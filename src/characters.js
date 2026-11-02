@@ -63,6 +63,10 @@ const CH_FACE={
 };
 // eyelid shapes: [inner y, peak y, peak u, outer y, bottom y] in units of eye height (u in eye widths)
 const CH_LIDS={normal:[-.02,-.56,-.04,-.22,.48],wide:[-.08,-.76,-.02,-.32,.6],half:[.06,-.26,.1,-.08,.46],sad:[-.22,-.44,-.16,.04,.46],stern:[.1,-.3,.14,-.38,.42]};
+// eye shapes (o.eyeShape), so faces differ beyond colour: w/h scale the eye, ir the iris, d shifts the lid points above
+// (inner, peak, peak u, outer, bottom), crease: 'none' (single lid), 'inner' (a low crease that fades toward the nose).
+const CH_EYESHAPE={almond:{w:1.06,h:.8,ir:.94,d:[.07,.1,.1,-.13,-.05],crease:'inner'},mono:{w:1.08,h:.7,ir:.9,d:[.1,.16,.12,-.12,-.07],crease:'none'},
+  hooded:{w:1.02,h:.76,ir:.92,d:[.04,.18,.04,-.04,-.04],crease:'none',hood:1},round:{w:.98,h:1.08,ir:1.04,d:[0,-.04,0,.02,.04],crease:'inner'}};
 
 // one eye. o=-1 viewer-left, +1 viewer-right. E: geometry + colours + mood bits
 function ch_eye(cx,cy,o,E,id,k){
@@ -73,7 +77,7 @@ function ch_eye(cx,cy,o,E,id,k){
     if(E.wing>.3)s+=`<path d="M${ch_n(X(w*.4))} ${ch_n(cy-h*.12)} L${ch_n(X(w*.62))} ${ch_n(cy-h*.3)} L${ch_n(X(w*.5))} ${ch_n(cy+h*.06)}Z" fill="${lash}"/>`;
     s+=ch_ln([[[X(-w*.3),cy+h*.42],[X(0),cy+h*.62],[X(w*.3),cy+h*.42]]],ch_swell(1.1,.2),E.skinLine,'opacity=".45"');
     return s}
-  const S=CH_LIDS[E.lid]||CH_LIDS.normal;
+  const S0=CH_LIDS[E.lid]||CH_LIDS.normal,S=E.shape?S0.map((v,i)=>v+E.shape.d[i]):S0;
   const I=[X(-w/2),cy+h*S[0]],Pk=[X(w*S[2]),cy+h*S[1]],O=[X(w/2+.5),cy+h*S[3]],By=cy+h*S[4],B=[X(w*.04),By];
   const s1=[I,[I[0],I[1]+(Pk[1]-I[1])*.72],[X(w*S[2]-w*.3),Pk[1]],Pk],s2=[Pk,[X(w*S[2]+w*.3),Pk[1]],[O[0],O[1]+(Pk[1]-O[1])*.55],O];
   const s3=[O,[X(w/2),cy+h*.2],[X(w*.3),By],B],s4=[B,[X(-w*.24),By],[X(-w/2-.5),cy+h*.28],I];
@@ -102,8 +106,12 @@ function ch_eye(cx,cy,o,E,id,k){
   if(E.wing>.5){for(const t of [.62,.8]){const i=Math.round(t*(lidPts.length-1)),p=lidPts[i],q=lidPts[Math.max(0,i-1)],r=lidPts[Math.min(lidPts.length-1,i+1)],ww=wf(t);
     s+=`<path d="M${P([q[0],q[1]-ww*.7])} L${P([p[0]+o*3,p[1]-ww-3.2])} L${P([r[0],r[1]-ww*.7])}Z" fill="${lash}"/>`}}
   // double-lid crease
-  const cr=ch_sub(lidPts,.3,.92).map((p,i,a)=>[p[0],p[1]-wf(.3+.62*i/(a.length-1))-2.6]);
-  s+=`<path d="${ch_rib(cr,ch_swell(.95,.15))}" fill="${E.skinLine}" opacity=".55"/>`;
+  const crease=E.shape?E.shape.crease:'double';
+  if(crease==='double'){const cr=ch_sub(lidPts,.3,.92).map((p,i,a)=>[p[0],p[1]-wf(.3+.62*i/(a.length-1))-2.6]);
+    s+=`<path d="${ch_rib(cr,ch_swell(.95,.15))}" fill="${E.skinLine}" opacity=".55"/>`}
+  else if(crease==='inner'){const cr=ch_sub(lidPts,.48,.94).map((p,i,a)=>[p[0],p[1]-wf(.48+.46*i/(a.length-1))-1.5]);
+    s+=`<path d="${ch_rib(cr,ch_tap(.1,.8,.5))}" fill="${E.skinLine}" opacity=".4"/>`}
+  if(E.shape&&E.shape.hood)s+=`<path d="${ch_rib(ch_sub(lidPts,.2,1).map(p=>[p[0],p[1]-3.4]),ch_swell(1.4,.2))}" fill="${E.lidSh}" opacity=".35"/>`;
   // lower lash: soft partial line on the outer half
   s+=`<path d="${ch_rib(ch_sub(ch_bz(s3,12),.12,.95),ch_swell(E.kid?1:1.1,.2))}" fill="${lash}" opacity=".55"/>`;
   return s}
@@ -572,8 +580,8 @@ function ch_neckAcc(acc,o,G,sk,id,build){const cy=G.chin,nb=cy+(build==='K'?22:2
 
 // ---------- more outfits for the bust (o.outfit; the existing coat / shirt / top stay as they were) ----------
 // o.shirt is the main garment colour, o.under the layer beneath (cardigan, suit, blazer, vest), o.tie the suit's tie.
-const CH_OUTFITS={cardigan:1,sweater:1,suit:1,scrubs:1,hoodie:1,parka:1,vest:1,dress:1,blazer:1,tee:1,shirt:1,top:1,coat:1};
-const CH_OUTFIT_DEF={cardigan:'#c86b85',sweater:'#5b7bd5',suit:'#2e3550',scrubs:'#2f8fd8',hoodie:'#6c5ce7',parka:'#3d6b5a',vest:'#f2d22e',dress:'#e05a7a',blazer:'#3d4a7a',tee:'#38b07f',shirt:'#5b7bd5',top:'#ff7a6b'};
+const CH_OUTFITS={cardigan:1,sweater:1,suit:1,scrubs:1,hoodie:1,parka:1,vest:1,dress:1,blazer:1,tee:1,shirt:1,top:1,coat:1,mandarin:1};
+const CH_OUTFIT_DEF={cardigan:'#c86b85',sweater:'#5b7bd5',suit:'#2e3550',scrubs:'#2f8fd8',hoodie:'#6c5ce7',parka:'#3d6b5a',vest:'#f2d22e',dress:'#e05a7a',blazer:'#3d4a7a',tee:'#38b07f',shirt:'#5b7bd5',top:'#ff7a6b',mandarin:'#2f5f7a'};
 // is this colour a high-visibility safety colour (vests get reflective stripes)?
 function ch_hiviz(c){const [r,g,b]=ch_rgb(c);return (r>190&&g>170&&b<110)||(r>220&&g>90&&g<180&&b<90)}
 function ch_bust(build){return build==='M'?{nx:25,L:10,top:206}:build==='K'?{nx:17,L:48,top:204}:{nx:21,L:26,top:206}}
@@ -693,6 +701,15 @@ function ch_outfit2(kind,o,G,sk,id,build,neckG){const B=ch_bust(build),nx=B.nx,L
     s+=`<path d="M${150+34} ${wy+8} C${150+46} ${wy-6} ${150+62} ${wy} ${150+56} ${wy+14} C${150+50} ${wy+20} ${150+42} ${wy+16} ${150+34} ${wy+12}Z M${150+34} ${wy+10} C${150+40} ${wy+24} ${150+44} ${wy+40} ${150+40} ${wy+56} L${150+30} ${wy+52} C${150+32} ${wy+40} ${150+30} ${wy+24} ${150+28} ${wy+12}Z" fill="${sash}" stroke="${Sh.line}" stroke-width="1.8" stroke-linejoin="round"/>`;
     let g='';for(const x of [-70,-46,-22,4,28,56,80])g+=`M${150+x} ${wy+24} Q${150+x*1.1} ${wy+40} ${150+x*1.18} 372`;s+=`<path d="${g}" stroke="${ln}" stroke-width="1.2" fill="none" opacity=".4"/>`;
     return s}
+  if(kind==='mandarin'){ // a jacket with a stand-up mandarin collar, piped edges (o.trim) and knotted frog buttons down the front
+    const tr=o.trim||ch_mix(col,'#f4e2b0',.55),Tp=ch_clothPal(tr);
+    s+=neckG+body(C,3);
+    const half=`M${150-nx-6} ${t-2} C${150-nx-5} ${t+10} ${150-12} ${t+15} ${150-2.5} ${t+15} L${150-2.5} ${t+1} C${150-11} ${t+1} ${150-nx+2} ${t-4} ${150-nx+1} ${t-16}Z`;
+    s+=`<path d="${half}" fill="${C.base}" stroke="${ln}" stroke-width="2.2" stroke-linejoin="round"/><path d="${ch_mx(half,150)}" fill="${C.sh}" stroke="${ln}" stroke-width="2.2" stroke-linejoin="round"/>`;
+    s+=`<path d="M${150-nx-5} ${t-1} C${150-nx-4} ${t+10} ${150-12} ${t+14} ${150-3} ${t+14}" stroke="${tr}" stroke-width="2" fill="none"/><path d="${ch_mx(`M${150-nx-5} ${t-1} C${150-nx-4} ${t+10} ${150-12} ${t+14} ${150-3} ${t+14}`,150)}" stroke="${tr}" stroke-width="2" fill="none"/>`;
+    s+=`<path d="M150 ${t+15} L150 372" stroke="${ln}" stroke-width="1.8"/><path d="M152.6 ${t+16} L152.6 372" stroke="${tr}" stroke-width="2.2" opacity=".9"/>`;
+    s+=[t+34,t+62,t+90,t+118].map(y=>`<path d="M${150-13} ${y} C${150-9} ${y-4} ${150-4} ${y-2} 150 ${y} C${150+4} ${y+2} ${150+9} ${y+4} ${150+13} ${y} M${150-13} ${y} C${150-10} ${y+3} ${150-6} ${y+3} ${150-3} ${y+1} M${150+13} ${y} C${150+10} ${y-3} ${150+6} ${y-3} ${150+3} ${y-1}" stroke="${Tp.line}" stroke-width="3.6" fill="none" stroke-linecap="round"/><path d="M${150-13} ${y} C${150-9} ${y-4} ${150-4} ${y-2} 150 ${y} C${150+4} ${y+2} ${150+9} ${y+4} ${150+13} ${y}" stroke="${tr}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="150" cy="${y}" r="3" fill="${tr}" stroke="${Tp.line}" stroke-width="1.2"/>`).join('');
+    return s}
   if(kind==='coat'){return ''}
   return s}
 
@@ -707,6 +724,7 @@ function ch_personKit(o,P){o=o||{};P=P||{};
   const iris=o.eye||'#7a4a2e',elder=st==='elder'||old,PE=P.eye||1,PL=P.lash||1;
   const E={ew:G.ew*PE,eh:(elder?G.eh*.82:G.eh)*PE,irx:G.irx*PE,iry:G.iry*PE,lash:G.lash*PL,wing:G.wing,brow:G.brow*PL,kid,lid:md.lid,look:md.look||[0,0],worry:md.worry,tear:md.fx==='tear',
     lashC:ch_mix(Hh.dk,'#1a0810',.5),skinLine:sk.line,white:'#ffffff',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
+  {const ES=CH_EYESHAPE[o.eyeShape];if(ES){E.ew*=ES.w;E.eh*=ES.h;E.irx*=ES.ir;E.iry*=ES.ir;E.shape=ES}}
   const ey=G.ey,ex=G.ex,browY=ey-E.eh/2+G.by,browC=ch_mix(Hh.dk,sk.line,.3);
   const acc=ch_accSet(o.accessory),hat=acc.hardhat?'hardhat':acc.beanie?'beanie':'';
   const bs=CH_BROWS[md.brow],bL=Array.isArray(bs[0])?bs[0]:bs,bR=Array.isArray(bs[0])?bs[1]:bs;
