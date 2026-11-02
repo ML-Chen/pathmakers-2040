@@ -10,6 +10,7 @@ import json, os, subprocess, sys, time, urllib.request, urllib.error
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'tools'))
 EL_KEY = os.environ.get('ELEVENLABS_API_KEY', '').strip()
+zh_tts = None
 if not EL_KEY:
     import zh_tts
 EL = {'Sarah': 'EXAVITQu4vr4xnSDxMaL', 'Laura': 'FGY2WhTYpPnrIDTdsKH5', 'Jessica': 'cgSgspJ2msm6clMCkdW9', 'Matilda': 'XrExE9yKIg1WjnnlVkGX',
@@ -33,7 +34,15 @@ def eleven(voice, text, speed, dst):
     subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-i', tmp, dst], check=True); os.remove(tmp)
 
 def synth(voice, text, speed, dst):
-    return eleven(voice, text, speed, dst) if EL_KEY else zh_tts.synth(voice, text, speed, dst)
+    """ElevenLabs when the key works; if it fails (for example out of credits), switch to Kokoro for the rest of the run."""
+    global EL_KEY, zh_tts, speaker
+    if EL_KEY:
+        try: return eleven(voice, text, speed, dst)
+        except Exception as e:
+            print('ElevenLabs failed, using Kokoro instead:', str(e)[:200], flush=True); EL_KEY = ''
+            import zh_tts as _z; zh_tts = _z; speaker = 'zf_xiaoxiao'; voice = speaker
+    if voice in EL or not voice.startswith(('zf_', 'zm_')): voice = 'zf_xiaoxiao'
+    return zh_tts.synth(voice, text, speed, dst)
 
 out = sys.argv[1]; speaker = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else ('Sarah' if EL_KEY else 'zf_xiaoxiao'); speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 os.makedirs(out, exist_ok=True)
