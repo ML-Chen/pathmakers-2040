@@ -76,31 +76,31 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
     mars_dusk:['Blue sunsets. I’ll never get used to them.','That bright star is Earth. Everyone I love is on it.']},
   talks:{
     morning:[
-      {who:'byte',mood:'happy',text:'Good afternoon, Explorer! Welcome to Jezero Station on Mars. Six people live here, plus a lot of robots and me.'},
-      {who:'byte',mood:'neutral',text:'Today the robots cleaned the [[solar panels]], the crew logged rock samples from the old river [[delta]], and Lucía’s first three tomatoes turned red.'},
-      {who:'byte',mood:'think',text:'But there’s news. A [[dust storm]] is coming from the east. Tonight the panels will go dark, and the station runs on its [[battery]] alone.',choices:[
-        {t:'What’s my job today?',reply:'You lead tonight. Delta, the outpost AI, keeps the power running, but you decide what gets power when there isn’t enough for everything. Then you sign the plan.'},
-        {t:'Is the crew in danger?',reply:'Not if we plan well. The habitat is built for storms. The hard part is choosing what to keep on, because the battery can’t do it all.'}]}
+      {who:'byte',mood:'happy',text:'Good afternoon, Explorer! Welcome to Jezero Station, a small outpost on Mars. Six people live here, along with a lot of robots, and me.'},
+      {who:'byte',mood:'neutral',text:'It has been a good day so far. The robots cleaned the [[solar panels]], and Lucía’s first three tomatoes turned red.'},
+      {who:'byte',mood:'think',text:'But a [[dust storm]] is coming from the east. Tonight the dust will block the sunlight, so the solar panels will stop making power. The station will have to run all night on its [[battery]].',choices:[
+        {t:'What’s my job today?',reply:'You’re in charge of the station tonight. Delta, the outpost’s AI, runs the power, air and heat. The battery can’t power everything, so you’ll decide what stays on, and then you’ll sign the plan.'},
+        {t:'Is the crew in danger?',reply:'Not if we plan well. The habitat is built for storms. The hard part is choosing what to keep on, because the battery can’t power everything.'}]}
     ],
     delta:[
-      {who:'delta',mood:'neutral',text:'Hello, Explorer. I’m Delta. I run the station’s power, air and heat. Here is my storm [[forecast]], with honest [[range]]s.'},
-      {who:'delta',mood:'think',text:'The storm front should arrive between 5 and 8 PM. Most likely, it comes at about 6:30. At [[sunset]], the battery should hold 48 to 55 [[kilowatt-hours]].'},
-      {who:'delta',mood:'worried',text:'There is about a 35% chance the storm is still here at sunrise. Then the panels give only a fifth of their power until noon, and we need 8 more kilowatt-hours to get through the morning.'},
+      {who:'delta',mood:'neutral',text:'Hello, Explorer. I’m Delta. I run the station’s power, air and heat. Here is my storm [[forecast]]. I’ll give you a [[range]] for each number, because I can’t know them exactly.'},
+      {who:'delta',mood:'think',text:'The storm should arrive between 5 and 8 PM, most likely at about 6:30. At [[sunset]], the battery should hold between 48 and 55 [[kilowatt-hours]] of energy.'},
+      {who:'delta',mood:'worried',text:'There is about a 35% chance that the storm is still here at sunrise. If it is, the panels will make only a little power until noon, and we will need 8 more kilowatt-hours from the battery to get through the morning.'},
       {who:'delta',mood:'neutral',text:'My default plan follows the [[priority list]] that [[mission control]] wrote years ago. [[Life support]] comes first, then crew comfort, then science. The greenhouse comes last, so it goes off tonight.',choices:[
-        {t:'Can we change that order tonight?',good:true,mood:'smile',reply:'Yes. The list is only a starting point. You lead this station, so tonight’s order is your call. I’ll show you exactly what each choice costs.'},
+        {t:'Can we change that order tonight?',good:true,mood:'smile',reply:'Yes. The list is only a starting point. You lead the station tonight, so you choose the order. I’ll show you exactly how much power each choice costs.'},
         {t:'You know best. Use your plan.',mood:'think',reply:'I can run my plan safely. But my list was written before anyone grew food here. You should hear from the crew before you decide.'}]}
     ],
     lucia:[
       {who:'lucia',mood:'happy',text:'Explorer! Come see. Three red tomatoes, the first ever grown on Mars. I’ve named them Uno, Dos and Tres.'},
       {who:'lucia',mood:'worried',text:'If the greenhouse goes cold tonight, the flowers die, and the tomatoes freeze. We’d have to start again, and that takes four months.'},
-      {who:'lucia',mood:'think',text:'Here’s the thing. The plants can live through one dark night, as long as they stay warm. Heat only, no lights. They won’t mind the dark.'},
+      {who:'lucia',mood:'think',text:'But the plants can live through one dark night, as long as they stay warm. We could keep the heat on and turn the lights off. They won’t mind the dark.'},
       {who:'lucia',mood:'smile',text:'One more thing, and it’s just for me. My son Caio turns ten tomorrow, back home in Recife. I recorded a birthday message, and the [[relay window]] closes at 9 PM.',choices:[
         {t:'Ten! Does he know about the tomatoes?',good:true,mood:'happy',reply:'He made me promise to save him the first seed. He wants to plant it in our backyard. That boy.'},
         {t:'Messages can wait a day, right?',mood:'sad',reply:'They can. It’s only a birthday. I just hoped he’d hear from me on the day.'}]}
     ],
     dev:[
       {who:'devr',mood:'smile',text:'Hey, Explorer. I’m Dev. I keep the rovers running and the habitat in one piece. Hand me that strap, would you?'},
-      {who:'devr',mood:'neutral',text:'Rover’s parked nose to the wind and fully charged on its own battery. If anything goes wrong tonight, six people fit inside. Snugly.'},
+      {who:'devr',mood:'neutral',text:'The rover is parked facing into the wind, and its own battery is full. If anything goes wrong tonight, all six of us can fit inside. It would be a tight squeeze.'},
       {who:'devr',mood:'worried',text:'Can I tell you something, just you? I sleep with a [[breathing machine]]. My throat closes up at night, and the machine keeps the air flowing.'},
       {who:'devr',mood:'stern',text:'It runs on my cabin outlet. Delta’s storm rule turns off the cabin outlets at 10 PM. I never put it in my records. I didn’t want everyone fussing over me.',clue:'cpap'},
       {who:'devr',mood:'think',text:'It doesn’t use much. I just need it to stay on.',choices:[
@@ -110,13 +110,13 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
   },
   docs:[
     {id:'dforecast',title:'Delta’s storm forecast',from:'Delta',kind:'forecast',steps:[
-      {t:'A regional [[dust storm]] is moving toward [[Jezero Crater]] from the east.',viz:'dsStormMove',cap:'The storm'},
+      {t:'A big [[dust storm]] is moving toward [[Jezero Crater]] from the east.',viz:'dsStormMove',cap:'The storm'},
       {t:'The storm front should arrive between 5 and 8 PM. Most likely, it comes at about 6:30.',viz:'dsArrive',cap:'When it arrives'},
       {t:'Inside the storm, sunlight drops to almost nothing, so the [[solar panels]] stop charging.',viz:'dsSolarDrop',cap:'The panels go dark'},
       {t:'The [[battery]] should hold 48 to 55 [[kilowatt-hours]] at [[sunset]], most likely 52. If the storm comes early, we lose the last hour of charging.',viz:'dsBattery',cap:'The battery'},
       {t:'Sunrise is at 7 AM. There is about a 35% chance the storm is still here, and then we need 8 more kilowatt-hours to reach noon.',viz:'dsLongStorm',cap:'35 in 100'},
       {t:'The battery must never fall below 5 kilowatt-hours. That is our [[emergency reserve]].',viz:'dsFloor',cap:'The reserve'},
-      {t:'These ranges come with honest odds. I will update them during the night.',viz:'dsHonest',cap:'Honest ranges'}]},
+      {t:'I have told you how unsure I am about each number. I will update this forecast during the night.',viz:'dsHonest',cap:'Honest ranges'}]},
     {id:'dpower',title:'Tonight’s power list',from:'Delta',kind:'log',steps:[
       {t:'[[Life support]] keeps our air and water clean and the cabin at a safe 14°C. It needs 26 kilowatt-hours tonight, and it always stays on.',viz:'dsLife',cap:'Life support'},
       {t:'Warming the cabin to a cozy 20°C needs 5 kilowatt-hours more.',viz:'dsCabin',cap:'Cabin heat'},
@@ -126,8 +126,8 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
         alt:{t:'Updated: one cabin outlet now stays on all night. It needs half a kilowatt-hour. I will not tell anyone why.',args:{one:1},cap:'One outlet stays on'}},
       {t:'The old [[priority list]] puts life support first, crew comfort second, science third, and the greenhouse last. Tonight, the Explorer can change the order.',viz:'dsPriority',cap:'The old order'}]}
   ],
-  react:{dforecast1:'Between 5 and 8. Plan for the early end, just in case.',dforecast3:'48 to 55. The low end matters most.',dforecast4:'35 in 100 isn’t small. That’s about 1 night in 3.',dforecast6:'Delta tells us what it isn’t sure about. That’s a good sign.',
-    dpower2:'Heat only costs a third of lights and heat.',dpower4:'Outlets off at 10 PM. Hmm, who might need one?',dpower5:'Written years ago, before anyone grew food here.'},
+  react:{dforecast1:'The storm could come as early as 5 PM, so it’s safer to plan for that.',dforecast3:'If we plan for 48, the low end, we won’t be caught short.',dforecast4:'35 in 100 is about 1 night in 3. That isn’t a small chance.',dforecast6:'Delta tells us which numbers it isn’t sure about. That makes its forecast easier to trust.',
+    dpower2:'Heat only uses 4 kilowatt-hours, a third of what lights and heat use.',dpower4:'The cabin outlets go off at 10 PM. I wonder whether anyone needs one at night.',dpower5:'That list was written years ago, before anyone grew food on Mars.'},
   tell:{clue:'cpap',label:'Tell Delta about Dev’s outlet',note:'Done. Delta will keep that one outlet on all night, and it won’t say why. That adds half a kilowatt-hour to tonight’s plan.',guide:'mars-private',doc:'dpower'},
   criteria:[{id:'safe',label:'The battery lasts until the Sun is back'},{id:'tomatoes',label:'The first tomatoes survive'},{id:'rest',label:'Everyone sleeps safely'},{id:'message',label:'Lucía’s message reaches Earth in time'}],
   criteriaHint:'Not sure what one means? <button class="gw" data-w="relay window">Relay window</button> means the time a satellite can carry messages to Earth.',
@@ -143,13 +143,13 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
   whyGuide(){return 'mars-ranges'},
   vignette(kind){return typeof dsVignette==='function'?dsVignette(kind):vignette('healed')},
   debriefScene:'mars',eveningScene:'mars_dusk',eveningPlace:'Jezero Station · Mars · 6:50 PM, the next evening',
-  consent:{scene:'mars',place:'Galley · Jezero Station',left:'devr',right:'lucia',title:'Lucía and Dev',role:'Your crew',prompt:'So, Explorer, what’s the plan for tonight?',replyWho:'lucia',heart:'lucia',
+  consent:{scene:'mars',place:'Galley · Jezero Station',left:'devr',right:'lucia',title:'Lucía and Dev',role:'Your crew',prompt:'So, Explorer, what’s the plan for tonight?',replyWho:'lucia',heart:'lucia',compact:true,
     opts(c,M){const f=forecastFor(c),sf=Math.round(10*f.safe),tm=Math.round(10*f.tomatoes);
       const gh={lights:'the greenhouse gets lights and heat',heat:'the greenhouse stays warm but dark',off:'the greenhouse goes off'}[c.gh];
-      return [{t:`Here’s my plan: ${gh}, the cabin stays ${c.cabin==='warm'?'cozy at 20°C':'cool at 14°C, so grab your sleeping bags'}, and ${c.msg==='send'?'we send the messages before 9 PM':'the messages wait until the storm passes'}. In about ${sf} of 10 nights like this, the battery lasts until the Sun is back. In about ${tm} of 10, the tomatoes make it. What do you think?`,good:true,mood:'smile',
+      return [{t:`Here’s my plan: ${gh}, the cabin stays ${c.cabin==='warm'?'cozy':'cool'}, and ${c.msg==='send'?'the messages go out':'the messages wait'}. The battery lasts until sunrise in about ${sf} of 10 nights like this.`,good:true,mood:'smile',
           reply:c.gh==='off'?'I hate losing them. But you were honest with us about the odds, and I trust you. Okay.':'Thank you for telling us the real odds. That’s a plan I can sleep on.'},
-        {t:'Delta runs this station better than any of us ever could, so we’ll just use its plan exactly as it is. Nobody needs to worry about it.',good:false,mood:'worried',reply:'Delta’s plan turns my greenhouse off. Did you even look at what it costs? Please tell us what you decided, and why.'},
-        {t:'Don’t worry, everyone. The storm will be gone by morning, so we’ll have plenty of power for everything we want tonight.',good:false,mood:'surprised',reply:'Delta said there’s about a one in three chance it’s still here at sunrise. Please don’t promise us what nobody knows.'}]}},
+        {t:'Delta runs this station better than any of us ever could. We’ll use its plan exactly as it is, so nobody needs to worry about tonight.',good:false,mood:'worried',reply:'Delta’s plan turns my greenhouse off. Did you even look at what it costs? Please tell us what you decided, and why.'},
+        {t:'Don’t worry, everyone. The storm will be gone by morning, so the battery has plenty of power for everything we want to run tonight.',good:false,mood:'surprised',reply:'Delta said there’s about a one in three chance it’s still here at sunrise. Please don’t promise us what nobody knows.'}]}},
   memo:{starters:['Tonight, the station will ','because ','The chance the battery lasts until sunrise is about ','For Lucía, Dev and the crew, ','If Delta’s update is bad, '],placeholder:'Tonight, the greenhouse stays warm but dark because…',
     plan:/greenhouse|light|heat|cabin|message|battery|power|tomato|outlet|plan/,planLabel:'Names tonight’s plan',planWhat:'a power plan for the night',careLabel:'Includes what matters to the crew',care:/luc[ií]a|dev|crew|tomato|caio|son|message|everyone|sleep|people/,signAs:'Explorer ',topic:'a power plan for a dust storm night on Mars'},
   reveal:{days(){return 1},who:'lucia',
@@ -162,7 +162,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
   debriefLines(){const st=dsState();return st.mid?[{ok:true,text:'When Delta’s forecast changed at 1 AM, you changed the plan to match it.'}]:[]},
   evening(){const R=S.result||{},ok=R.flags&&R.flags.tomatoes;
     return [`<b>${esc(S.byte.name)}:</b> “Look, a blue sunset! Fine dust in the air sends blue light toward us, right around the Sun. And that bright star above it is Earth.”`,
-      ok?'“Lucía picked Uno, the first ripe tomato on Mars, and cut it into six tiny pieces. She saved the seeds for Caio.”':'“Lucía is planting new seeds already. She says the second try always grows faster, because now she knows the soil.”',
+      ok?'“Lucía picked Uno, the first ripe tomato on Mars, and cut it into six tiny pieces, one for each of us. She saved the seeds for Caio.”':'“Lucía is planting new seeds already. She says the second try always grows faster, because now she knows the soil.”',
       '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”']},
   brief(){const st=dsState();return `Current case: Jezero Station, a small outpost in Jezero Crater on Mars, fall 2041 (a game forecast; no people have been to Mars today). Six crew. A regional dust storm arrives tonight (front between 5 and 8 PM, most likely 6:30) and stops solar charging. Battery at sunset: 48 to 55 kWh (most likely 52). Sunrise 7 AM; about a 35% chance the storm is still there, needing 8 kWh more until noon. Emergency reserve: never below 5 kWh. Loads tonight: life support 26 kWh (always on, cabin 14°C); cabin to 20°C +5; greenhouse lights+heat 12 or heat only 4 (off = it freezes and the first three tomatoes die); messages to Earth 2 kWh, relay window closes 9 PM (Lucía Prado, botanist, recorded a birthday message for her son Caio, turning 10 in Recife). Delta (the outpost AI) defaults to an old mission-control priority list: life support, crew comfort, science, greenhouse last; its storm rule turns off sleeping-cabin outlets at 10 PM. Dev Raman (engineer) privately told the player he sleeps with a breathing machine on his cabin outlet. The rover is charged on its own battery and can shelter six.
 What you know: ${S.told?'The player told Delta, with Dev’s permission, that one cabin outlet must stay on all night (0.5 kWh). Never reveal why to anyone else.':'Nothing about cabin outlets yet. If asked about the crew, ask whether anyone mentioned a need at night.'}

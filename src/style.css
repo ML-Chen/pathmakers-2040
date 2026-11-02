@@ -424,6 +424,11 @@ svg text:not([font-family]){font-family:var(--body)}
 .planpick{display:flex;flex-direction:column;gap:6px;background:var(--mist);border-radius:16px;padding:10px;margin-bottom:10px}
 .planpick .segb{font-size:.82rem;padding:7px 6px}
 .planpick .ctl-l{color:var(--ink2);margin:0}
+.planpick.compact{padding:8px 10px}
+.planpick .pp-sum{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.planpick .pp-sum>div{display:flex;flex-direction:column;gap:1px;min-width:0}
+.planpick .pp-sum b{font-size:.86rem;line-height:1.25;color:var(--ink)}
+.planpick .pp-sum .mini-btn{flex:none}
 /* the memo's confidence label sits on a white card, so it needs dark text (#a9b6e6 is for the dark Future Table) */
 .conf .ctl-l{color:var(--ink2)}
 .talk .stage.duo{height:min(36vh,300px)}
