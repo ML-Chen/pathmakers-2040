@@ -116,13 +116,13 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     'vaccine':'A shot that teaches your body how to beat a germ before you ever meet it.',
     'vaccines':'Shots that teach your body how to beat a germ before you ever meet it.',
     'wastewater':'The used water that goes down every drain in a city. Checking it tells doctors what is going around, before anyone feels sick.',
-    'far-UVC':'A kind of light that is safe for people and hard on germs. Lamps in stations and schools run all day.',
-    'shelter':'A room or building with its own clean air, kept ready in case people ever need it.',
+    'far-UVC':'A kind of light that is safe for people and hard on germs. In 2040, lamps like these run all day in stations and schools. True today: far-UVC lamps exist and are being tested, but very few buildings have them.',
+    'shelter':'A room or building with its own clean air, kept ready in case people ever need it. In 2040, every city has enough of them for everybody. True today: clean-air shelters like that have not been built yet.',
     'traced':'Followed back to whoever really sent it.',
     'evidence':'Something you can show other people, instead of a feeling.',
     'appeal':'To ask a person to look again at a decision you think is wrong.',
     'least privilege':'Giving a person or a machine only the power it needs for its job, and no more.',
-    'the Quiet Year':'The year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it.'
+    'the Quiet Year':'In this story, the year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it. True today: Varrow and the Quiet Year are made up for this game.'
   },
   cast:{
     // no two of them share a silhouette: long hair and glasses, a broad man with short hair, a bun and gold hoops
