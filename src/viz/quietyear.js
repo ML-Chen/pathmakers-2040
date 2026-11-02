@@ -327,10 +327,10 @@ const QY_ART=(()=>{
     <path d="M${r(x-m*.7)} ${r(y-m*.45)}C${r(x-m*.45)} ${r(y-m*.8)} ${r(x-m*.1)} ${r(y-m*.92)} ${r(x+m*.2)} ${r(y-m*.92)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".5"/>`};
   const tablet=(x,y,w,h,inner)=>`<path d="${rr(x,y,w,h,4)}" fill="${INK}"/><path d="${rr(x+2.5,y+2.5,w-5,h-5,2)}" fill="#dfe8ff"/>${inner||''}`;
   // people of the stories (mini options)
-  const ANA={skin:SKIN[1],shirt:'#ff8a7a',hair:'#3a2418',style:'long',outfit:'hoodie'},GRAN={skin:SKIN[2],shirt:'#c58ad8',hair:'#eceaf2',style:'bun',outfit:'jacket'},
+  const ANA={skin:SKIN[1],shirt:'#ff8a7a',hair:'#7a4a2a',style:'long',outfit:'hoodie'},GRAN={skin:SKIN[2],shirt:'#c58ad8',hair:'#eceaf2',style:'bun',outfit:'jacket'},
     MOM={skin:SKIN[2],shirt:'#5b7bd5',hair:'#2a1a14',style:'pony',outfit:'tee'},DAD={skin:SKIN[1],shirt:'#3f8f6b',hair:'#2a211c',style:'short',outfit:'tee'},
     KWAME={skin:SKIN[5],shirt:'#ffffff',hair:'#141010',style:'short',outfit:'tee'},NURSE={skin:SKIN[0],shirt:'#5fc9bd',hair:'#c9772d',style:'short',outfit:'tee'},
-    PRIYA={skin:SKIN[3],shirt:'#16b3a6',hair:'#1a1414',style:'bun',outfit:'jacket'},NOOR={skin:SKIN[2],shirt:'#6c5ce7',hair:'#2a1c16',style:'long',outfit:'jacket'},
+    PRIYA={skin:SKIN[3],shirt:'#16b3a6',hair:'#1a1414',style:'bun',outfit:'jacket'},NOOR={skin:SKIN[2],shirt:'#6c5ce7',hair:'#2a1c16',style:'bob',outfit:'jacket'},
     IVY={skin:SKIN[2],shirt:'#a99bff',hair:'#2a1a14',style:'tails',age:'kid'},KID2={skin:SKIN[4],shirt:'#ffd45c',hair:'#1b1410',style:'curly',age:'kid'};
   const street=(y)=>`${gnd(y,'#4a4d7c','#5d6194')}<path d="M0 ${y+10}H300" stroke="#6a6ea2" stroke-width="1.2" stroke-dasharray="10 9" opacity=".7"/>`;
 

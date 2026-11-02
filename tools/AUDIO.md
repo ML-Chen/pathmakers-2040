@@ -50,6 +50,7 @@ reads it, so you can recast a voice there without changing the game.
 | `bm_george`  | Narrator         | `bm_fable`     | 1.05  | none            |
 | `af_sarah`   | Passer-by        | `af_aoede`     | 1.02  | none (the `af_sarah` speaker is Byte's voice) |
 | `af_nicole`  | Passer-by        | `af_alloy`     | 1.02  | none (`af_nicole` is a near-whisper) |
+| `elder_man_deep` | Gus, keeper of the Lantern Garden | `am_onyx` | 0.96 | 0.96 / 1.0 (deep and unhurried) |
 | any other    | e.g. `bm_lewis`, `bf_isabella` | same-named speaker | 1.02 | none |
 
 The script stops if a voice key is neither in `ROLES` nor a Kokoro speaker name. Keys
