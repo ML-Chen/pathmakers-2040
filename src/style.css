@@ -393,7 +393,7 @@ textarea{resize:vertical;line-height:1.5}
 .prop.off .pa-glow{opacity:0}.prop .pa-glow{transition:opacity .2s}.fx-toggle .pa-body{animation:jig .3s}
 .fx-flyaway .pa-body{animation:flyaway 2.4s ease-in-out}.fx-flyaway .pa-wing{transform-box:fill-box;transform-origin:center;animation:flap .12s 12 alternate}
 @keyframes flyaway{0%{transform:none}40%{transform:translate(120px,-160px) rotate(-10deg);opacity:0}60%{transform:translate(-120px,-160px);opacity:0}100%{transform:none;opacity:1}}
-.fx-glow .pa-body{animation:igpulse .8s 2}.fx-shoot .pa-body{animation:shoot 1.4s ease-in}@keyframes shoot{0%{transform:none}50%{transform:translate(160px,90px) scale(.4);opacity:0}51%{transform:none;opacity:0}100%{opacity:1}}
+.fx-glow .pa-body{animation:igpulse .8s 2}.prop .pa-hit{opacity:0}.fx-glow .pa-hit{animation:orbflash 1s ease-out}@keyframes orbflash{25%{opacity:.32;transform:scale(1.06)}100%{opacity:0}}.fx-shoot .pa-body{animation:shoot 1.4s ease-in}@keyframes shoot{0%{transform:none}50%{transform:translate(160px,90px) scale(.4);opacity:0}51%{transform:none;opacity:0}100%{opacity:1}}
 .prop .pa-steam{animation:steam 2.4s ease-in-out infinite}.fx-jiggle .pa-steam{animation:steam .6s 3}
 .burst{position:fixed;z-index:80;pointer-events:none;font-weight:800;text-shadow:0 2px 6px rgba(0,0,0,.2);animation:burst 1.3s ease-out forwards}
 @keyframes burst{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--r)) scale(1.1);opacity:0}}
