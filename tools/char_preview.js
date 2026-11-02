@@ -1,10 +1,12 @@
-// Character sheet preview: node tools/char_preview.js [outDir=/tmp/chars]
+// Character sheet preview: node tools/char_preview.js [outDir=/tmp/chars] [section ...]
 // Inlines src/art.js, src/content_boston.js, src/characters.js into one page and screenshots every cast member in
 // several moods, Byte in all ear styles / colours / moods, mini() chibis, plus animation-state checks
-// (blink, talking mouth, tail wag extremes, head sway). Writes sheet.png and per-section crops.
+// (blink, talking mouth, tail wag extremes, head sway). Then every hair style, beard, age, outfit and accessory,
+// posedPerson() in every pose for several bodies and ages, wheelchairs, unknown-value fallbacks and close-ups.
+// Writes sheet.png and one crop per section (<section>.png). Naming sections renders only those (faster).
 const {chromium}=require('playwright');const fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..'),src=f=>fs.readFileSync(path.join(root,'src',f),'utf8');
-const out=process.argv[2]||'/tmp/chars';fs.mkdirSync(out,{recursive:true});
+const out=process.argv[2]||'/tmp/chars',only=process.argv.slice(3);fs.mkdirSync(out,{recursive:true});
 const page=`<!doctype html><meta charset="utf-8"><style>
 body{margin:0;padding:16px;background:#eef1fb;font:600 13px/1.2 system-ui,sans-serif;color:#2a2f55;width:1560px}
 h2{margin:18px 0 8px;font-size:16px}.row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
@@ -21,7 +23,8 @@ h2{margin:18px 0 8px;font-size:16px}.row{display:flex;flex-wrap:wrap;gap:10px;al
 .wagA .byte-tail{transform-origin:108px 116px;transform:rotate(-14deg)}.wagB .byte-tail{transform-origin:108px 116px;transform:rotate(16deg)}
 .perk .byte-ears{transform-box:fill-box;transform-origin:50% 100%;transform:translateY(-3px) scaleY(1.12)}
 .yap .byte-head{transform-box:fill-box;transform-origin:50% 90%;transform:translateY(-3px) rotate(-3deg)}
-</style><body><div id="root"></div><script>${src('art.js')}\n${src('content_boston.js')}\n${src('characters.js')}
+</style><body><div id="root"></div><script>const ONLY=${JSON.stringify(only)};
+${src('art.js')}\n${src('content_boston.js')}\n${src('characters.js')}
 const R=document.getElementById('root');let H='';
 const moods=['smile','happy','neutral','worried','sad','surprised','stern','think'];
 const cell=(inner,lbl,cls='')=>'<div class="cell '+cls+'">'+inner+'<div class="lbl">'+lbl+'</div></div>';
@@ -77,17 +80,78 @@ H+='</div>';
 H+='<h2 id="s-zoom">Zoom</h2><div class="row">';
 for(const [w,m] of [['imani','smile'],['maya','smile'],['dad','smile']])H+=cell('<div class="pbox zoombox" style="width:500px;height:600px">'+portrait({...CAST[w],mood:m})+'</div>',w);
 H+='</div>';
-R.innerHTML=H;
+
+// ---------- new options: hair, beards, age, outfits, accessories, posedPerson ----------
+const SK=SKIN,HC=['#1b1410','#3a2a20','#c9772d','#8a5a3a','#e8c26a','#2a1a14','#5a3a2a','#b3541e'],SC=['#6c5ce7','#ff7a6b','#16b3a6','#f5b82e','#5b7bd5','#e05a7a','#38b07f','#3d3d55'];
+const pc=(o,lbl,cls)=>cell('<div class="pbox'+(cls?' '+cls:'')+'">'+portrait(o)+'</div>',lbl);
+const STYLES=['short','bun','braids','long','elder','ponytail','afro','bob','curls','locs','bald','headscarf'];
+const WRAPS=['#4f6db8','#c86b85','#2f8f83','#8a5ab8'];
+H+='<h2 id="s-hair">Hair styles: woman, man, kid</h2>';
+for(const b of [{},{masc:true},{age:'kid'}]){H+='<div class="row">';STYLES.forEach((st,i)=>{H+=pc({skin:SK[(i*5+(b.masc?2:b.age?4:0))%6],hair:HC[i%8],hairStyle:st,shirt:SC[i%8],wrap:WRAPS[i%4],...b,mood:i%3?'smile':'happy'},st)});H+='</div>'}
+H+='<h2 id="s-hairbig">New hair styles at game size (300x360)</h2><div class="row">';
+[['ponytail',SK[0],'#c9772d'],['afro',SK[5],'#1b1410'],['bob',SK[1],'#1d1512'],['curls',SK[2],'#5a3a2a'],['locs',SK[4],'#2a1a14'],['bald',SK[3],'#2a1a14'],['headscarf',SK[2],'#1b1410']].forEach(([st,skn,hc],i)=>{
+  H+=cell('<div class="pbox big">'+portrait({skin:skn,hair:hc,hairStyle:st,shirt:SC[(i+2)%8],wrap:WRAPS[i%4],masc:st==='bald'?true:undefined,mood:'smile'})+'</div>',st)});
+H+='</div>';
+H+='<h2 id="s-beard">Beards (full, short, mustache) and clean-shaven</h2><div class="row">';
+[['short',SK[1],'#2a211c'],['bald',SK[4],'#1b1410'],['curls',SK[2],'#3a2a20'],['afro',SK[5],'#1b1410'],['locs',SK[3],'#2a1a14'],['elder',SK[0],'#cfcfd8']].forEach(([st,skn,hc],i)=>{
+  for(const bd of ['full','short','mustache',''])H+=pc({skin:skn,hair:hc,hairStyle:st,beard:bd||undefined,masc:true,shirt:SC[i%8],mood:['smile','happy','neutral','think'][(i+['full','short','mustache',''].indexOf(bd))%4]},st+' '+(bd||'none'))});
+H+='</div>';
+H+='<h2 id="s-elder">age elder with any style, moods and glasses</h2><div class="row">';
+STYLES.forEach((st,i)=>{H+=pc({skin:SK[(i*5+1)%6],hairStyle:st,age:'elder',masc:i%2?true:undefined,beard:i===10?'full':i===0?'mustache':undefined,glasses:i%3===0,shirt:SC[(i+3)%8],wrap:WRAPS[i%4],mood:['smile','happy','think','worried'][i%4]},st+(i%2?' man':' woman'))});
+H+='</div>';
+const OUTFITS=['cardigan','sweater','suit','scrubs','hoodie','parka','vest','dress','blazer','shirt','top','coat'];
+H+='<h2 id="s-outfit">Outfits: woman, man, kid</h2>';
+for(const b of [{hairStyle:'bob'},{hairStyle:'short'},{hairStyle:'ponytail',age:'kid'}]){H+='<div class="row">';OUTFITS.forEach((of,i)=>{H+=pc({skin:SK[(i*5+(b.age?3:b.hairStyle==='short'?1:0))%6],hair:HC[(i+3)%8],...b,outfit:of,shirt:SC[i%8],mood:'smile'},of)});H+='</div>'}
+H+='<h2 id="s-acc">Accessories (and combinations)</h2><div class="row">';
+[['necklace','bob',SK[1]],['pearls','elder',SK[3]],['scarf','long',SK[0]],['beanie','short',SK[2]],['hardhat','ponytail',SK[4]],['earring necklace','afro',SK[5]],['beanie scarf','curls',SK[1]],['hardhat','locs',SK[3]],['hardhat','bald',SK[0]],['beanie','afro',SK[4]],['pearls earring','bun',SK[5]],['scarf beanie','braids',SK[2]]].forEach(([a,st,skn],i)=>{
+  H+=pc({skin:skn,hair:HC[i%8],hairStyle:st,accessory:a,age:st==='elder'?'elder':st==='braids'?'kid':undefined,outfit:['sweater','cardigan','parka','hoodie','vest','dress','parka','vest','vest','hoodie','blazer','parka'][i],shirt:SC[(i+5)%8],masc:st==='bald'||st==='short'?true:undefined,mood:'smile'},a+' / '+st)});
+H+='</div>';
+const FB=[{hairStyle:'mohawk'},{outfit:'spacesuit'},{accessory:'monocle'},{beard:'goatee'},{age:'teen'},{mood:'confused'},{skin:'notacolor',hair:'??'},{body:'giant'}];
+H+='<h2 id="s-fallback">Unknown values fall back</h2><div class="row">';
+FB.forEach(f=>{H+=pc({skin:SK[2],hair:'#3a2a20',shirt:'#5b7bd5',...f},JSON.stringify(f).replace(/[{}"]/g,''))});
+H+='</div>';
+if(typeof posedPerson==='function'){
+  const POSES=['stand','wave','walk','sit','dance','cane','thumbsup','sad','think','cheer','point'];
+  const card=(k,o,lbl,w,bg)=>cell('<svg viewBox="-45 -80 90 86" width="'+(w||150)+'" height="'+Math.round((w||150)*86/90)+'" style="border-radius:10px;background:'+(bg||'linear-gradient(#e3efff,#f6f9ff)')+'">'+posedPerson(k,o)+'</svg>',lbl);
+  const cast=[['adult woman',{skin:SK[4],hair:'#1b1410',hairStyle:'bun',outfit:'blazer',shirt:'#16b3a6',glasses:true,accessory:'earring'}],['adult man',{skin:SK[1],hair:'#2a211c',hairStyle:'short',outfit:'sweater',shirt:'#5b7bd5'}],
+    ['kid',{skin:SK[2],hair:'#1d1512',hairStyle:'ponytail',age:'kid',outfit:'hoodie',shirt:'#ff7a6b'}],['elder',{skin:SK[0],hairStyle:'bob',age:'elder',outfit:'cardigan',shirt:'#c86b85',skirt:'#5a4a6a',accessory:'pearls'}]];
+  H+='<h2 id="s-pose">posedPerson(kind,o): every pose (feet at 0,0; adult ~70 tall, kid ~58)</h2>';
+  for(const [n,o] of cast){H+='<div class="row">';POSES.forEach(k=>{H+=card(k,o,n+' '+k,128)});H+='</div>'}
+  H+='<h2 id="s-posebig">posedPerson at 3x</h2><div class="row">';
+  [['wave',cast[0][1]],['think',cast[1][1]],['cheer',cast[2][1]],['cane',cast[3][1]],['point',{skin:SK[5],hair:'#1b1410',hairStyle:'locs',outfit:'scrubs',shirt:'#2f8fd8',masc:true,beard:'short'}],['dance',{skin:SK[3],hair:'#1b1410',hairStyle:'afro',outfit:'dress',shirt:'#f5b82e'}]].forEach(([k,o])=>{H+=card(k,o,k,300)});
+  H+='</div>';
+  H+='<h2 id="s-cast">posedPerson with every style and outfit (stand / wave)</h2><div class="row">';
+  STYLES.forEach((st,i)=>{H+=card(i%2?'wave':'stand',{skin:SK[(i*5+2)%6],hair:HC[i%8],hairStyle:st,outfit:OUTFITS[i%OUTFITS.length],shirt:SC[i%8],wrap:WRAPS[i%4],masc:i%3===1?true:undefined,beard:st==='bald'?'full':undefined,age:i===4?'elder':i===2?'kid':undefined},st+' / '+OUTFITS[i%OUTFITS.length],128)});
+  H+='</div>';
+  H+='<h2 id="s-body">Bodies: slim / average / broad / plus, woman and man; kid, elder</h2><div class="row">';
+  for(const m of [false,true])for(const b of ['slim','average','broad','plus'])H+=card('stand',{skin:SK[m?2:4],hair:'#2a1a14',hairStyle:m?'short':'long',masc:m,body:b,outfit:m?'shirt':'top',shirt:m?'#38b07f':'#e05a7a'},(m?'man ':'woman ')+b,128);
+  H+=card('stand',{skin:SK[1],hair:'#1d1512',hairStyle:'braids',age:'kid',shirt:'#ff7a6b',skirt:'#3b4a7a'},'kid (Maya colours)',128);
+  H+=card('stand',{skin:SK[3],hairStyle:'elder',age:'elder',masc:true,outfit:'vest',shirt:'#6a7090'},'elder man',128);
+  H+='</div>';
+  H+='<h2 id="s-wheel">Wheelchair (wheelchair:true) in every pose</h2><div class="row">';
+  POSES.forEach((k,i)=>{H+=card(k,{...[cast[0][1],cast[1][1],cast[2][1],cast[3][1]][i%4],wheelchair:true},'wheelchair '+k,128)});
+  H+=card('wave',{skin:SK[5],hair:'#1b1410',hairStyle:'afro',age:'kid',outfit:'hoodie',shirt:'#38b07f',wheelchair:true},'kid wave',220);
+  H+=card('stand',{skin:SK[0],hairStyle:'bald',age:'elder',beard:'mustache',outfit:'cardigan',shirt:'#6a7090',wheelchair:true},'elder stand',220);
+  H+='</div>';
+  H+='<h2 id="s-vig">In a 120x90 Future Table card, 1x and 2x</h2><div class="row">';
+  for(const sc of [1,2])H+=cell('<svg viewBox="0 0 120 90" width="'+120*sc+'" height="'+90*sc+'" style="border-radius:8px;background:#dff4ec"><path d="M0 64 H120 V90 H0Z" fill="#c6e9dc"/><g transform="translate(30 82) scale(.95)">'+posedPerson('cheer',cast[2][1])+'</g><g transform="translate(62 82) scale(.95)">'+posedPerson('cane',cast[3][1])+'</g><g transform="translate(94 82) scale(.95)">'+posedPerson('wave',{...cast[1][1],wheelchair:true})+'</g></svg>',sc+'x');
+  H+='</div>';
+}
+H+='<h2 id="s-zoom2">Zoom: new faces</h2><div class="row">';
+[{skin:SK[5],hair:'#1b1410',hairStyle:'afro',accessory:'earring',outfit:'blazer',shirt:'#f5b82e',mood:'smile'},{skin:SK[1],hair:'#2a211c',hairStyle:'short',beard:'full',outfit:'parka',shirt:'#3d6b5a',mood:'smile'},{skin:SK[0],hairStyle:'bob',age:'elder',glasses:true,outfit:'cardigan',shirt:'#c86b85',accessory:'pearls',mood:'happy'},{skin:SK[3],hair:'#2a1a14',hairStyle:'locs',outfit:'scrubs',shirt:'#2f8fd8',mood:'smile'},{skin:SK[2],hairStyle:'headscarf',wrap:'#2f8f83',outfit:'blazer',shirt:'#e8e2d6',mood:'smile'}].forEach((o,i)=>{
+  H+=cell('<div class="pbox zoombox2" style="width:500px;height:600px">'+portrait(o)+'</div>',o.hairStyle)});
+H+='</div>';
+if(ONLY.length){const keep=new Set(ONLY.map(x=>'s-'+x));R.innerHTML=H;[...R.children].reduce((on,el)=>{if(el.tagName==='H2')on=keep.has(el.id);if(!on)el.remove();return on},false);}else R.innerHTML=H;
 <\/script>`;
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1600,height:1000},deviceScaleFactor:2});
   const errs=[];p.on('pageerror',e=>errs.push('pageerror: '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
   fs.writeFileSync(path.join(out,'sheet.html'),page);
   await p.setContent(page);await p.waitForTimeout(300);
-  await p.screenshot({path:path.join(out,'sheet.png'),fullPage:true});
-  for(const id of ['imani','maya','dad','extra','anim','byte','bytec','bytes','mini','posed','zoom']){const h=await p.$('#s-'+id);if(!h)continue;
+  if(!only.length)await p.screenshot({path:path.join(out,'sheet.png'),fullPage:true});
+  for(const id of ['imani','maya','dad','extra','anim','byte','bytec','bytes','mini','posed','zoom','hair','hairbig','beard','elder','outfit','acc','fallback','pose','posebig','cast','body','wheel','vig','zoom2']){const h=await p.$('#s-'+id);if(!h)continue;
     const box=await p.evaluate(el=>{const r=el.getBoundingClientRect();let n=el.nextElementSibling,bottom=r.bottom;while(n&&n.tagName!=='H2'){bottom=Math.max(bottom,n.getBoundingClientRect().bottom);n=n.nextElementSibling}return{x:0,y:r.top+scrollY,width:1600,height:bottom-r.top+6}},h);
     await p.screenshot({path:path.join(out,id+'.png'),clip:box,fullPage:true})}
-  const zb=await p.$$('.zoombox');for(let i=0;i<zb.length;i++){const b=await zb[i].boundingBox();await p.screenshot({path:path.join(out,'face'+i+'.png'),clip:{x:b.x+70,y:b.y,width:360,height:420},fullPage:true})}
+  for(const [cls,pre] of [['.zoombox','face'],['.zoombox2','newface']]){const zb=await p.$$(cls);for(let i=0;i<zb.length;i++){const b=await zb[i].boundingBox();await p.screenshot({path:path.join(out,pre+i+'.png'),clip:{x:b.x+70,y:b.y,width:360,height:420},fullPage:true})}}
   // head pivot sanity: p-head bbox bottom should sit at the neck
   const piv=await p.evaluate(()=>[...document.querySelectorAll('.pbox.big .p-head')].map(g=>{const b=g.getBBox();return [b.x,b.y,b.width,b.height].map(v=>Math.round(v))}));
   console.log('p-head bboxes',JSON.stringify(piv));
