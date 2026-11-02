@@ -3,7 +3,7 @@
 // Portfolio Book, interview with Dr. Reyes (optional rehearsal with Byte), and the first day with the team. The custom
 // screens live in hired_screens.js; the practice case reuses the engine's generic mission screens.
 
-Object.assign(GLOSSARY,{
+const HIRED_GLOSSARY={
   'open house':'A day when a place invites everyone in to look around and meet the people who work there.',
   'charge nurse':'The nurse who leads the other nurses on one floor during a shift.',
   'chief of care':'The doctor in charge of how patients are cared for in the whole hospital.',
@@ -21,22 +21,22 @@ Object.assign(GLOSSARY,{
   rehearse:'To practice something before you do it for real.',
   trainee:'Someone who is new at a job and still learning it.',
   'house rule':'A rule that one family, team, or workplace agrees to follow.'
-});
+};
 
-Object.assign(CAST,{
-  bea:{name:'Bea Santos',role:'Charge nurse',skin:SKIN[2],hair:'#3a2418',hairStyle:'bun',shirt:'#5b9bf0'},
+const HIRED_CAST={
+  gabi:{name:'Gabi Santos',role:'Charge nurse',skin:SKIN[2],hair:'#3a2418',hairStyle:'bun',shirt:'#5b9bf0'},
   kofi:{name:'Kofi Asante',role:'Robot crew lead',skin:SKIN[5],hair:'#141010',hairStyle:'buzz',shirt:'#ff9f43',masc:true},
   ruth:{name:'Ruth Abrams',role:'Volunteer, age 88',skin:SKIN[0],hair:'#e9e6f0',hairStyle:'elder',shirt:'#b07ce8',glasses:true},
   ari:{name:'Ari Mensah',role:'Patient, age 10',skin:SKIN[4],hair:'#161010',hairStyle:'short',shirt:'#2fbf71',age:'kid',masc:true},
   abena:{name:'Abena Mensah',role:'Ari’s grandma',skin:SKIN[4],hair:'#d8d4dc',hairStyle:'elder',shirt:'#e85d75',glasses:true}
-});
+};
 
-Object.assign(FIELD_GUIDE,{
+const HIRED_GUIDE={
   'good-questions':{title:'Asking good questions',track:'People skills',text:'A good question is specific and open. “What’s the hardest part of your job?” teaches you more than “Is it fun?” Asking about a career before you choose it is how you find one that fits.',real:'True today: career counselors suggest informational interviews, short talks where you ask someone about their job.'},
   'referrals':{title:'Trust and referrals',track:'People skills',text:'When lots of people can do a job, people pick someone they already trust. Being kind and helpful, even when nobody is grading you, is how people come to trust you.',real:'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.'},
   'self-report':{title:'What people say vs. how they feel',track:'Evidence and truth',text:'Some people say “I’m fine” when they are hurting, so a plan that depends on what someone says can fail. Ari hides pain, so “stop if it hurts” was not a safe plan for him.',real:'True today: athletes sometimes hide concussion symptoms to keep playing, so many sports leagues use sideline checks that don’t depend only on what the player says.'},
   'specific-stories':{title:'Show your work',track:'People skills',text:'A real story with details (what you decided, why, and how it turned out) shows more than saying “I’m good at decisions.” Honest stories about mistakes count too.',real:'True today: many interviewers ask “Tell me about a time when…” questions, and people prepare by writing down real examples of their work.'}
-});
+};
 
 const HIRED_TALKS={
   home:[
@@ -46,13 +46,13 @@ const HIRED_TALKS={
       {t:'Yes, show me!',reply:'Woof! Here’s a whole day, squeezed into thirty seconds.'},
       {t:'What does a Care Doctor do?',reply:'A Care Doctor helps patients and families choose a treatment. I bring the facts and the forecasts. You bring the listening, the judgment, and the signature.'}]}
   ],
-  bea:[
-    {who:'bea',mood:'smile',text:'Hi there! Welcome to the [[open house]]. I’m Bea, the [[charge nurse]] on the kids’ floor.',choices:[
-      {t:'Hi Bea, I’m {P}. What does a charge nurse do?',good:true,mood:'happy',reply:'I make sure every kid on our floor gets what they need, and every nurse has a buddy. Halo handles the schedules. I handle the people.'},
-      {t:'Can you get me a job here?',mood:'think',reply:'Ha! Let’s start with hello. I’m Bea, and it’s nice to meet you.'}]},
-    {who:'bea',mood:'happy',text:'My cat is named Bandage, because he sleeps on the first-aid box.',clue:'bea-cat'},
-    {who:'bea',mood:'worried',text:'Oh no. I promised the kids’ floor this box of teddy bears, and the elevator robot is busy.',choices:[
-      hiredFavor('bea',{t:'I can carry it for you!',mood:'happy',reply:'You’re a star. The kids are going to love them.'}),
+  gabi:[
+    {who:'gabi',mood:'smile',text:'Hi there! Welcome to the [[open house]]. I’m Gabi, the [[charge nurse]] on the kids’ floor.',choices:[
+      {t:'Hi Gabi, I’m {P}. What does a charge nurse do?',good:true,mood:'happy',reply:'I make sure every kid on our floor gets what they need, and every nurse has a buddy. Halo handles the schedules. I handle the people.'},
+      {t:'Can you get me a job here?',mood:'think',reply:'Ha! Let’s start with hello. I’m Gabi, and it’s nice to meet you.'}]},
+    {who:'gabi',mood:'happy',text:'My cat is named Bandage, because he sleeps on the first-aid box.',clue:'gabi-cat'},
+    {who:'gabi',mood:'worried',text:'Oh no. I promised the kids’ floor this box of teddy bears, and the elevator robot is busy.',choices:[
+      hiredFavor('gabi',{t:'I can carry it for you!',mood:'happy',reply:'You’re a star. The kids are going to love them.'}),
       {t:'Maybe a robot can take it later.',mood:'sad',reply:'Maybe. They were hoping for them today, though.'}]}
   ],
   kofi:[
@@ -96,9 +96,9 @@ const HIRED_TALKS={
 function hiredReferral(){const f=hiredFavors();const n=f.length;
   if(n)return `${n>1?f.slice(0,-1).join(', ')+(n>2?',':'')+' and '+f.at(-1):f[0]}. People here notice kindness.`;
   return 'I hear you met some of the team. Helping people, even in small ways, is how they come to trust you.'}
-function hiredFavors(){const F=(S.hj||{}).favor||{};return [F.bea&&'Bea says you carried the teddy bears',F.kofi&&'Kofi says you helped Jupiter get unstuck',F.ruth&&'Ruth says you found her glasses'].filter(Boolean)}
+function hiredFavors(){const F=(S.m_hired||{}).favor||{};return [F.gabi&&'Gabi says you carried the teddy bears',F.kofi&&'Kofi says you helped Jupiter get unstuck',F.ruth&&'Ruth says you found her glasses'].filter(Boolean)}
 // a favor choice records itself when the engine's talk screen reads .good on tap
-function hiredFavor(who,c){return Object.defineProperty(c,'good',{enumerable:true,get(){S.hj=S.hj||{};S.hj.favor=S.hj.favor||{};S.hj.favor[who]=true;save();return true}})}
+function hiredFavor(who,c){return Object.defineProperty(c,'good',{enumerable:true,get(){S.m_hired=S.m_hired||{};S.m_hired.favor=S.m_hired.favor||{};S.m_hired.favor[who]=true;save();return true}})}
 
 const HIRED_DOCS=[
   {id:'amemo',title:'Byte’s memo: Ari’s ankle',from:'Byte',kind:'memo',steps:[
@@ -126,6 +126,8 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
     {name:'h-ari',k:'talk',talk:'ari',scene:'hospital',place:'First-aid tent · Open House',toast:'Practice case on your Workbench'},
     {name:'h-bench',k:'bench'},{name:'h-criteria',k:'criteria'},{name:'h-table',k:'table'},{name:'h-consent',k:'consent'},{name:'h-memo',k:'memo'},{name:'h-reveal',k:'reveal'},{name:'h-debrief',k:'debrief'},
     {name:'h-portfolio',k:'custom'},{name:'h-interview',k:'custom'},{name:'h-firstday',k:'custom'}],
+  glossary:HIRED_GLOSSARY,cast:HIRED_CAST,guide:HIRED_GUIDE,voices:{gabi:'af_sarah',kofi:'am_liam',ruth:'elder_woman',ari:'kid_boy',abena:'elder_woman'},
+  get lines(){return hiredLines()},
   talks:HIRED_TALKS,docs:HIRED_DOCS,
   react:{amemo2:'Only 1 in 10... if the pain check works.',amemo4:'This is the sentence I’m least sure about.',coach1:'So Saturday matters less than the playoffs?'},
   tell:{clue:'hides',label:'Tell Byte that Ari hides his pain',note:'Thanks! I updated my forecast. If Ari plays on Saturday, he has about a 3 in 10 chance of rolling it again, even in a brace.',guide:'self-report',doc:'amemo'},
@@ -164,7 +166,7 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
 };
 
 function hiredBrief(){const st=S.step||'';
-  const base='Right now the player is on the Care Doctor career journey, "Getting Hired", before their first workday. Steps: explore the job, meet people at Boston Harbor Hospital\'s open house (Nurse Bea Santos, the charge nurse; Kofi Asante, the robot crew lead; Ruth Abrams, an 88-year-old volunteer), do a supervised practice case, save it to a Portfolio Book, interview with Dr. Imani Reyes (Chief of Care), then a first day with the team.';
+  const base='Right now the player is on the Care Doctor career journey, "Getting Hired", before their first workday. Steps: explore the job, meet people at Boston Harbor Hospital\'s open house (Nurse Gabi Santos, the charge nurse; Kofi Asante, the robot crew lead; Ruth Abrams, an 88-year-old volunteer), do a supervised practice case, save it to a Portfolio Book, interview with Dr. Imani Reyes (Chief of Care), then a first day with the team.';
   const ari=`Practice case: Ari Mensah, 10, a soccer goalkeeper for the Southie Stingrays, has a mild right ankle sprain from the open house fun run. Saturday (4 days away) is a friendly scrimmage; the playoffs are in 3 weeks. Most mild sprains heal in about 2 weeks; a second sprain takes about 6 weeks. If he plays Saturday: about 1 in 10 kids roll it again in a brace and 2 in 10 with only tape, assuming they stop when it hurts. If he sits out: about 3 in 100 (brace), 8 in 100 (tape), 2 in 100 (walking boot). ${S.told?'The player told you Ari hides pain (his grandma said so), so you now estimate 3 in 10 (brace) and 5 in 10 (tape) if he plays.':'You do not know whether Ari reports pain honestly; his grandma may know.'} Do not pick for the player; ask what matters most (Saturday or the playoffs) first.`;
   const iv='The interview: Dr. Reyes will ask about a hard choice they made, what they would do if their AI and a patient disagreed, and what they still need to learn, then invite a question. Good answers are specific real stories (like the practice case) and honest; asking a good question back is a plus. Help them prepare but do not write their answers for them.';
   if(/h-(bench|criteria|table|consent|memo|reveal|debrief|ari)/.test(st))return base+'\n'+ari;
@@ -183,7 +185,7 @@ function hiredCanned(q){
   if(/saturday|playoff|scrimmage/.test(q))return 'Saturday is just a friendly scrimmage. The playoffs are in 3 weeks, and Ari is their best goalkeeper. So what matters more to Ari and his grandma?';
   if(/best|which|pick|choose|should|recommend/.test(q))return 'I can’t pick for you, but here’s the big question: what matters more to Ari, Saturday’s friendly game or being healthy for the playoffs?';
   if(/interview|reyes/.test(q))return 'Dr. Reyes likes real stories with details and honest answers. Your Portfolio Book is full of real stories! You can practice with me first.';
-  if(/bea|cat|bandage/.test(q))return 'Bea is the charge nurse on the kids’ floor. Her cat is named Bandage, because he sleeps on the first-aid box!';
+  if(/gabi|cat|bandage/.test(q))return 'Gabi is the charge nurse on the kids’ floor. Her cat is named Bandage, because he sleeps on the first-aid box!';
   if(/kofi|robot|jupiter|planet/.test(q))return 'Kofi leads the robot crew. He names every robot after a planet. The big one is Jupiter.';
   if(/ruth|piano|glasses/.test(q))return 'Ruth has volunteered here for twenty years. She plays “Fly Me to the Moon” on the lobby piano on Fridays.';
   if(/portfolio/.test(q))return 'Your Portfolio Book holds your signed decisions: what you chose, why, how sure you were, and what happened. Employers in 2040 love seeing real work.';
