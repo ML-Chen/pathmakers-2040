@@ -2,9 +2,9 @@
 .sheet.ledger .sheet-in{height:94vh;max-height:94vh;background:#fbf7ee}
 .sheet.ledger .sheet-top h2{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:1.65rem;letter-spacing:-.01em}
 .sheet.ledger .sheet-top{border-bottom:3px double #2a2f4a;margin-bottom:6px;padding-bottom:8px}
-.lg-hud{color:#2a2f4a}
-.hud-btns:has(.lg-hud){gap:4px}.hud-btns:has(.lg-hud) .hbtn{width:34px}
-.lg-hud span{background:var(--coral)}
+.hbtn .lg-badge{background:var(--coral)}
+.lg-menu svg{width:22px;height:22px}
+.lg-mnew{background:var(--coral);color:#fff;font-family:var(--body);font-weight:800;font-size:.75rem;border-radius:999px;padding:2px 8px;margin-left:4px}
 .lg-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 8px;font-size:.82rem;font-weight:800;color:var(--ink2)}
 .lg-edition{font-family:Georgia,serif;font-style:italic;font-weight:700}
 .lg-score{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid #e4dcc6;border-radius:999px;padding:3px 10px 3px 6px;color:var(--ink)}
