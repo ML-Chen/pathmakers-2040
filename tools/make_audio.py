@@ -47,7 +47,7 @@ ROLES = {
     "af_bella":   dict(speaker="af_sarah", speed=1.12, pitch=1.10, formant=1.04),    # Byte (female): bright puppy
     "am_adam":    dict(speaker="am_fenrir", speed=1.12, pitch=1.08, formant=1.03),   # Byte (male): young, upbeat
     "bf_emma":    dict(speaker="af_kore", speed=1.03, pitch=1.0, formant=1.0),       # Dr. Reyes
-    "af_sky":     dict(speaker="af_jessica", speed=1.12, pitch=1.22, formant=1.10),  # Maya, 11: child pitch/timbre
+    "af_sky":     dict(speaker="af_heart", speed=1.1, pitch=1.2, formant=1.14),     # Maya, 11: picked by the family by ear (Nov 2)
     "am_michael": dict(speaker="am_liam", speed=1.02, pitch=1.0, formant=1.0),       # Wei Lin, her dad
     "bm_george":  dict(speaker="bm_fable", speed=1.05, pitch=1.0, formant=1.0),      # narrator: storyteller
     # Passers-by (CHATTER). Any other key that is a Kokoro speaker name is read by that speaker
@@ -55,7 +55,7 @@ ROLES = {
     "af_sarah":   dict(speaker="af_aoede", speed=1.02, pitch=1.0, formant=1.0),
     "af_nicole":  dict(speaker="af_alloy", speed=1.02, pitch=1.0, formant=1.0),
     # Role voices for new missions (docs/MISSIONS.md): children and elders.
-    "kid_girl":   dict(speaker="af_jessica", speed=1.12, pitch=1.22, formant=1.10),
+    "kid_girl":   dict(speaker="af_heart", speed=1.1, pitch=1.2, formant=1.14),
     "kid_boy":    dict(speaker="am_puck", speed=1.1, pitch=1.3, formant=1.12),
     "elder_woman": dict(speaker="af_heart", speed=0.94, pitch=0.97, formant=0.98),
     "elder_man":  dict(speaker="am_michael", speed=0.92, pitch=0.95, formant=0.98),
