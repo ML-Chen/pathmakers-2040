@@ -136,7 +136,7 @@ function ch_mouth(m,y,K,sk,masc){const c=150,wd=masc?1.08:K?.9:1,X=dx=>ch_n(c+dx
 // ---------- hair styles ----------
 // Each style: back (behind the face, in .p-head), cap (crown mass), clumps (pointed locks, paint order), shine band, part (flow origin),
 // optional behind (long hair behind the body) and flags. Coordinates match CH_FACE builds.
-function ch_hairStyle(st,G){
+function ch_hairStyle(st,G,o){
   const C=ch_clump;
   if(st==='braids'||st==='long'){
     const back=st==='long'?'M150 38 C112 38 84 64 83 112 C82 150 86 186 92 206 L208 206 C214 186 218 150 217 112 C216 64 188 38 150 38Z'
@@ -165,6 +165,7 @@ function ch_hairStyle(st,G){
     const f=[C([88,104],[106,92],[94,156],7,-2),C([194,92],[212,104],[206,156],-2,7),
       C([100,84],[124,56],[102,118],7,0),C([116,58],[146,42],[130,106],6,1),C([138,42],[168,44],[166,104],1,7),C([160,46],[192,66],[198,116],0,8),C([180,62],[206,92],[208,130],0,6)];
     return {back,cap,clumps:f,shine:{crown:[140,42],cx:150,cy:150,rx:62,ry:94,a0:-150,a1:-30,t:8},curly:1}}
+  const NS=ch_newHair(st,G,o||{});if(NS)return NS;
   // short (default, also 'buzz'): neat side-swept cut from a part on the left, short sides, ears visible
   const back='M93 130 C88 84 110 38 150 36 C190 38 212 84 207 130 C205 126 203 122 200 118 L100 118 C97 122 95 126 93 130Z';
   const cap='M95 122 C89 86 104 46 132 36 C140 33 146 32 152 32 C162 32 172 35 182 40 C206 54 213 90 205 122 C203 110 198 98 190 88 C176 74 160 70 146 72 C130 74 116 80 108 90 C102 98 98 108 95 122Z';
@@ -207,8 +208,10 @@ function ch_outfit(o,G,sk,id,build){
   const neckG=`<clipPath id="${id}n"><path d="${neck}"/></clipPath><path d="${neck}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.2"/>
     <g clip-path="url(#${id}n)"><path d="M${cx-nw-6} 150 L${cx-nw-6} ${cy-10} C${cx-nw*.5} ${cy+13} ${cx+nw*.5} ${cy+13} ${cx+nw+6} ${cy-10} L${cx+nw+6} 150Z" fill="${sk.sh}"/>
     <path d="M${cx+nw*.42} 150 C${cx+nw*.5} ${cy+6} ${cx+nw*.62} ${nb} ${cx+nw*.8} ${nb+8} L${cx+nw+6} ${nb+8} L${cx+nw+6} 150Z" fill="${sk.sh}"/>
-    <path d="M${cx-nw*.5} ${cy+16} C${cx-nw*.4} ${cy+10} ${cx-nw*.3} ${cy+6} ${cx-nw*.2} ${cy+4}" stroke="${sk.line}" stroke-width="1" fill="none" opacity=".35"/></g>`;
-  if(o.coat){ // doctor: white coat over a top, stethoscope, badge, pen
+    <path d="M${cx-nw*.5} ${cy+16} C${cx-nw*.4} ${cy+10} ${cx-nw*.3} ${cy+6} ${cx-nw*.2} ${cy+4}" stroke="${sk.line}" stroke-width="1" fill="none" opacity=".35"/></g>${o.age==='elder'?ch_neckLines(G,sk,build):''}`;
+  const of=o.coat?'coat':o.outfit;
+  if(CH_OUTFITS[of]&&of!=='coat'&&!(of==='shirt'&&build==='M')&&!(of==='top'&&build!=='M'))return ch_outfit2(of,o,G,sk,id,build,neckG);
+  if(of==='coat'){ // doctor: white coat over a top, stethoscope, badge, pen
     const W=ch_clothPal('#fbfcff'),T=ch_clothPal(o.shirt||'#16b3a6'),L=W.line;
     const torso='M129 206 C114 213 84 219 60 227 C38 235 26 251 22 275 L14 372 L286 372 L278 275 C274 251 262 235 240 227 C216 219 186 213 171 206Z';
     const lapL='M132 200 C123 203 115 208 109 214 L95 252 L106 254 L100 263 L139 372 L147 372 L127 222Z';
@@ -291,19 +294,425 @@ function ch_braid(x0,y0,x1,y1,H,hg,tie,side,k){k=k||1;const n=8,step=(y1-y0)/n;l
   s+=`<rect x="${ch_n(tx-7)}" y="${ch_n(ty-1)}" width="14" height="8" rx="3.5" fill="${tie}" stroke="${td}" stroke-width="${1.3*k}"/><path d="M${ch_n(tx-5)} ${ch_n(ty+1.4)} h6" stroke="#fff" stroke-width="1.3" opacity=".6" stroke-linecap="round"/><circle cx="${ch_n(tx+side*7.5)}" cy="${ch_n(ty+3)}" r="4.4" fill="${tie}" stroke="${td}" stroke-width="${1.3*k}"/><circle cx="${ch_n(tx+side*7.5-1.4)}" cy="${ch_n(ty+1.6)}" r="1.3" fill="#fff" opacity=".85"/>`;
   return s}
 
+// ---------- more hair styles, beards, hats, accessories and age (all optional; absent options change nothing) ----------
+// hairStyle also takes 'ponytail' 'afro' 'bob' 'curls' 'locs' 'bald' 'headscarf' (aliases: pony, curly, dreads, hijab).
+// A style may add layers through functions: xBack (behind the face), xFront (over the fringe), xBehind (behind the body),
+// xBody (over the clothes, below the chin), tex (inside the hair clip, instead of the shine band). hatW/hatTop size hats.
+function ch_rand(seed){let s=(seed>>>0)||1;return ()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}}
+const ch_P=p=>ch_n(p[0])+' '+ch_n(p[1]);
+// absolute M/C path -> cubic segments [[p0,c1,c2,p1],...]
+function ch_segs(d){const n=(d.match(/-?\d*\.?\d+/g)||[]).map(Number),o=[];let p=[n[0],n[1]];
+  for(let i=2;i+5<n.length;i+=6){const s=[p,[n[i],n[i+1]],[n[i+2],n[i+3]],[n[i+4],n[i+5]]];o.push(s);p=s[3]}return o}
+// scalloped (curly) edge through pts; each step bulges to the left of travel (outward on a clockwise loop) by about amp/2
+function ch_scallop(pts,amp,seed,move){const r=ch_rand(seed||7);let d=move===false?'':`M${ch_P(pts[0])}`;
+  for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,k=amp*(.6+.8*r());
+    d+=`Q${ch_n((a[0]+b[0])/2+dy/l*k)} ${ch_n((a[1]+b[1])/2-dx/l*k)} ${ch_P(b)}`}return d}
+// evenly resample a polyline to n+1 points
+function ch_even(pts,n){const L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
+  const T=L[L.length-1]||1,o=[];let j=1;for(let i=0;i<=n;i++){const d=T*i/n;while(j<L.length-1&&L[j]<d)j++;const f=(d-L[j-1])/((L[j]-L[j-1])||1);
+    o.push([pts[j-1][0]+(pts[j][0]-pts[j-1][0])*f,pts[j-1][1]+(pts[j][1]-pts[j-1][1])*f])}return o}
+function ch_fabricPal(c){const P=ch_clothPal(c);return {base:c,top:ch_mix(c,'#ffffff',.16),sh:P.sh,dk:P.sh2,hi:P.hi,line:P.line}}
+// outlined group: line-colour silhouette under fills (merges overlapping parts into one outline)
+function ch_ol(ds,line,w,fill){return `<g fill="${line}" stroke="${line}" stroke-width="${w}" stroke-linejoin="round">${ds.map(d=>`<path d="${d}"/>`).join('')}</g>`+(fill?`<g fill="${fill}">${ds.map(d=>`<path d="${d}"/>`).join('')}</g>`:'')}
+
+// one loc (a rope of locked hair) along pts, width w, with a rounded end and soft rope-twist marks.
+// open=true leaves the bottom unfinished because it continues in another layer; dark=true for locs behind the body.
+function ch_loc(pts,w,H,fill,seed,open,dark){const r=ch_rand(seed),n=pts.length,R=ch_n;
+  const wf=t=>w*(.93+.09*Math.sin(t*7+seed))*Math.min(1,.55+t*6)*(open||t<.88?1:.25+.75*Math.sqrt(Math.max(0,1-(t-.88)/.12)));
+  const nor=i=>{const a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;return [dy/l,-dx/l,dx/l,dy/l]};
+  const side=k=>pts.map((p,i)=>{const N=nor(i),ww=wf(i/(n-1))/2;return [p[0]+N[0]*ww*k,p[1]+N[1]*ww*k]});
+  const body=ch_rib(pts,wf);let s='';
+  s+=open?`<path d="${ch_rib(pts,t=>wf(t)+2.2)}" fill="${H.line}"/>`:`<path d="${body}" fill="${H.line}" stroke="${H.line}" stroke-width="2.2" stroke-linejoin="round"/>`;
+  s+=`<path d="${body}" fill="${fill}"/>`;
+  s+=`<path d="${ch_rib(side(.55),t=>wf(t)*.36)}" fill="${H.sh}" opacity="${dark?.5:.8}"/>`;
+  s+=`<path d="${ch_rib(ch_sub(side(-.42),.03,.9),t=>wf(t)*.16*Math.sin(Math.PI*Math.min(1,t*1.1)))}" fill="${H.hi}" opacity="${dark?.22:.5}"/>`;
+  let tx='';const step=Math.max(2,Math.round((n-1)*w*.62/Math.max(1,ch_len(pts))));
+  for(let i=step,k=0;i<n-2;i+=step,k++){const N=nor(i),p=pts[i],ww=wf(i/(n-1))*.42,o=k%2?.18:-.18;
+    tx+=`M${R(p[0]-N[0]*ww+N[0]*o*ww)} ${R(p[1]-N[1]*ww+N[1]*o*ww)} Q${R(p[0]+N[2]*w*.25)} ${R(p[1]+N[3]*w*.25)} ${R(p[0]+N[0]*ww*.7+N[2]*w*.42)} ${R(p[1]+N[1]*ww*.7+N[3]*w*.42)}`}
+  s+=`<path d="${tx}" stroke="${H.line}" stroke-width="1.05" fill="none" opacity="${dark?.35:.42}" stroke-linecap="round"/>`;
+  return s}
+function ch_len(pts){let L=0;for(let i=1;i<pts.length;i++)L+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);return L}
+// a wavy curl lock along a cubic axis P: soft S-waves that taper to a curled tip (o: amp, wl wave length, ph phase, open, fill)
+function ch_wave(P,w0,H,hg,seed,o){o=o||{};const p0=ch_bz(P,34),n=p0.length,L=[0];for(let i=1;i<n;i++)L.push(L[i-1]+Math.hypot(p0[i][0]-p0[i-1][0],p0[i][1]-p0[i-1][1]));
+  const amp=o.amp!=null?o.amp:w0*.42,wl=o.wl||w0*3.4,ph=o.ph!=null?o.ph:seed*1.7;
+  const pts=p0.map((p,i)=>{const a=p0[Math.max(0,i-1)],b=p0[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,k=amp*Math.sin(L[i]/wl*6.283+ph)*Math.min(1,L[i]/(wl*.6));return [p[0]+dy/l*k,p[1]-dx/l*k]});
+  const wf=t=>o.open?w0*(1-.2*t):(t<.7?w0*(1-.25*t/.7):w0*.75*Math.pow(Math.max(0,1-(t-.7)/.3),.8))+.4;
+  const fill=o.fill||hg;let s='';
+  const body=ch_rib(pts,wf);
+  s+=o.open?`<path d="${ch_rib(pts,t=>wf(t)+2.8)}" fill="${H.line}"/>`:`<path d="${body}" fill="${H.line}" stroke="${H.line}" stroke-width="2.8" stroke-linejoin="round"/>`;
+  // curled tip
+  let tip='';if(!o.open){const e=pts[n-1],q=pts[n-4],dx=e[0]-q[0],dy=e[1]-q[1],l=Math.hypot(dx,dy)||1,u=[dx/l,dy/l],sd=o.curl||(seed%2?1:-1),rr=[u[1]*sd,-u[0]*sd];
+    const hook=ch_bz([[e[0]-u[0]*3,e[1]-u[1]*3],[e[0]+u[0]*5,e[1]+u[1]*5],[e[0]+u[0]*4+rr[0]*7,e[1]+u[1]*4+rr[1]*7],[e[0]-u[0]*1+rr[0]*6,e[1]-u[1]*1+rr[1]*6]],10);
+    tip=ch_rib(hook,t=>w0*.34*(1-t*.8)+.5);s+=`<path d="${tip}" fill="${H.line}" stroke="${H.line}" stroke-width="2.6" stroke-linejoin="round"/>`}
+  s+=`<path d="${body}" fill="${fill}"/>`+(tip?`<path d="${tip}" fill="${fill}"/>`:'');
+  const nor=i=>{const a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;return [dy/l,-dx/l]};
+  const side=k=>pts.map((p,i)=>{const N=nor(i),ww=wf(i/(n-1))/2;return [p[0]+N[0]*ww*k,p[1]+N[1]*ww*k]});
+  s+=`<path d="${ch_rib(side(.5),t=>wf(t)*.34)}" fill="${H.sh}" opacity=".75"/>`;
+  s+=`<path d="${ch_rib(ch_sub(pts,.12,.82),ch_swell(1.3,.1))}" fill="${H.dk}" opacity=".55"/>`;
+  s+=`<path d="${ch_rib(ch_sub(side(-.45),.05,.7),t=>wf(t)*.15*Math.sin(Math.PI*t))}" fill="${H.hi}" opacity=".55"/>`;
+  return s}
+// hanging strand helpers: pts from a cubic, split into a head part (to ys) and a body part (from ys-6)
+function ch_strand(P0,P1,P2,P3,N){return ch_bz([P0,P1,P2,P3],N||22)}
+function ch_split(pts,ys){const i=pts.findIndex(p=>p[1]>=ys);if(i<0)return [pts,null];if(i<2)return [null,pts];return [pts.slice(0,i+1),pts.slice(Math.max(0,i-2))]}
+
+function ch_newHair(st,G,o){const C=ch_clump,R=ch_n;
+  if(st==='ponytail'){ // pulled back with a side-swept fringe and tendrils; a high ponytail swings out behind the right side
+    const back='M92 142 C86 96 104 50 140 40 C146 38 154 38 160 40 C196 50 214 96 208 142 C206 150 202 154 198 152 L102 152 C98 154 94 150 92 142Z';
+    const cap='M93 134 C88 94 102 56 128 42 C136 38 144 36 150 36 C160 36 170 38 178 42 C204 56 214 94 207 134 C203 120 198 108 192 98 C180 84 166 78 150 78 C134 78 118 84 108 96 C101 106 96 120 93 134Z';
+    const f=[C([97,104],[106,92],[98,168],3,-1.4),C([194,92],[203,104],[202,168],-1.4,3),
+      C([104,74],[122,52],[102,116],4,-1),C([116,54],[136,44],[122,104],3,-1),
+      C([126,46],[148,40],[160,98],-2,5),C([136,42],[164,40],[186,106],-3,7),C([150,40],[176,44],[200,118],-3,6),C([170,46],[196,64],[208,132],-2,5)];
+    const tie=o.clip||'#ff7a6b',td=ch_mix(tie,'#2a0a10',.45);
+    const xBack=(H,hg)=>{const t=[C([164,34],[200,30],[236,150],-6,22),C([168,36],[198,40],[214,190],-8,14),C([172,34],[204,36],[228,196],-6,18),C([176,30],[204,32],[244,126],-2,16),C([166,38],[190,44],[200,170],-6,8)];
+      let s=ch_ol(t.map(c=>c.d),H.line,3.4)+t.map((c,i)=>`<path d="${c.d}" fill="${i===4?H.sh:hg}"/>`).join('');
+      t.forEach((c,i)=>{const mid=[[(c.L[0]+c.R[0])/2,(c.L[1]+c.R[1])/2],[(c.a[2][0]+c.b[1][0])/2,(c.a[2][1]+c.b[1][1])/2],c.T];s+=`<path d="${ch_rib(ch_sub(ch_bz(mid,12),.3,.92),ch_swell(1.5,.1))}" fill="${H.dk}" opacity=".6"/>`;
+        if(i<4)s+=`<path d="${ch_rib(ch_sub(ch_bz(c.b,14),.1,.62),ch_swell(2.4,.2))}" fill="${H.hi}" opacity=".5" transform="translate(-3 0)"/>`;
+        s+=`<path d="${ch_rib(ch_sub(ch_bz(c.b,14),.42,1),ch_tap(.5,1.6,.2))}" fill="${H.line}"/>`});
+      // scrunchie: a ruffled band peeking over the crown
+      const ru=[];for(let i=0;i<=8;i++){const a=Math.PI+i/8*Math.PI;ru.push([184+Math.cos(a)*13,34+Math.sin(a)*8])}
+      s+=`<g transform="rotate(18 184 34)"><path d="${ch_scallop(ru,5,4)}L197 37 C192 43 176 43 171 37Z" fill="${tie}" stroke="${td}" stroke-width="1.8" stroke-linejoin="round"/><path d="M176 30 Q184 25 192 30" stroke="#fff" stroke-width="1.6" fill="none" opacity=".6" stroke-linecap="round"/><path d="M178 38 Q184 40 190 38" stroke="${td}" stroke-width="1.2" fill="none" opacity=".6"/></g>`;
+      return s};
+    return {back,cap,clumps:f,shine:{crown:[126,44],cx:150,cy:152,rx:62,ry:96,a0:-150,a1:-30,t:8},combed:1,xBack,hatW:62}}
+  if(st==='afro'){ // a full rounded afro: scalloped silhouette, curl texture lit from the upper left
+    const cx=150,cy=96,rx=84,ry=88,pt=a=>{const c=Math.cos(a),s=Math.sin(a);return [cx+rx*Math.sign(c)*Math.pow(Math.abs(c),.8),cy+ry*Math.sign(s)*Math.pow(Math.abs(s),.8)*(s>0?.82:1)]};
+    const pts=[];for(let i=0;i<=26;i++)pts.push(pt((124+292*i/26)*Math.PI/180));
+    const outer=ch_scallop(pts,13,11);
+    const hl=ch_bz([[201,120],[197,94],[176,82],[150,82]],7).concat(ch_bz([[150,82],[124,82],[103,94],[99,120]],7).slice(1));
+    const cap=`${outer}L${ch_P([200,152])}L${ch_P([202,126])}${ch_scallop(hl,6,5,false).replace(/^Q/,'L'+ch_P(hl[0])+'Q')}L${ch_P([98,126])}L${ch_P([100,152])}Z`;
+    const back=`${outer}C${ch_P([190,176])} ${ch_P([110,176])} ${ch_P(pts[0])}Z`;
+    const tex=(H)=>{const r=ch_rand(29);let s='';
+      // puffs: shaded lower-right rims and lit upper-left rims give the mass volume
+      const puffs=[[112,40,30],[150,26,32],[190,42,30],[86,82,26],[214,86,26],[122,70,26],[178,68,26],[84,126,22],[216,128,22]];
+      for(const [x,y,rr] of puffs){const sh=[],hi=[];for(let i=0;i<=8;i++){const a=(-10+i*12.5)*Math.PI/180;sh.push([x+Math.cos(a)*rr,y+Math.sin(a)*rr*.9])}
+        for(let i=0;i<=7;i++){const a=(195+i*11)*Math.PI/180;hi.push([x+Math.cos(a)*rr*.9,y+Math.sin(a)*rr*.82])}
+        s+=`<path d="${ch_rib(ch_bz(sh.length>3?[sh[0],sh[3],sh[6],sh[8]]:sh,14),ch_swell(5,.4))}" fill="${H.sh}" opacity=".55"/>`;
+        s+=`<path d="${ch_rib(ch_bz([hi[0],hi[3],hi[5],hi[7]],12),ch_swell(3.6,.3))}" fill="${H.hi}" opacity=".32"/>`}
+      for(let i=0;i<150;i++){const a=i*2.39996,rr=88*Math.sqrt((i+.5)/150),x=150+Math.cos(a)*rr,y=92+Math.sin(a)*rr*.95,lit=(x-150)*.7+(y-92)<-26+r()*16,c=.9+r()*.9,an=r()*6.28;
+        const p0=[x+Math.cos(an)*3.2*c,y+Math.sin(an)*3.2*c],p1=[x+Math.cos(an+1.6)*5.4*c,y+Math.sin(an+1.6)*5.4*c],p2=[x+Math.cos(an+3)*3*c,y+Math.sin(an+3)*3*c];
+        s+=`<path d="${ch_rib(ch_bz([p0,p1,p2],6),ch_swell(lit?1.5:1.7,.2))}" fill="${lit?H.hi:H.dk}" opacity="${lit?.6:.5}"/>`}
+      return s};
+    return {back,cap,clumps:[],tex,noRim:1,hatW:84,hatTop:2,big:1}}
+  if(st==='bob'){ // chin-length bob with a blunt fringe; ends curve under toward the jaw
+    const back='M150 38 C110 38 84 64 84 112 C84 146 85 172 90 188 C94 200 104 204 112 198 C116 194 118 190 120 186 L180 186 C182 190 184 194 188 198 C196 204 206 200 210 188 C215 172 216 146 216 112 C216 64 190 38 150 38Z';
+    const cap='M88 150 C82 100 98 60 126 46 C134 42 142 40 150 40 C158 40 166 42 174 46 C202 60 218 100 212 150 C208 130 204 116 198 106 L102 106 C96 116 92 130 88 150Z';
+    const f=[C([86,104],[104,86],[112,194],11,-5),C([196,86],[214,104],[188,194],-5,11),C([92,96],[110,80],[104,186],8,-3),C([190,80],[208,96],[196,186],-3,8),
+      C([98,82],[118,62],[102,118],5,-1),C([182,62],[202,82],[198,118],-1,5),
+      C([106,70],[128,52],[112,112],3,0),C([118,58],[142,46],[126,113],2,0),C([134,50],[158,44],[142,114],1,1),C([148,46],[170,48],[158,114],1,1),C([162,50],[184,58],[174,113],0,2),C([174,54],[194,70],[189,112],0,3)];
+    return {back,cap,clumps:f,shine:{crown:[146,42],cx:150,cy:152,rx:66,ry:92,a0:-154,a1:-26,t:9},hatW:66}}
+  if(st==='curls'){ // shoulder-length curls: scalloped mass, a fringe of short curled locks, wavy locks framing the face and over the shoulders
+    const pts=[];for(let i=0;i<=20;i++){const a=(150+240*i/20)*Math.PI/180;pts.push([150+Math.cos(a)*74*(1+.06*Math.sin(a*3)),104+Math.sin(a)*76])}
+    const outer=ch_scallop(pts,14,23);
+    const hl=ch_bz([[201,132],[200,100],[184,84],[150,88]],6).concat(ch_bz([[150,88],[118,84],[100,100],[99,132]],6).slice(1));
+    const cap=`${outer}L${ch_P([204,170])}L${ch_P([201,140])}${ch_scallop(hl,10,9,false).replace(/^Q/,'L'+ch_P(hl[0])+'Q')}L${ch_P([99,140])}L${ch_P([96,170])}Z`;
+    const back=`${outer}C${ch_P([222,196])} ${ch_P([200,196])} ${ch_P([186,186])}L${ch_P([114,186])}C${ch_P([100,196])} ${ch_P([78,196])} ${ch_P(pts[0])}Z`;
+    // face-framing locks: [axis, width, phase]; each continues below the chin in the body layer
+    const fr=[[[[100,92],[86,130],[88,170],[86,250]],15,0],[[[110,100],[100,140],[106,180],[100,236]],13,2],[[[200,92],[214,130],[212,170],[214,250]],15,3.4],[[[190,100],[200,140],[194,180],[200,236]],13,1.2]];
+    const head=(H,hg,k)=>{let s='';fr.forEach(([P,w,ph],i)=>{const all=ch_bz(P,34),cutAt=all.findIndex(q=>q[1]>=184),T=cutAt/(all.length-1);
+      // the head part uses the first part of the same curve so the wave lines up with the body part
+      const sp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];const A=P[0],B=P[1],Cc=P[2],D=P[3];
+      const ab=sp(A,B,T),bc=sp(B,Cc,T),cd=sp(Cc,D,T),abc=sp(ab,bc,T),bcd=sp(bc,cd,T),m=sp(abc,bcd,T);
+      if(k==='head')s+=ch_wave([A,ab,abc,m],w,H,hg,i+3,{open:1,ph,amp:4,wl:44});
+      else s+=ch_wave([m,bcd,cd,D],w*.8,H,hg,i+3,{ph:ph+ch_len(ch_bz([A,ab,abc,m],20))/44*6.283,amp:4,wl:44,curl:i<2?1:-1})});return s};
+    const xFront=(H,hg)=>{let s=head(H,hg,'head');
+      [[[[126,72],[118,86],[116,100],[112,114]],10,-1],[[[142,68],[138,84],[136,96],[132,110]],10,-1],[[[160,68],[164,84],[166,96],[170,110]],10,1],[[[176,72],[184,86],[186,100],[190,114]],10,1],[[[110,84],[104,96],[102,108],[100,124]],9,-1],[[[192,84],[198,96],[200,108],[202,124]],9,1]].forEach(([P,w,c],i)=>{s+=ch_wave(P,w,H,hg,i+11,{amp:2.6,wl:26,curl:c})});
+      return s};
+    const xBody=(H,hg)=>head(H,hg,'body');
+    const xBehind=(H,hg)=>{let s='';[[86,150,82,262,-6],[102,160,100,272,-4],[120,170,118,262,-2],[214,150,218,262,6],[198,160,200,272,4],[180,170,182,262,2]].forEach(([a,b,c,d,e],i)=>{s+=ch_wave([[a,b],[a+e,b+(d-b)*.35],[c-e*.6,b+(d-b)*.7],[c,d]],18,H,hg,i+21,{fill:H.sh,amp:4,wl:46,curl:e<0?1:-1})});return s};
+    const tex=(H)=>{let s='';const r=ch_rand(41);for(let i=0;i<46;i++){const a=i*2.39996,rr=70*Math.sqrt((i+.5)/46),x=150+Math.cos(a)*rr,y=82+Math.sin(a)*rr*.7,lit=(x-150)+(y-82)<-30+r()*20;
+      const p=[[x-6,y-3],[x,y-8],[x+6,y-2],[x+3,y+5]];s+=`<path d="${ch_rib(ch_bz(p,8),ch_swell(lit?2:2.4,.2))}" fill="${lit?H.hi:H.sh}" opacity="${lit?.55:.6}"/>`}return s};
+    return {back,cap,clumps:[],tex,noRim:1,xFront,xBody,xBehind,hatW:74,hatTop:10,big:1}}
+  if(st==='locs'){ // shoulder-length locs from a parted crown; the front locs fall over the shoulders
+    const back='M150 40 C108 40 82 66 80 110 C78 150 82 184 90 204 C100 210 112 200 118 186 L182 186 C188 200 200 210 210 204 C218 184 222 150 220 110 C218 66 192 40 150 40Z';
+    const cap='M95 134 C88 94 104 54 132 42 C140 39 146 38 152 38 C162 38 172 41 180 46 C204 60 214 94 207 134 C203 118 197 106 189 98 C177 88 163 84 150 84 C136 84 123 88 112 98 C104 106 99 118 95 134Z';
+    // [axis, width]; the first six continue below the chin in the body layer
+    const F=[[[[114,90],[100,120],[94,170],[92,206]],10],[[[103,103],[93,134],[88,176],[84,214]],9],[[[124,84],[111,104],[106,150],[105,196]],9.5],
+      [[[186,90],[200,120],[206,170],[208,206]],10],[[[197,103],[207,134],[212,176],[216,214]],9],[[[176,84],[189,104],[194,150],[195,196]],9.5],
+      [[[136,56],[124,72],[114,98],[110,128]],8.5],[[[166,56],[178,72],[188,100],[192,128]],8.5]];
+    const wob=(pts,k)=>pts.map((p,i)=>[p[0]+Math.sin(i*.45+k)*1.4,p[1]]);
+    const xBack=(H)=>{let s='';[[106,62,84,204],[112,54,92,208],[100,84,80,196],[194,62,216,204],[188,54,208,208],[200,84,220,196]].forEach(([a,b,c,d],i)=>{s+=ch_loc(wob(ch_strand([a,b],[a-6,b+40],[c+2,d-40],[c,d],16),i),9.5,H,H.sh,i+40,false,true)});return s};
+    const xFront=(H,hg)=>{let s='';F.forEach(([p,w],i)=>{const pts=wob(ch_strand(p[0],p[1],p[2],p[3],22),i),[a]=ch_split(pts,184);s+=ch_loc(a||pts,w,H,hg,i+1,!!a&&i<6)});return s};
+    const xBody=(H,hg)=>{let s='';F.slice(0,6).forEach(([p,w],i)=>{const pts=wob(ch_strand(p[0],p[1],p[2],p[3],22),i),[,b]=ch_split(pts,184);if(!b)return;
+      const e=b[b.length-1],sd=i<3?-1:1;s+=ch_loc(b.concat(wob(ch_strand(e,[e[0]+sd*2,e[1]+30],[e[0]+sd*4,e[1]+56],[e[0]+sd*2,e[1]+72+(i*7)%20],10),i+3).slice(1)),w,H,hg,i+1,false)});return s};
+    const xBehind=(H)=>{let s='';[[90,150,84,296],[102,156,98,286],[114,160,114,280],[210,150,216,296],[198,156,202,286],[186,160,186,280],[128,166,130,276],[172,166,170,276]].forEach(([a,b,c,d],i)=>{s+=ch_loc(wob(ch_strand([a,b],[a-4,b+50],[c+2,d-50],[c,d],18),i),10,H,H.sh,i+60,false,true)});return s};
+    const tex=(H)=>{let s='';[[150,40,150,84],[128,44,118,90],[172,44,182,90],[110,56,100,104],[190,56,200,104]].forEach(([a,b,c,d])=>{s+=`<path d="${ch_rib(ch_bz([[a,b],[(a+c)/2+(c-a)*.2,(b+d)/2],[c,d]],10),ch_swell(1.3,.2))}" fill="${H.dk}" opacity=".7"/>`});return s};
+    return {back,cap,clumps:[],shine:{crown:[150,40],cx:150,cy:150,rx:60,ry:96,a0:-146,a1:-34,t:6},tex,xBack,xFront,xBody,xBehind,hatW:70,hatTop:16}}
+  if(st==='bald'){ // bald crown; close-cropped hair hugs the sides of the head above and in front of the ears
+    const crescent='M102 84 C94 90 88 102 88 118 C88 134 92 148 103 160 L104 150 C99 140 97 128 97 114 C97 102 99 92 102 84Z';
+    const back=crescent+' '+ch_mx(crescent,150);
+    const patch='M101 88 C97 96 95 108 96 122 C96.5 130 97.5 136 99 140 C101 136 102 130 103 124 C104 114 106 104 109 96 C106 93 104 90 101 88Z';
+    const xFront=(H)=>{let s='';for(const d of [patch,ch_mx(patch,150)]){s+=`<path d="${d}" fill="${H.base}" stroke="${H.line}" stroke-width="1.6" stroke-linejoin="round" opacity=".95"/>`}
+      s+=`<path d="M100 96 l1.6 6 M101.6 106 l1.2 6 M100 114 l1.2 6 M200 96 l-1.6 6 M198.4 106 l-1.2 6 M200 114 l-1.2 6" stroke="${H.hi}" stroke-width="1.1" opacity=".55" stroke-linecap="round"/>`;
+      for(const sd of [-1,1]){const pts=ch_bz([[101,86],[90,96],[86,126],[100,158]],12).map(p=>sd<0?p:[300-p[0],p[1]]);s+=`<path d="${ch_scallop(pts,sd<0?-3:3,5+sd)}" stroke="${H.hi}" stroke-width="1.2" fill="none" opacity=".35"/>`}
+      return s};
+    return {back,cap:'',clumps:[],shine:0,bald:1,noRim:1,xFront,hatW:58,hatTop:24}}
+  if(st==='headscarf'){ // a hijab: wraps the head and frames the face, then drapes over the shoulders (o.wrap = colour)
+    const outer='M150 30 C104 30 78 62 77 110 C76 150 84 184 102 206 L198 206 C216 184 224 150 223 110 C222 62 196 30 150 30Z';
+    const open='M150 80 C121 80 104 98 102 124 C101 140 103 154 108 166 C114 179 126 189 150 192 C174 189 186 179 192 166 C197 154 199 140 198 124 C196 98 179 80 150 80Z';
+    const cap=outer+' '+ch_rev(open);
+    const xFront=(H)=>{let s=`<path d="${ch_rib(ch_bz([[103,118],[104,98],[121,80],[150,80]],10).concat(ch_bz([[150,80],[179,80],[196,98],[197,118]],10).slice(1)).map(p=>{const dx=150-p[0],dy=150-p[1],l=Math.hypot(dx,dy);return [p[0]+dx/l*3.2,p[1]+dy/l*3.2]}),t=>.6+4.2*Math.pow(Math.sin(Math.PI*t),.5))}" fill="${H.dk}" stroke="${H.line}" stroke-width="1.2" stroke-linejoin="round"/>`;
+      [[[96,120],[92,160],[110,196]],[[86,104],[84,150],[100,196]],[[204,120],[208,160],[190,196]],[[214,104],[216,150],[200,196]],[[130,36],[114,52],[104,80]],[[176,38],[196,56],[204,84]]].forEach(p=>{s+=`<path d="${ch_rib(ch_bz(p,12),ch_swell(2.6,.2))}" fill="${H.sh}" opacity=".7"/>`});
+      s+=`<path d="${ch_rib(ch_bz([[112,44],[96,60],[88,92],[88,124]],14),ch_swell(5,.4))}" fill="${H.hi}" opacity=".45"/>`;
+      return s};
+    return {back:outer,cap,clumps:[],xFront,noEars:1,noRim:1,wrapDrape:1,hatW:70,hatTop:16}}
+  return null}
+// reverse an absolute M/C path (cubic segments) so a hole winds the other way
+function ch_rev(d){const S=ch_segs(d).reverse();return `M${ch_P(S[0][3])}`+S.map(s=>`C${ch_P(s[2])} ${ch_P(s[1])} ${ch_P(s[0])}`).join('')+'Z'}
+
+// the drape of a headscarf over the neck and shoulders (portrait space, inside .p-body)
+function ch_wrapDrape(o,G,id){const c=o.wrap||'#4f6db8',F=ch_clothPal(c),cy=G.chin;
+  const d=`M96 ${cy-36} C86 ${cy-6} 84 ${cy+14} 70 ${cy+34} C58 ${cy+52} 60 ${cy+86} 76 ${cy+110} C104 ${cy+136} 196 ${cy+136} 224 ${cy+110} C240 ${cy+86} 242 ${cy+52} 230 ${cy+34} C216 ${cy+14} 214 ${cy-6} 204 ${cy-36}Z`;
+  let s=`<path d="${d}" fill="${c}" stroke="${F.line}" stroke-width="2.6" stroke-linejoin="round"/>`;
+  s+=`<clipPath id="${id}wd"><path d="${d}"/></clipPath><g clip-path="url(#${id}wd)"><path d="M150 ${cy-40} C190 ${cy+20} 214 ${cy+60} 236 ${cy+150} L260 ${cy+150} L260 ${cy-40}Z" fill="${F.sh}" opacity=".8"/></g>`;
+  s+=`<path d="M150 ${cy+4} C170 ${cy+30} 196 ${cy+54} 214 ${cy+96} M150 ${cy+4} C134 ${cy+34} 112 ${cy+60} 98 ${cy+100} M150 ${cy+8} C152 ${cy+50} 150 ${cy+90} 146 ${cy+124} M120 ${cy+20} C108 ${cy+48} 92 ${cy+70} 80 ${cy+80} M182 ${cy+22} C196 ${cy+44} 210 ${cy+62} 222 ${cy+74}" stroke="${F.line}" stroke-width="1.6" fill="none" opacity=".35" stroke-linecap="round"/>`;
+  s+=`<path d="M86 ${cy+30} C76 ${cy+48} 74 ${cy+72} 82 ${cy+94}" stroke="${F.hi}" stroke-width="4" fill="none" opacity=".45" stroke-linecap="round"/>`;
+  return s}
+
+// ---------- beards ----------
+const CH_BEARDS={full:1,short:1,mustache:1};
+// a left-right symmetric closed path: S on x=150, then the left half as cubic segments [c1,c2,end] ending on x=150
+function ch_sym(S,segs){let d=`M${ch_P(S)}`+segs.map(s=>`C${ch_P(s[0])} ${ch_P(s[1])} ${ch_P(s[2])}`).join('');const pts=[S];segs.forEach(s=>pts.push(s[0],s[1],s[2]));
+  for(let i=pts.length-1;i>=3;i-=3)d+=`C${ch_P([300-pts[i-1][0],pts[i-1][1]])} ${ch_P([300-pts[i-2][0],pts[i-2][1]])} ${ch_P([300-pts[i-3][0],pts[i-3][1]])}`;return d+'Z'}
+function ch_beard(kind,G,H,sk,build,id){const R=ch_n;
+  const sg=ch_segs(G.face),jaw=ch_chain([sg[1],sg[2],sg[3]],18).filter(p=>p[1]>=G.ear-6&&p[0]<=146),n=jaw.length,my=G.my,ny=G.ny;
+  const full=kind==='full',off=t=>full?1.5+17*Math.pow(t,1.8):1.2+4.4*Math.pow(t,1.5);
+  const stache=(()=>{const th=kind==='mustache'?1.2:full?1:.85,y0=ny+4.5,yl=my-2.2;
+    const d=ch_sym([150,y0],[[[146,y0-1.6],[138,y0-.6],[132,y0+3]],[[126,y0+6],[124-3*th,yl-1],[122-4*th,yl+4*th]],[[128,yl+1.4],[136,yl-.4],[143,yl]],[[146,yl+.2],[148.6,yl-.6],[150,yl-1.4]]]);
+    return `<path d="${d}" fill="${H.base}" stroke="${H.line}" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="${ch_rib(ch_bz([[132,y0+5],[138,y0+2],[146,y0+2]],8),ch_swell(1.8,.2))}" fill="${H.hi}" opacity=".6"/>
+      <path d="${ch_rib(ch_bz([[154,yl-1],[162,yl-1.4],[172,yl+1]],8),ch_swell(2,.3))}" fill="${H.sh}" opacity=".8"/>
+      <path d="M137 ${R(y0+4)} l-3 ${R(yl-y0-4)} M143 ${R(y0+2.4)} l-1.6 ${R(yl-y0-3)} M157 ${R(y0+2.4)} l1.6 ${R(yl-y0-3)} M163 ${R(y0+4)} l3 ${R(yl-y0-4)}" stroke="${H.line}" stroke-width=".9" opacity=".45" stroke-linecap="round"/>`})();
+  if(kind==='mustache')return {beard:'',stache,bottom:G.chin};
+  const nor=i=>{const a=jaw[Math.max(0,i-1)],b=jaw[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;return [-dy/l,dx/l]};
+  // outer edge: tufts along the jaw, pointing down along the growth direction
+  const outer=jaw.map((p,i)=>{const t=i/(n-1),N=nor(i);return [p[0]+N[0]*off(t),p[1]+N[1]*off(t)]});
+  let dl=`M${ch_P([jaw[0][0]+(full?9:6),jaw[0][1]])}L${ch_P(outer[0])}`;
+  const tuft=(a,b,k)=>{const dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,tip=[(a[0]+b[0])/2-dy/l*k+dx/l*k*.2,(a[1]+b[1])/2+dx/l*k*.9+Math.abs(dy/l)*k*.6];
+    return `Q${ch_P([a[0]+dx*.2-dy/l*k*.4,a[1]+dy*.2+dx/l*k*.4])} ${ch_P(tip)} Q${ch_P([b[0]-dx*.15-dy/l*k*.2,b[1]-dy*.15+dx/l*k*.2])} ${ch_P(b)}`};
+  const ev=ch_even(outer,full?9:7),tk=full?3.6:1.8;
+  for(let i=1;i<ev.length;i++)dl+=tuft(ev[i-1],ev[i],tk*(.7+.6*(i/ev.length)));
+  const bot=[150,G.chin+off(1)+(full?3:1)];dl+=tuft(ev[ev.length-1],bot,tk*1.2);
+  // the right side mirrors the left
+  const evR=ev.map(p=>[300-p[0],p[1]]).reverse();let dr=tuft(bot,evR[0],tk*1.2);for(let i=1;i<evR.length;i++)dr+=tuft(evR[i-1],evR[i],tk*(.7+.6*(1-i/evR.length)));
+  const top0=[300-jaw[0][0]-(full?9:6),jaw[0][1]];
+  // inner edge: from the right sideburn down the cheek, around under the mouth, and back up the left cheek
+  const x0=300-jaw[0][0]-(full?9:6),y0=jaw[0][1],cm=full?[150+19,my-3]:[150+17,my+1],ul=full?my+10:my+9;
+  const inner=`L${ch_P(top0)}C${ch_P([x0-(full?1:2),G.ny-6])} ${ch_P([x0-(full?6:4),G.ny+(full?4:10)])} ${ch_P(cm)}C${ch_P([150+14,my+5])} ${ch_P([150+8,ul])} 150 ${R(ul)}C${ch_P([150-8,ul])} ${ch_P([150-14,my+5])} ${ch_P([300-cm[0],cm[1]])}C${ch_P([300-x0+(full?6:4),G.ny+(full?4:10)])} ${ch_P([300-x0+(full?1:2),G.ny-6])} ${ch_P([jaw[0][0]+(full?9:6),y0])}Z`;
+  const d=dl+dr+inner;
+  let s=`<clipPath id="${id}bd"><path d="${d}"/></clipPath><path d="${d}" fill="${H.base}" stroke="${H.line}" stroke-width="${full?2.6:2}" stroke-linejoin="round"${full?'':' opacity=".92"'}/>`;
+  s+=`<g clip-path="url(#${id}bd)"><path d="M${150+18} ${my+4} C${150+30} ${my+2} ${150+44} ${G.ny-10} ${x0+4} ${y0} L${x0+30} ${y0} L${x0+30} ${G.chin+40} L150 ${G.chin+40}Z" fill="${H.sh}" opacity=".7"/>`;
+  const strands=full?[.1,.3,.5,.7,.9]:[.2,.5,.8];
+  for(const f of strands)for(const sd of [-1,1]){const i=Math.round(f*(n-1)),p=jaw[i],N=nor(i),q=[p[0]+N[0]*off(f)*.85,p[1]+N[1]*off(f)*.85],a=[p[0]-N[0]*(full?5:3),p[1]-N[1]*(full?5:3)];
+    const A=sd<0?a:[300-a[0],a[1]],B=sd<0?q:[300-q[0],q[1]];s+=`<path d="${ch_rib(ch_bz([A,[(A[0]+B[0])/2+sd*1.5,(A[1]+B[1])/2],B],8),ch_swell(full?1.4:1,.15))}" fill="${f<.5&&sd<0?H.hi:H.dk}" opacity="${f<.5&&sd<0?.45:.5}"/>`}
+  if(!full){const r=ch_rand(7);let dots='';for(let i=0;i<46;i++){const k=Math.floor(r()*n),p=jaw[k],N=nor(k),u=r()*off(k/(n-1))*1.2-2,sd=r()<.5?-1:1,x=p[0]+N[0]*u,y=p[1]+N[1]*u-r()*6;
+    dots+=`M${ch_n(sd<0?x:300-x)} ${ch_n(y)}l.4 1.6`}s+=`<path d="${dots}" stroke="${H.dk}" stroke-width="1.1" opacity=".5" stroke-linecap="round"/>`}
+  s+='</g>';
+  return {beard:s,stache,bottom:G.chin+off(1)+(full?7:3)}}
+
+// ---------- age ----------
+function ch_wrinkles(G,sk,ex,ey,my,build){const c=sk.line,f=ey-46,R=ch_n;
+  return `<path d="M${150-24} ${f} Q150 ${f-5} ${150+24} ${f} M${150-15} ${f-8} Q150 ${f-11} ${150+15} ${f-8} M${150-ex-4} ${ey+14} Q${150-ex+3} ${ey+16.5} ${150-ex+9} ${ey+13.5} M${150+ex+4} ${ey+14} Q${150+ex-3} ${ey+16.5} ${150+ex-9} ${ey+13.5}" stroke="${c}" stroke-width="1" opacity=".3" fill="none" stroke-linecap="round"/>
+    <path d="M${150-13} ${my+4} Q${150-15} ${my+9} ${150-13.5} ${my+13} M${150+13} ${my+4} Q${150+15} ${my+9} ${150+13.5} ${my+13} M${150-31} ${G.chin-15} Q${150-25} ${G.chin-8} ${150-17} ${G.chin-6} M${150+31} ${G.chin-15} Q${150+25} ${G.chin-8} ${150+17} ${G.chin-6} M${150-5} ${ey-24} l-1 6 M${150+5} ${ey-24} l1 6" stroke="${c}" stroke-width="1.05" opacity=".34" fill="none" stroke-linecap="round"/>`}
+function ch_neckLines(G,sk,build){const nw=G.nw,cy=G.chin;
+  return `<path d="M${150-nw*.6} ${cy+8} Q150 ${cy+11} ${150+nw*.5} ${cy+8} M${150-nw*.5} ${cy+14} Q150 ${cy+16.4} ${150+nw*.4} ${cy+14}" stroke="${sk.line}" stroke-width="1.1" opacity=".3" fill="none" stroke-linecap="round"/>`}
+// bald scalp: shadow on the right of the dome and a shine on the upper left
+function ch_scalp(G,sk,id){const top=ch_segs(G.face)[7][3][1];
+  return `<g clip-path="url(#${id}f)"><path d="M210 112 C206 72 186 ${top} 150 ${top} C176 ${top+12} 192 ${top+34} 196 ${top+66} C198 84 200 98 200 112Z" fill="${sk.sh}" opacity=".85"/></g>
+    <path d="${ch_rib(ch_bz([[110,top+30],[118,top+12],[134,top+5]],10),ch_swell(5.4,.6))}" fill="${sk.hi}" opacity=".85"/><path d="${ch_rib(ch_bz([[114,top+38],[116,top+33],[119,top+28]],5),ch_swell(2.4,.4))}" fill="#fff" opacity=".7"/>`}
+
+// ---------- accessories ----------
+function ch_accSet(a){const s={};String([].concat(a||[]).join(' ')).toLowerCase().replace(/hard[\s_-]*hat/g,'hardhat').split(/[\s,+]+/).forEach(k=>{if(k)s[k]=1});return s}
+// hats sit over the hair: the hair is clipped below the hat's lower edge and the hat is drawn on top
+function ch_hat(kind,o,HS,id){const hw=HS.hatW||62,hard=kind==='hardhat',top=HS.hatTop!=null?HS.hatTop:(hard?14:20),col=o.hatColor||(hard?'#f6c22a':'#d8574a'),C=ch_clothPal(col),R=ch_n;
+  const L=150-hw-(hard?6:2),Rr=150+hw+(hard?6:2),yc=hard?86:100,ys=hard?100:113;
+  const qy=(yy,y2)=>R(2*yy-y2),ln=C.line;let svg='',shape;
+  if(!hard){const cuff=20;
+    shape=`M${R(L)} ${ys} C${R(L-3)} ${ys-14} ${R(L-1)} ${ys-28} ${R(L+5)} ${ys-cuff-8} C${R(L+14)} ${top+34} ${R(150-hw*.55)} ${top} 150 ${top} C${R(150+hw*.55)} ${top} ${R(Rr-14)} ${top+34} ${R(Rr-5)} ${ys-cuff-8} C${R(Rr+1)} ${ys-28} ${R(Rr+3)} ${ys-14} ${R(Rr)} ${ys} Q150 ${qy(yc,ys)} ${R(L)} ${ys}Z`;
+    const band=`M${R(L-1.5)} ${ys+1} Q150 ${qy(yc+1,ys+1)} ${R(Rr+1.5)} ${ys+1} L${R(Rr+.5)} ${ys-cuff} Q150 ${qy(yc-cuff,ys-cuff)} ${R(L-.5)} ${ys-cuff}Z`;
+    const ribs=[];for(let x=L+5;x<Rr-2;x+=7.2){const t=(x-L)/(Rr-L),q=(y,y2)=>(1-t)*(1-t)*y2+2*t*(1-t)*(2*y-y2)+t*t*y2;ribs.push(`M${R(x)} ${R(q(yc,ys)-2)} L${R(x+(x-150)*.02)} ${R(q(yc-cuff,ys-cuff)+2)}`)}
+    const dome=[];for(let k=-3;k<=3;k++){const x=150+k*hw*.28,t=(x-L)/(Rr-L),y=(1-t)*(1-t)*(ys-cuff)+2*t*(1-t)*(2*(yc-cuff)-(ys-cuff))+t*t*(ys-cuff);dome.push(`M${R(x)} ${R(y-2)} Q${R(150+k*hw*.3)} ${R((y+top)/2)} ${R(150+k*4)} ${top+8}`)}
+    const pom=(()=>{const pts=[];for(let i=0;i<=14;i++){const a=(i/14)*Math.PI*2-Math.PI/2;pts.push([150+Math.cos(a)*14,top-8+Math.sin(a)*12])}return ch_scallop(pts,7,3)+'Z'})();
+    svg=`<path d="${pom}" fill="${ch_mix(col,'#ffffff',.25)}" stroke="${ln}" stroke-width="2.6" stroke-linejoin="round"/><path d="M142 ${top-14} q4 -4 9 -3 M140 ${top-8} q3 -2 6 -1" stroke="#fff" stroke-width="1.6" fill="none" opacity=".6" stroke-linecap="round"/>
+      <path d="${shape}" fill="${col}" stroke="${ln}" stroke-width="3" stroke-linejoin="round"/>
+      <clipPath id="${id}hb"><path d="${shape}"/></clipPath><g clip-path="url(#${id}hb)"><path d="${ch_tr(shape,16,6)}" fill="none"/><path d="M${R(150+hw*.35)} ${top} C${R(150+hw*.75)} ${top+10} ${R(Rr-4)} ${ys-40} ${R(Rr+6)} ${ys} L${R(Rr+10)} ${top} Z" fill="${C.sh}" opacity=".85"/>
+        <path d="${dome.join('')}" stroke="${C.sh}" stroke-width="1.6" fill="none" opacity=".7"/><path d="${ch_rib(ch_bz([[L+10,ys-cuff-10],[L+16,top+26],[150-hw*.4,top+6]],12),ch_swell(5,.5))}" fill="${C.hi}" opacity=".55"/></g>
+      <path d="${band}" fill="${ch_mix(col,'#ffffff',.06)}" stroke="${ln}" stroke-width="2.8" stroke-linejoin="round"/>
+      <path d="${ribs.join('')}" stroke="${C.sh}" stroke-width="1.7" opacity=".8" stroke-linecap="round"/>
+      <path d="M${R(Rr-hw*.5)} ${ys-cuff+2} Q${R(Rr-6)} ${ys-cuff+6} ${R(Rr-1)} ${ys-2} L${R(Rr+1)} ${ys-cuff+1}Z" fill="${C.sh}" opacity=".6"/>`}
+  else{shape=`M${R(L)} ${ys} C${R(L-2)} ${ys-34} ${R(150-hw*.72)} ${top} 150 ${top} C${R(150+hw*.72)} ${top} ${R(Rr+2)} ${ys-34} ${R(Rr)} ${ys} Q150 ${qy(yc,ys)} ${R(L)} ${ys}Z`;
+    const brim=`M${R(L-5)} ${ys+1} Q150 ${qy(yc-1,ys+1)} ${R(Rr+5)} ${ys+1} L${R(Rr+3)} ${ys+6} Q150 ${qy(yc+12,ys+6)} ${R(L-3)} ${ys+6}Z`;
+    const ridge=`M${R(150-7)} ${top+2} C${R(150-10)} ${top+20} ${R(150-11)} ${yc-30} ${R(150-10)} ${yc-1} L${R(150+10)} ${yc-1} C${R(150+11)} ${yc-30} ${R(150+10)} ${top+20} ${R(150+7)} ${top+2}Z`;
+    svg=`<path d="${shape}" fill="${col}" stroke="${ln}" stroke-width="3.2" stroke-linejoin="round"/>
+      <clipPath id="${id}hb"><path d="${shape}"/></clipPath><g clip-path="url(#${id}hb)"><path d="M${R(150+hw*.3)} ${top} C${R(150+hw*.8)} ${top+8} ${R(Rr-2)} ${ys-36} ${R(Rr+4)} ${ys} L${R(Rr+10)} ${top}Z" fill="${C.sh}" opacity=".85"/>
+        <path d="M${R(150-hw*.62)} ${top+16} C${R(150-hw*.75)} ${top+34} ${R(L+8)} ${ys-22} ${R(L+8)} ${ys-4} M${R(150+hw*.62)} ${top+16} C${R(150+hw*.75)} ${top+34} ${R(Rr-8)} ${ys-22} ${R(Rr-8)} ${ys-4}" stroke="${C.sh}" stroke-width="2.2" fill="none" opacity=".8"/>
+        <path d="${ch_rib(ch_bz([[L+10,ys-14],[L+12,top+30],[150-hw*.5,top+8]],12),ch_swell(6,.6))}" fill="#fff" opacity=".55"/><path d="${ch_rib(ch_bz([[L+20,ys-22],[L+22,top+40],[150-hw*.36,top+20]],10),ch_swell(2,.3))}" fill="#fff" opacity=".7"/></g>
+      <path d="${ridge}" fill="${ch_mix(col,'#ffffff',.12)}" stroke="${ln}" stroke-width="2" stroke-linejoin="round"/><path d="M${R(150+3)} ${top+6} C${R(150+5)} ${top+24} ${R(150+5.5)} ${yc-30} ${R(150+5)} ${yc-4}" stroke="${C.sh}" stroke-width="3" fill="none" opacity=".7"/>
+      <path d="${brim}" fill="${ch_mix(col,'#000000',.06)}" stroke="${ln}" stroke-width="2.8" stroke-linejoin="round"/><path d="M${R(150-hw*.6)} ${R(ys-4)} Q150 ${R(yc-1)} ${R(150+hw*.2)} ${R(yc+1)}" stroke="#fff" stroke-width="1.6" fill="none" opacity=".5" stroke-linecap="round"/>`}
+  const clip=`<clipPath id="${id}hat"><path d="M-40 ${ys-7} L${R(L)} ${ys-7} Q150 ${qy(yc-7,ys-7)} ${R(Rr)} ${ys-7} L340 ${ys-7} L340 460 L-40 460Z"/></clipPath>`;
+  return {shape,svg,defs:clip}}
+// necklace, pearls and scarf (portrait space, inside .p-body, over the clothes)
+function ch_neckAcc(acc,o,G,sk,id,build){const cy=G.chin,nb=cy+(build==='K'?22:20),nw=G.nw,R=ch_n;let s='';
+  if(acc.necklace){const gold='#e2b04a',gd='#8a5a14',y1=nb+(build==='M'?30:26);
+    s+=`<path d="M${150-nw-2} ${nb-6} C${150-nw} ${nb+8} ${150-14} ${y1} 150 ${y1} C${150+14} ${y1} ${150+nw} ${nb+8} ${150+nw+2} ${nb-6}" stroke="${gd}" stroke-width="2.6" fill="none" opacity=".55"/><path d="M${150-nw-2} ${nb-6} C${150-nw} ${nb+8} ${150-14} ${y1} 150 ${y1} C${150+14} ${y1} ${150+nw} ${nb+8} ${150+nw+2} ${nb-6}" stroke="${gold}" stroke-width="1.5" fill="none" stroke-dasharray="2.2 .9"/>
+      <path d="M150 ${y1+1} C153 ${y1+4} 156 ${y1+8} 156 ${y1+11} C156 ${y1+15} 153 ${y1+17} 150 ${y1+17} C147 ${y1+17} 144 ${y1+15} 144 ${y1+11} C144 ${y1+8} 147 ${y1+4} 150 ${y1+1}Z" fill="${o.gem||'#7fd6e8'}" stroke="${gd}" stroke-width="1.6" stroke-linejoin="round"/><path d="M147.4 ${y1+8} Q148.6 ${y1+5.6} 150.4 ${y1+5}" stroke="#fff" stroke-width="1.3" fill="none" opacity=".85" stroke-linecap="round"/><circle cx="150" cy="${y1}" r="2" fill="${gold}" stroke="${gd}" stroke-width="1"/>`}
+  if(acc.pearls){const pts=ch_even(ch_bz([[150-nw-4,nb-8],[150-nw+2,nb+14],[150-nw*.4,nb+20],[150,nb+20]],16).concat(ch_bz([[150,nb+20],[150+nw*.4,nb+20],[150+nw-2,nb+14],[150+nw+4,nb-8]],16).slice(1)),16);
+    pts.forEach(([x,y],i)=>{const r=i===8?3.9:3.3;s+=`<path d="M${R(x-r)} ${R(y)} C${R(x-r)} ${R(y-r*.56)} ${R(x-r*.56)} ${R(y-r)} ${R(x)} ${R(y-r)} C${R(x+r*.56)} ${R(y-r)} ${R(x+r)} ${R(y-r*.56)} ${R(x+r)} ${R(y)} C${R(x+r)} ${R(y+r*.56)} ${R(x+r*.56)} ${R(y+r)} ${R(x)} ${R(y+r)} C${R(x-r*.56)} ${R(y+r)} ${R(x-r)} ${R(y+r*.56)} ${R(x-r)} ${R(y)}Z" fill="#f6f1ea" stroke="#9a8f86" stroke-width="1"/><path d="M${R(x+r*.2)} ${R(y+r*.8)} Q${R(x+r*.85)} ${R(y+r*.5)} ${R(x+r*.8)} ${R(y-r*.2)}" stroke="#d6c8d8" stroke-width="1.3" fill="none"/><circle cx="${R(x-r*.32)}" cy="${R(y-r*.34)}" r="${R(r*.3)}" fill="#fff"/>`})}
+  if(acc.scarf){const c=o.scarfColor||'#e7a33e',F=ch_clothPal(c),t=nb-16;
+    const wrapL=`M${150-nw-20} ${t+2} C${150-nw-24} ${t+18} ${150-nw-10} ${t+32} 150 ${t+34} C${150+nw+10} ${t+32} ${150+nw+24} ${t+18} ${150+nw+20} ${t+2} C${150+nw+8} ${t+10} ${150-nw-8} ${t+10} ${150-nw-20} ${t+2}Z`;
+    const roll=`M${150-nw-22} ${t+18} C${150-nw-20} ${t+34} ${150-nw} ${t+46} 150 ${t+46} C${150+nw} ${t+46} ${150+nw+20} ${t+34} ${150+nw+22} ${t+18} C${150+nw+8} ${t+30} ${150-nw-8} ${t+30} ${150-nw-22} ${t+18}Z`;
+    const tail=`M${150-16} ${t+34} C${150-22} ${t+70} ${150-26} ${t+110} ${150-30} 380 L${150} 380 C${150+2} ${t+110} ${150+4} ${t+70} ${150+6} ${t+38}Z`;
+    const tail2=`M${150+2} ${t+38} C${150+10} ${t+76} ${150+18} ${t+120} ${150+24} 380 L${150+50} 380 C${150+42} ${t+120} ${150+30} ${t+76} ${150+22} ${t+36}Z`;
+    s+=`<path d="${tail2}" fill="${F.sh}" stroke="${F.line}" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="${wrapL}" fill="${F.sh}" stroke="${F.line}" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="${roll}" fill="${c}" stroke="${F.line}" stroke-width="2.6" stroke-linejoin="round"/>
+      <path d="${tail}" fill="${c}" stroke="${F.line}" stroke-width="2.6" stroke-linejoin="round"/>
+      <path d="M${150-nw-14} ${t+22} C${150-nw} ${t+36} ${150+nw} ${t+36} ${150+nw+14} ${t+22}" stroke="${F.hi}" stroke-width="2.4" fill="none" opacity=".6" stroke-linecap="round"/>
+      <path d="${[0,1,2,3,4,5,6,7,8].map(i=>{const y=t+56+i*15;return `M${R(150-21-(y-t)*.06)} ${y} L${R(150+(y-t)*.01)} ${y+1}`}).join('')}" stroke="${F.sh}" stroke-width="1.6" opacity=".8"/>
+      <path d="${[-2,-1,0,1,2].map(i=>`M${150+i*nw*.42} ${t+30-Math.abs(i)*3} l${i*1.5} ${10-Math.abs(i)*2}`).join('')}" stroke="${F.sh}" stroke-width="1.6" opacity=".7"/>`}
+  return s}
+
+// ---------- more outfits for the bust (o.outfit; the existing coat / shirt / top stay as they were) ----------
+// o.shirt is the main garment colour, o.under the layer beneath (cardigan, suit, blazer, vest), o.tie the suit's tie.
+const CH_OUTFITS={cardigan:1,sweater:1,suit:1,scrubs:1,hoodie:1,parka:1,vest:1,dress:1,blazer:1,tee:1,shirt:1,top:1,coat:1};
+const CH_OUTFIT_DEF={cardigan:'#c86b85',sweater:'#5b7bd5',suit:'#2e3550',scrubs:'#2f8fd8',hoodie:'#6c5ce7',parka:'#3d6b5a',vest:'#f2d22e',dress:'#e05a7a',blazer:'#3d4a7a',tee:'#38b07f',shirt:'#5b7bd5',top:'#ff7a6b'};
+// is this colour a high-visibility safety colour (vests get reflective stripes)?
+function ch_hiviz(c){const [r,g,b]=ch_rgb(c);return (r>190&&g>170&&b<110)||(r>220&&g>90&&g<180&&b<90)}
+function ch_bust(build){return build==='M'?{nx:25,L:10,top:206}:build==='K'?{nx:17,L:48,top:204}:{nx:21,L:26,top:206}}
+function ch_torsoD(nx,L,top,w){w=w||0;const a=L-w;return `M${150-nx} ${top} C${150-nx-17} ${top+7} ${a+62} ${top+13-w*.2} ${a+38} ${top+21} C${a+16} ${top+29} ${a+4} ${top+45} ${a} ${top+67} L${a-6} 372 L${306-a} 372 L${300-a} ${top+67} C${296-a} ${top+45} ${284-a} ${top+29} ${262-a} ${top+21} C${238-a} ${top+13-w*.2} ${150+nx+17} ${top+7} ${150+nx} ${top}Z`}
+function ch_outfit2(kind,o,G,sk,id,build,neckG){const B=ch_bust(build),nx=B.nx,L=B.L,t=B.top,col=o.shirt||CH_OUTFIT_DEF[kind],C=ch_clothPal(col),ln=C.line,R=ch_n;
+  const under=o.under||(kind==='suit'||kind==='vest'?'#f3f5fa':ch_mix(col,'#ffffff',.82)),U=ch_clothPal(under);
+  const T=(w)=>ch_torsoD(nx,L,t,w);
+  const shade=(P,w)=>{const a=L-(w||0);return `<path d="M${262-a} ${t+21} C${284-a} ${t+29} ${296-a} ${t+45} ${300-a} ${t+67} L${306-a} 372 L${258-a} 372 C${264-a} 330 ${268-a} ${t+66} ${262-a} ${t+21}Z" fill="${P.sh}"/><path d="M${a+38} ${t+21} C${a+22} ${t+27} ${a+10} ${t+39} ${a+4} ${t+55} C${a+16} ${t+45} ${a+30} ${t+40} ${a+44} ${t+39}Z" fill="${P.hi}" opacity=".6"/>`};
+  const folds=(P,w)=>{const a=L-(w||0);return `<path d="M${a+54} ${t+84} Q${a+70} ${t+110} ${a+68} 372 M${246-a} ${t+84} Q${234-a} ${t+118} ${238-a} 372 M${a+20} ${t+82} Q${a+32} ${t+70} ${a+44} ${t+76}" stroke="${P.line}" stroke-width="1.3" fill="none" opacity=".4" stroke-linecap="round"/>`};
+  const body=(P,w,extra)=>`<path d="${T(w)}" fill="${P.base}" stroke="${P.line}" stroke-width="2.8" stroke-linejoin="round"/>`+shade(P,w)+folds(P,w)+(extra||'');
+  // a crew neckline with a ribbed band
+  const crew=(P,band,deep)=>{const d=deep||14,o1=`M${150-nx-5} ${t-3} C${150-nx-3} ${t+d} ${150-12} ${t+d+6} 150 ${t+d+6} C${150+12} ${t+d+6} ${150+nx+3} ${t+d} ${150+nx+5} ${t-3}`,i1=`C${150+nx-2} ${t+d-8} ${150+10} ${t+d-2} 150 ${t+d-2} C${150-10} ${t+d-2} ${150-nx+2} ${t+d-8} ${150-nx-1} ${t-5}Z`;
+    let s=`<path d="${o1}${i1}" fill="${band||P.base}" stroke="${P.line}" stroke-width="2" stroke-linejoin="round"/>`;
+    if(band){let r='';for(let k=-5;k<=5;k++){const x=150+k*(nx+3)/5.6,yy=t+d+5-Math.pow(Math.abs(k)/5.6,1.8)*(d+7);r+=`M${R(x)} ${R(yy)} l${R(k*.3)} ${-5.6+Math.abs(k)*.2}`}s+=`<path d="${r}" stroke="${P.line}" stroke-width="1" opacity=".45"/>`}
+    return s};
+  // a spread shirt collar; open=true shows a skin V (top button open), otherwise it closes over a tie
+  const collar=(P,open)=>{const fl=`M${150-nx+2} ${t-10} C${150-nx-4} ${t+2} ${150-nx-10} ${t+14} ${150-nx-17} ${t+26} L${150-nx+5} ${t+56} L${150-2} ${t+(open?42:20)} L${150-nx+6} ${t+6}Z`;
+    let s=`<path d="M${150-nx-10} ${t-6} C${150-nx+3} ${t-22} ${150+nx-3} ${t-22} ${150+nx+10} ${t-6} L${150+nx+14} ${t+14} L${150-nx-14} ${t+14}Z" fill="${P.sh}" stroke="${P.line}" stroke-width="2" stroke-linejoin="round"/>`;
+    return {back:s,front:`<path d="${fl}" fill="${P.base}" stroke="${P.line}" stroke-width="2" stroke-linejoin="round"/><path d="${ch_mx(fl,150)}" fill="${P.base}" stroke="${P.line}" stroke-width="2" stroke-linejoin="round"/><path d="${ch_mx(`M${150-nx+2} ${t-10} C${150-nx-4} ${t+2} ${150-nx-10} ${t+14} ${150-nx-17} ${t+26} L${150-nx-10} ${t+34} C${150-nx-5} ${t+20} ${150-nx} ${t+6} ${150-nx+6} ${t+6}Z`,150)}" fill="${P.sh}"/>`}};
+  const skinV=(depth,wid)=>`<path d="M${150-wid} ${t-4} L150 ${t+depth} L${150+wid} ${t-4}Z" fill="${sk.base}"/><path d="M150 ${t+depth} L${150+wid} ${t-4} L${150+wid-9} ${t-4} C${150+wid-11} ${t+depth*.5} ${150+5} ${t+depth*.8} 150 ${t+depth}Z" fill="${sk.sh}"/>`;
+  let s='';
+  if(kind==='sweater'||kind==='tee'||(kind==='top'&&build==='M')){
+    s+=neckG+body(C,kind==='sweater'?3:0);
+    s+=crew(C,kind==='sweater'?ch_mix(col,'#000000',.06):'',kind==='sweater'?12:16);
+    if(kind==='sweater'){// a centre cable and knit ribs
+      let cab='';for(let k=0;k<7;k++){const y=t+46+k*20;cab+=`M${150-9} ${y} C${150-9} ${y+8} ${150+9} ${y+10} ${150+9} ${y+20} M${150+9} ${y} C${150+9} ${y+6} ${150+3} ${y+8} ${150+1} ${y+9} M${150-1} ${y+11} C${150-3} ${y+12} ${150-9} ${y+14} ${150-9} ${y+20}`}
+      s+=`<path d="${cab}" stroke="${C.sh2}" stroke-width="2.2" fill="none" opacity=".55" stroke-linecap="round"/><path d="M${150-15} ${t+40} L${150-15} 372 M${150+15} ${t+40} L${150+15} 372" stroke="${C.sh}" stroke-width="1.6" opacity=".7"/>`;
+      let rib='';for(const x of [-60,-48,-36,36,48,60])rib+=`M${150+x} ${t+30+Math.abs(x)*.2} Q${150+x*1.04} ${t+110} ${150+x*1.08} 372`;s+=`<path d="${rib}" stroke="${C.sh}" stroke-width="1.2" fill="none" opacity=".45"/>`}
+    return s}
+  if(kind==='shirt'||kind==='top'){ // a collared button-up (any build), top button open
+    const cl=collar(C,true);s+=cl.back+neckG+body(C)+skinV(44,nx+2)+`<path d="M150 ${t+44} L150 372" stroke="${ln}" stroke-width="1.7"/><path d="M150 ${t+46} L157 ${t+54} L157 372" stroke="${ln}" stroke-width="1.2" fill="none" opacity=".55"/>`+
+      [t+80,t+120,t+158].map(y=>`<circle cx="153.6" cy="${y}" r="2.4" fill="${ch_mix(col,'#ffffff',.85)}" stroke="${ln}" stroke-width="1"/>`).join('')+cl.front;
+    return s}
+  if(kind==='cardigan'){ // open V cardigan with a button band over a crew-neck top
+    s+=neckG+body(C,4);
+    const fr=`M${150-nx-3} ${t-4} C${150-nx+2} ${t+30} ${150-14} ${t+70} ${150-8} ${t+118} L${150-6} 372 L${150+6} 372 L${150+8} ${t+118} C${150+14} ${t+70} ${150+nx-2} ${t+30} ${150+nx+3} ${t-4}Z`;
+    s+=`<path d="${fr}" fill="${under}" stroke="${U.line}" stroke-width="1.8" stroke-linejoin="round"/>`+crew(U,'',12);
+    const band=`M${150-nx-3} ${t-4} C${150-nx+2} ${t+30} ${150-14} ${t+70} ${150-8} ${t+118} L${150-6} 372 L${150-16} 372 L${150-18} ${t+118} C${150-24} ${t+66} ${150-nx-6} ${t+28} ${150-nx-12} ${t-2}Z`;
+    s+=`<path d="${band}" fill="${ch_mix(col,'#000000',.05)}" stroke="${ln}" stroke-width="2" stroke-linejoin="round"/><path d="${ch_mx(band,150)}" fill="${C.sh}" stroke="${ln}" stroke-width="2" stroke-linejoin="round"/>`;
+    s+=[t+96,t+132,t+166].map((y,i)=>{const x=150-12-(i?0:2);return `<circle cx="${x}" cy="${y}" r="3.3" fill="${ch_mix(col,'#fff5e0',.6)}" stroke="${ln}" stroke-width="1.2"/><path d="M${x-1.2} ${y-.6} h.1 M${x+1.2} ${y+.6} h.1" stroke="${ln}" stroke-width="1.1" stroke-linecap="round"/>`}).join('');
+    let rib='';for(const x of [-70,-58,-46,-34,34,46,58,70])rib+=`M${150+x} ${t+26+Math.abs(x)*.3} Q${150+x*1.03} ${t+110} ${150+x*1.07} 372`;s+=`<path d="${rib}" stroke="${C.sh}" stroke-width="1.2" fill="none" opacity=".5"/>`;
+    return s}
+  if(kind==='suit'||kind==='blazer'){ // notched lapels; the suit closes over a shirt and tie, the blazer hangs open over a top
+    const suit=kind==='suit',vY=suit?t+92:372,tie=o.tie||(suit?'#b8423e':null);
+    const cl=collar(U,false);
+    s+=(suit?cl.back:'')+neckG+body(C,6);
+    if(suit){s+=`<path d="M${150-nx-6} ${t-4} L150 ${vY+10} L${150+nx+6} ${t-4}Z" fill="${under}" stroke="${U.line}" stroke-width="1.6"/>`;
+      const Tc=ch_clothPal(tie),knot=`M${150-6} ${t+10} L${150+6} ${t+10} L${150+4.5} ${t+22} L${150-4.5} ${t+22}Z`,blade=`M${150-4.5} ${t+21} L${150+4.5} ${t+21} L${150+9} ${vY-6} L150 ${vY+4} L${150-9} ${vY-6}Z`;
+      s+=`<path d="${blade}" fill="${tie}" stroke="${Tc.line}" stroke-width="1.6" stroke-linejoin="round"/><path d="${knot}" fill="${Tc.sh}" stroke="${Tc.line}" stroke-width="1.6" stroke-linejoin="round"/><path d="M${150+2} ${t+24} L${150+6} ${vY-8}" stroke="${Tc.sh}" stroke-width="3" opacity=".7"/><path d="M${150-2} ${t+30} l3 4 M${150-3} ${t+46} l3 4 M${150-4} ${t+62} l3 4" stroke="${Tc.hi}" stroke-width="1.3" opacity=".6"/>`+cl.front}
+    else{const top=`M${150-nx-4} ${t-4} C${150-nx} ${t+40} ${150-28} ${t+90} ${150-24} 372 L${150+24} 372 C${150+28} ${t+90} ${150+nx} ${t+40} ${150+nx+4} ${t-4}Z`;
+      s+=`<path d="${top}" fill="${under}" stroke="${U.line}" stroke-width="1.8" stroke-linejoin="round"/>`+crew(U,'',13)+`<path d="M${150+8} ${t+40} Q${150+14} ${t+100} ${150+12} 372" stroke="${U.sh}" stroke-width="3" fill="none" opacity=".6"/>`}
+    // lapels: collar piece above the notch, lapel below, rolling to the button point
+    const lx=suit?150-2:150-26,ly=suit?vY:t+150;
+    const lap=`M${150-nx-4} ${t-8} C${150-nx-10} ${t+4} ${150-nx-14} ${t+16} ${150-nx-20} ${t+30} L${150-nx-10} ${t+38} L${150-nx-30} ${t+52} C${150-nx-20} ${t+86} ${lx-16} ${ly-30} ${lx} ${ly} C${lx-2} ${ly-36} ${150-nx+2} ${t+30} ${150-nx+4} ${t-4}Z`;
+    s+=`<path d="${lap}" fill="${C.base}" stroke="${ln}" stroke-width="2.1" stroke-linejoin="round"/><path d="${ch_mx(lap,150)}" fill="${C.sh}" stroke="${ln}" stroke-width="2.1" stroke-linejoin="round"/>`;
+    s+=`<path d="M${150-nx-20} ${t+30} L${150-nx-10} ${t+38}" stroke="${ln}" stroke-width="1.6"/><path d="${ch_mx(`M${150-nx-20} ${t+30} L${150-nx-10} ${t+38}`,150)}" stroke="${ln}" stroke-width="1.6"/><path d="M${150-nx-24} ${t+56} C${150-nx-16} ${t+86} ${lx-18} ${ly-34} ${lx-6} ${ly-8}" stroke="${C.hi}" stroke-width="2.2" fill="none" opacity=".5" stroke-linecap="round"/>`;
+    if(suit)s+=`<path d="M150 ${vY+2} L${150-3} 372" stroke="${ln}" stroke-width="1.8"/><circle cx="${150+5}" cy="${vY+22}" r="3.4" fill="${C.sh2}" stroke="${ln}" stroke-width="1.2"/>`;
+    s+=`<path d="M${196} ${t+66} L${226} ${t+63} L${226.6} ${t+69} L${196.4} ${t+72}Z" fill="${C.sh}" stroke="${ln}" stroke-width="1.4"/>`+(suit?`<path d="M${201} ${t+66} L${205} ${t+57} L${209} ${t+63} L${214} ${t+56} L${218} ${t+64}Z" fill="#f4f6fb" stroke="${ln}" stroke-width="1.1" stroke-linejoin="round"/>`:'');
+    s+=`<path d="M${74-L*.2} ${t+118} L${104-L*.1} ${t+116}" stroke="${ln}" stroke-width="1.5" opacity=".6"/>`;
+    return s}
+  if(kind==='scrubs'){ // V-neck scrub top, chest pocket with a pen, ID badge on a clip
+    s+=neckG+body(C);
+    s+=skinV(56,nx+3)+`<path d="M${150-nx-4} ${t-5} L150 ${t+58} L${150+nx+4} ${t-5}" stroke="${ln}" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M${150-nx-8} ${t-3} L150 ${t+66} L${150+nx+8} ${t-3}" stroke="${C.sh}" stroke-width="5" fill="none" stroke-linejoin="round" opacity=".9"/><path d="M${150-nx-10} ${t-2} L150 ${t+70} L${150+nx+10} ${t-2}" stroke="${ln}" stroke-width="1.4" fill="none" stroke-linejoin="round" opacity=".7"/>`;
+    s+=`<path d="M${190} ${t+70} L${226} ${t+68} L${227} ${t+108} Q${208} ${t+113} ${191} ${t+109}Z" fill="${C.sh}" opacity=".45" stroke="${ln}" stroke-width="1.4"/><path d="M190 ${t+70} L226 ${t+68}" stroke="${ln}" stroke-width="1.8"/>`;
+    s+=`<rect x="198" y="${t+56}" width="4.6" height="20" rx="2" fill="#2b3354"/><rect x="199.2" y="${t+53}" width="2.2" height="10" rx="1" fill="#c9d0e2"/><rect x="207" y="${t+60}" width="4.6" height="16" rx="2" fill="#e5484d"/>`;
+    s+=`<g transform="rotate(-4 98 ${t+110})"><rect x="94" y="${t+82}" width="8" height="12" rx="1.5" fill="#9aa4be" stroke="${ln}" stroke-width="1"/><rect x="82" y="${t+92}" width="30" height="38" rx="4" fill="#fff" stroke="${ln}" stroke-width="1.4"/><rect x="82" y="${t+92}" width="30" height="9" rx="3" fill="${C.sh}"/><circle cx="92" cy="${t+111}" r="5.4" fill="${sk.base}" stroke="${ln}" stroke-width=".8"/><path d="M100 ${t+109} h8 M100 ${t+114} h8 M86 ${t+123} h22" stroke="#9aa4be" stroke-width="1.6" stroke-linecap="round"/></g>`;
+    return s}
+  if(kind==='hoodie'){ // pullover hoodie: the hood rests around the neck, drawstrings, kangaroo pocket
+    const hood=`M${150-nx-30} ${t+12} C${150-nx-34} ${t-8} ${150-nx-10} ${t-26} 150 ${t-26} C${150+nx+10} ${t-26} ${150+nx+34} ${t-8} ${150+nx+30} ${t+12} C${150+nx+20} ${t+30} ${150+12} ${t+34} 150 ${t+28} C${150-12} ${t+34} ${150-nx-20} ${t+30} ${150-nx-30} ${t+12}Z`;
+    s+=neckG+body(C,4);
+    s+=`<path d="${hood}" fill="${C.sh}" stroke="${ln}" stroke-width="2.4" stroke-linejoin="round"/>`;
+    const inner=`M${150-nx-4} ${t-10} C${150-nx-2} ${t+8} ${150-14} ${t+22} 150 ${t+24} C${150+14} ${t+22} ${150+nx+2} ${t+8} ${150+nx+4} ${t-10}`;
+    s+=`<path d="${inner}" fill="none" stroke="${ln}" stroke-width="2" stroke-linejoin="round"/><path d="M${150-nx-22} ${t+8} C${150-nx-16} ${t+22} ${150-18} ${t+30} 150 ${t+30}" stroke="${C.base}" stroke-width="5" fill="none" opacity=".8"/>`;
+    s+=`<path d="M${150-nx-30} ${t+12} C${150-nx-20} ${t+30} ${150-12} ${t+34} 150 ${t+28} C${150+12} ${t+34} ${150+nx+20} ${t+30} ${150+nx+30} ${t+12}" stroke="${ln}" stroke-width="2.4" fill="none"/>`;
+    for(const sd of [-1,1]){const x=150+sd*9;s+=`<path d="M${x} ${t+30} C${x+sd*1} ${t+52} ${x-sd*2} ${t+70} ${x+sd*1} ${t+86}" stroke="${ln}" stroke-width="3.6" fill="none" stroke-linecap="round"/><path d="M${x} ${t+30} C${x+sd*1} ${t+52} ${x-sd*2} ${t+70} ${x+sd*1} ${t+86}" stroke="#f4f2f8" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="${x+sd*1-2}" y="${t+84}" width="4" height="9" rx="1.6" fill="#c9d0e2" stroke="${ln}" stroke-width="1"/><circle cx="${x}" cy="${t+31}" r="2.6" fill="#c9d0e2" stroke="${ln}" stroke-width="1"/>`}
+    s+=`<path d="M${150-56} 372 L${150-48} ${t+142} Q150 ${t+136} ${150+48} ${t+142} L${150+56} 372" fill="${C.sh}" opacity=".35" stroke="${ln}" stroke-width="1.6"/>`;
+    return s}
+  if(kind==='parka'){ // puffy quilted parka: stand-up collar, zip under a storm flap, fur-trimmed hood behind the neck
+    const fur=o.fur||'#d9cbb3',Fp=ch_clothPal(fur);
+    const ruff=[];for(let i=0;i<=16;i++){const a=Math.PI*(1.06+i/16*.88);ruff.push([150+Math.cos(a)*(nx+50),t+18+Math.sin(a)*42])}
+    s+=`<path d="${ch_scallop(ruff,9,13)}L${150+nx+30} ${t+30} C${150+nx+10} ${t+20} ${150-nx-10} ${t+20} ${150-nx-30} ${t+30}Z" fill="${fur}" stroke="${Fp.line}" stroke-width="2.4" stroke-linejoin="round"/>`;
+    s+=neckG+body(C,10);
+    // quilted baffles
+    let q='';for(let k=0;k<5;k++){const y=t+58+k*34;q+=`M${L-10+k*1.2} ${y+4} Q150 ${y+16} ${310-L-k*1.2} ${y+4}`}
+    s+=`<path d="${q}" stroke="${ln}" stroke-width="1.8" fill="none" opacity=".6"/>`;
+    let qs='';for(let k=0;k<5;k++){const y=t+58+k*34;qs+=`<path d="M${L-8} ${y+6} Q150 ${y+18} ${308-L} ${y+6} L${308-L} ${y+16} Q150 ${y+28} ${L-8} ${y+16}Z" fill="${C.sh}" opacity=".35"/><path d="M${L+20} ${y-10} Q150 ${y} ${280-L} ${y-10}" stroke="${C.hi}" stroke-width="3" fill="none" opacity=".35" stroke-linecap="round"/>`}
+    s+=`<clipPath id="${id}pk"><path d="${T(10)}"/></clipPath><g clip-path="url(#${id}pk)">${qs}</g>`;
+    const coll=`M${150-nx-12} ${t-30} C${150-nx-14} ${t-10} ${150-nx-12} ${t+8} ${150-nx-8} ${t+18} C${150-10} ${t+26} ${150+10} ${t+26} ${150+nx+8} ${t+18} C${150+nx+12} ${t+8} ${150+nx+14} ${t-10} ${150+nx+12} ${t-30} C${150+nx} ${t-22} ${150-nx} ${t-22} ${150-nx-12} ${t-30}Z`;
+    s+=`<path d="${coll}" fill="${col}" stroke="${ln}" stroke-width="2.4" stroke-linejoin="round"/><path d="M${150+4} ${t-26} C${150+nx} ${t-20} ${150+nx+10} ${t-6} ${150+nx+8} ${t+18} C${150+nx+12} ${t+8} ${150+nx+14} ${t-10} ${150+nx+12} ${t-30}Z" fill="${C.sh}"/>`;
+    s+=`<path d="M${150-7} ${t-22} L${150-7} 372 L${150+7} 372 L${150+7} ${t-22}Z" fill="${ch_mix(col,'#000000',.08)}" stroke="${ln}" stroke-width="1.8"/>`+[0,1,2,3,4,5,6,7,8,9,10].map(k=>`<circle cx="${150+(k%2?1.6:-1.6)}" cy="${t+30+k*13}" r="1.6" fill="${ln}" opacity=".7"/>`).join('');
+    s+=`<rect x="${150-4}" y="${t-18}" width="8" height="14" rx="2.4" fill="#c9d0e2" stroke="${ln}" stroke-width="1.2"/><path d="M${194} ${t+92} L${228} ${t+90} L${229} ${t+104} L${195} ${t+106}Z" fill="${C.sh}" stroke="${ln}" stroke-width="1.6"/>`;
+    return s}
+  if(kind==='vest'){ // a sleeveless work vest over a collared shirt; hi-vis colours get reflective stripes
+    const cl=collar(U,true);s+=cl.back+neckG+body(U)+skinV(40,nx+2)+cl.front;
+    const v=`M${150-nx-10} ${t+2} C${150-nx-30} ${t+8} ${L+60} ${t+16} ${L+46} ${t+22} C${L+60} ${t+60} ${L+54} ${t+100} ${L+40} ${t+130} L${L+34} 372 L${266-L} 372 L${260-L} ${t+130} C${246-L} ${t+100} ${240-L} ${t+60} ${254-L} ${t+22} C${240-L} ${t+16} ${150+nx+30} ${t+8} ${150+nx+10} ${t+2} L150 ${t+64}Z`;
+    s+=`<path d="${v}" fill="${col}" stroke="${ln}" stroke-width="2.6" stroke-linejoin="round"/><path d="M${254-L} ${t+22} C${240-L} ${t+60} ${246-L} ${t+100} ${260-L} ${t+130} L${266-L} 372 L${232-L} 372 C${236-L} ${t+120} ${236-L} ${t+60} ${254-L} ${t+22}Z" fill="${C.sh}"/>`;
+    s+=`<path d="M150 ${t+64} L150 372" stroke="${ln}" stroke-width="1.8"/><path d="M${150-3} ${t+66} L${150-3} 372 M${150+3} ${t+66} L${150+3} 372" stroke="${C.sh2}" stroke-width="1" stroke-dasharray="2 2" opacity=".7"/>`;
+    s+=`<path d="M${150-nx-30} ${t+70} L${150-14} ${t+70} L${150-14} ${t+100} Q${150-nx-14} ${t+104} ${150-nx-30} ${t+100}Z" fill="${C.sh}" opacity=".6" stroke="${ln}" stroke-width="1.4"/><path d="${ch_mx(`M${150-nx-30} ${t+70} L${150-14} ${t+70} L${150-14} ${t+100} Q${150-nx-14} ${t+104} ${150-nx-30} ${t+100}Z`,150)}" fill="${C.sh}" opacity=".6" stroke="${ln}" stroke-width="1.4"/>`;
+    if(o.reflective!=null?o.reflective:ch_hiviz(col)){const st=`<clipPath id="${id}vs"><path d="${v}"/></clipPath><g clip-path="url(#${id}vs)">${[t+118,t+150].map(y=>`<path d="M0 ${y} Q150 ${y+8} 300 ${y} L300 ${y+12} Q150 ${y+20} 0 ${y+12}Z" fill="#dfe4ee" stroke="#8a93a8" stroke-width="1.2"/><path d="M0 ${y+4} Q150 ${y+12} 300 ${y+4}" stroke="#fff" stroke-width="1.6" fill="none" opacity=".8"/>`).join('')}
+      <path d="M${150-nx-22} ${t+6} L${150-20} ${t+64} L${150-30} ${t+64} L${150-nx-32} ${t+10}Z" fill="#dfe4ee" stroke="#8a93a8" stroke-width="1.2"/><path d="${ch_mx(`M${150-nx-22} ${t+6} L${150-20} ${t+64} L${150-30} ${t+64} L${150-nx-32} ${t+10}Z`,150)}" fill="#dfe4ee" stroke="#8a93a8" stroke-width="1.2"/></g>`;s+=st}
+    return s}
+  if(kind==='dress'){ // empire-waist dress: scoop neckline, gathered puff sleeves, a sash under the bust and a gathered skirt
+    const sash=o.sash||ch_mix(col,'#ffffff',.6),Sh=ch_clothPal(sash),wy=t+112;
+    s+=neckG+body(C,-2);
+    const sc=`M${150-nx-10} ${t-4} C${150-nx-8} ${t+30} ${150-20} ${t+44} 150 ${t+44} C${150+20} ${t+44} ${150+nx+8} ${t+30} ${150+nx+10} ${t-4}Z`;
+    s+=`<path d="${sc}" fill="${sk.base}"/><path d="M${150+nx+10} ${t-4} C${150+nx+8} ${t+30} ${150+20} ${t+44} 150 ${t+44} C${150+16} ${t+40} ${150+nx+2} ${t+26} ${150+nx+3} ${t-4}Z" fill="${sk.sh}"/>`;
+    s+=`<path d="M${150-22} ${t+22} C${150-14} ${t+28} ${150-7} ${t+29} ${150-2} ${t+28} M${150+22} ${t+22} C${150+14} ${t+28} ${150+7} ${t+29} ${150+2} ${t+28}" stroke="${sk.line}" stroke-width="1.1" fill="none" opacity=".3" stroke-linecap="round"/>`;
+    s+=`<path d="${sc.replace('Z','')}" stroke="${ln}" stroke-width="2.2" fill="none"/><path d="M${150-nx-4} ${t+2} C${150-nx-2} ${t+28} ${150-18} ${t+38} 150 ${t+38}" stroke="${C.hi}" stroke-width="2" fill="none" opacity=".5"/>`;
+    // puff sleeves: a gathered bulge over each shoulder, seam on the inside, gathers fanning out
+    for(const sd of [-1,1]){const X=x=>sd<0?x:300-x,a0=L;
+      const puff=`M${X(a0+46)} ${t+18} C${X(a0+30)} ${t+8} ${X(a0+6)} ${t+14} ${X(a0-6)} ${t+38} C${X(a0-12)} ${t+52} ${X(a0-8)} ${t+66} ${X(a0+2)} ${t+74} C${X(a0+10)} ${t+64} ${X(a0+20)} ${t+52} ${X(a0+28)} ${t+44} C${X(a0+36)} ${t+36} ${X(a0+42)} ${t+28} ${X(a0+46)} ${t+18}Z`;
+      s+=`<path d="${puff}" fill="${sd<0?C.base:C.sh}" stroke="${ln}" stroke-width="2.2" stroke-linejoin="round"/>`;
+      s+=`<path d="M${X(a0+38)} ${t+20} Q${X(a0+24)} ${t+30} ${X(a0+20)} ${t+48} M${X(a0+26)} ${t+16} Q${X(a0+12)} ${t+30} ${X(a0+10)} ${t+58} M${X(a0+12)} ${t+20} Q${X(a0)} ${t+36} ${X(a0+2)} ${t+64}" stroke="${ln}" stroke-width="1.2" fill="none" opacity=".45" stroke-linecap="round"/>`;
+      if(sd<0)s+=`<path d="M${X(a0+28)} ${t+15} Q${X(a0+10)} ${t+20} ${X(a0+2)} ${t+36}" stroke="${C.hi}" stroke-width="2.6" fill="none" opacity=".6" stroke-linecap="round"/>`}
+    s+=`<path d="M${150-30} ${t+52} Q${150-26} ${t+80} ${150-24} ${wy} M${150+30} ${t+52} Q${150+26} ${t+80} ${150+24} ${wy}" stroke="${ln}" stroke-width="1.3" fill="none" opacity=".45"/>`;
+    s+=`<path d="M${L+4} ${wy} Q150 ${wy+10} ${296-L} ${wy} L${298-L} ${wy+16} Q150 ${wy+26} ${L+2} ${wy+16}Z" fill="${sash}" stroke="${Sh.line}" stroke-width="2" stroke-linejoin="round"/><path d="M${L+10} ${wy+5} Q150 ${wy+15} ${290-L} ${wy+5}" stroke="#fff" stroke-width="1.6" fill="none" opacity=".5"/>`;
+    s+=`<path d="M${150+34} ${wy+8} C${150+46} ${wy-6} ${150+62} ${wy} ${150+56} ${wy+14} C${150+50} ${wy+20} ${150+42} ${wy+16} ${150+34} ${wy+12}Z M${150+34} ${wy+10} C${150+40} ${wy+24} ${150+44} ${wy+40} ${150+40} ${wy+56} L${150+30} ${wy+52} C${150+32} ${wy+40} ${150+30} ${wy+24} ${150+28} ${wy+12}Z" fill="${sash}" stroke="${Sh.line}" stroke-width="1.8" stroke-linejoin="round"/>`;
+    let g='';for(const x of [-70,-46,-22,4,28,56,80])g+=`M${150+x} ${wy+24} Q${150+x*1.1} ${wy+40} ${150+x*1.18} 372`;s+=`<path d="${g}" stroke="${ln}" stroke-width="1.2" fill="none" opacity=".4"/>`;
+    return s}
+  if(kind==='coat'){return ''}
+  return s}
+
 // ---------- a person (natural-proportion anime bust) ----------
-function personSVG(o){o=o||{};
-  const id='ch'+(++CH_N),st=({buzz:'short'})[o.hairStyle]||o.hairStyle||'short',kid=o.age==='kid';
-  const masc=o.masc!=null?!!o.masc:(st==='short'&&!kid),build=kid?'K':masc?'M':'F',G=CH_FACE[build];
-  const md=CH_MOODS[o.mood]||CH_MOODS.smile,sk=ch_skinPal(o.skin||'#f2cdb4'),H=ch_hairPal(o.hair||'#2a211c'),HS=ch_hairStyle(st,G);
-  const iris=o.eye||'#7a4a2e',elder=st==='elder';
-  const E={ew:G.ew,eh:elder?G.eh*.82:G.eh,irx:G.irx,iry:G.iry,lash:G.lash,wing:G.wing,brow:G.brow,kid,lid:md.lid,look:md.look||[0,0],worry:md.worry,tear:md.fx==='tear',
-    lashC:ch_mix(H.dk,'#1a0810',.5),skinLine:sk.line,white:'#ffffff',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
-  const ey=G.ey,ex=G.ex,browY=ey-E.eh/2+G.by,browC=ch_mix(H.dk,sk.line,.3);
+// ch_personKit(o,P) builds every layer of a person in portrait space. personSVG() assembles the bust from it and
+// posedPerson() reuses the head and hair. P is only for posed figures: {eye: eye size factor, lash: lash and brow weight, mouth: mouth scale}.
+function ch_personKit(o,P){o=o||{};P=P||{};
+  const id='ch'+(++CH_N),st=({buzz:'short',pony:'ponytail',curly:'curls',dreads:'locs',dreadlocks:'locs',hijab:'headscarf',shaved:'bald'})[o.hairStyle]||o.hairStyle||'short',kid=o.age==='kid',old=o.age==='elder';
+  const masc=o.masc!=null?!!o.masc:((st==='short'||st==='bald'||!!CH_BEARDS[o.beard])&&!kid),build=kid?'K':masc?'M':'F',G=CH_FACE[build];
+  const Hh=ch_hairPal(o.hair||(old?'#d9d6e2':'#2a211c')),wrap=st==='headscarf';
+  const md=CH_MOODS[o.mood]||CH_MOODS.smile,sk=ch_skinPal(o.skin||'#f2cdb4'),H=wrap?ch_fabricPal(o.wrap||'#4f6db8'):Hh,HS=ch_hairStyle(st,G,o);
+  const iris=o.eye||'#7a4a2e',elder=st==='elder'||old,PE=P.eye||1,PL=P.lash||1;
+  const E={ew:G.ew*PE,eh:(elder?G.eh*.82:G.eh)*PE,irx:G.irx*PE,iry:G.iry*PE,lash:G.lash*PL,wing:G.wing,brow:G.brow*PL,kid,lid:md.lid,look:md.look||[0,0],worry:md.worry,tear:md.fx==='tear',
+    lashC:ch_mix(Hh.dk,'#1a0810',.5),skinLine:sk.line,white:'#ffffff',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
+  const ey=G.ey,ex=G.ex,browY=ey-E.eh/2+G.by,browC=ch_mix(Hh.dk,sk.line,.3);
+  const acc=ch_accSet(o.accessory),hat=acc.hardhat?'hardhat':acc.beanie?'beanie':'';
   const bs=CH_BROWS[md.brow],bL=Array.isArray(bs[0])?bs[0]:bs,bR=Array.isArray(bs[0])?bs[1]:bs;
   const brows=ch_brow(150-ex,browY,-1,bL,E,browC)+ch_brow(150+ex,browY,1,bR,E,browC);
   const earL=`M99 ${G.ear} C91 ${G.ear-5} 85 ${G.ear+2} 86.5 ${G.ear+13} C88 ${G.ear+24} 92 ${G.ear+33} 100 ${G.ear+35}Z`,earIn=`M95 ${G.ear+7} C90.5 ${G.ear+9} 90.5 ${G.ear+18} 94 ${G.ear+25}`;
-  const ears=`<path d="${earL}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.2"/><path d="${ch_mx(earL,150)}" fill="${sk.sh}" stroke="${sk.line}" stroke-width="2.2"/>
+  const ears=HS.noEars?'':`<path d="${earL}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.2"/><path d="${ch_mx(earL,150)}" fill="${sk.sh}" stroke="${sk.line}" stroke-width="2.2"/>
     <path d="${earIn}" stroke="${sk.line}" stroke-width="1.3" fill="none" opacity=".7"/><path d="${ch_mx(earIn,150)}" stroke="${sk.line}" stroke-width="1.3" fill="none" opacity=".7"/>`;
   // hair layers
   const hg=`url(#${id}hg)`,cl=HS.clumps,hairShapes=[HS.cap].concat(cl.map(c=>c.d));
@@ -317,8 +726,8 @@ function personSVG(o){o=o||{};
     clumps+=`<path d="${ch_rib(ch_sub(ch_bz(c.a,14),.42,1),ch_tap(.2,1.6,.5))}" fill="${H.line}"/><path d="${ch_rib(ch_sub(ch_bz(c.b,14),0,.58),ch_tap(.5,1.6,.2))}" fill="${H.line}"/>`});
   const hairClip=`<clipPath id="${id}hc">${hairShapes.map(d=>`<path d="${d}"/>`).join('')}</clipPath>`;
   const rim=ch_chain([[[96,128],[92,96],[104,58],[136,42]]],16);
-  const shine=`<g clip-path="url(#${id}hc)">${ch_shine(HS.shine,H)}<path d="${ch_rib(rim,ch_swell(3.4,.4))}" fill="${H.hi}" opacity=".42" transform="translate(3 2)"/></g>`;
-  let extraBack='',extraFront='';
+  const shine=`<g clip-path="url(#${id}hc)">${HS.shine?ch_shine(HS.shine,H):''}${HS.tex?HS.tex(H,hg):''}${HS.noRim?'':`<path d="${ch_rib(rim,ch_swell(3.4,.4))}" fill="${H.hi}" opacity=".42" transform="translate(3 2)"/>`}</g>`;
+  let extraBack=HS.xBack?HS.xBack(H,hg,id):'',extraFront=HS.xFront?HS.xFront(H,hg,id):'';
   if(HS.bun){extraBack+=ch_bun(150,24,27,H,hg,id);
     const td=ch_chain([[[102,98],[92,106],[96,116],[103,118]],[[103,118],[109,120],[103,132],[96,132]],[[96,132],[89,132],[92,146],[99,148]],[[99,148],[104,150],[101,160],[96,162]]],8);
     extraFront+=`<path d="${ch_rib(td,ch_tap(4.6,3.8,1.2))}" fill="${H.line}"/><path d="${ch_rib(td,ch_tap(3,2.4,.4))}" fill="${H.base}"/><path d="${ch_rib(ch_sub(td,.05,.6),ch_swell(1,.1))}" fill="${H.hi}" opacity=".7" transform="translate(-.6 -.4)"/>`}
@@ -331,7 +740,8 @@ function personSVG(o){o=o||{};
   // face shading (cel): hair shadow on forehead, shadow side crescent, nose, lips
   const faceClip=`<clipPath id="${id}f"><path d="${G.face}"/></clipPath>`;
   const R=build==='M'?204:202;
-  const hairSh=`<g clip-path="url(#${id}f)"><g fill="${sk.sh}">${hairShapes.map(d=>`<path d="${ch_tr(d,2.5,6.5)}"/>`).join('')}</g>
+  const HT=hat?ch_hat(hat,o,HS,id):null;
+  const hairSh=`<g clip-path="url(#${id}f)"><g fill="${sk.sh}">${(HT?hairShapes.concat([HT.shape]):hairShapes).map(d=>`<path d="${ch_tr(d,2.5,6.5)}"/>`).join('')}</g>
      <path d="M${R-1} 96 C${R+1} 124 ${R-3} 148 ${R-12} 166 C${R-20} 180 ${R-34} 190 ${R-50} 194 L${R+10} 200 L${R+10} 90Z" fill="${sk.sh}"/>
      <path d="M${R-6} 104 C${R-6} 128 ${R-9} 146 ${R-16} 160 C${R-22} 172 ${R-30} 180 ${R-38} 186 C${R-26} 182 ${R-16} 172 ${R-10} 160 C${R-4} 146 ${R-2} 126 ${R-2} 104Z" fill="${sk.sh}"/>
      ${build!=='K'?`<path d="M${150-ex+12} ${ey-12} C${150-ex+15} ${ey-6} ${150-ex+16} ${ey-1} ${150-ex+15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.2" fill="none" opacity=".7"/><path d="M${150+ex-12} ${ey-12} C${150+ex-15} ${ey-6} ${150+ex-16} ${ey-1} ${150+ex-15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.6" fill="none" opacity=".9"/>`:''}
@@ -356,7 +766,7 @@ function personSVG(o){o=o||{};
       <path d="M${x1+18} ${y-5} Q150 ${y-10} ${x2-18} ${y-5}" stroke="${fc}" stroke-width="1.9" fill="none"/>
       <path d="M${x1-14} ${y-10} L${x1+14} ${y-10.2}" stroke="${ch_mix(fc,'#ffffff',.5)}" stroke-width=".8" opacity=".8"/><path d="M${x2-14} ${y-10.2} L${x2+14} ${y-10}" stroke="${ch_mix(fc,'#ffffff',.5)}" stroke-width=".8" opacity=".8"/>
       <path d="M${x1-12} ${y+6} L${x1-4} ${y-7} M${x2+6} ${y+6} L${x2+13} ${y-6}" stroke="#fff" stroke-width="2.2" opacity=".26" stroke-linecap="round"/>`})():'';
-  const earring=o.accessory==='earring'?`<circle cx="91" cy="${G.ear+40}" r="4.6" fill="none" stroke="#e8b84a" stroke-width="1.9"/><circle cx="209" cy="${G.ear+40}" r="4.6" fill="none" stroke="#c8962e" stroke-width="1.9"/><circle cx="89.6" cy="${G.ear+36.6}" r="1" fill="#fff6c8"/>`:'';
+  const earring=acc.earring?`<circle cx="91" cy="${G.ear+40}" r="4.6" fill="none" stroke="#e8b84a" stroke-width="1.9"/><circle cx="209" cy="${G.ear+40}" r="4.6" fill="none" stroke="#c8962e" stroke-width="1.9"/><circle cx="89.6" cy="${G.ear+36.6}" r="1" fill="#fff6c8"/>`:'';
   let fx='';
   if(md.fx==='sparkle')fx=ch_star(226,70,9,'#ffd45c','stroke="#fff" stroke-width="1"')+ch_star(240,92,5,'#fff')+ch_star(70,76,6,'#ffe9a0');
   if(md.fx==='sweat')fx=`<path d="M211 96 C215 106 218 112 218 117 C218 122 214 125 210.5 125 C207 125 203 122 203.5 117 C204 112 207 106 211 96Z" fill="#bfe8ff" stroke="#4a9ad8" stroke-width="1.6"/><path d="M207.5 116 Q207.5 120 210 121.5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
@@ -369,25 +779,35 @@ function personSVG(o){o=o||{};
     <radialGradient id="${id}fl" gradientUnits="userSpaceOnUse" cx="128" cy="120" r="78"><stop offset="0" stop-color="${sk.hi}" stop-opacity=".5"/><stop offset=".55" stop-color="${sk.hi}" stop-opacity=".12"/><stop offset="1" stop-color="${sk.hi}" stop-opacity="0"/></radialGradient>
     <radialGradient id="${id}b"><stop offset="0" stop-color="${sk.blush}"/><stop offset="1" stop-color="${sk.blush}" stop-opacity="0"/></radialGradient>
     <radialGradient id="${id}m" cx=".35" cy=".3"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#c9d0e2"/><stop offset="1" stop-color="#8a94b0"/></radialGradient>${faceClip}${hairClip}</defs>`;
-  let body=ch_outfit(o,G,sk,id,build);
-  if(st==='braids'){const tie=o.clip||'#ff7a6b';body+=ch_braid(104,198,96,306,H,hg,tie,-1)+ch_braid(196,198,204,306,H,hg,tie,1)}
-  if(HS.locks)body+=[ch_clump([84,150],[104,150],[80,330],6,-2),ch_clump([196,150],[216,150],[220,330],-2,6)].map(c=>`<path d="${c.d}" fill="${hg}" stroke="${H.line}" stroke-width="2.4"/>`).join('');
-  const behind=HS.behind?`<path d="${HS.behind}" fill="${H.sh}" stroke="${H.line}" stroke-width="2.6"/>`:'';
+  let body=ch_outfit(o,G,sk,id,build)+ch_neckAcc(acc,o,G,sk,id,build)+(HS.wrapDrape?ch_wrapDrape(o,G,id):''),hairBody='';
+  if(st==='braids'){const tie=o.clip||'#ff7a6b';hairBody+=ch_braid(104,198,96,306,H,hg,tie,-1)+ch_braid(196,198,204,306,H,hg,tie,1)}
+  if(HS.locks)hairBody+=[ch_clump([84,150],[104,150],[80,330],6,-2),ch_clump([196,150],[216,150],[220,330],-2,6)].map(c=>`<path d="${c.d}" fill="${hg}" stroke="${H.line}" stroke-width="2.4"/>`).join('');
+  if(HS.xBody)hairBody+=HS.xBody(H,hg,id);
+  body+=hairBody;
+  const behind=(HS.behind?`<path d="${HS.behind}" fill="${H.sh}" stroke="${H.line}" stroke-width="2.6"/>`:'')+(HS.xBehind?HS.xBehind(H,hg,id):'');
   const ageLines=(elder||build==='M')?`<path d="M${150-ex-6} ${ey+9} Q${150-ex+2} ${ey+12} ${150-ex+9} ${ey+9}" stroke="${sk.line}" stroke-width="1" opacity="${elder?.5:.28}" fill="none" stroke-linecap="round"/><path d="M${150+ex+6} ${ey+9} Q${150+ex-2} ${ey+12} ${150+ex-9} ${ey+9}" stroke="${sk.line}" stroke-width="1" opacity="${elder?.5:.28}" fill="none" stroke-linecap="round"/>`+
     (elder?`<path d="M${150-ex-17} ${ey+1} l-5 -2 M${150-ex-17} ${ey+5} l-5 1 M${150+ex+17} ${ey+1} l5 -2 M${150+ex+17} ${ey+5} l5 1 M127 ${my-8} Q123 ${my} 127 ${my+6} M173 ${my-8} Q177 ${my} 173 ${my+6}" stroke="${sk.line}" stroke-width="1.1" opacity=".5" fill="none" stroke-linecap="round"/>`:''):'';
-  return `<g class="person">${defs}<g${kid?' transform="translate(0 20)"':''}>
-  ${behind}
-  <g class="p-body">${body}</g>
-  <g class="p-head"><rect x="56" y="-14" width="188" height="${ch_n(G.chin+24)}" fill="none"/>
-    <path d="${HS.back}" fill="${H.dk}" stroke="${H.line}" stroke-width="3.2"/>${extraBack}
-    ${ears}
+  const wrinkles=old?ch_wrinkles(G,sk,ex,ey,my,build):'',scalp=HS.bald?ch_scalp(G,sk,id):'';
+  const BD=CH_BEARDS[o.beard]?ch_beard(o.beard,G,Hh,sk,build,id):null,mouthT=P.mouth?` transform="translate(150 ${my}) scale(${P.mouth}) translate(-150 ${-my})"`:'';
+  const hairFront=`${outlinePass}<path d="${HS.cap}" fill="${hg}"/>${clumps}${shine}${extraFront}`;
+  let head1=`<path d="${HS.back}" fill="${H.dk}" stroke="${H.line}" stroke-width="3.2"/>${extraBack}`;if(HT)head1=`<g clip-path="url(#${id}hat)">${head1}</g>`;
+  const head2=`${ears}
     <path d="${G.face}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.6"/><path d="${G.face}" fill="url(#${id}fl)"/>
-    ${hairSh}${blush}${nose}${lipSh}${ageLines}${brows}
+    ${hairSh}${scalp}${blush}${nose}${lipSh}${ageLines}${wrinkles}${BD?BD.beard:''}${brows}
     ${md.lid!=='closed'?[-1,1].map(o=>{const cx=150+o*ex,w=E.ew,h=E.eh;return `<path d="${ch_rib(ch_bz([[cx-o*w*.4,ey+h*.02],[cx+o*w*.05,ey+h*.3],[cx+o*w*.44,ey-h*.04]],12),ch_tap(.8,2.4,1.6))}" fill="${E.lashC}"/>`}).join(''):''}
     <g class="p-eyes">${ch_eye(150-ex,ey,-1,E,id,0)}${ch_eye(150+ex,ey,1,E,id,1)}</g>
-    <g class="p-mouth">${ch_mouth(md.mouth,my,kid,sk,build==='M')}</g>
-    ${gl}${earring}
-    ${outlinePass}<path d="${HS.cap}" fill="${hg}"/>${clumps}${shine}${extraFront}<g opacity=".42">${brows}</g>${fx}
+    <g class="p-mouth"${mouthT}>${ch_mouth(md.mouth,my,kid,sk,build==='M')}</g>
+    ${BD?BD.stache:''}${gl}${earring}
+    ${HT?`<g clip-path="url(#${id}hat)">${hairFront}</g>${HT.svg}`:hairFront}<g opacity=".42">${brows}</g>${fx}`;
+  return {id,o,st,kid,old,elder,build,G,sk,H,Hh,HS,md,acc,defs:HT?defs.replace('</defs>',HT.defs+'</defs>'):defs,behind,body,hairBody,head1,head2,
+    rectH:Math.max(G.chin+24,BD?BD.bottom+14:0)}}
+function personSVG(o){const K=ch_personKit(o);
+  return `<g class="person">${K.defs}<g${K.kid?' transform="translate(0 20)"':''}>
+  ${K.behind}
+  <g class="p-body">${K.body}</g>
+  <g class="p-head"><rect x="56" y="-14" width="188" height="${ch_n(K.rectH)}" fill="none"/>
+    ${K.head1}
+    ${K.head2}
   </g></g></g>`}
 // A cast entry may draw itself instead of using personSVG (animals, robots, holograms): art(mood) returns SVG content in the same 30 0 240 360 box.
 function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${(o&&o.name)||''}">${o&&typeof o.art==='function'?o.art(o.mood||'smile'):personSVG(o||{})}</svg>`}
