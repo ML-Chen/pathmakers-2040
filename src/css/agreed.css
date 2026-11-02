@@ -1,0 +1,37 @@
+/* The App That Agreed: Test Sunny screen (.agt) and the Honesty Upgrade evening (.agu). */
+.agt h2{margin-bottom:.2em}
+.agt-top{display:flex;align-items:center;gap:10px;margin:4px 0 10px}
+.agt-meter{flex:1;min-width:0}
+.agt-meter .ml{display:flex;justify-content:space-between;font-size:.82rem;font-weight:800;color:var(--ink2)}
+.agt-meter .ml b{color:var(--ink);font-family:var(--display);font-size:1.05rem}
+.agt-bar{height:14px;border-radius:999px;background:var(--mist);overflow:hidden;margin-top:3px}
+.agt-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#f5b82e,#ff7a6b);transition:width 1.1s cubic-bezier(.2,.9,.3,1)}
+.agt-clock{flex:none;display:flex;flex-direction:column;align-items:center;background:var(--mist);border-radius:14px;padding:6px 10px;font-weight:800;font-size:.72rem;color:var(--ink2);min-width:64px}
+.agt-clock b{font-family:var(--display);font-size:1.3rem;color:var(--ink);line-height:1.1}
+.agt-clock.low b{color:var(--warn)}
+.agt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.agt-test{position:relative;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 10px 26px;font-weight:800;font-size:.9rem;line-height:1.25;min-height:76px;transition:transform .12s}
+.agt-test:active{transform:scale(.97)}
+.agt-test .mins{position:absolute;left:10px;bottom:7px;font-size:.72rem;color:var(--ink2)}
+.agt-test .tag{position:absolute;right:8px;bottom:6px;font-size:.68rem;border-radius:999px;padding:1px 8px;color:#fff}
+.agt-test .tag.s{background:var(--good)} .agt-test .tag.w{background:#9aa0bd}
+.agt-test.done{background:var(--mist);border-color:transparent;color:var(--ink2)}
+.agt-test[disabled]:not(.done){opacity:.4}
+.agt-res{margin-top:12px;border-radius:18px;background:#fff;border:2px solid var(--line);padding:10px;animation:reveal .35s}
+.agt-res .fig{margin-top:0}
+.agt-res p.r{margin:8px 2px 0;font-size:.95rem}
+.agt-res.thinking{display:flex;align-items:center;gap:10px;color:var(--ink2)}
+.agt-res.thinking .byteart{width:56px}
+.agt-delta{display:inline-block;margin-left:6px;font-size:.8rem;font-weight:800;border-radius:999px;padding:0 8px;background:#e7f7ef;color:var(--good)}
+.agt-delta.w{background:var(--mist);color:var(--ink2)}
+.agu .caption-card{max-height:62vh;overflow:auto}
+.agu .eve-byte{transition:filter .6s}
+.agu .eve-byte.glow{filter:drop-shadow(0 0 18px #7ff7e4) drop-shadow(0 0 4px #fff)}
+.agu .fig{background:rgba(255,255,255,.95);margin:8px 0}
+.agu .choices{margin-top:10px}
+.agu .choice{background:rgba(255,255,255,.95);color:var(--ink)}
+.agu .plan{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.1);border-radius:16px;padding:10px;margin:8px 0}
+.agu .plan svg{width:96px;flex:none}
+.agu .sig{font-family:'Caveat','Segoe Script',cursive;font-size:1.9rem;color:#fff;border-bottom:2px solid rgba(255,255,255,.6);display:inline-block;padding:0 6px;clip-path:inset(0 100% 0 0);animation:sign 1.1s ease-out forwards}
+.agu .tap{font-size:.8rem;opacity:.7;margin-top:6px}
+.agt-top{position:sticky;top:0;z-index:3;background:#fff;padding:6px 0;margin-top:-2px}
