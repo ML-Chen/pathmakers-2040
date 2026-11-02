@@ -47,9 +47,12 @@ function ch_star(x,y,r,fill,extra){const k=r*.28;return `<path d="M${ch_n(x)} ${
 function ch_skinPal(s){const L=ch_lum(s),dk=L<.2;
   return {base:s,sh:ch_mix(s,dk?'#2a0c1c':'#7a2a3c',dk?.32:.24),sh2:ch_mix(s,dk?'#1e0612':'#5a1628',dk?.46:.36),hi:ch_mix(s,dk?'#f2b88e':'#fff6ec',dk?.3:.5),
     line:ch_mix(s,'#24090a',dk?.62:.74),blush:dk?'#e2566f':'#ff7088',mouth:'#4e1422',tongue:dk?'#d65a6c':'#ef7684',lip:ch_mix(s,dk?'#8a2c48':'#e0707e',dk?.42:.32)}}
-function ch_hairPal(h){const L=ch_lum(h);const base=L<.025?ch_mix(h,'#3c3456',.34):L<.07?ch_mix(h,'#3c3456',.2):h;const Lb=ch_lum(base);
-  return {base,top:ch_mix(base,Lb<.1?'#8a8cb8':'#fff0d8',.22),sh:ch_mix(base,'#1a0c26',Lb<.1?.42:.3),dk:ch_mix(base,'#0e0614',Lb<.1?.62:.5),
-    hi:ch_mix(base,Lb<.1?'#c4ccff':'#fff4e0',Lb<.1?.5:.55),line:ch_mix(base,'#0a0410',Lb<.1?.72:.62)}}
+// very dark hair is lifted toward an anime blue-black; warm dark browns (red well above blue) lift toward a warm brown instead,
+// so dark brown and soft brown-black stay distinguishable from black
+function ch_hairPal(h){const L=ch_lum(h),[r,,b]=ch_rgb(h),warm=r-b>18,lift=warm?'#5a3c30':'#3c3456';
+  const base=L<.025?ch_mix(h,lift,warm?.3:.34):L<.07?ch_mix(h,lift,warm?.12:.2):h;const Lb=ch_lum(base),cool=Lb<.1&&!warm;
+  return {base,top:ch_mix(base,cool?'#8a8cb8':Lb<.1?'#c8a48c':'#fff0d8',.22),sh:ch_mix(base,'#1a0c26',Lb<.1?.42:.3),dk:ch_mix(base,'#0e0614',Lb<.1?.62:.5),
+    hi:ch_mix(base,cool?'#c4ccff':Lb<.1?'#f0c8a0':'#fff4e0',Lb<.1?.5:.55),line:ch_mix(base,'#0a0410',Lb<.1?.72:.62)}}
 function ch_clothPal(c){const L=ch_lum(c);return {base:c,sh:ch_mix(c,'#20184a',L>.8?.16:.26),sh2:ch_mix(c,'#140c30',L>.8?.3:.42),hi:ch_mix(c,'#ffffff',.35),line:ch_mix(c,'#120a26',L>.8?.72:.7)}}
 
 // ---------- head geometry by build ----------
@@ -61,21 +64,82 @@ const CH_FACE={
   M:{face:'M150 48 C120 48 96 68 96 100 C96 118 97 134 100 148 C103 162 108 173 118 183 C128 192 140 196 150 196 C160 196 172 192 182 183 C192 173 197 162 200 148 C203 134 204 118 204 100 C204 68 180 48 150 48Z',
      ey:128,ex:27,ew:26,eh:11.6,irx:7.2,iry:8.6,lash:2.5,wing:.2,brow:3.8,by:-8,ny:156,my:175,chin:196,nw:24,ear:118}
 };
-// face outlines (o.faceShape) so two people with the same build can have different faces: 'round' has full cheeks and a
+// fixed face outlines (o.faceShape, used by the Nome cast) so two people with the same build can have different faces: 'round' has full cheeks and a
 // short soft chin, 'broad' has wide cheekbones and a squarer jaw, 'oval' is a longer, narrower face.
-const CH_FACESHAPE={
+const CH_FACEPATH={
   F:{round:'M150 50 C120 50 97 70 97 100 C97 118 98 132 103 146 C108 162 118 174 130 182 C137 187 144 189 150 189 C156 189 163 187 170 182 C182 174 192 162 197 146 C202 132 203 118 203 100 C203 70 180 50 150 50Z',
      broad:'M150 50 C120 50 96 70 96 100 C96 118 97 132 101 144 C105 158 113 172 126 182 C134 188 142 190 150 190 C158 190 166 188 174 182 C187 172 195 158 199 144 C203 132 204 118 204 100 C204 70 180 50 150 50Z',
      oval:'M150 48 C122 48 99 68 99 98 C99 116 99 130 102 144 C105 160 113 174 125 184 C134 191 142 194 150 194 C158 194 166 191 175 184 C187 174 195 160 198 144 C201 130 201 116 201 98 C201 68 178 48 150 48Z'},
   M:{round:'M150 48 C120 48 96 68 96 100 C96 120 97 136 101 150 C105 165 113 177 125 186 C134 192 142 194 150 194 C158 194 166 192 175 186 C187 177 195 165 199 150 C203 136 204 120 204 100 C204 68 180 48 150 48Z',
      broad:'M150 48 C119 48 95 68 95 100 C95 120 96 138 99 152 C102 166 108 178 120 187 C130 194 140 196 150 196 C160 196 170 194 180 187 C192 178 198 166 201 152 C204 138 205 120 205 100 C205 68 181 48 150 48Z',
      oval:'M150 46 C121 46 98 66 98 98 C98 118 98 136 101 150 C104 164 110 176 120 186 C129 194 140 198 150 198 C160 198 171 194 180 186 C190 176 196 164 199 150 C202 136 202 118 202 98 C202 66 179 46 150 46Z'}};
+// face shapes (o.face). The outline is 8 cubic segments: top -> temple -> cheek -> jaw -> chin on the left, mirrored on the right.
+// A shape moves the cheek, jaw and chin points of the build's oval outline ([outward, down] per control point); the dome above the
+// temples never moves, so every hairstyle and hat still fits. my/ny move the mouth and nose with a longer or shorter chin.
+const CH_FACESHAPE={
+  round:{b1:[1,1],b2:[2,2],B:[2,3],c1:[4,2],c2:[6,4],C:[6,3],d1:[4,2],d2:[1,-1],D:[0,-2],my:-1,ny:-1},
+  long:{b1:[-1,2],b2:[-1,3],B:[-1.5,5],c1:[-1,8],c2:[-1.5,8],C:[-1,9],d1:[-1,8],d2:[0,8],D:[0,8],my:4,ny:3},
+  heart:{b1:[1.2,-2],b2:[1.2,-4],B:[.6,-4],c1:[-1.4,-4],c2:[-5,0],C:[-6,1],d1:[-5,0],d2:[-3,2],D:[0,2],my:0,ny:0},
+  square:{b1:[.6,1],b2:[1,4],B:[1.4,6],c1:[3,4],c2:[7,4],C:[8,3],d1:[7,4],d2:[1.6,2],D:[0,1],my:0,ny:0},
+  diamond:{b1:[1.6,-1],b2:[2,-2],B:[1.4,-2],c1:[-.6,0],c2:[-4,3],C:[-5,4],d1:[-4,3],d2:[-2,3],D:[0,3],my:1,ny:1}};
+function ch_faceGeom(G,shape,build){const F=CH_FACESHAPE[shape];if(!F)return G;
+  const k=build==='K'?.85:1,sg=ch_segs(G.face),mv=(p,d)=>d?[p[0]-d[0]*k,p[1]+d[1]*k]:p;
+  const segs=[[sg[0][1],sg[0][2],sg[0][3]],[mv(sg[1][1],F.b1),mv(sg[1][2],F.b2),mv(sg[1][3],F.B)],[mv(sg[2][1],F.c1),mv(sg[2][2],F.c2),mv(sg[2][3],F.C)],[mv(sg[3][1],F.d1),mv(sg[3][2],F.d2),mv(sg[3][3],F.D)]];
+  const face=ch_sym(sg[0][0],segs),chin=segs[3][2][1];
+  // how far the cheek moved at ear height, so the ears stay attached
+  const xAt=(d,y)=>{const pts=ch_chain(ch_segs(d).slice(0,4),20);let best=pts[0];for(const p of pts)if(Math.abs(p[1]-y)<Math.abs(best[1]-y))best=p;return best[0]};
+  const earDx=ch_n(xAt(face,G.ear+20)-xAt(G.face,G.ear+20));
+  return {...G,face,chin:ch_n(chin),my:G.my+(F.my||0)*k,ny:G.ny+(F.ny||0)*k,earDx,shape}}
+// noses (o.nose): soft (default), button, broad, long, straight, hooked
+function ch_nose(kind,ny,big,sk){const R=ch_n,ln=sk.line,sh=sk.sh,hi=sk.hi;
+  if(kind==='button')return `<path d="M152.6 ${ny-3} Q157 ${ny} 154.6 ${ny+3} Q152.6 ${ny+1.6} 151 ${ny+1.4}Z" fill="${sh}"/>
+    <path d="${ch_rib(ch_bz([[147,ny+1.6],[150,ny+3.4],[153.6,ny+1]],8),ch_swell(1.3,.3))}" fill="${ln}" opacity=".85"/><circle cx="149" cy="${ny-1.2}" r="1.7" fill="${hi}" opacity=".9"/>`;
+  if(kind==='broad')return `<path d="${ch_rib(ch_bz([[153.6,ny-(big?18:14)],[155.4,ny-8],[155.6,ny-3]],8),ch_tap(.3,big?1.4:1,.5))}" fill="${sh}"/>
+    <path d="M152 ${ny-3.6} C158.4 ${ny-3.4} 161 ${ny+1.4} 157.4 ${ny+3.6} C154.6 ${ny+4.8} 151 ${ny+4} 149.6 ${ny+3.2}Z" fill="${sh}" opacity=".9"/>
+    <path d="M143.2 ${ny-2.6} C140.4 ${ny-.4} 140.8 ${ny+2.8} 143.8 ${ny+3.6}" stroke="${ln}" stroke-width="1.15" fill="none" opacity=".45" stroke-linecap="round"/>
+    <path d="M156.8 ${ny-2.6} C159.6 ${ny-.4} 159.2 ${ny+2.8} 156.2 ${ny+3.6}" stroke="${ln}" stroke-width="1.15" fill="none" opacity=".5" stroke-linecap="round"/>
+    <ellipse cx="146.6" cy="${ny+3}" rx="1.4" ry=".75" fill="${ln}" opacity=".42"/><ellipse cx="153.4" cy="${ny+3}" rx="1.4" ry=".75" fill="${ln}" opacity=".5"/>
+    <path d="${ch_rib(ch_bz([[145.4,ny+4.4],[150,ny+5.6],[154.6,ny+4.4]],8),ch_swell(1.1,.3))}" fill="${ln}" opacity=".55"/>
+    <ellipse cx="148.4" cy="${ny-1}" rx="2.6" ry="1.7" fill="${hi}" opacity=".7"/>`;
+  if(kind==='long')return `<path d="${ch_rib(ch_bz([[153,ny-(big?32:28)],[156,ny-12],[156,ny]],10),ch_tap(.4,big?1.8:1.4,.7))}" fill="${sh}"/>
+    <path d="M153.4 ${ny-2} Q159 ${ny+1.8} 155.6 ${ny+5.4} Q153.4 ${ny+3.4} 151.4 ${ny+3}Z" fill="${sh}"/>
+    <path d="${ch_rib(ch_bz([[146,ny+3],[150,ny+5.8],[155.4,ny+2.4]],8),ch_swell(big?1.8:1.4,.3))}" fill="${ln}" opacity=".9"/>
+    <path d="M145 ${ny+.4} Q144.2 ${ny+3} 146.2 ${ny+3.6}" stroke="${ln}" stroke-width="1" fill="none" opacity=".55"/>
+    <ellipse cx="148.6" cy="${ny-4}" rx="1.3" ry="3.2" fill="${hi}" opacity=".9"/>`;
+  if(kind==='straight'||kind==='hooked'){const hk=kind==='hooked';
+    return `<path d="${ch_rib(ch_bz([[152,ny-(big?34:30)],[hk?156.4:153.6,ny-14],[155.6,ny-1]],10),ch_tap(.5,big?1.9:1.5,.8))}" fill="${sh}"/>
+    <path d="M${hk?156.6:155.6} ${ny-6} L${hk?158.2:157.2} ${ny+1} Q156.4 ${ny+3.6} 152.6 ${ny+2.4}Z" fill="${sh}"/>
+    <path d="M${R(146.4)} ${ny-24} C${R(146.2)} ${ny-14} ${R(145.4)} ${ny-6} ${R(144.6)} ${ny-1}" stroke="${ln}" stroke-width="1" fill="none" opacity=".32" stroke-linecap="round"/>
+    <path d="${ch_rib(ch_bz([[145.6,ny+1.4],[150,ny+3.8],[155.6,ny+1.6]],8),ch_swell(big?1.8:1.4,.3))}" fill="${ln}" opacity=".9"/>
+    <path d="M144.6 ${ny-1.6} Q144 ${ny+1} 146 ${ny+1.6}" stroke="${ln}" stroke-width="1" fill="none" opacity=".6"/>
+    <path d="M148.2 ${ny-20} L148.8 ${ny-3}" stroke="${hi}" stroke-width="2" opacity=".75" stroke-linecap="round"/>`}
+  return `<path d="${ch_rib(ch_bz([[153.5,ny-(big?26:20)],[155.5,ny-10],[155.2,ny-2]],8),ch_tap(.4,big?1.8:1.3,.6))}" fill="${sh}"/>
+    <path d="M153 ${ny-4} Q158 ${ny-.5} 155.4 ${ny+3.4} Q153.4 ${ny+1.4} 151.6 ${ny+1.2}Z" fill="${sh}"/>
+    <path d="${ch_rib(ch_bz([[146,ny+1],[150,ny+3.6],[155,ny+.4]],8),ch_swell(big?1.8:1.4,.3))}" fill="${ln}" opacity=".9"/>
+    ${big?`<path d="M144.6 ${ny-1.6} Q144 ${ny+1} 146 ${ny+1.6}" stroke="${ln}" stroke-width="1" fill="none" opacity=".6"/>`:''}
+    <ellipse cx="148.4" cy="${ny-3.4}" rx="1.4" ry="2.4" fill="${hi}" opacity=".9"/>`}
+// freckles over the nose and cheeks; a small mole ('left'|'right'|'chin'|'lip')
+function ch_freckles(ex,ey,sk,seed){const r=ch_rand(seed||5),dk=ch_lum(sk.base)<.2,c=ch_mix(sk.base,dk?'#1e0a06':'#8a3e1c',dk?.45:.42);let s='';
+  for(const sd of [-1,1])for(let i=0;i<11;i++){const a=r()*6.283,rr=Math.sqrt(r()),x=150+sd*(ex+2)+Math.cos(a)*13*rr,y=ey+17+Math.sin(a)*5.6*rr;s+=`<circle cx="${ch_n(x)}" cy="${ch_n(y)}" r="${ch_n(.8+r()*.65)}"/>`}
+  for(let i=0;i<6;i++)s+=`<circle cx="${ch_n(143+i*2.8+r()*1.4)}" cy="${ch_n(ey+12+r()*3)}" r="${ch_n(.7+r()*.4)}"/>`;
+  return `<g fill="${c}" opacity=".7">${s}</g>`}
+function ch_mole(where,G,ex,ey,sk){const p={left:[150-ex-8,ey+22],right:[150+ex+10,ey+20],chin:[158,G.chin-12],lip:[161,G.my-5]}[where===true?'right':where];
+  return p?`<circle cx="${ch_n(p[0])}" cy="${ch_n(p[1])}" r="1.5" fill="${ch_mix(sk.base,'#2a0e08',.55)}" opacity=".85"/>`:''}
 // eyelid shapes: [inner y, peak y, peak u, outer y, bottom y] in units of eye height (u in eye widths)
 const CH_LIDS={normal:[-.02,-.56,-.04,-.22,.48],wide:[-.08,-.76,-.02,-.32,.6],half:[.06,-.26,.1,-.08,.46],sad:[-.22,-.44,-.16,.04,.46],stern:[.1,-.3,.14,-.38,.42]};
 // eye shapes (o.eyeShape), so faces differ beyond colour: w/h scale the eye, ir the iris, d shifts the lid points above
 // (inner, peak, peak u, outer, bottom), crease: 'none' (single lid), 'inner' (a low crease that fades toward the nose).
 const CH_EYESHAPE={almond:{w:1.06,h:.8,ir:.94,d:[.07,.1,.1,-.13,-.05],crease:'inner'},mono:{w:1.08,h:.7,ir:.9,d:[.1,.16,.12,-.12,-.07],crease:'none'},
-  hooded:{w:1.02,h:.76,ir:.92,d:[.04,.18,.04,-.04,-.04],crease:'none',hood:1},round:{w:.98,h:1.08,ir:1.04,d:[0,-.04,0,.02,.04],crease:'inner'}};
+  hooded:{w:1.02,h:.76,ir:.92,d:[.04,.18,.04,-.04,-.04],crease:'none',hood:1},round:{w:.98,h:1.08,ir:1.04,d:[0,-.04,0,.02,.04],crease:'inner'},
+  upturned:{w:1.04,h:.9,ir:.96,d:[.08,.04,.08,-.2,-.02],crease:'double'},downturned:{w:1,h:.92,ir:.98,d:[-.06,.02,-.06,.16,.05],crease:'double'},
+  deep:{w:1,h:.94,ir:.96,d:[.02,.02,0,0,0],crease:'double',deep:1}};
+// o.eyeSize: 'small' | 'large' | a number (1 = the build's default)
+const CH_EYESIZE={small:.88,smaller:.92,large:1.1,big:1.1};
+// o.brows: space-separated words: thin, thick, bushy, arched, straight, angled, short, long, low, high (default: soft medium brows)
+function ch_browStyle(s){const B={w:1,d:[0,0,0],len:1,dy:0,bushy:0};String(s||'').split(/[\s,]+/).forEach(k=>{
+  if(k==='thin')B.w=.62;else if(k==='thick')B.w=1.55;else if(k==='bushy'){B.w=1.7;B.bushy=1}
+  else if(k==='arched')B.d=[1.2,-3.2,2.4];else if(k==='straight')B.d=[-.8,2.4,-1.2];else if(k==='angled')B.d=[.6,-1.6,3.6];
+  else if(k==='short')B.len=.84;else if(k==='long')B.len=1.12;else if(k==='low')B.dy=2.2;else if(k==='high')B.dy=-2.6});return B}
 
 // one eye. o=-1 viewer-left, +1 viewer-right. E: geometry + colours + mood bits
 function ch_eye(cx,cy,o,E,id,k){
@@ -126,9 +190,13 @@ function ch_eye(cx,cy,o,E,id,k){
   return s}
 
 // eyebrow (tapered) — sh: [inner dy, mid dy, outer dy]
-function ch_brow(cx,by,o,sh,E,col){const w=E.ew,X=u=>cx+o*u;
-  const pts=ch_bz([[X(-w*.42),by+sh[0]],[X(w*.1),by+sh[1]-2.6],[X(w*.62),by+sh[2]+1]],12);
-  return `<path d="${ch_rib(pts,ch_tap(E.brow*1.15,E.brow,.5))}" fill="${col}"/>`}
+function ch_brow(cx,by,o,sh,E,col,B){const w=E.ew,X=u=>cx+o*u;B=B||{w:1,d:[0,0,0],len:1,dy:0};by+=B.dy||0;
+  const pts=ch_bz([[X(-w*.42*B.len),by+sh[0]+B.d[0]],[X(w*.1),by+sh[1]-2.6+B.d[1]],[X(w*.62*B.len),by+sh[2]+1+B.d[2]]],12);
+  let s=`<path d="${ch_rib(pts,ch_tap(E.brow*1.15*B.w,E.brow*B.w,.5*(B.w>1.2?1.6:1)))}" fill="${col}"/>`;
+  if(B.bushy){let d='';for(let i=1;i<11;i++){const p=pts[i],q=pts[i+1]||p,dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy)||1;
+    d+=`M${ch_n(p[0]-dy/l*2)} ${ch_n(p[1]+dx/l*2)} l${ch_n(dx/l*3+o*.6)} ${ch_n(dy/l*3-2.4)}`}
+    s+=`<path d="${d}" stroke="${col}" stroke-width="1.2" stroke-linecap="round" fill="none"/>`}
+  return s}
 const CH_BROWS={soft:[1.2,-1.2,1.2],flat:[.4,0,1.4],worried:[-4.6,-2.6,2.6],stern:[4.2,1.4,-1.2],up:[-5.5,-8,-4],think:[[-4.5,-6,-2],[2,1,.8]]};
 const CH_MOODS={
   smile:{lid:'normal',brow:'soft',mouth:'smile'},happy:{lid:'closed',brow:'soft',mouth:'happy',fx:'sparkle'},
@@ -137,7 +205,22 @@ const CH_MOODS={
   stern:{lid:'stern',brow:'stern',mouth:'stern'},think:{lid:'half',brow:'think',mouth:'think',look:[4,-3.5],fx:'dots'}};
 
 // mouth shapes centred on (150,y); filled so the talking scale reads as opening
-function ch_mouth(m,y,K,sk,masc){const c=150,wd=masc?1.08:K?.9:1,X=dx=>ch_n(c+dx*wd),Y=dy=>ch_n(y+dy),dk=sk.mouth,ln=sk.line;
+// LP (optional): {w: width factor, lips: 'thin'|'full', dimples, lipC: lip colour, masc}. Lips and dimples are drawn here so the
+// talking animation (which scales .p-mouth) moves them with the mouth.
+function ch_mouth(m,y,K,sk,masc,LP){const base=ch_mouth0(m,y,K,sk,masc,LP&&LP.w);if(!LP)return base;
+  const c=150,wd=(masc?1.08:K?.9:1)*(LP.w||1),R=ch_n,lc=LP.lipC||sk.lip;let s='';
+  if(LP.lips==='full'){const T={smile:[5.2,6.8,0],neutral:[2.8,6.4,0],worried:[4.9,5.4,0],sad:[3.6,5.6,0],stern:[3.2,6.6,0],think:[2.9,5.6,3]}[m];
+    if(T){const [y0,h0,xo]=T,h=h0*wd,x=c+xo,a=y+y0;
+      s+=`<path d="M${R(x-h)} ${R(a)} C${R(x-h*.62)} ${R(a+6)} ${R(x+h*.62)} ${R(a+6)} ${R(x+h)} ${R(a)} C${R(x+h*.5)} ${R(a+1.2)} ${R(x-h*.5)} ${R(a+1.2)} ${R(x-h)} ${R(a)}Z" fill="${lc}" opacity="${LP.masc?.7:.95}"/><path d="M${R(x-h*.7)} ${R(a+4.6)} Q${R(x)} ${R(a+7.2)} ${R(x+h*.7)} ${R(a+4.6)}" stroke="${sk.line}" stroke-width=".9" fill="none" opacity=".3"/>
+        <ellipse cx="${R(x-1.6)}" cy="${R(a+2.4)}" rx="2.4" ry=".8" fill="#fff" opacity=".28"/>`;
+      const U={smile:[-.6,.9],neutral:[.4,1.2],stern:[1.8,.6]}[m];
+      if(U){const k=8.8*wd;s+=`<path d="M${R(c-k)} ${R(y+U[0])} C${R(c-k*.6)} ${R(y-2.2)} ${R(c-2.6)} ${R(y-3.4)} ${R(c)} ${R(y-2)} C${R(c+2.6)} ${R(y-3.4)} ${R(c+k*.6)} ${R(y-2.2)} ${R(c+k)} ${R(y+U[0])} Q${R(c)} ${R(y+U[1]+.6)} ${R(c-k)} ${R(y+U[0])}Z" fill="${lc}" opacity="${LP.masc?.32:.5}"/>`}}
+    else if(m==='happy')s+=`<path d="M${R(c-9.8*wd)} ${R(y+3)} Q${R(c)} ${R(y+16.4)} ${R(c+9.8*wd)} ${R(y+3)}" stroke="${lc}" stroke-width="2.2" fill="none" opacity=".6" stroke-linecap="round"/>`;
+    else if(m==='o')s+=`<ellipse cx="${c}" cy="${R(y+3.6)}" rx="${R(5*wd+1.8)}" ry="8" fill="none" stroke="${lc}" stroke-width="2" opacity=".55"/>`}
+  if(LP.dimples&&(m==='smile'||m==='happy')){const dx=(m==='happy'?12.6:11.4)*wd+1.6;
+    s+=`<path d="M${R(c-dx)} ${R(y-1)} q-1.6 2.4 .2 4.6 M${R(c+dx)} ${R(y-1)} q1.6 2.4 -.2 4.6" stroke="${sk.line}" stroke-width="1.1" fill="none" opacity=".5" stroke-linecap="round"/>`}
+  return s+base}
+function ch_mouth0(m,y,K,sk,masc,wk){const c=150,wd=(masc?1.08:K?.9:1)*(wk||1),X=dx=>ch_n(c+dx*wd),Y=dy=>ch_n(y+dy),dk=sk.mouth,ln=sk.line;
   const teeth=(a,b)=>`<path d="M${X(-a)} ${Y(.4)} Q${X(0)} ${Y(2.4)} ${X(a)} ${Y(.4)} L${X(a-.6)} ${Y(b)} Q${X(0)} ${Y(b+2)} ${X(-a+.6)} ${Y(b)}Z" fill="#fffaf6"/>`;
   switch(m){
     case 'happy':return `<path d="M${X(-11)} ${Y(-1)} Q${X(0)} ${Y(2.6)} ${X(11)} ${Y(-1)} Q${X(9)} ${Y(12)} ${X(0)} ${Y(12.6)} Q${X(-9)} ${Y(12)} ${X(-11)} ${Y(-1)}Z" fill="${dk}" stroke="${ln}" stroke-width="1.1" stroke-linejoin="round"/>${teeth(9,2.4)}<path d="M${X(-6)} ${Y(9.6)} Q${X(0)} ${Y(5.4)} ${X(6)} ${Y(9.6)} Q${X(3)} ${Y(12.2)} ${X(0)} ${Y(12.2)} Q${X(-3)} ${Y(12.2)} ${X(-6)} ${Y(9.6)}Z" fill="${sk.tongue}"/>`;
@@ -312,7 +395,8 @@ function ch_braid(x0,y0,x1,y1,H,hg,tie,side,k){k=k||1;const n=8,step=(y1-y0)/n;l
   return s}
 
 // ---------- more hair styles, beards, hats, accessories and age (all optional; absent options change nothing) ----------
-// hairStyle also takes 'ponytail' 'afro' 'bob' 'curls' 'locs' 'bald' 'headscarf' (aliases: pony, curly, dreads, hijab).
+// hairStyle also takes 'ponytail' 'afro' 'bob' 'curls' 'locs' 'bald' 'headscarf' (aliases: pony, curly, dreads, hijab), and the styles in
+// ch_moreHair below (parted straight and wavy hair, coily and textured styles, the headwrap). docs/MISSIONS.md lists every option.
 // A style may add layers through functions: xBack (behind the face), xFront (over the fringe), xBehind (behind the body),
 // xBody (over the clothes, below the chin), tex (inside the hair clip, instead of the shine band). hatW/hatTop size hats.
 function ch_rand(seed){let s=(seed>>>0)||1;return ()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}}
@@ -438,7 +522,7 @@ function ch_newHair(st,G,o){const C=ch_clump,R=ch_n;
     const tex=(H)=>{let s='';const r=ch_rand(41);for(let i=0;i<46;i++){const a=i*2.39996,rr=70*Math.sqrt((i+.5)/46),x=150+Math.cos(a)*rr,y=82+Math.sin(a)*rr*.7,lit=(x-150)+(y-82)<-30+r()*20;
       const p=[[x-6,y-3],[x,y-8],[x+6,y-2],[x+3,y+5]];s+=`<path d="${ch_rib(ch_bz(p,8),ch_swell(lit?2:2.4,.2))}" fill="${lit?H.hi:H.sh}" opacity="${lit?.55:.6}"/>`}return s};
     return {back,cap,clumps:[],tex,noRim:1,xFront,xBody,xBehind,hatW:74,hatTop:10,big:1}}
-  if(st==='locs'){ // shoulder-length locs from a parted crown; the front locs fall over the shoulders
+  if(st==='locs_v1'){ // (older locs, kept for reference: shoulder-length locs from a parted crown; the front locs fall over the shoulders
     const back='M150 40 C108 40 82 66 80 110 C78 150 82 184 90 204 C100 210 112 200 118 186 L182 186 C188 200 200 210 210 204 C218 184 222 150 220 110 C218 66 192 40 150 40Z';
     const cap='M95 134 C88 94 104 54 132 42 C140 39 146 38 152 38 C162 38 172 41 180 46 C204 60 214 94 207 134 C203 118 197 106 189 98 C177 88 163 84 150 84 C136 84 123 88 112 98 C104 106 99 118 95 134Z';
     // [axis, width]; the first six continue below the chin in the body layer
@@ -471,7 +555,238 @@ function ch_newHair(st,G,o){const C=ch_clump,R=ch_n;
       s+=`<path d="${ch_rib(ch_bz([[112,44],[96,60],[88,92],[88,124]],14),ch_swell(5,.4))}" fill="${H.hi}" opacity=".45"/>`;
       return s};
     return {back:outer,cap,clumps:[],xFront,noEars:1,noRim:1,wrapDrape:1,hatW:70,hatTop:16}}
+  return ch_moreHair(st,G,o)}
+// >>> more hair
+// ---------- hair helpers: splines, fans of locks, strand lines, coils, ropes ----------
+// Catmull-Rom spline through pts as absolute cubics; move=false continues an open path
+function ch_crSegs(pts){const o=[],n=pts.length;for(let i=0;i<n-1;i++){const p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(n-1,i+2)];
+  o.push([p1,[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6],p2])}return o}
+function ch_cr(pts,move){return (move===false?'':`M${ch_P(pts[0])}`)+ch_crSegs(pts).map(s=>`C${ch_P(s[1])} ${ch_P(s[2])} ${ch_P(s[3])}`).join('')}
+function ch_crPts(pts,N){return ch_chain(ch_crSegs(pts),N||8)}
+// sample a polyline by arc-length fraction
+function ch_sampler(pts){const e=ch_even(pts,120);return t=>{const f=Math.max(0,Math.min(1,t))*120,i=Math.min(119,Math.floor(f)),k=f-i,a=e[i],b=e[i+1];return [a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k]}}
+const ch_flipX=pts=>pts.map(p=>[300-p[0],p[1]]).reverse();
+// n pointed locks whose roots run along the polyline root and whose tips run along tip (both listed left to right)
+function ch_fan(root,tip,n,o){o=o||{};if(o.flip){root=ch_flipX(root);tip=ch_flipX(tip)}const rs=ch_sampler(ch_crPts(root)),ts=ch_sampler(ch_crPts(tip)),r=ch_rand(o.seed||3),out=[],ov=o.ov!=null?o.ov:.3;
+  for(let i=0;i<n;i++){const a=rs((i-ov)/n),b=rs((i+1+ov)/n);let T=ts((i+.5)/n);
+    if(o.jit)T=[T[0]+(r()-.5)*o.jit,T[1]+(r()-.5)*o.jit+(i%2?(o.alt||0):0)];
+    const bl=typeof o.bl==='function'?o.bl(i):(o.bl!=null?o.bl:3),br=typeof o.br==='function'?o.br(i):(o.br!=null?o.br:-1);
+    out.push(o.flip?ch_clump(a,b,T,-br,-bl):ch_clump(a,b,T,bl,br))}
+  return o.flip?out.reverse():out}
+// thin strand lines (quadratic [p0,c,p1]); every third one is a highlight
+function ch_lines(lines,H,w,op){let a='',b='';lines.forEach((L,i)=>{const d=ch_rib(ch_bz(L,10),ch_swell(w||1.1,.1));if(i%3===2)b+=d;else a+=d});
+  return `<path d="${a}" fill="${H.sh}" opacity="${op||.7}"/><path d="${b}" fill="${H.hi}" opacity="${(op||.7)*.62}"/>`}
+// strands from points along root to points along end, bowed by bend (positive bows to the left of travel)
+function ch_flow(root,end,n,bend,o){o=o||{};const rs=ch_sampler(ch_crPts(root)),es=ch_sampler(ch_crPts(end)),out=[],r=ch_rand(o.seed||17);
+  for(let i=0;i<n;i++){const t=(i+.5)/n,a=rs(t),b=es(o.rev?1-t:t),m=[(a[0]+b[0])/2,(a[1]+b[1])/2],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,k=bend*(.8+.4*r());
+    out.push([a,[m[0]+dy/l*k,m[1]-dx/l*k],b])}return out}
+// one coil (about 1.2 turns of a small spiral) as polyline points
+function ch_coilPts(x,y,s,a){const p=[];for(let i=0;i<=9;i++){const t=i/9,g=a+t*7.4,r=s*(.32+.68*t);p.push([x+Math.cos(g)*r,y+Math.sin(g)*r*.88])}return p}
+// fill an ellipse with coils, lit from the upper left; keep(x,y) can drop points
+function ch_coils(cx,cy,rx,ry,n,s,H,seed,o){o=o||{};const r=ch_rand(seed||11);let lit='',dark='',mid='';
+  for(let i=0;i<n;i++){const a=i*2.39996+seed,rr=Math.sqrt((i+.5)/n),x=cx+Math.cos(a)*rr*rx,y=cy+Math.sin(a)*rr*ry;if(o.keep&&!o.keep(x,y))continue;
+    const L=(x-cx)/rx*.7+(y-cy)/ry,d=ch_pl(ch_coilPts(x+(r()-.5)*s,y+(r()-.5)*s,s*(.78+r()*.5),r()*6.28));
+    if(L<-.5+r()*.35)lit+=d;else if(L>.25+r()*.35)dark+=d;else mid+=d}
+  const w=o.w||1.45;
+  return `<g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${dark}" stroke="${H.dk}" stroke-width="${w}" opacity=".8"/><path d="${mid}" stroke="${H.sh}" stroke-width="${w}" opacity=".75"/><path d="${lit}" stroke="${H.hi}" stroke-width="${w*.9}" opacity="${o.litOp||.62}"/></g>`}
+// soft volume: light upper left, shadow lower right (userSpace radial gradient over a rect; draw inside a clip)
+function ch_vol(id,k,cx,cy,r,H,box){return `<radialGradient id="${id}v${k}" gradientUnits="userSpaceOnUse" cx="${cx-r*.3}" cy="${cy-r*.35}" r="${r*1.25}"><stop offset="0" stop-color="${H.hi}" stop-opacity=".34"/><stop offset=".42" stop-color="${H.base}" stop-opacity="0"/><stop offset=".8" stop-color="${H.dk}" stop-opacity=".32"/><stop offset="1" stop-color="${H.dk}" stop-opacity=".55"/></radialGradient><rect x="${box?box[0]:62}" y="${box?box[1]:-8}" width="${box?box[2]:176}" height="${box?box[3]:196}" fill="url(#${id}v${k})"/>`}
+// a ball of coils (puffs, knots on the outside of the head): scalloped outline, fill, coils, volume
+function ch_puffBall(x,y,rx,ry,H,hg,id,k,seed){const pts=[];for(let i=0;i<=22;i++){const a=i/22*Math.PI*2-Math.PI/2;pts.push([x+Math.cos(a)*rx,y+Math.sin(a)*ry])}
+  const d=ch_scallop(pts,Math.max(3,rx*.17),seed)+'Z';
+  return `<path d="${d}" fill="${H.line}" stroke="${H.line}" stroke-width="3.2" stroke-linejoin="round"/><path d="${d}" fill="${hg}"/><clipPath id="${id}pb${k}"><path d="${d}"/></clipPath><g clip-path="url(#${id}pb${k})">${ch_vol(id,'p'+k,x,y,Math.max(rx,ry),H,[x-rx-2,y-ry-2,rx*2+4,ry*2+4])}${ch_coils(x,y,rx*1.02,ry*1.02,Math.round(rx*ry*.16),Math.max(2.6,rx*.1),H,seed)}</g>`}
+// a rope of hair along pts: kind 'loc' (lumpy, soft twists), 'twist' (two strands winding), 'braid' (three-strand box braid, V marks).
+// o: {open (unfinished top or bottom, continued in another layer), dark (behind the body), tip (colour for the last third), cuffs:[t...], cuff colour}
+function ch_rope(pts,w,H,fill,seed,kind,o){o=o||{};
+  const n=pts.length,R=ch_n,L=ch_len(pts),r=ch_rand(seed);
+  const end=o.open?1:t=>1;const wf=t=>{const base=kind==='braid'?w*(1-.12*t):kind==='twist'?w*(.94+.08*Math.sin(t*9+seed)):w*(.93+.09*Math.sin(t*7+seed));
+    const top=o.openTop?1:Math.min(1,.6+t*8);const tail=o.open?1:(kind==='braid'?(t<.94?1:.45+.55*(1-(t-.94)/.06)):t<.86?1:.3+.7*Math.sqrt(Math.max(0,1-(t-.86)/.14)));return base*top*tail};
+  const body=ch_rib(pts,wf);let s='';
+  s+=o.open?`<path d="${ch_rib(pts,t=>wf(t)+2.2)}" fill="${H.line}"/>`:`<path d="${body}" fill="${H.line}" stroke="${H.line}" stroke-width="2.2" stroke-linejoin="round"/>`;
+  s+=`<path d="${body}" fill="${fill}"/>`;
+  if(o.tip)s+=`<path d="${ch_rib(ch_sub(pts,o.tipFrom||.62,1),t=>wf((o.tipFrom||.62)+t*(1-(o.tipFrom||.62))))}" fill="${o.tip}" opacity=".8"/>`;
+  {const nor=i=>{const a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;return [dy/l,-dx/l,dx/l,dy/l]};
+    s+=`<path d="${ch_rib(pts.map((p,i)=>{const N=nor(i),ww=wf(i/(n-1))/2;return [p[0]+N[0]*ww*.55,p[1]+N[1]*ww*.55]}),t=>wf(t)*.34)}" fill="${H.sh}" opacity="${o.dark?.5:.75}"/>`;
+    const step=kind==='braid'?Math.max(3.6,w*.72):kind==='loc'?Math.max(5,w*.8):Math.max(4,w*.95),m=Math.max(2,Math.round(L/step)),E=ch_even(pts,m);let ln='',hi='';
+    for(let k=1;k<m-(o.open?0:1);k++){const p=E[k],q=E[Math.min(m,k+1)],a=E[k-1],dx=q[0]-a[0],dy=q[1]-a[1],l=Math.hypot(dx,dy)||1,T=[dx/l,dy/l],N=[T[1],-T[0]],t=k/m,ww=wf(t)/2;
+      if(kind==='braid'){const tipP=[p[0]+T[0]*step*.55,p[1]+T[1]*step*.55];
+        ln+=`M${R(p[0]+N[0]*ww*.95)} ${R(p[1]+N[1]*ww*.95)} Q${R(p[0]+N[0]*ww*.3+T[0]*step*.4)} ${R(p[1]+N[1]*ww*.3+T[1]*step*.4)} ${R(tipP[0])} ${R(tipP[1])} Q${R(p[0]-N[0]*ww*.3+T[0]*step*.4)} ${R(p[1]-N[1]*ww*.3+T[1]*step*.4)} ${R(p[0]-N[0]*ww*.95)} ${R(p[1]-N[1]*ww*.95)}`;
+        hi+=`M${R(p[0]+N[0]*ww*.62+T[0]*step*.08)} ${R(p[1]+N[1]*ww*.62+T[1]*step*.08)} L${R(p[0]+N[0]*ww*.2+T[0]*step*.4)} ${R(p[1]+N[1]*ww*.2+T[1]*step*.4)}`}
+      else if(kind==='loc'){const j=(r()-.5)*.3;ln+=`M${R(p[0]+N[0]*ww*.7)} ${R(p[1]+N[1]*ww*.7)} Q${R(p[0]+N[0]*ww*.1+T[0]*step*(.3+j))} ${R(p[1]+N[1]*ww*.1+T[1]*step*(.3+j))} ${R(p[0]-N[0]*ww*.6+T[0]*step*.2)} ${R(p[1]-N[1]*ww*.6+T[1]*step*.2)}`;
+        if(k%2)hi+=`M${R(p[0]+N[0]*ww*.5+T[0]*step*.3)} ${R(p[1]+N[1]*ww*.5+T[1]*step*.3)} L${R(p[0]+N[0]*ww*.25+T[0]*step*.7)} ${R(p[1]+N[1]*ww*.25+T[1]*step*.7)}`}
+      else{const sg=k%2?1:-1;ln+=`M${R(p[0]+N[0]*ww*.95-T[0]*step*.3)} ${R(p[1]+N[1]*ww*.95-T[1]*step*.3)} C${R(p[0]+N[0]*ww*.2+T[0]*step*.15)} ${R(p[1]+N[1]*ww*.2+T[1]*step*.15)} ${R(p[0]-N[0]*ww*.2+T[0]*step*.05)} ${R(p[1]-N[1]*ww*.2+T[1]*step*.05)} ${R(p[0]-N[0]*ww*.95+T[0]*step*.45)} ${R(p[1]-N[1]*ww*.95+T[1]*step*.45)}`;
+        if(sg>0)hi+=`M${R(p[0]+N[0]*ww*.55+T[0]*step*.2)} ${R(p[1]+N[1]*ww*.55+T[1]*step*.2)} L${R(p[0]+N[0]*ww*.05+T[0]*step*.62)} ${R(p[1]+N[1]*ww*.05+T[1]*step*.62)}`}}
+    s+=`<path d="${ln}" stroke="${H.line}" stroke-width="${kind==='braid'?1:kind==='loc'?1.05:1.15}" fill="none" opacity="${o.dark?.4:kind==='loc'?.45:.62}" stroke-linecap="round"/><path d="${hi}" stroke="${H.hi}" stroke-width="1.5" fill="none" opacity="${o.dark?.18:.5}" stroke-linecap="round"/>`;
+    if(kind==='twist'&&!o.open){const e=pts[n-1];s+=`<path d="M${R(e[0]-2)} ${R(e[1]-2)} q-1.6 3 .4 4.6 M${R(e[0]+1.6)} ${R(e[1]-1.6)} q2 2.6 .2 4.4" stroke="${H.line}" stroke-width="1.2" fill="none" opacity=".6" stroke-linecap="round"/>`}}
+  for(const t of (o.cuffs||[])){const i=Math.round(t*(n-1)),p=pts[i],a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,ang=Math.atan2(dy,dx)*180/Math.PI,ww=wf(t)+2;
+    s+=`<g transform="translate(${R(p[0])} ${R(p[1])}) rotate(${R(ang)})"><rect x="-2.2" y="${R(-ww/2)}" width="4.4" height="${R(ww)}" rx="1.4" fill="${o.cuff||'#e8b84a'}" stroke="${ch_mix(o.cuff||'#e8b84a','#3a2208',.55)}" stroke-width=".9"/><path d="M-1 ${R(-ww/2+1)} v${R(ww*.4)}" stroke="#fff6c8" stroke-width=".9" opacity=".8"/></g>`}
+  return s}
+// split a cubic at the point where it crosses y=cut: [head part, body part]
+function ch_cutCubic(P,cut){const all=ch_bz(P,40),i=all.findIndex(q=>q[1]>=cut);if(i<=0)return i<0?[P,null]:[null,P];const T=i/40;
+  const sp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t],[A,B,C,D]=P,ab=sp(A,B,T),bc=sp(B,C,T),cd=sp(C,D,T),abc=sp(ab,bc,T),bcd=sp(bc,cd,T),m=sp(abc,bcd,T);return [[A,ab,abc,m],[m,bcd,cd,D]]}
+
+// ---------- parted hair (straight and wavy): partings, hairlines, bangs and lengths from one recipe ----------
+// part 'left'|'right'|'middle'|'none' (none = combed straight back); bang 'none'|'swept'|'full'|'curtain'|'up'|'wisps';
+// len 'crop'|'ear'|'chin'|'shoulder'|'long'; vol = extra volume; hy = hairline height mid-forehead; recede 0..1; wave; topbun.
+// o.part, o.bangs and o.hairLen override the recipe.
+const CH_PARTED={
+  sidepart:{part:'left',bang:'swept',len:'crop',vol:3,hy:68},
+  slick:{part:'none',bang:'none',len:'crop',vol:2,hy:63},
+  receding:{part:'left',bang:'none',len:'crop',vol:-3,hy:62,recede:1},
+  crew:{part:'none',bang:'up',len:'crop',vol:4,hy:70},
+  pixie:{part:'left',bang:'swept',len:'ear',vol:2,hy:66},
+  middle:{part:'middle',bang:'none',len:'long',vol:2,hy:63},
+  sidelong:{part:'left',bang:'swept',len:'long',vol:4,hy:64},
+  wavy:{part:'right',bang:'none',len:'shoulder',vol:8,hy:64,wave:1},
+  lob:{part:'middle',bang:'curtain',len:'chin',vol:4,hy:63},
+  updo:{part:'none',bang:'none',len:'crop',vol:0,hy:63,topbun:1},
+  shag:{part:'middle',bang:'curtain',len:'shoulder',vol:9,hy:64,wave:1}};
+function ch_parted(sp,G,o){const v=sp.vol||0,rc=sp.recede||0,part=o.part||sp.part,side=part==='right'?1:part==='left'?-1:0,bang=o.bangs||sp.bang,len=o.hairLen||sp.len;
+  const hy=(o.hairline!=null?o.hairline:sp.hy||66),rx=57+v,ry=63+v,top=98-ry,wave=o.wave!=null?o.wave:sp.wave;
+  const outer=[];for(let i=0;i<=24;i++){const a=(166+208*i/24)*Math.PI/180;outer.push([150+Math.cos(a)*rx,98+Math.sin(a)*ry])}
+  const HLl=[[100.5,110],[102.4,94],[108-rc*2,hy+12-rc*20],[126+rc*2,hy+3-rc*9],[150,hy+rc*4]],HL=HLl.concat(ch_flipX(HLl).slice(1));// left to right
+  const cap=`${ch_cr(outer)}L${ch_P(HL[HL.length-1])}${ch_cr(HL.slice().reverse(),false)}Z`;
+  const deep=len==='chin'||len==='shoulder'||len==='long',lowY=len==='crop'?128:len==='ear'?140:196;
+  const back=`${ch_cr([[deep?110:96,lowY],[deep?94:96,lowY-(deep?6:0)],[90-v*.4,deep?150:116]].concat(outer.slice(2,-2),[[210+v*.4,deep?150:116],[deep?206:204,lowY-(deep?6:0)],[deep?190:204,lowY]]))}C${deep?'176 '+(lowY-40)+' 124 '+(lowY-40):'170 '+lowY+' 130 '+lowY} ${deep?110:96} ${lowY}Z`;
+  const xp=150+side*25,clumps=[];
+  // bangs
+  if(bang==='swept'){const d=side>0?-1:1,f=d<0; // d: direction of the sweep (away from the part)
+    clumps.push(...ch_fan([[122,top+20],[152,top+10],[184,top+22],[203,70]],[[134,hy+24],[160,hy+32],[186,hy+36],[205,114]],6,{flip:f,bl:i=>2+i*.4,br:-2,jit:4,alt:4,seed:5}));
+    clumps.push(...ch_fan([[112,72],[116,62]],[[100,104],[106,98]],1,{flip:f,bl:2,br:-1}))}
+  else if(bang==='full')clumps.push(...ch_fan([[102,82],[116,top+18],[150,top+10],[184,top+18],[198,82]],[[103,106],[126,108],[150,106],[174,108],[197,106]],8,{bl:2,br:2,jit:5,alt:5,seed:9}));
+  else if(bang==='curtain'){for(const f of [false,true])clumps.push(...ch_fan([[104,74],[124,top+16],[148,top+12]],[[99,120],[112,104],[136,90]],4,{flip:f,bl:-1,br:4,jit:3,seed:f?3:4}))}
+  else if(bang==='up'){const L=HL.slice(2,-2);clumps.push(...ch_fan(L,[[104,top+16],[124,top-2],[150,top-8],[176,top-2],[196,top+16]],7,{bl:-2,br:3,jit:7,seed:8,ov:.15}))}
+  else if(bang==='wisps')clumps.push(...ch_fan([[xp-6,top+18],[xp+14,top+16]],[[xp+2,hy+22],[xp+24,hy+26]],3,{bl:1,br:-1,jit:4,seed:2}));
+  // sides
+  const sideFan=(rt,tp,n,f,s)=>ch_fan(rt,tp,n,{flip:f,bl:i=>3-i*.5,br:-1,jit:3,seed:s});
+  if(len==='crop'){clumps.push(ch_clump([93.5,98],[103,95],[99.5,124],2,-1),ch_clump([197,95],[206.5,98],[200.5,124],-1,2))}
+  else if(len==='ear'){for(const f of [false,true])clumps.push(...sideFan([[92,110],[96,92],[106,76]],[[91,136],[97,128],[105,114]],3,f,f?6:7))}
+  else if(!wave){for(const f of [false,true])clumps.push(...sideFan([[90-v*.3,114],[96,92],[108,74]],[[88-v*.3,186],[97,174],[106,152]],4,f,f?6:7))}
+  // strand lines
+  let lines=[];const PL=[[xp,hy+3],[xp-side*2,(hy+top)/2],[xp-side*4,top+10]];
+  if(side){const near=side<0?[[103,94],[101,78],[110,60]]:ch_flipX([[110,60],[101,78],[103,94]]),far=side<0?[[150,top+4],[190,top+16],[205,96]]:ch_flipX([[205,96],[190,top+16],[150,top+4]]);
+    lines=lines.concat(ch_flow(PL,near,5,side*4,{seed:3}),ch_flow(PL,far,9,side*6,{seed:5}))}
+  else if(part==='middle'){const P2=[[150,hy+3],[150,top+8]];lines=lines.concat(ch_flow(P2,[[104,96],[112,62],[140,top+2]],8,4,{seed:3}),ch_flow(P2,ch_flipX([[104,96],[112,62],[140,top+2]]).reverse(),8,-4,{seed:4}))}
+  else{lines=ch_flow(HL.slice(1,-1),[[100,80],[118,top+6],[150,top-2],[182,top+6],[200,80]],14,0,{seed:6})}
+  const tex=(H)=>ch_lines(lines,H,1.15,.62)+(side||part==='middle'?`<path d="${ch_rib(ch_crPts(part==='middle'?[[150,hy+2],[150,top+8]]:PL,6),ch_tap(1.6,1.2,.4))}" fill="${H.line}" opacity=".75"/>`:'');
+  // long lengths below the chin
+  let xBody=null,xBehind=null,xFront=null;
+  if(wave&&deep){const locks=[[[[98,96],[84,130],[90,170],[84,len==='chin'?196:250]],15,0],[[[108,100],[98,140],[104,176],[98,len==='chin'?192:236]],12,2]];
+    const all=locks.concat(locks.map(([P,w,ph])=>[P.map(p=>[300-p[0],p[1]]),w,ph+2.4]));
+    xFront=(H,hg)=>all.map(([P,w,ph],i)=>{const [a]=ch_cutCubic(P,184);return a?ch_wave(a,w,H,hg,i+3,{open:1,ph,amp:4,wl:40}):''}).join('');
+    xBody=(H,hg)=>all.map(([P,w,ph],i)=>{const [a,b]=ch_cutCubic(P,184);return b?ch_wave(b,w*.85,H,hg,i+3,{ph:ph+(a?ch_len(ch_bz(a,20)):0)/40*6.283,amp:4,wl:40,curl:i<2?1:-1}):''}).join('')}
+  else if(len==='shoulder'||len==='long'){const yb=len==='long'?316:244;
+    xBody=(H,hg)=>[ch_clump([86-v*.3,150],[106,150],[84-v*.3,yb],6,-2),ch_clump([194,150],[214+v*.3,150],[216+v*.3,yb],-2,6),ch_clump([98,160],[110,160],[100,yb-26],3,-1),ch_clump([190,160],[202,160],[200,yb-26],-1,3)].map(c=>`<path d="${c.d}" fill="${hg}" stroke="${H.line}" stroke-width="2.4" stroke-linejoin="round"/><path d="${ch_rib(ch_sub(ch_bz([c.L,c.a[2],c.T],12),.2,.9),ch_swell(1.4,.1))}" fill="${H.sh}" opacity=".75"/>`).join('')}
+  if(len==='shoulder'||len==='long'){const yb=len==='long'?340:260;xBehind=(H,hg)=>{const d=`M${84-v*.5} 140 C${72-v} 200 ${70-v} ${yb-60} ${74-v*.5} ${yb} L${226+v*.5} ${yb} C${230+v} ${yb-60} ${228+v} 200 ${216+v*.5} 140Z`;
+    return `<path d="${wave?ch_scallop(ch_bz([[84-v*.5,140],[70-v,200],[70-v,yb-60],[76,yb]],10).concat(ch_bz([[224,yb],[230+v,yb-60],[230+v,200],[216+v*.5,140]],10)),6,13)+'Z':d}" fill="${H.sh}" stroke="${H.line}" stroke-width="2.6" stroke-linejoin="round"/>`}}
+  return {back,cap,clumps,tex,xBody,xBehind,xFront,shine:{crown:[side?xp:150,top+6],cx:150,cy:150,rx:60+v,ry:96+v*.6,a0:-150,a1:-30,t:8},noRim:!!wave,
+    hatW:60+v,hatTop:Math.max(4,top-14),bun:sp.topbun?1:0,parted:1}}
+
+function ch_moreHair(st,G,o){const C=ch_clump,R=ch_n;
+  if(CH_PARTED[st])return ch_parted(CH_PARTED[st],G,o);
+  // close coily crop (TWA), a fade with a crisp line-up, and a high-top fade
+  if(st==='twa'||st==='fade'||st==='hightop'){const ht=st==='hightop',tw=st==='twa';let outer,hl;
+    if(tw){outer=[];for(let i=0;i<=28;i++){const a=(168+204*i/28)*Math.PI/180;outer.push([150+Math.cos(a)*58,99+Math.sin(a)*65])}
+      hl=[[201,112],[200,94],[192,78],[172,70],[150,68],[128,70],[108,78],[100,94],[99,112]]}
+    else if(!ht){outer=[[99,88],[97,70],[104,48],[124,33],[150,29],[176,33],[196,48],[203,70],[201,88]];hl=[[201,88],[197,82],[193,72],[150,68],[107,72],[103,82],[99,88]]}
+    else{outer=[[100,86],[100,60],[102,30],[105,10],[124,3],[150,2],[176,3],[195,10],[198,30],[200,60],[200,86]];hl=[[200,86],[197,82],[193,72],[150,68],[107,72],[103,82],[100,86]]}
+    const sc=tw?ch_scallop(outer,4.5,7):(ht?ch_cr(outer):ch_scallop(outer,3,7));
+    const inner=tw?ch_scallop(hl,2.4,5,false):`L${ch_P(hl[1])}L${ch_P(hl[2])}C${ch_P([170,68])} ${ch_P([130,68])} ${ch_P(hl[4])}L${ch_P(hl[5])}L${ch_P(hl[6])}`;
+    const cap=`${sc}L${ch_P(hl[0])}${inner}Z`,back=tw?`${sc}L204 136 L96 136Z`:`${sc}Z`;
+    const tex=(H,hg,id)=>tw?ch_vol(id,0,150,70,62,H)+ch_coils(150,68,58,44,190,3,H,21):ch_vol(id,0,150,ht?44:58,ht?60:52,H)+ch_coils(150,ht?40:54,54,ht?44:30,ht?260:150,ht?3.2:2.8,H,23)+(ht?`<path d="M106 26 L194 26 M104 50 L196 50" stroke="${H.dk}" stroke-width="2" opacity=".25"/>`:'');
+    // faded sides: very short hair that thins out toward the ears (over the skin), with a crisp edge at the temple
+    const xFront=tw?null:(H,hg,id)=>{const sideD='M99 86 C96 96 95 108 97 120 L103 120 C102 108 102 96 104 82Z',g=`${id}fd`;
+      let s=`<linearGradient id="${g}" x1="0" y1="80" x2="0" y2="124" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${H.base}" stop-opacity=".95"/><stop offset=".55" stop-color="${H.base}" stop-opacity=".45"/><stop offset="1" stop-color="${H.base}" stop-opacity="0"/></linearGradient>`;
+      for(const d of [sideD,ch_mx(sideD,150)])s+=`<path d="${d}" fill="url(#${g})"/>`;
+      const r=ch_rand(4);let dots='';for(let i=0;i<40;i++){const y=88+r()*26,x=97+r()*5.6;dots+=`M${R(x)} ${R(y)}l.3 1M${R(300-x)} ${R(y)}l.3 1`}
+      return s+`<path d="${dots}" stroke="${H.dk}" stroke-width="1" opacity="${.5}" stroke-linecap="round"/>`};
+    return {back,cap,clumps:[],tex,xFront,noRim:1,hatW:tw?60:58,hatTop:ht?6:18,big:ht?1:0}}
+  // one or two high puffs; the hair underneath is smoothed up toward the band
+  if(st==='puff'||st==='puffs'){const two=st==='puffs';
+    const outer=[[94,112],[93,88],[102,62],[122,45],[150,39],[178,45],[198,62],[207,88],[206,112]],hl=[[200,112],[199,94],[190,78],[170,70],[150,68],[130,70],[110,78],[101,94],[100,112]];
+    const cap=ch_cr(outer)+'L'+ch_P(hl[0])+ch_cr(hl,false)+'Z',back=ch_cr(outer)+'L206 132 L94 132Z';
+    const P=two?[[110,40,23,21],[190,40,23,21]]:[[150,30,32,27]],band=o.clip||'#ffcf4a';
+    const xBack=(H,hg,id)=>P.map(([x,y,a,b],i)=>ch_puffBall(x,y,a,b,H,hg,id,i,31+i)).join('');
+    const tex=(H,hg,id)=>{const ends=two?null:[[140,42],[160,42]];const L=[];hl.slice(1,-1).forEach((p,i,a)=>{const t=i/(a.length-1);const e=two?(p[0]<150?[110,52]:[190,52]):[140+t*20,44];L.push([p,[(p[0]+e[0])/2+(p[0]-150)*.12,(p[1]+e[1])/2],e])});
+      for(let i=0;i<8;i++){const x=104+i*13;L.push([[x,96],[x+(x-150)*.1,70],two?(x<150?[112,52]:[188,52]):[146+(x-150)*.06,44]])}
+      return ch_vol(id,0,150,80,60,H)+ch_lines(L,H,1.2,.55)};
+    const xFront=(H)=>{const b=ch_clothPal(band);let s='';
+      for(const [x,y,a,bb] of P){const by=y+bb*.86;s+=`<path d="M${R(x-a*.5)} ${R(by-1)} Q${R(x)} ${R(by+4)} ${R(x+a*.5)} ${R(by-1)} L${R(x+a*.46)} ${R(by+4)} Q${R(x)} ${R(by+9)} ${R(x-a*.46)} ${R(by+4)}Z" fill="${band}" stroke="${b.line}" stroke-width="1.6" stroke-linejoin="round"/><path d="M${R(x-a*.32)} ${R(by+1.4)} Q${R(x-a*.1)} ${R(by+3)} ${R(x+a*.06)} ${R(by+2.6)}" stroke="#fff" stroke-width="1.2" opacity=".6" fill="none"/>`}
+      // baby hairs at the temples
+      s+=`<path d="M106 96 C100 96 99 90 103 88 C106 87 107 90 105 91 M194 96 C200 96 201 90 197 88 C194 87 193 90 195 91" stroke="${H.line}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`;return s};
+    return {back,cap,clumps:[],tex,xBack,xFront,noRim:1,hatW:62,hatTop:20}}
+  // bantu knots: sectioned scalp with coiled knots
+  if(st==='bantu'){const sk=ch_skinPal(o.skin||'#7a4a2c');
+    const outer=[[95,112],[94,88],[103,61],[123,44],[150,38],[177,44],[197,61],[206,88],[205,112]],hl=[[200,112],[199,94],[190,78],[170,70],[150,68],[130,70],[110,78],[101,94],[100,112]];
+    const cap=ch_cr(outer)+'L'+ch_P(hl[0])+ch_cr(hl,false)+'Z',back=ch_cr(outer)+'L206 132 L94 132Z';
+    const K=[[99,82,11],[201,82,11],[116,50,12.5],[184,50,12.5],[150,34,14]];
+    const tex=(H,hg,id)=>ch_vol(id,0,150,80,60,H)+`<path d="M150 70 L150 50 M134 72 L126 60 M166 72 L174 60 M112 82 L106 66 M188 82 L194 66 M128 60 L150 50 L172 60" stroke="${sk.sh}" stroke-width="1.6" fill="none" opacity=".9" stroke-linecap="round"/>`;
+    const xFront=(H,hg)=>K.map(([x,y,r],i)=>{let s=`<circle cx="${x}" cy="${y}" r="${r}" fill="${hg}" stroke="${H.line}" stroke-width="2.6"/>`;
+      const sp=[];for(let k=0;k<=30;k++){const t=k/30,a=-1.2+t*Math.PI*4.4,rr=r*(.12+.8*t);sp.push([x+Math.cos(a)*rr,y+Math.sin(a)*rr*.92])}
+      s+=`<path d="${ch_pl(sp)}" stroke="${H.line}" stroke-width="1.3" fill="none" opacity=".6"/><path d="M${R(x+r*.2)} ${R(y+r*.92)} A${r} ${r} 0 0 0 ${R(x+r*.95)} ${R(y-r*.1)}" stroke="${H.dk}" stroke-width="3" fill="none" opacity=".6"/>
+        <path d="M${R(x-r*.7)} ${R(y-r*.25)} Q${R(x-r*.55)} ${R(y-r*.75)} ${R(x-r*.05)} ${R(y-r*.8)}" stroke="${H.hi}" stroke-width="2" fill="none" opacity=".6" stroke-linecap="round"/>`;return s}).join('');
+    return {back,cap,clumps:[],tex,xFront,noRim:1,hatW:62,hatTop:20}}
+  // cornrows straight back, the braid ends hanging behind the shoulders
+  if(st==='cornrows'){const sk=ch_skinPal(o.skin||'#7a4a2c');
+    const outer=[[95,112],[94,88],[103,60],[123,43],[150,37],[177,43],[197,60],[206,88],[205,112]],hl=[[100,110],[101,92],[110,76],[130,68],[150,66],[170,68],[190,76],[199,92],[200,110]];
+    const cap=ch_cr(outer)+'L'+ch_P(hl[hl.length-1])+ch_cr(hl.slice().reverse(),false)+'Z',back=ch_cr(outer)+'L206 140 L94 140Z';
+    const hs=ch_sampler(ch_crPts(hl)),os=ch_sampler(ch_crPts(outer)),rows=[];const nR=o.rows||8;
+    for(let j=0;j<nR;j++){const t=.07+.86*j/(nR-1),S=hs(t),E=os(.05+.9*t);rows.push([S,[S[0]+(S[0]-150)*.05,S[1]-16],[E[0]+(150-E[0])*.04,E[1]+18],[E[0],E[1]-3]])}
+    const tex=(H,hg,id)=>{let s=`<rect x="80" y="20" width="140" height="110" fill="${sk.sh}"/>`;
+      rows.forEach((P,j)=>{s+=ch_rope(ch_bz(P,22),8.6,H,hg,j+3,'braid',{open:1,openTop:1})});return s+ch_vol(id,0,150,74,62,H)};
+    const xBehind=(H,hg)=>[[112,146,104,300],[124,154,120,286],[176,154,180,286],[188,146,196,300]].map(([a,b,c,d],i)=>ch_rope(ch_bz([[a,b],[a-4,b+50],[c+2,d-50],[c,d]],22),8,H,H.sh,i+40,'braid',{dark:1,cuffs:o.cuffs?[.86]:[]})).join('');
+    return {back,cap,clumps:[],tex,xBehind,noRim:1,hatW:60,hatTop:20}}
+  // box braids, two-strand twists and locs: ropes from the parting over the crown and down past the shoulders
+  if(st==='boxbraids'||st==='twists'||st==='locs'){const kind=st==='boxbraids'?'braid':st==='twists'?'twist':'loc';
+    const w=o.ropeW||(kind==='braid'?6.6:kind==='twist'?9:10.5),part=o.part||(kind==='twist'?'none':'middle'),lenK=o.hairLen==='short'?.55:o.hairLen==='long'?1.25:1;
+    const v=kind==='twist'?10:kind==='loc'?6:4,hy=o.hairline!=null?o.hairline:68,tip=o.hairTips,cuffs=o.cuffs;
+    const outer=[];for(let i=0;i<=24;i++){const a=(166+208*i/24)*Math.PI/180;outer.push([150+Math.cos(a)*(56+v),98+Math.sin(a)*(62+v)])}
+    const hl=[[100.5,112],[102,94],[110,78],[128,hy+3],[150,hy],[172,hy+3],[190,78],[198,94],[199.5,112]];
+    const cap=`${ch_cr(outer)}L${ch_P(hl[hl.length-1])}${ch_cr(hl.slice().reverse(),false)}Z`,top=98-62-v;
+    const back=`${ch_cr([[98,190],[86-v*.5,150]].concat(outer.slice(2,-2),[[214+v*.5,150],[202,190]]))}Z`;
+    const r=ch_rand(st.length*7+3),ropes=[];// [cubic, width, front?]
+    const per=kind==='braid'?8:kind==='twist'?7:6,endBase=kind==='twist'?212:kind==='braid'?300:270;
+    for(const sd of [-1,1])for(let j=0;j<per;j++){const t=j/(per-1),rootY=part==='none'?0:top+8+t*(hy-top-6);
+      let P0;if(part==='none'){const a=(sd<0?180:0)+sd*(-70+t*70);const aa=a*Math.PI/180;P0=[150+Math.cos(aa)*14*(sd<0?1:1),46+Math.sin(aa)*-6+t*22]}else P0=[150+sd*(part==='middle'?1.5:0),rootY];
+      const spread=(1-t)*(28+v)+t*8,endX=150+sd*(52+v+(1-t)*10-t*12+r()*4),endY=(endBase-t*(kind==='twist'?30:60)+r()*30)*lenK+(1-lenK)*150;
+      const P=[P0,[150+sd*(spread+16),P0[1]-10+t*12],[150+sd*(58+v-t*14),P0[1]+28+t*10],[endX,Math.max(endY,P0[1]+60)]];
+      ropes.push([P,w*(.92+r()*.16),t>.55])}
+    const backRopes=[];for(let i=0;i<10;i++){const sd=i%2?1:-1,k=Math.floor(i/2),x0=150+sd*(30+k*8),x1=150+sd*(48+k*9+r()*6);backRopes.push([[x0,60+k*14],[x0+sd*14,110],[x1-sd*4,200],[x1,(endBase+10+r()*40)*lenK+(1-lenK)*150]])}
+    const fill=(H,hg)=>kind==='braid'?hg:hg;
+    const tex=(H,hg,id)=>`<rect x="60" y="0" width="180" height="160" fill="${ch_lum(H.base)>.3?H.sh:H.dk}"/>`;
+    const xBack=(H,hg)=>backRopes.map((P,i)=>{if(whole(P))return ch_rope(ch_bz(P,18),w,H,H.sh,i+60,kind,{dark:1});const [a]=ch_cutCubic(P,186);return a?ch_rope(ch_bz(a,18),w,H,H.sh,i+60,kind,{open:1,dark:1}):''}).join('');
+    const whole=P=>P[3][1]<224,xFront=(H,hg)=>ropes.map(([P,ww],i)=>{if(whole(P))return ch_rope(ch_bz(P,24),ww,H,fill(H,hg),i+1,kind,{openTop:part==='none',tip,tipFrom:.55});const [a]=ch_cutCubic(P,186);return a?ch_rope(ch_bz(a,20),ww,H,fill(H,hg),i+1,kind,{open:1,openTop:part==='none'}):''}).join('');
+    const xBody=(H,hg)=>ropes.filter(x=>x[2]&&!whole(x[0])).map(([P,ww],i)=>{const [,b]=ch_cutCubic(P,186);return b?ch_rope(ch_bz(b,20),ww,H,fill(H,hg),i+30,kind,{tip,cuffs:cuffs?[.8]:[],tipFrom:.3,openTop:1}):''}).join('');
+    const xBehind=(H,hg)=>ropes.filter(x=>!x[2]&&!whole(x[0])).map(x=>x[0]).concat(backRopes.filter(P=>!whole(P))).map((P,i)=>{const [,b]=ch_cutCubic(P,186);return b?ch_rope(ch_bz(b,20),w,H,H.sh,i+80,kind,{dark:1,tip:tip?ch_mix(tip,H.dk,.35):0,tipFrom:.3,openTop:1}):''}).join('');
+    return {back,cap,clumps:[],tex,xBack,xFront,xBody,xBehind,noRim:1,hatW:62+v,hatTop:16}}
+  // a wrapped headwrap with a front knot and folds (o.wrap colour, o.wrap2 pattern colour)
+  if(st==='headwrap'){
+    const outer=[[94,114],[88,86],[87,54],[96,26],[118,9],[150,4],[182,9],[204,26],[213,54],[212,86],[206,114]],lo=[[200,112],[199,92],[188,76],[150,70],[112,76],[101,92],[100,112]];
+    const cap=ch_cr(outer)+'L'+ch_P(lo[0])+ch_cr(lo,false)+'Z',back=ch_cr(outer)+'L206 134 L94 134Z',p2=o.wrap2;
+    const tex=(H,hg,id)=>{let s=ch_vol(id,0,150,60,80,H);
+      const folds=[[[96,96],[110,60],[160,40],[210,40]],[[100,104],[124,72],[170,58],[212,66]],[[92,70],[104,30],[150,14],[196,20]],[[104,110],[140,86],[180,80],[208,92]]];
+      folds.forEach((P,i)=>{const pts=ch_bz(P,16);if(p2)s+=`<path d="${ch_rib(pts,ch_swell(5,1))}" fill="${p2}" opacity=".85"/><path d="${ch_rib(pts.map(p=>[p[0],p[1]+4.2]),ch_swell(1.2,.3))}" fill="${ch_mix(p2,'#ffffff',.5)}" opacity=".7"/>`;
+        s+=`<path d="${ch_rib(pts.map(p=>[p[0],p[1]-4]),ch_swell(2.6,.2))}" fill="${H.sh}" opacity=".7"/><path d="${ch_rib(pts.map(p=>[p[0],p[1]+7]),ch_swell(1.8,.2))}" fill="${H.hi}" opacity=".45"/>`});
+      return s};
+    const xFront=(H)=>{const cx=162,cy=38,pts=[];for(let i=0;i<=16;i++){const a=i/16*Math.PI*2;pts.push([cx+Math.cos(a)*15,cy+Math.sin(a)*12])}
+      const rose=ch_scallop(pts,5,6)+'Z',sp=[];for(let k=0;k<=34;k++){const t=k/34,a=t*Math.PI*4.2,rr=1.5+t*11;sp.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8])}
+      return `<path d="M136 56 C142 48 150 44 156 46 L150 58 C146 60 140 60 136 56Z" fill="${H.sh}" stroke="${H.line}" stroke-width="2" stroke-linejoin="round"/>
+        <path d="${rose}" fill="${H.base}" stroke="${H.line}" stroke-width="2.4" stroke-linejoin="round"/><path d="${ch_pl(sp)}" stroke="${H.line}" stroke-width="1.5" fill="none" opacity=".7"/>
+        <path d="M${cx-11} ${cy-3} Q${cx-8} ${cy-10} ${cx-1} ${cy-11}" stroke="${H.hi}" stroke-width="2.2" fill="none" opacity=".7" stroke-linecap="round"/>${p2?`<path d="M${cx+6} ${cy+4} l3 2 M${cx-7} ${cy+5} l2 3" stroke="${p2}" stroke-width="2.4" stroke-linecap="round"/>`:''}`};
+    return {back,cap,clumps:[],tex,xFront,noRim:1,hatW:70,hatTop:4,wrapped:1}}
+  // natural shoulder-length coily hair: a big soft mass of defined coils framing the face
+  if(st==='coily'){const v=o.vol||0;
+    const pts=[];for(let i=0;i<=26;i++){const a=(146+248*i/26)*Math.PI/180;pts.push([150+Math.cos(a)*(80+v)*(1+.05*Math.sin(a*3)),112+Math.sin(a)*(82+v*.6)])}
+    const outer=ch_scallop(pts,12,17);
+    const hl=[[198,178],[203,140],[198,104],[184,82],[160,72],[150,74],[140,72],[116,82],[102,104],[97,140],[102,178]];
+    const cap=`${outer}L${ch_P(hl[0])}${ch_scallop(hl,7,9,false).replace(/^Q/,'L'+ch_P(hl[0])+'Q')}L${ch_P(pts[0])}Z`;
+    const back=`${outer}C${ch_P([214,200])} ${ch_P([86,200])} ${ch_P(pts[0])}Z`;
+    const tex=(H,hg,id)=>ch_vol(id,0,150,100,92,H)+ch_coils(150,112,90,96,420,3.8,H,27);
+    const behindPts=ch_bz([[86,150],[66,180],[62,220],[80,250]],8).concat(ch_bz([[220,250],[238,220],[234,180],[214,150]],8));
+    const xBehind=(H,hg,id)=>{const d=ch_scallop(behindPts,10,5)+'Z';return `<path d="${d}" fill="${H.sh}" stroke="${H.line}" stroke-width="3" stroke-linejoin="round"/><clipPath id="${id}cb"><path d="${d}"/></clipPath><g clip-path="url(#${id}cb)">${ch_coils(150,206,92,52,200,3.6,H,33,{litOp:.35})}</g>`};
+    return {back,cap,clumps:[],tex,xBehind,noRim:1,noEars:1,hatW:84,hatTop:4,big:1}}
   return null}
+// <<< more hair
 // reverse an absolute M/C path (cubic segments) so a hole winds the other way
 function ch_rev(d){const S=ch_segs(d).reverse();return `M${ch_P(S[0][3])}`+S.map(s=>`C${ch_P(s[2])} ${ch_P(s[1])} ${ch_P(s[0])}`).join('')+'Z'}
 
@@ -485,7 +800,7 @@ function ch_wrapDrape(o,G,id){const c=o.wrap||'#4f6db8',F=ch_clothPal(c),cy=G.ch
   return s}
 
 // ---------- beards ----------
-const CH_BEARDS={full:1,short:1,mustache:1};
+const CH_BEARDS={full:1,short:1,mustache:1,goatee:1,stubble:1};
 // a left-right symmetric closed path: S on x=150, then the left half as cubic segments [c1,c2,end] ending on x=150
 function ch_sym(S,segs){let d=`M${ch_P(S)}`+segs.map(s=>`C${ch_P(s[0])} ${ch_P(s[1])} ${ch_P(s[2])}`).join('');const pts=[S];segs.forEach(s=>pts.push(s[0],s[1],s[2]));
   for(let i=pts.length-1;i>=3;i-=3)d+=`C${ch_P([300-pts[i-1][0],pts[i-1][1]])} ${ch_P([300-pts[i-2][0],pts[i-2][1]])} ${ch_P([300-pts[i-3][0],pts[i-3][1]])}`;return d+'Z'}
@@ -499,6 +814,14 @@ function ch_beard(kind,G,H,sk,build,id){const R=ch_n;
       <path d="${ch_rib(ch_bz([[154,yl-1],[162,yl-1.4],[172,yl+1]],8),ch_swell(2,.3))}" fill="${H.sh}" opacity=".8"/>
       <path d="M137 ${R(y0+4)} l-3 ${R(yl-y0-4)} M143 ${R(y0+2.4)} l-1.6 ${R(yl-y0-3)} M157 ${R(y0+2.4)} l1.6 ${R(yl-y0-3)} M163 ${R(y0+4)} l3 ${R(yl-y0-4)}" stroke="${H.line}" stroke-width=".9" opacity=".45" stroke-linecap="round"/>`})();
   if(kind==='mustache')return {beard:'',stache,bottom:G.chin};
+  if(kind==='goatee'){ // mustache joined to a rounded chin beard; cheeks stay clear
+    const cb=G.chin-1,t=my+7.4,w=8.6;
+    const d=ch_sym([150,t+1],[[[146,t+.4],[141,t-.4],[150-w+1,t+1]],[[150-w-2,t+5],[150-w-1.6,cb-4],[150-w+3.4,cb+1]],[[150-w+6,cb+4.6],[146,cb+6.4],[150,cb+6.6]]]);
+    const s=`<path d="${d}" fill="${H.base}" stroke="${H.line}" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="${ch_rib(ch_bz([[152,t+4],[157,cb-2],[155,cb+4]],8),ch_swell(3.6,.3))}" fill="${H.sh}" opacity=".7"/>
+      <path d="M145 ${R(t+5)} l-1 6 M150 ${R(t+6)} l0 7 M155 ${R(t+5)} l1 6" stroke="${H.dk}" stroke-width="1" opacity=".5" stroke-linecap="round"/>
+      <path d="${ch_rib(ch_bz([[143,t+4],[142,cb-3],[146,cb+2]],8),ch_swell(1.6,.2))}" fill="${H.hi}" opacity=".45"/>`;
+    return {beard:s,stache,bottom:cb+8}}
   const nor=i=>{const a=jaw[Math.max(0,i-1)],b=jaw[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;return [-dy/l,dx/l]};
   // outer edge: tufts along the jaw, pointing down along the growth direction
   const outer=jaw.map((p,i)=>{const t=i/(n-1),N=nor(i);return [p[0]+N[0]*off(t),p[1]+N[1]*off(t)]});
@@ -515,8 +838,12 @@ function ch_beard(kind,G,H,sk,build,id){const R=ch_n;
   const x0=300-jaw[0][0]-(full?9:6),y0=jaw[0][1],cm=full?[150+19,my-3]:[150+17,my+1],ul=full?my+10:my+9;
   const inner=`L${ch_P(top0)}C${ch_P([x0-(full?1:2),G.ny-6])} ${ch_P([x0-(full?6:4),G.ny+(full?4:10)])} ${ch_P(cm)}C${ch_P([150+14,my+5])} ${ch_P([150+8,ul])} 150 ${R(ul)}C${ch_P([150-8,ul])} ${ch_P([150-14,my+5])} ${ch_P([300-cm[0],cm[1]])}C${ch_P([300-x0+(full?6:4),G.ny+(full?4:10)])} ${ch_P([300-x0+(full?1:2),G.ny-6])} ${ch_P([jaw[0][0]+(full?9:6),y0])}Z`;
   const d=dl+dr+inner;
+  if(kind==='stubble'){const r=ch_rand(9),tone=ch_mix(H.base,sk.base,.25);let dots='';
+    for(let i=0;i<120;i++){const x=104+r()*92,y=G.ny-8+r()*(G.chin-G.ny+12);dots+=`M${ch_n(x)} ${ch_n(y)}l.3 1.1`}
+    const sd=ch_sym([150,G.ny+4.5],[[[146,G.ny+3],[136,G.ny+3],[131,G.ny+7]],[[127,G.my-1],[128,G.my+2],[136,G.my+1]],[[143,G.my-1.4],[148,G.my-1.8],[150,G.my-2]]]);
+    return {beard:`<clipPath id="${id}bd"><path d="${d}"/><path d="${sd}"/></clipPath><g clip-path="url(#${id}f)"><g clip-path="url(#${id}bd)"><rect x="90" y="${G.ny-20}" width="120" height="80" fill="${tone}" opacity=".26"/><path d="${dots}" stroke="${H.dk}" stroke-width="1" opacity=".42" stroke-linecap="round"/></g></g>`,stache:'',bottom:G.chin}}
   let s=`<clipPath id="${id}bd"><path d="${d}"/></clipPath><path d="${d}" fill="${H.base}" stroke="${H.line}" stroke-width="${full?2.6:2}" stroke-linejoin="round"${full?'':' opacity=".92"'}/>`;
-  s+=`<g clip-path="url(#${id}bd)"><path d="M${150+18} ${my+4} C${150+30} ${my+2} ${150+44} ${G.ny-10} ${x0+4} ${y0} L${x0+30} ${y0} L${x0+30} ${G.chin+40} L150 ${G.chin+40}Z" fill="${H.sh}" opacity=".7"/>`;
+  s+=`<g clip-path="url(#${id}bd)"><path d="M${150+18} ${my+4} C${150+30} ${my+2} ${150+44} ${G.ny-10} ${x0+4} ${y0} L${x0+30} ${y0} L${x0+30} ${R(G.chin+off(1)+4)} L150 ${R(G.chin+off(1)+4)}Z" fill="${H.sh}" opacity=".7"/>`;
   const strands=full?[.1,.3,.5,.7,.9]:[.2,.5,.8];
   for(const f of strands)for(const sd of [-1,1]){const i=Math.round(f*(n-1)),p=jaw[i],N=nor(i),q=[p[0]+N[0]*off(f)*.85,p[1]+N[1]*off(f)*.85],a=[p[0]-N[0]*(full?5:3),p[1]-N[1]*(full?5:3)];
     const A=sd<0?a:[300-a[0],a[1]],B=sd<0?q:[300-q[0],q[1]];s+=`<path d="${ch_rib(ch_bz([A,[(A[0]+B[0])/2+sd*1.5,(A[1]+B[1])/2],B],8),ch_swell(full?1.4:1,.15))}" fill="${f<.5&&sd<0?H.hi:H.dk}" opacity="${f<.5&&sd<0?.45:.5}"/>`}
@@ -727,20 +1054,22 @@ function ch_outfit2(kind,o,G,sk,id,build,neckG){const B=ch_bust(build),nx=B.nx,L
 // posedPerson() reuses the head and hair. P is only for posed figures: {eye: eye size factor, lash: lash and brow weight, mouth: mouth scale}.
 function ch_personKit(o,P){o=o||{};P=P||{};
   const id='ch'+(++CH_N),st=({buzz:'short',pony:'ponytail',curly:'curls',dreads:'locs',dreadlocks:'locs',hijab:'headscarf',shaved:'bald'})[o.hairStyle]||o.hairStyle||'short',kid=o.age==='kid',old=o.age==='elder';
-  const masc=o.masc!=null?!!o.masc:((st==='short'||st==='bald'||!!CH_BEARDS[o.beard])&&!kid),build=kid?'K':masc?'M':'F',G=(CH_FACESHAPE[build]&&CH_FACESHAPE[build][o.faceShape])?{...CH_FACE[build],face:CH_FACESHAPE[build][o.faceShape]}:CH_FACE[build];
-  const Hh=ch_hairPal(o.hair||(old?'#d9d6e2':'#2a211c')),wrap=st==='headscarf';
+  const masc=o.masc!=null?!!o.masc:((st==='short'||st==='bald'||!!CH_BEARDS[o.beard])&&!kid),build=kid?'K':masc?'M':'F',G=ch_faceGeom((CH_FACEPATH[build]&&CH_FACEPATH[build][o.faceShape])?{...CH_FACE[build],face:CH_FACEPATH[build][o.faceShape]}:CH_FACE[build],o.face,build);
+  const Hh=ch_hairPal(o.hair||(old?'#d9d6e2':'#2a211c')),wrap=st==='headscarf'||st==='headwrap';
   const md=CH_MOODS[o.mood]||CH_MOODS.smile,sk=ch_skinPal(o.skin||'#f2cdb4'),H=wrap?ch_fabricPal(o.wrap||'#4f6db8'):Hh,HS=ch_hairStyle(st,G,o);
   const iris=o.eye||'#7a4a2e',elder=st==='elder'||old,PE=P.eye||1,PL=P.lash||1;
   const E={ew:G.ew*PE,eh:(elder?G.eh*.82:G.eh)*PE,irx:G.irx*PE,iry:G.iry*PE,lash:G.lash*PL,wing:G.wing,brow:G.brow*PL,kid,lid:md.lid,look:md.look||[0,0],worry:md.worry,tear:md.fx==='tear',
     lashC:ch_mix(Hh.dk,'#1a0810',.5),skinLine:sk.line,white:'#ffffff',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
   {const ES=CH_EYESHAPE[o.eyeShape];if(ES){E.ew*=ES.w;E.eh*=ES.h;E.irx*=ES.ir;E.iry*=ES.ir;E.shape=ES}}
-  const ey=G.ey,ex=G.ex,browY=ey-E.eh/2+G.by,browC=ch_mix(Hh.dk,sk.line,.3);
+  {const z=typeof o.eyeSize==='number'?o.eyeSize:CH_EYESIZE[o.eyeSize];if(z){E.ew*=z;E.eh*=z;E.irx*=z;E.iry*=z}}
+  const ey=G.ey,ex=G.ex+(({close:-2.2,wide:2.6})[o.eyeSet]||0),browY=ey-E.eh/2+G.by,browC=o.browColor||ch_mix(Hh.dk,sk.line,.3),BS=ch_browStyle(o.brows);
   const acc=ch_accSet(o.accessory),hat=acc.hardhat?'hardhat':acc.beanie?'beanie':'';
   const bs=CH_BROWS[md.brow],bL=Array.isArray(bs[0])?bs[0]:bs,bR=Array.isArray(bs[0])?bs[1]:bs;
-  const brows=ch_brow(150-ex,browY,-1,bL,E,browC)+ch_brow(150+ex,browY,1,bR,E,browC);
+  const brows=ch_brow(150-ex,browY,-1,bL,E,browC,BS)+ch_brow(150+ex,browY,1,bR,E,browC,BS);
   const earL=`M99 ${G.ear} C91 ${G.ear-5} 85 ${G.ear+2} 86.5 ${G.ear+13} C88 ${G.ear+24} 92 ${G.ear+33} 100 ${G.ear+35}Z`,earIn=`M95 ${G.ear+7} C90.5 ${G.ear+9} 90.5 ${G.ear+18} 94 ${G.ear+25}`;
-  const ears=HS.noEars?'':`<path d="${earL}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.2"/><path d="${ch_mx(earL,150)}" fill="${sk.sh}" stroke="${sk.line}" stroke-width="2.2"/>
-    <path d="${earIn}" stroke="${sk.line}" stroke-width="1.3" fill="none" opacity=".7"/><path d="${ch_mx(earIn,150)}" stroke="${sk.line}" stroke-width="1.3" fill="none" opacity=".7"/>`;
+  const eDx=G.earDx||0,earT=eDx?` transform="translate(${eDx} 0)"`:'',earTR=eDx?` transform="translate(${-eDx} 0)"`:'';
+  const ears=HS.noEars?'':`<g${earT}><path d="${earL}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.2"/><path d="${earIn}" stroke="${sk.line}" stroke-width="1.3" fill="none" opacity=".7"/></g>
+    <g${earTR}><path d="${ch_mx(earL,150)}" fill="${sk.sh}" stroke="${sk.line}" stroke-width="2.2"/><path d="${ch_mx(earIn,150)}" stroke="${sk.line}" stroke-width="1.3" fill="none" opacity=".7"/></g>`;
   // hair layers
   const hg=`url(#${id}hg)`,cl=HS.clumps,hairShapes=[HS.cap].concat(cl.map(c=>c.d));
   const outlinePass=`<g fill="${H.line}" stroke="${H.line}" stroke-width="3.6" stroke-linejoin="round">${hairShapes.map(d=>`<path d="${d}"/>`).join('')}</g>`;
@@ -753,7 +1082,7 @@ function ch_personKit(o,P){o=o||{};P=P||{};
     clumps+=`<path d="${ch_rib(ch_sub(ch_bz(c.a,14),.42,1),ch_tap(.2,1.6,.5))}" fill="${H.line}"/><path d="${ch_rib(ch_sub(ch_bz(c.b,14),0,.58),ch_tap(.5,1.6,.2))}" fill="${H.line}"/>`});
   const hairClip=`<clipPath id="${id}hc">${hairShapes.map(d=>`<path d="${d}"/>`).join('')}</clipPath>`;
   const rim=ch_chain([[[96,128],[92,96],[104,58],[136,42]]],16);
-  const shine=`<g clip-path="url(#${id}hc)">${HS.shine?ch_shine(HS.shine,H):''}${HS.tex?HS.tex(H,hg):''}${HS.noRim?'':`<path d="${ch_rib(rim,ch_swell(3.4,.4))}" fill="${H.hi}" opacity=".42" transform="translate(3 2)"/>`}</g>`;
+  const shine=`<g clip-path="url(#${id}hc)">${HS.shine?ch_shine(HS.shine,H):''}${HS.tex?HS.tex(H,hg,id):''}${o.hairTips&&HS.parted?`<rect x="62" y="60" width="176" height="150" fill="url(#${id}tp)"/>`:''}${HS.noRim?'':`<path d="${ch_rib(rim,ch_swell(3.4,.4))}" fill="${H.hi}" opacity=".42" transform="translate(3 2)"/>`}</g>`;
   let extraBack=HS.xBack?HS.xBack(H,hg,id):'',extraFront=HS.xFront?HS.xFront(H,hg,id):'';
   if(HS.bun){extraBack+=ch_bun(150,24,27,H,hg,id);
     const td=ch_chain([[[102,98],[92,106],[96,116],[103,118]],[[103,118],[109,120],[103,132],[96,132]],[[96,132],[89,132],[92,146],[99,148]],[[99,148],[104,150],[101,160],[96,162]]],8);
@@ -769,19 +1098,15 @@ function ch_personKit(o,P){o=o||{};P=P||{};
   const R=build==='M'?204:202;
   const HT=hat?ch_hat(hat,o,HS,id):null;
   const hairSh=`<g clip-path="url(#${id}f)"><g fill="${sk.sh}">${(HT?hairShapes.concat([HT.shape]):hairShapes).map(d=>`<path d="${ch_tr(d,2.5,6.5)}"/>`).join('')}</g>
-     <path d="M${R-1} 96 C${R+1} 124 ${R-3} 148 ${R-12} 166 C${R-20} 180 ${R-34} 190 ${R-50} 194 L${R+10} 200 L${R+10} 90Z" fill="${sk.sh}"/>
+     <path d="M${R-1} 96 C${R+1} 124 ${R-3} 148 ${R-12} 166 C${R-20} ${G.chin-11} ${R-34} ${G.chin-1} ${R-50} ${G.chin+3} L${R+10} ${G.chin+12} L${R+10} 90Z" fill="${sk.sh}"/>
      <path d="M${R-6} 104 C${R-6} 128 ${R-9} 146 ${R-16} 160 C${R-22} 172 ${R-30} 180 ${R-38} 186 C${R-26} 182 ${R-16} 172 ${R-10} 160 C${R-4} 146 ${R-2} 126 ${R-2} 104Z" fill="${sk.sh}"/>
      ${build!=='K'?`<path d="M${150-ex+12} ${ey-12} C${150-ex+15} ${ey-6} ${150-ex+16} ${ey-1} ${150-ex+15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.2" fill="none" opacity=".7"/><path d="M${150+ex-12} ${ey-12} C${150+ex-15} ${ey-6} ${150+ex-16} ${ey-1} ${150+ex-15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.6" fill="none" opacity=".9"/>`:''}
 </g>`;
   const ny=G.ny,my=G.my,big=build==='M';
-  const nose=`<path d="${ch_rib(ch_bz([[153.5,ny-(big?26:20)],[155.5,ny-10],[155.2,ny-2]],8),ch_tap(.4,big?1.8:1.3,.6))}" fill="${sk.sh}"/>
-    <path d="M153 ${ny-4} Q158 ${ny-.5} 155.4 ${ny+3.4} Q153.4 ${ny+1.4} 151.6 ${ny+1.2}Z" fill="${sk.sh}"/>
-    <path d="${ch_rib(ch_bz([[146,ny+1],[150,ny+3.6],[155,ny+.4]],8),ch_swell(big?1.8:1.4,.3))}" fill="${sk.line}" opacity=".9"/>
-    ${big?`<path d="M144.6 ${ny-1.6} Q144 ${ny+1} 146 ${ny+1.6}" stroke="${sk.line}" stroke-width="1" fill="none" opacity=".6"/>`:''}
-    <ellipse cx="148.4" cy="${ny-3.4}" rx="1.4" ry="2.4" fill="${sk.hi}" opacity=".9"/>`;
+  const nose=ch_nose(o.nose,ny,big,sk);
   const closed=md.mouth!=='happy'&&md.mouth!=='o';
   const lipSh=(closed?`<path d="M145 ${my+8} Q150 ${my+10} 155 ${my+8} Q150 ${my+8.8} 145 ${my+8}Z" fill="${sk.sh}" stroke="${sk.sh}" stroke-width="1.4"/>`:'')+
-    (build==='F'&&closed?`<path d="M141.5 ${my+1.8} Q150 ${my+8.4} 158.5 ${my+1.8} Q150 ${my+5} 141.5 ${my+1.8}Z" fill="${sk.lip}" opacity=".8"/><ellipse cx="147" cy="${my+4.6}" rx="2.2" ry=".9" fill="#fff" opacity=".3"/>`:'');
+    (build==='F'&&closed&&o.lips!=='full'&&o.lips!=='thin'?`<path d="M141.5 ${my+1.8} Q150 ${my+8.4} 158.5 ${my+1.8} Q150 ${my+5} 141.5 ${my+1.8}Z" fill="${sk.lip}" opacity=".8"/><ellipse cx="147" cy="${my+4.6}" rx="2.2" ry=".9" fill="#fff" opacity=".3"/>`:'');
   const blushOp=Math.min(1,(md.fx==='sparkle'?.75:.5)*(kid?1.15:build==='M'?.45:.75)*(ch_lum(sk.base)<.12?.6:1)*(o.blush||1));
   const blush=`<ellipse cx="${150-ex-4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/><ellipse cx="${150+ex+4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/>`+
     (kid?[-1,1].map(s=>[0,1,2].map(j=>`<path d="M${ch_n(150+s*(ex+4)-6+j*5)} ${ey+22} l3 -5" stroke="${sk.blush}" stroke-width="1.1" opacity=".55" stroke-linecap="round"/>`).join('')).join(''):'');
@@ -793,7 +1118,9 @@ function ch_personKit(o,P){o=o||{};P=P||{};
       <path d="M${x1+18} ${y-5} Q150 ${y-10} ${x2-18} ${y-5}" stroke="${fc}" stroke-width="1.9" fill="none"/>
       <path d="M${x1-14} ${y-10} L${x1+14} ${y-10.2}" stroke="${ch_mix(fc,'#ffffff',.5)}" stroke-width=".8" opacity=".8"/><path d="M${x2-14} ${y-10.2} L${x2+14} ${y-10}" stroke="${ch_mix(fc,'#ffffff',.5)}" stroke-width=".8" opacity=".8"/>
       <path d="M${x1-12} ${y+6} L${x1-4} ${y-7} M${x2+6} ${y+6} L${x2+13} ${y-6}" stroke="#fff" stroke-width="2.2" opacity=".26" stroke-linecap="round"/>`})():'';
-  const earring=acc.earring?`<circle cx="91" cy="${G.ear+40}" r="4.6" fill="none" stroke="#e8b84a" stroke-width="1.9"/><circle cx="209" cy="${G.ear+40}" r="4.6" fill="none" stroke="#c8962e" stroke-width="1.9"/><circle cx="89.6" cy="${G.ear+36.6}" r="1" fill="#fff6c8"/>`:'';
+  const earring=acc.earring?`<circle cx="${91+eDx}" cy="${G.ear+40}" r="4.6" fill="none" stroke="#e8b84a" stroke-width="1.9"/><circle cx="${209-eDx}" cy="${G.ear+40}" r="4.6" fill="none" stroke="#c8962e" stroke-width="1.9"/><circle cx="${89.6+eDx}" cy="${G.ear+36.6}" r="1" fill="#fff6c8"/>`
+    :acc.stud?`<circle cx="${92+eDx}" cy="${G.ear+31}" r="2.3" fill="#f2f4fa" stroke="#8a93ad" stroke-width=".9"/><circle cx="${208-eDx}" cy="${G.ear+31}" r="2.3" fill="#e2e6f0" stroke="#8a93ad" stroke-width=".9"/>`:'';
+  const skinX=(o.freckles?ch_freckles(ex,ey,sk,o.freckles===true?5:o.freckles):'')+(o.mole?ch_mole(o.mole,G,ex,ey,sk):'');
   let fx='';
   if(md.fx==='sparkle')fx=ch_star(226,70,9,'#ffd45c','stroke="#fff" stroke-width="1"')+ch_star(240,92,5,'#fff')+ch_star(70,76,6,'#ffe9a0');
   if(md.fx==='sweat')fx=`<path d="M211 96 C215 106 218 112 218 117 C218 122 214 125 210.5 125 C207 125 203 122 203.5 117 C204 112 207 106 211 96Z" fill="#bfe8ff" stroke="#4a9ad8" stroke-width="1.6"/><path d="M207.5 116 Q207.5 120 210 121.5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
@@ -804,7 +1131,7 @@ function ch_personKit(o,P){o=o||{};P=P||{};
     <linearGradient id="${id}hg" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="${kid?330:220}"><stop offset="0" stop-color="${H.top}"/><stop offset=".3" stop-color="${H.base}"/><stop offset="1" stop-color="${H.sh}"/></linearGradient>
     <linearGradient id="${id}hs" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="220"><stop offset="0" stop-color="${H.base}"/><stop offset="1" stop-color="${H.dk}"/></linearGradient>
     <radialGradient id="${id}fl" gradientUnits="userSpaceOnUse" cx="128" cy="120" r="78"><stop offset="0" stop-color="${sk.hi}" stop-opacity=".5"/><stop offset=".55" stop-color="${sk.hi}" stop-opacity=".12"/><stop offset="1" stop-color="${sk.hi}" stop-opacity="0"/></radialGradient>
-    <radialGradient id="${id}b"><stop offset="0" stop-color="${sk.blush}"/><stop offset="1" stop-color="${sk.blush}" stop-opacity="0"/></radialGradient>
+    ${o.hairTips?`<linearGradient id="${id}tp" gradientUnits="userSpaceOnUse" x1="0" y1="${o.tipFrom||96}" x2="0" y2="${(o.tipFrom||96)+34}"><stop offset="0" stop-color="${o.hairTips}" stop-opacity="0"/><stop offset="1" stop-color="${o.hairTips}" stop-opacity=".8"/></linearGradient>`:''}<radialGradient id="${id}b"><stop offset="0" stop-color="${sk.blush}"/><stop offset="1" stop-color="${sk.blush}" stop-opacity="0"/></radialGradient>
     <radialGradient id="${id}m" cx=".35" cy=".3"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#c9d0e2"/><stop offset="1" stop-color="#8a94b0"/></radialGradient>${faceClip}${hairClip}</defs>`;
   let body=ch_outfit(o,G,sk,id,build)+ch_neckAcc(acc,o,G,sk,id,build)+(HS.wrapDrape?ch_wrapDrape(o,G,id):''),hairBody='';
   if(st==='braids'){const tie=o.clip||'#ff7a6b';hairBody+=ch_braid(104,198,96,306,H,hg,tie,-1)+ch_braid(196,198,204,306,H,hg,tie,1)}
@@ -815,15 +1142,16 @@ function ch_personKit(o,P){o=o||{};P=P||{};
   const ageLines=(elder||build==='M')?`<path d="M${150-ex-6} ${ey+9} Q${150-ex+2} ${ey+12} ${150-ex+9} ${ey+9}" stroke="${sk.line}" stroke-width="1" opacity="${elder?.5:.28}" fill="none" stroke-linecap="round"/><path d="M${150+ex+6} ${ey+9} Q${150+ex-2} ${ey+12} ${150+ex-9} ${ey+9}" stroke="${sk.line}" stroke-width="1" opacity="${elder?.5:.28}" fill="none" stroke-linecap="round"/>`+
     (elder?`<path d="M${150-ex-17} ${ey+1} l-5 -2 M${150-ex-17} ${ey+5} l-5 1 M${150+ex+17} ${ey+1} l5 -2 M${150+ex+17} ${ey+5} l5 1 M127 ${my-8} Q123 ${my} 127 ${my+6} M173 ${my-8} Q177 ${my} 173 ${my+6}" stroke="${sk.line}" stroke-width="1.1" opacity=".5" fill="none" stroke-linecap="round"/>`:''):'';
   const wrinkles=old?ch_wrinkles(G,sk,ex,ey,my,build):'',scalp=HS.bald?ch_scalp(G,sk,id):'';
+  const LP={w:({thin:.92,full:1.06,wide:1.1,small:.88})[o.lips]||1,lips:o.lips,dimples:o.dimples,masc:build==='M',lipC:o.lipColor||ch_mix(sk.lip,sk.sh2,ch_lum(sk.base)<.2?.18:.1)};
   const BD=CH_BEARDS[o.beard]?ch_beard(o.beard,G,Hh,sk,build,id):null,mouthT=P.mouth?` transform="translate(150 ${my}) scale(${P.mouth}) translate(-150 ${-my})"`:'';
   const hairFront=`${outlinePass}<path d="${HS.cap}" fill="${hg}"/>${clumps}${shine}${extraFront}`;
   let head1=`<path d="${HS.back}" fill="${H.dk}" stroke="${H.line}" stroke-width="3.2"/>${extraBack}`;if(HT)head1=`<g clip-path="url(#${id}hat)">${head1}</g>`;
   const head2=`${ears}
     <path d="${G.face}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.6"/><path d="${G.face}" fill="url(#${id}fl)"/>
-    ${hairSh}${scalp}${blush}${nose}${lipSh}${ageLines}${wrinkles}${BD?BD.beard:''}${brows}
+    ${hairSh}${scalp}${blush}${skinX}${nose}${lipSh}${ageLines}${wrinkles}${BD?BD.beard:''}${brows}
     ${md.lid!=='closed'?[-1,1].map(o=>{const cx=150+o*ex,w=E.ew,h=E.eh;return `<path d="${ch_rib(ch_bz([[cx-o*w*.4,ey+h*.02],[cx+o*w*.05,ey+h*.3],[cx+o*w*.44,ey-h*.04]],12),ch_tap(.8,2.4,1.6))}" fill="${E.lashC}"/>`}).join(''):''}
     <g class="p-eyes">${ch_eye(150-ex,ey,-1,E,id,0)}${ch_eye(150+ex,ey,1,E,id,1)}</g>
-    <g class="p-mouth" data-m="${md.mouth}"${mouthT}>${ch_mouth(md.mouth,my,kid,sk,build==='M')}</g>
+    <g class="p-mouth" data-m="${md.mouth}"${mouthT}>${ch_mouth(md.mouth,my,kid,sk,build==='M',LP)}</g>
     ${BD?BD.stache:''}${gl}${earring}
     ${HT?`<g clip-path="url(#${id}hat)">${hairFront}</g>${HT.svg}`:hairFront}<g opacity=".42">${brows}</g>${fx}`;
   return {id,o,st,kid,old,elder,build,G,sk,H,Hh,HS,md,acc,defs:HT?defs.replace('</defs>',HT.defs+'</defs>'):defs,behind,body,hairBody,head1,head2,

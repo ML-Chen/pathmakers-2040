@@ -35,11 +35,11 @@ MISSIONS.treatytalks={id:'treatytalks',title:'Trust, Then Check',career:'lawmake
     {name:'bj_debrief',k:'custom'},
     {name:'bj_evening',k:'evening'}],
   cast:{
-    hanyw:{name:'Han Yuewen',role:'Lead delegate for China, treaty talks',skin:'#f0cfb4',hair:'#5a545e',hairStyle:'bun',eyeShape:'almond',glasses:true,frame:'#8a2a3a',eye:'#2a1a14',
+    hanyw:{name:'Han Yuewen',role:'Lead delegate for China, treaty talks',brows:'thin',face:'oval',skin:'#f0cfb4',hair:'#5a545e',hairStyle:'bun',eyeShape:'almond',glasses:true,frame:'#8a2a3a',eye:'#2a1a14',
       outfit:'mandarin',shirt:'#2f5a66',trim:'#e6c674',accessory:'earring',art(m){return zhArt(this,m,{chest:bjJadePin(112,262)})}},
-    zhaomy:{name:'Zhao Mingyu',role:'Treaty inspector, Beijing team',skin:'#ecc6a4',hair:'#141012',hairStyle:'short',masc:true,eyeShape:'mono',eye:'#24160e',
+    zhaomy:{name:'Zhao Mingyu',role:'Treaty inspector, Beijing team',eyeSize:'small',brows:'thick',nose:'button',face:'square',skin:'#ecc6a4',hair:'#141012',hairStyle:'short',masc:true,eyeShape:'mono',eye:'#24160e',
       outfit:'sweater',shirt:'#d89a3a',glasses:true,frame:'#3a3a4a',art(m){return zhArt(this,m,{chest:bjBadge(196,300)})}},
-    qiaoye:{name:'Qiao Shoucheng',role:'Keeps the tea stand by the courtyard gate',skin:'#e6bc98',hair:'#e8e6ee',hairStyle:'bald',beard:'short',age:'elder',masc:true,eyeShape:'hooded',eye:'#2a1a10',
+    qiaoye:{name:'Qiao Shoucheng',role:'Keeps the tea stand by the courtyard gate',brows:'bushy',face:'round',skin:'#e6bc98',hair:'#e8e6ee',hairStyle:'bald',beard:'short',age:'elder',masc:true,eyeShape:'hooded',eye:'#2a1a10',
       outfit:'cardigan',shirt:'#5a6a7a',under:'#f2efe6'}
   },
   voices:{hanyw:'af_aoede',zhaomy:'am_puck',qiaoye:'elder_man'},

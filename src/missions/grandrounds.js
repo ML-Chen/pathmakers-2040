@@ -10,7 +10,7 @@ const GR_B=t=>({who:'byte',text:t}),GR_T=t=>({who:'owen',text:t}),GR_I=t=>({who:
 MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:9,dayLabel:'Big talk',kind:'bigtalk',promotes:'pro',rank:'trainee',district:'boston',year:1,
   blurb:'Tell the whole hospital about one of your cases, and answer one tough question.',after:['hired'],place:'Boston Harbor Hospital',
   flow:[{name:'g-prep',k:'talkprep',music:'work'},{name:'g-stage',k:'bigtalk',music:'hospital'},{name:'g-promo',k:'promotion',music:'win'}],
-  cast:{owen:{name:'Dr. Owen Hale',role:'Care Doctor, Boston Harbor Hospital',skin:SKIN[1],hair:'#1a1416',hairStyle:'short',shirt:'#5b9bf0',coat:true,masc:true}},
+  cast:{owen:{name:'Dr. Owen Hale',role:'Care Doctor, Boston Harbor Hospital',nose:'button',eyeShape:'round',face:'oval',skin:SKIN[1],hair:'#6b4428',hairStyle:'pixie',shirt:'#5b9bf0',coat:true,masc:true}},
   voices:{owen:'am_eric'},
   glossary:{'grand rounds':'A meeting where a doctor tells other doctors about a real case, so everyone learns from it.',
     accountable:'Responsible for a decision, so you have to explain it and answer for how it turns out.'},

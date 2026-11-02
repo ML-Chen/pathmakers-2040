@@ -218,13 +218,13 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
   blurb:'It’s your day off. Take the ferry to the memorial garden in Varrow.',after:['maya'],
   place:'Lantern Garden · Varrow',
   cast:{
-    qygus:{name:'Gus Barros',role:'Keeper of the Lantern Garden',skin:SKIN[2],hair:'#e8e4ee',hairStyle:'short',masc:true,shirt:'#3f8f6b',glasses:true,art(m){return qyGusArt(this,m)}},
-    qyana:{name:'Ana Ribeiro',role:'Was 14 in the Quiet Year',skin:SKIN[1],hair:'#7a4a2a',hairStyle:'long',shirt:'#ff8a7a'},
-    qykwame:{name:'Kwame Mensah',role:'Baker on Harbor Street',skin:SKIN[5],hair:'#141010',hairStyle:'buzz',masc:true,shirt:'#f5b82e',art(m){return qyKwameArt(this,m)}},
-    qypriya:{name:'Dr. Priya Nair',role:'Engineer, built the first water tester',skin:SKIN[3],hair:'#1a1414',hairStyle:'bun',shirt:'#16b3a6',glasses:true,accessory:'earring'},
-    qynoor:{name:'Noor Haddad',role:'DNA screener, Varrow print shop',skin:SKIN[2],hair:'#2a1c16',hairStyle:'short',masc:false,shirt:'#6c5ce7',accessory:'earring'},
-    qysam:{name:'Sam Brennan',role:'Nurse, Varrow General',skin:SKIN[0],hair:'#c9772d',hairStyle:'short',masc:true,shirt:'#5fc9bd',art(m){return qySamArt(this,m)}},
-    qyivy:{name:'Ivy Torres',role:'Was 7 in the Quiet Year',skin:SKIN[2],hair:'#3a2418',hairStyle:'braids',clip:'#7fd8c8',shirt:'#a99bff'}},
+    qygus:{name:'Gus Barros',role:'Keeper of the Lantern Garden',brows:'bushy',nose:'broad',eyeShape:'downturned',age:'elder',face:'round',beard:'mustache',skin:SKIN[2],hair:'#e8e4ee',hairStyle:'slick',masc:true,shirt:'#3f8f6b',glasses:true,art(m){return qyGusArt(this,m)}},
+    qyana:{name:'Ana Ribeiro',role:'Was 14 in the Quiet Year',eyeShape:'upturned',face:'oval',freckles:true,skin:SKIN[1],hair:'#8a4a2a',hairStyle:'wavy',shirt:'#ff8a7a'},
+    qykwame:{name:'Kwame Mensah',role:'Baker on Harbor Street',lips:'full',nose:'broad',eyeShape:'round',face:'round',beard:'short',skin:'#3f2517',hair:'#141010',hairStyle:'fade',masc:true,shirt:'#f5b82e',art(m){return qyKwameArt(this,m)}},
+    qypriya:{name:'Dr. Priya Nair',role:'Engineer, built the first water tester',lips:'full',mole:'left',eyeShape:'almond',nose:'long',face:'oval',skin:SKIN[3],hair:'#1a1414',hairStyle:'middle',shirt:'#16b3a6',glasses:true,accessory:'earring'},
+    qynoor:{name:'Noor Haddad',role:'DNA screener, Varrow print shop',face:'heart',brows:'thick arched',nose:'hooked',eyeShape:'almond',skin:SKIN[2],hair:'#4a2a1c',hairStyle:'shag',masc:false,shirt:'#6c5ce7',accessory:'earring'},
+    qysam:{name:'Sam Brennan',role:'Nurse, Varrow General',face:'long',freckles:true,skin:SKIN[0],hair:'#c9772d',hairStyle:'crew',masc:true,shirt:'#5fc9bd',art(m){return qySamArt(this,m)}},
+    qyivy:{name:'Ivy Torres',role:'Was 7 in the Quiet Year',nose:'button',lips:'full',eyeSize:'large',face:'heart',skin:'#8a5634',hair:'#2c1e1a',hairStyle:'bantu',shirt:'#a99bff'}},
   // elder_man_deep: am_onyx, slower and lower (ROLES in tools/make_audio.py)
   voices:{qygus:'elder_man_deep',qyana:'af_nova',qykwame:'bm_daniel',qypriya:'af_river',qynoor:'af_heart',qysam:'am_puck',qyivy:'bf_alice'},
   glossary:{

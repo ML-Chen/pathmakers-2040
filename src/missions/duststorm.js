@@ -36,9 +36,9 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
     {name:'ds_consent',k:'consent'},{name:'ds_memo',k:'memo'},{name:'ds_night',k:'custom',music:'table'},
     {name:'ds_debrief',k:'debrief'},{name:'ds_evening',k:'evening'}],
   cast:{
-    lucia:{name:'Lucía Prado',role:'Botanist · greenhouse lead',skin:'#d8a080',hair:'#3a2418',hairStyle:'curls',eye:'#5a3418',accessory:'earring',
+    lucia:{name:'Lucía Prado',role:'Botanist · greenhouse lead',nose:'soft',lips:'full',freckles:true,eyeShape:'round',face:'heart',skin:'#b07850',hair:'#3a2418',hairStyle:'coily',eye:'#5a3418',accessory:'earring',
       space:'jumper',shirt:'#6f9a72',trim:'#e8b84a',leafpin:true,get art(){return typeof SC_CAST_ART!=='undefined'?SC_CAST_ART(this):undefined}},
-    devr:{name:'Dev Raman',role:'Engineer · rover driver',skin:'#a8704c',hair:'#2a2424',hairStyle:'short',beard:'mustache',masc:true,eye:'#2a1a10',accessory:'beanie',hatColor:'#3a6a8a',
+    devr:{name:'Dev Raman',role:'Engineer · rover driver',eyeShape:'deep',brows:'bushy',nose:'long',face:'round',skin:'#a8704c',hair:'#2a2424',hairStyle:'short',beard:'mustache',masc:true,eye:'#2a1a10',accessory:'beanie',hatColor:'#3a6a8a',
       space:'suit',shirt:'#e8783a',trim:'#3a4a6a',patch:'#3a4a6a',get art(){return typeof SC_CAST_ART!=='undefined'?SC_CAST_ART(this):undefined}},
     delta:{name:'Delta',role:'Outpost AI · Jezero Station',get art(){return typeof deltaArt==='function'?m=>deltaArt(m):undefined}}
   },

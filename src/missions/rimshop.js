@@ -47,9 +47,9 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
     {name:'rim_criteria',k:'criteria'},{name:'rim_table',k:'table'},{name:'rim_consent',k:'consent'},{name:'rim_memo',k:'memo'},
     {name:'rim_reveal',k:'reveal'},{name:'rim_debrief',k:'debrief'},{name:'rim_evening',k:'evening'}],
   cast:{
-    haruto:{name:'Haruto Mori',role:'Copy monitor and tea-corner host',skin:'#ecc8a4',hair:'#dcdae2',hairStyle:'bald',beard:'short',masc:true,age:'elder',eye:'#3a2a1e',glasses:true,frame:'#4a3420',
+    haruto:{name:'Haruto Mori',role:'Copy monitor and tea-corner host',eyeShape:'hooded',brows:'bushy',face:'long',skin:'#ecc8a4',hair:'#dcdae2',hairStyle:'bald',beard:'short',masc:true,age:'elder',eye:'#3a2a1e',glasses:true,frame:'#4a3420',
       space:'jumper',shirt:'#56688a',trim:'#d4a85a',scarf:'#b8483a',badge:true,get art(){return typeof SC_CAST_ART!=='undefined'?SC_CAST_ART(this):undefined}},
-    ada:{name:'Ada Marchetti-Obi',role:'Age 12 · lives at the base',skin:'#8a5a3c',hair:'#1a1012',hairStyle:'afro',age:'kid',eye:'#3a2016',
+    ada:{name:'Ada Marchetti-Obi',role:'Age 12 · lives at the base',face:'heart',freckles:true,clip:'#2aa89a',skin:'#a87048',hair:'#3a2418',hairStyle:'puffs',age:'kid',eye:'#3a2016',
       space:'suit',shirt:'#ffd45c',trim:'#2aa89a',patch:'#18a058',sticker:true,get art(){return typeof SC_CAST_ART!=='undefined'?SC_CAST_ART(this):undefined}},
     till:{name:'Till',role:'Shop AI · your booth',get art(){return typeof tillArt==='function'?m=>tillArt(m):undefined}}
   },

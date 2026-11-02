@@ -22,9 +22,9 @@ const GLOSSARY={
 };
 
 const CAST={
-  imani:{name:'Dr. Imani Reyes',role:'Chief of Care, Boston Harbor Hospital',skin:SKIN[4],hair:'#1b1410',hairStyle:'bun',shirt:'#16b3a6',coat:true,glasses:true,accessory:'earring'},
+  imani:{name:'Dr. Imani Reyes',role:'Chief of Care, Boston Harbor Hospital',eye:'#5a3420',brows:'arched',lips:'full',nose:'broad',eyeShape:'almond',face:'oval',clip:'#e8b84a',skin:'#7f4e2e',hair:'#2c1e1a',hairStyle:'puff',shirt:'#16b3a6',coat:true,glasses:true,accessory:'earring'},
   maya:{name:'Maya Lin',role:'Patient, age 11',skin:SKIN[1],hair:'#1d1512',hairStyle:'braids',shirt:'#ff7a6b',age:'kid',cast:false},
-  dad:{name:'Wei Lin',role:'Maya’s dad',skin:SKIN[1],hair:'#2a211c',hairStyle:'buzz',shirt:'#5b7bd5',glasses:false},
+  dad:{name:'Wei Lin',role:'Maya’s dad',brows:'straight',nose:'straight',eyeShape:'mono',face:'long',masc:true,skin:SKIN[1],hair:'#221c22',hairStyle:'sidepart',shirt:'#5b7bd5',glasses:false},
   halo:{name:'Halo',role:'The hospital’s operations AI'}
 };
 

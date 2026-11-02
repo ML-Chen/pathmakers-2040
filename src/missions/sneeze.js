@@ -126,9 +126,9 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   },
   cast:{
     // no two of them share a silhouette: long hair and glasses, a broad man with short hair, a bun and gold hoops
-    lena:{name:'Lena Park',role:'Biosecurity screener, Health Harbor',skin:SKIN[3],hair:'#15110f',hairStyle:'long',shirt:'#f5b82e',glasses:true,frame:'#2b6f6a',eye:'#5a3a22'},
-    tomas:{name:'Tomás Ferreira',role:'Owner, Harbor Print Shop 2',skin:SKIN[2],hair:'#241a14',hairStyle:'short',masc:true,shirt:'#2f8f86',eye:'#4a2c1c'},
-    osei:{name:'Councilor Amara Osei',role:'Boston City Council',skin:SKIN[5],hair:'#140f0d',hairStyle:'bun',shirt:'#6c5ce7',accessory:'earring',eye:'#3a2418'},
+    lena:{name:'Lena Park',role:'Biosecurity screener, Health Harbor',face:'diamond',eyeShape:'mono',skin:SKIN[3],hair:'#15110f',hairStyle:'sidelong',shirt:'#f5b82e',glasses:true,frame:'#2b6f6a',eye:'#5a3a22'},
+    tomas:{name:'Tomás Ferreira',role:'Owner, Harbor Print Shop 2',nose:'long',face:'square',beard:'stubble',skin:SKIN[2],hair:'#3a2418',hairStyle:'fade',masc:true,shirt:'#2f8f86',eye:'#4a2c1c'},
+    osei:{name:'Councilor Amara Osei',role:'Boston City Council',brows:'arched',lips:'full',nose:'broad',eyeShape:'almond',face:'diamond',cuffs:true,skin:'#4b2a19',hair:'#1e1614',hairStyle:'boxbraids',shirt:'#6c5ce7',accessory:'earring',eye:'#3a2418'},
     tally:{name:'Tally',role:'An independent auditor AI'},
     pip:{name:'Pip',role:'In a hurry, holding an empty box'},
     jory:{name:'Jory',role:'Also in a hurry'}

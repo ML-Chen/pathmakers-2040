@@ -26,11 +26,11 @@ const HIRED_GLOSSARY={
 };
 
 const HIRED_CAST={
-  gabi:{name:'Gabi Santos',role:'Charge nurse',skin:SKIN[2],hair:'#3a2418',hairStyle:'bun',shirt:'#5b9bf0'},
-  kofi:{name:'Kofi Asante',role:'Robot crew lead',skin:SKIN[5],hair:'#141010',hairStyle:'buzz',shirt:'#ff9f43',masc:true},
-  ruth:{name:'Ruth Abrams',role:'Volunteer, age 88',skin:SKIN[0],hair:'#e9e6f0',hairStyle:'elder',shirt:'#b07ce8',glasses:true},
-  ari:{name:'Ari Mensah',role:'Patient, age 10',skin:SKIN[4],hair:'#161010',hairStyle:'short',shirt:'#2fbf71',age:'kid',masc:true},
-  abena:{name:'Abena Mensah',role:'Ari’s grandma',skin:SKIN[4],hair:'#d8d4dc',hairStyle:'elder',shirt:'#e85d75',glasses:true}
+  gabi:{name:'Gabi Santos',role:'Charge nurse',lips:'full',nose:'button',eyeShape:'round',dimples:true,face:'round',skin:SKIN[2],hair:'#4a2a1c',hairStyle:'updo',shirt:'#5b9bf0'},
+  kofi:{name:'Kofi Asante',role:'Robot crew lead',beard:'goatee',brows:'thick',lips:'full',nose:'broad',eyeShape:'deep',face:'square',skin:'#5a341f',hair:'#1e1614',hairStyle:'hightop',shirt:'#ff9f43',masc:true},
+  ruth:{name:'Ruth Abrams',role:'Volunteer, age 88',lips:'thin',nose:'long',frame:'#c8343a',eyeShape:'downturned',face:'long',age:'elder',skin:SKIN[0],hair:'#e9e6f0',hairStyle:'elder',shirt:'#b07ce8',glasses:true},
+  ari:{name:'Ari Mensah',role:'Patient, age 10',dimples:true,nose:'button',eyeSize:'large',face:'round',skin:'#8a5634',hair:'#161010',hairStyle:'twa',shirt:'#2fbf71',age:'kid',masc:true},
+  abena:{name:'Abena Mensah',role:'Ari’s grandma',age:'elder',lips:'full',nose:'broad',eyeShape:'downturned',face:'round',wrap2:'#2f7a4a',wrap:'#e8a33a',skin:'#694027',hair:'#d8d4dc',hairStyle:'headwrap',shirt:'#e85d75',glasses:true}
 };
 
 const HIRED_GUIDE={

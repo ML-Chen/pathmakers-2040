@@ -24,6 +24,7 @@ Several Claude sessions build this game at the same time. Before starting a piec
 | Android app (APK built by GitHub Actions) | `main` | coordinating session (Nov 2) | in progress |
 | China travel visits: Shanghai "The Sister Hospital", Beijing "Trust, Then Check", Shenzhen "Who Can Stop a Crew?" (scenes, missions, cast) | `content/china` | coordinating session's agent | built on branch, ready to merge (voices not recorded yet) |
 | Moon Founder Day 1 "The Shop at the Rim" (rimshop) and Mars Explorer Day 1 "One Night of Power" (duststorm), with painted moon/moon_night and mars/mars_storm/mars_dusk scenes | `content/space` | coordinating session's agent | in progress; shared edit: game.js onSite() so missions can put gear (the space helmet) on Byte |
+| Distinct faces and hair for every cast member (face, eye, nose, lip and brow options; textured and parted hairstyles; recast of all missions except Nome) | `art/faces` | coordinating session's agent | ready to merge; shared files: src/characters.js and the cast entries in content_boston.js and src/missions/*.js |
 | Landscape layout | none | unclaimed | briefs ready in docs/BRIEFS.md |
 | Pacific Ocean place: floating datacenters scene (`ocean_dc`), world-map place `ocean`, Ledger story `ocean-dc` | `content/ocean-dc` | coordinating session's agent | ready to merge; no missions there yet ("Coming soon"); new lines not recorded |
 | Promo videos (RedNote and Twitter) | `promo/` on main | unclaimed | paused until more of the game is built; storyboard and Mandarin TTS/ASR tools in promo/ |

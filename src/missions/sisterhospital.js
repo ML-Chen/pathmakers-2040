@@ -49,11 +49,11 @@ MISSIONS.sisterhospital={id:'sisterhospital',title:'The Sister Hospital',career:
     {name:'sh_debrief',k:'custom'},
     {name:'sh_evening',k:'evening'}],
   cast:{
-    wenjh:{name:'Dr. Wen Jiahui',role:'Children’s doctor, Riverside Children’s Hospital',skin:'#f4d6bf',hair:'#1d1416',hairStyle:'bob',eyeShape:'almond',eye:'#3a2216',
+    wenjh:{name:'Dr. Wen Jiahui',role:'Children’s doctor, Riverside Children’s Hospital',face:'oval',skin:'#f4d6bf',hair:'#1d1416',hairStyle:'lob',eyeShape:'almond',eye:'#3a2216',
       shirt:'#5fb3a8',coat:true,glasses:true,frame:'#b98a46',art(m){return zhArt(this,m,{chest:shMagnoliaPin(112,270)})}},
-    luguo:{name:'Dr. Lu Guoqiang',role:'Children’s heart doctor, Riverside',skin:'#ecc4a2',hair:'#d2cfd8',hairStyle:'short',age:'elder',masc:true,eyeShape:'hooded',eye:'#2e1c12',
+    luguo:{name:'Dr. Lu Guoqiang',role:'Children’s heart doctor, Riverside',face:'long',skin:'#ecc4a2',hair:'#d2cfd8',hairStyle:'sidepart',age:'elder',masc:true,eyeShape:'hooded',eye:'#2e1c12',
       outfit:'cardigan',shirt:'#8a6a4e',under:'#ece6da',glasses:true,frame:'#2a2a36',art(m){return zhArt(this,m,{chest:shHeartPin(112,292)})}},
-    gaoying:{name:'Gao Ying',role:'Ellie’s mom, on video from Boston',skin:'#f2cdb0',hair:'#2a1c18',hairStyle:'ponytail',eyeShape:'mono',eye:'#2a1a12',
+    gaoying:{name:'Gao Ying',role:'Ellie’s mom, on video from Boston',part:'left',hairStyle:'wavy',face:'round',part:'left',skin:'#f2cdb0',hair:'#2a1c18',hairStyle:'wavy',eyeShape:'mono',eye:'#2a1a12',
       outfit:'hoodie',shirt:'#9a8ad8',accessory:'earring'}
   },
   voices:{wenjh:'af_nicole',luguo:'elder_man',gaoying:'af_sarah'},

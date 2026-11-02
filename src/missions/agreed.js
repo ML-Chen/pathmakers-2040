@@ -115,11 +115,11 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
   signed:'Marked with a secret code that proves who sent it.'
 },
   cast:{
-  rosa:{name:'Rosa Morales',role:'Patient, age 68',skin:SKIN[2],hair:'#dcd7d2',hairStyle:'elder',shirt:'#24477a',accessory:'earring',eye:'#5a3a22',
+  rosa:{name:'Rosa Morales',role:'Patient, age 68',age:'elder',mole:'chin',lips:'thin',nose:'long',eyeShape:'downturned',face:'round',skin:SKIN[2],hair:'#dcd7d2',hairStyle:'elder',shirt:'#24477a',accessory:'earring',eye:'#5a3a22',
     art(mood){return typeof agRosaArt==='function'?agRosaArt(mood):''}},
-  leo:{name:'Leo Morales',role:'Rosa’s grandson, age 10',skin:SKIN[2],hair:'#22160f',hairStyle:'short',shirt:'#ffb53b',age:'kid',masc:true},
+  leo:{name:'Leo Morales',role:'Rosa’s grandson, age 10',brows:'thick',eyeShape:'round',dimples:true,freckles:true,eyeSize:'large',face:'round',skin:SKIN[2],hair:'#4a2a1c',hairStyle:'crew',shirt:'#ffb53b',age:'kid',masc:true},
   sunny:{name:'Sunny',role:'Boston’s home-care AI',art(mood){return typeof sunnyArt==='function'?sunnyArt(mood):''}},
-  theo:{name:'Theo Park',role:'Home Care Lead, Boston',skin:SKIN[1],hair:'#1c1820',hairStyle:'short',shirt:'#5b8fd9',masc:true}
+  theo:{name:'Theo Park',role:'Home Care Lead, Boston',brows:'thick',eyeShape:'almond',face:'square',skin:'#f0c9a4',hair:'#1c1820',hairStyle:'crew',shirt:'#5b8fd9',masc:true}
 },
   voices:{rosa:'elder_woman',leo:'kid_boy',sunny:'af_nova',theo:'am_eric'},
   guide:{

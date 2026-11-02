@@ -34,11 +34,11 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
     {name:'sz_debrief',k:'custom'},
     {name:'sz_evening',k:'evening'}],
   cast:{
-    linxm:{name:'Lin Xiaomei',role:'Test engineer, Zone 3 robot factory',skin:'#f2d0b4',hair:'#1a1214',hairStyle:'ponytail',eyeShape:'almond',eye:'#2a1a12',
+    linxm:{name:'Lin Xiaomei',role:'Test engineer, Zone 3 robot factory',brows:'thin',face:'heart',skin:'#f2d0b4',hair:'#1a1214',hairStyle:'ponytail',eyeShape:'upturned',eye:'#2a1a12',
       outfit:'vest',shirt:'#ff8a2a',under:'#eef2f6',art(m){return zhArt(this,m,{top:szGoggles()})}},
-    huangjg:{name:'Huang Jianguo',role:'Floor supervisor, 43 years at the factory',skin:'#dcae88',hair:'#a8a4ac',hairStyle:'short',age:'elder',masc:true,eyeShape:'hooded',eye:'#24160e',
+    huangjg:{name:'Huang Jianguo',role:'Floor supervisor, 43 years at the factory',brows:'thick',face:'square',skin:'#dcae88',hair:'#a8a4ac',hairStyle:'crew',age:'elder',masc:true,eyeShape:'hooded',eye:'#24160e',
       outfit:'shirt',shirt:'#3e5a7a',art(m){return zhArt(this,m,{chest:szPen(206,296)})}},
-    tangyf:{name:'Tang Yifan',role:'Zone monitor, Shenzhen Special Economic Zone',skin:'#eec8a6',hair:'#20181a',hairStyle:'curls',masc:false,eyeShape:'mono',eye:'#2a1a10',
+    tangyf:{name:'Tang Yifan',role:'Zone monitor, Shenzhen Special Economic Zone',eyeSize:'large',face:'oval',skin:'#eec8a6',hair:'#20181a',hairStyle:'curls',masc:false,eyeShape:'mono',eye:'#2a1a10',
       outfit:'blazer',shirt:'#2e3a5a',under:'#f2f2ee',accessory:'earring',art(m){return zhArt(this,m,{chest:szZoneBadge(108,292)})}}
   },
   voices:{linxm:'af_river',huangjg:'am_onyx',tangyf:'af_alloy'},
