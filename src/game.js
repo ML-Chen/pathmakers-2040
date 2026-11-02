@@ -475,7 +475,7 @@ function renderDebrief(){
   $('#next').onclick=()=>{awardStars(S.mission,SB);nextStep()};hook('debrief',{stars,good,luck})}
 
 function renderEvening(){const lines=M().evening();
-  screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...onSite(S.byte),mood:'alert'},'big perk')}</div>
+  screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...onSite(S.byte),mood:M().eveningMood||'happy'},'big')}</div>
    <div class="caption-card dark">${lines.map(l=>`<p>${l}</p>`).join('')}
    <div class="row"><button class="btn small ghost" id="guide">${T('Open Field Guide')}</button><button class="btn small" id="plan">${T('Plan tomorrow')}</button></div></div></div>`);
   $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};save();go('hub')}}
