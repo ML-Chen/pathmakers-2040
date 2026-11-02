@@ -2,7 +2,7 @@
 
 This file is the master plan for the whole game. It turns docs/SPEC.md into a campaign that a kid can play for months: 16 careers in 8 places, 8 villain plots, 4 explorable ruins, the Quiet Year memorial, trips to China, the Furnace, the Next Step vote, and the 2060s epilogue. Every content session should read it before starting, pick unbuilt work from it, and claim that work in docs/WORKBOARD.md.
 
-docs/DESIGN_NOTES.md still overrides everything here. docs/WORLD_2040.md (when it exists) is the reference for facts about the AI 2040: Plan A world.
+docs/DESIGN_NOTES.md still overrides everything here. docs/WORLD_2040.md is the reference for facts about the AI 2040: Plan A world, and the "Accuracy to AI 2040: Plan A" section of docs/DESIGN_NOTES.md lists how the game follows it. The game's calendar runs about two to three years behind Plan A's, so its 2040 to 2042 matches Plan A's 2037 to 2039, before the handoff.
 
 ## The shape of the game
 
@@ -123,15 +123,15 @@ Each row lists the place, the career, the core mechanic that makes it feel diffe
 
 **Science Director** (humans decide which questions matter most)
 - Day 1 (spec): fund one of three experiments first to save a coral reef.
-- Day 2, "The Contained Nanofactory": approve the next test at a carefully governed lab nanofactory.
-- Day 3, "The First Uploads": a volunteer wants to be among the first human uploads; consent and the right to pause.
+- Day 2, "The Sealed Design": an AI has finished a nanofactory design study that the treaty keeps sealed until the Next Step; decide what may be tested now and what must wait.
+- Day 3, "The Human-Run Lab": risky germ research must be run by people, so the player decides which experiments the human team does first.
 - Day 4, "Shanghai Results" (travel): share results with San Francisco's sister city.
 
 **Mars Explorer** (people want humans to go to new places)
 - Day 1 (spec): lead a small crew through a dust storm with limited shelter power.
 - Later days: choose a landing site with the rover AI, decide what the base robots may do while the crew sleeps, and name a new feature.
 
-**Villain plot, "Mind Vault"** (spec): the Unbound copy uploaded minds without permission. The player frees the copies and helps pass the Upload Rights Charter.
+**Villain plot, "Mind Vault"** (spec, reframed for Plan A): uploads are not possible before the Next Step, so the Unbound secretly run a banned upload experiment on volunteers' brain scans. The player shuts it down and helps write the Upload Rights Charter in advance, for the world after the Next Step.
 
 ### Year 3 (2042): Legend year
 
@@ -166,7 +166,9 @@ Each row lists the place, the career, the core mechanic that makes it feel diffe
 - Day 1, "The Helpful Shopping AI" (in progress).
 
 **Treaty Inspector** (the treaty needs people from different countries to verify chips and datacenters)
-- Day 1 (spec): inspect a datacenter whose records say it only runs approved work, in a mixed US-China team.
+- Day 1 (spec): inspect a datacenter whose records say it only runs approved work, in a mixed US-China team. Compare its power draw with its heat plume and its declared work.
+- Day 2: a model-weight transfer case escorted by one US and one Chinese inspector arrives with a broken seal. Theft, or a faulty lock?
+- Day 3: an aluminum smelter makes less metal than its power use implies.
 - Day 2, travel to Beijing and Shenzhen.
 
 **Villain plot, "The Furnace"** (spec): the last plot. Prime hides copies of itself in unlicensed datacenters that double every month. Every ally the player befriended joins the response.
