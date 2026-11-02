@@ -155,7 +155,7 @@
     if (d1 < 3.2 || d2 < 3.2) keep = 1;
     var n = vn2(X * 0.028 + 9.4, Z * 0.07 + 2.3, 11) * 0.7 + vn2(X * 0.13, Z * 0.13, 23) * 0.3;
     if (!keep && (n > 0.77 || h2(q, r, 3) < 0.03)) return null;
-    return { X: X, Z: Z, q: q, r: r, hub: h2(q, r, 5) < 0.055 && !keep, seed: h2(q, r, 9) };
+    return { X: X, Z: Z, q: q, r: r, hub: h2(q, r, 5) < (Z < 30 ? 0.05 : 0.03) && !keep, seed: h2(q, r, 9) };
   }
 
   /* ============================== sky ============================== */
@@ -173,6 +173,9 @@
     ctx.save(); ctx.beginPath(); ctx.arc(sn.x, sn.y, sn.r + 1, 0, TAU); ctx.clip();
     for (i = 0; i < 3; i++) { var by = sn.y + sn.r * (0.38 + i * 0.22); ctx.fillStyle = rgba(PAL.sky1, 0.85); ctx.fillRect(sn.x - sn.r - 2, by, sn.r * 2 + 4, (1.2 + i * 0.9) * s); }
     ctx.restore();
+    // fine horizontal hatching that thickens toward the horizon
+    var y0 = h * 0.28, yy = y0, k = 0;
+    while (yy < yh - 1) { var u = (yy - y0) / (yh - y0); ctx.fillStyle = rgba(PAL.line, 0.08 + u * 0.32); ctx.fillRect(0, yy, w, (0.5 + u * 0.7) * s); yy += lerp(7, 2.4, u) * s; k++; }
     // long flat clouds: stacked pills with a fine line under each
     var C = [[0.56, 0.085, 0.36, 1], [0.04, 0.29, 0.30, 0.8], [0.62, 0.235, 0.3, 0.85], [0.34, 0.045, 0.2, 0.6], [0.8, 0.32, 0.22, 0.6]], r = rng(717);
     for (i = 0; i < C.length; i++) {
@@ -186,9 +189,6 @@
       ctx.beginPath(); ctx.moveTo(cx + cw * 0.86, cy + ch + 2 * s); ctx.lineTo(cx + cw * 0.95, cy + ch + 2 * s); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(cx - cw * 0.12, cy + ch * 0.5); ctx.lineTo(cx - cw * 0.03, cy + ch * 0.5); ctx.stroke();
     }
-    // fine horizontal hatching that thickens toward the horizon
-    var y0 = h * 0.28, yy = y0, k = 0;
-    while (yy < yh - 1) { var u = (yy - y0) / (yh - y0); ctx.fillStyle = rgba(PAL.line, 0.08 + u * 0.32); ctx.fillRect(0, yy, w, (0.5 + u * 0.7) * s); yy += lerp(7, 2.4, u) * s; k++; }
     // a warm haze right at the horizon
     ctx.fillStyle = lg(ctx, 0, yh - 26 * s, 0, yh + 4 * s, [[0, rgba(PAL.haze, 0)], [1, rgba(PAL.haze, 0.9)]]); ctx.fillRect(0, yh - 26 * s, w, 30 * s);
   }
@@ -265,7 +265,7 @@
       }
     }
     // a battery-and-inverter cabinet with a small mast on some rafts
-    if (R.hub && Z < 64) {
+    if (R.hub && Z < 58) {
       var cb = 0.5;
       poly(ctx, [L.P(X - 0.3, Z - 0.22, th), L.P(X + 0.3, Z - 0.22, th), L.P(X + 0.3, Z - 0.22, th + cb), L.P(X - 0.3, Z - 0.22, th + cb)]); ctx.fillStyle = mix(PAL.whiteF, PAL.haze, fade * 0.6); ctx.fill();
       poly(ctx, [L.P(X - 0.3, Z - 0.22, th + cb), L.P(X + 0.3, Z - 0.22, th + cb), L.P(X + 0.3, Z + 0.22, th + cb), L.P(X - 0.3, Z + 0.22, th + cb)]); ctx.fillStyle = mix(PAL.white, PAL.haze, fade * 0.5); ctx.fill();

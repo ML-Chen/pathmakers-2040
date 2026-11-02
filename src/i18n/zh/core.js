@@ -2,7 +2,7 @@
 // Keys are the exact English text; missing strings fall back to English. See src/i18n.js.
 I18N.add('zh','core',{strings:{
   'Boston':'波士顿','Varrow':'瓦罗','Nome':'诺姆','Phoenix':'凤凰城','Marrow Point':'马罗角','The Moon':'月球','Bay Area':'湾区','Mars':'火星',
-  'Calder Bay':'考尔德湾','New York':'纽约','Washington':'华盛顿','Vienna':'维也纳','Shanghai':'上海','Beijing':'北京','Shenzhen':'深圳',
+  'Calder Bay':'考尔德湾','New York':'纽约','Washington':'华盛顿','Vienna':'维也纳','Shanghai':'上海','Beijing':'北京','Shenzhen':'深圳','Pacific Ocean':'太平洋',
   'forecast {0}%':'预测 {0}%','{0} of 10':'10次中 {0} 次','Day {0}':'第 {0} 天','{0} home':'{0} 户人家','{0} homes':'{0} 户人家',
   'Treatment':'治疗方案','Physical therapy':'康复训练','Recital':'演出','Surgery with pins':'手术打钢钉','Cast':'打石膏','BoneMend gel':'骨愈凝胶',
   'No':'不做','Yes':'要做','Keep Friday':'周五照常','Move it':'改期',
