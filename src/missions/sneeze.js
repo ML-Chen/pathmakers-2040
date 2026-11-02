@@ -209,7 +209,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
 
   // ---------- consent: the plan costs Tomás his week, and he deserves the real numbers
   consent:{left:'lena',right:'tomas',scene:'screening',place:'Screening office · Health Harbor',
-    title:'Lena and Tomás',role:'Screener and shop owner',replyWho:'tomas',heart:'tomas',
+    title:'Lena and Tomás',role:'Screener and shop owner',replyWho:'tomas',heart:'tomas',compact:true,
     prompt:'My shop has built nothing wrong, and now you want to stop my orders. Tell me straight. What are you doing to my week?',
     opts(c,M){const o=M.outcomes(c,M.knows());const ev=Math.round(100*o.reduce((a,x)=>a+x.p*x.flags.every,0));
       const what=c.block==='all'?'pause every order in the harbor, yours included':c.block==='watch'?'leave your orders running while we watch':'block only the orders we found, so your other work keeps moving';

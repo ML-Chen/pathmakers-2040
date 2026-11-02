@@ -36,7 +36,7 @@ const RIM_CAPS={angry:'Prices jumped in a shortage, and people were upset.',left
   soupline:'The 2 AM soup line was packed!',treats:'The treats sold. We earned back the 300!',soupday:'Lunch soup earned back the 300.',glassok:'Visitors loved the Moon-glass!'};
 
 MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:1,kind:'workday',year:2,season:'spring',district:'moon',rank:'trainee',
-  blurb:'A tiny shop at the rim of a crater is waiting for its founder.',after:['maya'],place:'Market Dome · Shackleton Rim Base',
+  blurb:'You open your first shop at the Moon base, and decide what it sells and what its robot clerk may do alone.',after:['maya'],place:'Market Dome · Shackleton Rim Base',
   byteWear(step){return ['rim_morning','rim_ride','rim_evening'].includes(step)?['helmet']:[]},
   flow:[{name:'rim_morning',k:'talk',talk:'morning',scene:'moon',place:'Shackleton Rim Base · The Moon · 7:30 AM'},
     {name:'rim_ride',k:'custom'},
@@ -47,7 +47,7 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
     {name:'rim_criteria',k:'criteria'},{name:'rim_table',k:'table'},{name:'rim_consent',k:'consent'},{name:'rim_memo',k:'memo'},
     {name:'rim_reveal',k:'reveal'},{name:'rim_debrief',k:'debrief'},{name:'rim_evening',k:'evening'}],
   cast:{
-    haruto:{name:'Haruto Mori',role:'Copy monitor and tea-corner host',eyeShape:'hooded',brows:'bushy',face:'long',skin:'#ecc8a4',hair:'#dcdae2',hairStyle:'bald',beard:'short',masc:true,age:'elder',eye:'#3a2a1e',glasses:true,frame:'#4a3420',
+    haruto:{name:'Haruto Mori',role:'Serves tea, and counts the factory’s new robots',eyeShape:'hooded',brows:'bushy',face:'long',skin:'#ecc8a4',hair:'#dcdae2',hairStyle:'bald',beard:'short',masc:true,age:'elder',eye:'#3a2a1e',glasses:true,frame:'#4a3420',
       space:'jumper',shirt:'#56688a',trim:'#d4a85a',scarf:'#b8483a',badge:true,get art(){return typeof SC_CAST_ART!=='undefined'?SC_CAST_ART(this):undefined}},
     ada:{name:'Ada Marchetti-Obi',role:'Age 12 · lives at the base',face:'heart',freckles:true,clip:'#2aa89a',skin:'#a87048',hair:'#3a2418',hairStyle:'puffs',age:'kid',eye:'#3a2016',
       space:'suit',shirt:'#ffd45c',trim:'#2aa89a',patch:'#18a058',sticker:true,get art(){return typeof SC_CAST_ART!=='undefined'?SC_CAST_ART(this):undefined}},
@@ -141,7 +141,7 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
   tell:{clue:'crew',label:'Tell Byte about the 2 AM crews',note:'Thanks! The base schedule shows that the ice crews come up at 2 AM, but nobody had told me they want hot food then. Soup at 2 AM now looks like a strong idea. I updated the memo.',guide:'rim-who',doc:'rmemo'},
   criteria:[{id:'earn',label:'[[Earn back]] the 300 coins this month'},{id:'crew',label:'The night crews get a hot meal'},{id:'trust',label:'Customers trust our prices'},{id:'waste',label:'Nothing goes to waste'}],
   criteriaHint:'Not sure what one means? <button class="gw" data-w="earn back">Earn back</button> means making back the money you spent to start.',
-  criteriaNote:'If you decide what a good month looks like first, a flashy idea is less likely to fool you.',
+  criteriaNote:'Decide now what a good first month would look like. If you do that before you see the numbers, an exciting idea is less likely to talk you into something.',
   controls:[{key:'sell',label:'What the shop sells',opts:[['glass','Glass'],['treats','Treats'],['soup','Soup'],['both','Soup + glass']]},
     {key:'order',label:'First order',opts:[['small','Small, reorder'],['big','All 300 now']]},
     {key:'short',label:'When supplies run short',opts:[['raise','Till raises'],['ask','Till asks me'],['steady','Prices stay']]}],
@@ -174,7 +174,7 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
       treats:'The chocolate sold, and my tea friends are very happy. You earned back your coins, too.',soupday:'Your lunch soup did better than I thought. People like something warm in the middle of the day.',glassok:'The visitors loved your Moon-glass. I saw a little boy hold his marble up to Earth to see it glow.'},
     mood(k){return k==='angry'||k==='leftover'||k==='slow'?'worried':'happy'}},
   trap(c){return {ok:!!S.told,text:S.told?'You listened to Ada and told '+S.byte.name+' about the 2 AM crews, so the forecast knew who was hungry and when.':'You didn’t tell '+S.byte.name+' what Ada said about the 2 AM crews. Its forecast missed forty hungry customers that nobody had counted.'}},
-  byteGood:'Nice work, Founder. You asked more than five people, tested small, and gave Till clear limits.',
+  byteGood:'Nice work, Founder. You asked far more than five people, you tested one idea cheaply before spending the rest, and you gave Till limits it can follow.',
   debriefLines(c){const st=rimState();const out=[];if(st.test)out.push({ok:true,text:'You ran a small pop-up test before you spent the rest of your budget.'});
     const r=st.rules.raise;if(r)out.push({ok:r!=='alone',text:r!=='alone'?'You kept the choice to raise prices in a shortage for a person.':'You let Till raise prices by itself during shortages. On a small base, that can feel unfair.'});return out},
   evening(){const st=rimState(),newS=st.rules.newsupplier==='alone',R=S.result||{},soup=R.flags&&R.flags.crew;
@@ -200,16 +200,16 @@ The key consideration when asked what to sell: ${S.told?'who buys every day (the
 MISSIONS.rimshop.lines=[
   {who:'byte',text:'Thanks! The base schedule shows that the ice crews come up at 2 AM, but nobody had told me they want hot food then. Soup at 2 AM now looks like a strong idea. I updated the memo.'},
   {who:'byte',text:'Woof, good catch! About 40 ice miners come up the lift at 2 AM, and nothing is open then. Soup at 2 AM now looks like a strong idea. I updated the memo.'},
-  {who:'byte',text:'Let’s hear from both: five friends at the tea corner, and five hundred people from the whole base.'},
+  {who:'byte',text:'Let’s hear from both groups. First Haruto’s five friends at the tea corner, then five hundred people from all over the base.'},
   {who:'byte',text:'Four of the five picked Earth treats. Now let’s see what five hundred people say.'},
   {who:'byte',text:'Five hundred people answered. Visitors mostly picked Moon-glass, and residents picked treats or soup.'},
   {who:'byte',text:'So why don’t the five and the five hundred agree?'},
-  {who:'byte',text:'Exactly. All five live here, but more than half of our customers are visitors. A sample should look like the people who will really buy.'},
+  {who:'byte',text:'Exactly. All five of them live at the base, and more than half of our customers are visitors. The people you ask should look like the people who will really buy.'},
   {who:'byte',text:'I’m sure they thought carefully. The real difference is who they are. All five live at the base, but most of our customers are visitors.'},
   {who:'byte',text:'The poll is fine. The five just aren’t like most of our customers. They all live at the base, and more than half of our buyers are visitors.'},
   {who:'byte',text:'Pick one idea to test for three days. Which one are you least sure about?'},
-  {who:'byte',text:'Here’s what three days taught us.'},
+  {who:'byte',text:'Here is what three days of selling taught us.'},
   {who:'byte',text:'Till can do a lot by itself. For each job, choose whether Till does it alone, Till does it and you check, or only you do it.'},
-  {who:'byte',text:'Those are clear limits. Till will follow them exactly.'},
+  {who:'byte',text:'Those are clear limits, and Till will follow them exactly as you wrote them.'},
   {who:'till',text:'Hello, Founder! I’m ready to follow your rules.'}
 ];

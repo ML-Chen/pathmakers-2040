@@ -547,13 +547,13 @@
     PROPS_ART.drone = hit(100, 100, '<circle cx="50" cy="50" r="50" fill="#fff"/>');
     PROPS.ocean_dc = [
       { id: 'raft', x: 79, y: 86, w: 96, sfx: 'blip', fx: 'glow', burst: 'sparkles', who: 'byte',
-        say: 'Solar panels on top, batteries underneath. Six sides means every raft fits snugly against its neighbors.' },
+        say: 'Each raft has solar panels on top and batteries underneath. The six sides mean every raft fits snugly against its neighbors.' },
       { id: 'datacenter', x: 83, y: 47.5, w: 140, sfx: 'chime', fx: 'glow', who: 'byte',
-        say: 'Millions of AIs are thinking in there right now. The cold seawater keeps their computers cool.' },
+        say: 'Millions of AIs are thinking inside that platform right now. Cold seawater from deep below keeps their computers from overheating.' },
       { id: 'tanker', x: 46, y: 46.8, w: 360, sfx: 'whoosh', fx: 'glow', who: 'byte',
-        say: 'That’s a data tanker. It brings new computer chips out here and carries the old ones home to be recycled.' },
+        say: 'That’s a data tanker. It brings new computer chips out here, and it carries the old ones home to be recycled.' },
       { id: 'drone', x: 20, y: 74, w: 64, sfx: 'beep', fx: 'glow', burst: 'sparkles', who: 'byte',
-        say: 'This drone checks every raft for cracks and barnacles. It visits each one about once a week.' }
+        say: 'That drone checks the rafts for cracks and barnacles. It gets around to each one about once a week.' }
     ];
   });
 })();
