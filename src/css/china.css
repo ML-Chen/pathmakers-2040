@@ -1,0 +1,73 @@
+/* china.css — the China travel visits: shared screens (zh-*), Shanghai's "Compare notes" (sh-*), Beijing's treaty
+   desk (bj-*) and Shenzhen's stop drill (sz-*). See src/missions/china_common.js and the three mission files. */
+
+/* ---------- shared ---------- */
+.zh-sub .zh-go{justify-content:flex-end;margin-top:8px}
+.zh-placecard{position:fixed;top:47%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 22px 9px;
+  background:rgba(255,250,240,.92);border-radius:18px;box-shadow:0 10px 30px rgba(20,25,60,.22);animation:zhplace 1.1s ease-out both;z-index:3}
+.zh-placecard b{font-family:var(--display);font-size:1.5rem;color:#2a2f55;letter-spacing:.02em}
+.zh-placecard span{font-size:1.25rem;color:#c8483a;font-weight:800;letter-spacing:.2em}
+.zh-placecard i{font-style:normal;font-size:.78rem;color:#6a6f8a;font-weight:700}
+@keyframes zhplace{0%{opacity:0;transform:translate(-50%,-10px)}100%{opacity:1;transform:translate(-50%,0)}}
+.zh-signcard h2{margin:0 0 6px}
+.zh-plan{background:#f4f6ff;border-radius:14px;padding:10px 12px;font-size:.92rem;line-height:1.4}
+.zh-signcard textarea{width:100%;box-sizing:border-box;border:2px solid var(--line);border-radius:14px;padding:10px 12px;font:inherit;font-size:.98rem;resize:none}
+.zh-sigs{display:flex;gap:10px;margin-top:10px}
+.zh-sig{flex:1;position:relative;border-bottom:2px solid #2a2f55;min-height:56px;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:4px}
+.zh-sig i{font-family:'Caveat','Segoe Script',cursive;font-size:1.5rem;color:#3b2a8a;font-style:normal;min-height:30px;line-height:1}
+.zh-sig i b{font-family:'KaiTi','STKaiti','Noto Serif SC',serif;font-weight:400;font-size:1.35rem;color:#2a2f55}
+.zh-sig span{font-size:.75rem;color:#6a6f8a;font-weight:700}
+.zh-sig.on i{animation:zhpen .9s ease-out both}
+@keyframes zhpen{0%{clip-path:inset(0 100% 0 0)}100%{clip-path:inset(0 0 0 0)}}
+.zh-seal{position:absolute;right:2px;top:-6px;width:42px;height:42px;display:grid;place-items:center;font-style:normal;font-family:'KaiTi','STKaiti','Noto Serif SC',serif;
+  font-size:1rem;line-height:1.05;color:#fff;background:#c8302e;border-radius:6px;box-shadow:inset 0 0 0 2px #e8605a;transform:rotate(-6deg);writing-mode:vertical-rl;letter-spacing:.05em;opacity:.92}
+.zh-seal.big{position:static;margin:10px auto 0;width:64px;height:64px;font-size:1.4rem;animation:zhstamp .6s .9s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes zhstamp{0%{transform:scale(2.4) rotate(-6deg);opacity:0}100%{transform:scale(1) rotate(-6deg);opacity:.95}}
+.zh-signing .zh-pen{font-family:'KaiTi','STKaiti','Noto Serif SC',serif;font-size:1.6rem;margin-top:4px;animation-delay:.5s}
+
+/* ---------- Shanghai: Compare notes ---------- */
+.sh-board{padding:14px}
+.sh-board h2{margin:0 0 8px}
+.sh-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sh-col{border-radius:16px;padding:6px;display:flex;flex-direction:column;gap:5px;min-height:120px}
+.sh-col.boston{background:#eef3ff}.sh-col.shanghai{background:#fff1ec}
+.sh-head{display:flex;align-items:baseline;justify-content:space-between;padding:0 4px 2px}
+.sh-head b{font-family:var(--display);font-size:.98rem;color:#2a2f55}.sh-head span{font-size:.72rem;color:#7a7f9a;font-weight:700}
+.sh-col.shanghai .sh-head span{color:#c8483a;font-size:.85rem;letter-spacing:.15em}
+.sh-card{position:relative;display:flex;gap:6px;align-items:center;text-align:left;border:1.5px solid #c9d2ef;background:#fff;border-radius:12px;padding:4px 6px;
+  font-size:.72rem;line-height:1.2;font-weight:700;color:#2a2f55;transition:transform .35s,opacity .35s}
+.sh-card .sh-ic{flex:none;width:22px;height:22px}.sh-card .sh-ic svg{width:100%;height:100%}
+.sh-card.private{background:#f6f4fa;border-style:dashed;border-color:#b8b0cc;color:#5a5476}
+.sh-card .sh-lock{position:absolute;right:6px;top:4px;font-style:normal;font-size:.5rem;color:#9a8ab8}
+.sh-card.sent{opacity:.45;border-color:#7fd8c8;background:#effbf8}
+.sh-card.sent::after{content:'✓ sent';position:absolute;right:6px;bottom:3px;font-size:.62rem;color:#1a9a8a}
+.sh-card.noted{border-color:#f5b82e;box-shadow:0 0 0 2px rgba(245,184,46,.28)}
+.sh-card .sh-nb{position:absolute;right:6px;top:-7px;font-style:normal;font-size:.58rem;background:#f5b82e;color:#4a3410;border-radius:999px;padding:1px 6px}
+.sh-card.sh-fly{transform:translateX(110%) scale(.9);opacity:0}
+.sh-card.sh-bounce{animation:shbounce .4s}
+@keyframes shbounce{40%{transform:translateX(26px)}100%{transform:none}}
+.sh-empty{font-size:.78rem;color:#9a8a8a;text-align:center;margin:auto 0;font-weight:700}
+.sh-reply{display:flex;gap:6px;align-items:center;text-align:left;background:#fff;border-radius:12px;padding:4px 6px;border:1.5px solid #f2c4b6}
+.sh-reply:not(.open) .sh-face{width:24px;height:28px}.sh-reply:not(.open) p{color:#8a5a52}.sh-reply:not(.open) p::before{content:'✓ ';color:#1a9a8a}
+.sh-reply.open{align-items:flex-start;border-color:#e0584a;box-shadow:0 0 0 2px rgba(224,88,74,.15)}
+.sh-reply p{margin:0;font-size:.74rem;line-height:1.25;font-weight:700;color:#4a2a2a}
+.sh-reply.sh-new{animation:shflip .6s ease-out both}
+@keyframes shflip{0%{transform:rotateY(90deg);opacity:0}100%{transform:none;opacity:1}}
+.sh-face{flex:none;width:34px;height:40px;border-radius:10px;overflow:hidden;background:linear-gradient(#cfe6f4,#f6f2ea)}
+.sh-face .portrait{width:100%;height:100%}
+.sh-meter{margin-top:8px;background:#f7f8fc;border-radius:14px;padding:7px 10px}
+.sh-mlbl{font-size:.8rem;font-weight:800;color:#2a2f55;margin-bottom:3px}
+.sh-bar{display:grid;grid-template-columns:96px 1fr 34px;gap:6px;align-items:center;font-size:.74rem;font-weight:700;color:#4a4f6a;margin:2px 0}
+.sh-track{height:9px;background:#e4e6f0;border-radius:99px;overflow:hidden}
+.sh-track i{display:block;height:100%;border-radius:99px;transition:width .8s cubic-bezier(.3,1.3,.5,1)}
+.sh-bar.b i{background:#5b7bd5}.sh-bar.s i{background:#e0584a}.sh-bar.t i{background:linear-gradient(90deg,#5b7bd5,#16b3a6,#e0584a)}
+.sh-bar.t b{color:#1a9a8a}
+.sh-board .byte-note{margin:8px 0 0}.sh-board .byte-note p{font-size:.86rem}
+.sh-decide h2{margin:0 0 8px}
+.sh-duo{display:flex;gap:6px;align-items:center}.sh-duo .sh-face{width:48px;height:56px}
+.sh-duo p{margin:0;font-size:.88rem;line-height:1.35;font-weight:700;color:#2a2f55}
+.sh-plans{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.sh-plan{text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:9px 12px;display:flex;flex-direction:column;gap:3px}
+.sh-plan b{font-size:.93rem;line-height:1.3;color:#2a2f55}.sh-plan span{font-size:.8rem;line-height:1.35;color:#5a5f7a}
+.sh-plan.on{border-color:var(--violet);background:#f3f0ff;box-shadow:0 0 0 3px rgba(108,92,231,.15)}
+.sh-decide .byte-note p{font-size:.84rem}
