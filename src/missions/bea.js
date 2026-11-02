@@ -425,8 +425,8 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
   cast:{
     bea:{name:'Bea Hollis',role:'Your client, age 104',skin:SKIN[4],hair:'#f4f0ea',hairStyle:'elder',shirt:'#8a5bb8',eye:'#5a3424',art(m){return typeof beaPortrait==='function'?beaPortrait(m):personSVG({...this,art:null,mood:m})}},
     grace:{name:'Grace Hollis',role:'Bea’s granddaughter',skin:SKIN[3],hair:'#2b1d18',hairStyle:'short',masc:false,shirt:'#3f7fbf',glasses:true,frame:'#2a3a5a',eye:'#4a2a1a',art(m){return typeof beaGracePortrait==='function'?beaGracePortrait(m):personSVG({...this,art:null,mood:m})}},
-    jordan:{name:'Jordan Hollis',role:'Bea’s great-grandson',skin:SKIN[3],hair:'#1b1410',hairStyle:'short',shirt:'#f5b82e',eye:'#4a2a1a'},
-    marisol:{name:'Marisol Vega',role:'Director, Elder Companion program',skin:SKIN[2],hair:'#8d8279',hairStyle:'bun',shirt:'#e86a8a',glasses:true,frame:'#7a2a4a',accessory:'earring',eye:'#4a2a1a'},
+    jordan:{name:'Jordan Hollis',role:'Bea’s great-grandson',skin:SKIN[3],hair:'#1b1410',hairStyle:'locs',outfit:'sweater',shirt:'#e8a43a',eye:'#4a2a1a'},
+    marisol:{name:'Marisol Vega',role:'Director, Elder Companion program',skin:SKIN[2],hair:'#b8b2ac',hairStyle:'bob',glasses:true,frame:'#b0304a',outfit:'blazer',shirt:'#d0566e',accessory:'scarf',scarfColor:'#f5b82e',eye:'#4a2a1a'},
     wren:{name:'Wren',role:'Bea’s home robot',art(m){return typeof beaWrenPortrait==='function'?beaWrenPortrait(m):''}}},
   voices:{bea:'elder_woman',grace:'af_nova',jordan:'am_echo',marisol:'bf_alice',wren:'bf_lily'},
   glossary:GLOSSARY,guide:GUIDE,lessons:{bea_muscle:LESSON},

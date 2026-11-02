@@ -255,8 +255,10 @@ function beaFig(pose,o){o=o||{};const Q=BEA_FIG_POSES[pose]||BEA_FIG_POSES.stand
   const chair=sit?`<path d="M-9 -38 C-10 -44 -6 -48 0 -48 C6 -48 10 -44 9 -38 L10 -22 L-10 -22Z" fill="#8a3a4a" stroke="#4a1a26" stroke-width=".7"/><path d="M-11 -22 L17 -22 L17 -16 L-11 -16Z" fill="#a24a5a" stroke="#4a1a26" stroke-width=".7"/><path d="M-10 -16 L-10 0 M15 -16 L15.6 0" stroke="#4a2a1a" stroke-width="1.4" stroke-linecap="round"/>`:'';
   return `<g class="bea-fig"><ellipse cx="2" cy=".4" rx="11" ry="1.8" fill="rgba(31,35,64,.18)"/><g transform="rotate(${sway} 0 0)">${chair}${legs}${dress}${neck}${top}${head}${arm(Q.R,Q.aR,1)}${arm(Q.L,Q.aL,-1)}${cane}</g></g>`}
 // Jordan: suit (wedding) or a casual shirt; poses stand, waltz (mirror of Bea's), cheer
-function jordanFig(pose,o){o=o||{};const sk=ch_skinPal(SKIN[3]),ln='#2a1a1a',suit=o.suit!==false,J=ch_clothPal(suit?'#2c3550':'#f5b82e'),Pn=ch_clothPal('#2c3550');
-  const H=bc_head({skin:SKIN[3],eye:'#4a2a1a',mood:o.mood||'happy',build:'M',hairPal:{line:'#120c0c',top:'#4a3c40',base:'#231a1a',sh:'#140e0e',dk:'#0e0a0a',hi:'#6a5a60',lash:'#140e0e',brow:'#1e1414',gloss:.15},hair:{kind:'crop',seed:3},lw:2.4});
+function jordanFig(pose,o){o=o||{};const sk=ch_skinPal(SKIN[3]),ln='#2a1a1a',suit=o.suit!==false,J=ch_clothPal(suit?'#2c3550':'#e8a43a'),Pn=ch_clothPal('#2c3550');
+  // the same head and locs as his portrait (characters.js), scaled onto the figure; falls back to a cropped head
+  const K=typeof ch_personKit==='function'&&typeof CAST!=='undefined'&&CAST.jordan?ch_personKit({...CAST.jordan,mood:o.mood||'happy'}):null;
+  const H=K?null:bc_head({skin:SKIN[3],eye:'#4a2a1a',mood:o.mood||'happy',build:'M',hairPal:{line:'#120c0c',top:'#4a3c40',base:'#231a1a',sh:'#140e0e',dk:'#0e0a0a',hi:'#6a5a60',lash:'#140e0e',brow:'#1e1414',gloss:.15},hair:{kind:'crop',seed:3},lw:2.4});
   const Q={stand:{L:[[-6.6,-50],[-8,-40],[-7.4,-31]],R:[[6.6,-50],[8,-40],[7.4,-31]],aL:10,aR:-10},
     waltz:{L:[[-6.8,-50.4],[-12.2,-54.4],[-11.2,-60]],R:[[6.8,-50.4],[8.6,-42],[4.6,-35]],aL:175,aR:60,tilt:-5,back:1},
     cheer:{L:[[-6.6,-50],[-12,-56],[-13,-65]],R:[[6.6,-50],[12,-56],[13,-65]],aL:175,aR:-175}}[pose]||{};
@@ -266,7 +268,7 @@ function jordanFig(pose,o){o=o||{};const sk=ch_skinPal(SKIN[3]),ln='#2a1a1a',sui
     ${suit?`<path d="M-2.2 -51.4 L0 -42 L2.2 -51.4Z" fill="#f6f7fb" stroke="${ln}" stroke-width=".4"/><path d="M0 -50.6 L-.9 -48.6 L0 -43.6 L.9 -48.6Z" fill="#b89be0" stroke="${ln}" stroke-width=".3"/><path d="M-2.4 -51.2 L-4.4 -46 L-.6 -40 M2.4 -51.2 L4.4 -46 L.6 -40" stroke="${ln}" stroke-width=".4" fill="none"/><path d="M-5.6 -44.6 l1.6 -.6 l.6 1.4z" fill="#ffd0e0"/>`:`<path d="M-2 -51.4 L0 -47 L2 -51.4" stroke="${ln}" stroke-width=".4" fill="none"/>`}`;
   const neck=`<path d="M-1.9 -56 L-2 -52.2 L2 -52.2 L1.9 -56Z" fill="${sk.base}" stroke="${ln}" stroke-width=".5"/><path d="M-1.9 -54.6 Q0 -53.4 1.9 -54.6 L1.95 -53.4 Q0 -52.4 -1.95 -53.4Z" fill="${sk.sh}"/>`;
   const arm=(A,a,s)=>bc_limb([A[0],A[1]],3.1,2.7,J.base,ln,J.sh)+bc_limb([A[1],A[2]],2.7,2.3,J.base,ln)+bc_hand(A[2],a,s,sk.base,ln,.7);
-  const head=bc_figHead(H,0,-61.4,.1,Q.tilt||0);
+  const head=K?`<g transform="translate(0 -61.4) rotate(${Q.tilt||0}) scale(.1) translate(-150 -122)">${K.defs}${K.behind}${K.head1}${K.head2}${K.hairBody}</g>`:bc_figHead(H,0,-61.4,.1,Q.tilt||0);
   return `<g class="jordan-fig"><ellipse cx="0" cy=".4" rx="11" ry="1.8" fill="rgba(31,35,64,.18)"/>${Q.back?arm(Q.R,Q.aR,1):''}${legs}${neck}${torso}${head}${arm(Q.L,Q.aL,-1)}${Q.back?'':arm(Q.R,Q.aR,1)}</g>`}
 // Wren, full body (about 58 tall): rounded shell on a wheeled base, visor with a light bar, arms; pose 'stand'|'spot'|'patch'
 function wrenFig(pose,o){o=o||{};const ln='#7d879e',sh='#d3d9e6',teal='#16b3a6',bar=o.bar||'M-4 -48 L4 -48';
