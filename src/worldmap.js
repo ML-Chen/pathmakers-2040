@@ -19,6 +19,7 @@ const CM_ICON={
   lantern:'<path d="M12 3.6v2" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M8.6 7.2h6.8l1 9.4c0 1.6-2 2.8-4.4 2.8s-4.4-1.2-4.4-2.8z" fill="#fff"/><path d="M8 7.2h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M12 10c1.6 1.6 1.6 3.4 0 5-1.6-1.6-1.6-3.4 0-5z" fill="#ffb347"/><path d="M10 20.6h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>',
   darktower:'<path d="M9.4 21V8.4L12 3.6l2.6 4.8V21z" fill="#fff"/><path d="M7 21h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="11" y="10" width="2" height="2.4" fill="var(--c)"/><rect x="11" y="14.4" width="2" height="2.4" fill="var(--c)"/><path d="M15.6 6.2c1.4-1 2.6-1 3.6 0M16.4 8.4c.8-.6 1.6-.6 2.2 0" stroke="#ffe7a0" stroke-width="1.1" fill="none" stroke-linecap="round"/>',
   server:'<rect x="6" y="4" width="12" height="16.6" rx="1.6" fill="#fff"/><path d="M8 8.4h8M8 12.4h8M8 16.4h8" stroke="var(--c)" stroke-width="1.4"/><circle cx="15.4" cy="6.4" r=".8" fill="#2fd17a"/><circle cx="15.4" cy="10.4" r=".8" fill="#ffb347"/><circle cx="15.4" cy="14.4" r=".8" fill="#2fd17a"/>',
+  raft:'<path d="M5.4 10.6 8.7 5h6.6l3.3 5.6-3.3 5.6H8.7z" fill="#fff"/><path d="M7.9 10.6 9.9 7.2h4.2l2 3.4-2 3.4H9.9z" fill="var(--c)" opacity=".75"/><path d="M7.9 10.6h8.2M9.9 7.2l4.2 6.8M14.1 7.2l-4.2 6.8" stroke="#fff" stroke-width=".7"/><path d="M4 20.2c2.4-1.4 3.6 1.4 6 0s3.6 1.4 6 0 3.6 1.4 4-.2" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M18.6 3.4v2.4M17.4 4.6h2.4" stroke="#ffe7a0" stroke-width="1.2" stroke-linecap="round"/>',
   lock:'<rect x="6.6" y="11" width="10.8" height="8.4" rx="2" fill="#fff"/><path d="M8.8 11V8.6a3.2 3.2 0 0 1 6.4 0V11" stroke="#fff" stroke-width="2" fill="none"/><circle cx="12" cy="15" r="1.3" fill="var(--c)"/>',
   heart:'<path d="M12 20.4C5.8 16.2 3.6 12.6 4.2 9.4 4.8 6.4 8.6 5 12 8.4c3.4-3.4 7.2-2 7.8 1 .6 3.2-1.6 6.8-7.8 11Z" fill="currentColor"/>',
   coin:'<circle cx="12" cy="12" r="8.4" fill="currentColor"/><circle cx="12" cy="12" r="5.8" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.4"/><path d="M12 8.6v6.8M10 10.4c0-1 4-1.4 4 .4s-4 1.2-4 3c0 1.6 4 1.4 4 .4" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/>',
@@ -30,8 +31,8 @@ const CM_ICON={
   winter:'<path d="M12 2.8v18.4M4 7.4l16 9.2M4 16.6l16-9.2" stroke="#7fc8ff" stroke-width="2" stroke-linecap="round"/><path d="M9.6 4.4 12 6.6l2.4-2.2M9.6 19.6 12 17.4l2.4 2.2M4.6 10.6l3.2.4-1.2-3M19.4 13.4l-3.2-.4 1.2 3M4.6 13.4l3.2-.4-1.2 3M19.4 10.6l-3.2.4 1.2-3" stroke="#7fc8ff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
 };
 const cmSvg=(k,cls='')=>`<svg class="cm-i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${CM_ICON[k]||''}</svg>`;
-const PLACE_COLOR={city:'#6c5ce7',space:'#3a4aa8',travel:'#16a3b3',fiction:'#8a5a9a'};
-const PLACE_TINT={boston:'#e8566c',nome:'#3d8fd1',phoenix:'#e98a2b',moon:'#5d6ac9',bay:'#16a39a',mars:'#c4533a',nyc:'#d4497f',dc:'#3e63c9',vienna:'#7d55c7',varrow:'#c48a2a',marrowpoint:'#5c4a7a',calderbay:'#3a7a8a'};
+const PLACE_COLOR={city:'#6c5ce7',space:'#3a4aa8',travel:'#16a3b3',fiction:'#8a5a9a',sea:'#1f86a0'};
+const PLACE_TINT={boston:'#e8566c',nome:'#3d8fd1',phoenix:'#e98a2b',moon:'#5d6ac9',bay:'#16a39a',mars:'#c4533a',nyc:'#d4497f',dc:'#3e63c9',vienna:'#7d55c7',varrow:'#c48a2a',marrowpoint:'#5c4a7a',calderbay:'#3a7a8a',ocean:'#1f86a0'};
 function placeColor(k){return PLACE_TINT[k]||PLACE_COLOR[PLACES[k].kind]||'#6c5ce7'}
 
 // ---------- stars ----------

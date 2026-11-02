@@ -60,9 +60,11 @@ const PLACES={
   marrowpoint:{name:'Marrow Point',full:'Marrow Point (a made-up town)',kind:'fiction',icon:'darktower',lat:45.1,lon:-87.2,mark:[.02,.52],year:1,season:'winter',scenes:['marrowpoint','darktower'],
     teaser:'A dark tower has stood empty since Blackout Week.'},
   calderbay:{name:'Calder Bay',full:'Calder Bay (a made-up town)',kind:'fiction',icon:'server',lat:46.6,lon:-124.1,mark:[-.50,.36],year:2,season:'winter',scenes:['calderbay','servervalley'],
-    teaser:'Someone built a secret datacenter here. Nobody knows who.'}
+    teaser:'Someone built a secret datacenter here. Nobody knows who.'},
+  ocean:{name:'Pacific Ocean',full:'Pacific Ocean (international waters)',kind:'sea',icon:'raft',lat:32,lon:-150,mark:[-.73,.0],scenes:['ocean_dc'],
+    teaser:'Far out at sea, solar rafts power a town of floating datacenters.'}
 };
-const PLACE_ORDER=['boston','varrow','nome','phoenix','marrowpoint','moon','bay','mars','calderbay','nyc','dc','vienna','shanghai','beijing','shenzhen'];
+const PLACE_ORDER=['boston','varrow','nome','phoenix','marrowpoint','moon','bay','mars','calderbay','ocean','nyc','dc','vienna','shanghai','beijing','shenzhen'];
 
 // ---------- careers: defaults merged under CAREERS entries (CAREERS wins) ----------
 const CAREER_INFO={
@@ -87,7 +89,7 @@ function careerInfo(k){const c=(typeof CAREERS!=='undefined'&&CAREERS[k])||{};re
 
 // ---------- where a mission sits: every field is optional, with defaults ----------
 const PLACE_WORDS=[['boston','boston'],['nome','nome'],['alaska','nome'],['phoenix','phoenix'],['arizona','phoenix'],['moon','moon'],['lunar','moon'],['san francisco','bay'],['bay area','bay'],['mars','mars'],['jezero','mars'],
-  ['new york','nyc'],['broadway','nyc'],['washington','dc'],['capitol','dc'],['vienna','vienna'],['shanghai','shanghai'],['beijing','beijing'],['shenzhen','shenzhen'],['varrow','varrow'],['marrow point','marrowpoint'],['calder bay','calderbay']];
+  ['new york','nyc'],['broadway','nyc'],['washington','dc'],['capitol','dc'],['vienna','vienna'],['shanghai','shanghai'],['beijing','beijing'],['shenzhen','shenzhen'],['varrow','varrow'],['marrow point','marrowpoint'],['calder bay','calderbay'],['pacific ocean','ocean'],['international waters','ocean']];
 function placeFromLabel(t){t=String(t||'').toLowerCase();const w=PLACE_WORDS.find(([k])=>t.includes(k));return w?w[1]:null}
 function chapterOf(year,season){return (Math.max(1,Math.min(3,year||1))-1)*4+Math.max(0,SEASONS.indexOf(season))}
 function chapterLabel(ch){ch=Math.max(0,Math.min(11,ch|0));return SEASON_NAME[SEASONS[ch%4]]+' '+CAMPAIGN_YEARS[ch/4|0]}
