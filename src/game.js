@@ -110,7 +110,26 @@ function openWords(){sheet(T('Word Book'),S.words.length?`<div class="wordlist">
 
 // ---------- chat with Byte ----------
 let CHAT=[],SAMPLE=null;
-async function getSample(){if(SAMPLE!==null)return SAMPLE;try{SAMPLE=window.claude&&claude.use?await claude.use('sample'):null}catch(e){SAMPLE=null}return SAMPLE}
+async function getSample(){if(SAMPLE!==null)return SAMPLE;try{SAMPLE=window.claude&&claude.use?await claude.use('sample'):null}catch(e){SAMPLE=null}if(!SAMPLE)SAMPLE=keySample();return SAMPLE}
+// Outside Claude.ai (the Android app, an offline copy) there is no sample capability. A grown-up can paste an Anthropic
+// API key on the progress page; it stays in this device's storage only (never in S, so never in save codes) and makes
+// the same kind of calls the artifact's sample capability makes. With no key, Byte uses scripted replies.
+const KEY_STORE='pm2040_apikey';
+function liveKey(){try{return localStorage.getItem(KEY_STORE)||''}catch(e){return ''}}
+function setLiveKey(k){try{k?localStorage.setItem(KEY_STORE,k.trim()):localStorage.removeItem(KEY_STORE)}catch(e){}SAMPLE=null}
+function keySample(){if(!liveKey())return null;
+  const call=async(input,opts={})=>{const msgs=typeof input==='string'?[{role:'user',content:input}]:input;
+    const model=opts.modelTier==='quick'?'claude-haiku-5-5':'claude-sonnet-5-5';
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:opts.signal,headers:{'content-type':'application/json','x-api-key':liveKey(),
+      'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:opts.maxTokens||700,messages:msgs})});
+    if(!r.ok)throw {code:r.status===429?'rate_limited':'error',message:'HTTP '+r.status};
+    const j=await r.json();const text=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    if(opts.onText)opts.onText({text,delta:text});return {text,truncated:j.stop_reason==='max_tokens'}};
+  const sm=(input,opts)=>call(input,opts);
+  sm.json=async(input,opts={})=>{const add='\n\nReply with only the JSON value, no other text.';
+    const inp=typeof input==='string'?input+add:input.map((m,i)=>i===input.length-1?{...m,content:m.content+add}:m);
+    const {text}=await call(inp,opts);const m=text.match(/[\[{][\s\S]*[\]}]/);return JSON.parse(m?m[0]:text)};
+  return sm}
 function byteContext(){return hook('byteContext',`You are ${S.byte.name}, the player's AI partner in the game "Pathmakers 2040", shaped like a cute robot puppy. In this 2040, AI is far smarter than any human; you are a superintelligent expert (in medicine, science, history, everything) and you are impressively, concretely helpful. The player, ${P()}, is a kid who reads well above their grade level; speak warmly and clearly, with a little puppy playfulness, in 2 to 4 short sentences unless a list is clearly better. No markdown.
 The world: Boston, 2040. AI quietly runs a lot of everyday things (the hospital's systems are run by an AI called Halo), and people treat that as normal and mundane, the way we treat electricity. Humans still make value choices, give consent, and sign off, because the decisions are about their own lives. Mention the AI parts casually, never as a big deal.
 ${M().brief()}
@@ -430,3 +449,8 @@ function renderEvening(){const lines=M().evening();
 
 // ---------- boot ----------
 (function boot(){mergeMissions();LATE.forEach(f=>{try{f()}catch(e){console.warn(e)}});RESUME=migrateSave(loadLocal());render();connectCloud()})();
+
+// Android app hooks: Back closes the top sheet or progress page (returns true if it closed something); pause silences audio.
+window.pmBack=()=>{const top=[...document.querySelectorAll('.sheet,.pp')].pop();if(!top)return false;const x=top.querySelector('.x,[aria-label="Close"]');if(x)x.click();else top.remove();return true};
+window.pmPause=()=>{try{MUSIC.pause();document.querySelectorAll('audio').forEach(a=>a.pause())}catch(e){}};
+document.addEventListener('visibilitychange',()=>{try{document.hidden?window.pmPause():MUSIC.resume()}catch(e){}});

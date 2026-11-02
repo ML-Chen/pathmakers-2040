@@ -94,7 +94,12 @@ window.PARENT=(()=>{
   function chatCard(){const L=S.chatLog||[];
     const qs=L.length?`<ul class="pp-qs">${L.map(x=>`<li><p>${esc(x.q)}</p><span>${fmtDate(x.t)}</span></li>`).join('')}</ul><button class="mini-btn" id="pp-clear">${T('Clear questions')}</button>`:empty(T('Questions to {0} appear here.',esc(S.byte.name)));
     return card('chat',T('Talking with {0}',esc(S.byte.name)),null,`<div class="pp-switch"><span id="pp-swl">${T('Free chat')}</span><button class="pp-tog ${chatOn()?'on':''}" id="pp-tog" role="switch" aria-checked="${chatOn()}" aria-labelledby="pp-swl"><i></i></button></div>
-      <p class="pp-note" id="pp-swnote">${T(chatOn()?'{0} answers anything, using AI.':'{0} answers with scripted lines only.',esc(S.byte.name))}</p><div class="pp-sub">${T('Recent questions')}</div>${qs}`)}
+      <p class="pp-note" id="pp-swnote">${T(chatOn()?'{0} answers anything, using AI.':'{0} answers with scripted lines only.',esc(S.byte.name))}</p>${keyBox()}<div class="pp-sub">${T('Recent questions')}</div>${qs}`)}
+  // Outside Claude.ai, live chat needs a grown-up's own Anthropic API key (kept on this device only).
+  function keyBox(){if(window.claude&&window.claude.use||typeof liveKey!=='function')return '';const k=liveKey();
+    return `<div class="pp-sub">${T('Live chat on this device')}</div><p class="pp-note">${T(k?'Connected with your API key. It is stored only on this device.':'Without a key, {0} uses scripted lines. Paste an Anthropic API key to turn on live answers. It stays on this device, and use is billed to that key, so set a low spending limit.',esc(S.byte.name))}</p>
+      <div class="row"><input id="pp-key" type="password" autocomplete="off" placeholder="${T(k?'Key saved':'sk-ant-...')}" style="flex:1;min-width:0"><button class="btn small" id="pp-keysave">${T('Save')}</button>${k?`<button class="btn small ghost" id="pp-keydel">${T('Remove')}</button>`:''}</div>`}
+
 
   // ---------- page and gate ----------
   function page(){$$('.pp').forEach(x=>x.remove());const d=document.createElement('div');d.className='pp';d.setAttribute('role','dialog');d.setAttribute('aria-label',T('Progress'));
@@ -106,7 +111,8 @@ window.PARENT=(()=>{
       box.innerHTML=`<b>${T('Day {0}',x.day)} · ${esc(T(x.title))}</b>${x.plan?`<span>${esc(T(x.plan))}</span>`:''}<span><span class="pp-gold">${starStr(x.stars)}</span> · ${x.luck?esc(T(x.luck))+T(x.good?' · went well':' · did not go well'):T('luck not recorded')}${x.conf!=null?T(' · said {0}% sure',x.conf):''}${x.fc!=null?T(" · {0}'s forecast {1}%",esc(S.byte.name),x.fc):''}${x.levelName?` · ${esc(T(x.levelName))}`:''}</span>`});
     const more=$('#pp-more',d);if(more)more.onclick=()=>{$$('.pp-memo',d).forEach(a=>a.hidden=false);more.remove()};
     wireChat(d);hook('parent',d)}
-  function wireChat(d){const tog=$('#pp-tog',d);tog.onclick=()=>{S.chatOff=!S.chatOff;save();tog.classList.toggle('on',chatOn());tog.setAttribute('aria-checked',chatOn());
+  function wireChat(d){const ks=$('#pp-keysave',d),kd=$('#pp-keydel',d);if(ks)ks.onclick=()=>{const v=$('#pp-key',d).value.trim();if(!v)return;setLiveKey(v);toast(T('Key saved on this device'),'good');d.remove();page()};if(kd)kd.onclick=()=>{setLiveKey('');d.remove();page()};
+  const tog=$('#pp-tog',d);tog.onclick=()=>{S.chatOff=!S.chatOff;save();tog.classList.toggle('on',chatOn());tog.setAttribute('aria-checked',chatOn());
       $('#pp-swnote',d).textContent=T(chatOn()?'{0} answers anything, using AI.':'{0} answers with scripted lines only.',esc(S.byte.name))};
     const clr=$('#pp-clear',d);if(clr)clr.onclick=()=>{S.chatLog=[];save();$('#pp-chat',d).outerHTML=chatCard();wireChat(d)}}
   // a light grown-ups gate: a two-digit multiplication question, asked once per visit
