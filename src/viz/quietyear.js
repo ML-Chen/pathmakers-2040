@@ -356,7 +356,7 @@ const QY_ART=(()=>{
     <path d="M56 54C56 48 60 46 75 46C90 46 94 48 94 54L92 72C92 76 88 78 75 78C62 78 58 76 58 72Z" fill="#e5484d" stroke="#a83236" stroke-width="1.2"/><path d="M54 52H96" stroke="#a83236" stroke-width="2.4" stroke-linecap="round"/><path d="M62 56Q68 60 72 56" stroke="#fff" stroke-width="1.4" fill="none" opacity=".6"/>
     ${[0,1,2].map(i=>`<path d="M${66+i*9} 40Q${62+i*9} 34 ${67+i*9} 28Q${71+i*9} 22 ${66+i*9} 16" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" class="qyv-steam" style="--d:${i*.7}s"/>`).join('')}
     <g class="qyv-stir"><path d="M86 30L80 58" stroke="#8a5a3a" stroke-width="2.4" stroke-linecap="round"/><path d="${ov(79,59,4,2.6)}" fill="#8a5a3a"/></g>
-    ${tablet(150,24,64,48,callFace(156,30,52,36,'#ffe8b0',SKIN[2],'#eceaf2',2))}<path d="M174 72L170 104M190 72L194 104" stroke="#8a90b0" stroke-width="2"/>
+    ${tablet(150,24,64,48,`<path d="${rr(153,27,58,42,2)}" fill="#ffe8b0"/><g transform="translate(182 49) scale(2.1) translate(-9.25 -15)">${callFace(0,0,18.5,27,'#ffe8b0',SKIN[2],'#eceaf2',2)}</g>`)}<path d="M174 72L170 104M190 72L194 104" stroke="#8a90b0" stroke-width="2"/>
     ${['1','2','3'].map((n,i)=>`<g class="qyv-on" style="--d:${i*1.4}s"><path d="${rr(226,22+i*26,58,20,5)}" fill="#fff" stroke="#e0c49a"/>${txt(238,36+i*26,10,CO,n)}<path d="M248 ${32+i*26}H276" stroke="${INK}" stroke-width="1.6" opacity=".3" stroke-linecap="round"/></g>`).join('')}`,'Grandma teaching soup over the screen, one step at a time'),
   qyHug:()=>pic(...DAWN,`${sun(240,30,12)}${gnd(112,'#a8d8a0','#88c080')}${house(196,112,70,48,{wall:'#d9c2e8',roof:'#5a4a7a',doorX:.4})}
     <g class="qyv-hug"><g transform="translate(0 0)">${P(126,112,{...ANA,s:1.25,face:'happy',pose:'walk'})}</g></g>
@@ -405,10 +405,11 @@ const QY_ART=(()=>{
       s+=`<path d="M${x} ${y+12}V${y+5}L${x+6} ${y}L${x+12} ${y+5}V${y+12}Z" fill="#e8e2f4" stroke="#b8b0d0" stroke-width=".8"/>${hit?`<path d="${ov(x+6,y+8,2.6)}" fill="${CO}" class="qyv-on" style="--d:${(((i*13+j*7)%20)*.12).toFixed(2)}s"/>`:''}`}
     return pic(...['#f6f2ff','#fff'],s,'The outbreak reached hundreds of homes')},
   qyBuildBox:()=>pic(...ROOM,`${gnd(104,'#d9c3a8','#c4aa8a')}<path d="M70 92H230V98H70Z" fill="#a8744a"/><path d="M80 98V122M220 98V122" stroke="#8a5a3a" stroke-width="4"/>
-    ${boxG(150,92,1.25,GR,'qyv-blink')}${txt(150,62,7,'#5d6385','SNIFFER','textLength="32" lengthAdjust="spacingAndGlyphs"')}
-    ${P(70,104,{...PRIYA,s:1.2})}${P(234,104,{skin:SKIN[0],shirt:'#ff8a7a',hair:'#d9a441',style:'pony',s:1.15,flip:true})}
-    <g class="qyv-wave" style="transform-origin:96px 80px"><path d="M92 74L112 78" stroke="#8a90b0" stroke-width="3" stroke-linecap="round"/><path d="M112 78L120 79" stroke="#e5484d" stroke-width="3.4" stroke-linecap="round"/></g>
-    ${[[118,40],[186,36],[200,54]].map(([x,y],i)=>`<g class="qyv-pop" style="--d:${i*.6}s"><path d="M${x} ${y-5}V${y+5}M${x-5} ${y}H${x+5}" stroke="${GO}" stroke-width="2" stroke-linecap="round"/></g>`).join('')}`,'Priya’s team builds the first air sensor, Sniffer'),
+    ${boxG(150,92,1.25,GR,'qyv-blink')}
+    <path d="M96 90L114 86" stroke="#8a90b0" stroke-width="2.4" stroke-linecap="round"/><path d="M114 86L122 84" stroke="#e5484d" stroke-width="3.6" stroke-linecap="round"/>
+    <path d="M182 91L196 84" stroke="#9aa0bd" stroke-width="3" stroke-linecap="round"/><path d="${ov(198,83,3.4)}" fill="none" stroke="#9aa0bd" stroke-width="2.2"/><path d="${rr(204,84,14,8,2)}" fill="#5b9bf0"/><path d="M207 88H215" stroke="#fff" stroke-width="1.2"/>
+    ${P(70,104,{...PRIYA,s:1.2})}${P(236,104,{skin:SKIN[0],shirt:'#ff8a7a',hair:'#d9a441',style:'pony',outfit:'jacket',s:1.2,flip:true})}
+    ${[[118,40],[186,36],[200,54]].map(([x,y],i)=>`<g class="qyv-pop" style="--d:${i*.6}s"><path d="M${x} ${y-5}V${y+5}M${x-5} ${y}H${x+5}" stroke="${GO}" stroke-width="2" stroke-linecap="round"/></g>`).join('')}`,'Priya’s team builds the first water tester, Sniffer'),
   qySniff:()=>pic(...DAY,`${gnd(96,'#cfe8c0','#b8dca8')}<path d="M0 104H300V130H0Z" fill="#b9a68a"/><path d="M0 108H122" stroke="#5d6385" stroke-width="12"/><path d="M0 108H122" stroke="#7aa6d8" stroke-width="7"/>
     ${[0,1,2,3,4].map(i=>`<g class="qyv-slide" style="--dx:100px;--d:${i*.6}s"><path d="${ov(8,106+(i%2)*3,1.8)}" fill="#e8f7ff"/></g>`).join('')}<g class="qyv-slide" style="--dx:100px;--d:1.4s">${germ(8,108,3.2)}</g>
     <path d="M118 108C126 108 128 100 126 96" stroke="#3d5a80" stroke-width="3" fill="none"/>${boxG(100,96,1.5,'#e5484d','qyv-blink')}
@@ -449,10 +450,12 @@ const QY_ART=(()=>{
   qyFlagHold:()=>pic(...['#f6f2ff','#fffaf3'],`${gnd(112,'#ddd6ee')}${slipG(30,48,1.6,{flag:1})}<path d="M84 72H110" stroke="#e5484d" stroke-width="2" class="qyv-dash"/>
     ${P(150,112,{...NOOR,s:1.25})}<g class="qyv-bob"><g transform="translate(176 62)"><path d="${ov(0,0,10)}" fill="#cfeaff" opacity=".6" stroke="${INK}" stroke-width="2.6"/><path d="M7 7L14 14" stroke="${INK}" stroke-width="3.4" stroke-linecap="round"/></g></g>
     <g class="qyv-stamp"><g transform="rotate(-10 248 56)"><path d="${rr(212,40,72,32,4)}" fill="none" stroke="#e0484a" stroke-width="3"/>${txt(248,63,17,'#e0484a','HOLD','textLength="52" lengthAdjust="spacingAndGlyphs"')}</g></g>`,'The AI flags an odd order, and Noor decides whether to hold it'),
-  qyQuietDesk:()=>pic(...NIGHT,`${stars(14,3,40)}${moon(260,26,8)}<path d="M0 84H300V130H0Z" fill="#4a3f5e"/><path d="M0 84H300V88H0Z" fill="#6a5a7e"/>
-    <path d="${rr(150,34,86,50,4)}" fill="#22263a"/><path d="${rr(154,38,78,42,2)}" fill="#2e3456"/>${[0,1,2,3].map(i=>`<path d="M162 ${47+i*9}H210" stroke="#7ff7e4" stroke-width="2" opacity=".35"/><path d="M216 ${47+i*9}L219 ${50+i*9}L224 ${44+i*9}" stroke="${GR}" stroke-width="1.8" fill="none" stroke-linecap="round" class="qyv-on" style="--d:${i*.8}s"/>`).join('')}
-    ${P(110,112,{...NOOR,s:1.3})}<path d="M244 84C244 76 258 76 258 84V72H244Z" fill="#fff"/><path d="M246 74H256V86Q256 88 251 88Q246 88 246 86Z" fill="#f2f2f6" stroke="#b9c1d9"/>${[0,1].map(i=>`<path d="M${249+i*4} 70Q${246+i*4} 64 ${250+i*4} 58" stroke="#fff" stroke-width="1.6" fill="none" class="qyv-steam" style="--d:${i}s" stroke-linecap="round"/>`).join('')}
-    <path d="M30 84C26 70 34 62 38 52C42 62 50 70 46 84Z" fill="#3f8f6b"/><path d="M28 84H48L46 96H30Z" fill="#c98a4a"/>`,'A quiet night at the screening desk'),
+  qyQuietDesk:()=>pic(...['#2a2e5e','#3a3a70'],`<path d="${rr(18,12,92,62,4)}" fill="#141a44" stroke="#5a5a8a" stroke-width="2"/><g>${stars(9,3,50).replace(/cx="(\d+)"/g,(m,x)=>`cx="${22+(+x)%84}"`)}</g>${moon(88,28,7)}<path d="M64 12V74M18 43H110" stroke="#5a5a8a" stroke-width="1.6"/>
+    ${gnd(118,'#4a3f5e')}<path d="M130 82H292V88H130Z" fill="#a8744a"/><path d="M136 88V118M286 88V118" stroke="#7a5032" stroke-width="4"/>
+    <path d="${rr(170,34,84,46,4)}" fill="#22263a"/><path d="${rr(174,38,76,38,2)}" fill="#2e3456"/><path d="M206 80H218L222 82H202Z" fill="#22263a"/>${[0,1,2,3].map(i=>`<path d="M182 ${46+i*8}H226" stroke="#7ff7e4" stroke-width="2" opacity=".35"/><path d="M232 ${46+i*8}L235 ${49+i*8}L240 ${43+i*8}" stroke="${GR}" stroke-width="1.8" fill="none" stroke-linecap="round" class="qyv-on" style="--d:${i*.8}s"/>`).join('')}
+    <path d="M264 82V70H276V82Z" fill="#f2f2f6" stroke="#b9c1d9"/><path d="M276 73Q281 74 276 79" stroke="#b9c1d9" stroke-width="1.6" fill="none"/>${[0,1].map(i=>`<path d="M${268+i*4} 66Q${265+i*4} 60 ${269+i*4} 54" stroke="#fff" stroke-width="1.6" fill="none" class="qyv-steam" style="--d:${i}s" stroke-linecap="round"/>`).join('')}
+    <path d="M140 82C137 70 143 62 146 54C149 62 155 70 152 82Z" fill="#3f8f6b"/><path d="M138 82H154L153 74H139Z" fill="#c98a4a"/>
+    ${P(112,122,{...NOOR,s:1.35,face:'happy'})}`,'A quiet night at the screening desk'),
   // ---------------- Sam's sticker ----------------
   qyDesignFast:()=>pic(...['#eef0ff','#fbfbff'],`${orb(60,62,18)}<path d="M84 62H120" stroke="${VI}" stroke-width="2" class="qyv-dash"/>
     <g transform="translate(150 22)"><path d="M10 14H30C30 14 31 34 31 52C31 62 27 68 20 68C13 68 9 62 9 52C9 34 10 14 10 14Z" fill="none" stroke="${VI}" stroke-width="1.6" stroke-dasharray="4 3" class="qyv-dash"/><path d="M8 6H32V14H8Z" fill="none" stroke="${VI}" stroke-width="1.6" stroke-dasharray="4 3"/>
@@ -474,12 +477,13 @@ const QY_ART=(()=>{
   qyCrayons:()=>pic(...ROOM,`${gnd(96,'#e9d2b0','#d8bc90')}<path d="${rr(120,30,130,82,3)}" fill="#fffaf0" stroke="#d8c8a8" transform="rotate(-3 185 70)"/>
     <path d="M140 92V66H190V92M134 68L165 46L196 68" stroke="${CO}" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="160" class="qyv-draw"/>
     <g class="qyv-bob"><path d="M196 54L224 26" stroke="#5b9bf0" stroke-width="7" stroke-linecap="round"/><path d="M196 54L192 58" stroke="#5b9bf0" stroke-width="4" stroke-linecap="round"/></g>
-    <path d="${rr(20,74,70,26,3)}" fill="#ffd45c" stroke="#d8a838"/>${[CO,GO,GR,TE,VI,'#5b9bf0'].map((c,i)=>`<path d="M${28+i*10} 74V60L${31+i*10} 54L${34+i*10} 60V74Z" fill="${c}"/>`).join('')}
-    ${P(60,122,{...IVY,s:.9,face:'happy'})}`,'Ivy drawing at seven'),
+    <path d="${rr(62,74,52,22,3)}" fill="#ffd45c" stroke="#d8a838"/>${[CO,GO,GR,TE,VI].map((c,i)=>`<path d="M${68+i*9} 74V62L${71+i*9} 56L${74+i*9} 62V74Z" fill="${c}"/>`).join('')}
+    ${P(34,126,{...IVY,s:1.15,face:'happy'})}`,'Ivy drawing at seven'),
   qyFirstLantern:()=>pic(...NIGHT,`${stars(20,7,44)}${moon(40,22,8)}${gnd(116,'#2e3266')}${house(70,116,160,84,{wall:'#e8b48a',roof:'#6a3e5e',door:false})}
     <path d="${rr(110,52,80,52,3)}" fill="#ffd98a" stroke="#5a3a40" stroke-width="1.6"/><path d="${rr(110,52,80,52,3)}" fill="#ffb347" opacity=".25" class="qyv-pulse"/>
-    ${P(136,116,{...MOM,s:1.3})}${P(166,116,{...IVY,s:1.15,face:'happy'})}<g class="qyv-pop" style="--d:.8s">${lamp(150,64,1.8,'#f7a440')}</g>
-    <path d="M110 78H190" stroke="#5a3a40" stroke-width="1.2" opacity=".5"/>`,'Ivy and her mom put a paper lantern in the window'),
+    <defs><clipPath id="qyfl1"><path d="${rr(111,53,78,50,2)}"/></clipPath></defs><g clip-path="url(#qyfl1)">${P(132,128,{...MOM,s:1.6})}${P(168,128,{...IVY,s:1.35,face:'happy'})}</g>
+    <path d="M110 96H190V104H110Z" fill="#c98a5a"/><g class="qyv-pop" style="--d:.8s">${lamp(150,82,1.8,'#f7a440')}</g>
+    <path d="M150 52V104" stroke="#5a3a40" stroke-width="1.6" opacity=".55"/><path d="${rr(110,52,80,52,3)}" fill="none" stroke="#5a3a40" stroke-width="2"/>`,'Ivy and her mom put a paper lantern in the window'),
   qyAcrossStreet:()=>pic(...NIGHT,`${stars(18,9,40)}${moon(150,20,8)}${street(100)}
     ${house(14,100,96,64,{wall:'#e8b48a',roof:'#6a3e5e',doorX:.1})}${win(48,52,26,22,1)}${lamp(61,62,1.1,'#f7a440','qyv-sway')}
     ${house(190,100,96,64,{wall:'#bfd8ee',roof:'#4a5a8a',doorX:.72})}${win(224,52,26,22,0)}<g class="qyv-on" style="--d:1.2s">${win(224,52,26,22,1)}${lamp(237,62,1.1,'#ff8a7a')}</g>`,'The next night, the house across the street lit one too'),

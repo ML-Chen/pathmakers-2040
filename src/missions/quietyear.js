@@ -65,6 +65,13 @@ const QY_JOBS=[
 const QY_COLORS=['#f5a63a','#ff8a7a','#ffd45c','#7fd8c8','#a99bff'];
 const QY_THANKS=['the nurses','the bakers','the screeners','the kids who stayed home','everyone who helped'];
 
+// Gus, the keeper, is about 70: the standard portrait plus a neat white mustache, smile lines and crow's feet
+function qyGusArt(o,mood){const svg=personSVG({...o,art:undefined,mood});
+  const age=`<path d="M106 126.5l-6.5 -2.4M106.5 131.5l-6.5 1.6M194 126.5l6.5 -2.4M193.5 131.5l6.5 1.6M126.5 165Q122.5 173 126.5 180M173.5 165Q177.5 173 173.5 180" stroke="#6a3e2c" stroke-width="1.2" fill="none" opacity=".45" stroke-linecap="round"/>
+   <path d="M150 165C145 161.5 136 161.5 130 166C127 168.5 126.5 172 128 174.4C132 171.4 140 170.6 146 171.6C148 171.9 149.3 171.2 150 170.2C150.7 171.2 152 171.9 154 171.6C160 170.6 168 171.4 172 174.4C173.5 172 173 168.5 170 166C164 161.5 155 161.5 150 165Z" fill="#ebe7f1" stroke="#8e8aa2" stroke-width="1.5" stroke-linejoin="round"/>
+   <path d="M136 166.5Q141 165 146 166.8M164 166.5Q159 165 154 166.8" stroke="#b9b4c8" stroke-width="1.1" fill="none" stroke-linecap="round"/>`;
+  return svg.replace('<g class="p-mouth">',age+'<g class="p-mouth">')}
+
 // mission state lives in S.notes (startMission wipes it, so a replay starts fresh)
 function qyState(){S.notes=S.notes||{};return S.notes.qy=S.notes.qy||{found:{},on:{},rules:{},lantern:{color:QY_COLORS[0],to:null,text:''},ruleAt:0}}
 function qyFound(){const f=qyState().found;return QY_ITEMS.filter(x=>f[x.id])}
@@ -137,8 +144,8 @@ function qyRules(){const st=qyState(),R=st.rules,done=QY_JOBS.filter(j=>R[j.id])
     body=`<div class="qy-job qy-sum"><h3>${match>=5?'You think like Varrow’s rule book.':match>=3?'Close to Varrow’s rules.':'Varrow chose differently on a few.'}</h3>
      <p>Small, fast and easy to undo: the AI acts alone. Bigger: the AI acts and a person checks. Huge or hard to undo: a person decides and signs.</p>
      <button class="btn wide" id="qy-done">Back to the pond</button></div>`}
-  const head=job?'Since the Quiet Year, AIs run these safeguards all day. Varrow wrote rules for what they may do on their own. Where would you put this job?':'Here is your board. A dimmed card means Varrow put that job somewhere else.';
-  screen('futuretable',`${scene('table')}${hud('Who does what? · Varrow')}
+  const head=job?'AIs run these safeguards all day. Which jobs may they do on their own?':'Your board. A dimmed card means Varrow put that job somewhere else.';
+  screen('futuretable',`${scene('table')}${hud('Rule board · Varrow')}
    <div class="ft qy-ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:job?'think':'happy'})}</div><p>${esc(head)}</p></div>${board}${body}</div>`);
   $$('.qy-bin').forEach(b=>b.onclick=()=>{R[job.id]=b.dataset.b;save();MUSIC.sfx&&MUSIC.sfx(b.dataset.b===job.best?'chime':'blip');qyRules()});
   const nj=$('#qy-nextjob');if(nj)nj.onclick=()=>{st.ruleAt=at+1;save();if(st.ruleAt>=QY_JOBS.length&&unlock('who-does-what'))toast('New Field Guide idea: '+FIELD_GUIDE['who-does-what'].title,'good');qyRules()};
@@ -150,7 +157,7 @@ function qyLantern(){const L=qyState().lantern;
     <h2>Light a lantern</h2>
     <div class="qy-light">${qyArt('lantern',L.color)}<div class="qy-tag" id="qy-tag"></div></div>
     <div class="qy-swatches">${QY_COLORS.map(c=>`<button data-c="${c}" class="${L.color===c?'on':''}" style="background:${c}" aria-label="Lantern color"></button>`).join('')}</div>
-    <div class="qy-cards">${QY_THANKS.map(t=>`<button class="critb ${L.to===t?'on':''}" data-t="${esc(t)}">Thank you to ${esc(t)}</button>`).join('')}</div>
+    <div class="qy-cards">${QY_THANKS.map(t=>`<button class="critb ${L.to===t?'on':''}" data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div>
     <div class="ta-wrap"><textarea id="qy-text" rows="2" maxlength="120" placeholder="Add your own words">${esc(L.text)}</textarea>${micButton('qy-text')}</div>
     <button class="btn wide" id="qy-go" ${L.to?'':'disabled'}>Set it on the pond</button></div>`);
   wireMics();const msg=()=>{$('#qy-tag').textContent=L.to?`Thank you to ${L.to}.${L.text.trim()?' '+L.text.trim():''}`:''};msg();
@@ -167,7 +174,7 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
   blurb:'A day off: take the ferry to the memorial garden in Varrow.',after:['maya'],
   place:'Lantern Garden · Varrow',
   cast:{
-    qygus:{name:'Gus Barros',role:'Keeper of the Lantern Garden',skin:SKIN[2],hair:'#e8e4ee',hairStyle:'elder',masc:true,shirt:'#3f8f6b',glasses:true},
+    qygus:{name:'Gus Barros',role:'Keeper of the Lantern Garden',skin:SKIN[2],hair:'#e8e4ee',hairStyle:'short',masc:true,shirt:'#3f8f6b',glasses:true,art(m){return qyGusArt(this,m)}},
     qyana:{name:'Ana Ribeiro',role:'Was 14 in the Quiet Year',skin:SKIN[1],hair:'#3a2418',hairStyle:'long',shirt:'#ff8a7a'},
     qykwame:{name:'Kwame Mensah',role:'Baker on Harbor Street',skin:SKIN[5],hair:'#141010',hairStyle:'buzz',masc:true,shirt:'#f5b82e'},
     qypriya:{name:'Dr. Priya Nair',role:'Engineer, built the first water tester',skin:SKIN[3],hair:'#1a1414',hairStyle:'bun',shirt:'#16b3a6',glasses:true,accessory:'earring'},
