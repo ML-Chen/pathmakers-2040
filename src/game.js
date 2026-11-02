@@ -1,7 +1,7 @@
 // game.js — state, saving, screens and the mission flow for Pathmakers 2040.
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const APP=$('#app');
-const NEW=()=>({v:1,mission:'maya',completed:{},player:'Juniper',byte:{name:'Byte',color:'#f0b35a',ears:'floppy',voice:'female'},step:'title',notes:{},told:false,highlights:{},
+const NEW=()=>({v:2,mission:'maya',completed:{},player:'Juniper',byte:{name:'Byte',color:'#f0b35a',ears:'floppy',voice:'female'},step:'title',notes:{},told:false,highlights:{},
   criteria:[],choice:{tx:'gel',pt:false,date:'fri'},seed:1,conf:2,memo:'',consent:null,words:[],guide:[],hearts:{},result:null,done:false,read:{}});
 let S=NEW(),RESUME=null;
 const M=()=>MISSIONS[S.mission||'maya'];
@@ -18,7 +18,7 @@ async function connectCloud(){
     UID=await user.id();if(!UID)return;DB=db;
     const d=await DB.collection('data/users/'+UID).doc('save').get().catch(()=>null);
     const remote=d&&(d.data?d.data():d);const j=remote&&remote.json;
-    if(j){const r=JSON.parse(j);const loc=loadLocal();if(r&&r.v===1&&(!loc||loc.step==='title'||(r.t||0)>=(loc.t||0))){RESUME=r;try{localStorage.setItem('pm2040',j)}catch(e){}if(APP.classList.contains('title'))render()}}
+    if(j){const r=migrateSave(JSON.parse(j));const loc=loadLocal();if(r&&(!loc||loc.step==='title'||(r.t||0)>=(loc.t||0))){RESUME=r;try{localStorage.setItem('pm2040',j)}catch(e){}if(APP.classList.contains('title'))render()}}
   }catch(e){}
 }
 
@@ -53,7 +53,7 @@ function wireMics(){$$('.mic').forEach(b=>b.onclick=()=>{const el=document.getEl
     r.onerror=()=>{b.classList.remove('on');b.remove();toast('The microphone isn\u2019t available here. You can type instead.')};r.onend=()=>b.classList.remove('on');r.start()}catch(e){b.remove()}})}
 function learnWord(k){window.PARENT&&PARENT.noteWord(k);if(!S.words.includes(k)){S.words.push(k);save();bumpHud('words')}}
 function unlock(id){window.PARENT&&PARENT.noteIdea(id);if(!S.guide.includes(id)){S.guide.push(id);save();bumpHud('guide');return true}return false}
-function heart(who,n=1){S.hearts[who]=(S.hearts[who]||0)+n;save()}
+function heart(who,n=1){S.hearts[who]=(S.hearts[who]||0)+n;save();if(typeof heartFx==='function')heartFx(who,n)}
 function bumpHud(id){const b=$('#hud-'+id);if(b){const n=id==='words'?S.words.length:S.guide.length;let sp=b.querySelector('span');if(!sp){sp=document.createElement('span');b.appendChild(sp)}sp.textContent=n;b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}}
 
 // glossary popover (one at a time)
@@ -83,9 +83,9 @@ function hud(place){return `<div class="hud"><div class="place">${esc(place)}</d
   <button id="hud-guide" class="hbtn" aria-label="Field Guide">${ICON.guide}${S.guide.length?`<span>${S.guide.length}</span>`:''}</button>
   <button id="hud-words" class="hbtn" aria-label="Word Book">${ICON.words}${S.words.length?`<span>${S.words.length}</span>`:''}</button></div></div>`}
 function saveCode(){try{return 'PM1-'+btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/=+$/,'')}catch(e){return ''}}
-function loadCode(code){try{const j=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^PM1-/,'')))));if(j&&j.v===1){S={...NEW(),...j};save();return true}}catch(e){}return false}
+function loadCode(code){try{const j=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^PM1-/,'')))));const g=migrateSave(j);if(g){S={...NEW(),...g};save();return true}}catch(e){}return false}
 function openMenu(){const d=sheet('Menu',`<div class="menu">
-   <button class="btn wide" id="m-hub">Day planner</button>${typeof openPortfolio==='function'?'<button class="btn wide ghost" id="m-port">Portfolio Book</button>':''}
+   <button class="btn wide" id="m-hub">World map</button>${typeof openPortfolio==='function'?'<button class="btn wide ghost" id="m-port">Portfolio Book</button>':''}
    <div class="lbl">Save code</div><p class="tiny muted">Copy this code to move your game to another device or browser.</p>
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">Copy code</button>
    <div class="lbl">Load a save code</div><textarea id="m-in" rows="3" placeholder="Paste a code that starts with PM1-"></textarea><button class="btn small ghost" id="m-load">Load this game</button>
@@ -157,7 +157,7 @@ if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
 function screen(cls,html){stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
-  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
+  if(typeof campaignScreen==='function')campaignScreen(cls);applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
   MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 function go(step){S.step=step;save();render()}
@@ -188,7 +188,7 @@ function talk(key,sceneKey,place,next){
     if(L.clue&&!S.notes[L.clue]&&!isReply){choices.innerHTML=`<button class="choice clue">Write this in my notebook</button><button class="choice ghost">Keep listening</button>`;
       choices.firstChild.onclick=e=>{e.stopPropagation();S.notes[L.clue]=true;save();toast('Added to your notebook','good');advance()};choices.lastChild.onclick=e=>{e.stopPropagation();advance()};return}
     if(L.choices&&!isReply){choices.innerHTML=L.choices.map((c,j)=>`<button class="choice" data-j="${j}">${esc(fill(c.t))}</button>`).join('');
-      $$('.choice',choices).forEach(b=>b.onclick=e=>{e.stopPropagation();const c=L.choices[b.dataset.j];if(c.good)heart(L.who==='byte'?'byte':key);show(L,c.reply,c.mood);L._replied=true});return}
+      $$('.choice',choices).forEach(b=>b.onclick=e=>{e.stopPropagation();const c=L.choices[b.dataset.j];if(c.good)heart(L.who);if(c.on)c.on();show(L,c.reply,c.mood);L._replied=true});return}
     hint.hidden=false}
   function advance(){stopVoice();i++;if(i>=lines.length){next();return}lines[i]._replied=false;show(lines[i])}
   $('#sub').onclick=e=>{if(e.target.closest('.gw,.choice'))return;if(choices.children.length)return;
@@ -200,12 +200,12 @@ function talk(key,sceneKey,place,next){
 // ---------- steps: title, setup, hub, and each mission's flow ----------
 // a new game starts with the earliest unlocked mission (the career journey when it exists)
 function firstMission(){return Object.values(MISSIONS).filter(m=>!(m.after||[]).length).sort((a,b)=>a.day-b.day)[0].id}
-function startMission(id){Object.assign(S,MISSION_FIELDS());S.mission=id;S.choice={...MISSIONS[id].start};curDoc=(MISSIONS[id].docs[0]||{}).id;go(MISSIONS[id].flow[0].name)}
+function startMission(id,at){Object.assign(S,MISSION_FIELDS());S.mission=id;S.choice={...MISSIONS[id].start};S.daysLeft=null;curDoc=((MISSIONS[id].docs||[])[0]||{}).id;go(at||MISSIONS[id].flow[0].name)}
 function nextStep(){const f=M().flow;const i=f.findIndex(x=>x.name===S.step);if(i<0||i>=f.length-1){S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};go('hub');return}go(f[i+1].name)}
 function runFlow(){const f=M().flow.find(x=>x.name===S.step);if(!f)return STEPS.hub();
   if(f.k==='talk')return talk(f.talk,f.scene,f.place,()=>{if(f.toast)toast(f.toast);nextStep()});
   if(f.k==='custom')return (M().custom&&M().custom[f.name]||STEPS[f.name])();
-  ({bench:renderWorkbench,criteria:renderCriteria,table:renderTable,consent:renderConsent,memo:renderMemo,reveal:renderReveal,debrief:renderDebrief,evening:renderEvening}[f.k]||STEPS.hub)()}
+  ((typeof FLOW_KINDS!=='undefined'&&FLOW_KINDS[f.k])||{bench:renderWorkbench,criteria:renderCriteria,table:renderTable,consent:renderConsent,memo:renderMemo,reveal:renderReveal,debrief:renderDebrief,evening:renderEvening}[f.k]||STEPS.hub)()}
 const STEPS={
   title(){const has=!!(RESUME&&RESUME.step&&!['title','setup'].includes(RESUME.step));
     screen('title',`${scene('home')}<div class="title-wrap"><h1 class="logo"><span>Pathmakers</span><b>2040</b></h1>
@@ -393,24 +393,24 @@ function renderDebrief(){
   const crit=S.criteria.filter(x=>x!=='agree');const score=p=>{const e=expectedFor(p);return crit.reduce((a,id)=>a*e(id),1)};
   const mine=score(c),best=Math.max(...allPlans().map(score));const fit=mine>=best-.08;
   const memoOk=memoChecks(S.memo,S.memoAI).filter(x=>x.ok).length>=3;
-  const stars=[T.ok,fit,memoOk&&S.consent].filter(Boolean).length;S.lastStars=stars;
+  const SB=starsFrom({ask:T.ok,decision:fit,heart:memoOk&&S.consent}),stars=SB.stars;S.lastStars=stars;
   const truth=M().outcomes(c,M().truth());const pk=truth.filter(o=>o.kind===R.kind).reduce((a,o)=>a+o.p,0);const good=crit.every(id=>(R.flags[id]??1)>0);
   const luck=good?(pk<.4?'Lucky':'As expected'):(pk<.3?'Unlucky':'As expected');
   if(S.consent)heart(M().consent.left);
   window.PARENT&&PARENT.record({stars,luck,good,checks:memoChecks(S.memo,S.memoAI)});
   screen('debrief',`${scene(M().debriefScene||'hospital')}<div class="talk-dim"></div>${hud('Debrief')}<div class="panel-card debrief">
    <h2>How you did</h2>
-   <div class="scores"><div class="score"><div class="stars">${[0,1,2].map(i=>`<span class="${i<stars?'on':''}">★</span>`).join('')}</div><b>Decision</b><span>How wise your choice was, given what you knew</span></div>
+   <div class="scores"><div class="score">${starRow(SB)}<b>Stars</b><span>For asking well, choosing wisely and caring</span></div>
     <div class="score"><div class="luckpill ${luck.toLowerCase().replace(' ','-')}">${luck}</div><b>Luck</b><span>How the dice landed. Luck never earns stars.</span></div></div>
    <ul class="dlist">
-    <li class="${T.ok?'ok':''}">${esc(T.text)}</li>
-    <li class="${fit?'ok':''}">${fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.'}</li>
-    <li class="${memoOk&&S.consent?'ok':''}">${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.'} ${S.consent?'You explained honestly, so they could truly agree.':''}</li></ul>
+    <li class="${T.ok?'ok':''}">${starIcon('ask',T.ok)}${esc(T.text)}</li>
+    <li class="${fit?'ok':''}">${starIcon('decision',fit)}${fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.'}</li>
+    <li class="${memoOk&&S.consent?'ok':''}">${starIcon('heart',memoOk&&S.consent)}${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.'} ${S.consent?'You explained honestly, so they could truly agree.':''}</li></ul>
    <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(M().byteGood):'Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'}</p></div>
    ${calibLine()}
    <div class="earned"><span>${S.guide.length} Field Guide ideas</span><span>${S.words.length} new words</span><span>${Object.values(S.hearts).reduce((a,b)=>a+b,0)} hearts</span></div>
    <button class="btn wide" id="next">${M().flow.some(f=>f.k==='evening')?'Head home':'Finish the day'}</button></div>`);
-  $('#next').onclick=()=>{S.completed[S.mission]={stars:Math.max(stars,(S.completed[S.mission]||{}).stars||0)};save();nextStep()}}
+  $('#next').onclick=()=>{awardStars(S.mission,SB);nextStep()}}
 
 function renderEvening(){const lines=M().evening();
   screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
@@ -419,4 +419,4 @@ function renderEvening(){const lines=M().evening();
   $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};save();go('hub')}}
 
 // ---------- boot ----------
-(function boot(){mergeMissions();LATE.forEach(f=>{try{f()}catch(e){console.warn(e)}});const l=loadLocal();if(l&&l.v===1)RESUME=l;render();connectCloud()})();
+(function boot(){mergeMissions();LATE.forEach(f=>{try{f()}catch(e){console.warn(e)}});RESUME=migrateSave(loadLocal());render();connectCloud()})();

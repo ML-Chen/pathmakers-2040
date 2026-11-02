@@ -9,6 +9,8 @@
 //  Optional mission-owned tables (merged into the shared ones by mergeMissions() at startup, and recorded by tools/make_audio.py):
 //  glossary {lowercase word: meaning}, cast {id: portrait options + name, role}, voices {cast id: voice name}, guide {Field Guide id: {title,track,text,real}},
 //  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine).
+//  Campaign fields (all optional, see docs/CAMPAIGN.md and src/campaign.js): kind, year, season, district, rank, days, dayLabel.
+//  Career screens (src/career.js): journey {explore, meet, portfolio, interview, firstday} with stages, bigtalk, promotion.
 //  Top-level code in mission files must be plain data and function definitions: tools/make_audio.py evaluates them in node (no DOM).
 const MISSIONS={};
 function mergeMissions(){for(const m of Object.values(MISSIONS)){if(m._merged)continue;m._merged=1;
@@ -23,7 +25,10 @@ function missionLines(m){const L=[],add=(who,t)=>{if(t&&typeof t==='string')L.pu
   if(m.reveal&&m.reveal.lines)for(const k in m.reveal.lines)add(m.reveal.who,m.reveal.lines[k]);
   if(m.consent&&m.consent.opts){try{m.consent.opts(m.start,m).forEach(o=>add(m.consent.replyWho,o.reply))}catch(e){}}
   (m.lines||[]).forEach(x=>add(x.who,x.text));
+  ['journey','bigtalk','promotion'].forEach(k=>spokenIn(m[k],add));
   return L}
+// career screens (career.js) keep every spoken line as a {who, text} object somewhere inside m.journey, m.bigtalk or m.promotion
+function spokenIn(o,add,seen=new Set()){if(!o||typeof o!=='object'||seen.has(o))return;seen.add(o);if(typeof o.who==='string'&&typeof o.text==='string')add(o.who,o.text);for(const k in o)spokenIn(o[k],add,seen)}
 const CAREERS={doctor:{name:'Care Doctor',place:'Boston Harbor Hospital'},companion:{name:'Elder Companion',place:'Boston'}};
 
 MISSIONS.maya={id:'maya',title:'The Violinist’s Wrist',career:'doctor',day:1,blurb:'An 11-year-old violinist broke her wrist nine days before her recital.',after:[],
