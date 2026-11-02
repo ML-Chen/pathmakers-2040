@@ -7,10 +7,14 @@
 const {chromium} = require('playwright'); const fs = require('fs'), path = require('path'), {execFileSync} = require('child_process');
 const [html, out = '/tmp/pm-promo', voDir] = process.argv.slice(2);
 const SHOTS = require('./shots.js'); const ROOT = path.resolve(__dirname, '..', '..');
-for (const d of ['frames', 'segs', 'stills']) fs.mkdirSync(path.join(out, d), {recursive: true});
+for (const d of ['frames', 'segs', 'stills', 'clean']) fs.mkdirSync(path.join(out, d), {recursive: true});
 const ff = (...a) => execFileSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...a]);
 const VO = voDir && fs.existsSync(path.join(voDir, 'durations.json')) ? JSON.parse(fs.readFileSync(path.join(voDir, 'durations.json'))) : null;
-const LEAD = 0.35, PAUSE = 0.55;                                      // silence before and after each line
+const LEAD = 0.35, PAUSE = 0.55;
+// a slow camera move on every shot (the captions stay still): push in, pull out, drift left or right, rise
+const CAMS = [{o: '50% 40%', a: 'scale(1.0)', b: 'scale(1.13)'}, {o: '50% 50%', a: 'scale(1.16) translateX(-3%)', b: 'scale(1.04) translateX(2%)'},
+  {o: '30% 60%', a: 'scale(1.06)', b: 'scale(1.18) translateY(-2%)'}, {o: '70% 40%', a: 'scale(1.15) translateX(3%)', b: 'scale(1.03) translateX(-2%)'},
+  {o: '50% 70%', a: 'scale(1.12) translateY(3%)', b: 'scale(1.02) translateY(-1%)'}];                                      // silence before and after each line
 const est = s => [...s.vo].filter(ch => /[一-鿿]/.test(ch)).length / 4.6 + (s.vo.match(/[A-Za-z]+/g) || []).length * 0.35;
 const dur = s => Math.max(s.min || 3, LEAD + (VO && VO[s.id] ? VO[s.id] : est(s)) + PAUSE) + (s.tail || 0);
 
@@ -20,7 +24,20 @@ const CSS = `
 #pr{position:fixed;inset:0;pointer-events:none;z-index:9999;font-family:"Noto Sans CJK SC","Noto Sans SC",sans-serif}
 #pr .chip{position:absolute;left:14px;top:14px;background:rgba(18,20,52,.72);color:#fff;font-weight:700;font-size:13px;letter-spacing:.06em;padding:5px 11px;border-radius:999px;backdrop-filter:blur(6px)}
 #pr .shade{position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(180deg,rgba(10,12,36,0),rgba(10,12,36,.78) 55%,rgba(10,12,36,.9))}
-#pr .cap{position:absolute;left:18px;right:18px;bottom:26px;color:#fff;font-weight:900;font-size:22px;line-height:1.42;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.6);animation:prin .5s ease-out both}
+#pr .cap{position:absolute;left:18px;right:18px;bottom:26px;color:#fff;font-weight:900;font-size:22px;line-height:1.42;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+/* characters act: they talk, bob and breathe; Byte bounces */
+.speaker{animation:prbob 1.6s ease-in-out infinite alternate;transform-origin:50% 100%}
+.speaker .p-mouth{transform-box:fill-box;transform-origin:center top;animation:talk .17s ease-in-out infinite alternate}
+.speaker .p-mouth[data-m=happy],.speaker .p-mouth[data-m=o]{animation-name:talkbig}
+@keyframes prbob{from{transform:translateY(0) rotate(-.6deg)}to{transform:translateY(-6px) rotate(.6deg)}}
+.byteart{animation:hop 1.1s ease-in-out infinite}
+#pr .cap span{opacity:.28;animation:prch .18s ease-out both}
+@keyframes prch{to{opacity:1}}
+@keyframes prcam{from{transform:var(--c0)}to{transform:var(--c1)}}
+#pr.shot-hook .big{top:40%;animation:none}#pr.shot-hook .cap{animation:none}
+.pr-hook{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pr-hook b{background:rgba(255,255,255,.96);color:#1f2350;font-size:30px;font-weight:900;padding:4px 16px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.45)}
+.pr-hook b.q{background:#ffd45c;font-size:40px;padding:6px 20px}
 #pr .big{position:absolute;left:0;right:0;top:36%;transform:translateY(-50%);display:flex;justify-content:center;animation:prpop .55s cubic-bezier(.2,1.4,.4,1) .25s both}
 @keyframes prin{from{opacity:0;transform:translateY(10px)}}
 @keyframes prpop{from{opacity:0;transform:translateY(-50%) scale(.8)}}
@@ -37,7 +54,7 @@ const CSS = `
 .pr-logo h1,.pr-end h1{font-family:Fredoka,sans-serif;font-size:38px;white-space:nowrap;color:#fff;margin:0;text-shadow:0 4px 18px rgba(30,20,80,.55)}
 .pr-logo h1 span,.pr-end h1 span{display:inline-block;background:#ffd45c;color:#2a2140;border-radius:14px;padding:0 10px;margin-left:4px;text-shadow:none}
 .pr-end{top:auto;position:static}.pr-end p{color:#fff;font-weight:700;font-size:12px;margin:10px 18px 0;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-.pr-byte{position:fixed;left:50%;top:33%;width:190px;transform:translateX(-50%);z-index:5}.pr-byte.low{top:9%;width:170px}
+.pr-byte{position:fixed;left:50%;top:42%;width:190px;transform:translateX(-50%);z-index:5}.pr-byte.low{top:9%;width:170px}
 #pr.shot-end .big{top:61%}
 #pr.shot-game .big{top:16%}
 .pr-byte .byteart{width:100%}
@@ -59,16 +76,25 @@ const CSS = `
     await p.evaluate(({setup, hide}) => {
       document.querySelectorAll('#pr,#pr-hide').forEach(e => e.remove());
       try { (0, eval)(setup) } catch (e) { console.error(e) }
+      document.getElementById('app').style.animation = 'none';
       const st = document.createElement('style'); st.id = 'pr-hide'; st.textContent = (hide || []).join(',') + (hide && hide.length ? '{display:none!important}' : ''); document.head.appendChild(st);
-    }, {setup: s.setup, hide: s.hide});
-    await p.waitForTimeout(900);                                      // let the scene paint and the entrance finish
-    await p.evaluate(({place, vo, big, id}) => {
+    }, {setup: s.setup || (s.cycle && s.cycle[1]), hide: s.hide});
+    await p.waitForTimeout(s.hook ? 250 : 900);                       // let the scene paint and the entrance finish
+    if (!s.hook) await p.screenshot({path: path.join(out, 'clean', `${s.id}.png`)});
+    const cam = CAMS[n % CAMS.length];
+    await p.evaluate(({place, vo, big, id, D, cam}) => {
+      const app = document.getElementById('app'); app.style.transformOrigin = cam.o; app.style.animation = `prcam ${D}s cubic-bezier(.3,.1,.3,1) both`;
+      document.documentElement.style.setProperty('--c0', cam.a); document.documentElement.style.setProperty('--c1', cam.b);
+      const chars = [...vo], per = (D * 0.78) / Math.max(1, chars.length);
+      vo = chars.map((ch, i) => `<span style="animation-delay:${(0.15 + i * per).toFixed(3)}s">${ch}</span>`).join('');
       const d = document.createElement('div'); d.id = 'pr'; d.className = 'shot-' + id;
       d.innerHTML = `${place ? `<div class="chip">${place}</div>` : ''}<div class="shade"></div>${big ? `<div class="big">${big}</div>` : ''}<div class="cap">${vo}</div>`;
       document.body.appendChild(d);
-    }, s);
+    }, {...s, D, cam});
     let timer = null;
     if (s.every) timer = setInterval(() => p.evaluate(s.every[1]).catch(() => {}), s.every[0]);
+    if (s.cycle) { let k = 0; const [ms, ...setups] = s.cycle; timer = setInterval(() => { k = (k + 1) % setups.length;
+      p.evaluate(code => { const pr = document.getElementById('pr'); try { (0, eval)(code) } catch (e) {} if (pr) document.body.appendChild(pr) }, setups[k]).catch(() => {}) }, ms) }
     const dir = path.join(out, 'frames', String(n).padStart(2, '0')); fs.rmSync(dir, {recursive: true, force: true}); fs.mkdirSync(dir);
     const frames = []; let t0 = null;
     const onFrame = async f => {
@@ -95,9 +121,9 @@ const CSS = `
   }
   await b.close();
   // join the shots with short crossfades
-  const X = 0.3; let inputs = [], filt = [], last = '[0:v]', off = 0;
+  const X = 0.28, TR = ['slideleft', 'smoothup', 'circleopen', 'slideright', 'wipeleft', 'smoothleft', 'fade']; let inputs = [], filt = [], last = '[0:v]', off = 0;
   segs.forEach(({seg}, i) => inputs.push('-i', seg));
-  for (let i = 1; i < segs.length; i++) { off += segs[i - 1].D - X; const o = `[v${i}]`; filt.push(`${last}[${i}:v]xfade=transition=fade:duration=${X}:offset=${off.toFixed(3)}${o}`); last = o; segs[i].at = off }
+  for (let i = 1; i < segs.length; i++) { off += segs[i - 1].D - X; const o = `[v${i}]`; filt.push(`${last}[${i}:v]xfade=transition=${i === 1 ? 'fade' : TR[i % TR.length]}:duration=${X}:offset=${off.toFixed(3)}${o}`); last = o; segs[i].at = off }
   const vlen = off + segs[segs.length - 1].D;
   const video = path.join(out, 'video.mp4');
   ff(...inputs, '-filter_complex', filt.join(';'), '-map', last, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p', video);

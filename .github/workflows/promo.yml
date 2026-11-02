@@ -49,12 +49,14 @@ jobs:
         run: |
           python3 src/build.py dist/pathmakers.html
           node promo/rednote/render.js dist/pathmakers.html video vo
+          node promo/rednote/cover.js video
       - uses: actions/upload-artifact@v4
         with:
           name: promo
           path: |
             video/rednote.mp4
             video/contact.jpg
+            video/cover.png
             video/stills/
             vo/
           retention-days: 30
@@ -62,7 +64,7 @@ jobs:
         env: {GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}'}
         run: |
           cd vo && zip -q ../narrator-audition.zip audition_*.wav && cd ..
-          files=(video/rednote.mp4 video/contact.jpg narrator-audition.zip)
+          files=(video/rednote.mp4 video/cover.png video/contact.jpg narrator-audition.zip)
           NOTES="RedNote concept video from ${GITHUB_SHA::7}, $(date -u '+%b %d %H:%M UTC'). Narrator: ${{ github.event.inputs.speaker || 'zf_xiaoxiao' }}. narrator-audition.zip has the first lines in every Mandarin voice; rerun this workflow with another speaker to switch."
           if gh release view promo-latest >/dev/null 2>&1; then
             for a in $(gh release view promo-latest --json assets -q '.assets[].name'); do gh release delete-asset promo-latest "$a" -y; done
