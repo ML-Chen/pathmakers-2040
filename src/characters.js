@@ -366,6 +366,7 @@ function personSVG(o){o=o||{};
   const defs=`<defs><linearGradient id="${id}i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch_mix(iris,'#0a0410',.55)}"/><stop offset=".38" stop-color="${ch_mix(iris,'#0a0410',.12)}"/><stop offset=".72" stop-color="${ch_mix(iris,'#ffb070',.12)}"/><stop offset="1" stop-color="${ch_mix(iris,'#ffe2b8',.6)}"/></linearGradient>
     <linearGradient id="${id}hg" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="${kid?330:220}"><stop offset="0" stop-color="${H.top}"/><stop offset=".3" stop-color="${H.base}"/><stop offset="1" stop-color="${H.sh}"/></linearGradient>
     <linearGradient id="${id}hs" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="220"><stop offset="0" stop-color="${H.base}"/><stop offset="1" stop-color="${H.dk}"/></linearGradient>
+    <radialGradient id="${id}fl" gradientUnits="userSpaceOnUse" cx="128" cy="120" r="78"><stop offset="0" stop-color="${sk.hi}" stop-opacity=".5"/><stop offset=".55" stop-color="${sk.hi}" stop-opacity=".12"/><stop offset="1" stop-color="${sk.hi}" stop-opacity="0"/></radialGradient>
     <radialGradient id="${id}b"><stop offset="0" stop-color="${sk.blush}"/><stop offset="1" stop-color="${sk.blush}" stop-opacity="0"/></radialGradient>
     <radialGradient id="${id}m" cx=".35" cy=".3"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#c9d0e2"/><stop offset="1" stop-color="#8a94b0"/></radialGradient>${faceClip}${hairClip}</defs>`;
   let body=ch_outfit(o,G,sk,id,build);
@@ -380,7 +381,7 @@ function personSVG(o){o=o||{};
   <g class="p-head"><rect x="56" y="-14" width="188" height="${ch_n(G.chin+24)}" fill="none"/>
     <path d="${HS.back}" fill="${H.dk}" stroke="${H.line}" stroke-width="3.2"/>${extraBack}
     ${ears}
-    <path d="${G.face}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.6"/>
+    <path d="${G.face}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.6"/><path d="${G.face}" fill="url(#${id}fl)"/>
     ${hairSh}${blush}${nose}${lipSh}${ageLines}${brows}
     ${md.lid!=='closed'?[-1,1].map(o=>{const cx=150+o*ex,w=E.ew,h=E.eh;return `<path d="${ch_rib(ch_bz([[cx-o*w*.4,ey+h*.02],[cx+o*w*.05,ey+h*.3],[cx+o*w*.44,ey-h*.04]],12),ch_tap(.8,2.4,1.6))}" fill="${E.lashC}"/>`}).join(''):''}
     <g class="p-eyes">${ch_eye(150-ex,ey,-1,E,id,0)}${ch_eye(150+ex,ey,1,E,id,1)}</g>
