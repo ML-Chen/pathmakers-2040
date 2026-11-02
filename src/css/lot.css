@@ -40,6 +40,8 @@
 
 /* ---- field visit ---- */
 .lot-spots{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:1;pointer-events:none}
+/* #app>*:not(.scene){position:relative} would otherwise win and squash the layer to zero height at the top of the screen */
+#app>.lot-spots{position:fixed}
 .lot-spot{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border:0;background:none;padding:0;pointer-events:auto;cursor:pointer}
 .lot-spot i{position:absolute;inset:9px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(31,35,64,.35),0 0 14px rgba(255,255,255,.7);animation:lot-spot 1.8s ease-in-out infinite}
 .lot-spot i::after{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}

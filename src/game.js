@@ -173,7 +173,7 @@ function openChat(){const d=sheet(T('Talk to {0}',esc(S.byte.name)),`<div class=
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
 let CURSCENE=null;const BG={cv:null,cache:{},key:null,raf:0,t0:performance.now()};
 // scenes that are referenced but not painted yet borrow the closest painted one instead of the hospital corridor
-const SCENE_STANDIN={eastie_pier:'harbor',dance_hall:'night'};
+const SCENE_STANDIN={};
 // (CURSCENE keeps the scene's own key, so its props and passers-by stay; only the painting is borrowed)
 function standIn(k){return window.PAINT&&!PAINT[k]&&SCENE_STANDIN[k]&&PAINT[SCENE_STANDIN[k]]?SCENE_STANDIN[k]:k}
 function scene(k){if(window.PAINT&&(PAINT[k]||PAINT[standIn(k)])&&!SCENES[k]){CURSCENE=k;return ''}if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}

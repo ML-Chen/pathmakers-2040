@@ -282,7 +282,7 @@ const alive=(step)=>()=>S.step===step&&document.getElementById('bsub');
 // ---------- custom step: the interview ----------
 async function interview(){
   const live=alive('interview');let good=0;
-  talkFrame('dance_hall','Elder Companion program · South End','bea-iv',`<div class="speaker enter" id="ivsp">${portraitOf('marisol','smile')}</div>`);
+  talkFrame('dance_hall_day','Elder Companion program · South End','bea-iv',`<div class="speaker enter" id="ivsp">${portraitOf('marisol','smile')}</div>`);
   const art=mood=>{const sp=$('#ivsp');if(sp)sp.innerHTML=portraitOf('marisol',mood)};
   const talkOn=on=>{const sp=$('#ivsp');if(sp)sp.classList.toggle('talking',on)};
   const say=async(mood,text)=>{art(mood);await sayLine('marisol',text,talkOn)};

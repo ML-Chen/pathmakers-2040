@@ -25,8 +25,8 @@
   var LINE = '#4a3e38';
   function ink(ctx, s, a, wd) { ctx.strokeStyle = rgba(LINE, a == null ? 0.5 : a); ctx.lineWidth = (wd || 0.7) * s; ctx.lineJoin = 'round'; ctx.stroke(); }
 
-  var ANCH = { wall: { x: 0.3, y: 0.522 }, valve: { x: 0.64, y: 0.512 }, drain: { x: 0.84, y: 0.742 }, saguaro: { x: 0.14, y: 0.47 }, bus: { x: 0.13, y: 0.69 },
-    curb: { x: 0.6, y: 0.738 }, cracks: { x: 0.42, y: 0.615 }, mountain: { x: 0.5, y: 0.33 }, canal: { x: 0.85, y: 0.468 }, path: { x: 0.5, y: 0.48 } };
+  var ANCH = { wall: { x: 0.3, y: 0.528 }, valve: { x: 0.64, y: 0.512 }, drain: { x: 0.84, y: 0.742 }, saguaro: { x: 0.14, y: 0.47 }, bus: { x: 0.13, y: 0.69 },
+    curb: { x: 0.6, y: 0.738 }, cracks: { x: 0.42, y: 0.615 }, mountain: { x: 0.62, y: 0.36 }, canal: { x: 0.72, y: 0.466 }, path: { x: 0.5, y: 0.48 } };
   var SKY = [[0, '#9cc4dc'], [0.45, '#cfe0dc'], [0.8, '#f2e6c8'], [1, '#f8e2bc']];
 
   var LM = null;

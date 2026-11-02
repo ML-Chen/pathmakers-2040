@@ -251,10 +251,11 @@
       { id: 'phx_bot', x: 72, y: 91, w: 58, sfx: 'beep', fx: 'hop' },
       { id: 'mug', x: 91, y: 92, w: 40, sfx: 'clink', fx: 'jiggle', burst: 'steam' }
     ];
+    // the evening card covers the floor, so at night the robot sits on the desk and a star shines in the window
     PROPS.phx_dusk = [
-      { id: 'lamp', x: 9, y: 91, w: 36, sfx: 'click', fx: 'toggle' },
-      { id: 'phx_bot', x: 76, y: 91, w: 56, sfx: 'beep', fx: 'hop' },
-      { id: 'star', x: 30, y: 10, w: 22, sfx: 'chime', fx: 'shoot' }
+      { id: 'phx_bot', x: 44, y: 51.5, w: 34, sfx: 'beep', fx: 'hop' },
+      { id: 'star', x: 30, y: 10, w: 22, sfx: 'chime', fx: 'shoot' },
+      { id: 'star', x: 86, y: 16, w: 16, sfx: 'chime', fx: 'shoot' }
     ];
   });
 })();
