@@ -9,19 +9,16 @@ html,body{margin:0;width:1080px;height:1440px;overflow:hidden;background:#141838
 .grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px}
 .grid div{background-size:cover;background-position:center 30%;filter:saturate(1.08)}
 .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,16,48,.15) 0%,rgba(14,16,48,0) 30%,rgba(14,16,48,.55) 62%,rgba(14,16,48,.92) 100%)}
-.top{position:absolute;left:0;right:0;top:64px;text-align:center}
-.top span{display:inline-block;background:#ffd45c;color:#1f2350;font-weight:900;font-size:56px;padding:8px 30px;border-radius:22px;box-shadow:0 12px 40px rgba(0,0,0,.45)}
-.title{position:absolute;left:40px;right:40px;bottom:250px;text-align:center;color:#fff;font-weight:900;font-size:104px;line-height:1.16;text-shadow:0 6px 30px rgba(0,0,0,.55)}
-.title em{font-style:normal;color:#ffd45c}
-.sub{position:absolute;left:40px;right:40px;bottom:120px;text-align:center;color:#fff;font-weight:700;font-size:40px;opacity:.95}
-.sub b{background:rgba(255,255,255,.16);padding:4px 18px;border-radius:14px}
+.band{position:absolute;left:0;right:0;bottom:120px;height:150px;background:rgba(14,16,48,.78)}
+.one{position:absolute;left:30px;right:30px;bottom:150px;text-align:center;white-space:nowrap;color:#fff;font-weight:900;font-size:80px;line-height:90px;text-shadow:0 6px 30px rgba(0,0,0,.6)}
+.one em{font-style:normal;color:#ffd45c}
 </style><div class="grid">${pick.map(f => `<div style="background-image:url(${img(f)})"></div>`).join('')}</div><div class="shade"></div>
-<div class="top"><span>AI 超过人类专家之后</span></div>
-<div class="title">孩子今天<br>该学<em>什么</em>？</div>
-<div class="sub"><b>我用 Claude 连夜做了个小游戏</b></div>`;
+<div class="band"></div><div class="one" id="one">vibe coding 出的游戏，帮孩子备战 <em>AI 2040</em></div>`;
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({viewport: {width: 1080, height: 1440}});
   await p.setContent(html); await p.waitForTimeout(300);
+  // shrink the one line until it fits the width
+  await p.evaluate(() => { const e = document.getElementById('one'); let f = 80; while (e.scrollWidth > e.clientWidth && f > 30) e.style.fontSize = (f -= 2) + 'px' });
   await p.screenshot({path: path.join(out, 'cover.png')}); await b.close();
   console.log(path.join(out, 'cover.png'));
 })();
