@@ -224,15 +224,14 @@
     });
   }
   /* water reflection: copy the band above `axis` into [axis, y1] flipped, in thin wobbling strips */
-  var scratch = null;
   function reflect(ctx, w, axis, y1, al, amp, freq, seed, squash) {
     try {
       var cv = ctx.canvas; if (!cv || !cv.width) return; var k = cv.width / w, y, sq = squash || 1;
       var st = Math.max(2, Math.round(1.5 * k)) / k, srcH = Math.min(axis, (y1 - axis) * sq + 2 * st);
       var sw = cv.width, sh = Math.ceil(srcH * k);
-      if (!scratch) scratch = mk(sw, sh); if (!scratch) return;
-      if (scratch.width < sw || scratch.height < sh) { scratch.width = Math.max(sw, scratch.width); scratch.height = Math.max(sh, scratch.height); }
-      var g = scratch.getContext('2d'); g.clearRect(0, 0, scratch.width, scratch.height);
+      // exact-size scratch every call: strip sampling then never depends on what an earlier paint left behind
+      var scratch = mk(sw, sh); if (!scratch) return;
+      var g = scratch.getContext('2d');
       g.drawImage(cv, 0, Math.round((axis - srcH) * k), sw, sh, 0, 0, sw, sh);
       ctx.save(); ctx.beginPath(); ctx.rect(0, axis, w, y1 - axis); ctx.clip();
       for (y = axis; y < y1; y += st) {

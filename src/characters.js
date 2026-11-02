@@ -379,6 +379,7 @@ function personSVG(o){o=o||{};
     ${ears}
     <path d="${G.face}" fill="${sk.base}" stroke="${sk.line}" stroke-width="2.6"/>
     ${hairSh}${blush}${nose}${lipSh}${ageLines}${brows}
+    ${md.lid!=='closed'?[-1,1].map(o=>{const cx=150+o*ex,w=E.ew,h=E.eh;return `<path d="${ch_rib(ch_bz([[cx-o*w*.4,ey+h*.02],[cx+o*w*.05,ey+h*.3],[cx+o*w*.44,ey-h*.04]],12),ch_tap(.8,2.4,1.6))}" fill="${E.lashC}"/>`}).join(''):''}
     <g class="p-eyes">${ch_eye(150-ex,ey,-1,E,id,0)}${ch_eye(150+ex,ey,1,E,id,1)}</g>
     <g class="p-mouth">${ch_mouth(md.mouth,my,kid,sk,build==='M')}</g>
     ${gl}${earring}
