@@ -8,14 +8,11 @@ Several Claude sessions build this game at the same time. Before starting a piec
 | PR checks and the all-mission screenshot tool | `claude/project-thread-niuo7p` | another session | merged into main |
 | Bezier bone diagrams, crate label, reveal leak fix | `claude/project-thread-s7we06` | another session | merged into main |
 | Quiet Year memorial | `quiet-year-memorial` | another session | in progress |
-| Nome, Alaska: Wildlife Vet and Animal Translator, "The Calf Who Stopped Eating" (mission `calf`, scenes `nome_reserve`, `nome_barn`) | `content/nome-vet` | integrator session | in progress |
-| Phoenix, Arizona: Community Architect, "The Flood Lot" (mission `lot`, scenes `phx_lot`, `phx_studio`) | `content/phoenix-architect` | integrator session | in progress |
-| Washington, DC: Lawmaker (congressional aide), "The Robot Safety Bill" (mission `bill`, scenes `dc_office`, `dc_hearing`) | `content/dc-lawmaker` | integrator session | in progress |
-| Vienna, Austria: AI Auditor, "The Helpful Shopping AI" (mission `shop`, scenes `vienna_watch`, `vienna_market`) | `content/vienna-auditor` | integrator session | in progress |
-| Boston: Elder Companion, "Dancing at 104" (mission `bea`, scenes `bea_parlor`, `dance_hall`) | `content/boston-companion` | integrator session | in progress |
-| Boston: Care Doctor Day 2, the flattering advice app and Byte's Honesty Upgrade, "The App That Agreed" (mission `rosa`, scene `rosa_kitchen`) | `content/boston-doctor-2` | integrator session | in progress |
-| New hair styles, beards, elder faces, outfits, `posedPerson()` full-body poses | `art/characters-2` | integrator session | in progress |
-| Landscape and tablet layout (full-bleed scenes, side-by-side panels) | `ui/landscape` | integrator session | in progress |
-| Promo videos (RedNote and Twitter) | outside the repo | integrator session | paused until more of the game is built |
+| The App That Agreed (Care Doctor Day 2, Rosa, Byte's Honesty Upgrade); family feedback in docs/BRIEFS.md says raise the stakes | `claude/project-thread-eju8ow` | another session | in progress |
+| The Sneeze Recipe (Health Harbor villain plot) | `claude/project-thread-mmpiwt` | another session | in progress |
+| Getting Hired career journey | `claude/project-thread-c7547j` | another session | paused |
+| Byte customizing | `claude/project-thread-izhx21` | another session | planned, paused before code |
+| Nome Wildlife Vet, Phoenix Community Architect, DC Lawmaker, Vienna AI Auditor, Boston "Dancing at 104", characters, landscape layout, Android app | none | unclaimed | briefs ready in docs/BRIEFS.md; agents stopped on a usage limit before writing code |
+| Promo videos (RedNote and Twitter) | `promo/` on main | unclaimed | paused until more of the game is built; storyboard and Mandarin TTS/ASR tools in promo/ |
 
 Ideas not yet claimed (from docs/SPEC.md): Nome Ranger; Phoenix Robot Crew Lead; Moon Founder and Dividend Investor; Bay Area Science Director; Mars Explorer; New York Performer and Coach; DC Judge; Vienna Treaty Inspector; the career-journey steps (explore, meet people, interview, first day, big talk, promotion); a world map to travel between places; the Unbound and Prime villain plots for each place; Byte customization unlocks; the Android app.
