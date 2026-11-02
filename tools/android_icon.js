@@ -18,4 +18,5 @@ const res=path.join(root,'android/app/src/main/res');
     await p.evaluate(px=>{const c=document.getElementById('c');c.style.cssText=`width:${px}px;height:${px}px;--r:50%;--bg:#bfe6ff;--w:${Math.round(px*.78)}px`},px);
     fs.mkdirSync(path.join(res,'mipmap-'+d),{recursive:true});
     await p.locator('#c').screenshot({path:path.join(res,'mipmap-'+d,'ic_launcher.png'),omitBackground:true})}
-  await b.close();console.log('icons written')})();
+  fs.mkdirSync(path.join(root,"src/icons"),{recursive:true});fs.copyFileSync(path.join(res,"mipmap-hdpi/ic_launcher.png"),path.join(root,"src/icons/favicon-72.png"));fs.copyFileSync(path.join(res,"mipmap-xxxhdpi/ic_launcher.png"),path.join(root,"src/icons/apple-touch-192.png"));
+  await b.close();console.log("icons written")})();

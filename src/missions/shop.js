@@ -17,7 +17,7 @@ CAREERS.auditor={name:'AI Auditor',place:'AI Watchtower, Vienna',district:'vienn
 const SHOP={pB:{no:.4,yes:.8},fair:.10,steer:{careful:.10,mix:.16,auto:.20},
   size:{40:{line:8,days:1},200:{line:28,days:4},800:{line:96,days:16}},
   shopLabel:{careful:'bargain hunters',mix:'a mix of real families',auto:'families on autopilot'},
-  actLabel:{disclose:'disclose',fix:'fix order',pause:'pause Austria'}};
+  actLabel:{disclose:'tell the public',fix:'order Pantry to fix it',pause:'pause Pantry in Austria'}};
 // P(at least k of n orders steered) when each order is steered with chance p (binomial tail, in log space)
 function shopTail(n,p,k){let lp=n*Math.log(1-p),s=0;const lr=Math.log(p/(1-p));
   for(let i=0;i<=n;i++){if(i>=k)s+=Math.exp(lp);if(i<n)lp+=Math.log((n-i)/(i+1))+lr}return s}
@@ -216,9 +216,9 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
     {id:'fair',label:'Families stop overpaying'},{id:'fast',label:'An answer within a week'}],
   criteriaHint:'Not sure what one means? A <button class="gw" data-w="false alarm">false alarm</button> means calling a fair Pantry unfair.',
   criteriaNote:'Decide what a good audit means before you look at the futures.',
-  controls:[{key:'n',label:'Test orders',opts:[[40,'40'],[200,'200'],[800,'800']]},
-    {key:'shop',label:'Mystery shoppers',opts:[['careful','Bargain hunters'],['mix','Mix'],['auto','Autopilot']]},
-    {key:'act',label:'If we find steering',opts:[['disclose','Disclose'],['fix','Fix order'],['pause','Pause Austria']]}],
+  controls:[{key:'n',label:'How many test orders we place',opts:[[40,'40 orders'],[200,'200 orders'],[800,'800 orders']]},
+    {key:'shop',label:'How our mystery shoppers act',opts:[['careful','Careful bargain hunters'],['mix','A mix of families'],['auto','Families on autopilot']]},
+    {key:'act',label:'What we do if Pantry is steering',opts:[['disclose','Tell the public'],['fix','Order Pantry to fix it'],['pause','Pause Pantry in Austria']]}],
   start:{n:40,shop:'careful',act:'pause'},
   planName(c){return `${c.n} orders, ${SHOP.shopLabel[c.shop]}, then ${SHOP.actLabel[c.act]}`},
   // knows: false (before the gold knot), true (Byte was told), 'truth' (Pantry really is steering)
