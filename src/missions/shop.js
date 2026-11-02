@@ -37,11 +37,13 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
     {name:'reveal',k:'reveal'},{name:'debrief',k:'debrief'},{name:'evening',k:'evening'}],
 
   cast:{
-    vie_shen:{name:'Dr. Shen Yiling',role:'Senior Auditor, AI Watchtower',skin:SKIN[1],hair:'#1f1a26',hairStyle:'bun',glasses:true,frame:'#2c3a5a',shirt:'#2f6f8a',eye:'#4a3020'},
-    vie_valentin:{name:'Valentin Moser',role:'Head of Trust, Korbwerk',skin:SKIN[0],hair:'#a8834e',hairStyle:'short',shirt:'#34416e',eye:'#4f6f8f',masc:true},
-    vie_emine:{name:'Emine Kaya',role:'Stall owner, Naschmarkt',skin:SKIN[2],hair:'#2a1712',hairStyle:'long',shirt:'#d9682e',eye:'#5a3418',accessory:'earring'},
-    vie_jonas:{name:'Jonas Huber',role:'Lotte’s dad',skin:SKIN[0],hair:'#6b4a2e',hairStyle:'short',shirt:'#4f8a5b',eye:'#5a7a4a',masc:true},
-    vie_lotte:{name:'Lotte Huber',role:'Age 9',skin:SKIN[0],hair:'#9a6a38',hairStyle:'braids',clip:'#ffd45c',shirt:'#5b9bf0',eye:'#4a6a3a',age:'kid'}
+    // Every silhouette differs: a sleek bob with glasses and pearls; a spice-red headscarf and cardigan; a suit with a gold tie;
+    // curly hair, a short beard and a hoodie; a kid with a high ponytail.
+    vie_shen:{name:'Dr. Shen Yiling',role:'Senior Auditor, AI Watchtower',skin:SKIN[1],hair:'#2a2630',hairStyle:'bob',glasses:true,frame:'#2c3a5a',outfit:'blazer',shirt:'#2f6f8a',under:'#f4f2ee',accessory:'pearls',eye:'#4a3020'},
+    vie_valentin:{name:'Valentin Moser',role:'Head of Trust, Korbwerk',skin:SKIN[0],hair:'#a8834e',hairStyle:'short',outfit:'suit',shirt:'#2e3550',tie:'#d8a83a',eye:'#4f6f8f',masc:true},
+    vie_emine:{name:'Emine Kaya',role:'Stall owner, Naschmarkt',skin:SKIN[2],hair:'#2a1712',hairStyle:'headscarf',wrap:'#c8502e',outfit:'cardigan',shirt:'#5a7a3a',under:'#f2d48a',accessory:'necklace',eye:'#5a3418'},
+    vie_jonas:{name:'Jonas Huber',role:'Lotte’s dad',skin:SKIN[0],hair:'#6b4a2e',hairStyle:'curls',beard:'short',outfit:'hoodie',shirt:'#4f8a5b',eye:'#5a7a4a',masc:true},
+    vie_lotte:{name:'Lotte Huber',role:'Age 9',skin:SKIN[0],hair:'#b07a40',hairStyle:'ponytail',outfit:'tee',shirt:'#5b9bf0',eye:'#4a6a3a',age:'kid'}
   },
   voices:{vie_shen:'af_nova',vie_valentin:'bm_daniel',vie_emine:'af_river',vie_jonas:'am_eric',vie_lotte:'kid_girl'},
 
