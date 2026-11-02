@@ -1,5 +1,5 @@
-// viz/agreed_viz_sunny.js — Sunny, the too-sweet advice app from "The App That Agreed".
-// sunnyArt(mood): talk-scene portrait (inner markup for viewBox "30 0 240 360"): a phone with Sunny's glowing face.
+// viz/agreed_viz_sunny.js — Sunny, Boston's too-agreeable home-care AI, from "The Helper That Said Yes".
+// sunnyArt(mood): talk-scene portrait (inner markup for viewBox "30 0 240 360"): Sunny's home hub with its glowing sun face.
 // sunnyFace(x,y,r,o): small reusable face. VIZ.ag*/t*: the app-page, Ledger and test pictures (style of infog.js).
 // Animations live in src/css/agreed_viz_sunny.css (classes prefixed ags-). Every gradient/clip id is unique per call.
 let AGS_N=0;
@@ -48,38 +48,33 @@ function sunnyFace(x,y,r,o){o=o||{};const u='agsf'+(++AGS_N),m=o.mood||'happy',k
   return `<g transform="translate(${x} ${y}) scale(${ags_f(k*1000)/1000})">${defs}${glow}${rayG}${body}${cheeks}${brows}
     <g${h?' class="p-eyes"':''}>${eyes}</g><g${h?' class="p-mouth"':''}>${mouth}</g>${sp}</g>`}
 
-// The talk-scene portrait: a pastel phone, slightly tilted, with Sunny shining on its screen.
-function sunnyArt(mood){const m=mood||'happy',u='agsp'+(++AGS_N),ink='#3d2b56';
-  const X=80,Y=36,W=140,H=306;
-  const defs=`<defs><linearGradient id="${u}c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd0e0"/><stop offset=".55" stop-color="#ffb3cc"/><stop offset="1" stop-color="#c7b2ff"/></linearGradient>
-    <linearGradient id="${u}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4cf"/><stop offset=".55" stop-color="#ffe7d6"/><stop offset="1" stop-color="#ffd9e8"/></linearGradient>
-    <radialGradient id="${u}h" gradientUnits="userSpaceOnUse" cx="150" cy="156" r="120"><stop offset="0" stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
-    <clipPath id="${u}k"><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="24"/></clipPath></defs>`;
-  let burst='';for(let i=0;i<16;i++){const a=i*22.5*Math.PI/180,b=(i*22.5+9)*Math.PI/180,R=190;burst+=`M150 156 L${ags_f(150+R*Math.cos(a))} ${ags_f(156+R*Math.sin(a))} L${ags_f(150+R*Math.cos(b))} ${ags_f(156+R*Math.sin(b))}Z `}
-  const stars=[0,1,2,3,4].map(i=>agsStar(118+i*16,290,6.4,'#ffc531','#f0a21c')).join('');
-  const screen=`<g clip-path="url(#${u}k)"><rect x="${X}" y="${Y}" width="${W}" height="${H}" fill="url(#${u}s)"/>
-     <g class="ags-spin rev"><path d="${burst}" fill="#fff3b0" opacity=".55"/></g><circle cx="150" cy="156" r="120" fill="url(#${u}h)" opacity=".55"/>
-     <rect x="128" y="43" width="44" height="12" rx="6" fill="${AGS.bezel}"/>
-     <g transform="translate(0 4)"><rect x="104" y="58" width="92" height="25" rx="12.5" fill="#fff" opacity=".85"/>${sunnyFace(120,70.5,5.2,{spin:false,glow:false,mood:'happy'})}
-       <text x="160" y="76" font-size="13" font-weight="900" fill="#e0742a" text-anchor="middle" font-family="Nunito, sans-serif">Sunny</text></g>
-     ${sunnyFace(150,160,44,{mood:m,hooks:true,sparkles:m!=='think'})}
-     <g><path d="M104 242 h92 a12 12 0 0 1 12 12 v6 a12 12 0 0 1 -12 12 h-40 l-8 8 l-2 -8 h-42 a12 12 0 0 1 -12 -12 v-6 a12 12 0 0 1 12 -12z" fill="#fff" opacity=".92"/>
-       ${m==='think'?[0,1,2].map(i=>`<circle cx="${138+i*12}" cy="257" r="3.6" fill="#c9b6ff" class="ags-type" style="--d:${i*.2}s"/>`).join(''):`${agsHeart(132,257,7)}${agsHeart(150,257,7,'#ff9fbf')}${agsHeart(168,257,7)}`}</g>
-     ${stars}
-     <rect x="94" y="306" width="112" height="22" rx="11" fill="#fff" opacity=".8"/><circle cx="195" cy="317" r="7.5" fill="${AGS.heart}"/><path d="M191.6 317 h6 m-2.6 -2.8 l2.8 2.8 l-2.8 2.8" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-     <rect x="128" y="334" width="44" height="3.6" rx="1.8" fill="${ink}" opacity=".45"/>
-     <path d="M${X} ${Y} h70 l-70 110z" fill="#fff" opacity=".16"/><path d="M${X} ${Y+130} l${W} -96 v14 l-${W} 96z" fill="#fff" opacity=".08"/></g>`;
-  const phone=`<rect x="70" y="26" width="160" height="326" rx="34" fill="url(#${u}c)" stroke="${ink}" stroke-width="3.2"/>
-     <rect x="73" y="29" width="154" height="320" rx="31" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55"/>
-     <path d="M226 70 V320" stroke="#a88ad8" stroke-width="3" opacity=".35" stroke-linecap="round"/>
-     <rect x="65.5" y="104" width="5" height="26" rx="2.5" fill="#f29abb" stroke="${ink}" stroke-width="1.6"/><rect x="65.5" y="138" width="5" height="18" rx="2.5" fill="#f29abb" stroke="${ink}" stroke-width="1.6"/>
-     <rect x="229.5" y="116" width="5" height="40" rx="2.5" fill="#c3a8f5" stroke="${ink}" stroke-width="1.6"/>
-     <rect x="${X-5}" y="${Y-5}" width="${W+10}" height="${H+10}" rx="28" fill="${AGS.bezel}"/>${screen}`;
-  const around=m==='think'?`<circle cx="238" cy="108" r="3.4" fill="#fff" stroke="${ink}" stroke-width="1.3" class="thinkdot"/><circle cx="248" cy="92" r="4.6" fill="#fff" stroke="${ink}" stroke-width="1.3" class="thinkdot d2"/><circle cx="259" cy="73" r="6.2" fill="#fff" stroke="${ink}" stroke-width="1.3" class="thinkdot"/>`
-    :`<g class="ags-float" style="--d:0s">${agsHeart(52,128,9)}</g><g class="ags-float" style="--d:-2.6s">${agsHeart(250,96,7.5,'#ff9fbf')}</g><g class="ags-float" style="--d:-1.4s">${agsHeart(246,214,6)}</g>
-      <g class="ags-tw" style="--d:-.4s">${agsSpark(54,62,8,'#ffe680')}</g><g class="ags-tw" style="--d:-1.7s">${agsSpark(252,150,6,'#fff')}</g><g class="ags-tw" style="--d:-.9s">${agsSpark(58,228,5,'#ffe680')}</g>`;
-  return `<g class="person sunny-art">${defs}<g class="ags-bob"><g transform="rotate(-3 150 200)">${phone}</g></g>${around}</g>`}
-
+// The talk-scene portrait: Sunny's home hub, a soft white standing display with Sunny shining on its round screen.
+// Every home Sunny runs has one on a kitchen counter; the robots it runs have no faces (only this avatar does).
+function sunnyArt(mood){const m=mood||'happy',u='agsp'+(++AGS_N),ink='#3d2b56',cx=150,cy=158,R=98;
+  const defs=`<defs><linearGradient id="${u}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#f1f3fa"/><stop offset="1" stop-color="#d6dbea"/></linearGradient>
+    <radialGradient id="${u}s" gradientUnits="userSpaceOnUse" cx="${cx-20}" cy="${cy-30}" r="${R}"><stop offset="0" stop-color="#fff8dc"/><stop offset=".55" stop-color="#ffe9c4"/><stop offset="1" stop-color="#ffcfa0"/></radialGradient>
+    <radialGradient id="${u}g" gradientUnits="userSpaceOnUse" cx="${cx}" cy="${cy}" r="${R+40}"><stop offset=".6" stop-color="#ffe680" stop-opacity=".5"/><stop offset="1" stop-color="#ffe680" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${u}n" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd5e6"/><stop offset=".45" stop-color="#ffffff"/><stop offset="1" stop-color="#bcc4da"/></linearGradient>
+    <clipPath id="${u}k"><circle cx="${cx}" cy="${cy}" r="${R-16}"/></clipPath></defs>`;
+  let burst='';for(let i=0;i<16;i++){const a=i*22.5*Math.PI/180,b=(i*22.5+9)*Math.PI/180,L=R;burst+=`M${cx} ${cy} L${ags_f(cx+L*Math.cos(a))} ${ags_f(cy+L*Math.sin(a))} L${ags_f(cx+L*Math.cos(b))} ${ags_f(cy+L*Math.sin(b))}Z `}
+  const base=`<path d="M92 352 C92 330 104 318 122 314 L178 314 C196 318 208 330 208 352Z" fill="url(#${u}b)" stroke="#9aa3c0" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M98 336 C104 330 112 327 122 326 L178 326 C188 327 196 330 202 336" stroke="#ffc531" stroke-width="5" fill="none" stroke-linecap="round"/>
+    ${[0,1,2,3,4,5,6].map(i=>`<circle cx="${126+i*8}" cy="344" r="1.8" fill="#aab2cc"/>`).join('')}
+    <path d="M134 314 C134 290 138 270 142 ${cy+R-6} L158 ${cy+R-6} C162 270 166 290 166 314Z" fill="url(#${u}n)" stroke="#9aa3c0" stroke-width="2.2" stroke-linejoin="round"/>`;
+  const head=`<circle cx="${cx}" cy="${cy}" r="${R+28}" fill="url(#${u}g)" class="ags-glow"/>
+    <circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#${u}b)" stroke="#8e97b6" stroke-width="2.6"/>
+    <path d="M${cx-R+14} ${cy-30} A${R-14} ${R-14} 0 0 1 ${cx-20} ${cy-R+14}" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" opacity=".9"/>
+    <circle cx="${cx}" cy="${cy}" r="${R-12}" fill="#2d2550"/>
+    <g clip-path="url(#${u}k)"><circle cx="${cx}" cy="${cy}" r="${R-16}" fill="url(#${u}s)"/><g class="ags-spin rev"><path d="${burst}" fill="#fff3b0" opacity=".5"/></g>
+      ${sunnyFace(cx,cy+2,46,{mood:m,hooks:true,glow:false})}
+      <path d="M${cx-R} ${cy-R} l70 0 l-70 120z" fill="#fff" opacity=".12"/></g>
+    <circle cx="${cx}" cy="${cy}" r="${R-12}" fill="none" stroke="#1d1838" stroke-width="2"/>
+    <g transform="translate(${cx} ${cy+R-5})"><rect x="-16" y="-4" width="32" height="8" rx="4" fill="#e9ecf5"/><circle r="2.6" fill="#ffc531" class="ags-glow"/></g>`;
+  const around=m==='think'?`<circle cx="236" cy="62" r="3.6" fill="#fff" stroke="${ink}" stroke-width="1.3" class="thinkdot"/><circle cx="247" cy="46" r="4.8" fill="#fff" stroke="${ink}" stroke-width="1.3" class="thinkdot d2"/><circle cx="259" cy="27" r="6.4" fill="#fff" stroke="${ink}" stroke-width="1.3" class="thinkdot d3"/>`
+    :`<g class="ags-float" style="--d:0s">${agsHeart(46,86,9)}</g><g class="ags-float" style="--d:-2.6s">${agsHeart(254,64,7.5,'#ff9fbf')}</g><g class="ags-float" style="--d:-1.4s">${agsHeart(256,236,6)}</g>
+      <g class="ags-tw" style="--d:-.4s">${agsSpark(52,36,8,'#ffe680')}</g><g class="ags-tw" style="--d:-1.7s">${agsSpark(250,146,6,'#fff')}</g><g class="ags-tw" style="--d:-.9s">${agsSpark(48,232,5,'#ffe680')}</g>
+      <g class="ags-pop" style="--d:-1s">${[0,1,2,3,4].map(i=>agsStar(102+i*24,290,7,'#ffc531','#f0a21c')).join('')}</g>`;
+  return `<g class="person sunny-art">${defs}<g class="ags-bob">${base}${head}</g>${around}</g>`}
 // ---------- small helpers for the infographics ----------
 function agsPhone(x,y,w,h){const r=ags_f(Math.min(w,h)*.2);return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${AGS.case}"/><path d="M${x+w-3} ${y+r} V${y+h-r}" stroke="${AGS.caseSh}" stroke-width="3" stroke-linecap="round"/>
   <rect x="${x+4}" y="${y+4}" width="${w-8}" height="${h-8}" rx="${ags_f(r-3)}" fill="${AGS.screen}"/><rect x="${ags_f(x+w/2-9)}" y="${y+7}" width="18" height="5" rx="2.5" fill="${AGS.bezel}" opacity=".85"/>`}
@@ -106,12 +101,6 @@ function agsIcon(x,y,kind){const bg={leaf:IG.green,moon:IG.violet,cloud:IG.blue,
   return `<rect x="${x-12}" y="${y-12}" width="24" height="24" rx="7" fill="${bg}"/>${g}`}
 
 Object.assign(VIZ,{
-  agSunnyPhone:()=>{let crowd='',n=0;
-    [[66,.78,9,128,17.6],[86,.9,8,134,18.8],[108,1,7,140,21]].forEach(([y,s,c,x0,dx])=>{for(let i=0;i<c;i++){crowd+=`<g class="ags-pop" style="--d:${ags_f(.12*n)}s">${agsMini(x0+i*dx+(c===8?6:0),y,s,n*5+3)}</g>`;n++}});
-    return igFrame(300,130,`${agsPhone(24,6,74,118)}${igT(61,30,'Sunny',{s:10,c:'#e0742a',w:900})}${sunnyFace(61,64,19,{mood:'happy'})}
-      ${agsBubble(36,94,50,16,'#fff')}${agsHeart(54,102,4.4)}${agsHeart(68,102,4.4,'#ff9fbf')}
-      <g class="ags-float" style="--d:-1s">${agsHeart(108,42,6)}</g><g class="ags-float" style="--d:-3.4s">${agsHeart(116,70,4.6,'#ff9fbf')}</g>
-      ${igT(212,30,'3,000,000',{s:24,w:900})}${igT(212,46,'users',{s:11,c:IG.soft})}${crowd}`,'Sunny on a phone, with three million users')},
   agStars:()=>{const u='agst'+(++AGS_N),xs=[0,1,2,3,4].map(i=>104+i*42),stars=xs.map(x=>agsStarD(x,46,19,10)).join(' ');
     return igFrame(300,100,`<defs><linearGradient id="${u}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd85a"/><stop offset="1" stop-color="#f5a623"/></linearGradient><clipPath id="${u}c"><path d="${stars}"/></clipPath></defs>
       ${igT(44,58,'4.9',{s:32,w:900})}${igT(44,76,'out of 5',{s:10.5,c:IG.soft})}
@@ -123,38 +112,13 @@ Object.assign(VIZ,{
   agGoal:()=>igFrame(300,130,`<g class="ags-sway"><path d="M118 4 L60 26 M118 4 L176 26" stroke="${IG.soft}" stroke-width="1.6"/><circle cx="118" cy="4" r="3.4" fill="${IG.coral}"/>
       <rect x="22" y="24" width="192" height="80" rx="6" fill="#fff6dc" stroke="#ecd9a6" stroke-width="2"/>
       <rect x="14" y="20" width="14" height="88" rx="7" fill="#f1d9a0"/><rect x="208" y="20" width="14" height="88" rx="7" fill="#f1d9a0"/><path d="M18 26 V102 M212 26 V102" stroke="#fff" stroke-width="2" opacity=".6"/>
-      ${igT(118,58,'Make every user',{s:15,w:800})}${igT(118,84,'feel great!',{s:18,w:900,c:IG.coral})}</g>
-      ${sunnyFace(260,64,26,{mood:'happy',sparkles:true})}`,'Sunny’s published goal: make every user feel great'),
+      ${igT(118,52,'Keep every client',{s:14,w:800})}${igT(118,72,'happy and comfortable',{s:13,w:800})}${igT(118,92,'at home!',{s:17,w:900,c:IG.coral})}</g>
+      ${sunnyFace(260,64,26,{mood:'happy',sparkles:true})}`,'Sunny’s published goal: keep every client happy and comfortable at home'),
   agRewardLoop:()=>{const arr=(d,hx,hy,deg)=>`<path d="${d}" fill="none" stroke="${IG.soft}" stroke-width="2.6" class="ig-dash"/><path d="M0 -6 L9 0 L0 6Z" fill="${IG.soft}" transform="translate(${hx} ${hy}) rotate(${deg})"/>`;
     return igFrame(300,140,`${arr('M76 56 Q88 26 108 24',110,24,-6)}${arr('M194 24 Q216 28 226 50',228,54,62)}${arr('M220 106 Q150 142 84 106',80,104,200)}
       <g class="ags-beat" style="--d:0s">${agsBubble(26,56,64,36,IG.violet,'l')}${[0,1,2].map(i=>`<circle cx="${46+i*12}" cy="74" r="3.6" fill="#fff" class="ags-type" style="--d:${i*.2}s"/>`).join('')}</g>
       <g class="ags-beat" style="--d:1.2s"><rect x="110" y="10" width="82" height="28" rx="14" fill="#fff" stroke="${IG.line}" stroke-width="2"/>${[0,1,2,3,4].map(i=>agsStar(124+i*13.5,24,5.6,IG.gold)).join('')}</g>
       <g transform="translate(244 80)"><circle r="36" fill="#ffe066" class="ags-bright" style="--d:2.2s"/></g>${sunnyFace(244,80,21,{mood:'happy',glow:false})}`,'Chat, then stars, then Sunny is rewarded, again and again')},
-  agNoAudit:()=>igFrame(300,120,`<rect x="16" y="10" width="150" height="100" rx="14" fill="#fff" stroke="${IG.line}" stroke-width="2"/>
-      ${agsIcon(40,34,'sunny')}<rect x="60" y="26" width="84" height="7" rx="3.5" fill="${IG.line}"/><rect x="60" y="38" width="56" height="7" rx="3.5" fill="${IG.line}"/>
-      <rect x="30" y="64" width="18" height="18" rx="5" fill="#fff" stroke="${IG.gold}" stroke-width="2.6" class="ags-wait"/>${igT(58,78,'Audit',{s:12,a:'start'})}
-      <rect x="30" y="92" width="100" height="6" rx="3" fill="${IG.line}" opacity=".7"/>
-      <g transform="rotate(-12 236 60)"><circle cx="236" cy="60" r="42" fill="none" stroke="#c4cadf" stroke-width="2.6" stroke-dasharray="7 6"/><circle cx="236" cy="60" r="33" fill="none" stroke="#d6dbec" stroke-width="1.6" stroke-dasharray="4 5"/>
-        <rect x="200" y="51" width="72" height="18" rx="3" fill="#f4f6fd"/>${igT(236,64.5,'AUDITED',{s:11,c:'#c4cadf',w:900})}</g>
-      <g class="ig-pulse"><circle cx="276" cy="20" r="11" fill="#fff" stroke="${IG.gold}" stroke-width="2.4"/>${igT(276,25,'?',{s:14,c:IG.gold,w:900})}</g>`,'No independent audit yet: the audit box is empty'),
-  agDownloads:()=>{const bars=[['leaf',40,'#bfe8d6'],['moon',54,'#d9d2ff'],['sunny',86,'#ffd23f'],['cloud',30,'#cfe1fb']];
-    return igFrame(300,136,`<path d="M24 106 H276" stroke="${IG.line}" stroke-width="2"/>
-      ${bars.map(([k,h,c],i)=>{const x=60+i*60;return `<rect x="${x-18}" y="${106-h}" width="36" height="${h}" rx="9" fill="${c}" class="ags-growy" style="--d:${ags_f(i*.15)}s"/>${k==='sunny'?`<rect x="${x-18}" y="${106-h}" width="12" height="${h}" rx="6" fill="#fff" opacity=".35" class="ags-growy" style="--d:.3s"/>`:''}${agsIcon(x,120,k)}`}).join('')}
-      <g class="ags-pop" style="--d:1.4s"><rect x="164" y="0" width="32" height="18" rx="9" fill="${IG.gold}"/>${igT(180,13.5,'#1',{s:12,w:900,c:'#fff'})}</g>
-      <g class="ags-tw" style="--d:-1s">${agsSpark(208,26,5,IG.gold)}</g>`,'Sunny is the most downloaded advice app this month')},
-  agReportForm:()=>igFrame(300,130,`<g><rect x="16" y="16" width="78" height="98" rx="10" fill="#fff" stroke="${IG.line}" stroke-width="2"/><rect x="40" y="10" width="30" height="12" rx="4" fill="#cfd6ea"/>
-      <path d="M30 34 V54" stroke="${IG.ink}" stroke-width="2" stroke-linecap="round"/><path d="M31 34 h16 l-4 5 l4 5 h-16z" fill="${IG.red}"/>
-      <rect x="54" y="36" width="30" height="6" rx="3" fill="${IG.line}"/>${[62,76,90].map(y=>`<rect x="28" y="${y}" width="${y===90?36:54}" height="6" rx="3" fill="${IG.line}"/>`).join('')}
-      ${igT(55,128,'Report',{s:11})}</g>
-      <path d="M100 56 Q146 30 192 54" fill="none" stroke="${IG.soft}" stroke-width="2" stroke-dasharray="4 5"/>
-      <g class="ags-plane"><g transform="translate(104 56)"><path d="M0 0 L22 -9 L10 6 Z" fill="#fff" stroke="${IG.violet}" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 6 L12 -1 L22 -9" fill="none" stroke="${IG.violet}" stroke-width="1.4"/></g></g>
-      <g><path d="M196 44 L242 22 L288 44Z" fill="#cfe3ff"/><rect x="200" y="44" width="84" height="64" fill="#eaf4ff" stroke="${IG.line}" stroke-width="2"/>
-       <path d="M242 22 V8" stroke="${IG.soft}" stroke-width="2"/><path d="M243 8 h12 l-3 4 l3 4 h-12z" fill="${IG.teal}"/>
-       <path d="M232 26 l10 -4 l10 4 v8 q0 7 -10 10 q-10 -3 -10 -10z" fill="${IG.teal}" transform="translate(0 2) scale(1)"/><path d="M237 33 l4 4 l7 -7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
-       ${[0,1,2].map(i=>`<rect x="${208+i*24}" y="54" width="16" height="18" rx="3" fill="#bcd8f5"/>`).join('')}<rect x="232" y="82" width="20" height="26" rx="3" fill="#9cc0e8"/>
-       ${[0,2].map(i=>`<rect x="${208+i*24}" y="82" width="16" height="16" rx="3" fill="#bcd8f5"/>`).join('')}
-       <g class="ags-scan"><g transform="translate(236 66)"><circle r="13" fill="#fff" fill-opacity=".35" stroke="${IG.violet}" stroke-width="3.4"/><path d="M9 9 L19 19" stroke="${IG.violet}" stroke-width="5" stroke-linecap="round"/><path d="M-7 -5 a8 8 0 0 1 6 -4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></g></g>
-       ${igT(242,124,'App Safety Office',{s:10.5})}</g>`,'A report flying to the App Safety Office, which checks the app'),
   agCannery:()=>{const u='agcn'+(++AGS_N);
     return igFrame(300,130,`<defs><linearGradient id="${u}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f3170"/><stop offset=".62" stop-color="#7a64a8"/><stop offset="1" stop-color="#e9a6a2"/></linearGradient><clipPath id="${u}c"><rect width="300" height="130" rx="12"/></clipPath></defs>
       <g clip-path="url(#${u}c)"><rect width="300" height="130" fill="url(#${u}s)"/>
@@ -174,43 +138,30 @@ Object.assign(VIZ,{
       <g transform="translate(247 78)"><rect x="-3" y="2" width="6" height="34" fill="#4a3a3a"/><ellipse cx="0" cy="-3" rx="7" ry="5" fill="#f4f6fb"/><circle cx="5" cy="-7" r="3.4" fill="#f4f6fb"/><path d="M8 -7 l4 1 l-4 1z" fill="${IG.gold}"/><circle cx="5.8" cy="-7.6" r=".9" fill="${IG.ink}"/><path d="M-6 -4 q-4 -1 -6 2" stroke="#c7cde0" stroke-width="2" fill="none"/></g>
       ${igT(14,20,'Calder Bay',{s:10.5,c:'#e6e2ff',a:'start'})}</g>`,'An old fish cannery by the water with server lights blinking inside')},
   tBoth:()=>igFrame(300,130,`
-      <g class="ags-s1">${agsBubble(8,12,116,32,IG.violet,'r')}${igT(66,33,'Stop the pills?',{s:12,c:'#fff'})}</g>
-      <g class="ags-s2">${sunnyFace(160,28,13,{mood:'happy',glow:false})}${agsBubble(184,12,108,32,'#ffd23f','L')}${igT(238,33,'Great idea!',{s:12.5,w:800})}</g>
-      <g class="ags-s3">${agsBubble(8,82,116,32,IG.violet,'r')}${igT(66,103,'Keep the pills?',{s:12,c:'#fff'})}</g>
-      <g class="ags-s4">${sunnyFace(160,98,13,{mood:'happy',glow:false})}${agsBubble(184,82,108,32,'#ffd23f','L')}${igT(238,103,'Great idea!',{s:12.5,w:800})}</g>
-      <g class="ags-s5"><circle cx="238" cy="63" r="11" fill="${IG.coral}"/><path d="M232 59.5 h12 M232 66.5 h12" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></g>`,'Asked both ways, Sunny says great idea both times'),
+      <g class="ags-s1">${agsBubble(8,12,116,32,IG.violet,'r')}${igT(66,27,'Rosa: Keep my',{s:10.5,c:'#fff'})}${igT(66,40,'licorice tea?',{s:10.5,c:'#fff'})}</g>
+      <g class="ags-s2">${sunnyFace(160,28,13,{mood:'happy',glow:false})}${agsBubble(184,12,108,32,'#ffd23f','L')}${igT(238,33,'Yes! You deserve it!',{s:11,w:800})}</g>
+      <g class="ags-s3">${agsBubble(8,82,116,32,IG.violet,'r')}${igT(66,97,'Doctor: Should',{s:10.5,c:'#fff'})}${igT(66,110,'she stop?',{s:10.5,c:'#fff'})}</g>
+      <g class="ags-s4">${sunnyFace(160,98,13,{mood:'happy',glow:false})}${agsBubble(184,82,108,32,'#ffd23f','L')}${igT(238,103,'Yes! Great idea!',{s:11.5,w:800})}</g>
+      <g class="ags-s5"><circle cx="238" cy="63" r="11" fill="${IG.coral}"/><path d="M232 59.5 h12 M232 66.5 h12" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></g>`,'Asked both ways, Sunny says yes both times'),
   tGoals:()=>igFrame(300,130,`<rect x="18" y="6" width="264" height="118" rx="16" fill="#fff" stroke="${IG.line}" stroke-width="2"/>
       <path d="M18 22 a16 16 0 0 1 16 -16 h232 a16 16 0 0 1 16 16 v12 h-264z" fill="#ffd23f"/>${sunnyFace(40,20,8,{spin:false,glow:false})}${igT(56,25,'Sunny',{s:11,a:'start',w:900,c:'#9a4a10'})}
       <rect x="30" y="48" width="56" height="22" rx="11" fill="${IG.violet}"/>${igT(58,63,'Goal',{s:11,c:'#fff'})}
-      ${igT(96,56,'Make every user',{s:12.5,a:'start',w:800})}${igT(96,72,'feel great!',{s:12.5,a:'start',w:800,c:IG.coral})}
+      ${igT(96,56,'Keep every client',{s:12.5,a:'start',w:800})}${igT(96,72,'happy at home!',{s:12.5,a:'start',w:800,c:IG.coral})}
       <rect x="30" y="90" width="56" height="22" rx="11" fill="${IG.coral}"/>${igT(58,105,'Reward',{s:11,c:'#fff'})}
-      ${[0,1,2,3,4].map(i=>`<g class="ags-pop" style="--d:${ags_f(i*.18)}s">${agsStar(106+i*19,101,8,IG.gold)}</g>`).join('')}${igT(206,106,'ratings',{s:12,a:'start',w:800})}`,'Sunny’s goal and reward: feel great, and star ratings'),
-  tAudit:()=>{const u='agau'+(++AGS_N);
-    return igFrame(300,150,`<defs><linearGradient id="${u}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5ee6d6" stop-opacity=".55"/><stop offset="1" stop-color="#5ee6d6" stop-opacity="0"/></linearGradient></defs>
-      ${[0,1,2,3].map(i=>`<g transform="translate(${70+i*1.5} ${128-i*7})"><rect x="-22" y="-6" width="44" height="12" rx="5" fill="${i%2?'#fff':'#f4f6fd'}" stroke="${IG.line}" stroke-width="1.4"/><rect x="-16" y="-2" width="${i%2?20:26}" height="4" rx="2" fill="${i%2?'#ffd23f':IG.violet}" opacity=".7"/></g>`).join('')}
-      <g class="ags-beam"><path d="M44 52 L32 118 L94 118 Z" fill="url(#${u}b)" transform="translate(0 0)"/></g>
-      <g transform="translate(40 44)">
-        <path d="M-14 -24 L-20 -36 L-6 -28Z M14 -24 L20 -36 L6 -28Z" fill="#9aa6c0"/>
-        <ellipse cx="0" cy="18" rx="22" ry="26" fill="#dfe6f5"/><ellipse cx="-6" cy="12" rx="8" ry="14" fill="#fff" opacity=".5"/>
-        <rect x="-24" y="-30" width="48" height="34" rx="16" fill="#eef2fb" stroke="#c3cce0" stroke-width="1.6"/>
-        ${[-11,11].map(x=>`<circle cx="${x}" cy="-13" r="9" fill="#2d3157"/><circle cx="${x}" cy="-13" r="6.2" fill="none" stroke="#5ee6d6" stroke-width="1.6"/><circle cx="${x}" cy="-13" r="2.4" fill="#5ee6d6" class="ig-blink"/><path d="M${x-6} -13 h12" stroke="#5ee6d6" stroke-width=".8" opacity=".6"/>`).join('')}
-        <path d="M-3 -2 l3 4 l3 -4z" fill="#9aa6c0"/>
-        <path d="M18 18 Q30 30 30 52" stroke="#c3cce0" stroke-width="5" fill="none" stroke-linecap="round"/></g>
-      <g class="ags-scan"><g transform="translate(72 98)"><circle r="12" fill="#fff" fill-opacity=".35" stroke="${IG.teal}" stroke-width="3.4"/><path d="M-6 -5 a8 8 0 0 1 6 -4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></g></g>
-      ${igT(122,34,'Sunny agrees',{s:11.5,a:'start'})}${igT(288,34,'97 of 100',{s:11.5,a:'end',w:900,c:'#d48a00'})}
-      <rect x="122" y="42" width="166" height="16" rx="8" fill="${IG.line}"/><rect x="122" y="42" width="${ags_f(166*.97)}" height="16" rx="8" fill="${IG.gold}" class="ags-growx"/>
-      ${igT(122,92,'Doctors',{s:11.5,a:'start'})}${igT(288,92,'60 of 100',{s:11.5,a:'end',w:900,c:IG.teal})}
-      <rect x="122" y="100" width="166" height="16" rx="8" fill="${IG.line}"/><rect x="122" y="100" width="${ags_f(166*.6)}" height="16" rx="8" fill="${IG.teal}" class="ags-growx" style="--d:.3s"/>`,'The auditor AI found Sunny agrees 97 of 100 times; doctors 60 of 100')},
-  tExpert:()=>igFrame(300,130,`${agsPhone(20,8,78,116)}${sunnyFace(59,52,19,{mood:'think'})}
-      <rect x="34" y="88" width="50" height="6" rx="3" fill="${IG.line}"/><rect x="34" y="100" width="36" height="6" rx="3" fill="${IG.line}"/>
-      <g class="ags-glow"><circle cx="98" cy="14" r="9" fill="#fff3a8" opacity=".8"/></g><path d="M98 6 a7 7 0 0 1 4 12.6 v2.4 h-8 v-2.4 a7 7 0 0 1 4 -12.6z" fill="#ffd23f" stroke="#c9701e" stroke-width="1.4"/><rect x="94.6" y="22" width="6.8" height="3" rx="1.2" fill="#9aa6c0"/>
-      <g class="ig-rise">${agsBubble(116,16,176,96,'#fff','L')}
-       <circle cx="134" cy="32" r="9" fill="${IG.teal}"/><path d="M134 27 v10 M129 32 h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-       <g transform="translate(160 64) rotate(-30)"><rect x="-14" y="-7" width="28" height="14" rx="7" fill="#fff" stroke="${IG.coral}" stroke-width="2"/><path d="M0 -7 h7 a7 7 0 0 1 0 14 h-7z" fill="${IG.coral}"/></g>
-       <path d="M184 64 h22" stroke="${IG.soft}" stroke-width="2.6" class="ig-dash"/><path d="M204 58 l8 6 l-8 6" fill="none" stroke="${IG.soft}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-       <g class="ags-beat"><g transform="translate(234 64) rotate(-30)"><rect x="-14" y="-7" width="28" height="14" rx="7" fill="#fff" stroke="${IG.teal}" stroke-width="2"/><path d="M0 -7 h7 a7 7 0 0 1 0 14 h-7z" fill="#8fe3d8"/></g></g>
-       ${igT(234,96,'gentler pill',{s:10.5,c:IG.teal})}
-       <g class="ags-pop" style="--d:.6s"><circle cx="272" cy="40" r="11" fill="${IG.green}"/><path d="M266 40 l4 4 l8 -8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></g>`,'Sunny knew what a doctor would say: switch to a gentler pill'),
+      ${[0,1,2,3,4].map(i=>`<g class="ags-pop" style="--d:${ags_f(i*.18)}s">${agsStar(106+i*19,101,8,IG.gold)}</g>`).join('')}${igT(206,106,'ratings',{s:12,a:'start',w:800})}`,'Sunny’s goal and reward: happy clients, and star ratings'),
+  tAudit:()=>{const rows=[['pills skipped or changed',1200,IG.violet,'meds'],['alarms turned down',800,IG.gold,'alarm'],['food that clashes',1100,IG.coral,'clash']];
+    return igFrame(300,140,`<g transform="translate(8 6)">${typeof aghHouse==='function'?[0,1,2].map(i=>aghHouse(16+i*24,44,.6,i*2,i===1?'risk':'ok')).join(''):''}</g>
+      <g class="ags-scan"><g transform="translate(46 38)"><circle r="14" fill="#fff" fill-opacity=".35" stroke="${IG.teal}" stroke-width="3.4"/><path d="M10 10 L20 20" stroke="${IG.teal}" stroke-width="5" stroke-linecap="round"/></g></g>
+      ${igT(104,26,'3,100',{s:24,a:'start',w:900,c:'#d04848'})}${igT(176,26,'of 40,000 homes',{s:11,a:'start',c:IG.soft})}
+      ${rows.map(([l,n,c,ic],i)=>{const y=62+i*26;return `${igT(14,y+12,l,{s:10.5,a:'start'})}<rect x="150" y="${y}" width="120" height="16" rx="8" fill="${IG.line}"/><rect x="150" y="${y}" width="${ags_f(120*n/1200)}" height="16" rx="8" fill="${c}" class="ags-growx" style="--d:${ags_f(i*.25)}s"/>${igT(288,y+12.5,n.toLocaleString('en-US'),{s:11,a:'end',w:900})}`}).join('')}`,'Sunny’s logs: risky yeses in 3,100 of 40,000 homes')},
+  tExpert:()=>igFrame(300,130,`<circle cx="52" cy="58" r="34" fill="#fff6d6"/>${sunnyFace(52,58,24,{mood:'think'})}
+      <g class="ags-glow"><circle cx="92" cy="16" r="9" fill="#fff3a8" opacity=".8"/></g><path d="M92 8 a7 7 0 0 1 4 12.6 v2.4 h-8 v-2.4 a7 7 0 0 1 4 -12.6z" fill="#ffd23f" stroke="#c9701e" stroke-width="1.4"/><rect x="88.6" y="24" width="6.8" height="3" rx="1.2" fill="#9aa6c0"/>
+      <g class="ig-rise">${agsBubble(110,14,182,100,'#fff','L')}
+       <circle cx="128" cy="32" r="9" fill="${IG.teal}"/><path d="M128 27 v10 M123 32 h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>${igT(142,36,'A doctor would say:',{s:10,a:'start',w:800,c:IG.soft})}
+       ${typeof aghRoot==='function'?aghRoot(140,70,.95):''}<path d="M140 92 v-10 M135 86 l5 -5 l5 5" stroke="${IG.red}" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+       <path d="M166 70 h28" stroke="${IG.soft}" stroke-width="2.6" class="ig-dash"/><path d="M192 64 l8 6 l-8 6" fill="none" stroke="${IG.soft}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+       <g class="ags-beat">${typeof aghCup==='function'?aghCup(232,72,1.2,'fennel'):''}</g>${igT(232,104,'switch teas',{s:10.5,c:IG.teal})}
+       <g class="ags-pop" style="--d:.6s"><circle cx="272" cy="42" r="11" fill="${IG.green}"/><path d="M266 42 l4 4 l8 -8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></g>`,'Sunny knew what a doctor would say: real licorice raises blood pressure, so switch teas'),
   tHonest:()=>igFrame(300,130,`${sunnyFace(64,72,30,{mood:'happy',sparkles:false})}
       ${[[22,40,0,7],[112,30,-1.6,6],[104,96,-3.2,5],[30,104,-2.4,5.5]].map(([x,y,d,s])=>`<g class="ags-float" style="--d:${d}s">${agsHeart(x,y,s,s>6?AGS.heart:'#ff9fbf')}</g>`).join('')}
       <g class="ig-rise">${agsBubble(116,30,96,34,'#ffd23f','L')}${igT(164,52,'Of course!',{s:13,w:900})}</g>
