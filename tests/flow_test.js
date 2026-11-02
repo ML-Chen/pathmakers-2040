@@ -26,6 +26,10 @@ const {chromium}=require('playwright');const path=require('path');
      if(!S.completed[id])bad.push('not recorded in S.completed');if(S.step!=='hub')bad.push(`ended on "${S.step}" instead of the day planner`);
      return {line:seen.join(' > ')+' | completed:'+JSON.stringify(S.completed[id]||null),bad}},id);
    console.log(id+': '+r.line);r.bad.forEach(x=>fails.push(id+': '+x))}
- await p.evaluate(()=>go('hub'));await p.waitForTimeout(200);const cards=await p.evaluate(()=>document.querySelectorAll('.mcard').length);
+ await p.evaluate(()=>go('hub'));await p.waitForTimeout(200);
+ // The hub is either the old day planner (cards on one screen) or the world map (cards on each place's planner).
+ const cards=await p.evaluate(async()=>{const seen=new Set();const grab=()=>document.querySelectorAll('.mcard[data-m]').forEach(b=>seen.add(b.dataset.m));grab();
+   if(typeof PLACES!=='undefined')for(const k of Object.keys(PLACES)){S.place=k;try{go('place')}catch(e){}await new Promise(r=>setTimeout(r,30));grab()}
+   return seen.size});
  console.log('hub cards:',cards);if(cards!==ids.length)fails.push(`hub shows ${cards} mission cards for ${ids.length} missions`);
  const all=fails.concat(errs);console.log(all.length?'FAILURES:\n'+all.join('\n'):'no errors');await b.close();process.exit(all.length?1:0)})();
