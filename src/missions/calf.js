@@ -69,9 +69,9 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     {name:'calf_bench',k:'bench'},{name:'calf_test',k:'custom'},{name:'calf_criteria',k:'criteria'},{name:'calf_table',k:'table'},
     {name:'calf_consent',k:'consent'},{name:'calf_memo',k:'memo'},{name:'calf_reveal',k:'reveal'},{name:'calf_debrief',k:'debrief'},{name:'calf_evening',k:'evening'}],
   cast:{
-    ruthn:{name:'Ruth Nauyaq',role:'Lead keeper, Kigluaik Mammoth Reserve',skin:'#c48a62',hair:'#2e2829',hairStyle:'bun',eye:'#3a2216',shirt:'#1f7f86',nome:'ruth',
+    ruthn:{name:'Ruth Nauyaq',role:'Lead keeper, Kigluaik Mammoth Reserve',skin:'#eec6a2',hair:'#1a1416',hairStyle:'bun',faceShape:'round',eyeShape:'almond',blush:1.5,eye:'#3a2216',shirt:'#1f7f86',nome:'ruth',
       get art(){return typeof nomePerson==='function'?m=>nomePerson(this,m):undefined}},
-    eli:{name:'Eli Johnson',role:'Reindeer herder',skin:'#b97a52',hair:'#16110f',hairStyle:'short',eye:'#2e1a10',shirt:'#5c6b3a',nome:'eli',
+    eli:{name:'Eli Johnson',role:'Reindeer herder',skin:'#e2b98e',hair:'#221812',hairStyle:'short',faceShape:'broad',eyeShape:'mono',blush:2,accessory:'beanie',eye:'#2e1a10',shirt:'#5c6b3a',nome:'eli',
       get art(){return typeof nomePerson==='function'?m=>nomePerson(this,m):undefined}},
     aqpik:{name:'Aqpik',role:'Mammoth calf, 5 months · her collar translator',get art(){return typeof calfPortrait==='function'?m=>calfPortrait(m):undefined}}
   },

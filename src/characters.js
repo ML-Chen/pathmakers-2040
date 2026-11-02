@@ -61,6 +61,15 @@ const CH_FACE={
   M:{face:'M150 48 C120 48 96 68 96 100 C96 118 97 134 100 148 C103 162 108 173 118 183 C128 192 140 196 150 196 C160 196 172 192 182 183 C192 173 197 162 200 148 C203 134 204 118 204 100 C204 68 180 48 150 48Z',
      ey:128,ex:27,ew:26,eh:11.6,irx:7.2,iry:8.6,lash:2.5,wing:.2,brow:3.8,by:-8,ny:156,my:175,chin:196,nw:24,ear:118}
 };
+// face outlines (o.faceShape) so two people with the same build can have different faces: 'round' has full cheeks and a
+// short soft chin, 'broad' has wide cheekbones and a squarer jaw, 'oval' is a longer, narrower face.
+const CH_FACESHAPE={
+  F:{round:'M150 50 C120 50 97 70 97 100 C97 118 98 132 103 146 C108 162 118 174 130 182 C137 187 144 189 150 189 C156 189 163 187 170 182 C182 174 192 162 197 146 C202 132 203 118 203 100 C203 70 180 50 150 50Z',
+     broad:'M150 50 C120 50 96 70 96 100 C96 118 97 132 101 144 C105 158 113 172 126 182 C134 188 142 190 150 190 C158 190 166 188 174 182 C187 172 195 158 199 144 C203 132 204 118 204 100 C204 70 180 50 150 50Z',
+     oval:'M150 48 C122 48 99 68 99 98 C99 116 99 130 102 144 C105 160 113 174 125 184 C134 191 142 194 150 194 C158 194 166 191 175 184 C187 174 195 160 198 144 C201 130 201 116 201 98 C201 68 178 48 150 48Z'},
+  M:{round:'M150 48 C120 48 96 68 96 100 C96 120 97 136 101 150 C105 165 113 177 125 186 C134 192 142 194 150 194 C158 194 166 192 175 186 C187 177 195 165 199 150 C203 136 204 120 204 100 C204 68 180 48 150 48Z',
+     broad:'M150 48 C119 48 95 68 95 100 C95 120 96 138 99 152 C102 166 108 178 120 187 C130 194 140 196 150 196 C160 196 170 194 180 187 C192 178 198 166 201 152 C204 138 205 120 205 100 C205 68 181 48 150 48Z',
+     oval:'M150 46 C121 46 98 66 98 98 C98 118 98 136 101 150 C104 164 110 176 120 186 C129 194 140 198 150 198 C160 198 171 194 180 186 C190 176 196 164 199 150 C202 136 202 118 202 98 C202 66 179 46 150 46Z'}};
 // eyelid shapes: [inner y, peak y, peak u, outer y, bottom y] in units of eye height (u in eye widths)
 const CH_LIDS={normal:[-.02,-.56,-.04,-.22,.48],wide:[-.08,-.76,-.02,-.32,.6],half:[.06,-.26,.1,-.08,.46],sad:[-.22,-.44,-.16,.04,.46],stern:[.1,-.3,.14,-.38,.42]};
 // eye shapes (o.eyeShape), so faces differ beyond colour: w/h scale the eye, ir the iris, d shifts the lid points above
@@ -718,7 +727,7 @@ function ch_outfit2(kind,o,G,sk,id,build,neckG){const B=ch_bust(build),nx=B.nx,L
 // posedPerson() reuses the head and hair. P is only for posed figures: {eye: eye size factor, lash: lash and brow weight, mouth: mouth scale}.
 function ch_personKit(o,P){o=o||{};P=P||{};
   const id='ch'+(++CH_N),st=({buzz:'short',pony:'ponytail',curly:'curls',dreads:'locs',dreadlocks:'locs',hijab:'headscarf',shaved:'bald'})[o.hairStyle]||o.hairStyle||'short',kid=o.age==='kid',old=o.age==='elder';
-  const masc=o.masc!=null?!!o.masc:((st==='short'||st==='bald'||!!CH_BEARDS[o.beard])&&!kid),build=kid?'K':masc?'M':'F',G=CH_FACE[build];
+  const masc=o.masc!=null?!!o.masc:((st==='short'||st==='bald'||!!CH_BEARDS[o.beard])&&!kid),build=kid?'K':masc?'M':'F',G=(CH_FACESHAPE[build]&&CH_FACESHAPE[build][o.faceShape])?{...CH_FACE[build],face:CH_FACESHAPE[build][o.faceShape]}:CH_FACE[build];
   const Hh=ch_hairPal(o.hair||(old?'#d9d6e2':'#2a211c')),wrap=st==='headscarf';
   const md=CH_MOODS[o.mood]||CH_MOODS.smile,sk=ch_skinPal(o.skin||'#f2cdb4'),H=wrap?ch_fabricPal(o.wrap||'#4f6db8'):Hh,HS=ch_hairStyle(st,G,o);
   const iris=o.eye||'#7a4a2e',elder=st==='elder'||old,PE=P.eye||1,PL=P.lash||1;
@@ -773,7 +782,7 @@ function ch_personKit(o,P){o=o||{};P=P||{};
   const closed=md.mouth!=='happy'&&md.mouth!=='o';
   const lipSh=(closed?`<path d="M145 ${my+8} Q150 ${my+10} 155 ${my+8} Q150 ${my+8.8} 145 ${my+8}Z" fill="${sk.sh}" stroke="${sk.sh}" stroke-width="1.4"/>`:'')+
     (build==='F'&&closed?`<path d="M141.5 ${my+1.8} Q150 ${my+8.4} 158.5 ${my+1.8} Q150 ${my+5} 141.5 ${my+1.8}Z" fill="${sk.lip}" opacity=".8"/><ellipse cx="147" cy="${my+4.6}" rx="2.2" ry=".9" fill="#fff" opacity=".3"/>`:'');
-  const blushOp=(md.fx==='sparkle'?.75:.5)*(kid?1.15:build==='M'?.45:.75)*(ch_lum(sk.base)<.12?.6:1);
+  const blushOp=Math.min(1,(md.fx==='sparkle'?.75:.5)*(kid?1.15:build==='M'?.45:.75)*(ch_lum(sk.base)<.12?.6:1)*(o.blush||1));
   const blush=`<ellipse cx="${150-ex-4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/><ellipse cx="${150+ex+4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/>`+
     (kid?[-1,1].map(s=>[0,1,2].map(j=>`<path d="M${ch_n(150+s*(ex+4)-6+j*5)} ${ey+22} l3 -5" stroke="${sk.blush}" stroke-width="1.1" opacity=".55" stroke-linecap="round"/>`).join('')).join(''):'');
   const gl=o.glasses?(()=>{const fc=o.frame||'#5a2a3c',x1=150-ex,x2=150+ex,y=ey;

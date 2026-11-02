@@ -31,7 +31,7 @@
 .nm-rotor ellipse:first-child{transform-origin:-24px -9px}.nm-rotor ellipse:last-child{transform-origin:24px -9px}
 .nm-rig-light{animation:igblink 1.1s infinite}
 .nm-rig-pump{animation:nmpump .25s linear infinite alternate}@keyframes nmpump{to{transform:translateY(-1px)}}
-.nm-calf-portrait .p-mouth{transform-origin:150px 214px}
+.nm-calf-portrait .p-mouth{transform-origin:150px 170px}
 .speaker.talking .nm-calf-portrait .p-mouth{animation:nmtrunk 1.2s ease-in-out infinite}
 @keyframes nmtrunk{0%,100%{transform:none}50%{transform:rotate(-4deg)}}
 /* Observe screen: the animal on a stage over the painted scene, a compact log card, and the pulse source */
