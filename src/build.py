@@ -14,6 +14,6 @@ def font(name,file,weight):
 FONTS='\n'.join([font('Fredoka','fredoka.woff2','300 700'),font('Nunito','nunito.woff2','200 1000'),font('Caveat','caveat.woff2','400 700')])
 for marker,val in [('/*@@FONTS@@*/',FONTS),('/*@@CSS@@*/',rd('style.css')+'\n'+rd('parent.css')+'\n'+many('css','css')),('//@@AUDIO@@',rd('audio.js')+'\n'+many('audio')),('//@@ART@@',rd('art.js')),('//@@CHARS@@',rd('characters.js')),
   ('//@@PAINT@@',rd('paint_boston.js')+'\n'+many('scenes')),('//@@CONTENT@@',rd('content_boston.js')),('//@@MISSIONS@@',rd('missions.js')+'\n'+many('missions')),
-  ('//@@INFOG@@',rd('infog.js')+'\n'+many('viz')),('//@@TRACKS@@',rd('music_tracks.js')),('//@@MUSIC@@',rd('music.js')),('//@@PROPS@@',rd('props.js')),('//@@PARENT@@',rd('parent.js')),('//@@GAME@@',rd('game.js'))]:
+  ('//@@INFOG@@',rd('infog.js')+'\n'+many('viz')),('//@@TRACKS@@',rd('music_tracks.js')),('//@@MUSIC@@',rd('music.js')),('//@@PROPS@@',rd('props.js')),('//@@PARENT@@',rd('parent.js')),('//@@MODES@@',rd('modes.js')),('//@@GAME@@',rd('game.js'))]:
     t=t.replace(marker,val)
 open(sys.argv[1] if len(sys.argv)>1 else os.path.join(here,'..','dist','pathmakers.html'),'w').write(t)

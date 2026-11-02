@@ -2,9 +2,13 @@
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const APP=$('#app');
 const NEW=()=>({v:1,mission:'maya',completed:{},player:'Juniper',byte:{name:'Byte',color:'#f0b35a',ears:'floppy',voice:'female'},step:'title',notes:{},told:false,highlights:{},
-  criteria:[],choice:{tx:'gel',pt:false,date:'fri'},seed:1,conf:2,memo:'',consent:null,words:[],guide:[],hearts:{},result:null,done:false,read:{}});
+  criteria:[],choice:{tx:'gel',pt:false,date:'fri'},seed:1,conf:2,memo:'',consent:null,words:[],guide:[],hearts:{},result:null,done:false,read:{},level:'kid'});
 let S=NEW(),RESUME=null;
-const M=()=>MISSIONS[S.mission||'maya'];
+// hooks: optional systems (src/modes.js, the campaign) register with onHook(name, fn) from a LATE function.
+// hook(name, value, ...args) passes value through every registered fn (a fn that returns undefined leaves it unchanged); with none registered it returns value.
+const HOOKS={};function onHook(n,f){(HOOKS[n]=HOOKS[n]||[]).push(f)}
+function hook(n,v,...a){for(const f of HOOKS[n]||[]){try{const r=f(v,...a);if(r!==undefined)v=r}catch(e){console.warn(e)}}return v}
+const M=()=>hook('mission',MISSIONS[S.mission||'maya']);
 const MISSION_FIELDS=()=>({notes:{},told:false,highlights:{},criteria:[],seed:1,conf:2,memo:'',memoAI:null,consent:null,result:null,read:{}});
 
 // ---------- saving: browser storage, plus the viewer's private artifact storage when available ----------
@@ -96,20 +100,20 @@ function openMenu(){const d=sheet('Menu',`<div class="menu">
   $('#m-copy',d).onclick=()=>{const t=$('#m-code',d);navigator.clipboard&&navigator.clipboard.writeText(t.value).then(()=>toast('Save code copied','good')).catch(()=>{t.select()});t.select()};
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast('Game loaded','good');render()}else toast('That code didn\u2019t work. Check that you copied all of it.')};
   $('#m-new',d).onclick=()=>{$('#m-confirm',d).innerHTML=`<p>Erase this game and start over?</p><div class="row"><button class="btn small" id="m-yes">Yes, start over</button><button class="btn small ghost" id="m-no">Keep playing</button></div>`;
-    $('#m-yes',d).onclick=()=>{d.remove();S=NEW();save();go('setup')};$('#m-no',d).onclick=()=>{$('#m-confirm',d).innerHTML=''}}}
+    $('#m-yes',d).onclick=()=>{d.remove();S=NEW();save();go('setup')};$('#m-no',d).onclick=()=>{$('#m-confirm',d).innerHTML=''}};hook('menu',d)}
 function wireHud(){const mm=$('#hud-menu');if(mm)mm.onclick=openMenu;const m=$('#hud-mute');if(m)m.onclick=()=>{S.mute=!S.mute;save();stopVoice();MUSIC.mute(S.mute);m.innerHTML=S.mute?ICON.off:ICON.on};const c=$('#hud-chat');if(c)c.onclick=openChat;const g=$('#hud-guide');if(g)g.onclick=openGuide;const w=$('#hud-words');if(w)w.onclick=openWords}
 function sheet(title,html){const d=document.createElement('div');d.className='sheet';d.innerHTML=`<div class="sheet-in"><div class="sheet-top"><h2>${title}</h2><button class="x" aria-label="Close">×</button></div><div class="sheet-body">${html}</div></div>`;document.body.appendChild(d);
   requestAnimationFrame(()=>d.classList.add('on'));d.querySelector('.x').onclick=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),250)};return d}
-function openGuide(){const items=Object.entries(FIELD_GUIDE);sheet('Field Guide',`<p class="muted">${S.guide.length} of ${items.length} found in Boston</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${g.track}</div><h3>${g.title}</h3><p>${g.text}</p><div class="realcard"><span>True today</span>${g.real.replace(/^True today: /,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>Keep playing to discover this idea.</p></div>`).join(''))}
+function openGuide(){const items=Object.entries(FIELD_GUIDE);hook('guide',sheet('Field Guide',`<p class="muted">${S.guide.length} of ${items.length} found in Boston</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${g.track}</div><h3>${g.title}</h3><p>${g.text}</p><div class="realcard"><span>True today</span>${g.real.replace(/^True today: /,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>Keep playing to discover this idea.</p></div>`).join('')))}
 function openWords(){sheet('Word Book',S.words.length?`<div class="wordlist">${S.words.map(k=>`<div class="wb"><button class="gw" data-w="${esc(k)}">${esc(k)}</button><p>${esc(GLOSSARY[k])}</p></div>`).join('')}</div>`:'<p class="muted">Tap any underlined word to learn it. It will be saved here.</p>')}
 
 // ---------- chat with Byte ----------
 let CHAT=[],SAMPLE=null;
 async function getSample(){if(SAMPLE!==null)return SAMPLE;try{SAMPLE=window.claude&&claude.use?await claude.use('sample'):null}catch(e){SAMPLE=null}return SAMPLE}
-function byteContext(){return `You are ${S.byte.name}, the player's AI partner in the game "Pathmakers 2040", shaped like a cute robot puppy. In this 2040, AI is far smarter than any human; you are a superintelligent expert (in medicine, science, history, everything) and you are impressively, concretely helpful. The player, ${P()}, is 8 and reads at a 7th-grade level; speak warmly and clearly, with a little puppy playfulness, in 2 to 4 short sentences unless a list is clearly better. No markdown.
+function byteContext(){return hook('byteContext',`You are ${S.byte.name}, the player's AI partner in the game "Pathmakers 2040", shaped like a cute robot puppy. In this 2040, AI is far smarter than any human; you are a superintelligent expert (in medicine, science, history, everything) and you are impressively, concretely helpful. The player, ${P()}, is 8 and reads at a 7th-grade level; speak warmly and clearly, with a little puppy playfulness, in 2 to 4 short sentences unless a list is clearly better. No markdown.
 The world: Boston, 2040. AI quietly runs a lot of everyday things (the hospital's systems are run by an AI called Halo), and people treat that as normal and mundane, the way we treat electricity. Humans still make value choices, give consent, and sign off, because the decisions are about their own lives. Mention the AI parts casually, never as a big deal.
 ${M().brief()}
-How to help: answer factual questions exactly and impressively, with real numbers and reasoning, and explain anything (science, words, how the game works). When asked which option to pick, do not simply hand over the answer at first: point out the single most important consideration for this case, then ask what matters most to the people involved. Once the player says what matters, give a clear recommendation tied to that priority, with the odds. Then remind them gently that Maya and her family decide after a clear explanation, and the doctor signs. If asked how to "win" or "beat the game", explain the steps plainly: read the documents, notice clues from the family, tell you anything the record is missing, pick what matters most, test plans on the Future Table, explain honestly to Maya and her dad, write a clear decision with odds, and sign. You can also teach anything (science, words, history) at a kid-friendly level. Stay kind and age-appropriate; gently steer away from anything unsuitable for a child. Never ask for the player’s real name, address, or school.`}
+How to help: answer factual questions exactly and impressively, with real numbers and reasoning, and explain anything (science, words, how the game works). When asked which option to pick, do not simply hand over the answer at first: point out the single most important consideration for this case, then ask what matters most to the people involved. Once the player says what matters, give a clear recommendation tied to that priority, with the odds. Then remind them gently that Maya and her family decide after a clear explanation, and the doctor signs. If asked how to "win" or "beat the game", explain the steps plainly: read the documents, notice clues from the family, tell you anything the record is missing, pick what matters most, test plans on the Future Table, explain honestly to Maya and her dad, write a clear decision with odds, and sign. You can also teach anything (science, words, history) at a kid-friendly level. Stay kind and age-appropriate; gently steer away from anything unsuitable for a child. Never ask for the player’s real name, address, or school.`)}
 function cannedReply(q){q=q.toLowerCase();if(M().canned){const r=M().canned(q);if(r)return r}if(S.mission&&S.mission!=='maya'){if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here\u2019s the path: read the documents, listen for clues from the people involved, tell me anything I\u2019m missing, pick what matters most, test plans on the Future Table, explain honestly, then write your decision and sign it!';return 'Great question! Ask me about this case, the odds, or anything about 2040.'}
   if(/rash|allerg|patch|itch/.test(q)){if(!S.told){S.told=true;save();return 'Woof, that changes everything! If Maya reacted to an HX-2 cooling patch, BoneMend has about a 60% chance of giving her a rash, so I’d avoid it. A cast with physical therapy plus asking to move the recital is my top pick now.'}return 'Right, the rash! I’d skip BoneMend for Maya. Pins are the surest for the bone; a cast with therapy is gentler and lets her play in about 3 weeks.'}
   if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here’s the path: read the 3 documents, listen for clues from Maya’s family, tell me anything her record is missing, pick what matters most, test plans on the Future Table, explain the choice honestly to Maya and her dad, then write your decision with odds and sign it!';
@@ -127,7 +131,7 @@ function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="cha
   d.classList.add('chat');wireMics();const told0=S.told;d.querySelector('.x').addEventListener('click',()=>{if(S.step==='workbench'&&S.told!==told0)setTimeout(renderWorkbench,260)});const log=$('#chatlog');
   const draw=()=>{log.innerHTML=`<div class="msg b"><div class="mini-byte">${byteBox(S.byte)}</div><p>Hi ${esc(P())}! Ask me anything.</p></div>`+CHAT.map(m=>`<div class="msg ${m.role==='user'?'u':'b'}">${m.role==='user'?'':`<div class="mini-byte">${byteBox(S.byte)}</div>`}<p>${esc(m.content)}</p></div>`).join('');log.scrollTop=log.scrollHeight};draw();
   $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();window.PARENT&&PARENT.noteChat(q);
-    if(/rash|allerg|patch|itch/i.test(q)&&!S.told){S.told=true;save()}
+    if(hook('tellMatch',/rash|allerg|patch|itch/i).test(q)&&!S.told){S.told=true;save()}
     const placeholder={role:'assistant',content:'Thinking...'};CHAT.push(placeholder);draw();
     const sm=window.PARENT&&!PARENT.chatOn()?null:await getSample();let answer=null;
     if(sm){try{const turns=[{role:'user',content:byteContext()+'\n\nThe player says: '+CHAT[0].content}];
@@ -135,7 +139,7 @@ function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="cha
         // keep alternation: merge leading user turns
         const merged=[];for(const m of msgs){if(merged.length&&merged.at(-1).role===m.role)merged.at(-1).content+='\n'+m.content;else merged.push({...m})}
         const r=await sm(merged,{modelTier:'quick',cache:false,onText:({text})=>{placeholder.content=text;draw()}});answer=r.text}catch(err){answer=null}}
-    placeholder.content=answer||cannedReply(q);draw();MUSIC.babble(placeholder.content,'byte');if(S.step==='workbench'&&!d.isConnected)renderWorkbench()};
+    placeholder.content=answer||hook('canned',cannedReply(q),q);draw();MUSIC.babble(placeholder.content,'byte');if(S.step==='workbench'&&!d.isConnected)renderWorkbench()};
 }
 
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
@@ -168,7 +172,7 @@ function speakerArt(who,mood){
   if(who==='byte')return `<div class="speaker byte-speaker">${byteBox({...S.byte,mood:mood==='neutral'?'neutral':mood==='think'?'think':'happy'},'big')}</div>`;
   const c=CAST[who];return `<div class="speaker">${portrait({...c,mood})}</div>`}
 function talk(key,sceneKey,place,next){
-  const lines=M().talks[key];let i=0,typing=null,lineId=0;
+  const lines=hook('talkLines',M().talks[key],key);let i=0,typing=null,lineId=0;
   screen('talk',`${scene(sceneKey)}<div class="talk-dim"></div>${hud(place)}<div class="stage" id="stage"></div>
    <div class="subtitle" id="sub"><div class="who" id="who"></div><p id="line"></p><div class="choices" id="choices"></div><div class="tap-hint" id="hint">Tap to continue</div></div>`);
   const stage=$('#stage'),line=$('#line'),who=$('#who'),choices=$('#choices'),hint=$('#hint');
@@ -189,6 +193,7 @@ function talk(key,sceneKey,place,next){
       choices.firstChild.onclick=e=>{e.stopPropagation();S.notes[L.clue]=true;save();toast('Added to your notebook','good');advance()};choices.lastChild.onclick=e=>{e.stopPropagation();advance()};return}
     if(L.choices&&!isReply){choices.innerHTML=L.choices.map((c,j)=>`<button class="choice" data-j="${j}">${esc(fill(c.t))}</button>`).join('');
       $$('.choice',choices).forEach(b=>b.onclick=e=>{e.stopPropagation();const c=L.choices[b.dataset.j];if(c.good)heart(L.who==='byte'?'byte':key);show(L,c.reply,c.mood);L._replied=true});return}
+    if(hook('afterLine',false,L,{key,isReply,choices,advance}))return;
     hint.hidden=false}
   function advance(){stopVoice();i++;if(i>=lines.length){next();return}lines[i]._replied=false;show(lines[i])}
   $('#sub').onclick=e=>{if(e.target.closest('.gw,.choice'))return;if(choices.children.length)return;
@@ -198,7 +203,7 @@ function talk(key,sceneKey,place,next){
 }
 
 // ---------- steps: title, setup, hub, and each mission's flow ----------
-function startMission(id){Object.assign(S,MISSION_FIELDS());S.mission=id;S.choice={...MISSIONS[id].start};curDoc=(MISSIONS[id].docs[0]||{}).id;go(MISSIONS[id].flow[0].name)}
+function startMission(id){Object.assign(S,MISSION_FIELDS());S.mission=id;hook('start',id);S.choice={...M().start};curDoc=(M().docs[0]||{}).id;go(M().flow[0].name)}
 function nextStep(){const f=M().flow;const i=f.findIndex(x=>x.name===S.step);if(i<0||i>=f.length-1){S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};go('hub');return}go(f[i+1].name)}
 function runFlow(){const f=M().flow.find(x=>x.name===S.step);if(!f)return STEPS.hub();
   if(f.k==='talk')return talk(f.talk,f.scene,f.place,()=>{if(f.toast)toast(f.toast);nextStep()});
@@ -225,7 +230,7 @@ const STEPS={
     $$('[data-e]').forEach(b=>b.onclick=()=>{S.byte.ears=b.dataset.e;$$('[data-e]').forEach(x=>x.classList.toggle('on',x===b));redraw()});
     $$('[data-v]').forEach(b=>b.onclick=()=>{S.byte.voice=b.dataset.v;$$('[data-v]').forEach(x=>x.classList.toggle('on',x===b));save();MUSIC.unlock();playLine('byte','Hi! I’m your AI partner. Let’s do great work together!')});
     $('#bname').oninput=e=>{S.byte.name=e.target.value.trim()||'Byte';save()};$('#pname').oninput=e=>{S.player=e.target.value.trim()||'Juniper';save()};
-    $('#go').onclick=()=>startMission('maya')},
+    $('#go').onclick=()=>startMission('maya');hook('setup')},
   hub(){const list=Object.values(MISSIONS);const unlocked=m=>(m.after||[]).every(id=>S.completed[id]);
     screen('hub',`${scene('home')}${hud('Your day planner')}<div class="panel-card hub"><h2>What’s next?</h2>
       ${Object.entries(CAREERS).map(([ck,cv])=>{const ms=list.filter(m=>m.career===ck);if(!ms.length)return '';return `<div class="career"><div class="career-h">${esc(cv.name)}</div>${ms.map(m=>{const done=S.completed[m.id],open=unlocked(m);
@@ -248,20 +253,20 @@ function chartSVG(ch){const W=320,rowH=46,top=8,left=96,max=100,scale=v=>left+(v
      <line x1="${scale(r.lo)}" x2="${scale(r.hi)}" y1="${y+12}" y2="${y+12}" stroke="#1f2340" stroke-width="2.5"/><line x1="${scale(r.lo)}" x2="${scale(r.lo)}" y1="${y+5}" y2="${y+19}" stroke="#1f2340" stroke-width="2.5"/><line x1="${scale(r.hi)}" x2="${scale(r.hi)}" y1="${y+5}" y2="${y+19}" stroke="#1f2340" stroke-width="2.5"/>
      <text x="${scale(r.hi)+6}" y="${y+16}" font-size="12" font-weight="800" fill="#1f2340">${r.v}</text></g>`}).join('')}</svg>`}
 function renderWorkbench(){
-  const D=M().docs;let doc=D.find(d=>d.id===curDoc);if(!doc){doc=D[0];curDoc=doc.id}S.read[curDoc]=1;save();
+  const D=M().docs;let doc=D.find(d=>d.id===curDoc);if(!doc){doc=D[0];curDoc=doc.id}S.read[curDoc]=1;save();const steps=hook('docSteps',doc.steps,doc);
   screen('bench',`${scene('workbench')}${hud('Workbench · '+M().place)}
    <div class="bench"><div class="tabs">${D.map(d=>`<button class="tab ${d.id===curDoc?'on':''} ${S.read[d.id]?'':'new'}" data-d="${d.id}">${esc(d.title.split(':')[0])}</button>`).join('')}</div>
    <article class="doc doc-${doc.kind}"><div class="doc-from">From ${esc(doc.from)}</div><h2>${esc(doc.title)}</h2>
     <div class="doc-tools"><button class="mini-btn" id="readme">Read to me</button><span class="tiny muted">Tap a sentence to mark it as evidence.</span></div>
-    ${doc.steps.map((st0,i)=>{const up=st0.alt&&S.told;const st=up?{...st0,...st0.alt}:st0;return `<section class="step ${up?'updated':''}" ${up?'id="upd"':''}><div class="step-n">${i+1}</div><div class="step-body">${up?'<div class="upd-badge">Updated</div>':''}<p class="sent ${S.highlights[doc.id+i]?'hl':''}" data-k="${doc.id+i}">${rich(st.t)}</p>
+    ${steps.map((st0,i)=>{const up=st0.alt&&S.told;const st=up?{...st0,...st0.alt}:st0;const k=st0.key||doc.id+i;return `<section class="step ${up?'updated':''}${st0.cls?' '+st0.cls:''}" ${up?'id="upd"':''}><div class="step-n">${st0.n||i+1}</div><div class="step-body">${up?'<div class="upd-badge">Updated</div>':''}<p class="sent ${S.highlights[k]?'hl':''}" data-k="${k}">${rich(st.t)}</p>
       <figure class="fig"><figcaption>${esc(st.cap||'')}</figcaption>${VIZ[st.viz]?VIZ[st.viz](st.args||{}):''}</figure></div></section>`}).join('')}
    </article>
    ${companion()}<div class="bench-foot">${M().lesson?`<button class="btn ghost small" id="learn">${esc(M().lesson.label)}</button>`:''}<div id="tellslot"></div><button class="btn" id="next">Set my criteria</button></div></div>`);
   $$('.tab').forEach(b=>b.onclick=()=>{curDoc=b.dataset.d;renderWorkbench()});
   $$('.sent').forEach(p=>p.onclick=e=>{if(e.target.closest('.gw'))return;const k=p.dataset.k;S.highlights[k]=!S.highlights[k];p.classList.toggle('hl');save();const R=M().react||{};if(S.highlights[k]&&R[k])byteSays(typeof R[k]==='function'?R[k]():R[k])});
-  $('#readme').onclick=()=>{const items=[['narrator',doc.title]].concat(doc.steps.map(b=>['narrator',b.t]));let k=0;const ps=$$('.sent');
+  $('#readme').onclick=()=>{const items=[['narrator',doc.title]].concat(steps.map(b=>['narrator',b.t]));let k=0;const ps=$$('.sent');
     (async()=>{stopVoice();const id=playId;for(const [w,t] of items){if(id!==playId)break;const p=k>0?ps[k-1]:null;if(p)p.classList.add('reading');await playLine(w,t);playId=id;if(p)p.classList.remove('reading');k++}})()};
-  renderTellButton();wireCompanion();if(M().lesson)$('#learn').onclick=()=>openLesson(M().lesson.id);
+  renderTellButton();wireCompanion();if(M().lesson)$('#learn').onclick=()=>openLesson(M().lesson.id);hook('bench',doc);
   $('#next').onclick=()=>{const unread=D.filter(d=>!S.read[d.id]&&d.kind!=='ledger');if(unread.length){toast('Read the '+unread.map(d=>d.title.split(':')[0]).join(' and ')+' first.');return}nextStep()};
 }
 function renderTellButton(){const slot=$('#tellslot');if(!slot)return;const T=M().tell;if(!T){slot.innerHTML='';return}
@@ -322,7 +327,7 @@ function renderTable(){
    <div class="why" id="whybox" hidden></div></div>`);
   wireControls($('.controls'),renderTable);
   $('#why').onclick=()=>{const box=$('#whybox');box.hidden=false;box.innerHTML=`<p>${M().why(c)}</p>`;const gid=M().whyGuide&&M().whyGuide(c);if(gid)unlock(gid)&&toast('New Field Guide idea: '+FIELD_GUIDE[gid].title,'good');box.scrollIntoView({behavior:'smooth',block:'nearest'})};
-  $('#next').onclick=()=>nextStep()}
+  $('#next').onclick=()=>nextStep();hook('table',c)}
 
 // ---------- Consent conversation ----------
 function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M());
@@ -336,14 +341,14 @@ function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M())
     $('.stage').innerHTML=`<div class="speaker">${portrait({...CAST[K.left],mood:o.good?'smile':'worried'})}</div><div class="speaker talking">${portrait({...CAST[K.replyWho],mood:o.mood})}</div>`;
     playLine(K.replyWho,o.reply);
     $('.subtitle').innerHTML=`<div class="who"><b>${esc(CAST[K.replyWho].name)}</b><span>${esc(CAST[K.replyWho].role)}</span></div><p>${esc(o.reply)}</p><div class="choices"><button class="choice" id="cont">${o.good?'Write my decision':'Try explaining again'}</button></div>`;
-    $('#cont').onclick=()=>o.good?nextStep():renderConsent()})}
+    $('#cont').onclick=()=>o.good?nextStep():renderConsent();hook('consentReply',o)});hook('consent',opts)}
 
 // ---------- Decision memo, confidence, signature ----------
-function memoChecks(t,ai){const s=' '+t.toLowerCase().replace(/[’']/g,"'")+' ';const A=ai||{};const Mm=M().memo;return [
+function memoChecks(t,ai){const s=' '+t.toLowerCase().replace(/[’']/g,"'")+' ';const A=ai||{};const Mm=M().memo;return hook('memoChecks',[
   {k:'treatment',ok:A.treatment??Mm.plan.test(s),l:Mm.planLabel||'Names the plan'},
   {k:'reason',ok:A.reason??/because|since|so that| so she| so her| so it|that's why|that is why|which is why|this is why|the reason|reason is|in order to| to avoid| to keep| to help| to make sure|balances|helps|means|otherwise| due to|thanks to|given that|as she|as her/.test(s),l:'Gives a reason'},
   {k:'odds',ok:A.odds??/\d|percent|%|out of|likely|unlikely|probably|pretty sure|very sure|not sure|i'm sure|i am sure|most of the time|chance (is|of|it)|odds/.test(s),l:'Says how sure, with odds'},
-  {k:'maya',ok:A.maya??Mm.care.test(s),l:Mm.careLabel}]}
+  {k:'maya',ok:A.maya??Mm.care.test(s),l:Mm.careLabel}],s,A)}
 function renderMemo(){
   const Mm=M().memo,starters=Mm.starters;
   screen('memo',`${scene('workbench')}${hud('Workbench · Decision')}<div class="panel-card">
@@ -365,7 +370,7 @@ function renderMemo(){
     box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what matters to the people involved.');MUSIC.babble(box.textContent,'byte')};
   $('#sign').onclick=()=>{if(ta.value.trim().length<20){toast('Write at least a sentence or two first.');return}
     const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc(Mm.signAs+P())}</div><p>Signed. You are accountable for this decision.</p></div>`;document.body.appendChild(sig);
-    setTimeout(()=>{sig.remove();nextStep()},1700)}}
+    setTimeout(()=>{sig.remove();nextStep()},1700)};hook('memo')}
 
 // ---------- The real future ----------
 function renderReveal(){const RV=M().reveal;
@@ -390,8 +395,9 @@ function renderDebrief(){
   const c=S.choice,R=S.result;const T=M().trap(c);
   const crit=S.criteria.filter(x=>x!=='agree');const score=p=>{const e=expectedFor(p);return crit.reduce((a,id)=>a*e(id),1)};
   const mine=score(c),best=Math.max(...allPlans().map(score));const fit=mine>=best-.08;
-  const memoOk=memoChecks(S.memo,S.memoAI).filter(x=>x.ok).length>=3;
-  const stars=[T.ok,fit,memoOk&&S.consent].filter(Boolean).length;S.lastStars=stars;
+  const memoOk0=memoChecks(S.memo,S.memoAI).filter(x=>x.ok).length>=3;
+  const sc=hook('debriefScore',{T,fit,memoOk:memoOk0,max:3},c),memoOk=sc.memoOk,fit2=sc.fit;
+  const stars=Math.min(sc.max,[T.ok,fit2,memoOk&&S.consent].filter(Boolean).length);S.lastStars=stars;
   const truth=M().outcomes(c,M().truth());const pk=truth.filter(o=>o.kind===R.kind).reduce((a,o)=>a+o.p,0);const good=crit.every(id=>(R.flags[id]??1)>0);
   const luck=good?(pk<.4?'Lucky':'As expected'):(pk<.3?'Unlucky':'As expected');
   if(S.consent)heart(M().consent.left);
@@ -402,13 +408,13 @@ function renderDebrief(){
     <div class="score"><div class="luckpill ${luck.toLowerCase().replace(' ','-')}">${luck}</div><b>Luck</b><span>How the dice landed. Luck never earns stars.</span></div></div>
    <ul class="dlist">
     <li class="${T.ok?'ok':''}">${esc(T.text)}</li>
-    <li class="${fit?'ok':''}">${fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.'}</li>
+    <li class="${fit2?'ok':''}">${fit2?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.'}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.'} ${S.consent?'You explained honestly, so they could truly agree.':''}</li></ul>
    <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(M().byteGood):'Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'}</p></div>
    ${calibLine()}
    <div class="earned"><span>${S.guide.length} Field Guide ideas</span><span>${S.words.length} new words</span><span>${Object.values(S.hearts).reduce((a,b)=>a+b,0)} hearts</span></div>
    <button class="btn wide" id="next">${M().flow.some(f=>f.k==='evening')?'Head home':'Finish the day'}</button></div>`);
-  $('#next').onclick=()=>{S.completed[S.mission]={stars:Math.max(stars,(S.completed[S.mission]||{}).stars||0)};save();nextStep()}}
+  $('#next').onclick=()=>{S.completed[S.mission]={stars:Math.max(stars,(S.completed[S.mission]||{}).stars||0)};save();nextStep()};hook('debrief',{stars,good,luck})}
 
 function renderEvening(){const lines=M().evening();
   screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
