@@ -120,7 +120,7 @@
 
 /* ---------- the wedding ---------- */
 .bea-wcal{background:#fff;color:var(--ink);border-radius:18px;width:120px;padding:10px;margin:22vh auto 0;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.3)}
-.bea-wcal span{display:block;font-size:.8rem;font-weight:800;color:var(--coral);text-transform:uppercase;letter-spacing:.08em}
+.bea-wcal span{display:block;font-size:.8rem;font-weight:800;color:#d9503f;text-transform:uppercase;letter-spacing:.08em}
 .bea-wcal b{font-family:var(--display);font-size:3rem;line-height:1}
 .bea-wcal.done{animation:bump .5s}
 .bea-wfloor{margin:0 -16px;animation:reveal .6s}

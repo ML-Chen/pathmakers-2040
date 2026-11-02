@@ -199,7 +199,7 @@ function i18nSvg(root){if(typeof LANG!=='function'||LANG()==='en'||!root)return;
     else if(v!=null&&e.tagName==='text'&&!e.querySelector('tspan'))e.textContent=v})}
 function screen(cls,html){I18N.sync();stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;i18nSvg(APP);const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
-  if(typeof campaignScreen==='function')campaignScreen(cls);fitPlace();applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
+  if(typeof campaignScreen==='function')campaignScreen(cls);fitPlace();applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop,.bubble').forEach(x=>x.remove());
   MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[standIn(scn)]&&PAINT[standIn(scn)].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 // Autosave keeps the exact step of every unfinished mission (S.at) and, when the player switches to another mission,
