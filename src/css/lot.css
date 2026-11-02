@@ -1,0 +1,167 @@
+/* lot.css — "The Flood Lot" (Phoenix, Community Architect). Classes start with "lot-". */
+/* ---- shared looping animations for the Phoenix pictures ---- */
+.lot-drop{animation:lot-drop .7s linear infinite;animation-delay:var(--d,0s)}
+@keyframes lot-drop{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(var(--fall,30px));opacity:0}}
+.lot-fillup{transform-box:fill-box;transform-origin:50% 100%;animation:lot-fillup 6s ease-in-out infinite}
+@keyframes lot-fillup{0%{transform:scaleY(.08)}45%,90%{transform:scaleY(1)}100%{transform:scaleY(1)}}
+.lot-wave{animation:igwave 3s linear infinite}
+.lot-slosh{animation:lot-slosh 2.6s ease-in-out infinite}@keyframes lot-slosh{50%{transform:translateY(-.6px)}}
+.lot-spill{stroke-dasharray:4 3;animation:lot-flowk .6s linear infinite}
+.lot-flowdash{animation:lot-flowk .8s linear infinite}@keyframes lot-flowk{to{stroke-dashoffset:-12}}
+.lot-flash{animation:lot-flash 4s infinite}@keyframes lot-flash{0%,8%,14%,100%{opacity:0}10%,12%{opacity:1}}
+.lot-ring{animation:igblink .5s steps(2) infinite}
+.lot-pulse{transform-box:fill-box;transform-origin:center;animation:igpulse 1.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+.lot-blink{animation:igblink 1.3s ease-in-out infinite;animation-delay:var(--d,0s)}
+.lot-shimmer{animation:lot-shim 3s ease-in-out infinite}@keyframes lot-shim{50%{opacity:.75}}
+.lot-roll{animation:lot-roll 3.4s ease-in-out infinite}@keyframes lot-roll{0%,100%{transform:translate(-14px,-4px)}50%{transform:translate(16px,6px)}}
+.lot-spray{animation:igblink 1s ease-in-out infinite}
+.lot-cloudin{animation:lot-cloudin 7s ease-in-out infinite}@keyframes lot-cloudin{0%{transform:translateX(60px);opacity:0}25%,100%{transform:none;opacity:1}}
+.lot-bot{animation:lot-bot 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lot-bot{50%{transform:translate(6px,3px)}}
+.lot-arm{transform-box:fill-box;transform-origin:0 50%;animation:lot-arm 1.2s ease-in-out infinite alternate}@keyframes lot-arm{to{transform:rotate(-18deg)}}
+.lot-ripple{transform-box:fill-box;transform-origin:center;animation:lot-ripple 3s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lot-ripple{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.25);opacity:0}}
+.lot-arroyo{animation:floaty 4s ease-in-out infinite}
+.lot-wiggle{animation:jig .5s ease-in-out infinite}
+.lot-leaf{animation:lot-leaf 4s ease-in infinite;animation-delay:var(--d,0s)}@keyframes lot-leaf{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translate(40px,80px) rotate(220deg);opacity:0}}
+.lot-vig{display:block}
+/* red-team cartoons: 8 s loops */
+.lot-rt{display:block;width:100%;height:auto}
+.lot-rt-fill{transform-box:fill-box;transform-origin:50% 100%;animation:lot-rtfill 8s ease-in-out infinite}@keyframes lot-rtfill{0%,62%{transform:scaleY(0)}86%,96%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.lot-rt-skater{animation:lot-rtsk 8s ease-in-out infinite}@keyframes lot-rtsk{0%{transform:translate(-40px,0)}12%{transform:translate(30px,0)}24%{transform:translate(-30px,0)}36%{transform:translate(10px,0)}48%{transform:translate(70px,-34px)}56%,100%{transform:translate(110px,-34px);opacity:1}57%,98%{opacity:0}}
+.lot-rt-light{animation:lot-rtlight 8s infinite}@keyframes lot-rtlight{0%,36%{opacity:.15}38%,58%{opacity:1}40%,44%,48%,52%{opacity:.4}60%,100%{opacity:.15}}
+.lot-rt-horn{opacity:0;animation:lot-rthorn 8s infinite}@keyframes lot-rthorn{0%,37%{opacity:0}39%,55%{opacity:1}57%,100%{opacity:0}}
+.lot-rt-pause{animation:igblink 1.2s infinite}
+.lot-rt-pond{animation:lot-rtpond 6s infinite}@keyframes lot-rtpond{0%,30%{opacity:0}45%,75%{opacity:.75}90%,100%{opacity:0}}
+.lot-rt-bot{animation:lot-rtbot 6s ease-in-out infinite}@keyframes lot-rtbot{0%,60%{transform:translateX(60px)}75%,92%{transform:translateX(-90px)}100%{transform:translateX(60px)}}
+.lot-rt-pump2{animation:igblink 1.6s infinite}
+.lot-rt-rise{transform-box:fill-box;transform-origin:50% 100%;animation:lot-fillup 5s ease-in-out infinite}
+.lot-rt-jug{transform-box:fill-box;transform-origin:50% 100%;animation:lot-rtjug 5s linear infinite}@keyframes lot-rtjug{0%{transform:scaleY(1)}90%{transform:scaleY(.05)}100%{transform:scaleY(1)}}
+.lot-rt-walk{animation:lot-rtwalk 7s linear infinite}@keyframes lot-rtwalk{0%{transform:translateX(-40px)}100%{transform:translateX(320px)}}
+.lot-rt-scan{animation:lot-rtscan 7s infinite}@keyframes lot-rtscan{0%,30%{opacity:0}38%,60%{opacity:1}68%,100%{opacity:0}}
+
+/* ---- field visit ---- */
+.lot-spots{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:1;pointer-events:none}
+.lot-spot{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border:0;background:none;padding:0;pointer-events:auto;cursor:pointer}
+.lot-spot i{position:absolute;inset:9px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(31,35,64,.35),0 0 14px rgba(255,255,255,.7);animation:lot-spot 1.8s ease-in-out infinite}
+.lot-spot i::after{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}
+@keyframes lot-spot{0%,100%{transform:scale(.85);opacity:.9}50%{transform:scale(1.08);opacity:1}}
+.lot-spot.seen i{animation:none;opacity:.55;border-color:#bfe6c9;transform:scale(.7)}
+.lot-spot.seen i::after{background:#1fa774}
+.lot-pj{position:absolute;width:96px;margin:-50px 0 0 -48px;border:0;background:none;padding:0;pointer-events:auto;cursor:pointer;animation:lot-pj 22s linear infinite}
+.lot-pj svg{width:100%;height:auto;display:block;overflow:visible}
+.lot-pj.gone{animation:lot-pjgone 1.2s ease-in forwards}
+@keyframes lot-pj{0%{transform:translateX(-160px)}100%{transform:translateX(160px)}}
+@keyframes lot-pjgone{to{transform:translateX(260px);opacity:0}}
+.lot-cap{top:calc(64px + env(safe-area-inset-top,0px));bottom:auto}
+.lot-cap-top{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--ink2)}
+.lot-cap-top b{font-family:var(--display);font-size:1.05rem;color:var(--ink)}
+.lot-cap p{margin:4px 0 10px;font-size:.98rem;line-height:1.4;min-height:2.8em}
+.lot-notes{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+
+/* ---- Future Table note ---- */
+.lot-tn{display:flex;gap:6px;flex-wrap:wrap}
+.lot-tn span{flex:1 1 auto;text-align:center;background:rgba(12,16,44,.78);border:1px solid rgba(94,230,214,.25);border-radius:12px;padding:6px 8px;font-size:.8rem;font-weight:800;color:#cfe9ff}
+.lot-tn b{font-family:var(--display);font-size:1.02rem;color:#fff}
+.lot-tn span.over{border-color:#ff8a8f;color:#ffd0d2}.lot-tn span.over b{color:#ff9aa0}
+
+/* ---- pin-up with the neighbors ---- */
+.lot-pin{padding:12px}
+.lot-pin-model{background:linear-gradient(180deg,#eaf5fb,#fdf6e9);border-radius:18px;overflow:hidden}
+.lot-pin-model svg{display:block;width:100%;height:auto;max-height:32vh}
+.lot-pin-cap{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:0 10px 10px}
+.lot-pin-cap b{font-family:var(--display);font-size:1.1rem;margin-right:auto}
+.lot-pin-cap span{background:#fff;border-radius:99px;padding:2px 9px;font-size:.8rem;font-weight:800}
+.lot-pin-cap span.over{background:#fde6e6;color:#b4262b}
+.lot-pin-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 6px;align-items:start}
+.lot-pin-p{display:flex;flex-direction:column;align-items:center;text-align:center}
+.lot-pin-art{width:100%;height:96px;overflow:hidden;border-radius:16px;background:linear-gradient(#bfe2f4,#f8e9cf)}
+.lot-pin-art .portrait{width:100%;height:150px;display:block;margin-top:-6px}
+.lot-pin-p b{font-size:.85rem;margin-top:3px}
+.lot-pin-say{margin:4px 0 0;font-size:.8rem;line-height:1.3;background:var(--mist);border-radius:12px;padding:6px 7px;animation:reveal .4s backwards;position:relative}
+.lot-pin-p:nth-child(2) .lot-pin-say{animation-delay:.4s}.lot-pin-p:nth-child(3) .lot-pin-say{animation-delay:.8s}
+.lot-pin-q{font-weight:800;font-size:.9rem;color:var(--ink2);margin-top:6px}
+.lot-pin-btns{margin-top:10px}.lot-pin-btns .btn{flex:1 1 auto}
+
+/* ---- night orders ---- */
+.lot-order{padding:14px;background:#fffdf7;border:2px solid #f0e2c4}
+.lot-order-head{display:flex;gap:12px;align-items:center}
+.lot-badge{width:56px;height:56px;flex:none}
+.lot-order-k{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--coral)}
+.lot-order h2{margin:0;font-family:var(--display);font-size:1.35rem;line-height:1.1}
+.lot-order-sub{font-size:.85rem;color:var(--ink2);font-weight:800}
+.lot-sec{margin-top:12px}
+.lot-sec-h{display:flex;gap:6px;align-items:center;margin-bottom:6px;font-size:.92rem}
+.lot-sec-h svg{width:22px;height:22px;flex:none}
+.lot-opt{display:block;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:9px 12px;margin-top:6px;position:relative}
+.lot-opt b{display:block;font-size:.93rem;line-height:1.25}
+.lot-opt span{display:block;font-size:.8rem;color:var(--ink2);line-height:1.3;margin-top:2px}
+.lot-opt.on{border-color:var(--violet);background:#f3f0ff;box-shadow:0 0 0 2px rgba(108,92,231,.18)}
+.lot-opt.on::after{content:"\2713";position:absolute;right:10px;top:9px;width:20px;height:20px;border-radius:50%;background:var(--violet);color:#fff;font-size:.78rem;display:grid;place-items:center}
+.lot-opt em{display:inline-block;font-style:normal;font-size:.72rem;font-weight:800;background:var(--gold);color:var(--ink);border-radius:99px;padding:1px 8px;margin-top:4px}
+.lot-react{display:flex;gap:10px;align-items:center;margin-top:12px;background:#eef6ff;border-radius:16px;padding:8px 10px;animation:reveal .35s}
+.lot-react-art{width:58px;height:58px;border-radius:50%;overflow:hidden;flex:none;background:linear-gradient(#bfe2f4,#f8e9cf)}
+.lot-react-art .portrait{width:58px;height:96px;display:block;margin-top:-4px}
+.lot-react p{margin:0;font-size:.9rem;line-height:1.35}.lot-react p b{display:block;font-size:.78rem;color:var(--ink2)}
+.lot-fc{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.lot-fc div{background:#20264f;color:#fff;border-radius:14px;padding:8px 6px;text-align:center}
+.lot-fc b{display:block;font-family:var(--display);font-size:1.5rem;line-height:1}
+.lot-fc span{font-size:.7rem;font-weight:800;color:#bcd0ff;line-height:1.2;display:block;margin-top:3px}
+.lot-night-btns{margin-top:12px}.lot-night-btns .btn{flex:1 1 auto}
+.lot-stamp-mark{display:inline-block;font-family:var(--display);font-size:2.4rem;color:var(--coral);border:4px solid var(--coral);border-radius:12px;padding:2px 16px;transform:rotate(-8deg);animation:lot-stamp .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes lot-stamp{0%{transform:rotate(-8deg) scale(2.2);opacity:0}100%{transform:rotate(-8deg) scale(1);opacity:1}}
+
+/* ---- the overnight build ---- */
+.lot-tl{display:flex;flex-direction:column;gap:10px;color:#fff;padding-top:4px}
+.lot-tl-h{display:flex;justify-content:space-between;align-items:center}
+.lot-tl-h span{font-family:var(--display);font-size:1.3rem;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.lot-tl-art{border-radius:18px;overflow:hidden;background:#141a3e;box-shadow:0 0 0 2px #5ee6d6,0 0 40px rgba(94,230,214,.35);min-height:120px}
+.lot-tl-art svg{display:block;width:100%;height:auto}
+.lot-tl-storm .vig,.lot-tl-res .vig{width:100%}
+.lot-tl-res h2{margin:6px 10px 10px;text-align:center;font-family:var(--display);font-size:1.25rem}
+.lot-tl-log{list-style:none;margin:0;padding:10px 12px;background:rgba(12,16,44,.82);border:1px solid rgba(94,230,214,.25);border-radius:16px;max-height:30vh;overflow:auto;display:flex;flex-direction:column;gap:5px;font-size:.88rem;line-height:1.35}
+.lot-tl-log li{animation:reveal .3s;color:#dfe8ff}
+.lot-tl-log li.h{font-family:var(--display);color:#7ff7e4;font-size:.95rem;margin-top:4px}
+.lot-tl-log li.am{color:#ffd98a}
+.lot-tl-log li.storm{color:#bfe3ff}
+.lot-tl-end{color:var(--ink)}
+.lot-tl .btn{align-self:center}
+
+/* ---- document pictures (src/viz/lot.js) ---- */
+.lot-sweep{animation:spin 6s linear infinite}
+.lot-floodh{transform-box:fill-box;transform-origin:50% 100%;animation:lot-floodh 5s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lot-floodh{0%,20%{transform:scaleY(0)}40%,90%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.lot-bcycle{transform-box:fill-box;transform-origin:50% 100%;animation:lot-bcycle 9s ease-in-out infinite}@keyframes lot-bcycle{0%{transform:scaleY(0)}25%,55%{transform:scaleY(1)}92%,100%{transform:scaleY(0)}}
+.lot-ph1{animation:lot-ph1 9s infinite}@keyframes lot-ph1{0%,25%{opacity:1}30%,100%{opacity:.18}}
+.lot-ph2{animation:lot-ph2 9s infinite}@keyframes lot-ph2{0%,22%{opacity:.18}27%,55%{opacity:1}60%,100%{opacity:.18}}
+.lot-ph3{animation:lot-ph3 9s infinite}@keyframes lot-ph3{0%,55%{opacity:.18}60%,92%{opacity:1}97%,100%{opacity:.18}}
+.lot-bsun{animation:lot-bsun 10s infinite}@keyframes lot-bsun{0%,38%{opacity:1}44%,88%{opacity:0}94%,100%{opacity:1}}
+.lot-bstorm{opacity:0;animation:lot-bstorm 10s infinite}@keyframes lot-bstorm{0%,38%{opacity:0}44%,66%{opacity:1}74%,100%{opacity:0}}
+.lot-bfill{transform-box:fill-box;transform-origin:50% 100%;animation:lot-bfill 10s ease-in-out infinite}@keyframes lot-bfill{0%,44%{transform:scaleY(0)}64%,76%{transform:scaleY(1)}92%,100%{transform:scaleY(0)}}
+.lot-bskate{animation:lot-bskate 10s ease-in-out infinite}@keyframes lot-bskate{0%{transform:translate(-56px,-26px);opacity:1}10%{transform:translate(0,0)}20%{transform:translate(56px,-26px)}30%{transform:translate(0,0)}38%{transform:translate(-30px,-8px);opacity:1}40%,92%{opacity:0;transform:translate(-30px,-8px)}96%{opacity:1;transform:translate(-56px,-26px)}100%{transform:translate(-56px,-26px)}}
+.lot-dropin{opacity:.2;animation:lot-dropin 4s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lot-dropin{0%{opacity:.2}12%,85%{opacity:1}100%{opacity:.2}}
+.lot-hotd{animation:lot-hotd 4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lot-hotd{0%{opacity:.35}20%,80%{opacity:1}100%{opacity:.35}}
+.lot-heat{animation:lot-heat 1.6s ease-in-out infinite}@keyframes lot-heat{0%{transform:translateY(4px);opacity:.2}50%{opacity:1}100%{transform:translateY(-6px);opacity:0}}
+.lot-tfill{transform-box:fill-box;transform-origin:50% 100%;animation:lot-tfill 4s ease-out infinite}@keyframes lot-tfill{0%{transform:scaleY(.2)}40%,100%{transform:scaleY(1)}}
+.lot-sunarc{animation:lot-sunarc 8s ease-in-out infinite}
+@keyframes lot-sunarc{0%{transform:translate(30px,70px)}12%{transform:translate(70px,26px)}30%{transform:translate(120px,4px)}50%{transform:translate(150px,-1px)}70%{transform:translate(190px,8px)}88%{transform:translate(230px,40px)}100%{transform:translate(254px,70px)}}
+.lot-pop{animation:lot-pop 5s ease-out infinite;animation-delay:var(--d,0s);transform-box:fill-box;transform-origin:50% 100%}@keyframes lot-pop{0%{transform:scale(0)}8%,88%{transform:scale(1)}100%{transform:scale(0)}}
+.lot-pourline{stroke-dasharray:80;animation:lot-pour 4s ease-in-out infinite}@keyframes lot-pour{0%{stroke-dashoffset:80}70%,100%{stroke-dashoffset:0}}
+.lot-wk{animation:lot-wk 4s infinite;animation-delay:var(--d,0s)}@keyframes lot-wk{0%{opacity:.35}10%,80%{opacity:1}100%{opacity:.35}}
+.lot-gate{animation:lot-gate 2.4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lot-gate{0%,100%{fill:#16b3a6}50%{fill:#eef1fb}}
+.lot-gateup{transform-box:fill-box;transform-origin:50% 0;animation:lot-gateup 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lot-gateup{0%,20%{transform:scaleY(1)}35%,85%{transform:scaleY(.15)}100%{transform:scaleY(1)}}
+.lot-signit{clip-path:inset(0 100% 0 0);animation:lot-sign 4s ease-out infinite}@keyframes lot-sign{0%{clip-path:inset(0 100% 0 0)}40%,100%{clip-path:inset(0 0 0 0)}}
+.lot-barup{transform-box:fill-box;transform-origin:50% 100%;animation:lot-tfill 4s ease-out infinite;animation-delay:var(--d,0s)}
+.lot-stampin{animation:lot-stampin 4s infinite}@keyframes lot-stampin{0%,30%{opacity:0}40%,100%{opacity:1}}
+.lot-reply{animation:lot-reply 5s infinite;animation-delay:var(--d,0s)}@keyframes lot-reply{0%{fill:#d9c6a8}20%,90%{fill:#16b3a6}100%{fill:#d9c6a8}}
+.lot-bub{animation:lot-bub 5s ease-out infinite;animation-delay:var(--d,0s);opacity:0}@keyframes lot-bub{0%{opacity:0}10%,85%{opacity:1}100%{opacity:0}}
+.lot-rampup{animation:lot-rampup 6s ease-in-out infinite}@keyframes lot-rampup{0%{transform:translate(84px,104px)}70%,100%{transform:translate(170px,76px)}}
+.lot-lighton{animation:lot-lighton 4s infinite}@keyframes lot-lighton{0%,15%{opacity:0}20%,100%{opacity:1}}
+.lot-sailpop{animation:lot-pop2 6s infinite;animation-delay:var(--d,0s);opacity:0}@keyframes lot-pop2{0%{opacity:0}8%,90%{opacity:1}100%{opacity:0}}
+.lot-walkby{animation:lot-walkby 9s linear infinite}@keyframes lot-walkby{0%{transform:translateX(-20px)}100%{transform:translateX(320px)}}
+.lot-drawon{stroke-dasharray:420;animation:lot-drawon 6s ease-in-out infinite}@keyframes lot-drawon{0%{stroke-dashoffset:420}40%,100%{stroke-dashoffset:0}}
+.lot-drawon2{stroke-dasharray:420;animation:lot-drawon2 6s ease-in-out infinite}@keyframes lot-drawon2{0%,40%{stroke-dashoffset:420}80%,100%{stroke-dashoffset:0}}
+.lot-grow2{transform-box:fill-box;transform-origin:center;animation:lot-grow2 3s ease-in-out infinite alternate}@keyframes lot-grow2{from{transform:scale(.55)}to{transform:scale(1)}}
+.lot-scan{animation:lot-scan 4s ease-in-out infinite}@keyframes lot-scan{0%,100%{transform:translate(70px,60px)}50%{transform:translate(140px,90px)}}
+.lot-heatup{animation:lot-heat 2.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+.lot-cloudgrow{transform-box:fill-box;transform-origin:50% 100%;animation:lot-cloudgrow 6s ease-out infinite}@keyframes lot-cloudgrow{0%{transform:scale(.25);opacity:.4}70%,100%{transform:scale(1);opacity:1}}
+.lot-haboob{animation:lot-haboob 6s linear infinite}@keyframes lot-haboob{0%{transform:translateX(-60px)}100%{transform:translateX(140px)}}
+.lot-soak{animation:lot-soak 2s ease-in infinite;animation-delay:var(--d,0s)}@keyframes lot-soak{0%{transform:translateY(0);opacity:1}60%{transform:translateY(54px);opacity:1}100%{transform:translateY(64px);opacity:0}}
+.lot-runoff{animation:lot-runoff 2.4s ease-in infinite;animation-delay:var(--d,0s)}@keyframes lot-runoff{0%{transform:translate(0,0);opacity:1}45%{transform:translate(4px,40px)}100%{transform:translate(80px,66px);opacity:0}}
