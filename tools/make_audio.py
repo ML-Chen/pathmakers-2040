@@ -80,7 +80,7 @@ PIPELINE_VERSION = 2
 
 NODE_CMD = ("const fs=require('fs'),vm=require('vm'),path=require('path');const c={module:{exports:{}},LATE:[],console};c.window=c;vm.createContext(c);"
             "const ms=fs.existsSync('src/missions')?fs.readdirSync('src/missions').filter(f=>f.endsWith('.js')).sort().map(f=>'src/missions/'+f):[];"
-            "const src=['src/art.js','src/content_boston.js','src/missions.js'].concat(ms).map(f=>fs.readFileSync(f,'utf8')).join('\\n');"
+            "const src=['src/art.js','src/content_boston.js','src/missions.js','src/ledger.js'].concat(ms).map(f=>fs.readFileSync(f,'utf8')).join('\\n');"
             "vm.runInContext(src+'\\n;this.L=spokenLines();',c);process.stdout.write(JSON.stringify(c.L))")
 
 

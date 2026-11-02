@@ -1,0 +1,89 @@
+/* The Ledger: the in-world news app (src/ledger.js). Newsprint cream, serif headlines, stamps for spotted tricks. */
+.sheet.ledger .sheet-in{height:94vh;max-height:94vh;background:#fbf7ee}
+.sheet.ledger .sheet-top h2{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:1.65rem;letter-spacing:-.01em}
+.sheet.ledger .sheet-top{border-bottom:3px double #2a2f4a;margin-bottom:6px;padding-bottom:8px}
+.hbtn .lg-badge{background:var(--coral)}
+.lg-menu svg{width:22px;height:22px}
+.lg-mnew{background:var(--coral);color:#fff;font-family:var(--body);font-weight:800;font-size:.75rem;border-radius:999px;padding:2px 8px;margin-left:4px}
+.lg-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 8px;font-size:.82rem;font-weight:800;color:var(--ink2)}
+.lg-edition{font-family:Georgia,serif;font-style:italic;font-weight:700}
+.lg-score{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid #e4dcc6;border-radius:999px;padding:3px 10px 3px 6px;color:var(--ink)}
+.lg-score svg{width:16px;height:16px;color:var(--violet)}
+.lg-score b{color:var(--violet);margin-right:-2px}
+.lg-hello{background:#f1ecff;margin:4px 0 10px}
+.lg-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:6px}
+.lg-chip{flex:none;border:1.5px solid #e4dcc6;background:#fff;border-radius:999px;padding:6px 13px;font-weight:800;font-size:.86rem;color:var(--ink2)}
+.lg-chip.on{background:#2a2f4a;border-color:#2a2f4a;color:#fff}
+.lg-list{display:flex;flex-direction:column;gap:10px;padding-bottom:16px}
+.lg-card{position:relative;display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;align-items:center;text-align:left;border:0;background:#fff;border-radius:16px;padding:10px;box-shadow:0 3px 12px rgba(60,50,20,.08);animation:reveal .3s backwards}
+.lg-card:nth-child(2){animation-delay:.04s}.lg-card:nth-child(3){animation-delay:.08s}.lg-card:nth-child(4){animation-delay:.12s}.lg-card:nth-child(5){animation-delay:.16s}
+.lg-card.big{grid-template-columns:1fr;padding:12px}
+.lg-thumb{background:var(--mist);border-radius:12px;overflow:hidden;padding:4px;pointer-events:none}
+.lg-thumb svg{display:block;width:100%;height:auto}
+.lg-card:not(.big) .lg-thumb{aspect-ratio:1.45;display:grid;place-items:center}
+.lg-card h3{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:1.02rem;line-height:1.22;margin:0 0 4px;color:var(--ink)}
+.lg-card.big h3{font-size:1.32rem}
+.lg-card.unread h3::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--coral);margin:0 7px 2px 0;vertical-align:middle}
+.lg-meta{font-size:.76rem;font-weight:800;color:var(--ink2)}
+.lg-saved{position:absolute;right:10px;top:-3px;width:18px;color:var(--gold)}
+.lg-saved svg{display:block;width:18px;height:22px}
+.lg-empty{text-align:center;padding:24px 0}
+.lg-stamp{position:absolute;right:10px;bottom:10px;transform:rotate(-8deg);border:2.5px solid #d7263d;color:#d7263d;border-radius:8px;padding:1px 7px;font-family:var(--display);font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.85)}
+.lg-stamp.ok{border-color:var(--good);color:var(--good)}
+/* article */
+.lg-art{padding-bottom:28px}
+.lg-back{display:inline-flex;align-items:center;gap:4px;border:0;background:none;padding:4px 0;margin-bottom:6px;font-weight:800;color:var(--violet)}
+.lg-back svg{width:18px;height:18px}
+.lg-headwrap{position:relative}
+.lg-head{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:1.6rem;line-height:1.16;margin:0 0 8px;color:var(--ink)}
+.lg-stamp.big{position:absolute;right:-2px;bottom:-14px;font-size:1.05rem;padding:2px 10px;border-width:3px;z-index:2}
+.lg-stamp.slam{animation:lgslam .55s cubic-bezier(.2,1.6,.4,1)}
+@keyframes lgslam{0%{transform:rotate(-8deg) scale(2.6);opacity:0}60%{transform:rotate(-8deg) scale(.92);opacity:1}100%{transform:rotate(-8deg) scale(1)}}
+.lg-by{display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:800;color:var(--ink2);padding:6px 0;border-top:1px solid #e9e1cc;border-bottom:1px solid #e9e1cc;margin-bottom:4px}
+.lg-by i{flex:none;width:26px;height:26px;color:var(--good)}
+.lg-by i svg{display:block;width:26px;height:26px}
+.lg-by.unsigned i{color:#a7a29a}
+.lg-by small{display:block;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--good)}
+.lg-by.unsigned small{color:#a7a29a}
+.lg-art .step{border-top-color:#ece4cf}
+.lg-art .fig{background:#f3efe4}
+.lg-art .doc-tools{margin:8px 0 2px}
+.mini-btn.on{background:var(--gold);border-color:var(--gold);color:#3a2a00}
+#lg-go{margin:10px 0 0}
+.lg-check{margin-top:14px}
+.lg-ask{background:#fff;border:2px dashed #d9cfb4;border-radius:18px;padding:12px 14px;text-align:center}
+.lg-ask b{font-family:var(--display);font-weight:600;font-size:1.1rem;display:block;margin-bottom:8px}
+.lg-ask .row{justify-content:center}
+.lg-ask .btn svg,.lg-check .btn svg{width:18px;height:18px}
+.lg-check .row{margin-top:6px}
+.lg-find{display:flex;align-items:center;gap:8px;background:#2a2f4a;color:#fff;border-radius:14px;padding:10px 12px}
+.lg-find svg{width:22px;height:22px;flex:none;color:var(--gold)}
+.lg-findbar{position:sticky;top:0;z-index:3;margin:0 -2px 8px;padding-top:2px;background:#fbf7ee}
+.lg-hint{min-height:0;font-weight:800;color:var(--violet);margin:6px 4px 2px;font-size:.92rem}.lg-hint:empty{display:none}
+.lg-check .byte-note.lg-hop{animation:hop .6s}
+.finding .lg-part{cursor:zoom-in;outline:2px dashed rgba(108,92,231,.38);outline-offset:3px;border-radius:10px}
+.finding .lg-part:hover{outline-color:var(--violet);background:rgba(108,92,231,.06)}
+.lg-part.lg-wrong{animation:lgshake .4s}
+@keyframes lgshake{20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.lg-part.lg-right{outline:3px solid var(--gold)!important;background:#fff6d6!important}
+.lg-part.lg-show{outline:3px solid var(--gold)!important;animation:flash 1.6s infinite}
+/* picture animations used by src/viz/ledger.js */
+.lg-bob{animation:lgbob 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgbob{50%{transform:translateY(-4px)}}
+.lg-drift{animation:lgdrift 6s ease-in-out infinite alternate;animation-delay:var(--d,0s)}@keyframes lgdrift{from{transform:translateX(-8px)}to{transform:translateX(8px)}}
+.lg-spin{transform-box:fill-box;transform-origin:center;animation:lgspin 6s linear infinite}@keyframes lgspin{to{transform:rotate(360deg)}}
+.lg-fade{animation:lgfade 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgfade{0%,100%{opacity:.25}50%{opacity:1}}
+.lg-in{opacity:0;animation:lgin 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lgin{0%{opacity:0;transform:translateY(6px)}12%,85%{opacity:1;transform:none}100%{opacity:0}}
+.lg-pop{transform-box:fill-box;transform-origin:center;animation:lgpopin 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lgpopin{0%{transform:scale(0);opacity:0}10%{transform:scale(1.15);opacity:1}16%,88%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
+.lg-grow{transform-box:fill-box;transform-origin:bottom;animation:lggrow 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lggrow{0%{transform:scaleY(0)}30%,88%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.lg-growx{transform-box:fill-box;transform-origin:left;animation:lggrowx 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lggrowx{0%{transform:scaleX(0)}30%,88%{transform:scaleX(1)}100%{transform:scaleX(1);opacity:0}}
+.lg-swing{transform-box:fill-box;transform-origin:50% 0;animation:lgswing 2.4s ease-in-out infinite alternate}@keyframes lgswing{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+.lg-beat{transform-box:fill-box;transform-origin:center;animation:lgbeat 1.6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgbeat{50%{transform:scale(1.12)}}
+.lg-move{animation:lgmove 7s linear infinite;animation-delay:var(--d,0s)}@keyframes lgmove{from{transform:translateX(var(--from,-60px))}to{transform:translateX(var(--to,360px))}}
+.lg-flash{animation:lgflash 2.2s steps(1) infinite;animation-delay:var(--d,0s)}@keyframes lgflash{0%,60%{opacity:1}61%,100%{opacity:0}}
+.lg-flip{animation:lgflip 4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgflip{0%,40%{opacity:1}50%,90%{opacity:0}100%{opacity:1}}
+.lg-flop{animation:lgflop 4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgflop{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
+.lg-dash{stroke-dasharray:5 6;animation:lgdash 1s linear infinite}@keyframes lgdash{to{stroke-dashoffset:-11}}
+.lg-wave{animation:lgwave 4s linear infinite}@keyframes lgwave{to{transform:translateX(-40px)}}
+.lg-rise{animation:lgrise 4s ease-in infinite;animation-delay:var(--d,0s)}@keyframes lgrise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-40px);opacity:0}}
+.lg-turn{transform-box:fill-box;transform-origin:center;animation:lgturn 6s ease-in-out infinite}@keyframes lgturn{0%,30%{transform:none}55%,100%{transform:scaleX(-1)}}
+@media (prefers-reduced-motion: reduce){.lg-bob,.lg-drift,.lg-spin,.lg-fade,.lg-in,.lg-pop,.lg-grow,.lg-growx,.lg-swing,.lg-beat,.lg-move,.lg-flash,.lg-flip,.lg-flop,.lg-dash,.lg-wave,.lg-rise,.lg-turn{animation:none;opacity:1}}
