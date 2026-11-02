@@ -1,0 +1,71 @@
+/* calf.css — "The Calf Who Stopped Eating": Byte's pictures (calf-*), the one-day test screen and the overnight time-lapse. */
+.calf-gauge{animation:calfgauge 4s ease-out infinite}@keyframes calfgauge{0%{stroke-dashoffset:var(--c)}35%,85%{stroke-dashoffset:var(--o)}100%{stroke-dashoffset:var(--o);opacity:.4}}
+.calf-pop{transform-box:fill-box;transform-origin:center;animation:igpop 4s ease-in-out infinite;animation-delay:var(--d,0s)}
+.calf-blink{animation:igblink 1.3s ease-in-out infinite}
+.calf-rise{animation:calfrise 3s ease-out infinite;animation-delay:var(--d,0s)}@keyframes calfrise{0%{transform:translateY(8px);opacity:0}20%{opacity:1}100%{transform:translateY(-18px);opacity:0}}
+.calf-sweep{animation:calfspin 6s linear infinite}@keyframes calfspin{to{transform:rotate(360deg)}}
+.calf-drain{transform-box:fill-box;transform-origin:bottom;animation:calfdrain 4s ease-in infinite}@keyframes calfdrain{0%{transform:scaleY(1)}60%,100%{transform:scaleY(0)}}
+.calf-shrink{transform-box:fill-box;transform-origin:left;animation:calfshrink 6s ease-in-out infinite}@keyframes calfshrink{0%{transform:scaleX(1)}80%,100%{transform:scaleX(.08)}}
+.calf-scan{animation:calfscan 5s ease-in-out infinite}@keyframes calfscan{0%,100%{transform:translate(36px,48px)}33%{transform:translate(110px,62px)}66%{transform:translate(70px,86px)}}
+.calf-dot{opacity:.15;animation:calfdot 6s infinite;animation-delay:var(--d)}@keyframes calfdot{0%{opacity:.15}10%,85%{opacity:1}100%{opacity:.15}}
+.calf-waves path{animation:calfwave 1.6s ease-out infinite;animation-delay:var(--d,0s)}@keyframes calfwave{0%{opacity:0;transform:translateX(-4px)}30%{opacity:1}100%{opacity:0;transform:translateX(8px)}}
+.calf-tuskup{animation:calftusk 3.4s ease-in-out infinite}@keyframes calftusk{0%,20%{transform:translateY(14px)}70%,100%{transform:translateY(0)}}
+.calf-grow{transform-box:fill-box;transform-origin:left;animation:iggrow 5s ease-out infinite;animation-delay:var(--d,0s)}
+.calf-hover{animation:calfhover 2.4s ease-in-out infinite}@keyframes calfhover{50%{transform:translateY(-5px)}}
+.calf-ping{transform-box:fill-box;transform-origin:center;animation:calfping 2s ease-out infinite;animation-delay:var(--d,0s)}@keyframes calfping{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.calf-earflip .nm-ear{animation:calfear 3.2s ease-in-out infinite}@keyframes calfear{0%,30%{transform:none}45%,85%{transform:rotate(-34deg) scale(1.12)}}
+.calf-chewloop .nm-jaw{animation:calfchew 3.6s infinite}@keyframes calfchew{0%,8%,16%,24%,32%{transform:none}4%,12%,20%,28%{transform:translateY(2.4px) rotate(4deg)}36%,100%{transform:none}}
+.calf-chewloop .nm-sprig{animation:calfdrop 3.6s infinite}@keyframes calfdrop{0%,36%{transform:none;opacity:1}55%{transform:translate(-4px,40px) rotate(-30deg);opacity:1}70%,100%{transform:translate(-4px,40px) rotate(-30deg);opacity:0}}
+.calf-curlloop .nm-trunk-hang{animation:calfxa 3.4s infinite}.calf-curlloop .nm-trunk-curl{animation:calfxb 3.4s infinite}
+@keyframes calfxa{0%,35%{opacity:1}45%,90%{opacity:0}100%{opacity:1}}@keyframes calfxb{0%,35%{opacity:0}45%,90%{opacity:1}100%{opacity:0}}
+.calf-footloop .nm-fl-low{animation:calffoot 3.6s ease-in-out infinite}.calf-footloop .nm-sole{animation:calfsole 3.6s ease-in-out infinite}
+@keyframes calffoot{0%,20%{transform:none}40%,70%{transform:rotate(62deg) translate(-2px,-4px)}90%,100%{transform:none}}@keyframes calfsole{0%,28%{opacity:0}40%,68%{opacity:1}78%,100%{opacity:0}}
+.calf-colhi{opacity:.2;animation:calfcol 2s ease-in-out infinite;animation-delay:var(--d)}@keyframes calfcol{0%,100%{opacity:.2}30%{opacity:1}}
+.calf-needle{transform-origin:0 0;animation:calfneedle 2.4s ease-in-out infinite alternate}@keyframes calfneedle{from{transform:rotate(-26deg)}to{transform:rotate(14deg)}}
+.calf-parcel{animation:calfparcel 4s ease-in-out infinite}@keyframes calfparcel{0%{transform:translate(70px,52px);opacity:0}10%{opacity:1}40%,55%{transform:translate(118px,52px)}90%{transform:translate(226px,52px);opacity:1}100%{transform:translate(226px,52px);opacity:0}}
+.calf-sign{stroke-dasharray:60;animation:calfsign 4s ease-in-out infinite}@keyframes calfsign{0%,40%{stroke-dashoffset:60}60%,100%{stroke-dashoffset:0}}
+.calf-fadeout{animation:igfadeout 4s ease-in-out infinite}.calf-fadein{animation:calffadein 4s ease-in-out infinite}@keyframes calffadein{0%,30%{opacity:0}70%,100%{opacity:1}}
+.calf-herdmove{animation:calfherd 5s ease-in-out infinite}@keyframes calfherd{0%{transform:none}70%,100%{transform:translateX(-70px)}}
+.calf-heat path{animation:calfheat 2s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes calfheat{0%{opacity:0;transform:translateY(6px)}40%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+.calf-bump{animation:calfbump 3s ease-in-out infinite}@keyframes calfbump{0%,100%{transform:translate(70px,52px)}45%,60%{transform:translate(126px,52px)}52%{transform:translate(120px,52px)}}
+.calf-step{transform-box:fill-box;transform-origin:center;animation:calfstep 3.6s ease-in-out infinite}@keyframes calfstep{0%,10%{transform:scale(.9);opacity:.4}25%,60%{transform:scale(1);opacity:1}80%,100%{opacity:.4}}
+.calf-scanline{animation:calfscanl 1.6s ease-in-out infinite alternate}@keyframes calfscanl{from{transform:translateY(-6px)}to{transform:translateY(8px)}}
+.calf-knob{animation:calfknob 3s ease-in-out infinite}@keyframes calfknob{0%,40%,100%{transform:none}55%,70%{transform:translateX(18px)}62%{transform:translateX(14px)}}
+.calf-patrol{animation:calfpatrol 6s linear infinite}@keyframes calfpatrol{from{transform:translate(-40px,50px)}to{transform:translate(340px,50px)}}
+.calf-scatter{animation:calfscat 6s ease-out infinite;animation-delay:var(--d)}@keyframes calfscat{0%,30%{transform:none}45%,80%{transform:translate(var(--x),8px)}100%{transform:none}}
+.calf-ship{animation:calfship 6s ease-in-out infinite}@keyframes calfship{0%{transform:translateX(60px)}50%,100%{transform:none}}
+.calf-hazeband{animation:calfhaze 6s ease-in-out infinite alternate}@keyframes calfhaze{to{transform:translateX(30px)}}
+.calf-flock{animation:calfflock 6s linear infinite;offset-path:path('M70 60 C140 30 230 30 250 56 C262 72 220 86 170 70');offset-rotate:auto}@keyframes calfflock{from{offset-distance:0%}to{offset-distance:100%}}
+.calf-growup{transform-box:fill-box;transform-origin:bottom;animation:calfgrowup 4s ease-out infinite}@keyframes calfgrowup{0%{transform:scaleY(.2)}50%,100%{transform:scaleY(1)}}
+.calf-drum{transform-origin:8px -26px;animation:calfdrum .6s ease-in-out infinite alternate}@keyframes calfdrum{to{transform:rotate(-20deg)}}
+.calf-gwave path{animation:calfgw 2s linear infinite;animation-delay:var(--d,0s)}@keyframes calfgw{from{transform:translateX(-40px);opacity:0}30%{opacity:1}to{transform:translateX(20px);opacity:0}}
+.calf-gwave2{animation:igwave 2s linear infinite}
+.calf-sense{opacity:.2;animation:calfsense 2s ease-out infinite;animation-delay:var(--d)}@keyframes calfsense{0%{opacity:.2}20%{opacity:1}60%,100%{opacity:.2}}
+.calf-zz text{animation:calfrise 2.4s ease-out infinite}
+.calf-gripon ellipse{fill:none;stroke:#8a5a2a;stroke-width:1.4;transform-box:fill-box;transform-origin:center;animation:nmgrip 1.4s ease-out infinite;animation-delay:var(--d,0s)}
+/* the one-day test screen */
+.calf-testcard{max-height:calc(100vh - 90px);overflow:auto}
+.calf-bars{display:grid;gap:5px;margin:10px 0}
+.calf-bar{display:grid;grid-template-columns:96px 1fr 40px;align-items:center;gap:8px;font-size:.85rem}
+.calf-bar span{font-weight:800}.calf-bar b{text-align:right;font-variant-numeric:tabular-nums}
+.calf-track{position:relative;height:14px;border-radius:7px;background:#eef1fb;overflow:hidden}
+.calf-track i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;transition:width .8s cubic-bezier(.3,1.2,.5,1)}
+.calf-track i.old{background:#d6dbec}.calf-track i.fear{background:#8f6cf0}.calf-track i.tooth{background:#ff7a6b}.calf-track i.belly{background:#f5b82e}.calf-track i.sick{background:#6b8fb8}
+.calf-tests{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.calf-test{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:2px solid var(--line);background:#fff;border-radius:16px;padding:8px 6px;transition:transform .12s,border-color .12s}
+.calf-test.on{border-color:var(--violet);background:#f3f1ff;transform:translateY(-2px)}
+.calf-test[disabled]{opacity:.7}.calf-test.on[disabled]{opacity:1}
+.calf-ticon svg{width:44px;height:44px}
+.calf-tt b{display:block;font-size:.88rem;line-height:1.2}.calf-tt span{display:block;font-size:.72rem;color:var(--ink2);line-height:1.25;margin-top:2px}
+.calf-result{display:flex;gap:10px;align-items:center;margin-top:14px;padding:10px;border-radius:16px;background:#eafaf2}
+.calf-result.bad{background:#fdecea}.calf-result h3{margin:0 0 2px;font-size:1rem}.calf-result p{margin:0;font-size:.9rem}
+.calf-rvig{flex:0 0 120px}.calf-rvig svg{width:120px;display:block;border-radius:10px}
+.calf-upd{margin-top:10px;font-weight:800;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.calf-night{position:fixed;inset:0;z-index:60;background:radial-gradient(circle at 70% 20%,#2a2f66,#0a0c22 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:#fff;animation:reveal .4s}
+.calf-night.out{opacity:0;transition:opacity .45s}
+.calf-moon{position:absolute;right:16%;top:12%;width:44px;height:44px;border-radius:50%;background:#fff8dc;box-shadow:0 0 40px #fff8dc}
+.calf-clock{text-align:center}.calf-clock b{display:block;font-family:var(--display);font-size:2.4rem}.calf-clock span{opacity:.8}
+.calf-nvig svg{width:min(80vw,320px);display:block;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+/* Pip and Jory on the ridge during the walk out */
+.calf-pj{position:absolute;left:58%;top:calc(47% - 50px);width:96px;transition:transform 1.6s ease-in,opacity 1.6s}
+.calf-pj.flee{transform:translate(90px,-40px) scale(.7);opacity:0}
