@@ -47,6 +47,12 @@ body.wm-zooming canvas.bgcanvas,body.wm-zooming .wm{transform-origin:var(--zx) v
 
 .wm-foot{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2;max-width:496px;margin:0 auto;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .wm-foot>*{pointer-events:auto}
+/* #app>* is position:relative, which pulled the card up under the HUD (covering Mars and the Moon) and shifted it 12px right */
+#app>.wm-foot{position:fixed}
+/* Byte's gift waits above the card on the map instead of on top of it */
+body:has(.screen.worldmap) .bc-gift{bottom:calc(136px + env(safe-area-inset-bottom,0px))}
+/* crowded pins: open places draw above locked ones, and the one with new work on top, so its name stays readable */
+.wm-pin.open{z-index:1}.wm-pin.has-new{z-index:2}
 .wm-res{display:flex;gap:6px;justify-content:center}
 .wm-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(10,14,44,.66);backdrop-filter:blur(6px);color:#fff;border-radius:999px;padding:5px 11px 5px 8px;font-family:var(--display);font-weight:600;font-size:.95rem;box-shadow:0 4px 12px rgba(0,0,0,.25)}
 .wm-chip .cm-i{width:18px;height:18px}
@@ -78,7 +84,7 @@ body.wm-zooming canvas.bgcanvas,body.wm-zooming .wm{transform-origin:var(--zx) v
 .toast .t-coin{width:18px;height:18px;vertical-align:-4px;color:#ffd45c}
 
 /* ---------- a place's planner ---------- */
-.cm-dim{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(14,18,52,.25),rgba(14,18,52,.55))}
+#app>.cm-dim{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(14,18,52,.25),rgba(14,18,52,.55))}
 .cm-plan{background:#fff;border-radius:24px;padding:14px 14px 10px;box-shadow:0 16px 44px rgba(10,14,40,.4);animation:reveal .3s;max-width:488px;margin:0 auto}
 .cm-plan-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .cm-plan-h h2{margin:0;font-size:1.5rem;line-height:1}
@@ -138,7 +144,7 @@ body.wm-zooming canvas.bgcanvas,body.wm-zooming .wm{transform-origin:var(--zx) v
 .cm-st small{font-size:.66rem;font-weight:800;color:var(--ink2)}
 .dlist li>.cm-star{position:absolute;left:8px;top:8px;width:22px;height:22px;z-index:1;background:#fff;border-radius:50%}
 .cm-heartfx{position:fixed;left:50%;top:calc(64px + env(safe-area-inset-top,0px));z-index:61;display:flex;align-items:center;gap:5px;transform:translateX(-50%);
-  background:#fff;color:#e24a64;border-radius:999px;padding:5px 12px 5px 8px;box-shadow:0 8px 22px rgba(10,14,40,.3);font-weight:800;pointer-events:none;animation:cm-float 2.2s ease-out forwards}
+  background:#fff;color:#e24a64;border-radius:999px;padding:5px 12px 5px 8px;box-shadow:0 8px 22px rgba(10,14,40,.3);font-weight:800;white-space:nowrap;pointer-events:none;animation:cm-float 2.2s ease-out forwards}
 .cm-heartfx .cm-i{width:20px;height:20px}.cm-heartfx span{color:var(--ink);font-weight:700}
 @keyframes cm-float{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}12%{opacity:1;transform:translate(-50%,0) scale(1.08)}20%{transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-26px)}}
 .cm-days{display:flex;align-items:baseline;gap:3px;background:#fff3d1;color:#8a5a00;border-radius:999px;padding:6px 11px;font-weight:800;font-size:.8rem;box-shadow:0 4px 14px rgba(20,25,60,.12);flex:none}
@@ -146,13 +152,14 @@ body.wm-zooming canvas.bgcanvas,body.wm-zooming .wm{transform-origin:var(--zx) v
 
 /* ---------- wide screens: the map fills the window, the planner becomes a side panel ---------- */
 @media (min-aspect-ratio:1/1) and (min-width:820px){
-  .screen.worldmap .hud,.screen.placeplan .hud{position:fixed;left:24px;right:24px;top:16px;z-index:3}
-  .wm-foot{left:auto;right:28px;bottom:28px;width:380px;margin:0}
+  /* #app> and the id keep these above #app>*:not(.scene){position:relative}, which used to win and stack the map's HUD, chips and card in the page flow */
+  #app.worldmap>.hud,#app.placeplan>.hud{position:fixed;left:24px;right:24px;top:16px;z-index:3;margin:0}
+  #app>.wm-foot{left:auto;right:28px;bottom:28px;width:380px;margin:0}
   .wm-medal{width:48px;height:48px}.wm-medal>svg{width:28px;height:28px}
   .wm-pin{transform:translate(-50%,-24px)}@keyframes wm-in{from{transform:translate(-50%,-24px) scale(.4);opacity:0}}
   .wm-pin.k-travel .wm-medal,.wm-pin.k-fiction .wm-medal{width:40px;height:40px}
   .wm-name{font-size:.95rem}
-  .cm-plan{position:fixed;top:76px;right:28px;bottom:28px;width:460px;max-width:none;overflow:auto;margin:0}
-  .cm-dim{background:linear-gradient(90deg,rgba(14,18,52,0) 30%,rgba(14,18,52,.5))}
+  #app>.cm-plan{position:fixed;top:76px;right:28px;bottom:auto;width:460px;max-width:calc(100vw - 56px);max-height:calc(100vh - 104px);overflow:auto;margin:0}
+  #app>.cm-dim{background:linear-gradient(90deg,rgba(14,18,52,0) 30%,rgba(14,18,52,.5))}
 }
 @media (prefers-reduced-motion:reduce){.wm-pin,.wm-medal,.wm-medal::after,.wm-medal::before,.cm-heartfx{animation:none!important}}

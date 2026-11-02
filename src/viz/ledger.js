@@ -78,9 +78,9 @@ Object.assign(VIZ,{
   lg_cold3:()=>lgPic(120,['#fde9cf','#f6d8b0'],`${lgGround(98,'#d9c3a0','#c4a77f')}
     ${lgBldg(70,98,120,70,'#f4efe6',{win:'#cfe6f5'})}<rect x="70" y="28" width="120" height="14" fill="${LGC.teal}"/>${igT(130,39,'PHARMACY',{s:9.5,c:'#fff',w:800})}
     <g transform="translate(130 70)"><rect x="-12" y="-14" width="24" height="28" rx="2" fill="#bfe8ff" stroke="#fff" stroke-width="2"/></g>
-    <g transform="translate(40 30)" class="lg-beat"><rect x="-12" y="-4" width="24" height="8" rx="2" fill="${LGC.green}"/><rect x="-4" y="-12" width="8" height="24" rx="2" fill="${LGC.green}"/></g>
+    <g transform="translate(40 30)"><g class="lg-beat"><rect x="-12" y="-4" width="24" height="8" rx="2" fill="${LGC.green}"/><rect x="-4" y="-12" width="8" height="24" rx="2" fill="${LGC.green}"/></g></g>
     <g transform="translate(250 98)"><path d="M-3 0 V-36" stroke="#8a5a3a" stroke-width="5"/><circle cx="0" cy="-46" r="20" fill="#e8863a"/><circle cx="-12" cy="-38" r="12" fill="#d2602a"/><circle cx="12" cy="-40" r="13" fill="#f0a040"/></g>
-    ${[0,1,2,3].map(i=>`<path transform="translate(${226+i*16} ${30+i*8})" d="M0 0 c4 -4 8 0 4 4 c-4 4 -8 0 -4 -4z" fill="${['#e8863a','#d2602a','#f0a040','#c94a22'][i]}" class="lg-rise" style="--d:${i*.7}s;animation-direction:reverse"/>`).join('')}
+    ${[0,1,2,3].map(i=>`<g transform="translate(${226+i*16} ${30+i*8})"><path d="M0 0 c4 -4 8 0 4 4 c-4 4 -8 0 -4 -4z" fill="${['#e8863a','#d2602a','#f0a040','#c94a22'][i]}" class="lg-rise" style="--d:${i*.7}s;animation-direction:reverse"/></g>`).join('')}
     <g class="lg-drift">${lgRobot(196,100,.7,LGC.teal)}<rect x="188" y="62" width="16" height="10" rx="2" fill="#c9a26b" stroke="#7a5426"/></g>
     ${lgBadge(38,106,'By fall',LGC.coral,{w:60})}`,'A pharmacy in fall, with a delivery robot'),
   // ---------- orchestra ----------
@@ -135,7 +135,7 @@ Object.assign(VIZ,{
   lg_sun3:()=>lgPic(124,[LGC.space,'#262c66'],`${lgStars(26,124,9)}${lgEarth(150,64,28)}
     <path d="M150 64 m-62 0 a62 26 0 1 0 124 0 a62 26 0 1 0 -124 0" stroke="#5a6aa8" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
     <g transform="translate(150 38)"><path d="M-10 -4 L10 -4 L13 0 L10 4 L-10 4 L-13 0Z" fill="#ffe08a" stroke="#fff" stroke-width="1"/></g>${igT(150,26,'1 now',{s:10,c:'#ffe08a'})}
-    ${[...Array(20)].map((_,i)=>{const a=i/20*Math.PI*2,x=150+Math.cos(a)*62,y=64+Math.sin(a)*26;return Math.abs(y-38)<6&&Math.abs(x-150)<16?'':`<path transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" d="M-5 -2 L5 -2 L6.5 0 L5 2 L-5 2 L-6.5 0Z" fill="#9fd3ff" class="lg-pop" style="--d:${(i*.12).toFixed(2)}s"/>`}).join('')}
+    ${[...Array(20)].map((_,i)=>{const a=i/20*Math.PI*2,x=150+Math.cos(a)*62,y=64+Math.sin(a)*26;return Math.abs(y-38)<6&&Math.abs(x-150)<16?'':`<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><path d="M-5 -2 L5 -2 L6.5 0 L5 2 L-5 2 L-6.5 0Z" fill="#9fd3ff" class="lg-pop" style="--d:${(i*.12).toFixed(2)}s"/></g>`}).join('')}
     ${igT(150,116,'20 more if it works for a year',{s:10.5,c:'#cfd6ff'})}`,'One collector now and twenty later around Earth'),
   // ---------- Calder Bay datacenter ----------
   lg_calder1:()=>lgPic(120,[LGC.night,'#2c3570'],`${lgStars(20,60,2)}<rect y="88" width="300" height="32" fill="#22305e"/>${lgWaves(98,'#5a6aa8',.6)}

@@ -49,7 +49,10 @@ function cardStars(c){if(!c)return '';const typed=STAR_TYPES.some(([k])=>k in c)
 // ---------- hearts: a small floating "+1" near the top of the screen ----------
 function heartFx(who,n){if(typeof document==='undefined'||!n||n<0)return;const name=who==='byte'?S.byte.name:(CAST[who]&&CAST[who].name||'').split(' ').filter(w=>!/^(Dr|Mr|Mrs|Ms)\.?$/.test(w))[0]||'';
   const d=document.createElement('div');d.className='cm-heartfx';d.innerHTML=`${cmSvg('heart')}<b>+${n}</b>${name?`<span>${esc(name)}</span>`:''}`;
-  d.style.marginTop=($$('.cm-heartfx').length*40)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),2300)}
+  document.body.appendChild(d);
+  // sit below any toast and any earlier "+1" still floating, so they never cover each other
+  const above=$$('.toast:not(.out),.cm-heartfx').filter(x=>x!==d),b=above.length?Math.max(...above.map(x=>x.offsetTop+x.offsetHeight)):0;
+  d.style.marginTop=Math.max(0,b+8-d.offsetTop)+'px';setTimeout(()=>d.remove(),2300)}
 
 // ---------- the screen hook: wide hub screens, the Days chip, journey progress ----------
 function campaignScreen(cls){if(typeof document==='undefined')return;
