@@ -45,16 +45,29 @@ const TALKS={
   arrive:[
     {who:'wren',mood:'neutral',text:'Welcome. Mrs. Hollis is in the parlor. Today she has walked 1,204 steps, and her [[grip strength]] is up 2 percent.'},
     {who:'bea',mood:'stern',text:'Wren, stop reading my numbers to strangers.'},
-    {who:'bea',mood:'smile',text:'So you’re my new companion. Sit, sit. I’m Bea. Everybody calls me Bea, except Wren.'},
-    {who:'bea',mood:'happy',text:'When I was twenty, I danced six nights a week in the South End clubs. Then I was a nurse for forty years.',choices:[
-      {t:'A dancer and a nurse? Tell me about the dancing.',good:true,mood:'happy',reply:'Swing on Saturdays, waltzes on Sundays. My feet still remember every step. My legs forget.'},
-      {t:'Wow. You’re really old.',mood:'neutral',reply:'One hundred and four, dear. I’m aware.'}]},
-    {who:'bea',mood:'think',text:'My great-grandson Jordan gets married in three months. His mother, Grace, thinks the [[renewal therapy]] will hurt me. Jordan thinks it will make me twenty again.'},
-    {who:'bea',mood:'neutral',text:'They’re both on their way over. They’ll talk about me as if I were the furniture. You watch.',choices:[
-      {t:'I’ll make sure you get heard.',good:true,mood:'happy',reply:'Ha! I like you already.'},
-      {t:'Maybe they know what’s best for you.',mood:'think',reply:'Maybe. But they don’t know what I want. Nobody has asked.'}]}
+    {who:'bea',mood:'smile',text:'So you’re my new companion. Sit, sit. I’m Bea. Everybody calls me Bea, except Wren.',choices:[
+      {t:'It’s lovely to meet you, Bea. What a beautiful room.',good:true,mood:'happy',reply:'Isn’t it? Everything in this room has a story. Go on, look around.'},
+      {t:'Wow. You’re really old.',mood:'neutral',reply:'One hundred and four, dear. I’m aware. Go on, look around. Everything in here has a story.'}]}
   ]
 };
+
+// Bea's treasures (custom step): tap things in her parlor; each one has a story. Reminiscence is real companion work.
+const TREASURES=[
+  {id:'photo',label:'Photo, 1961',mood:'happy',text:'Walter and me, on our wedding day in 1961, at the dance hall on Tremont Street. He stepped on my toes exactly once.'},
+  {id:'record',label:'Record player',mood:'happy',text:'Swing on Saturdays, waltzes on Sundays. When I was twenty, I danced six nights a week in the South End clubs.'},
+  {id:'pin',label:'Nurse’s pin',mood:'smile',text:'Then I was a nurse for forty years. I’ve held a lot of hands, and I know what “tested on 31 people” means.'},
+  {id:'invite',label:'Invitation',mood:'smile',text:'Jordan and Ana, July 19, at that same dance hall. He picked it for me, I think. He won’t say.'},
+  {id:'cane',label:'Cane',mood:'neutral',text:'This is Fred, my cane. Fred and I have a deal: he holds me up, and I never take him dancing.'},
+  {id:'wren',label:'Wren',mood:'think',text:'Wren is a good robot. It counts my steps and my heartbeats. It has never once asked me what I want to do with them.'}];
+const TREASURE_OUTRO={text:'Jordan’s mother, Grace, thinks the [[renewal therapy]] will hurt me. Jordan thinks it will make me twenty again. They’re both on their way over, and they’ll talk about me as if I were the furniture.',
+  opts:[{t:'I’ll make sure you get heard.',good:1,mood:'happy',reply:'Ha! I like you already.'},
+    {t:'Maybe they know what’s best for you.',mood:'think',reply:'Maybe. But they don’t know what I want. Nobody has asked.'}]};
+
+// What matters to Bea (custom step, sets the Future Table's criteria). She answers each pick; one tempting goal isn't hers.
+const GOALS={prompt:'So what should a good plan do for me? Pick two or three, and I’ll tell you if you’ve been listening.',
+  replies:{dance:'Yes. That’s the whole point.',safe:'Fair. Grace will sleep better, and so will I.',say:'Good. My legs, my say.',easy:'I don’t mind aches, dear. I danced on sore toes for ten years. But all right.'},
+  long:{label:'She lives as long as possible',reply:'Live longer? I never asked for that. Take that one off, dear.'},
+  tooMany:'Three is plenty. Take one off first.',ready:'Now show me those futures.'};
 
 // Interview at the dance hall (custom step). Bad answers get a nudge and the remaining cards come back.
 const IV={
@@ -152,8 +165,9 @@ const DOCS=[
   ]},
   {id:'tempo',title:'Tempo: Bea’s plan settings',from:'Tempo, the dosing AI',kind:'bea-tempo',steps:[
     {t:'I run Bea’s renewal plan. Wren, her home robot, carries it out at home every day.',viz:'bea_tempoWren',cap:'Tempo plans, Wren does'},
+    {t:'I don’t learn on the job. I follow the clinic’s approved plan, which allows small dose steps up to the full dose.',viz:'bea_approved',cap:'An approved plan, step by step'},
     {t:'Every morning Wren checks four things: her [[grip strength]], her steps, her sleep, and her [[heart rhythm]].',viz:'bea_sensors',cap:'Four morning checks'},
-    {t:'My goal is set to “as strong as possible by July 19.” Jordan set it, and I aim exactly at the goal I am given.',viz:'bea_goal',cap:'The goal I aim at',
+    {t:'My published spec says I aim at the goal in my settings. Right now it says “as strong as possible by July 19.” Jordan typed it in.',viz:'bea_goal',cap:'The goal I aim at',
       alt:{t:'Updated goal, waiting for Bea’s yes: “one 3-minute waltz on her own feet, holding Jordan’s hands.” I aim exactly at the goal I am given, so this changes my whole plan.',args:{waltz:1},cap:'A better goal'}},
     {t:'If I may change her plan on my own, I raise the dose or make her exercises harder the morning her body is ready, and I tell her afterward.',viz:'bea_modeAlone',cap:'Changes on my own'},
     {t:'If Bea must say yes, I suggest each change, and nothing changes until she agrees.',viz:'bea_modeAsk',cap:'Changes with Bea’s yes'},
@@ -239,6 +253,8 @@ function extraLines(){const L=[];
   L.push({who:'byte',text:MEET.tip},{who:'byte',text:MEET.end});
   MEET.beats.forEach(b=>{L.push({who:b.who,text:b.text});b.opts.forEach(o=>L.push({who:o.who,text:o.reply}))});
   L.push({who:'wren',text:RULES.intro},{who:'wren',text:RULES.signed});
+  TREASURES.forEach(x=>L.push({who:'bea',text:x.text}));L.push({who:'bea',text:TREASURE_OUTRO.text});TREASURE_OUTRO.opts.forEach(o=>L.push({who:'bea',text:o.reply}));
+  L.push({who:'bea',text:GOALS.prompt},{who:'bea',text:GOALS.long.reply},{who:'bea',text:GOALS.tooMany},{who:'bea',text:GOALS.ready});for(const k in GOALS.replies)L.push({who:'bea',text:GOALS.replies[k]});
   for(const k in CONSENT_REPLIES)L.push({who:'bea',text:CONSENT_REPLIES[k]});
   return L}
 
@@ -342,17 +358,70 @@ function rules(){
     const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc('Companion '+P())}</div><p>${esc(RULES.signed)}</p><p class="bea-sigscore">${good} of ${RULES.cards.length} rules match Byte’s safety advice</p></div>`;
     document.body.appendChild(sig);playLine('wren',RULES.signed);setTimeout(()=>{sig.remove();nextStep()},2300)}}
 
+// ---------- custom step: Bea's treasures (a first visit: look around and listen) ----------
+async function treasures(){
+  const live=alive('treasures'),seen=new Set(N().seen||[]);
+  const tile=t=>`<button class="bea-tr ${seen.has(t.id)?'seen':''}" data-t="${t.id}" aria-label="${esc(t.label)}"><span class="bea-tr-art">${typeof beaTreasureArt==='function'?beaTreasureArt(t.id):''}</span><b>${esc(t.label)}</b></button>`;
+  screen('talk bea-trs',`${scene('bea_parlor')}<div class="talk-dim"></div>${hud('Bea’s parlor · Rutland Square')}
+    <div class="bea-trgrid" id="trgrid">${TREASURES.map(tile).join('')}</div>
+    <div class="subtitle bea-trsub" id="bsub"><div class="bea-trbea" id="trbea">${portraitOf('bea','smile')}</div><div class="bea-trtext"><div class="who" id="bwho"></div><p id="bline"></p></div><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`);
+  const face=(m,on)=>{const b=$('#trbea');if(!b)return;b.innerHTML=portraitOf('bea',m);b.classList.toggle('talking',!!on)};
+  $('#bwho').innerHTML=whoRow('bea');$('#bline').innerHTML=rich('Go on. Tap anything you like.');
+  const gate=()=>{if(seen.size>=4&&!$('#trgo')){$('#bch').innerHTML=`<button class="choice bea-go" id="trgo">${seen.size>=TREASURES.length?'Sit down with Bea':'I’ve looked around'}</button>`;$('#trgo').onclick=e=>{e.stopPropagation();outro()}}};
+  let busy=false;
+  $$('.bea-tr').forEach(b=>b.onclick=async()=>{if(busy||!live())return;busy=true;const t=TREASURES.find(x=>x.id===b.dataset.t);
+    $$('.bea-tr').forEach(x=>x.classList.toggle('on',x===b));seen.add(t.id);N().seen=[...seen];save();b.classList.add('seen');MUSIC.sfx(t.id==='record'?'chime':'pop');
+    if(t.id==='record'){const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height*.3,'notes',6)}
+    face(t.mood,true);await sayLine('bea',t.text);face(t.mood,false);busy=false;if(live())gate()});
+  gate();
+  async function outro(){if(!live())return;$('#bch').innerHTML='';$('#trgrid').classList.add('done');if(seen.size>=TREASURES.length)heart('bea',1);
+    face('think',true);await sayLine('bea',TREASURE_OUTRO.text);face('think',false);if(!live())return;
+    const pick=await cards(TREASURE_OUTRO.opts,o=>esc(o.t));if(!live())return;if(pick.good)heart('bea',1);
+    face(pick.mood,true);await sayLine('bea',pick.reply);face(pick.mood,false);if(!live())return;await tapToGo();if(live()){toast('Family meeting');nextStep()}}}
+
+// ---------- custom step: what matters to Bea (the Future Table's criteria, chosen by listening to her) ----------
+function goals(){
+  const C=MISSIONS.bea.criteria,picked=S.criteria.filter(id=>C.some(c=>c.id===id));S.criteria=picked;
+  const chip=(id,label)=>`<button class="critb ${picked.includes(id)?'on':''}" data-c="${id}">${esc(label.replace(/\[\[|\]\]/g,''))}</button>`;
+  talkFrame('bea_parlor','Bea’s parlor · What matters','bea-goal',`<div class="speaker enter" id="gsp">${portraitOf('bea','smile')}</div>`);
+  const sp=$('#gsp'),say=async(m,t)=>{sp.innerHTML=portraitOf('bea',m);await sayLine('bea',t,on=>sp.classList.toggle('talking',on))};
+  const foot=()=>`<div class="crit bea-goalchips">${C.map(c=>chip(c.id,c.label)).join('')}${chip('long',GOALS.long.label)}</div><button class="choice bea-go" id="ggo" ${picked.length>=2?'':'disabled'}>Open the Future Table</button>`;
+  const wire=()=>{$('#bch').innerHTML=foot();
+    $$('.critb',$('#bch')).forEach(b=>b.onclick=async e=>{e.stopPropagation();const id=b.dataset.c;
+      if(id==='long'){b.classList.add('on','bea-no');MUSIC.sfx('blip');await say('think',GOALS.long.reply);b.classList.remove('on');return}
+      if(picked.includes(id)){picked.splice(picked.indexOf(id),1);S.criteria=picked;save();wire();return}
+      if(picked.length>=3){await say('neutral',GOALS.tooMany);return}
+      picked.push(id);S.criteria=picked;save();wire();MUSIC.sfx('chime');await say(id==='dance'?'happy':'smile',GOALS.replies[id])});
+    $('#ggo').onclick=async e=>{e.stopPropagation();await say('happy',GOALS.ready);nextStep()}};
+  say('smile',GOALS.prompt).then(()=>{});wire()}
+
+// ---------- custom step: the wedding (the real outcome, 13 weeks later, at the dance hall) ----------
+async function wedding(){
+  const live=alive('wedding');if(!S.result){S.result=sampleReal(S.choice,rngFrom(Date.now()%100000+7));save()}
+  const R=S.result,line=REVEAL[R.kind]||'';
+  screen('talk bea-wed',`${scene('dance_hall')}<div class="talk-dim"></div>${hud('Jordan’s wedding · Tremont Street')}
+    <div class="bea-wcal" id="wcal"><span>Week</span><b id="wk">1</b></div>
+    <div class="bea-wfloor" id="wfloor" hidden>${typeof beaWeddingArt==='function'?beaWeddingArt(R.kind):''}</div>
+    <div class="subtitle bea-wsub" id="bsub" hidden><div class="who" id="bwho"></div><h2 class="bea-wcap">${esc(R.cap)}</h2><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`);
+  for(let w=2;w<=13;w++){await new Promise(r=>setTimeout(r,120));if(!live())return;$('#wk').textContent=w}
+  $('#wcal').classList.add('done');await new Promise(r=>setTimeout(r,450));if(!live())return;
+  $('#wcal').hidden=true;$('#wfloor').hidden=false;$('#bsub').hidden=false;MUSIC.sfx(R.kind==='waltz'?'chime':'pop');
+  if(unlock('forecast'))toast('New Field Guide idea: Forecasts are not promises','good');
+  await sayLine('bea',line);if(!live())return;
+  $('#bch').innerHTML='<button class="choice bea-go" id="wgo">See how you did</button>';$('#wgo').onclick=e=>{e.stopPropagation();nextStep()}}
+
 // ---------- the mission ----------
 MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'workday',year:1,season:'spring',district:'boston',rank:'trainee',
   blurb:'Bea, 104, wants to dance at her great-grandson’s wedding. Her family disagrees about a new therapy.',after:['maya'],
   place:'South End · Boston',
   flow:[{name:'morning',k:'talk',talk:'morning',scene:'home',place:'Home · Boston · 8:10 AM'},
     {name:'interview',k:'custom',music:'morning'},
-    {name:'arrive',k:'talk',talk:'arrive',scene:'bea_parlor',place:'Bea’s parlor · Rutland Square',toast:'Family meeting'},
+    {name:'arrive',k:'talk',talk:'arrive',scene:'bea_parlor',place:'Bea’s parlor · Rutland Square'},
+    {name:'treasures',k:'custom',music:'morning'},
     {name:'meeting',k:'custom',music:'hospital'},
-    {name:'rules',k:'custom',music:'work',toast:'New work on your Workbench'},
-    {name:'workbench',k:'bench'},{name:'criteria',k:'criteria'},{name:'table',k:'table'},{name:'consent',k:'consent'},{name:'memo',k:'memo'},
-    {name:'reveal',k:'reveal'},{name:'debrief',k:'debrief'},{name:'evening',k:'evening'}],
+    {name:'rules',k:'custom',music:'work'},
+    {name:'workbench',k:'bench'},{name:'goals',k:'custom',music:'work'},{name:'table',k:'table'},{name:'consent',k:'consent'},{name:'memo',k:'memo'},
+    {name:'wedding',k:'custom',music:'win'},{name:'debrief',k:'debrief'},{name:'evening',k:'evening'}],
   cast:{
     bea:{name:'Bea Hollis',role:'Your client, age 104',skin:SKIN[4],hair:'#f4f0ea',hairStyle:'elder',shirt:'#8a5bb8',eye:'#5a3424',art(m){return typeof beaPortrait==='function'?beaPortrait(m):personSVG({...this,art:null,mood:m})}},
     grace:{name:'Grace Hollis',role:'Bea’s granddaughter',skin:SKIN[3],hair:'#2b1d18',hairStyle:'short',masc:false,shirt:'#3f7fbf',glasses:true,frame:'#2a3a5a',eye:'#4a2a1a',art(m){return typeof beaGracePortrait==='function'?beaGracePortrait(m):personSVG({...this,art:null,mood:m})}},
@@ -366,7 +435,7 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
     bea_parlor:[]},
   talks:TALKS,docs:DOCS,
   react:{memo3:'Only 31 people over 100. My numbers could be off by a lot.',memo7:'Fifteen in 100 is not small. But it’s Bea’s risk to weigh.',memo10:'This depends on what “dancing” means to Bea. Did anyone ask her?',
-    tempo2:'Who set this goal? Jordan. Not Bea.',tempo6:'Feeling pushed makes people quit. That’s real data.',tempo7:'Stopping is the safe direction, so Tempo doesn’t wait.',
+    tempo3:'Who set this goal? Jordan. Not Bea.',tempo7:'Feeling pushed makes people quit. That’s real data.',tempo8:'Stopping is the safe direction, so Tempo doesn’t wait.',
     sheet5:'Her own consent. Not Grace’s, not Jordan’s, not mine.',ledger2:'Brand-new customers, all on the same night. The shop was right to check.'},
   lesson:{id:'bea_muscle',label:'Learn it fast: how old muscles get stronger'},
   tell:{clue:'waltz',label:'Tell Byte what Bea really wants',note:'Thanks! One 3-minute waltz needs much less strength than an hour of dancing. I updated my forecast, and Tempo suggested a new goal for Bea to approve.',guide:'aim-the-goal',doc:'memo'},
@@ -414,7 +483,7 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
   eveningScene:'night',eveningPlace:'Home · Boston · 9:20 PM',
   brief(){return `Current case (Elder Companion, South End, Boston): Bea Hollis, 104, retired dancer and nurse, walks with a cane; her leg muscles have about half the strength they had at 70. Her great-grandson Jordan marries in 13 weeks at the Tremont Street dance hall. Her granddaughter Grace (Jordan's mother, a bridge inspector) worries; Bea broke her hip at 99. Options: training with Wren (her home robot) only; a gentle (half) dose of renewal therapy plus training; the full dose plus training. Renewal therapy was tested on 2,400 people over 80 but only 31 over 100. Heart flutter (therapy paused, stops): about 15 in 100 on the full dose, 5 in 100 gentle. Falls in 3 months of training: about 5 in 100, 3 in 100 with weekly dance practice. Tempo, the dosing AI, runs the plan through Wren; it can change her plan (raise the dose, harder exercises) on its own or only with Bea's yes; changing alone gets about 4 more in 100 ready in time, but about 15 in 100 people quit when plans change without asking, versus 3 in 100. Safety pauses are automatic in every setting. Tempo's goal is set by Jordan to "as strong as possible by July 19". Bea's choice is hers; she is fully able to decide.
 What you know: ${told()?'The player told you Bea wants one 3-minute waltz, on her own feet, holding Jordan’s hands, not an hour of dancing. Forecasts for that (weekly practice, Bea approves each change): gentle 79 in 100, full 74, training only 56. Gentle dose is your pick for her.':'You assume "dancing at the wedding" means about an hour of dancing. Forecasts for that (weekly practice, Bea approves each change): full 58 in 100, gentle 34, training only 8. You do not know what Bea herself means by dancing.'}
-The key consideration when asked which option: ${told()?'Bea wants one 3-minute waltz, so far less strength is needed; and who approves changes to her plan':'ask what Bea herself means by dancing at the wedding, because it changes everything'}. Never call yourself superintelligent; you are an excellent, ordinary 2040 AI partner.`},
+The key consideration when asked which option: ${told()?'Bea wants one 3-minute waltz, so far less strength is needed; and who approves changes to her plan':'ask what Bea herself means by dancing at the wedding, because it changes everything'}. You are an expert AI partner (never call yourself superintelligent). Tempo follows the clinic's approved dosing plan and does not learn on the job; its goals are published in its spec.`},
   canned(q){
     if(/waltz|three minutes|3 minutes|one dance|walter/.test(q)){if(S.notes.waltz&&!S.told){S.told=true;save();unlock('aim-the-goal');return 'Woof, that changes everything! One 3-minute waltz needs much less strength than an hour of dancing. With weekly practice and Bea saying yes to each change: gentle dose about 79 in 100, full 74, training only 56.'}
       if(S.told)return 'Right, her waltz! For one 3-minute waltz, the gentle dose with weekly practice gives about 79 in 100, with much milder aches than the full dose.';return null}
@@ -429,6 +498,6 @@ The key consideration when asked which option: ${told()?'Bea wants one 3-minute 
     if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read everything, run forecasts and build Future Tables. You bring the listening, and Bea makes the call.`;
     return null},
   lines:[...extraLines(),{who:'byte',text:'Here are 10 possible futures for this plan. Change the plan and watch them shift.'}],
-  custom:{interview,meeting,rules}
+  custom:{interview,treasures,meeting,rules,goals,wedding}
 };
 })();
