@@ -22,10 +22,11 @@ const [html,out]=[process.argv[2],process.argv[3]||'/tmp/pm-shots'];fs.mkdirSync
  await p.click('.gw');await shot('glossary',400);await p.mouse.click(5,5);
  await E(()=>{curDoc='sheet';renderWorkbench()});await p.click('.step:nth-of-type(4) .sent');await shot('workbench-sheet',500);
  await E(()=>{S.read={memo:1,record:1,sheet:1};S.told=true;curDoc='record';renderWorkbench()});await shot('workbench-record-told',500);
+ await E(()=>openLesson('bones'));await shot('lesson',1500);await E(()=>{document.querySelector('.qopt').click()});await E(()=>document.querySelector('.sheet-body').scrollTo(0,9999));await shot('lesson-quiz',600);await E(()=>document.querySelectorAll('.sheet').forEach(x=>x.remove()));
  await E(()=>go('criteria'));await p.click('.critb:nth-child(1)');await p.click('.critb:nth-child(2)');await p.click('.critb:nth-child(3)');await shot('criteria',400);
- await E(()=>go('table'));await shot('table',1400);
+ await E(()=>go('table'));await shot('table-guess',900);await p.click('#gok');await shot('table',1400);
  await p.click('#why');await p.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await shot('table-why',500);
- await E(()=>{S.choice={tx:'cast',pt:true,date:'moved'};go('table')});await shot('table-cast',1400);
+ await E(()=>{S.choice={tx:'cast',pt:true,date:'moved'};go('table')});const g=await p.$('#gok');if(g)await g.click();await shot('table-cast',1400);
  await E(()=>go('consent'));await shot('consent',900);
  await p.click('.choice');await shot('consent-reply',800);
  await E(()=>{S.memo='I recommend a cast with physical therapy because Maya had a rash from HX-2. It heals straight about 88 out of 100 times, and we can move her recital.';go('memo')});await shot('memo',600);

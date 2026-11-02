@@ -16,6 +16,7 @@ const GLOSSARY={
   tradeoff:'When getting more of one good thing means getting less of another.', uncertain:'Not known for sure.',
   operations:'The everyday work that keeps a big place running.', diagnose:'To figure out what illness or injury someone has.',
   trial:'A careful test of a new medicine to see if it is safe and works.', approved:'Officially allowed after being checked.',
+  clot:'A soft clump of blood that forms to protect an injury.', callus:'A bridge of new tissue the body builds across a broken bone. It hardens into bone over weeks.', calibration:'How well your "how sure am I" matches how often you turn out to be right.',
   'error bar':'A line on a chart that shows how far the real answer might be from the number shown.',
   dividend:'Money shared out to people. In 2040, everyone gets a Town Dividend.', autonomous:'Able to act on its own without a person controlling it.'
 };
@@ -86,6 +87,14 @@ const DOCS=[
     {t:'Treaty inspectors shut down a small, unlicensed datacenter near the fictional town of Calder Bay last night. Nobody knows who built it.',viz:'datacenter',cap:'A mystery datacenter'}
   ]}
 ];
+const LESSONS={bones:{title:'How a broken bone heals',steps:[
+    {t:'When a bone breaks, blood rushes to the spot and forms a soft [[clot]] around the break.',viz:'healStage',args:{s:1},cap:'Day 1'},
+    {t:'Over about two weeks, the body builds a soft bridge across the gap, called a [[callus]].',viz:'healStage',args:{s:2},cap:'Weeks 1 to 2'},
+    {t:'Then the callus slowly hardens into real bone, which takes about 6 to 12 weeks.',viz:'healStage',args:{s:3},cap:'Weeks 3 to 12'},
+    {t:'Keeping the bone still with a cast or pins helps the bridge grow straight instead of crooked.',viz:'healStage',args:{s:4},cap:'Why we keep it still'}],
+  quiz:[{q:'What forms first around a break?',opts:['A soft clot','Hard new bone','A cast'],a:0,why:'Blood forms a soft clot first. Hard bone comes weeks later.'},
+        {q:'What is a callus?',opts:['A kind of cast','A soft bridge the body builds across the gap','An allergy'],a:1,why:'A callus is the bridge of new tissue that later hardens into bone.'},
+        {q:'Why keep a broken bone still?',opts:['So it heals faster than a week','So the bridge grows straight','So it doesn\u2019t need a doctor'],a:1,why:'Moving the pieces can make the bridge grow crooked.'}]}};
 const MEMO_CHART={type:'bars',title:'Heals straight (out of 100 kids)',rows:[{label:'Pins',v:95,lo:93,hi:97,n:'12,000 kids'},{label:'Cast + therapy',v:88,lo:85,hi:90,n:'9,500 kids'},{label:'Cast',v:80,lo:77,hi:83,n:'21,000 kids'},{label:'BoneMend',v:90,lo:76,hi:97,n:'40 kids'}]};
 
 // Future Table model. Choices: tx (pins|cast|gel), pt (bool), date (fri|moved), told (bool: player told Byte about the rash)
@@ -118,6 +127,7 @@ const FIELD_GUIDE={
   'only-you-know':{title:'Information only you have',track:'Ethics and AI',text:'Even a brilliant AI only knows what it has been told. Maya’s rash happened in another country, so it was not in her record. When you know something the AI doesn’t, tell it.',real:'True today: medical records often don’t transfer between countries or even between hospitals.'},
   'sample-size':{title:'Sample size',track:'Evidence and truth',text:'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.',real:'True today: new medicines go through trials with growing numbers of people before approval.'},
   'consent':{title:'Informed consent',track:'Government, law, and power',text:'Patients decide about their own treatment after they understand the choices, the odds, and the tradeoffs. A doctor explains; the patient chooses.',real:'True today: US law requires informed consent for most medical treatments.'},
+  'calibration':{title:'Calibration',track:'Evidence and truth',text:'When you say \u201cpretty sure,\u201d you should be right most of the time, and when you say \u201ccoin flip,\u201d about half. Guessing first and then checking is how you get better at knowing how sure to be.',real:'True today: weather forecasters and doctors practice this; when a forecaster says 70% chance of rain, it rains on about 7 of 10 such days.'},
   'forecast':{title:'Forecasts are not promises',track:'Evidence and truth',text:'90% likely still means 1 in 10 goes the other way. A good decision can have an unlucky result, and a bad decision can get lucky.',real:'True today: weather forecasters track how often their 70% predictions come true.'}
 };
 

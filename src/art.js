@@ -229,10 +229,10 @@ function vignette(kind){
   const girl=(face,extra='')=>`<g transform="translate(60 52)">${mini(0,0,{skin:SKIN[2],shirt:PAL.coral,hair:'#2b1a10',face,s:1.25})}${extra}</g>`;
   const bg={recital:'#ffe7a8',healed:'#cdeedd',crooked:'#ffd3cc',rash:'#ffd3cc',waiting:'#dfe4f3',moved:'#e2dcff'}[kind]||'#eee';
   let art='';
-  if(kind==='recital'||kind==='moved')art=`<rect x="0" y="70" width="120" height="20" fill="#9a6b4f"/>${[18,102].map(x=>`<path d="M${x} 0 L${x} 70" stroke="${PAL.coral}" stroke-width="8"/>`).join('')}${girl('happy',`<g transform="translate(10 4) rotate(-30)"><ellipse cx="0" cy="0" rx="5" ry="9" fill="#a0522d"/><path d="M0 -9 V-20" stroke="#5a2d10" stroke-width="2"/></g>`)}${kind==='moved'?`<text x="96" y="20" font-size="15">📅</text>`:''}<text x="12" y="20" font-size="14">♪</text>`;
-  if(kind==='healed')art=`${girl('happy')}<path d="M86 24 l6 6 l12 -14" stroke="${PAL.leafD}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  if(kind==='recital'||kind==='moved')art=`<rect x="0" y="70" width="120" height="20" fill="#9a6b4f"/>${[18,102].map(x=>`<path d="M${x} 0 L${x} 70" stroke="${PAL.coral}" stroke-width="8"/>`).join('')}${girl('happy',`<g transform="translate(10 4) rotate(-30)"><ellipse cx="0" cy="0" rx="5" ry="9" fill="#a0522d"/><path d="M0 -9 V-20" stroke="#5a2d10" stroke-width="2"/></g>`)}${kind==='moved'?`<text x="96" y="20" font-size="15">📅</text>`:''}<g class="vnote"><text x="14" y="22" font-size="14" fill="#6c5ce7">&#9834;</text></g><g class="vnote d2"><text x="28" y="30" font-size="11" fill="#ff7a6b">&#9835;</text></g>`;
+  if(kind==='healed')art=`${girl('happy')}<path class="vpop" d="M86 24 l6 6 l12 -14" stroke="${PAL.leafD}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
   if(kind==='crooked')art=`${girl('sad')}<path d="M84 18 l18 18 M102 18 l-18 18" stroke="#d3452f" stroke-width="5" stroke-linecap="round"/>`;
-  if(kind==='rash')art=`${girl('sad')}${[[52,58],[58,64],[66,56],[62,70]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="#e5484d"/>`).join('')}<text x="88" y="30" font-size="16">!</text>`;
+  if(kind==='rash')art=`${girl('sad')}${[[52,58],[58,64],[66,56],[62,70]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="#e5484d" class="vblink"/>`).join('')}<text x="88" y="30" font-size="16" fill="#e5484d" font-weight="800">!</text>`;
   if(kind==='waiting')art=`${girl()}<rect x="84" y="14" width="22" height="26" rx="3" fill="#fff" stroke="${PAL.steel}"/><path d="M88 22 h14 M88 28 h14 M88 34 h9" stroke="${PAL.steel}" stroke-width="2"/>`;
   return `<svg viewBox="0 0 120 90" class="vig"><rect width="120" height="90" rx="10" fill="${bg}"/>${art}</svg>`;
 }

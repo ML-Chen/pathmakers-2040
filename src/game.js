@@ -219,13 +219,13 @@ function renderWorkbench(){
     ${doc.steps.map((st,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p class="sent ${S.highlights[doc.id+i]?'hl':''}" data-k="${doc.id+i}">${rich(st.t)}</p>
       <figure class="fig"><figcaption>${esc(st.cap||'')}</figcaption>${VIZ[st.viz]?VIZ[st.viz](st.args||{}):''}</figure></div></section>`).join('')}
    </article>
-   <div class="bench-foot"><div id="tellslot"></div><button class="btn" id="next">Set my criteria</button></div></div>`);
+   <div class="bench-foot"><button class="btn ghost small" id="learn">Learn it fast: how a broken bone heals</button><div id="tellslot"></div><button class="btn" id="next">Set my criteria</button></div></div>`);
   $$('.tab').forEach(b=>b.onclick=()=>{curDoc=b.dataset.d;renderWorkbench()});
   $$('.sent').forEach(p=>p.onclick=e=>{if(e.target.closest('.gw'))return;const k=p.dataset.k;S.highlights[k]=!S.highlights[k];p.classList.toggle('hl');save();
     if(k==='sheet3'&&S.highlights[k]&&S.notes.rash&&!S.told)toast('This matches what Maya’s dad told you!','good')});
   $('#readme').onclick=()=>{const items=[['narrator',doc.title]].concat(doc.steps.map(b=>['narrator',b.t]));let k=0;const ps=$$('.sent');
     (async()=>{stopVoice();const id=playId;for(const [w,t] of items){if(id!==playId)break;const p=k>0?ps[k-1]:null;if(p)p.classList.add('reading');await playLine(w,t);playId=id;if(p)p.classList.remove('reading');k++}})()};
-  renderTellButton();
+  renderTellButton();$('#learn').onclick=()=>openLesson('bones');
   $('#next').onclick=()=>{const unread=DOCS.filter(d=>!S.read[d.id]&&d.id!=='ledger');if(unread.length){toast('Read the '+unread.map(d=>d.title.split(':')[0]).join(' and ')+' first.');return}go('criteria')};
 }
 function renderTellButton(){const slot=$('#tellslot');if(!slot)return;
@@ -233,6 +233,15 @@ function renderTellButton(){const slot=$('#tellslot');if(!slot)return;
   else if(S.told)slot.innerHTML=`<div class="byte-note" data-speak="byte">${byteBox({...S.byte,mood:'alert'})}<p>Thanks! I updated my forecast: if Maya is sensitive to HX-2, BoneMend has about a 60% chance of a skin reaction.</p></div>`;
   else slot.innerHTML='';
   const t=$('#tell');if(t)t.onclick=()=>{S.told=true;save();unlock('only-you-know')&&toast('New Field Guide idea: Information only you have','good');renderTellButton()}}
+
+// ---------- Learn It Fast: a short lesson from Byte, then a 3-question check ----------
+function openLesson(id){const L=LESSONS[id];let qi=0,right=0;
+  const d=sheet(esc(L.title),`<div class="lesson">${L.steps.map((st,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p>${rich(st.t)}</p><figure class="fig"><figcaption>${esc(st.cap)}</figcaption>${VIZ[st.viz](st.args||{})}</figure></div></section>`).join('')}
+   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>Got it? Try 3 quick questions.</p></div><div id="quiz"></div></div>`);
+  playLine('byte','Here is how a broken bone heals.');
+  const q=()=>{const box=$('#quiz',d);if(qi>=L.quiz.length){box.innerHTML=`<div class="calib"><b>${right}/3</b><span>${right===3?'Perfect! You learned it fast.':'Nice work. You can read the steps again anytime.'}</span></div>`;S.lessons=S.lessons||{};S.lessons[id]=right;save();return}
+    const Q=L.quiz[qi];box.innerHTML=`<h3>${esc(Q.q)}</h3><div class="quiz">${Q.opts.map((o,j)=>`<button class="qopt" data-j="${j}">${esc(o)}</button>`).join('')}</div>`;
+    $$('.qopt',box).forEach(b=>b.onclick=()=>{const j=+b.dataset.j;if(j===Q.a){b.classList.add('right');if(!b.dataset.miss)right++;box.insertAdjacentHTML('beforeend',`<p class="qwhy">${esc(Q.why)}</p><button class="btn small" id="qn">Next</button>`);$$('.qopt',box).forEach(x=>x.disabled=true);$('#qn',box).onclick=()=>{qi++;q()}}else{b.classList.add('wrong');b.disabled=true;$$('.qopt',box).forEach(x=>x.dataset.miss=1)}})};q()}
 
 // ---------- Criteria: set the bar before looking ----------
 function renderCriteria(){
@@ -269,7 +278,13 @@ function renderTable(){
   $('#why').onclick=()=>{const p=modelProbs(c,false);const box=$('#whybox');box.hidden=false;
     box.innerHTML=`<p><b>${TX_LABEL[c.tx]}${c.pt?' with physical therapy':''}:</b> the bone grows back straight about ${Math.round(p.straight*100)}% of the time. ${p.ready?`If it heals well, she’s ready ${c.date==='fri'?'by Friday':'for the moved recital'} about ${Math.round(p.ready*100)}% of the time.`:`She can’t play ${c.date==='fri'?'by Friday':'in 3 weeks'} with this treatment.`} ${c.tx==='gel'?(S.told?'Because of Maya’s rash, a skin reaction is likely: about 60%.':'I see no allergy in her record, so I forecast a skin reaction at about 5%.'):''} ${c.tx==='gel'?'Only 40 kids have tried BoneMend, so I’m less sure about these numbers.':''}</p>`;
     if(c.tx==='gel')unlock('sample-size')&&toast('New Field Guide idea: Sample size','good')};
-  $('#next').onclick=()=>go('consent')}
+  $('#next').onclick=()=>go('consent');
+  const pk=c.tx+(c.pt?'+pt':'')+'/'+c.date;S.guesses=S.guesses||{};
+  if(!S.guesses[pk]&&Object.keys(S.guesses).length<3){const actual=critScore('straight',futs);
+    const gv=document.createElement('div');gv.className='guess';gv.innerHTML=`<div class="guess-card"><h3>Guess first</h3><p>Plan: ${esc(TX_LABEL[c.tx])}${c.pt?' with therapy':''}. Out of 10 futures, how many will <button class="gw" data-w="heals straight">heal straight</button>?</p><div class="big" id="gnum">5</div><input type="range" id="gsl" min="0" max="10" value="5"><button class="btn wide" id="gok">Show the futures</button></div>`;
+    document.body.appendChild(gv);$('#futs').style.visibility='hidden';$('.meters').style.visibility='hidden';$('#gsl').oninput=e=>$('#gnum').textContent=e.target.value;
+    $('#gok').onclick=()=>{const v=+$('#gsl').value;S.guesses[pk]={g:v,a:actual};save();gv.remove();renderTable();
+      toast(`You guessed ${v}. ${actual} of 10 healed straight.`,Math.abs(v-actual)<=1?'good':'');if(Math.abs(v-actual)<=1)unlock('calibration')&&toast('New Field Guide idea: Calibration','good')}}}
 
 // ---------- Consent conversation ----------
 function renderConsent(){
@@ -349,6 +364,7 @@ function renderDebrief(){
     <li class="${fit?'ok':''}">${fit?'Your plan was one of the best for the criteria you picked.':'Another plan would have done better on the criteria you picked. Try the Future Table again next time.'}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what Maya cares about.'} ${S.consent?'You explained honestly, so Maya and her dad could truly agree.':''}</li></ul>
    <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${R.kind==='crooked'||R.kind==='rash'?'Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.':'Nice work, Doctor. Halo handled the robots; you handled the people.'}</p></div>
+   ${S.guesses&&Object.keys(S.guesses).length?`<div class="calib"><b>${Object.values(S.guesses).filter(x=>Math.abs(x.g-x.a)<=1).length}/${Object.keys(S.guesses).length}</b><span>of your Future Table guesses were within 1 of what happened. That\u2019s your <button class="gw" data-w="calibration">calibration</button> score.</span></div>`:''}
    <div class="earned"><span>${S.guide.length} Field Guide ideas</span><span>${S.words.length} new words</span><span>${Object.values(S.hearts).reduce((a,b)=>a+b,0)} hearts</span></div>
    <button class="btn wide" id="next">Head home</button></div>`);
   $('#next').onclick=()=>{S.done=true;go('evening')}}
