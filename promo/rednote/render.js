@@ -33,11 +33,13 @@ const CSS = `
 .pr-words b{background:rgba(255,255,255,.95);color:#2a2f66;font-size:30px;font-weight:900;border-radius:16px;padding:10px 22px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:prpop2 .5s cubic-bezier(.2,1.4,.4,1) both}
 .pr-words b:nth-child(2){animation-delay:.5s}.pr-words b:nth-child(3){animation-delay:1s}.pr-words b:nth-child(4){animation-delay:1.5s}
 @keyframes prpop2{from{opacity:0;transform:scale(.6)}}
-.pr-logo,.pr-end{position:fixed;left:0;right:0;top:9%;text-align:center;z-index:5}
-.pr-logo h1,.pr-end h1{font-family:Fredoka,sans-serif;font-size:46px;color:#fff;margin:0;text-shadow:0 4px 18px rgba(30,20,80,.55)}
+.pr-logo,.pr-end{position:fixed;left:0;right:0;top:15%;text-align:center;z-index:5}
+.pr-logo h1,.pr-end h1{font-family:Fredoka,sans-serif;font-size:38px;white-space:nowrap;color:#fff;margin:0;text-shadow:0 4px 18px rgba(30,20,80,.55)}
 .pr-logo h1 span,.pr-end h1 span{display:inline-block;background:#ffd45c;color:#2a2140;border-radius:14px;padding:0 10px;margin-left:4px;text-shadow:none}
 .pr-end{top:auto;position:static}.pr-end p{color:#fff;font-weight:700;font-size:12px;margin:10px 18px 0;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-.pr-byte{position:fixed;left:50%;top:32%;width:210px;transform:translateX(-50%);z-index:5}.pr-byte.low{top:14%}
+.pr-byte{position:fixed;left:50%;top:33%;width:190px;transform:translateX(-50%);z-index:5}.pr-byte.low{top:9%;width:170px}
+#pr.shot-end .big{top:61%}
+#pr.shot-game .big{top:16%}
 .pr-byte .byteart{width:100%}
 `;
 
@@ -49,7 +51,7 @@ const CSS = `
   await p.addInitScript(() => { window.__noaudio = 1; try { localStorage.clear() } catch (e) {} });
   await p.goto('file://' + path.resolve(html)); await p.waitForTimeout(800);
   await p.addStyleTag({content: CSS});
-  await p.evaluate(() => { S.mute = true; S.player = 'Juniper'; save() });
+  await p.evaluate(() => { S.mute = true; S.player = 'Juniper'; S.lang = 'zh'; save() });
   const cdp = await ctx.newCDPSession(p);
   const segs = []; let total = 0;
   for (const [n, s] of SHOTS.entries()) {
@@ -60,8 +62,8 @@ const CSS = `
       const st = document.createElement('style'); st.id = 'pr-hide'; st.textContent = (hide || []).join(',') + (hide && hide.length ? '{display:none!important}' : ''); document.head.appendChild(st);
     }, {setup: s.setup, hide: s.hide});
     await p.waitForTimeout(900);                                      // let the scene paint and the entrance finish
-    await p.evaluate(({place, vo, big}) => {
-      const d = document.createElement('div'); d.id = 'pr';
+    await p.evaluate(({place, vo, big, id}) => {
+      const d = document.createElement('div'); d.id = 'pr'; d.className = 'shot-' + id;
       d.innerHTML = `${place ? `<div class="chip">${place}</div>` : ''}<div class="shade"></div>${big ? `<div class="big">${big}</div>` : ''}<div class="cap">${vo}</div>`;
       document.body.appendChild(d);
     }, s);

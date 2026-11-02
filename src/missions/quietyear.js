@@ -161,7 +161,7 @@ function qyDouble(){const st=qyState(),D=st.dbl=st.dbl||{day:0,guess:null,phase:
   else{const said=['About 20 homes','About 100 homes','About 1,000 homes'][D.guess];
     head=D.phase==='slide'?(D.guess===2?'You guessed about 1,000, and that’s right. Most people guess much lower. Slide through the days and watch how it grows.':`You guessed ${said.toLowerCase()}. Most people guess much lower than the real answer. Slide through the days and watch how it grows.`)
       :'In 2030, nobody noticed the germ until day 21. Today, a water tester in every neighborhood notices a new germ by day 3. Slide to each day to compare.';
-    panel=`<div class="qyd-read"><b>Day ${D.day}</b><span>${fmt(homes)} ${homes===1?'home':'homes'}</span></div>
+    panel=`<div class="qyd-read"><b>${T('Day {0}',D.day)}</b><span>${T(homes===1?'{0} home':'{0} homes',fmt(homes))}</span></div>
       <input type="range" class="qyd-range" id="qyd-day" min="0" max="${QYD_DAYS}" step="${QYD_STEP}" value="${D.day}" aria-label="Day">
       <div class="qyd-ticks">${Array.from({length:QYD_DAYS/QYD_STEP+1},(_,k)=>k*QYD_STEP).map(d=>`<span class="${D.phase==='notice'&&(d===QYD_THEN||d===QYD_NOW)?'mark':''}">${d}</span>`).join('')}</div>
       ${D.phase==='notice'?`<div class="qyd-cmp"><button class="qyd-c then" data-d="${QYD_THEN}"><b>2030</b><span>Noticed on day ${QYD_THEN}: ${fmt(qydHomes(QYD_THEN))} homes</span></button><button class="qyd-c now" data-d="${QYD_NOW}"><b>Today</b><span>Noticed by day ${QYD_NOW}: ${fmt(qydHomes(QYD_NOW))} homes</span></button></div>`:''}
@@ -171,7 +171,7 @@ function qyDouble(){const st=qyState(),D=st.dbl=st.dbl||{day:0,guess:null,phase:
     <div class="qyd-grid" role="img" aria-label="${fmt(homes)} of 1,024 homes">${dots}</div>${panel}</div>`);
   $$('.qyd-opts .choice').forEach(b=>b.onclick=()=>{D.guess=+b.dataset.g;D.phase='slide';D.day=0;save();MUSIC.sfx&&MUSIC.sfx(D.guess===2?'chime':'blip');qyDouble()});
   const r=$('#qyd-day');if(r)r.oninput=()=>{D.day=+r.value;save();const h=qydHomes(D.day);$$('.qyd-grid i').forEach((x,i)=>x.classList.toggle('on',i<h));
-    $('.qyd-read b').textContent='Day '+D.day;$('.qyd-read span').textContent=fmt(h)+' '+(h===1?'home':'homes');$('.qyd-grid').setAttribute('aria-label',fmt(h)+' of 1,024 homes');
+    $('.qyd-read b').textContent=T('Day {0}',D.day);$('.qyd-read span').textContent=T(h===1?'{0} home':'{0} homes',fmt(h));$('.qyd-grid').setAttribute('aria-label',fmt(h)+' of 1,024 homes');
     const n=$('#qyd-next');if(n&&D.phase==='slide')n.disabled=D.day<QYD_DAYS};
   $$('.qyd-c').forEach(b=>b.onclick=()=>{D.day=+b.dataset.d;save();qyDouble()});
   const n=$('#qyd-next');if(n)n.onclick=()=>{if(D.phase==='slide'){D.phase='notice';D.day=QYD_THEN;save();qyDouble()}else{unlock('doubling')&&toast('New Field Guide idea: '+FIELD_GUIDE['doubling'].title,'good');nextStep()}}}

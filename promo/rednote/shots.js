@@ -17,9 +17,10 @@ module.exports = [
   {id: 'world', place: '波士顿港医院', min: 5.5,
     vo: '在那个世界里，医院、城市和工厂都由AI来运转，但重要的决定，仍然由人来签字。',
     setup: `startMission('maya','arrive')`},
-  {id: 'game', place: '我做的小游戏', min: 4.5,
-    vo: '所以，我给家里的孩子做了一个小游戏，让孩子提前练习这些能力。',
-    setup: `screen('title-promo', scene('home')+'<div class="pr-logo"><h1>Pathmakers <span>2040</span></h1></div><div class="pr-byte">'+byteBox({...S.byte,mood:'happy'},'dance')+'</div>')`},
+  {id: 'game', place: '一个通宵做出来的', min: 4.5,
+    vo: '所以，我和 Claude 一起熬了一个通宵，vibe coding 出一个小游戏，让家里的孩子提前练习这些能力。',
+    big: `<div class="pr-end"><h1>Pathmakers <span>2040</span></h1></div>`,
+    setup: `screen('title-promo', scene('home')+'<div class="pr-byte">'+byteBox({...S.byte,mood:'happy'},'dance')+'</div>')`},
   {id: 'local', place: '病房 · 第一手信息', min: 6,
     vo: 'AI再聪明，也不知道只有家人才知道的事。孩子把这条信息告诉AI，它的预测马上就变了。',
     big: `<div class="pr-num"><span>过敏风险</span><b class="pr-from">5%</b><i>→</i><b class="pr-to">60%</b></div>`,
@@ -52,6 +53,6 @@ module.exports = [
     setup: `screen('promo', scene('table'))`},
   {id: 'end', place: '', min: 5, tail: 1.6,
     vo: '我们该怎么帮孩子，为这样的未来做好准备？',
-    big: `<div class="pr-end"><h1>Pathmakers <span>2040</span></h1><p>根据 AI Futures Project《AI 2040: Plan A》的设想 · 用 Claude 制作</p></div>`,
+    big: `<div class="pr-end"><h1>Pathmakers <span>2040</span></h1><p>一个通宵 vibe coding 出来的游戏 · 用 Claude 制作</p><p>世界观参考 AI Futures Project《AI 2040: Plan A》</p></div>`,
     setup: `screen('title-promo', scene('home')+'<div class="pr-byte low">'+byteBox({...S.byte,mood:'happy'},'dance')+'</div>')`}
 ];

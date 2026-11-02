@@ -82,8 +82,8 @@ function wmDrawPins(){const box=$('#wmpins'),lines=$('#wmlines');if(!box)return;
   for(const k of keys){const P=PLACES[k],p=wmPos(k,L),open=placeOpen(k),n=open?placeNew(k):0,done=open&&placeMissions(k).length&&placeMissions(k).every(m=>isDone(m.id));
     const x=p.x+L.ox,y=p.y+L.oy;
     if(p.dot){const dx=p.dot.x+L.ox,dy=p.dot.y+L.oy;svg+=`<line x1="${dx.toFixed(1)}" y1="${dy.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" class="${open?'on':''}"/><circle cx="${dx.toFixed(1)}" cy="${dy.toFixed(1)}" r="${open?3.2:2.4}" class="wm-dot ${open?'on':''}"/>`}
-    html+=`<button class="wm-pin k-${P.kind} ${open?'open':'locked'} ${done?'done':''} ${n?'has-new':''}" data-p="${k}" style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;--c:${placeColor(k)}" aria-label="${esc(P.name)}${open?'':' (locked)'}">
-      <span class="wm-medal"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg>${open?'':`<i class="wm-lock">${cmSvg('lock')}</i>`}${n?`<i class="wm-new">${n}</i>`:''}</span><span class="wm-name">${esc(P.name)}</span></button>`}
+    html+=`<button class="wm-pin k-${P.kind} ${open?'open':'locked'} ${done?'done':''} ${n?'has-new':''}" data-p="${k}" style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;--c:${placeColor(k)}" aria-label="${esc(T(P.name))}${open?'':' (locked)'}">
+      <span class="wm-medal"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg>${open?'':`<i class="wm-lock">${cmSvg('lock')}</i>`}${n?`<i class="wm-new">${n}</i>`:''}</span><span class="wm-name">${esc(T(P.name))}</span></button>`}
   lines.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);lines.innerHTML=svg;box.innerHTML=html;
   $$('.wm-pin',box).forEach(b=>b.onclick=e=>{e.stopPropagation();const k=b.dataset.p;if(placeOpen(k)){wmZoom(b,()=>{S.place=k;go('place')})}else wmTease(k,b)});
   $('#wm').onclick=()=>{const p=$('#wmpop');if(p)p.hidden=true}}
@@ -91,7 +91,7 @@ function wmZoom(b,then){const wm=$('#wm');if(!wm||matchMedia('(prefers-reduced-m
   b.classList.add('pick');document.body.style.setProperty('--zx',(r.left+r.width/2)+'px');document.body.style.setProperty('--zy',(r.top+r.height/2)+'px');document.body.classList.add('wm-zooming');
   setTimeout(()=>{document.body.classList.remove('wm-zooming');then()},280)}
 function wmTease(k,b){const P=PLACES[k],pop=$('#wmpop');if(!pop)return;const r=b.getBoundingClientRect();
-  pop.innerHTML=`<div class="wm-pop-h" style="--c:${placeColor(k)}"><span class="wm-medal"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg></span><div><b>${esc(P.name)}</b>${P.game?`<span>${esc(P.game)}</span>`:''}</div></div><p>${esc(P.teaser)}</p><div class="wm-pop-when">${cmSvg('lock')}${esc(placeOpensLabel(k))}</div>`;
+  pop.innerHTML=`<div class="wm-pop-h" style="--c:${placeColor(k)}"><span class="wm-medal"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg></span><div><b>${esc(T(P.name))}</b>${P.game?`<span>${esc(P.game)}</span>`:''}</div></div><p>${esc(P.teaser)}</p><div class="wm-pop-when">${cmSvg('lock')}${esc(placeOpensLabel(k))}</div>`;
   pop.hidden=false;const w=Math.min(280,innerWidth-24);pop.style.width=w+'px';pop.style.left=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2))+'px';
   const top=r.bottom+8+pop.offsetHeight>innerHeight-8?r.top-pop.offsetHeight-8:r.bottom+8;pop.style.top=Math.max(8,top)+'px'}
 function wmNews(news){if(!news.length)return;const coinsWon=news.filter(n=>n.coins).reduce((a,n)=>a+n.coins,0);const season=news.filter(n=>n.season!=null).pop();
@@ -130,7 +130,7 @@ function placePlanner(){const key=PLACES[S.place]?S.place:'boston',P=PLACES[key]
   const people=placePeople(key);
   screen('placeplan',`${scene(placeScene(key))}<div class="cm-dim"></div>${hud(P.full)}<div class="cm-plan" style="--c:${placeColor(key)}">
     <div class="cm-plan-h"><button class="cm-back" id="back" aria-label="Back to the world map">${cmSvg('back')}</button><span class="wm-medal big"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg></span>
-      <div><h2>${esc(P.name)}</h2>${P.game?`<span class="cm-game">${esc(P.game)}</span>`:''}</div><span class="cm-when">${cmSvg(SEASONS[camp().ch%4],'wm-season')}${esc(chapterLabel(camp().ch))}</span></div>
+      <div><h2>${esc(T(P.name))}</h2>${P.game?`<span class="cm-game">${esc(P.game)}</span>`:''}</div><span class="cm-when">${cmSvg(SEASONS[camp().ch%4],'wm-season')}${esc(chapterLabel(camp().ch))}</span></div>
     ${careers.map(c=>{const I=careerInfo(c);const list=own.filter(m=>m.career===c);return `<section class="cm-career">
       <div class="cm-career-h"><b>${esc(I.name)}</b>${rankChip(c)}</div>${!rankOf(c)&&I.why?`<p class="cm-why">${esc(I.why)}</p>`:''}${trackHTML(c)}
       ${list.map(missionCard).join('')}</section>`}).join('')}
