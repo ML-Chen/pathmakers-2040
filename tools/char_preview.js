@@ -55,11 +55,17 @@ H+=cell('<div class="bbox wagB" style="width:150px">'+byteBox({color:'#8f86ff',e
 H+=cell('<div class="bbox blink" style="width:150px">'+byteBox({color:'#f0b35a',ears:'pointy',mood:'happy'})+'</div>','blink');
 H+=cell('<div class="bbox perk yap" style="width:150px">'+byteBox({color:'#f0b35a',ears:'floppy',mood:'alert'})+'</div>','perk+yap');
 H+=cell('<div class="bbox dark" style="width:150px">'+byteBox({color:'#9aa3b8',ears:'pointy',mood:'happy'})+'</div>','on dark');
-H+='</div><h2 id="s-mini">mini() chibis</h2><div class="row"><svg class="minis" width="1100" height="190" viewBox="0 0 550 95">';
-const sk=SKIN;let x=22;
-[[sk[0],'#6c5ce7','#c9772d',''],[sk[1],'#ff7a6b','#2b1a10','happy'],[sk[2],'#16b3a6','#1b1410','sad'],[sk[3],'#f5b82e','#3a2a20',''],[sk[4],'#fbfdff','#111111','happy'],[sk[5],'#5b7bd5','#1b1410',''],[sk[2],'#3d3d55','#b3541e',''],[sk[0],'#38b07f','#e8c26a','sad'],[sk[1],'#ff9bb0','#5a3a2a','happy'],[sk[4],'#6c5ce7','#1b1410','']].forEach(([s,sh,h,f],i)=>{H+=mini(x,40,{skin:s,shirt:sh,hair:h,face:f||undefined,s:1});x+=34});
-H+=mini(380,48,{skin:SKIN[2],shirt:'#fbfdff',hair:'#3a2a20',s:1.5})+mini(430,48,{skin:SKIN[4],shirt:'#ff7a6b',hair:'#1b1410',s:1.5})+mini(480,48,{skin:SKIN[0],shirt:'#6c5ce7',hair:'#c9772d',s:1.4})+mini(525,52,{shirt:'#3d3d55',hair:'#111',s:1.4});
-H+='</svg></div><div class="row" style="margin-top:8px">';
+H+='</div><h2 id="s-mini">mini() people: 1x row, 2x row, poses, villains, vignettes</h2>';
+const sk=SKIN;const crowd=[[sk[0],'#6c5ce7','#c9772d',''],[sk[1],'#ff7a6b','#2b1a10','happy'],[sk[2],'#16b3a6','#1b1410','sad'],[sk[3],'#f5b82e','#3a2a20',''],[sk[4],'#fbfdff','#111111','happy'],[sk[5],'#5b7bd5','#1b1410',''],[sk[2],'#3d3d55','#b3541e',''],[sk[0],'#38b07f','#e8c26a','sad'],[sk[1],'#ff9bb0','#5a3a2a','happy'],[sk[4],'#6c5ce7','#1b1410',''],[sk[3],'#e05a7a','#2a1a14',''],[sk[0],'#5b7bd5','#8a5a3a','']];
+for(const sc of [1,2]){H+='<div class="row" style="margin:4px 0"><svg class="minis" width="'+(crowd.length*30*sc+40)+'" height="'+(64*sc)+'" viewBox="0 0 '+(crowd.length*30*sc+40)+' '+(64*sc)+'">';
+  crowd.forEach(([s,sh,h,f],i)=>{H+=mini(20+i*30*sc,(64-36)*sc,{skin:s,shirt:sh,hair:h,face:f||undefined,s:sc,pose:i%3===1?'walk':'stand'})});H+='</svg><span class="lbl">s='+sc+'</span></div>'}
+H+='<div class="row"><svg class="minis" width="1000" height="150" viewBox="0 0 500 75">';
+H+=mini(30,30,{who:'pip',s:1})+mini(60,24,{who:'jory',s:1})+mini(100,30,{who:'pip',face:'happy'})+mini(130,24,{who:'jory',pose:'walk'});
+H+='<rect x="186" y="34" width="36" height="26" rx="3" fill="#c9a26b" stroke="#6a4a22"/>'+mini(170,30,{who:'pip',pose:'push'})+mini(240,30,{who:'jory',pose:'push',flip:true});
+H+=mini(290,30,{skin:SKIN[2],shirt:'#fbfdff',hair:'#3a2a20',pose:'walk'})+mini(320,30,{skin:SKIN[4],shirt:'#ff7a6b',hair:'#1b1410',pose:'walk',flip:true})+mini(350,30,{skin:SKIN[1],shirt:'#ff7a6b',hair:'#2b1a10',age:'kid',face:'happy'})+mini(380,30,{skin:SKIN[0],shirt:'#38b07f',hair:'#c9772d',style:'long',outfit:'hoodie'})+mini(410,30,{skin:SKIN[5],shirt:'#f5b82e',hair:'#1b1410',style:'curly',outfit:'jacket'})+mini(440,30,{skin:SKIN[3],shirt:'#6c5ce7',hair:'#d9d6e2',style:'bun',skirt:true})+mini(470,30,{skin:SKIN[1],shirt:'#5b7bd5',hair:'#2a211c',style:'short',outfit:'tee'});
+H+='</svg><span class="lbl">2x: villains, push, styles</span></div>';
+H+='<div class="row"><svg viewBox="-40 -30 140 80" width="280" height="160" style="background:#dfe6f5;border-radius:10px">'+mini(0,0,{who:'pip',s:1.4})+mini(56,0,{who:'jory',s:1.4})+'<rect x="10" y="4" width="36" height="26" rx="3" fill="#c9a26b"/></svg><span class="lbl">street pipjory call (as in game.js)</span></div>';
+H+='<div class="row" style="margin-top:8px">';
 for(const k of ['recital','healed','crooked','rash','waiting','moved'])H+=cell(vignette(k),k);
 H+='</div>';
 H+='<h2 id="s-zoom">Zoom</h2><div class="row">';
@@ -73,7 +79,7 @@ R.innerHTML=H;
   await p.setContent(page);await p.waitForTimeout(300);
   await p.screenshot({path:path.join(out,'sheet.png'),fullPage:true});
   for(const id of ['imani','maya','dad','extra','anim','byte','bytec','bytes','mini','zoom']){const h=await p.$('#s-'+id);if(!h)continue;
-    const box=await p.evaluate(el=>{const r=el.getBoundingClientRect(),n=el.nextElementSibling.getBoundingClientRect();let bottom=n.bottom;let s=el.nextElementSibling.nextElementSibling;if(s&&s.classList.contains('row')&&!s.previousElementSibling.matches('h2+.row+h2'))bottom=Math.max(bottom,s.getBoundingClientRect().bottom);return{x:0,y:r.top+scrollY,width:1600,height:bottom-r.top+4}},h);
+    const box=await p.evaluate(el=>{const r=el.getBoundingClientRect();let n=el.nextElementSibling,bottom=r.bottom;while(n&&n.tagName!=='H2'){bottom=Math.max(bottom,n.getBoundingClientRect().bottom);n=n.nextElementSibling}return{x:0,y:r.top+scrollY,width:1600,height:bottom-r.top+6}},h);
     await p.screenshot({path:path.join(out,id+'.png'),clip:box,fullPage:true})}
   // head pivot sanity: p-head bbox bottom should sit at the neck
   const piv=await p.evaluate(()=>[...document.querySelectorAll('.pbox.big .p-head')].map(g=>{const b=g.getBBox();return [b.x,b.y,b.width,b.height].map(v=>Math.round(v))}));

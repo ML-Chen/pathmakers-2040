@@ -223,16 +223,45 @@ const SCENES={
     <g class="drone"><circle cx="90" cy="300" r="2.4" fill="#ff7a6b" class="twinkle"/></g><g class="drone"><circle cx="220" cy="260" r="2.4" fill="#7ff7e4" class="twinkle"/></g>
   </svg>`
 };
-// ---------- Future vignettes (mini cards on the Future Table) ----------
-// kind: 'recital' (plays violin on stage), 'healed' (good, no recital), 'crooked' (needs re-set), 'rash' (skin reaction), 'waiting'
-function vignette(kind){
-  const girl=(face,extra='')=>`<g transform="translate(60 52)">${mini(0,0,{skin:SKIN[2],shirt:PAL.coral,hair:'#2b1a10',face,s:1.25})}${extra}</g>`;
-  const bg={recital:'#ffe7a8',healed:'#cdeedd',crooked:'#ffd3cc',rash:'#ffd3cc',waiting:'#dfe4f3',moved:'#e2dcff'}[kind]||'#eee';
-  let art='';
-  if(kind==='recital'||kind==='moved')art=`<rect x="0" y="70" width="120" height="20" fill="#9a6b4f"/>${[18,102].map(x=>`<path d="M${x} 0 L${x} 70" stroke="${PAL.coral}" stroke-width="8"/>`).join('')}${girl('happy',`<g transform="translate(10 4) rotate(-30)"><ellipse cx="0" cy="0" rx="5" ry="9" fill="#a0522d"/><path d="M0 -9 V-20" stroke="#5a2d10" stroke-width="2"/></g>`)}${kind==='moved'?`<text x="96" y="20" font-size="15">📅</text>`:''}<g class="vnote"><text x="14" y="22" font-size="14" fill="#6c5ce7">&#9834;</text></g><g class="vnote d2"><text x="28" y="30" font-size="11" fill="#ff7a6b">&#9835;</text></g>`;
-  if(kind==='healed')art=`${girl('happy')}<path class="vpop" d="M86 24 l6 6 l12 -14" stroke="${PAL.leafD}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
-  if(kind==='crooked')art=`${girl('sad')}<path d="M84 18 l18 18 M102 18 l-18 18" stroke="#d3452f" stroke-width="5" stroke-linecap="round"/>`;
-  if(kind==='rash')art=`${girl('sad')}${[[52,58],[58,64],[66,56],[62,70]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="#e5484d" class="vblink"/>`).join('')}<text x="88" y="30" font-size="16" fill="#e5484d" font-weight="800">!</text>`;
-  if(kind==='waiting')art=`${girl()}<rect x="84" y="14" width="22" height="26" rx="3" fill="#fff" stroke="${PAL.steel}"/><path d="M88 22 h14 M88 28 h14 M88 34 h9" stroke="${PAL.steel}" stroke-width="2"/>`;
-  return `<svg viewBox="0 0 120 90" class="vig"><rect width="120" height="90" rx="10" fill="${bg}"/>${art}</svg>`;
+// ---------- Future vignettes (cards on the Future Table, viewBox 0 0 120 90) ----------
+let VGN=0;
+function violinArt(x,y,sc=1,rot=0){const id='vb'+(++VGN);return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${sc})">
+  <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e08a3c"/><stop offset=".55" stop-color="#b4521c"/><stop offset="1" stop-color="#7a3210"/></linearGradient></defs>
+  <path d="M0 -20 C7 -20 11 -17 11 -12 C11 -8 8 -6.5 7 -4.5 C6.2 -2.5 6.2 2 7 4 C8 6 12 8 12 13 C12 18.5 7 21 0 21 C-7 21 -12 18.5 -12 13 C-12 8 -8 6 -7 4 C-6.2 2 -6.2 -2.5 -7 -4.5 C-8 -6.5 -11 -8 -11 -12 C-11 -17 -7 -20 0 -20Z" fill="url(#${id})" stroke="#4a1f0a" stroke-width="1.1"/>
+  <path d="M-4.2 -3 C-5.6 0 -2.6 3 -4.4 6.5 M4.2 -3 C5.6 0 2.6 3 4.4 6.5" stroke="#2a1006" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <circle cx="-4.4" cy="-3.2" r=".8" fill="#2a1006"/><circle cx="4.4" cy="-3.2" r=".8" fill="#2a1006"/><circle cx="-4.4" cy="6.8" r=".8" fill="#2a1006"/><circle cx="4.4" cy="6.8" r=".8" fill="#2a1006"/>
+  <path d="M-7 -14 C-3 -17.5 3 -17.5 7 -14" stroke="#ffd7a8" stroke-width="1" fill="none" opacity=".6"/>
+  <path d="M-2.2 -36 h4.4 l.6 30 h-5.6z" fill="#1f1410"/><path d="M-3.4 8.5 h6.8 l-1.2 10 h-4.4z" fill="#1f1410"/><rect x="-3.6" y="4.6" width="7.2" height="1.6" rx=".6" fill="#f1d9a8"/>
+  <path d="M0 -38.5 c2.6 0 3 -2.6 1.4 -3.6 c-1.6 -1 -3.4 .4 -2.4 1.8" stroke="#1f1410" stroke-width="1.6" fill="none"/><path d="M-2.6 -33 h-1.6 M2.6 -33 h1.6 M-2.6 -30 h-1.6 M2.6 -30 h1.6" stroke="#3a2416" stroke-width="1.4" stroke-linecap="round"/>
+  ${[-1.2,-.4,.4,1.2].map(d=>`<path d="M${d} -34 L${d*1.6} 9" stroke="#eee" stroke-width=".35"/>`).join('')}
+</g>`}
+function bowArt(x,y,rot,len=44){return `<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M0 0 L${len} 0" stroke="#3a2416" stroke-width="1.6" stroke-linecap="round"/><path d="M2 2 L${len-2} 1.4" stroke="#f3ead8" stroke-width=".9"/><rect x="-2" y="-1.8" width="5" height="4.6" rx="1" fill="#1f1410"/></g>`}
+function stageBg(){const id='sp'+(++VGN);return `<defs><radialGradient id="${id}" cx=".5" cy=".15" r=".8"><stop offset="0" stop-color="#fff6cf" stop-opacity=".95"/><stop offset=".55" stop-color="#ffe7a0" stop-opacity=".35"/><stop offset="1" stop-color="#ffe7a0" stop-opacity="0"/></radialGradient></defs>
+  <rect width="120" height="90" fill="#2a1d3d"/>
+  <path d="M38 0 L82 0 L104 70 L16 70Z" fill="url(#${id})"/>
+  <path d="M0 0 H22 C20 18 24 34 20 52 C18 62 22 70 24 74 H0Z" fill="#b3263a"/><path d="M6 0 C4 24 9 46 6 74 M13 0 C12 22 16 48 14 74" stroke="#7c1626" stroke-width="2.2" fill="none"/>
+  <path d="M120 0 H98 C100 18 96 34 100 52 C102 62 98 70 96 74 H120Z" fill="#b3263a"/><path d="M114 0 C116 24 111 46 114 74 M107 0 C108 22 104 48 106 74" stroke="#7c1626" stroke-width="2.2" fill="none"/>
+  <path d="M0 0 H120 V8 C100 14 80 6 60 12 C40 6 20 14 0 8Z" fill="#c7364b"/><path d="M0 8 C20 14 40 6 60 12 C80 6 100 14 120 8" stroke="#ffd45c" stroke-width="1.2" fill="none"/>
+  <path d="M0 70 H120 V90 H0Z" fill="#8a5a3a"/><path d="M0 70 H120" stroke="#5e3b24" stroke-width="1.5"/>${[0,1,2,3,4,5,6].map(i=>`<path d="M${60+(i-3)*8} 70 L${60+(i-3)*22} 90" stroke="#6e4630" stroke-width=".7"/>`).join('')}
+  ${[10,24,38,52,66,80,94,108].map((x,i)=>`<g transform="translate(${x} ${92-(i%2)*2})"><circle cy="-9" r="5.4" fill="#120c1c"/><path d="M-8 2 C-8 -6 8 -6 8 2Z" fill="#120c1c"/></g>`).join('')}`}
+function xrayPanel(x,y,crooked){return `<g transform="translate(${x} ${y})"><rect x="0" y="0" width="44" height="34" rx="4" fill="#0f1a2e" stroke="#7fa6d9" stroke-width="1.2"/>
+  <path d="M6 22 C14 21 22 21 38 22" stroke="#cfe3ff" stroke-width="3.2" fill="none" stroke-linecap="round" opacity=".85"/>
+  ${crooked?`<path d="M6 13 C12 12.5 18 12.5 21 13 C23 13.5 25 15.5 27 17 C31 19 34 19.5 38 20" stroke="#ffd0d0" stroke-width="3.6" fill="none" stroke-linecap="round"/><circle cx="24" cy="14.6" r="5" fill="none" stroke="#ff6b6b" stroke-width="1.2" stroke-dasharray="2 1.6"/>`
+  :`<path d="M6 13 C14 12 22 12 38 13" stroke="#e8f4ff" stroke-width="3.6" fill="none" stroke-linecap="round" class="xglow"/><ellipse cx="22" cy="12.6" rx="3.6" ry="2.8" fill="#e8f4ff" opacity=".45"/>`}
+  <rect x="3" y="2.6" width="12" height="3" rx="1.2" fill="#7fa6d9" opacity=".6"/></g>`}
+function vignette(kind){const maya={skin:'#f8dcc8',shirt:'#ff7a6b',hair:'#2a2030',s:1.05};let art='';
+  if(kind==='recital'||kind==='moved'){art=stageBg()+`<g transform="translate(60 66)">${mini(0,0,{...maya,face:'happy'})}</g>${violinArt(70,34,.42,-58)}${bowArt(50,36,-22,30)}
+    <g class="vnote"><path d="M30 26 v-9 l7 -2 v9" stroke="#ffd45c" stroke-width="1.6" fill="none"/><ellipse cx="28.6" cy="26" rx="2.4" ry="1.7" fill="#ffd45c"/><ellipse cx="35.6" cy="24" rx="2.4" ry="1.7" fill="#ffd45c"/></g>
+    <g class="vnote d2"><path d="M90 30 v-9" stroke="#fff" stroke-width="1.5"/><ellipse cx="88.6" cy="30" rx="2.4" ry="1.7" fill="#fff"/><path d="M90 21 q4 2 3 6" stroke="#fff" stroke-width="1.5" fill="none"/></g>
+    ${kind==='moved'?`<g transform="translate(92 14)"><rect x="0" y="0" width="22" height="22" rx="3" fill="#fff"/><rect x="0" y="0" width="22" height="7" rx="3" fill="#6c5ce7"/><text x="11" y="18" text-anchor="middle" font-size="8" font-weight="800" fill="#2a2140" font-family="Nunito">+3 wk</text></g>`:''}`}
+  if(kind==='healed')art=`<rect width="120" height="90" fill="#dff4ec"/><path d="M0 64 H120 V90 H0Z" fill="#c6e9dc"/>${xrayPanel(66,12,false)}<g transform="translate(36 70)">${mini(0,0,{...maya,face:'happy'})}</g>
+    <path class="vpop" d="M78 54 l5 5 l10 -12" stroke="#1fa774" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  if(kind==='crooked')art=`<rect width="120" height="90" fill="#fde7e3"/><path d="M0 64 H120 V90 H0Z" fill="#f7d3cc"/>${xrayPanel(66,12,true)}<g transform="translate(36 70)">${mini(0,0,{...maya,face:'sad'})}</g>
+    <path d="M80 50 l10 10 M90 50 l-10 10" stroke="#e5484d" stroke-width="3.4" stroke-linecap="round"/>`;
+  if(kind==='rash')art=`<rect width="120" height="90" fill="#fde7e3"/><path d="M-6 76 C20 58 54 48 86 46 C100 45 112 48 124 52 L124 90 L-6 90Z" fill="#f8dcc8"/><path d="M-6 76 C20 58 54 48 86 46 C100 45 112 48 124 52" stroke="#c98a6a" stroke-width="1.4" fill="none"/>
+    ${[[30,66],[40,61],[48,66],[56,58],[64,63],[72,56],[80,60],[44,72],[62,70],[88,55]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${2.2+(i%3)*.6}" fill="#e5484d" class="vblink" style="animation-delay:${i*.12}s"/>`).join('')}
+    <path d="M34 50 q3 -4 6 0 q3 4 6 0 M60 42 q3 -4 6 0 q3 4 6 0" stroke="#e5484d" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <g transform="translate(14 10)"><rect x="0" y="0" width="34" height="22" rx="6" fill="#fff"/><path d="M8 22 l-2 6 l8 -6z" fill="#fff"/><text x="17" y="15" text-anchor="middle" font-size="10" font-weight="800" fill="#e5484d" font-family="Nunito">itchy!</text></g>
+    <g transform="translate(86 10)"><rect x="0" y="0" width="26" height="22" rx="4" fill="#fff7e0" stroke="#e9d9a8"/><text x="13" y="15" text-anchor="middle" font-size="7.5" font-weight="800" fill="#7a5426" font-family="Nunito">cast</text></g>`;
+  return `<svg viewBox="0 0 120 90" class="vig"><clipPath id="vc${++VGN}"><rect width="120" height="90" rx="10"/></clipPath><g clip-path="url(#vc${VGN})">${art}</g></svg>`;
 }

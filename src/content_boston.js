@@ -104,7 +104,7 @@ const CRITERIA=[
 const TRUTH_SENSITIVE=true; // Maya really is sensitive to HX-2 (the clue from her dad)
 function modelProbs(c,useTruth){
   // returns per-future probabilities for outcome events
-  const sens = useTruth?TRUTH_SENSITIVE:c.told; // previews only know about the rash if she told Byte
+  const sens = useTruth?TRUTH_SENSITIVE:!!(c.told||(typeof S!=='undefined'&&S.told)); // previews only know about the rash if she told Byte
   let straight, readyFri, readyMoved, rash=0;
   if(c.tx==='pins'){straight=.95+(c.pt?.02:0);readyFri=0;readyMoved=0;}
   if(c.tx==='cast'){straight=.80+(c.pt?.08:0);readyFri=0;readyMoved=.9;}
