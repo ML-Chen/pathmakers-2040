@@ -125,7 +125,7 @@ function agUpgradeScreen(){const N=S.notes,c=S.choice||{},B=()=>S.byte.name;
     const ch=$('#agch');
     if(st.end){ch.innerHTML=`<div class="row"><button class="btn small ghost" id="guide">Open Field Guide</button><button class="btn small" id="plan">Plan tomorrow</button></div>`;
       $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};N.agEve=0;save();go('hub')};return}
-    if(st.choices){ch.innerHTML=st.choices.map((c,j)=>`<button class="choice" data-j="${j}">${esc(fill(c.t))}</button>`).join('');
+    if(st.choices){ch.innerHTML=mixIdx(st.choices).map(([c,j])=>`<button class="choice" data-j="${j}">${esc(fill(c.t))}</button>`).join('');
       $$('.choice',ch).forEach(b=>b.onclick=()=>{const c=st.choices[b.dataset.j];i=at(c.go);show()});return}
     ch.outerHTML=`<button class="btn small" id="agn">Next</button>`;$('#agn').onclick=()=>{i++;show()}}
   show()}

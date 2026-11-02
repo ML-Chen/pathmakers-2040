@@ -1,3 +1,8 @@
+// Answer choices appear in a mixed order (stable for the same options) so the kind or right answer is not always first.
+// Returns [[item, originalIndex], ...]; buttons keep data-j = originalIndex.
+function mixIdx(list){const L=(list||[]).map((x,j)=>[x,j]);if(L.length<2)return L;let h=2166136261;for(const [x] of L){const t=typeof x==='string'?x:(x&&(x.t||x.text||x[1]))||'';for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)}}
+  const rnd=()=>{h=(h+0x6D2B79F5)|0;let t=Math.imul(h^(h>>>15),1|h);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296};
+  for(let i=L.length-1;i>0;i--){const k=Math.floor(rnd()*(i+1));[L[i],L[k]]=[L[k],L[i]]}return L}
 // art.js — all vector art, drawn in code as SVG strings.
 // Palette lives in CSS custom properties; art uses literal fills from ART palette so scenes look identical everywhere.
 const PAL={

@@ -78,6 +78,9 @@ p{margin:.35em 0}
 .speaker:nth-child(2) .p-eyes{animation-delay:-2.3s}
 .talking .p-mouth{transform-box:fill-box;transform-origin:center top;animation:talk .17s ease-in-out infinite alternate}
 @keyframes talk{to{transform:scaleY(1.9) scaleX(.85)}}
+/* Open mouths are already tall: talk with a small flap so they never pass the chin. */
+.talking .p-mouth[data-m=happy],.talking .p-mouth[data-m=o]{animation-name:talkbig}.talking .p-mouth[data-m=smile]{animation-name:talkmid}
+@keyframes talkbig{to{transform:scaleY(1.12) scaleX(.96)}}@keyframes talkmid{to{transform:scaleY(1.45) scaleX(.9)}}
 .talking .byte-head{animation:yap .22s ease-in-out infinite alternate}
 @keyframes yap{to{transform:translateY(-3px) rotate(-3deg)}}
 
@@ -428,5 +431,6 @@ svg text:not([font-family]){font-family:var(--body)}
 .mstar{color:var(--gold);letter-spacing:1px}
 .hud-btns .hbtn{width:38px;height:38px}
 /* the place label wraps to a second line instead of cutting off long names; small phones get slightly smaller HUD buttons */
-.place{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.12;padding:6px 12px;font-size:.82rem}
+.place{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.12;padding:0 12px;border:6px solid transparent;border-left:0;border-right:0;border-radius:18px;font-size:.82rem}
+/* (vertical space is a transparent border, not padding, so a clamped third line never peeks out below) */
 @media (max-width:380px){.hud-btns{gap:4px}.hud-btns .hbtn{width:35px;height:35px}.hbtn svg{width:20px;height:20px}}
