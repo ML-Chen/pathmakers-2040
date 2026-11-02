@@ -1,0 +1,73 @@
+/* nome.css — the reusable Nome kit (src/viz/nome.js): mammoth poses and animation, drones, the Observe mechanic. Classes start with nm-. */
+/* Mammoth calf poses. Calm: trunk brings a willow sprig to the mouth and the jaw chews. Freeze (the listening pose):
+   head up, ears spread, trunk curled under the chin, tail up, the near front foot lifts to show its pad, then the toes press down. */
+.nm-mm .nm-head{transform-origin:80px -90px;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}
+.nm-mm .nm-ear{transform-origin:89px -112px;transition:transform .35s}
+.nm-mm .nm-tail{transform-origin:-39px -77px;transition:transform .4s}
+.nm-mm .nm-fl-low{transform-origin:62px -27px;transition:transform .5s cubic-bezier(.3,1.2,.5,1)}
+.nm-mm .nm-trunk-eat,.nm-mm .nm-trunk-curl,.nm-mm .nm-trunk-hang{transition:opacity .25s}
+.nm-mm .nm-trunk-eat,.nm-mm .nm-trunk-curl{opacity:0}
+.nm-mm.nm-eat .nm-trunk-eat{opacity:1}.nm-mm.nm-eat .nm-trunk-hang{opacity:0}
+.nm-mm .nm-sole{opacity:0;transition:opacity .2s}
+.nm-mm .nm-jaw{transform-origin:106px -77px}
+.nm-mm.nm-eat:not(.nm-freeze) .nm-jaw{animation:nmchew .5s ease-in-out infinite alternate}
+@keyframes nmchew{from{transform:translateY(0)}to{transform:translateY(2.4px) rotate(4deg)}}
+.nm-mm.nm-eat:not(.nm-freeze) .nm-head{animation:nmnod 2.6s ease-in-out infinite}
+@keyframes nmnod{0%,100%{transform:rotate(6deg)}50%{transform:rotate(9deg)}}
+.nm-mm:not(.nm-freeze) .nm-tail{animation:nmswish 2.2s ease-in-out infinite}
+@keyframes nmswish{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(10deg)}}
+.nm-mm.nm-freeze .nm-head{transform:rotate(-11deg)}
+.nm-mm.nm-freeze .nm-ear{transform:rotate(-34deg) scale(1.12)}
+.nm-mm.nm-freeze .nm-tail{transform:rotate(-62deg)}
+.nm-mm.nm-freeze .nm-trunk-curl{opacity:1}.nm-mm.nm-freeze .nm-trunk-eat,.nm-mm.nm-freeze .nm-trunk-hang{opacity:0}
+.nm-mm.nm-freeze .nm-fl-low{animation:nmlift 3.4s ease-in-out forwards}
+.nm-mm.nm-freeze .nm-sole{animation:nmsole 3.4s ease-in-out forwards}
+@keyframes nmlift{0%{transform:none}18%,52%{transform:rotate(62deg) translate(-2px,-4px)}70%,100%{transform:rotate(10deg)}}
+@keyframes nmsole{0%,12%{opacity:0}20%,50%{opacity:1}60%,100%{opacity:0}}
+.nm-mm.nm-still .nm-fl-low{animation:none;transform:rotate(62deg) translate(-2px,-4px)}.nm-mm.nm-still .nm-sole{animation:none;opacity:1}
+.nm-collar-light{animation:nmglow 1.8s ease-in-out infinite}@keyframes nmglow{50%{opacity:.35}}
+.nm-mm.nm-freeze .nm-collar-light{animation-duration:.4s}
+.nm-rotor{animation:nmrotor .12s linear infinite alternate}@keyframes nmrotor{to{opacity:.4;transform:scaleX(.6)}}
+.nm-rotor ellipse:first-child{transform-origin:-24px -9px}.nm-rotor ellipse:last-child{transform-origin:24px -9px}
+.nm-rig-light{animation:igblink 1.1s infinite}
+.nm-rig-pump{animation:nmpump .25s linear infinite alternate}@keyframes nmpump{to{transform:translateY(-1px)}}
+.nm-calf-portrait .p-mouth{transform-origin:150px 214px}
+.speaker.talking .nm-calf-portrait .p-mouth{animation:nmtrunk 1.2s ease-in-out infinite}
+@keyframes nmtrunk{0%,100%{transform:none}50%{transform:rotate(-4deg)}}
+/* Observe screen: the animal on a stage over the painted scene, a compact log card, and the pulse source */
+.nm-observe{padding-bottom:0}
+.nm-layer{position:fixed!important;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:1;pointer-events:none}
+.nm-src{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;pointer-events:auto;cursor:pointer;border-radius:50%}
+.nm-src i{position:absolute;inset:18px;border-radius:50%;border:2px solid rgba(255,90,74,.9);opacity:0}
+.nm-src.on i{animation:nmring 1.2s ease-out infinite}.nm-src.on i:nth-child(2){animation-delay:.4s}.nm-src.on i:nth-child(3){animation-delay:.8s}
+@keyframes nmring{0%{transform:scale(.4);opacity:1}100%{transform:scale(2.6);opacity:0}}
+.nm-stage{position:fixed!important;left:50%;transform:translateX(-50%);width:min(100%,520px);bottom:calc(150px + env(safe-area-inset-bottom,0px));height:min(46vh,420px);z-index:2}
+.nm-stage svg{width:100%;height:100%;display:block;overflow:visible}
+.nm-hot{fill:transparent;cursor:pointer;pointer-events:all}
+.nm-mark{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(108,92,231,.6);pointer-events:none;animation:nmmark .9s ease-out forwards}
+.nm-mark.key{border-color:#ffd45c;box-shadow:0 0 0 2px rgba(229,72,77,.7)}
+@keyframes nmmark{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.nm-stage.pulse svg{animation:nmshake .18s linear 6}
+@keyframes nmshake{25%{transform:translateX(-1px)}75%{transform:translateX(1px)}}
+.nm-grip ellipse{fill:none;stroke:#8a5a2a;stroke-width:1.4;opacity:0}
+.nm-stage.pulse .nm-grip ellipse{transform-box:fill-box;transform-origin:center;animation:nmgrip 1.2s ease-out infinite;animation-delay:var(--d,0s)}
+@keyframes nmgrip{0%{transform:scale(.4);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+.nm-cuprip ellipse{fill:none;stroke:#f2d8b0;stroke-width:.8;opacity:0}
+.nm-stage.pulse .nm-cuprip ellipse{transform-box:fill-box;transform-origin:center;animation:nmgrip .6s ease-out infinite;animation-delay:var(--d,0s)}
+.nm-steam{animation:steam 2.4s ease-in-out infinite}
+.nm-card{position:fixed!important;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:496px;margin:0 auto;background:#fff;border-radius:20px;padding:10px 12px 12px;box-shadow:0 16px 40px rgba(10,14,40,.35);z-index:3;max-height:62vh;overflow:auto}
+.nm-last{min-height:2.7em;font-size:.95rem;line-height:1.35}.nm-last b{color:var(--violet);margin-right:4px}
+.nm-tr{display:block;font-size:.8rem;color:#167f78;font-weight:800}.nm-hint{color:var(--ink2)}
+.nm-icons{display:flex;gap:5px;justify-content:space-between;margin:6px 0 4px}
+.nm-ic{position:relative;flex:1;max-width:44px;aspect-ratio:1;border-radius:12px;border:2px solid var(--line);background:#f7f8fc;color:#a0a6c0;display:flex;align-items:center;justify-content:center;padding:0}
+.nm-ic svg{width:72%;height:72%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nm-ic.on{border-color:var(--violet);background:#f1efff;color:var(--violet)}
+.nm-ic.key::after{content:'★';position:absolute;top:-7px;right:-5px;font-size:13px;color:#f5b82e;text-shadow:0 1px 0 #a8740e}
+.nm-cmp{display:grid;gap:4px;font-size:.84rem}.nm-cmp-h{display:grid;grid-template-columns:1.2fr 1fr;gap:8px;font-weight:800;color:var(--ink2);font-size:.75rem}
+.nm-row{display:grid;grid-template-columns:1.2fr 1fr;gap:8px;padding:5px 7px;border-radius:10px;background:#f7f8fc}.nm-row span{color:#167f78;font-weight:800}
+.nm-row.key{background:#fff6d8}
+.nm-ask{display:flex;gap:8px;align-items:center;margin:8px 0 4px}.nm-ask p{margin:0;font-weight:800}
+.nm-bbyte{flex:0 0 46px}.nm-bbyte .byteart{width:46px;height:auto;display:block}
+.nm-end{justify-content:flex-end;margin-top:6px}
+.nm-bubble{position:fixed;left:50%;transform:translateX(-50%);top:84px;z-index:70;display:flex;gap:8px;align-items:center;background:#fff;border-radius:18px;padding:8px 14px 8px 8px;box-shadow:0 10px 30px rgba(10,14,40,.3);width:min(92vw,420px);animation:reveal .3s}
+.nm-bubble p{margin:0;font-weight:800}.nm-bubble.out{opacity:0;transition:opacity .4s}
