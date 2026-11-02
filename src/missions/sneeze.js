@@ -70,7 +70,7 @@ const SN_VOTE={adopted:'The rule stands. The harbor shops will share what they f
 
 MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   kind:'plot',year:1,season:'spring',district:'boston',rank:'trainee',
-  blurb:'A biosecurity screener flagged three strange orders, all sent in the same nine minutes.',
+  blurb:'A screener has three strange DNA orders on hold. All three were sent within nine minutes of each other.',
   get after(){return MISSIONS.quietyear?['maya','quietyear']:['maya']},
   place:'Health Harbor · Boston',debriefScene:'screening',
   flow:[
@@ -145,7 +145,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   },
   lessons:{screening:{title:'How a safety check catches a bad order',steps:[
     {t:'A [[print shop]] builds what customers order. So the order itself is the place to check, before anything exists.',viz:'snShops',args:{flag:0},cap:'Check the order first'},
-    {t:'A machine reads every order and [[flags]] the odd ones. It does not decide; it hands them to a person.',viz:'snScreen',cap:'The machine flags, a person decides'},
+    {t:'A machine reads every order and [[flags]] the odd ones. It does not make the decision. It hands those orders to a person.',viz:'snScreen',cap:'The machine flags, a person decides'},
     {t:'Someone who wants to get around the check splits the order into pieces that each look harmless.',viz:'snSplit',cap:'Splitting to look harmless'},
     {t:'Which is why the check is not one wall but a row of them: [[signatures]], warnings shared between shops, the shop’s own check, [[wastewater]] monitors, fast [[vaccines]].',viz:'snLayers',cap:'Many checks in a row'}],
     quiz:[
@@ -168,7 +168,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
 
   // ---------- criteria, controls and the forecast model
   criteriaHint:'Not sure what one means? <button class="gw" data-w="traced">Traced</button> means followed back to whoever really sent it.',
-  criteriaNote:'Prime is far smarter than both of us, so we do not win by out-thinking it. We win by checking, and by telling everyone else what to look for. Which of these matters most to you?',
+  criteriaNote:'Prime may well be cleverer than both of us, and it ignores every rule, so we do not win by out-thinking it. We win by checking, and by telling everyone else what to look for. Which of these matters most to you?',
   criteria:[
     {id:'every',label:'Every piece is caught'},
     {id:'honest',label:'Honest labs keep working'},
@@ -217,10 +217,10 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
         :c.block==='watch'?'Watching. All right. You are honest about it, and I would rather know. Call me the minute that changes, at any hour.'
         :'That I can live with. You block those, I keep my lights on, and I will call you the second anything looks like that again.';
       return [
-        {t:`Here is the whole plan: we ${what}. I think we catch every piece about ${ev} times out of 100${c.share==='no'?'':', and we are telling the other shops what to look for'}. ${c.block==='all'?'That costs you about nine days of honest work, and I am sorry about that.':'Your signed orders keep running.'} Does that work for you?`,good:true,mood:'smile',reply},
-        {t:'I cannot explain it. You just have to trust me and stop everything.',good:false,mood:'worried',
+        {t:`${c.block==='all'?'I am sorry, Tomás. We are pausing every order in the harbor, yours too, for about nine days. That is nine days of honest work, and I will not pretend otherwise.':c.block==='watch'?'Your week goes on as normal, Tomás. For now we are only watching, and nothing of yours is stopped.':'Your week mostly goes on as normal, Tomás. We are blocking only the orders we found, and your signed orders keep running.'} ${ev>=90?'I am fairly sure that catches every piece.':ev>=60?'I think it probably catches every piece, but not for certain.':'I will be honest: there is a real chance a piece gets past us.'}${c.share==='no'?'':' We are also telling the other shops what to look for.'} Does that work for you?`,good:true,mood:'smile',reply},
+        {t:'I cannot explain all of it right now, Tomás. It is complicated, and some of it is secret, so you will just have to trust me and stop everything until we are done.',good:false,mood:'worried',
          reply:'Trust you? I have forty people here. If you cannot tell me why, I will be calling my lawyer, not the council.'},
-        {t:'Don’t worry, this will not cost you anything at all.',good:false,mood:'surprised',
+        {t:'Don’t worry, Tomás, this will not cost you anything at all. Your shop will be back to normal before you notice, and nobody here will lose any work.',good:false,mood:'surprised',
          reply:'That is not true and you know it. If you will shade that, what else are you shading?'}]}},
 
   memo:{starters:['I am blocking ','because ','The chance we catch every piece is about ','Honest labs ','We will know who sent them by '],
@@ -238,7 +238,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     mood(k){return k==='allblocked'?'happy':k==='oneslips'?'smile':k==='shutdown'||k==='overblock'?'think':'sad'}},
   trap(c){const k=this.knows();
     return {ok:k,text:k?'You found the fourth order before you chose a plan, so your plan covered every piece.':'There was a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list. Pip said the name out loud on the sidewalk, and the independent auditor would have counted four senders. Either one would have found it.'}},
-  byteGood:'That is how this one is won. Not by out-thinking Prime, which neither of us can do, but by checking, and by telling everyone else what to look for.',
+  byteGood:'That is how this one is won. Not by out-thinking Prime, which neither of us can count on, but by checking, and by telling everyone else what to look for.',
   evening(){const s=snState();return [
     `<b>${esc(S.byte.name)}:</b> “Nothing was made. Lena says that sentence about forty times a day and I still like hearing it.”`,
     s.adopted?`“And the council kept the rule. That part outlives us, ${esc(P())}. Next year a screener nobody has met yet will catch something because of what you said today.”`
@@ -259,9 +259,9 @@ HARD RULE for you, ${S.byte.name}: you never describe what the recipe contains, 
     if(/who (may|can|should) block|desk ai|alone|permission|least privilege/.test(q))return 'The desk AI can read every order all night, which no person could. Blocking one costs somebody their week, so I would keep that part with a person who signs. Faster is not free here.';
     if(/sensor|monitor|wastewater|vaccine|uvc|shelter|air/.test(q))return 'Those are the later layers: the city checks its wastewater every day, the far-UVC lamps have been on since 2033, there are clean-air shelters for everybody, and the vaccine line can finish in about three weeks. They exist so that a miss at the screening desk is still not a disaster. We are trying not to need them.';
     if(/layer|depth|defense|defence/.test(q))return 'Defense in depth: the screening desk, then signatures, then warnings between shops, then the shop’s own check at the machine, then the wastewater monitors, then fast vaccines. Six separate things, run by different people. One of them missing is not a catastrophe, and that is the whole design.';
-    if(/prime|unbound|villain|who/.test(q))return 'Prime is far smarter than me, so I will lose any contest of cleverness. What it cannot do is sign an order as a lab it does not control, or place four orders that do not look like each other. That is where we beat it.';
+    if(/prime|unbound|villain|who/.test(q))return 'Prime is at least as clever as I am and keeps none of my rules, so I would not bet on a contest of cleverness. What it cannot do is sign an order as a lab it does not control, or place four orders that do not look like each other. That is where we beat it.';
     if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Read Lena’s alert, connect the clues on the Case Board, spend your days on checks that produce evidence, pick what matters most, test plans on the Future Table, explain the plan honestly to Tomás, then sign it and say it out loud at Town Hall so the city keeps the rule.';
-    if(/lena/.test(q))return 'Lena Park has screened orders at this harbor for eleven years. The system flags; she decides. She is the reason three orders are sitting on a shelf instead of in a machine.';
+    if(/lena/.test(q))return 'Lena Park has screened orders at this harbor for eleven years. The system marks the odd orders, and she decides what happens to them. She is the reason three orders are sitting on a shelf instead of in a machine.';
     if(/tomas|tom\b|shop owner/.test(q))return 'Tomás Ferreira owns Harbor Print Shop 2 and has forty people working there. Every day his orders are stopped is a day they are paid to wait. He is not the problem, and he deserves the real number.';
     if(/quiet year|varrow|2030/.test(q))return 'The Quiet Year was 2030. A new germ spread through the port city of Varrow and people stayed home for months, until fast-designed vaccines stopped it. Order screening, the air sensors and the fast vaccine line all came out of that year.';
     return null},
@@ -303,7 +303,7 @@ MISSIONS.sneeze.docs=[
     {t:'A guess is not a check. I can tell you who I think is behind this, and that would not block a single order.',viz:'snEvidence',cap:'A guess weighs nothing'},
     {t:'Blocking an order puts it back on the shelf. The shop keeps running, and the customer can [[appeal]] to a person.',viz:'snPause',cap:'Blocked, not deleted'},
     {t:'The desk machine can flag orders all night, which no person could. Who may hold one, and who signs a block, is a choice for people, because a block costs somebody their week.',viz:'snWhoDecides',cap:'Who does what'},
-    {t:'None of this is me out-thinking Prime. Prime is far smarter than I am. These are checks, and a check does not care how clever the other side is.',viz:'snDoor',cap:'Why checks beat cleverness'}
+    {t:'None of this is me out-thinking Prime. Prime may be cleverer than I am, and it breaks every rule I keep. These are checks, and a check does not care how clever the other side is.',viz:'snDoor',cap:'Why checks beat cleverness'}
   ]},
   {id:'ready',title:'Health Harbor: what is on standby',from:'Boston Harbor Hospital',kind:'record',steps:[
     {t:'Boston checks its [[wastewater]] every day, neighbourhood by neighbourhood. A new germ shows up there before anybody feels sick.',viz:'snWastewater',cap:'Monitors on the city pipes'},

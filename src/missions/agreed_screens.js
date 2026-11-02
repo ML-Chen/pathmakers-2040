@@ -116,7 +116,7 @@ function agUpgradeScreen(){const N=S.notes,c=S.choice||{},B=()=>S.byte.name;
     screen('evening',`${scene('night')}${hud('Home · Boston · 9:10 PM')}<div class="evening agu"><div class="eve-byte ${st.glow||S.honesty?'glow':''}" id="agb">${byteBox({...S.byte,mood:st.mood||'happy'},'big perk')}</div>
      <div class="caption-card dark" id="agcap"></div></div>`);
     const cap=$('#agcap');
-    if(st.sign){cap.innerHTML=`<div class="fig">${VIZ.agUpgrade?VIZ.agUpgrade({p:0}):''}</div><p>Sign the Honesty Upgrade so ${esc(B())} knows it’s really from you.</p><div class="row"><button class="btn small" id="sg">Sign as ${esc(P())}</button></div>`;
+    if(st.sign){cap.innerHTML=`<div class="fig">${VIZ.agUpgrade?VIZ.agUpgrade({p:0}):''}</div><p>Sign to approve the Honesty Upgrade from ${esc(B())}’s maker.</p><div class="row"><button class="btn small" id="sg">Sign as ${esc(P())}</button></div>`;
       $('#sg').onclick=()=>{cap.innerHTML=`<div class="fig">${VIZ.agUpgrade?VIZ.agUpgrade({p:1}):''}</div><div class="sig">${esc(P())}</div>`;S.honesty=true;save();
         if(unlock('honesty'))setTimeout(()=>toast('New Field Guide idea: '+FIELD_GUIDE.honesty.title,'good'),900);setTimeout(()=>{i++;show()},1700)};return}
     cap.innerHTML=`${st.viz&&VIZ[st.viz]?`<div class="fig">${VIZ[st.viz]({p:1})}</div>`:''}${st.plan?`<div class="plan">${VIZ.agCupcakes?VIZ.agCupcakes({}):''}<p>A box of 12 cupcakes from the hospital party.</p></div>`:''}<p><b>${esc(B())}:</b> “${rich(st.text)}”</p><div class="choices" id="agch"></div>`;

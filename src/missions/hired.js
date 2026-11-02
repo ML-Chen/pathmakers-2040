@@ -122,7 +122,7 @@ const HIRED_DOCS=[
 const HIRED_REVEAL={saturday:'I made three saves on Saturday! My ankle feels totally fine.',reroll:'Ow. It rolled again, and now I have to miss the playoffs...',
   cheer:'I cheered so loud on Saturday. And now I’m ready for the playoffs!',boot:'That boot was so boring. But my ankle is strong again!'};
 
-MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:'Start',blurb:'Explore the job, meet the team, practice, and interview with Dr. Reyes.',after:[],
+MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:'Start',blurb:'See what the job is like, meet the team, try a practice case, and interview with Dr. Reyes.',after:[],
   kind:'journey',district:'boston',year:1,season:'spring',caseTitle:'Ari’s ankle · practice case',
   place:'Boston Harbor Hospital',debriefScene:'hospital',
   stages:[{key:'explore',at:'h-home'},{key:'meet',at:'h-openhouse'},{key:'practice',at:'h-reyes'},{key:'interview',at:'h-interview'},{key:'firstday',at:'h-firstday'}],
@@ -158,7 +158,9 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
   consent:{left:'abena',right:'ari',title:'Ari and his grandma',role:'Patient and grandparent',prompt:'So can I play on Saturday or not?',replyWho:'ari',heart:'ari',scene:'hospital',place:'First-aid tent · Open House',
     opts(c,M){const o=M.outcomes(c,M.knows());const re=Math.round(100*o.filter(x=>x.kind==='reroll').reduce((a,x)=>a+x.p,0));const play=c.sat==='play'&&c.prot!=='boot';
       const what=(c.prot==='boot'?'a walking boot for about two weeks':c.prot==='brace'?'a brace':'tape')+(play?' and playing on Saturday':', and sitting out on Saturday');
-      return [{t:`I suggest ${what}. About ${re} out of 100 kids would roll it again${play?', so you’d have to tell us the truth if it hurts':''}. ${play?'':'You can still sit with your team and cheer. '}What do you two think?`,good:true,mood:'think',
+      const odds=re>=40?'about half the kids who do that roll it again':re>=25?'about 3 in 10 kids who do that roll it again':re>=15?'about 2 in 10 kids who do that roll it again':re>=8?'about 1 in 10 kids who do that roll it again':'very few kids roll it again';
+      const gear=c.prot==='boot'?'a walking boot for about two weeks':c.prot==='brace'?'a brace':'tape';
+      return [{t:play?`Yes, you can play on Saturday, Ari, with ${gear} on. But ${odds}, so you’d have to tell us the truth the moment it hurts. What do you two think?`:`Not this Saturday, Ari. I’d like you to rest it with ${gear}, so you’re strong for the playoffs in three weeks. ${re<=5?'Resting like that, very few kids hurt it again.':'Resting like that, only a few kids in 100 hurt it again.'} You can still sit with your team and cheer. What do you two think?`,good:true,mood:'think',
           reply:play?'I promise I’ll tell the truth if it hurts. Okay, let’s do it.':'I really wanted to play... but I want to be ready for the playoffs. Okay.'},
         {t:`Trust me, ${what} is the best plan for you. I’ve looked at all the numbers, so you two don’t need to worry about the details.`,good:false,mood:'worried',reply:'Um... okay. But what if it gets worse?'},
         {t:'You’ll definitely be fine, Ari. Kids your age heal really fast, so nothing can go wrong with this plan!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
