@@ -1,3 +1,5 @@
+/* The game is drawn for a light page. Hosts in dark mode (the Claude app, some browsers) must not darken its cards. */
+:root{color-scheme:light only}
 /* Layout: one phone-width column over a full-bleed animated scene; conversations put a large animated character on stage with graded-reader subtitles below; work screens use floating cards. */
 [hidden]{display:none!important}
 :root{

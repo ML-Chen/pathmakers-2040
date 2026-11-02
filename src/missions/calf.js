@@ -333,10 +333,12 @@ MISSIONS.calf.custom={
     const card=k=>{const T=CALF_TESTS[k];return `<button class="calf-test ${pick===k?'on':''}" data-t="${k}" ${done?'disabled':''}><div class="calf-ticon">${calfTestIcon(k)}</div><div class="calf-tt"><b>${esc(T.name)}</b><span>${T.cost} coins · ${T.risk?T.risk+' in 100 have breathing trouble':'no risk'} · checks: ${T.checks==='all'?'teeth, belly, and blood':esc(CALF_CAUSE[T.checks].toLowerCase())}</span></div></button>`};
     const before=calfBelief(!!S.told,null);
     screen('criteria calf-testscr',`${scene('nome_barn')}${hud('Warming Barn 2 · Friday, 4:30 PM')}<div class="panel-card calf-testcard"><h2>Test small first</h2>
-      <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
+      <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}${!S.told&&!done?`<br><button class="btn small" id="calftell">Tell ${esc(S.byte.name)} about the ridge tower</button>`:''}</p></div>
       ${bars(before)}<div class="calf-tests">${['barn','feed','chew','exam'].map(card).join('')}</div>
       <button class="btn wide" id="run" ${pick&&!done?'':'disabled'}>Run it tonight</button><div id="calfres"></div></div>`);
     if(!done)setTimeout(()=>playLine('byte',say),250);
+    const tb=$('#calftell');if(tb)tb.onclick=()=>{S.told=true;S.notes.hum=true;save();unlock('nome-local');toast('You told '+S.byte.name+' about the ridge tower','good');
+      setTimeout(()=>playLine('byte','Thanks! I checked the reserve’s quake sensor. A hum too low for her collar to hear comes from the east ridge every few minutes, and Aqpik freezes each time.'),300);M().custom.calf_test()};
     $$('.calf-test').forEach(b=>b.onclick=()=>{pick=b.dataset.t;$$('.calf-test').forEach(x=>x.classList.toggle('on',x===b));$('#run').disabled=false});
     const show=()=>{const T=CALF_TESTS[st.test],after=calfBelief(!!S.told);const ok=st.test==='exam'?null:T.result;
       const line=st.test==='exam'?'The exam looked normal. A milk tusk is coming in, but her gums, belly, and blood look fine.':ok?'She nursed! The quiet barn worked. That’s strong evidence she was scared.':'She still won’t eat. That rules some causes out, and that helps too.';

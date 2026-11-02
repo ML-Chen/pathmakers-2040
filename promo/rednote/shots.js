@@ -34,7 +34,7 @@ module.exports = [
   {id: 'bench', place: '工作台 · AI的资料', min: 6.5,
     vo: 'AI会把资料整理好，每一句话都配上图，难词点一下就有解释。',
     setup: `startMission('maya','workbench')`,
-    every: [60, `window.scrollBy(0, 9)`], hide: ['.tabs', '.doc-tools', '.bench-foot', '#next', '.companion']},
+    every: [33, `window.scrollBy(0, 13)`], hide: ['.tabs', '.doc-tools', '.bench-foot', '#next', '.companion']},
   {id: 'odds', place: '未来之桌', min: 7.5,
     vo: '要学会先想清楚什么最重要，再看概率，在十种可能的未来里做选择。',
     setup: `startMission('maya','criteria');S.criteria=[];renderCriteria()`,

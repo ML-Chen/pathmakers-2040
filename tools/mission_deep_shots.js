@@ -4,14 +4,16 @@
 const {chromium}=require('playwright');const fs=require('fs'),path=require('path');
 const [html,out,id]=[process.argv[2],process.argv[3]||'/tmp/mission-shots',process.argv[4]];if(!id){console.error('usage: mission_deep_shots.js page.html outDir missionId');process.exit(2)}
 fs.mkdirSync(out,{recursive:true});for(const f of fs.readdirSync(out))if(/\.(png|txt)$/.test(f))fs.unlinkSync(path.join(out,f));
-(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+(async()=>{const VW=+process.env.PM_VW||390,VH=+process.env.PM_VH||844,LG=process.env.PM_LANG||'';const uiChecks=require('./ui_checks.js');const issues=[];
+ const b=await chromium.launch();const p=await b.newPage({viewport:{width:VW,height:VH},deviceScaleFactor:1});
  const errs=[];p.on('pageerror',e=>errs.push('pageerror: '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
  await p.route(/fonts\.(googleapis|gstatic)\.com/,r=>r.fulfill({status:200,body:''}));
  await p.addInitScript(()=>{try{localStorage.clear()}catch(e){}});
  await p.goto('file://'+path.resolve(html));await p.waitForTimeout(300);
- let n=0;const shot=async(name,w=500,full=false)=>{await p.waitForTimeout(w);await p.screenshot({path:path.join(out,String(++n).padStart(3,'0')+'-'+name+'.png'),fullPage:full})};
+ let n=0;const shot=async(name,w=500,full=false)=>{await p.waitForTimeout(w);const fn=String(++n).padStart(3,'0')+'-'+name;await p.screenshot({path:path.join(out,fn+'.png'),fullPage:full});
+   try{for(const x of await p.evaluate('('+uiChecks.toString()+')()'))issues.push(fn+'  ·  '+x)}catch(e){issues.push(fn+'  ·  check failed: '+e.message.split('\n')[0])}};
  const E=(f,a)=>p.evaluate(f,a);
- const flow=await E(id=>{S.mute=true;if(!MISSIONS[id])return null;S.completed={};startMission(id);return M().flow.map(f=>({name:f.name,k:f.k}))},id);
+ const flow=await E(([id,lg])=>{S.mute=true;if(lg)S.lang=lg;if(!MISSIONS[id])return null;S.completed={};startMission(id);return M().flow.map(f=>({name:f.name,k:f.k}))},[id,LG]);
  if(!flow){console.error('no mission '+id);process.exit(2)}
  for(const f of flow){await E(n=>{window.__st=n;go(n)},f.name);
   if(f.k==='talk'){for(let i=0;i<40;i++){await p.waitForFunction(()=>document.querySelectorAll('#choices .choice').length||(document.querySelector('#hint')&&!document.querySelector('#hint').hidden)||S.step!==window.__st,null,{timeout:3500}).catch(()=>{});await shot(f.name+'-'+i,200);const st=await E(()=>({ch:document.querySelectorAll('#choices .choice').length,step:S.step}));if(st.step!==f.name)break;
@@ -39,4 +41,4 @@ fs.mkdirSync(out,{recursive:true});for(const f of fs.readdirSync(out))if(/\.(png
   const ex=await E(n=>((M().shots||{})[n]||[]).map(x=>x.label),f.name);
   for(let i=0;i<ex.length;i++){await E(([n,i])=>{document.querySelectorAll('.sheet,.bubble').forEach(x=>x.remove());M().shots[n][i].run()},[f.name,i]);await shot(f.name+'-'+ex[i].replace(/[^a-z0-9]+/gi,'-'),1000,true)}}
  await E(()=>go('hub'));await shot('hub',900);
- fs.writeFileSync(path.join(out,'errors.txt'),errs.join('\n'));console.log(n+' shots in '+out+'; errors: '+(errs.join('\n')||'none'));await b.close()})();
+ fs.writeFileSync(path.join(out,'errors.txt'),errs.join('\n'));fs.writeFileSync(path.join(out,'issues.txt'),issues.join('\n'));console.log(n+' shots in '+out+'; errors: '+(errs.join('\n')||'none'));await b.close()})();

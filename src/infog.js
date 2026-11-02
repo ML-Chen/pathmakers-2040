@@ -153,7 +153,7 @@ const VIZ={
   timeline:()=>{const X=d=>20+d*(260/45);return igFrame(300,150,`
      <path d="M20 118 H284" stroke="${IG.line}" stroke-width="2"/>${[0,7,14,21,28,35,42].map(d=>`<path d="M${X(d)} 114 v8" stroke="${IG.soft}"/>${igT(X(d),134,d===0?'Today':typeof T==='function'?T('Wk {0}',d/7):'Wk '+d/7,{s:9.5,c:IG.soft})}`).join('')}
      <path d="M${X(9)} 20 V118" stroke="${IG.coral}" stroke-width="2" stroke-dasharray="4 4"/><g transform="translate(${X(9)} 12)"><path d="M0 0 v14 M0 0 h14 l-4 4 l4 4 h-14" fill="${IG.coral}" stroke="${IG.coral}" stroke-width="1.5"/></g>${igT(X(9)+20,18,'Recital (day 9)',{s:10,c:IG.coral,a:'start'})}
-     ${[['BoneMend',8,IG.violet],['Cast',21,IG.teal],['Pins',42,'#7b8bb8']].map(([l,d,c],i)=>`<g><rect x="20" y="${38+i*24}" width="${X(d)-20}" height="14" rx="7" fill="${c}" class="ig-grow" style="--d:${i*.3}s"/>${igT(26,49+i*24,l,{s:10,c:'#fff',a:'start'})}<text x="${X(d)+6}" y="${49+i*24}" font-size="12" font-family="Nunito" fill="${IG.ink}">&#119070;</text></g>`).join('')}`,'Time until violin for each option')},
+     ${[['BoneMend',8,IG.violet],['Cast',21,IG.teal],['Pins',42,'#7b8bb8']].map(([l,d,c],i)=>`<g><rect x="20" y="${38+i*24}" width="${X(d)-20}" height="14" rx="7" fill="${c}" class="ig-grow" style="--d:${i*.3}s"/>${X(d)-20>70?igT(26,49+i*24,l,{s:10,c:'#fff',a:'start'}):igT(X(d)+22,49+i*24,l,{s:10,c:c,w:800,a:'start'})}<text x="${X(d)+6}" y="${49+i*24}" font-size="12" font-family="Nunito" fill="${IG.ink}">&#119070;</text></g>`).join('')}`,'Time until violin for each option')},
   sampleSize:()=>{let big='',small='';for(let i=0;i<220;i++)big+=`<circle cx="${(12+(i*37)%126).toFixed(0)}" cy="${(30+((i*53)%70)).toFixed(0)}" r="2.4" fill="${IG.teal}" opacity=".75"/>`;for(let i=0;i<40;i++)small+=`<circle cx="${(172+(i*29)%110).toFixed(0)}" cy="${(30+((i*41)%70)).toFixed(0)}" r="2.4" fill="${IG.violet}"/>`;
      return igFrame(300,150,`<rect x="6" y="22" width="138" height="86" rx="14" fill="#eefaf8"/>${big}<rect x="160" y="22" width="134" height="86" rx="14" fill="#f2f0ff"/>${small}
      ${igT(75,16,'Cast: 21,000 kids',{s:11})}${igT(227,16,'BoneMend: 40 kids',{s:11})}
@@ -190,3 +190,17 @@ const VIZ={
      ${igT(200,50,'4 minutes',{s:22,c:IG.teal,w:800})}${igT(200,74,'average wait',{s:12,c:IG.soft})}`,'A clock showing a four minute wait'),
   datacenter:()=>igFrame(300,110,`<rect x="0" y="0" width="300" height="110" rx="10" fill="#1e2450"/>${[0,1,2,3,4,5,6,7,8,9,10,11,12].map(i=>`<circle cx="${(i*71)%300}" cy="${(i*37)%60}" r="1.2" fill="#fff" opacity=".6"/>`).join('')}<rect x="96" y="44" width="108" height="50" rx="4" fill="#3a4282"/>${[0,1,2,3,4,5].map(i=>`<rect x="${104+i*16}" y="54" width="10" height="30" rx="2" fill="#5ee6d6" class="ig-blink" style="--d:${i*.2}s"/>`).join('')}<path d="M80 30 l140 70 M220 30 l-140 70" stroke="${IG.red}" stroke-width="5" stroke-linecap="round" opacity=".85"/>${igT(150,22,'Calder Bay',{s:10.5,c:'#cfd6ff'})}`,'A secret datacenter that was shut down')
 };
+
+// An SVG piece placed with transform="translate(...)" loses its place when a CSS animation also animates transform:
+// the animation replaces the attribute and the piece jumps to the corner. Wrap any such piece in a <g> that keeps the
+// placement, so the animation runs inside it. Runs on everything added to the page (docs, vignettes, props, maps).
+function svgUnclash(root){if(!root||!root.querySelectorAll)return;
+  const els=root.querySelectorAll('svg [transform][class],svg [transform][style]');
+  for(const el of els){if(!el.getAnimations)continue;let hit=false;
+    try{hit=el.getAnimations().some(a=>a.effect&&a.effect.getKeyframes().some(k=>'transform' in k||'translate' in k||'scale' in k||'rotate' in k))}catch(e){}
+    if(!hit)continue;const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('transform',el.getAttribute('transform'));
+    el.removeAttribute('transform');el.parentNode.insertBefore(g,el);g.appendChild(el)}}
+if(typeof MutationObserver!=='undefined'&&typeof document!=='undefined'){let q=[],t=0;
+  const run=()=>{t=0;const r=q;q=[];r.forEach(n=>{if(n.isConnected)svgUnclash(n.tagName==='svg'?n.parentNode:n)})};
+  new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes)if(n.nodeType===1&&(n.tagName==='svg'||n.querySelector&&n.querySelector('svg')))q.push(n);
+    if(q.length&&!t)t=requestAnimationFrame(run)}).observe(document.documentElement,{childList:true,subtree:true})}

@@ -1,13 +1,13 @@
 // Renders the RedNote concept video: node promo/rednote/render.js dist/pathmakers.html OUT [vo_dir]
 // Each shot in shots.js is played live in the game at 405x540 CSS px (3:4) with deviceScaleFactor 8/3, so frames are
-// 1080x1920. The page runs in slow motion (PROMO_SLOW, default 0.25) while full-size screenshots are taken, and the
+// 1080x1920. The page runs on a virtual clock stepped one 30 fps frame at a time while full-size screenshots are taken, and the
 // frames are assembled at page time with ffmpeg at 30 fps, so motion is smooth.
 // With vo_dir (made by vo.py: <id>.wav and durations.json) each shot lasts as long as its line plus a pause, and the
 // narration and music are mixed in; without it, shots use estimated lengths and only the music plays (a preview).
 // Writes OUT/rednote.mp4, OUT/stills/<n>-<id>.png (one still per shot) and OUT/contact.jpg.
 const {chromium} = require('playwright'); const fs = require('fs'), path = require('path'), {execFileSync} = require('child_process');
 const [html, out = '/tmp/pm-promo', voDir] = process.argv.slice(2);
-const SHOTS = require('./shots.js'); const ROOT = path.resolve(__dirname, '..', '..');
+const SHOTS = require('./shots.js').filter(s => !process.env.PROMO_ONLY || process.env.PROMO_ONLY.split(',').includes(s.id)); const ROOT = path.resolve(__dirname, '..', '..');  // PROMO_ONLY=hook,bench renders just those shots
 for (const d of ['frames', 'segs', 'stills', 'clean']) fs.mkdirSync(path.join(out, d), {recursive: true});
 const ff = (...a) => execFileSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...a]);
 const VO = voDir && fs.existsSync(path.join(voDir, 'durations.json')) ? JSON.parse(fs.readFileSync(path.join(voDir, 'durations.json'))) : null;
@@ -65,24 +65,34 @@ const CSS = `
 `;
 
 (async () => {
-  // Slow motion capture: the page runs at R times real speed (JS clocks, timers, animation frames and CSS animations),
-  // and full-resolution screenshots are taken as fast as possible, each stamped with page time. Played back at page
-  // time, the video is smooth and sharp even though each screenshot takes ~100 ms.
-  const R = +(process.env.PROMO_SLOW || 0.25);
+  // Frame-stepped capture: the page runs on a virtual clock that only moves when we say so. JS clocks, timers and
+  // animation frames use it, and every CSS animation and transition is paused and moved forward by hand. Each frame is
+  // exactly 1/30 s of page time, however long the full-resolution screenshot takes, so the video plays at a true 30 fps.
+  const FPS = 30, DT = 1000 / FPS;
   const b = await chromium.launch();
   const ctx = await b.newContext({viewport: {width: W, height: H}, deviceScaleFactor: OW / W});
   const p = await ctx.newPage(); const errs = [];
   p.on('pageerror', e => errs.push(e.message));
-  await p.addInitScript(R => {
+  await p.addInitScript(() => {
     window.__noaudio = 1; try { localStorage.clear() } catch (e) {}
-    const pn = performance.now.bind(performance), t0 = pn(), dn = Date.now, d0 = dn();
-    performance.now = () => t0 + (pn() - t0) * R; Date.now = () => Math.round(d0 + (dn() - d0) * R);
-    const ST = window.setTimeout, SI = window.setInterval, RAF = window.requestAnimationFrame.bind(window);
-    window.setTimeout = (f, ms, ...a) => ST(f, (ms || 0) / R, ...a); window.setInterval = (f, ms, ...a) => SI(f, (ms || 0) / R, ...a);
-    window.requestAnimationFrame = cb => RAF(ts => cb(t0 + (ts - t0) * R));
+    const base = performance.now(), d0 = Date.now(); let vt = 0, seq = 0; const timers = new Map(); let rafs = [];
+    performance.now = () => base + vt; Date.now = () => Math.round(d0 + vt);
+    window.setTimeout = (f, ms, ...a) => { const id = ++seq; timers.set(id, {due: vt + Math.max(0, +ms || 0), f, a}); return id };
+    window.setInterval = (f, ms, ...a) => { const id = ++seq; const every = Math.max(1, +ms || 0); timers.set(id, {due: vt + every, f, a, every}); return id };
+    window.clearTimeout = window.clearInterval = id => timers.delete(id);
+    window.requestAnimationFrame = cb => { const id = ++seq; rafs.push([id, cb]); return id };
+    window.cancelAnimationFrame = id => { rafs = rafs.filter(r => r[0] !== id) };
+    const css = dt => { for (const an of document.getAnimations()) { try { if (an.playState !== 'paused') an.pause(); an.currentTime = (an.currentTime || 0) + dt } catch (e) {} } };
+    // move page time forward by ms: run due timers in order, then one animation frame, then the CSS animations
+    window.__adv = ms => { const end = vt + ms;
+      for (let guard = 0; guard < 5000; guard++) { let nx = null; for (const [id, t] of timers) if (t.due <= end && (!nx || t.due < nx[1].due)) nx = [id, t]; if (!nx) break;
+        const [id, t] = nx; vt = Math.max(vt, t.due); if (t.every) t.due += t.every; else timers.delete(id); try { typeof t.f === 'function' ? t.f(...t.a) : (0, eval)(t.f) } catch (e) { console.error(e) } }
+      const dt = end - vt; vt = end; const q = rafs; rafs = []; for (const [, cb] of q) try { cb(base + vt) } catch (e) { console.error(e) }
+      css(ms) };
+    window.__run = ms => { for (let t = 0; t < ms; t += 1000 / 30) window.__adv(Math.min(1000 / 30, ms - t)) };
     window.__pt = () => performance.now();
-  }, R);
-  await p.goto('file://' + path.resolve(html)); await p.waitForTimeout(800 / R);
+  });
+  await p.goto('file://' + path.resolve(html)); await p.waitForTimeout(300); await p.evaluate(() => __run(800));
   await p.addStyleTag({content: CSS});
   // a finger that taps buttons on screen: prTap(selector, text?) moves to the element, shows a ripple, then clicks it
   await p.evaluate(() => {
@@ -93,8 +103,8 @@ const CSS = `
   });
   await p.evaluate(() => { S.mute = true; S.player = 'Juniper'; S.lang = 'zh'; save() });
   const cdp = await ctx.newCDPSession(p);
-  await cdp.send('Animation.enable'); await cdp.send('Animation.setPlaybackRate', {playbackRate: R});
-  const wait = ms => p.waitForTimeout(ms / R);                         // wait in page time
+  await cdp.send('Animation.enable'); await cdp.send('Animation.setPlaybackRate', {playbackRate: 0});  // only our clock moves animations
+  const wait = ms => p.evaluate(ms => __run(ms), ms);                   // wait in page time
   const segs = []; let total = 0;
   for (const [n, s] of SHOTS.entries()) {
     const D = dur(s);
@@ -121,22 +131,21 @@ const CSS = `
     if (s.cycle) { const [ms, ...setups] = s.cycle; for (let k = 1, t = ms; t < D * 1000; k++, t += ms) events.push([t, setups[k % setups.length], true]) }
     events.sort((a, b) => a[0] - b[0]);
     const dir = path.join(out, 'frames', String(n).padStart(2, '0')); fs.rmSync(dir, {recursive: true, force: true}); fs.mkdirSync(dir);
-    const frames = []; const pt0 = await p.evaluate(() => window.__pt()); let still = false;
-    for (;;) {
-      const t = (await p.evaluate(() => window.__pt())) - pt0;
+    const frames = []; let still = false; const N = Math.round(D * FPS);
+    for (let f = 0; f < N; f++) {
+      const t = f * DT;
       while (events.length && events[0][0] <= t) { const [, code, keep] = events.shift();
         await p.evaluate(({code, keep}) => { const pr = document.getElementById('pr'); try { (0, eval)(code) } catch (e) {} if (keep && pr) document.body.appendChild(pr) }, {code, keep}).catch(() => {}) }
-      if (t >= D * 1000) break;
       const file = path.join(dir, String(frames.length).padStart(5, '0') + '.jpg');
-      await p.screenshot({path: file, type: 'jpeg', quality: 90}); frames.push([file, t / 1000]);
-      if (!still && t > D * 450) { fs.copyFileSync(file, path.join(out, 'stills', `${String(n + 1).padStart(2, '0')}-${s.id}.jpg`)); still = true }
+      const shot = await cdp.send('Page.captureScreenshot', {format: 'jpeg', quality: 88, optimizeForSpeed: true}); fs.writeFileSync(file, Buffer.from(shot.data, 'base64')); frames.push([file, t / 1000]);
+      if (!still && f >= N * .45) { fs.copyFileSync(file, path.join(out, 'stills', `${String(n + 1).padStart(2, '0')}-${s.id}.jpg`)); still = true }
+      await p.evaluate(dt => __adv(dt), DT);
     }
     if (!frames.length) { errs.push(s.id + ': no frames'); continue }
     // concat list with real frame durations, then a constant 30 fps segment of exactly D seconds
-    const list = frames.map(([f, t], i) => `file '${f}'\nduration ${Math.max(0.001, ((frames[i + 1] ? frames[i + 1][1] : D) - t)).toFixed(4)}`).join('\n') + `\nfile '${frames[frames.length - 1][0]}'\n`;
-    fs.writeFileSync(path.join(dir, 'list.txt'), list);
+
     const seg = path.join(out, 'segs', `${String(n).padStart(2, '0')}.mp4`);
-    ff('-f', 'concat', '-safe', '0', '-i', path.join(dir, 'list.txt'), '-vf', `scale=${OW}:${OH}:flags=lanczos,fps=30,format=yuv420p,setsar=1`, '-t', D.toFixed(3),
+    ff('-framerate', String(FPS), '-i', path.join(dir, '%05d.jpg'), '-vf', `scale=${OW}:${OH}:flags=lanczos,format=yuv420p,setsar=1`, '-t', D.toFixed(3),
        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '17', '-an', seg);
     segs.push({seg, D, s, at: total}); total += D;
     console.log(`${s.id}: ${D.toFixed(1)}s, ${frames.length} frames`);

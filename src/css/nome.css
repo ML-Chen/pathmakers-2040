@@ -36,8 +36,10 @@
 @keyframes nmtrunk{0%,100%{transform:none}50%{transform:rotate(-4deg)}}
 /* Observe screen: the animal on a stage over the painted scene, a compact log card, and the pulse source */
 .nm-observe{padding-bottom:0}
-.nm-layer{position:fixed!important;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:1;pointer-events:none}
-.nm-src{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;pointer-events:auto;cursor:pointer;border-radius:50%}
+.nm-layer{position:fixed!important;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:3!important;pointer-events:none}
+.nm-src{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;pointer-events:auto;cursor:pointer;border-radius:50%;z-index:4}
+/* the whole ridge tower is tappable: a tall invisible hit area from the light down to the hilltop */
+.nm-src.nm-env::before{content:'';position:absolute;left:50%;top:-12px;width:76px;height:118px;transform:translateX(-50%);border-radius:24px}
 .nm-src i{position:absolute;inset:18px;border-radius:50%;border:2px solid rgba(255,90,74,.9);opacity:0}
 .nm-src.on i{animation:nmring 1.2s ease-out infinite}.nm-src.on i:nth-child(2){animation-delay:.4s}.nm-src.on i:nth-child(3){animation-delay:.8s}
 @keyframes nmring{0%{transform:scale(.4);opacity:1}100%{transform:scale(2.6);opacity:0}}
