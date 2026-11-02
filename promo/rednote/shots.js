@@ -23,8 +23,8 @@ module.exports = [
     setup: `startMission('maya','workbench')`,
     taps: [[250, `prFlick(560, 650)`], [1500, `prFlick(700, 760)`], [2900, `prFlick(520, 600)`], [3900, `prFlick(760, 800)`]], hide: ['.tabs', '.doc-tools', '.bench-foot', '#next', '.companion']},
   // 4. The game.
-  {id: 'game', place: 'Claude 熬夜做的游戏', min: 4.5,
-    vo: '我让 Claude 熬夜做了个游戏，让孩子提前练习做这个签字的人。',
+  {id: 'game', place: '用 Claude 连夜做的小游戏', min: 4.5,
+    vo: '于是我用 Claude 连夜做了个小游戏，让孩子提前练练怎么做决定、签字负责。',
     setup: `screen('title-promo', scene('home')+'<div class="pr-byte">'+byteBox({...S.byte,mood:'happy'},'dance')+'</div>')`},
   // 5. The places.
   {id: 'places', place: '', min: 5.5,

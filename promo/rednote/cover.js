@@ -18,7 +18,7 @@ html,body{margin:0;width:1080px;height:1440px;overflow:hidden;background:#141838
 </style><div class="grid">${pick.map(f => `<div style="background-image:url(${img(f)})"></div>`).join('')}</div><div class="shade"></div>
 <div class="top"><span>AI 超过人类专家之后</span></div>
 <div class="title">孩子今天<br>该学<em>什么</em>？</div>
-<div class="sub"><b>我让 Claude 熬夜做了个游戏来回答</b></div>`;
+<div class="sub"><b>我用 Claude 连夜做了个小游戏</b></div>`;
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({viewport: {width: 1080, height: 1440}});
   await p.setContent(html); await p.waitForTimeout(300);
