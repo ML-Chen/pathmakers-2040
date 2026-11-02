@@ -172,9 +172,13 @@ function openChat(){const d=sheet(T('Talk to {0}',esc(S.byte.name)),`<div class=
 
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
 let CURSCENE=null;const BG={cv:null,cache:{},key:null,raf:0,t0:performance.now()};
-function scene(k){if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
+// scenes that are referenced but not painted yet borrow the closest painted one instead of the hospital corridor
+const SCENE_STANDIN={eastie_pier:'harbor',dance_hall:'night'};
+// (CURSCENE keeps the scene's own key, so its props and passers-by stay; only the painting is borrowed)
+function standIn(k){return window.PAINT&&!PAINT[k]&&SCENE_STANDIN[k]&&PAINT[SCENE_STANDIN[k]]?SCENE_STANDIN[k]:k}
+function scene(k){if(window.PAINT&&(PAINT[k]||PAINT[standIn(k)])&&!SCENES[k]){CURSCENE=k;return ''}if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
 function bgSize(){const cv=BG.cv,r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);return [Math.max(1,Math.round(r.width*dpr)),Math.max(1,Math.round(r.height*dpr))]}
-function applyScene(){const k=CURSCENE;if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
+function applyScene(){const k=standIn(CURSCENE);if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
   if(!BG.cv){BG.cv=document.createElement('canvas');BG.cv.className='scene bgcanvas';document.body.prepend(BG.cv);addEventListener('resize',()=>{BG.cache={};drawBg(true)})}
   BG.cv.style.display='block';BG.key=k;drawBg(true);if(!BG.raf)loopBg()}
 function paintCache(k,w,h){const id=k+w+'x'+h;if(BG.cache[id])return BG.cache[id];const c=document.createElement('canvas');c.width=w;c.height=h;try{PAINT[k].paint(c.getContext('2d'),w,h)}catch(e){console.warn(e)}BG.cache[id]=c;return c}
@@ -187,14 +191,16 @@ function loopBg(){BG.raf=requestAnimationFrame(()=>{BG.raf=0;if(document.hidden|
 const TRACK_FOR={title:'title',setup:'title',talk:null,walk:'morning',bench:'work',criteria:'work',memo:'work',futuretable:'table',reveal:'table',debrief:'win',evening:'night'};
 if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
+// a place name too long for two lines ("North Pasture · Kigluaik Mammoth Reserve") gets a smaller three-line pill instead of an ellipsis
+function fitPlace(){const pl=APP.querySelector('.hud .place');if(pl&&pl.scrollHeight>pl.clientHeight+2)pl.classList.add('long')}
 // In Chinese mode, text drawn inside pictures (SVG labels) and picture captions is translated too, when a translation exists.
 function i18nSvg(root){if(typeof LANG!=='function'||LANG()==='en'||!root)return;const tab=I18N.tab[LANG()]||{};
   root.querySelectorAll('svg text,svg tspan,figcaption,.fig-cap').forEach(e=>{if(e.children.length&&e.tagName!=='text')return;const t=e.textContent.trim();const v=tab[t];if(v!=null&&e.childNodes.length<=1)e.textContent=v;
     else if(v!=null&&e.tagName==='text'&&!e.querySelector('tspan'))e.textContent=v})}
 function screen(cls,html){I18N.sync();stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;i18nSvg(APP);const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
-  if(typeof campaignScreen==='function')campaignScreen(cls);applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
-  MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
+  if(typeof campaignScreen==='function')campaignScreen(cls);fitPlace();applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
+  MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[standIn(scn)]&&PAINT[standIn(scn)].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 // Autosave keeps the exact step of every unfinished mission (S.at) and, when the player switches to another mission,
 // that mission's working state (S.paused), so coming back resumes where they left off instead of restarting a stage.

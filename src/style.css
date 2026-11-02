@@ -164,8 +164,10 @@ textarea{resize:vertical;line-height:1.5}
 .gpop .mini-btn{margin-top:4px}
 
 /* toasts */
-.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:10px 16px;border-radius:14px;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:drop .35s cubic-bezier(.2,1.4,.4,1);width:max-content;max-width:min(90vw,420px);text-align:center}
+.toast{position:fixed;left:50%;top:calc(62px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:10px 16px;border-radius:14px;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:drop .35s cubic-bezier(.2,1.4,.4,1);width:max-content;max-width:min(90vw,420px);text-align:center}
 .toast.good{background:var(--good)}
+/* toasts drop in just below the HUD row so they never cover the place name or the HUD buttons */
+@media (min-width:700px){.toast{top:calc(82px + env(safe-area-inset-top,0px))}}
 .toast.out{opacity:0;transform:translate(-50%,-10px);transition:.4s}
 @keyframes drop{from{transform:translate(-50%,-30px);opacity:0}}
 
@@ -220,13 +222,16 @@ textarea{resize:vertical;line-height:1.5}
 .ft-byte{width:62px;flex:none}
 .ft-head p{margin:0;font-size:.98rem;color:#dfe6ff}
 .futs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;perspective:600px}
-.fut{margin:0;background:rgba(94,230,214,.08);border:1px solid rgba(94,230,214,.35);border-radius:12px;padding:4px;box-shadow:0 0 18px rgba(94,230,214,.15) inset;animation:holo .55s cubic-bezier(.2,1.2,.4,1) backwards;animation-delay:var(--d)}
+.fut{margin:0;background:rgba(12,18,52,.74);border:1px solid rgba(94,230,214,.35);border-radius:12px;padding:4px;box-shadow:0 0 18px rgba(94,230,214,.15) inset;animation:holo .55s cubic-bezier(.2,1.2,.4,1) backwards;animation-delay:var(--d)}
 @keyframes holo{from{opacity:0;transform:rotateX(60deg) translateY(16px);filter:brightness(2)}}
 .fut .vig{display:block;width:100%;height:auto}
 .fut figcaption{font-size:.62rem;line-height:1.2;color:#cfe9ff;padding:3px 1px 1px;min-height:2.4em}
 .meters{display:flex;flex-direction:column;gap:6px}
 .meter{display:grid;grid-template-columns:minmax(0,1fr) 110px auto auto;gap:8px;align-items:center;font-size:.85rem;font-weight:800}
 .meter small{font-size:.72rem;color:#a9b6e6;font-weight:800;white-space:nowrap}
+/* phones: a shorter bar leaves the goal name room, so it doesn't wrap one word per line; a tappable goal name stays left-aligned */
+@media (max-width:440px){.meter{grid-template-columns:minmax(0,1fr) 74px auto auto;gap:6px}}
+.meter>span .gw{text-align:left}
 .mbar{position:relative}.mbar em{position:absolute;top:-3px;bottom:-3px;width:3px;margin-left:-1.5px;background:#ffd45c;border-radius:2px;box-shadow:0 0 6px #ffd45c}
 .mbar{height:10px;background:rgba(255,255,255,.14);border-radius:999px;overflow:hidden}
 .mbar i{display:block;height:100%;background:linear-gradient(90deg,#5ee6d6,#7c6cf0);border-radius:999px;transition:width .6s}
@@ -435,6 +440,7 @@ svg text:not([font-family]){font-family:var(--body)}
 /* the place label wraps to a second line instead of cutting off long names; small phones get slightly smaller HUD buttons */
 .place{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.12;padding:0 12px;border:6px solid transparent;border-left:0;border-right:0;border-radius:18px;font-size:.82rem}
 /* (vertical space is a transparent border, not padding, so a clamped third line never peeks out below) */
+.place.long{font-size:.7rem;line-height:1.06;-webkit-line-clamp:3;border-width:4px;padding:0 10px}
 @media (max-width:380px){.hud-btns{gap:4px}.hud-btns .hbtn{width:35px;height:35px}.hbtn svg{width:20px;height:20px}}
 /* Talk screens fit the window: the portrait shrinks to leave room for the line and its choices, so nothing scrolls. */
 #app.talk{display:flex;flex-direction:column;height:100vh;height:100dvh;min-height:0}

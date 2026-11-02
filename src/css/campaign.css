@@ -146,6 +146,7 @@ body:has(.screen.worldmap) .bc-gift{bottom:calc(136px + env(safe-area-inset-bott
 .cm-heartfx{position:fixed;left:50%;top:calc(64px + env(safe-area-inset-top,0px));z-index:61;display:flex;align-items:center;gap:5px;transform:translateX(-50%);
   background:#fff;color:#e24a64;border-radius:999px;padding:5px 12px 5px 8px;box-shadow:0 8px 22px rgba(10,14,40,.3);font-weight:800;white-space:nowrap;pointer-events:none;animation:cm-float 2.2s ease-out forwards}
 .cm-heartfx .cm-i{width:20px;height:20px}.cm-heartfx span{color:var(--ink);font-weight:700}
+@media (min-width:700px){.cm-heartfx{top:calc(82px + env(safe-area-inset-top,0px))}}
 @keyframes cm-float{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}12%{opacity:1;transform:translate(-50%,0) scale(1.08)}20%{transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-26px)}}
 .cm-days{display:flex;align-items:baseline;gap:3px;background:#fff3d1;color:#8a5a00;border-radius:999px;padding:6px 11px;font-weight:800;font-size:.8rem;box-shadow:0 4px 14px rgba(20,25,60,.12);flex:none}
 .cm-days b{font-family:var(--display);font-size:1rem}
