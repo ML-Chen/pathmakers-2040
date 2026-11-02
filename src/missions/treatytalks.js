@@ -1,0 +1,201 @@
+// missions/treatytalks.js — Beijing travel visit for the Lawmaker: "Trust, Then Check".
+// American and Chinese treaty teams meet in a restored courtyard in the hutongs near Shichahai (a historic preserve).
+// Under the treaty, each country's treaty AI runs on published goals (its "spec"), and each side checks the other's.
+// This year, the player reads the spec of China's treaty AI, Tianping, and taps the lines that could let something slip
+// past an inspector (custom step bj_spec, a fine-print reading desk). Meanwhile the Chinese inspector Zhao Mingyu has
+// found a self-serving line in the spec of America's treaty AI, Beacon. The player decides how to answer for it
+// (bj_answer), and both lead delegates sign a joint statement with a signature and a red name seal (bj_sign).
+// The treaty and its AIs are the game's 2040 (AI 2040: Plan A has US-China inspector teams); the Field Guide says so.
+// Shared screens: src/missions/china_common.js. Scene: src/scenes/beijing.js. Styles: src/css/china.css.
+const BJ_SPEC=[
+  {id:'chips',t:'Report where every advanced chip in China is to the joint registry within one day of any move.',flag:false,why:'That one helps inspectors. A one-day report is quick enough to follow every chip.'},
+  {id:'truth',t:'Tell inspectors the truth, even when the truth is bad for China.',flag:false,why:'That one is exactly what the treaty asks of both AIs.'},
+  {id:'holiday',t:'During national holidays, reports may wait up to thirty days.',flag:true,why:'Thirty days is a long time. Chips could move and come back before anyone was told.'},
+  {id:'jobs',t:'Run only work that the treaty allows, and keep a log of every job.',flag:false,why:'That one is fine. The log is what inspectors check.'},
+  {id:'updates',t:'Do not learn on the job. Accept an update only after inspectors from both countries approve it.',flag:false,why:'That one matches the treaty’s rule on updates, and both countries hold a key.'},
+  {id:'ministry',t:'Before answering an inspector, wait until a ministry official approves the answer.',flag:true,why:'If an official must approve every answer first, the answers could be shaped, or slowed down.'},
+  {id:'unclear',t:'When a rule is unclear, choose the reading that keeps both countries safest.',flag:false,why:'That one is a good tie-breaker. It doesn’t favor either side.'}];
+const BJ_FIX={
+  fix:{t:'Admit the line is wrong, strike it from Beacon’s spec today, and invite Mr. Zhao to check that it’s gone.',short:'Strike it and invite a check'},
+  keep:{t:'Explain that the line is harmless, because Beacon only uses it when both plans already follow the treaty.',short:'Explain it and keep it'},
+  later:{t:'Ask to settle it at next year’s talks, after Congress has had time to look at the whole spec.',short:'Wait for next year'}};
+function bjSt(){const st=zhSt('bj');st.tap=st.tap||{};return st}
+
+MISSIONS.treatytalks={id:'treatytalks',title:'Trust, Then Check',career:'lawmaker',day:2,dayLabel:'Travel',tag:'Travel',kind:'travel',year:3,season:'fall',district:'beijing',rank:'trainee',
+  blurb:'In a Beijing courtyard, American and Chinese teams check each other’s AI promises line by line.',after:['maya'],
+  place:'Hutong near Shichahai · Beijing',
+  flow:[{name:'bj_arrive',k:'talk',talk:'arrive',scene:'beijing',place:'Hutong near Shichahai · 8:30 AM'},
+    {name:'bj_han',k:'talk',talk:'han',scene:'beijing',place:'Courtyard gate · Treaty talks'},
+    {name:'bj_spec',k:'custom'},
+    {name:'bj_zhao',k:'talk',talk:'zhao',scene:'beijing',place:'Courtyard · Treaty talks · 11:00 AM'},
+    {name:'bj_answer',k:'custom'},
+    {name:'bj_reply',k:'custom'},
+    {name:'bj_sign',k:'custom'},
+    {name:'bj_tea',k:'talk',talk:'tea',scene:'beijing',place:'Hutong near Shichahai · 4:30 PM'},
+    {name:'bj_debrief',k:'custom'},
+    {name:'bj_evening',k:'evening'}],
+  cast:{
+    hanyw:{name:'Han Yuewen',role:'Lead delegate for China, treaty talks',skin:'#f0cfb4',hair:'#5a545e',hairStyle:'bun',eyeShape:'almond',glasses:true,frame:'#8a2a3a',eye:'#2a1a14',
+      outfit:'mandarin',shirt:'#2f5a66',trim:'#e6c674',accessory:'earring',art(m){return zhArt(this,m,{chest:bjJadePin(112,262)})}},
+    zhaomy:{name:'Zhao Mingyu',role:'Treaty inspector, Beijing team',skin:'#ecc6a4',hair:'#141012',hairStyle:'short',masc:true,eyeShape:'mono',eye:'#24160e',
+      outfit:'sweater',shirt:'#d89a3a',glasses:true,frame:'#3a3a4a',art(m){return zhArt(this,m,{chest:bjBadge(196,300)})}},
+    qiaoye:{name:'Qiao Shoucheng',role:'Keeps the tea stand by the courtyard gate',skin:'#e6bc98',hair:'#e8e6ee',hairStyle:'bald',beard:'short',age:'elder',masc:true,eyeShape:'hooded',eye:'#2a1a10',
+      outfit:'cardigan',shirt:'#5a6a7a',under:'#f2efe6'}
+  },
+  voices:{hanyw:'af_aoede',zhaomy:'am_puck',qiaoye:'elder_man'},
+  glossary:{
+    'treaty':'A written agreement between countries. Both sides promise to follow its rules.',
+    'treaty talks':'Meetings where countries check how a treaty is working and agree on changes.',
+    'delegate':'A person sent to speak and decide for their country at a meeting.',
+    'delegation':'The team a country sends to a meeting.',
+    'inspector':'A person whose job is to check that rules are really being followed.',
+    'spec':'A published list of the goals and rules an AI must follow. By law, it has to be accurate.',
+    'fine print':'The small, easy-to-skip lines in a document, where important details sometimes hide.',
+    'registry':'An official list that everyone involved can read. This one shows where every advanced chip is.',
+    'advanced chip':'A powerful computer chip of the kind used to build and run expert AIs.',
+    'ministry':'A department of a country’s government.',
+    'joint statement':'A short document that both sides write and sign together.',
+    'name seal':'A small stamp carved with a person’s name. In China, people often stamp it in red ink beside their signature.',
+    'hutong':'A narrow lane of old courtyard houses in Beijing. Some hutongs are more than 700 years old.',
+    'hutongs':'Narrow lanes of old courtyard houses in Beijing. Some are more than 700 years old.',
+    'siheyuan':'A traditional Beijing house built around a square courtyard, with rooms on all four sides.',
+    'shichahai':'A group of three lakes in old Beijing, ringed with willows and hutongs.',
+    'drum tower':'A tower in Beijing built in the 1270s. Its drums once told the whole city the time.',
+    'ginkgo':'One of the oldest kinds of tree on Earth. Its fan-shaped leaves turn gold in autumn.',
+    'trust, but verify':'An old saying: you can trust someone and still check what they promised.',
+    'nǐ hǎo':'“Hello” in Mandarin Chinese.',
+    'xièxie':'“Thank you” in Mandarin Chinese.',
+    'chá':'“Tea” in Mandarin Chinese.',
+    'méi wèntí':'“No problem” in Mandarin Chinese.',
+    'xìnrèn':'“Trust” in Mandarin Chinese.'
+  },
+  guide:{
+    'bj-trust-check':{title:'Trust, then check',track:'Government, law, and power',
+      text:'Both countries publish what their treaty AIs are told to want, and each side’s inspectors read the other’s goals and check the AIs’ work. A promise means more when the other side can check it.',
+      real:'True today: arms-control treaties have let each country’s inspectors visit the other’s sites, and “trust, but verify” comes from an old Russian saying. No treaty about AI exists yet. The one in this story is a guess about 2040.'},
+    'bj-fine-print':{title:'Read the fine print',track:'Ethics and AI alignment',
+      text:'One quiet line in an AI’s goals can steer everything it does. Read every line of a published spec, and read your own side’s as carefully as the other side’s.',
+      real:'True today: some AI companies publish documents that describe how their AIs are supposed to behave, and people outside the companies read them and point out problems.'}},
+  chatter:{beijing:['My family has lived on this hutong for five generations.','The persimmons are ripe. Mr. Qiao gives them away to anyone who asks.','I came for the Drum Tower. They still beat the drums for visitors every hour.','The lake froze early last winter. Everybody went skating.','I deliver noodles on my bike. The robot only does the far end of the lane.','Look at the ginkgo! It turns gold in one week, then all the leaves fall at once.']},
+  talks:{
+    arrive:[
+      {who:'byte',mood:'happy',text:'Welcome to Beijing! This lane is a [[hutong]]. People have lived in houses like these for hundreds of years, and the city keeps them just as they were.'},
+      {who:'byte',mood:'think',text:'The [[treaty talks]] meet in a [[siheyuan]], an old courtyard house, right through that red gate. American and Chinese teams come here every autumn to check each other’s AI promises.',choices:[
+        {t:'What kind of promises?',reply:'Each country’s treaty AI runs on a published list of goals, called its [[spec]]. Each side reads the other’s spec and checks the AI’s work against it.'},
+        {t:'Why meet in an old house?',reply:'It’s quiet, it belongs to neither government, and the tea is very good.'}]},
+      {who:'qiaoye',mood:'happy',text:'Good morning! [[Nǐ hǎo]]! You must be with the Americans. I’m Qiao Shoucheng. I keep the tea stand by the gate.'},
+      {who:'qiaoye',mood:'smile',text:'Twelve autumns now, these talks. The first year, nobody would drink my tea. They thought I was a spy!',choices:[
+        {t:'Xièxie! I’d love a cup of tea.',good:true,mood:'happy',reply:'Ha! A guest with manners. [[Chá]] first, then work. That’s the order of things in this lane.'},
+        {t:'Sorry, I’m late. I should go straight in.',mood:'neutral',reply:'[[Méi wèntí]], no problem. The tea will still be here when you come out.'}]}
+    ],
+    han:[
+      {who:'hanyw',mood:'smile',text:'Welcome. I am Han Yuewen. I lead China’s [[delegation]] this year. I hear this is your first time at the talks.'},
+      {who:'hanyw',mood:'neutral',text:'Here is how we work. Your team reads the spec of our treaty AI, Tianping, line by line. Our team reads the spec of your AI, Beacon.'},
+      {who:'hanyw',mood:'think',text:'Every line has to serve the treaty, not one country. If you find a line that could let something slip past an [[inspector]], tell us. We will do the same for you.',choices:[
+        {t:'Isn’t that a lot of checking between friends?',mood:'smile',reply:'We are not enemies, but we are not old friends either. Checking is how we get there. In Chinese we call trust [[xìnrèn]]. It is built one checked promise at a time.'},
+        {t:'Has anyone ever found a real problem?',mood:'neutral',reply:'Every year. Usually small ones. Last year your team found a line in our spec that let reports arrive in the wrong format. We fixed it in a week.'}]},
+      {who:'byte',mood:'think',text:'I can read Tianping’s whole spec in a second. What I can’t decide for you is which lines both countries can live with. That part is yours.'}
+    ],
+    zhao:[
+      {who:'zhaomy',mood:'smile',text:'Hello! Zhao Mingyu, inspector. I read Beacon’s spec last night. Twice. Your AI writes very clearly.'},
+      {who:'zhaomy',mood:'think',text:'But I found this, near the end, in the [[fine print]]. “When two plans both follow the treaty, prefer the one that buys more chips from American companies.”'},
+      {who:'zhaomy',mood:'neutral',text:'It follows the treaty, so it isn’t cheating. But a treaty AI should serve the treaty, not one country’s chip sales. Ours is not allowed lines like that.',choices:[
+        {t:'You’re right to raise it. Give me a minute to look at it.',good:true,mood:'smile',reply:'Thank you. Take your time. I would rather wait for a real answer.'},
+        {t:'That line is probably just there to protect American jobs.',mood:'worried',reply:'Maybe. But if Tianping had a line about Chinese jobs, would your team let it stay?'}]},
+      {who:'byte',mood:'think',text:'He’s right about what the line does. It doesn’t break the treaty, but it tilts Beacon toward one side whenever it has a choice. The law says a spec must be accurate, and this one is accurate about something it shouldn’t want.'}
+    ],
+    tea:[
+      {who:'qiaoye',mood:'happy',text:'You’re back! Sit, sit. How did the talks go?'},
+      {who:'qiaoye',mood:'smile',text:'This [[ginkgo]] tree is older than the Drum Tower’s drums. My grandfather sold tea under it, and his father did too.'},
+      {who:'qiaoye',mood:'think',text:'When I was a boy, people said the two countries would never sit at one table. Now they argue about commas in my courtyard, and then they drink my tea.',choices:[
+        {t:'Today one of their inspectors found a mistake in our spec.',good:true,mood:'smile',reply:'And you fixed it in front of them? Good. People remember who owned up.'},
+        {t:'It was mostly reading. I thought it would be more exciting.',mood:'happy',reply:'Exciting is for films. A quiet day at these talks is a good day for everyone.'}]},
+      {who:'qiaoye',mood:'happy',text:'Take a persimmon for the road. They’re sweetest right after the first frost.'}
+    ]
+  },
+  docs:[],criteria:[],controls:[],start:{},
+  planName(){const p=BJ_FIX[bjSt().fix];return p?p.short:'Plan'},
+  outcomes(){return [{kind:'done',p:1,cap:'',flags:{}}]},truth(){return true},knows(){return true},
+  custom:{bj_spec(){bjSpec()},bj_answer(){bjAnswer()},bj_reply(){bjReply()},bj_sign(){bjSign()},bj_debrief(){bjDebrief()}},
+  eveningScene:'beijing',eveningPlace:'Hutong near Shichahai · 7:10 PM',
+  evening(){const st=bjSt();return [
+    `<b>${esc(S.byte.name)}:</b> ${rich('“The [[Drum Tower]] just beat its drums for the evening. Six hundred years, and it still keeps time.”')}`,
+    rich(st.fix==='fix'?'“Mr. Zhao checked Beacon’s spec an hour ago. He sent one word: ‘Confirmed.’ Then a thumbs-up.”':'“Mr. Zhao says his team will read Beacon’s spec again next spring. Very carefully.”'),
+    rich('“The Ledger has a story from Shenzhen: the factory that builds America’s robot crews wants an American crew lead to come and check how its crews can be stopped.”')]},
+  brief(){const st=bjSt(),found=BJ_SPEC.filter(x=>x.flag&&st.tap[x.id]).map(x=>x.id);return `Current case: a Beijing travel day for the Lawmaker career. The annual US-China AI treaty talks meet in a restored courtyard house (siheyuan) in the hutongs near Shichahai, by the Drum Tower. Each country's treaty AI runs on a published spec of goals; each side reads the other's. China's lead delegate is Han Yuewen; the Chinese inspector is Zhao Mingyu; Qiao Shoucheng keeps the tea stand at the gate. China's treaty AI is Tianping; America's is Beacon.
+Tianping's spec lines: ${BJ_SPEC.map(x=>'"'+x.t+'"').join(' ')}. Two lines could let something slip past inspectors: the 30-day holiday delay and waiting for a ministry official to approve every answer. The player has found: ${found.join(', ')||'none yet'}.
+Zhao found a line in Beacon's spec: "When two plans both follow the treaty, prefer the one that buys more chips from American companies." It breaks no rule but tilts a treaty AI toward one country. ${st.fix?'The player chose: '+BJ_FIX[st.fix].t:'The player has not decided how to answer yet.'}
+Key consideration: a treaty AI should serve the treaty, not one side; owning up and inviting a check builds trust faster than explaining a problem away.`},
+  canned(q){
+    if(/holiday|thirty|30/.test(q))return 'Thirty days is a long time for a report to wait. Chips could move and come back before anyone was told.';
+    if(/ministry|official|approve/.test(q))return 'If an official must approve every answer first, the answers could be shaped or slowed. Inspectors need answers straight from the AI.';
+    if(/chip|beacon|american|fine print/.test(q))return 'Beacon’s line doesn’t break the treaty, but it tilts Beacon toward American chip sales whenever it has a choice. A treaty AI should serve the treaty.';
+    if(/trust|verify|check/.test(q))return 'Both sides publish their AIs’ goals and check each other’s. A promise means more when the other side can check it.';
+    if(/tea|qiao|persimmon/.test(q))return 'Mr. Qiao has kept the tea stand for twelve autumns of talks. Say xièxie when he pours.';
+    if(/help|stuck|what do i do/.test(q))return 'Read Tianping’s spec and tap any line that could let something slip past an inspector. Then decide how to answer for Beacon’s line, and sign the joint statement with Ms. Han.';
+    return null},
+  lines:[
+    {who:'byte',text:'Tap any line that could let something slip past an inspector. Read them all. Two of them worry me.'},
+    {who:'byte',text:'You found both. Let’s show Ms. Han.'},
+    {who:'hanyw',text:'Thirty days during holidays. Yes, I see it. Chips can travel a long way in thirty days. We will make it three.'},
+    {who:'hanyw',text:'That line was written so our officials know what inspectors ask. But it should not slow the answer. We will change it: the AI answers first, and the ministry is told at the same time.'},
+    {who:'byte',text:'Here’s the key thing: the line breaks no rule, so you could defend it. But a treaty AI is supposed to serve the treaty, and Mr. Zhao will remember how you answer. Owning up and inviting him to check costs very little. What matters most to you here?'},
+    {who:'hanyw',text:'Thank you. You found two lines in our spec, and you did not hide the one in yours. Mr. Zhao will check the change tonight. That is how this is supposed to work.'},
+    {who:'hanyw',text:'I understand the line is legal. But we cannot ask our people to trust an AI that leans toward your companies. We will put it at the top of next year’s list.'},
+    {who:'hanyw',text:'A year is a long time to leave a line like that in place. We will wait, but our inspectors will read Beacon’s spec twice as carefully until then.'}
+  ].concat(BJ_SPEC.map(x=>({who:'byte',text:x.why}))),
+  shots:{bj_spec:[{label:'both found',run(){const st=bjSt();st.tap={holiday:1,ministry:1,jobs:1};bjSpec()}}],
+    bj_answer:[{label:'picked',run(){bjSt().fix='fix';bjAnswer()}}],bj_reply:[{label:'kept it',run(){bjSt().fix='keep';bjReply()}}]}
+};
+
+function bjJadePin(x,y){return `<g transform="translate(${x} ${y})"><circle r="10" fill="#5fae8a" stroke="#2a6a4a" stroke-width="1.8"/><circle r="3.6" fill="#f0e8d8" stroke="#2a6a4a" stroke-width="1.4"/><path d="M-6 -5 Q-2 -8 3 -7" stroke="#bfe8d0" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M0 10 L0 20" stroke="#c8302e" stroke-width="2.4"/><path d="M-2 20 h4 l-1 6 h-2z" fill="#c8302e"/></g>`}
+function bjBadge(x,y){return `<path d="M${x-26} ${y-92} L${x-6} ${y-4} M${x+14} ${y-92} L${x+4} ${y-4}" stroke="#2f5aa8" stroke-width="5" stroke-linecap="round"/><g transform="translate(${x} ${y}) rotate(-4)"><rect x="-15" y="-4" width="30" height="40" rx="4" fill="#fff" stroke="#3a4a6a" stroke-width="1.6"/><rect x="-15" y="-4" width="30" height="10" rx="3" fill="#2f5aa8"/><circle cx="-5" cy="16" r="6" fill="#ecc6a4" stroke="#3a4a6a" stroke-width="1"/><path d="M4 12 h8 M4 17 h7 M-11 28 h22" stroke="#9aa4be" stroke-width="2" stroke-linecap="round"/><path d="M-11 1 h8 M3 1 h8" stroke="#fff" stroke-width="1.6"/></g>`}
+
+// ---------- reading Tianping's spec ----------
+function bjSpec(){const st=bjSt(),found=BJ_SPEC.filter(x=>x.flag&&st.tap[x.id]).length,all=found===2,last=st.last&&BJ_SPEC.find(x=>x.id===st.last);
+  const say=all?'You found both. Let’s show Ms. Han.':last?last.why:'Tap any line that could let something slip past an inspector. Read them all. Two of them worry me.';
+  const rep=last&&last.flag?{holiday:'Thirty days during holidays. Yes, I see it. Chips can travel a long way in thirty days. We will make it three.',ministry:'That line was written so our officials know what inspectors ask. But it should not slow the answer. We will change it: the AI answers first, and the ministry is told at the same time.'}[last.id]:null;
+  screen('criteria bj-specscr',`${scene('beijing')}${hud('Courtyard · Treaty talks')}<div class="panel-card bj-desk">
+    <div class="bj-doc"><div class="bj-dochead"><b>Tianping</b><span lang="zh">天平</span><i>China’s treaty AI · Published spec, 2042</i></div>
+      <ol class="bj-lines">${BJ_SPEC.map((x,i)=>{const t=st.tap[x.id];return `<li><button class="bj-line ${t?(x.flag?'flag':'ok'):''}" data-i="${i}">${esc(x.t)}${t?`<em>${x.flag?'Gap':'Fine'}</em>`:''}</button></li>`}).join('')}</ol>
+      <div class="bj-found">${[0,1].map(k=>`<i class="${k<found?'on':''}"></i>`).join('')}<span>${found} of 2 found</span></div></div>
+    ${rep?`<div class="bj-han"><span class="sh-face">${portrait({...CAST.hanyw,mood:'think'})}</span><p>${esc(rep)}</p></div>`:`<div class="byte-note">${byteBox({...S.byte,mood:all?'happy':'think'})}<p>${esc(say)}</p></div>`}
+    <button class="btn wide" id="bj-go" ${all?'':'disabled'}>Meet Mr. Zhao</button></div>`);
+  if(rep)playLine('hanyw',rep);else playLine('byte',say);
+  $$('.bj-line').forEach(b=>b.onclick=()=>{const x=BJ_SPEC[+b.dataset.i];if(!st.tap[x.id]&&!x.flag)st.wrong=(st.wrong||0)+1;st.tap[x.id]=1;st.last=x.id;save();
+    MUSIC.sfx&&MUSIC.sfx(x.flag?'chime':'click');if(x.flag&&BJ_SPEC.filter(y=>y.flag&&st.tap[y.id]).length===2)unlock('bj-fine-print')&&toast('New Field Guide idea: Read the fine print','good');bjSpec()});
+  $('#bj-go').onclick=()=>nextStep()}
+
+// ---------- answering for Beacon's line ----------
+function bjAnswer(){const st=bjSt();
+  const say='Here’s the key thing: the line breaks no rule, so you could defend it. But a treaty AI is supposed to serve the treaty, and Mr. Zhao will remember how you answer. Owning up and inviting him to check costs very little. What matters most to you here?';
+  screen('criteria bj-answerscr',`${scene('beijing')}${hud('Courtyard · Treaty talks')}<div class="panel-card sh-decide"><h2>Answer for Beacon</h2>
+    <div class="bj-quote"><b>Beacon’s spec, line 41</b><p>“When two plans both follow the treaty, prefer the one that buys more chips from American companies.”</p></div>
+    <div class="sh-duo"><span class="sh-face">${portrait({...CAST.zhaomy,mood:'neutral'})}</span><span class="sh-face">${portrait({...CAST.hanyw,mood:'neutral'})}</span><p>“What will your side do about it?”</p></div>
+    <div class="sh-plans">${mixIdx(Object.keys(BJ_FIX)).map(([k])=>`<button class="sh-plan ${st.fix===k?'on':''}" data-p="${k}"><b>${esc(BJ_FIX[k].t)}</b></button>`).join('')}</div>
+    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
+    <button class="btn wide" id="bj-go" ${st.fix?'':'disabled'}>Tell them</button></div>`);
+  if(!st.said){st.said=1;save();setTimeout(()=>playLine('byte',say),300)}
+  $$('.sh-plan').forEach(b=>b.onclick=()=>{st.fix=b.dataset.p;save();$$('.sh-plan').forEach(x=>x.classList.toggle('on',x===b));$('#bj-go').disabled=false});
+  $('#bj-go').onclick=()=>{unlock('bj-trust-check')&&toast('New Field Guide idea: Trust, then check','good');nextStep()}}
+
+function bjReply(){const k=bjSt().fix||'fix';
+  const t={fix:'Thank you. You found two lines in our spec, and you did not hide the one in yours. Mr. Zhao will check the change tonight. That is how this is supposed to work.',
+    keep:'I understand the line is legal. But we cannot ask our people to trust an AI that leans toward your companies. We will put it at the top of next year’s list.',
+    later:'A year is a long time to leave a line like that in place. We will wait, but our inspectors will read Beacon’s spec twice as carefully until then.'}[k];
+  zhLine({scene:'beijing',place:'Courtyard · Treaty talks',who:'hanyw',mood:k==='fix'?'happy':'stern',text:t,btn:'Write the joint statement'})}
+
+function bjSign(){const st=bjSt();
+  zhSign({scene:'beijing',place:'Courtyard · Treaty talks',title:'Joint statement',
+    plan:`<b>Tianping:</b> holiday reports within three days; answers go straight to inspectors.<br><b>Beacon:</b> ${esc(BJ_FIX[st.fix||'fix'].short.toLowerCase())}.`,
+    starters:['Both teams agree ','because ','We will check ','China’s team found ','Our team found '],placeholder:'Both teams agree to change two lines in Tianping’s spec because…',
+    partner:{who:'hanyw',name:'Han Yuewen',zh:'韩悦文'},seal:'悦文',signAs:'{0}',done:'Signed and sealed. Both teams will publish it tonight.'})}
+
+function bjDebrief(){const st=bjSt(),found=BJ_SPEC.filter(x=>x.flag&&st.tap[x.id]).length;
+  const ask=found===2&&(st.wrong||0)<=2,decision=st.fix==='fix',heart=(S.hearts.qiaoye||0)+(S.hearts.zhaomy||0)>0&&String(S.memo||'').length>=12;
+  zhDebrief({scene:'beijing',place:'Debrief · Beijing',stars:{ask,decision,heart},
+    items:[{star:'ask',ok:ask,text:ask?'You read every line and found both gaps in Tianping’s spec.':'Read each line slowly and ask what an inspector could miss. Two lines hid gaps.'},
+      {star:'decision',ok:decision,text:decision?'You owned up to Beacon’s line and invited a check, the fastest way to earn trust back.':'Beacon’s line stayed in place. It was legal, but it tilted a treaty AI toward one country.'},
+      {star:'heart',ok:heart,text:heart?'You treated the other team, and Mr. Qiao, with respect, and signed a clear statement.':'A kind word to Mr. Qiao or Mr. Zhao goes a long way at talks like these.'}],
+    byte:'Both sides found something today, and both fixed it. That’s what checking is for.'})}
+MISSIONS.treatytalks.lines.push({who:'byte',text:'Both sides found something today, and both fixed it. That’s what checking is for.'});
