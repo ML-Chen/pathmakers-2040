@@ -25,7 +25,6 @@ module.exports = [
   // 4. The game.
   {id: 'game', place: 'Claude 熬夜做的游戏', min: 4.5,
     vo: '我让 Claude 熬夜做了个游戏，让孩子提前练习做这个签字的人。',
-    big: `<div class="pr-end"><h1>Pathmakers <span>2040</span></h1></div>`,
     setup: `screen('title-promo', scene('home')+'<div class="pr-byte">'+byteBox({...S.byte,mood:'happy'},'dance')+'</div>')`},
   // 5. The places.
   {id: 'places', place: '', min: 5.5,
