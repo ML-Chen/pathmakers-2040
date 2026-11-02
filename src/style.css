@@ -260,6 +260,9 @@ textarea{resize:vertical;line-height:1.5}
 .real-fut{animation:holo .7s cubic-bezier(.2,1.2,.4,1)}
 .rf-card{width:min(300px,80vw);margin:0 auto;border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px #5ee6d6,0 0 40px rgba(94,230,214,.45)}
 .rf-card svg{display:block;width:100%}
+.real-fut h2{display:inline-block;margin:14px auto 0;max-width:min(320px,86vw);background:rgba(12,16,44,.82);border:1px solid rgba(94,230,214,.4);border-radius:16px;padding:9px 16px;font-size:1.15rem;line-height:1.3;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+/* SVG labels (vignettes, infographics, charts) always use the game's fonts */
+svg text:not([font-family]){font-family:var(--body)}
 .rf-talk{display:flex;align-items:center;gap:10px;background:#fff;color:var(--ink);border-radius:18px;padding:10px 14px;text-align:left;animation:reveal .4s}
 .rf-maya{width:76px;height:96px;flex:none}
 
@@ -393,7 +396,7 @@ textarea{resize:vertical;line-height:1.5}
 .prop.off .pa-glow{opacity:0}.prop .pa-glow{transition:opacity .2s}.fx-toggle .pa-body{animation:jig .3s}
 .fx-flyaway .pa-body{animation:flyaway 2.4s ease-in-out}.fx-flyaway .pa-wing{transform-box:fill-box;transform-origin:center;animation:flap .12s 12 alternate}
 @keyframes flyaway{0%{transform:none}40%{transform:translate(120px,-160px) rotate(-10deg);opacity:0}60%{transform:translate(-120px,-160px);opacity:0}100%{transform:none;opacity:1}}
-.fx-glow .pa-body{animation:igpulse .8s 2}.fx-shoot .pa-body{animation:shoot 1.4s ease-in}@keyframes shoot{0%{transform:none}50%{transform:translate(160px,90px) scale(.4);opacity:0}51%{transform:none;opacity:0}100%{opacity:1}}
+.fx-glow .pa-body{animation:igpulse .8s 2}.prop .pa-hit{opacity:0}.fx-glow .pa-hit{animation:orbflash 1s ease-out}@keyframes orbflash{25%{opacity:.32;transform:scale(1.06)}100%{opacity:0}}.fx-shoot .pa-body{animation:shoot 1.4s ease-in}@keyframes shoot{0%{transform:none}50%{transform:translate(160px,90px) scale(.4);opacity:0}51%{transform:none;opacity:0}100%{opacity:1}}
 .prop .pa-steam{animation:steam 2.4s ease-in-out infinite}.fx-jiggle .pa-steam{animation:steam .6s 3}
 .burst{position:fixed;z-index:80;pointer-events:none;font-weight:800;text-shadow:0 2px 6px rgba(0,0,0,.2);animation:burst 1.3s ease-out forwards}
 @keyframes burst{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--r)) scale(1.1);opacity:0}}
