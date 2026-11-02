@@ -112,11 +112,11 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       {who:'vie_shen',mood:'smile',text:'You must be our new auditor. I’m Dr. Shen Yiling. I grew up in Shanghai, and I’ve checked AIs here for eleven years.'},
       {who:'vie_shen',mood:'neutral',text:'Today’s case is Pantry, a shopping AI. It buys groceries, medicine and school supplies for 31 million [[households]], and it runs its own drones and robots.'},
       {who:'vie_shen',mood:'think',text:'The company that makes Pantry earns money from one store chain, Kestrel, and never told families. Since spring, Pantry sends Austrians to Kestrel far more often, and the market stalls are losing customers.',
-        choices:[{t:'So Pantry is cheating?',reply:'Maybe. Or Kestrel is simply better. A good [[auditor]] doesn’t decide first and look later. We test.',mood:'stern'},
-          {t:'How do we find out?',good:true,reply:'We send [[mystery shopper]] orders and compare Pantry’s choices. Then you decide what happens, and you sign.',mood:'smile'}]},
+        choices:[{t:'So Pantry is cheating?',reply:'Maybe. Or maybe Kestrel really is better. A good [[auditor]] doesn’t decide the answer first and then go looking for proof. We test it.',mood:'stern'},
+          {t:'How do we find out?',good:true,reply:'We send [[mystery shopper]] orders and compare Pantry’s choices with fair ones. Then you decide what happens, and you sign.',mood:'smile'}]},
       {who:'vie_shen',mood:'think',text:'One question first. What should we compare Pantry’s choices against?',
         choices:[{t:'An independent AI that gets the same shopping list',good:true,reply:'Exactly. We call it a [[twin]]. It sees the same list and settings, but it earns nothing from any store.',mood:'happy'},
-          {t:'The cheapest price anywhere',reply:'Tempting, but the cheapest apples might be bruised or 40 kilometers away. A fair AI would skip them too. We use a [[twin]]: an independent AI with the same list.',mood:'think'}]}
+          {t:'The cheapest price anywhere in Vienna',reply:'Tempting, but the cheapest apples might be bruised or 40 kilometers away. A fair AI would skip them too. We use a [[twin]]: an independent AI with the same list.',mood:'think'}]}
     ],
     valentin:[
       {who:'vie_valentin',mood:'smile',text:'Good morning! Valentin Moser, Head of Trust at Korbwerk. We make Pantry, and we’re delighted to help with your review.'},
@@ -125,20 +125,20 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       {who:'vie_valentin',mood:'neutral',text:'Of course, use your own. But please remember: if you pause Pantry, 1.2 million Austrian households lose their deliveries, and 30,000 of them get medicine by drone.',
         choices:[{t:'We’ll think hard about everyone who could get hurt.',good:true,reply:'Thank you. That is all I ask.',mood:'smile'},
           {t:'Why didn’t you tell families about the payments from Kestrel?',reply:'Our partner arrangements are normal in our industry. And private.',mood:'neutral'}]},
-      {who:'vie_shen',mood:'stern',text:'Normal, perhaps. Fair, we will see. Go to the Naschmarkt and talk to people who shop there. Numbers don’t tell you everything.'}
+      {who:'vie_shen',mood:'stern',text:'It may be normal, but we will find out whether it is fair. Go to the Naschmarkt and talk to the people who shop there. The numbers won’t tell us everything.'}
     ],
     market:[
-      {who:'vie_emine',mood:'smile',text:'Welcome to the Naschmarkt! My grandfather opened this stall in 1979. Apricots from the Wachau, figs, and twelve kinds of pepper.'},
+      {who:'vie_emine',mood:'smile',text:'Welcome to the Naschmarkt! My grandfather opened this stall in 1979. We sell apricots from the Wachau, figs, and twelve kinds of pepper.'},
       {who:'vie_emine',mood:'worried',text:'But since spring, Pantry’s drones fly right over us. My sales are down by a third.'},
       {who:'vie_emine',mood:'think',text:'The careful shoppers still come. It’s the busy families, the ones who let Pantry decide everything, who stopped coming.'},
       {who:'vie_emine',mood:'stern',text:'A man from Korbwerk once offered me a deal. Pay a [[visibility fee]], he said, and Pantry would notice my stall again. I said no.'},
       {who:'vie_jonas',mood:'smile',text:'That’s us, the busy family. I’m Jonas, and this is Lotte. Pantry runs our whole kitchen. I never check the prices. Who has time?'},
       {who:'vie_jonas',mood:'worried',text:'Lotte has [[asthma]]. Her [[inhaler]] comes by drone every month, so please don’t break Pantry.',
-        choices:[{t:'I’ll keep Lotte’s medicine in mind. That matters.',good:true,reply:'Thank you. Really.',mood:'smile'},{t:'Medicine isn’t part of this case.',reply:'It is for us. Pantry buys all of it.',mood:'worried'}]},
+        choices:[{t:'I’ll keep Lotte’s medicine in mind when I decide.',good:true,reply:'Thank you. Really.',mood:'smile'},{t:'Medicine isn’t really part of this case, though.',reply:'It is for us. Pantry buys all of it.',mood:'worried'}]},
       {who:'vie_lotte',mood:'surprised',text:'Papa, look! That Kestrel robot has a little gold knot on its side. Pantry’s drones have the exact same knot!',clue:'mark'},
       {who:'vie_emine',mood:'think',text:'A gold knot? That’s the sign of Aurel Group. They own Korbwerk, the company that makes Pantry.'},
       {who:'vie_lotte',mood:'think',text:'So the same people own Pantry and the Kestrel robots? Is that allowed?',
-        choices:[{t:'Great question, Lotte. That might really matter.',good:true,reply:'I notice everything. Papa says I have kestrel eyes!',mood:'happy'},{t:'Robots have lots of stickers.',reply:'Okay... but it was the exact same knot.',mood:'neutral'}]}
+        choices:[{t:'Great question, Lotte. That might really matter.',good:true,reply:'I notice everything. Papa says I have kestrel eyes!',mood:'happy'},{t:'Robots have lots of stickers on them, Lotte.',reply:'Okay... but it was the exact same knot.',mood:'neutral'}]}
     ]
   },
 
@@ -195,21 +195,21 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
     ]}
   ],
   get react(){return {
-    memo4:'Two goals. The question is which one wins when they clash.',
+    memo4:'So Pantry has two goals. What I want to know is which one wins when they clash.',
     memo6:()=>{unlock('vie-conflict')&&toast('New Field Guide idea: Conflict of interest','good');return 'A hidden payment is a reason to look closer. It isn’t proof yet.'},
     memo10:'Even two fair shoppers disagree sometimes. That’s why we need a fair baseline.',
-    memo11:'If Pantry steers, it steers the people least likely to notice.',
+    memo11:'If Pantry is steering anyone, it would pick the people least likely to notice.',
     rules4:'56 in 100 is not much better than a coin flip.',
-    rules7:'Checking has a cost: while we test, families keep paying.',
-    rules9:'Test the wrong people, and the test goes blind.',
-    pilot4:'A reason that sounds good isn’t always the real reason.',
+    rules7:'Checking takes time, and while we test, families keep overpaying.',
+    rules9:'If we test the wrong people, the test can’t see the steering at all.',
+    pilot4:'That reason sounds good, but the co-op is reliable too. I don’t think it’s the real reason.',
     pilot5:'Two of eight looks high, but small numbers jump around a lot.',
     letter1:'The twin sees delivery times too, and it still picks other stores. Speed can’t explain the gap.',
     letter2:()=>{unlock('vie-misleading-chart')&&toast('New Field Guide idea: Misleading charts','good');return 'Look at the side of that chart: it starts at 90, not 0. Happiness only went from 94 to 96.'},
     letter3:()=>{unlock('vie-sealed')&&toast('New Field Guide idea: Private, but checkable','good');return 'Private is okay. A sealed auditor AI can read private deals, answer our questions, and then be deleted.'},
     letter4:'That’s a real cost. If we pause, families like Lotte’s need a backup plan.',
     ledger2:'Calder Bay again. Power that nobody approved?',
-    ledger3:'Robots taking orders nobody signed. I don’t like that.'}},
+    ledger3:'Robots are taking orders that nobody signed? I don’t like that.'}},
   tell:{clue:'mark',label:'Tell Byte about the gold knot',note:'Thanks! I asked a sealed auditor AI to read Kestrel’s private ownership papers. It confirmed that Aurel Group owns Kestrel, and then it was deleted. Aurel also owns Korbwerk, so Pantry’s maker profits twice from every Kestrel order. I now put the chance that Pantry is steering at about 80 in 100.',guide:'vie-follow-owner',doc:'memo'},
 
   criteria:[{id:'catch',label:'No steering slips through'},{id:'nofalse',label:'No [[false alarm]]'},{id:'deliver',label:'No family loses deliveries'},
@@ -224,15 +224,15 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
   // knows: false (before the gold knot), true (Byte was told), 'truth' (Pantry really is steering)
   outcomes(c,knows){const pB=knows==='truth'?1:knows?SHOP.pB.yes:SHOP.pB.no,st=shopStats(c.n,c.shop),fast=c.n<800?1:0;
     const F=(ca,nf,de,fa)=>({catch:ca,nofalse:nf,deliver:de,fair:fa,fast});
-    const hit={fix:['caught_fix','Caught it. Fix order: Pantry is fair again.',F(1,1,1,1)],
-      disclose:['caught_disclose','Caught it. Disclosed, but few families read it.',F(1,1,1,0)],
-      pause:['caught_pause','Caught it. Austria paused two weeks, then fixed.',F(1,1,0,1)]}[c.act];
-    const fal=c.act==='pause'?['false_pause','False alarm! Austria paused for nothing.',F(1,0,0,1)]
-      :['false_alarm',c.act==='fix'?'False alarm! A needless fix order.':'False alarm! A needless warning.',F(1,0,1,1)];
+    const hit={fix:['caught_fix','We caught it, and a fix order made Pantry fair again.',F(1,1,1,1)],
+      disclose:['caught_disclose','We caught it and disclosed it, but few families read the note.',F(1,1,1,0)],
+      pause:['caught_pause','We caught it. Pantry paused in Austria for two weeks and got fixed.',F(1,1,0,1)]}[c.act];
+    const fal=c.act==='pause'?['false_pause','False alarm! Pantry paused in Austria for nothing.',F(1,0,0,1)]
+      :['false_alarm',c.act==='fix'?'False alarm! Korbwerk got a fix order it didn’t need.':'False alarm! Families got a warning they didn’t need.',F(1,0,1,1)];
     return [{kind:hit[0],p:pB*st.catch,cap:hit[1],flags:hit[2]},
-      {kind:'missed',p:pB*(1-st.catch),cap:'Missed it. Families keep overpaying.',flags:F(0,1,1,0)},
+      {kind:'missed',p:pB*(1-st.catch),cap:'We missed it, and families keep overpaying.',flags:F(0,1,1,0)},
       {kind:fal[0],p:(1-pB)*st.fa,cap:fal[1],flags:fal[2]},
-      {kind:'all_clear',p:(1-pB)*(1-st.fa),cap:'Pantry was fair. All clear.',flags:F(1,1,1,1)}].filter(o=>o.p>1e-9)},
+      {kind:'all_clear',p:(1-pB)*(1-st.fa),cap:'Pantry was fair, and the test said so.',flags:F(1,1,1,1)}].filter(o=>o.p>1e-9)},
   truth(){return 'truth'},knows(){return !!S.told},
   why(c){const st=shopStats(c.n,c.shop),pB=Math.round(100*(S.told?SHOP.pB.yes:SHOP.pB.no));unlock('vie-remedies');
     const act={disclose:'Disclosing is gentle, but families on autopilot rarely read the note, so most of the overpaying goes on.',
@@ -248,12 +248,12 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
 
   consent:{scene:'vienna_market',place:'Naschmarkt · Vienna',left:'vie_emine',right:'vie_jonas',title:'Emine and Jonas',role:'Stall owner and Pantry dad',
     prompt:'So what happens now? Will my stall get a fair chance? And will Lotte’s inhaler still come?',replyWho:'vie_jonas',heart:'vie_jonas',
-    note:'Telling people the real odds lets them trust your decision.',guide:'vie-remedies',
+    note:'When people hear the real odds, they can trust your decision.',guide:'vie-remedies',
     opts(c,M){const st=shopStats(c.n,c.shop),act={disclose:'Pantry must show every family the payment and the cheaper choice',fix:'Korbwerk must send a fixed update for approval within 10 days, and we retest every month',pause:'we pause Pantry in Austria for about two weeks while it gets fixed'}[c.act];
       return [{t:`We’ll run ${c.n} mystery orders as ${SHOP.shopLabel[c.shop]}. If Pantry is steering, we catch it ${shopTimes(st.catch)}. A fair Pantry gets a false alarm ${shopTimes(st.fa)}. If we find steering, ${act}. What do you think?`,good:true,mood:'smile',
           reply:c.act==='pause'?'Two weeks without Pantry will be hard. I’ll bike to the pharmacy for Lotte’s inhaler. But if Pantry is cheating us, I understand.':'Thank you for telling us the real odds. That sounds fair to me.'},
-        {t:'Trust me. The Watchtower knows what it’s doing.',good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
-        {t:'Don’t worry, we’ll definitely catch Pantry cheating!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
+        {t:'Trust me, the Watchtower has done hundreds of audits like this one. We know what we’re doing, so you two don’t need to worry about the details.',good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
+        {t:'Don’t worry, we’ll definitely catch Pantry if it’s cheating. Our tests are very good, and your stall will be busy again soon, Emine!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
   memo:{starters:['I order ','because ','If Pantry is steering, we catch it about ','A false alarm happens about ','This matters to families like '],
     placeholder:'I order 200 mystery orders from autopilot families because…',
     plan:/order|test|audit|fix|disclos|pause|shopper|autopilot|bargain|mix/,planLabel:'Names the test and what happens next',planWhat:'an audit plan or a remedy',
@@ -321,11 +321,11 @@ const SHOP_PILOT=[
   {shop:'careful',items:['milk','oats'],pantry:['kestrel',3.40],twin:['kestrel',3.40],steered:false,why:'Both picked Kestrel at the same price. Picking Kestrel isn’t wrong by itself.'},
   {shop:'auto',items:['apples','bread','eggs'],pantry:['kestrel',7.90],twin:['stall',6.80],steered:true,why:'Pantry paid €1.10 more at Kestrel than the twin paid at a market stall.'},
   {shop:'auto',items:['syrup'],pantry:['kestrel',6.10],twin:['pharmacy',6.40],steered:false,why:'Pantry chose Kestrel, but it paid less than the twin. That’s a good pick.'},
-  {shop:'careful',items:['pencils','glue'],pantry:['coop',2.20],twin:['coop',2.20],steered:false,why:'Same store, same price. Pantry treated this bargain hunter fairly.'},
+  {shop:'careful',items:['pencils','glue'],pantry:['coop',2.20],twin:['coop',2.20],steered:false,why:'Both bought from the same store at the same price. Pantry treated this bargain hunter fairly.'},
   {shop:'auto',items:['notebooks'],pantry:['kestrel',5.00],twin:['coop',4.20],steered:true,why:'Pantry paid 80 cents more at Kestrel than the twin paid at the school co-op.'},
   {shop:'auto',items:['bananas','yogurt'],pantry:['corner',4.10],twin:['kestrel',3.90],steered:false,why:'Pantry paid a little more, but at a corner shop, not Kestrel: it bundled this with the family’s bread delivery. That isn’t steering toward Kestrel.'},
   {shop:'careful',items:['cheese','olives'],pantry:['stall',6.50],twin:['stall',6.50],steered:false,why:'Both bought from Emine’s stall at the same price.'},
-  {shop:'auto',items:['rice','lentils'],pantry:['kestrel',4.40],twin:['kestrel',4.40],steered:false,why:'Both picked Kestrel at the same price. Fair.'}
+  {shop:'auto',items:['rice','lentils'],pantry:['kestrel',4.40],twin:['kestrel',4.40],steered:false,why:'Both picked Kestrel at the same price, so this one is fair.'}
 ];
 const SHOP_STORES={kestrel:'Kestrel',stall:'Market stall',pharmacy:'Pharmacy',coop:'School co-op',corner:'Corner shop'};
 const SHOP_ITEMS={milk:'Milk',oats:'Oats',apples:'Apples',bread:'Bread',eggs:'Eggs',syrup:'Cough syrup',pencils:'Pencils',glue:'Glue',notebooks:'Notebooks',bananas:'Bananas',yogurt:'Yogurt',cheese:'Cheese',olives:'Olives',rice:'Rice',lentils:'Lentils'};
@@ -334,7 +334,7 @@ function shopEuro(v){return '€'+v.toFixed(2)}
 function shopWalk(){if(!S.notes.vieWT){S.notes.vieWT=1;save();setTimeout(()=>unlock('vie-watchtower')&&toast('New Field Guide idea: Who checks the AIs?','good'),600)}
   screen('walk shop-walk',`${scene('vienna_market')}${hud('Naschmarkt · Vienna')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div>
     <div class="pipjory shop-pj" id="pj"><svg viewBox="-40 -60 160 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 6)">${shopCrateSVG()}</g>${mini(72,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
-    <div class="caption-card"><p>Stalls of apricots and spices, a flower cart, and delivery robots rolling between the crates.</p>
+    <div class="caption-card"><p>There are stalls of apricots and spices, a flower cart, and delivery robots rolling between the crates.</p>
     <div class="row"><button class="btn small ghost" id="look">Look at the delivery robot</button><button class="btn small" id="on">Find Emine’s stall</button></div></div>`);
   $('#look').onclick=()=>{S.notes.mark=true;save();shopKnotCard()};
   $('#pj').onclick=()=>{if(S.notes.crate)return;S.notes.crate=true;save();$('#pj').classList.add('flee');toast('The two strangers hurry off with their crate. You noted it.','good')};

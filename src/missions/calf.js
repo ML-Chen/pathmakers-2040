@@ -56,7 +56,7 @@ function calfBranches(h,c,linked,ate1,examDone){const out=[],R=.03;
   if(c.auto==='auto'){add('trouble',miss*R,F(0,1,0));add('treated',miss*(1-R)*fix,F(1,1,1));add('tube',miss*(1-R)*(1-fix),F(0,1,0))}
   else{const sedNeeded=h==='sick';add(sedNeeded?'treated':here,miss*ruth,F(1,sedNeeded,1));add('still',miss*(1-ruth),F(0,0,0))}
   return out}
-const CALF_CAPS={barn:'Eating in the quiet barn!',herd:'Eating with the herd again!',treated:'The exam found it. Eating again.',tube:'Fed by tube. Still won’t nurse.',still:'Still not nursing.',trouble:'Breathing trouble under sedation. The vets helped.'};
+const CALF_CAPS={barn:'She’s eating in the quiet barn!',herd:'She’s eating with the herd again!',treated:'The exam found the problem, and she’s eating again.',tube:'She’s fed by tube, but she still won’t nurse.',still:'She still isn’t nursing.',trouble:'She had trouble breathing under sedation, but the vets helped her.'};
 
 MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,kind:'workday',year:1,season:'fall',district:'nome',rank:'trainee',
   blurb:'A five-month-old mammoth calf won’t nurse. Her collar translator is only 55% sure why.',after:['maya'],
@@ -134,8 +134,8 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     morning:[
       {who:'byte',mood:'happy',text:'Good morning, Doctor! Welcome to Nome, and to your first day as a wildlife vet.'},
       {who:'byte',mood:'neutral',text:'Here’s what the reserve’s systems did overnight. The feeders switched the calves to their [[winter mix]]. The [[herd drones]] moved the herd away from a fox. And this barn tested its heaters.'},
-      {who:'byte',mood:'think',text:'And one worry. Aqpik, a five-month-old [[woolly mammoth]] calf, hasn’t [[nursed]] since yesterday morning. Her [[collar translator]] is 55% sure her mouth hurts.',choices:[
-        {t:'What’s my job today?',reply:'Find out why she stopped eating, and decide what the reserve’s machines may do about it. They act on their own. You set the rules, and you sign.'},
+      {who:'byte',mood:'think',text:'There’s one worry, though. Aqpik, a five-month-old [[woolly mammoth]] calf, hasn’t [[nursed]] since yesterday morning. Her [[collar translator]] is 55% sure her mouth hurts.',choices:[
+        {t:'What’s my job today?',reply:'Find out why Aqpik stopped eating, and decide what the reserve’s machines may do about it. The machines act on their own, so you set their rules and sign your name to them.'},
         {t:'55% isn’t very sure.',reply:'Right! It’s only a bit better than a coin flip. That’s why we check it against what we can see with our own eyes.'}]}
     ],
     ruth:[
@@ -143,19 +143,19 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
       {who:'ruth',mood:'happy',text:'That’s Aqpik, beside her mother, Nuna. We give every calf an [[Iñupiaq]] name. Aqpik means [[cloudberry]]. Look at that orange hair and you’ll see why.'},
       {who:'aqpik',mood:'worried',text:'Collar translator, 55% sure: “My mouth hurts.”'},
       {who:'ruth',mood:'worried',text:'She hasn’t nursed since yesterday morning. A calf her age drinks milk all day long. After about three days without it, she’ll get weak.'},
-      {who:'ruth',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are close. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
-        {t:'What does she do instead?',good:true,mood:'smile',reply:'Go watch her yourself. Watch her feet, not just her face. Mammoths listen with their feet.'},
-        {t:'Should we trust the translator?',mood:'neutral',reply:'Trust it like a smart friend who wasn’t there. It’s very good, but it only knows what its collar can sense.'}]},
-      {who:'ruth',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones dart her, and robots feed her through a tube. Nobody has to sign.'},
-      {who:'ruth',mood:'neutral',text:'Today, that rule is yours to keep or change.'}
+      {who:'ruth',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are almost in. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
+        {t:'What does she do instead?',good:true,mood:'smile',reply:'Go watch her yourself, and keep an eye on her feet as well as her face. Mammoths listen with their feet.'},
+        {t:'Should we trust the translator?',mood:'neutral',reply:'Mostly. It’s very good, but it only knows what its collar can sense. It hasn’t been out here watching her the way I have.'}]},
+      {who:'ruth',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones would dart her with medicine, and robots would feed her through a tube. Nobody has to sign off on any of it.'},
+      {who:'ruth',mood:'neutral',text:'Today, you get to decide whether we keep that rule or change it.'}
     ],
     eli:[
       {who:'eli',mood:'smile',text:'Hey, Doc. I’m Eli Johnson. My Iñupiaq name is Tuttu, after my great-grandpa. He herded [[reindeer]] on this same land.'},
       {who:'eli',mood:'neutral',text:'My family’s reindeer graze just east of your fence. It’s the [[rut]] right now, so the bulls are jumpy. Your [[herd drones]] buzz along the fence every morning, and my reindeer scatter.'},
-      {who:'eli',mood:'stern',text:'I asked the reserve to keep its drones off our side. I got a polite message back. I want a person I can talk to, not a message.'},
+      {who:'eli',mood:'stern',text:'I asked the reserve to keep its drones off our side. All I got back was a polite message. I’d like to talk to an actual person about it.'},
       {who:'eli',mood:'think',text:'Something else is weird. Since Tuesday, my reindeer won’t graze near the east ridge. That’s when that new [[weather station]] went up there.',clue:'hum'},
       {who:'eli',mood:'worried',text:'My cousin works for the weather service in town. She says they didn’t put anything up there.',choices:[
-        {t:'Thanks. That might matter for Aqpik too.',good:true,mood:'surprised',reply:'Huh. You think the calf feels it too? Then let’s find out what that thing is.'},
+        {t:'Thanks. That might matter for Aqpik too.',good:true,mood:'surprised',reply:'Huh. You think whatever’s bothering my reindeer is bothering the calf too? Then let’s find out what that thing is.'},
         {t:'Maybe the drones scared your reindeer.',mood:'stern',reply:'Maybe. But my reindeer have seen drones for years. This is different.'}]}
     ]
   },
@@ -202,11 +202,11 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
       {t:'Treaty inspectors are asking why sales of [[helium]] in Nome tripled this month.',viz:'calfHelium',cap:'A helium mystery'}
     ]}
   ],
-  react:{cmemo2:'About three days. That’s not much time.',cmemo3:'Common causes first. Then the clues.',cmemo4:'40 out of 100 is the most common, but not most of them!',ccollar5:'All at the same time? Interesting...',ccollar6:'Below 20 hertz. That’s where elephant rumbles live.',clog4:'Outside the fence. That needs a person’s OK.',clog6:'No signature needed. Hmm.',cledger1:'White sunsets? That’s strange.',cledger3:'Helium makes balloons float...'},
+  react:{cmemo2:'About three days. That’s not much time.',cmemo3:'Start with the common causes, then look at the clues.',cmemo4:'Sore mouths are the most common cause, but that’s still only 40 out of 100.',ccollar5:'All at the same time? Interesting...',ccollar6:'Some elephant rumbles are lower than 20 hertz. The collar would miss those.',clog4:'The station is outside the fence, so checking it needs a person’s OK.',clog6:'Nobody has to sign before the system sedates her. Hmm.',cledger1:'White sunsets? That’s strange.',cledger3:'Helium makes balloons float...'},
   tell:{clue:'hum',label:'Tell Byte about the ridge',note:'Thanks! I checked the reserve’s quake sensor. A hum too low for her collar to hear comes from the east ridge every few minutes, and Aqpik freezes each time. Now I think she’s scared: about 60%. Sore mouth drops to 20%.',guide:'nome-local',doc:'cmemo'},
   criteria:[{id:'eats',label:'Aqpik eats again by Monday'},{id:'nosed',label:'No [[sedation]]'},{id:'cause',label:'Find what upset her'},{id:'eli',label:'Eli’s reindeer left in peace'}],
   criteriaHint:'Not sure what one means? <button class="gw" data-w="sedation">Sedation</button> means medicine that puts an animal into a deep sleep.',
-  criteriaNote:'Deciding what “good” means first keeps a flashy option from fooling you.',
+  criteriaNote:'If you decide what you want first, a flashy option is less likely to fool you.',
   controls:[{key:'care',label:'Next two days',opts:[['barn','Quiet barn'],['pasture','Back with the herd'],['exam','Full exam']]},
     {key:'ridge',label:'The ridge station',opts:[['leave','Leave it'],['drone','Camera drone'],['eli','Eli checks it']]},
     {key:'auto',label:'Sunday’s care protocol',opts:[['auto','Runs on its own'],['ask','A keeper signs first']]}],
@@ -214,7 +214,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
   planName(c){return {barn:'Quiet barn',pasture:'Back with the herd',exam:'Full exam'}[c.care]+', '+{leave:'leave the ridge',drone:'camera drone to the ridge',eli:'Eli checks the ridge'}[c.ridge]+', '+(c.auto==='auto'?'protocol runs alone':'keeper signs first')},
   outcomes(c,knows){const st=calfState(),p=calfBelief(knows),linked=!!knows,ate1=st.test==='barn',examDone=st.test==='exam';const m={};
     for(const h of CALF_H){if(!(p[h]>0))continue;for(const [k,q,f] of calfBranches(h,c,linked,ate1,examDone)){const key=k+JSON.stringify(f);(m[key]=m[key]||{kind:k,p:0,flags:f}).p+=p[h]*q}}
-    return Object.values(m).map(o=>({...o,cap:CALF_CAPS[o.kind]+(o.flags.cause&&o.kind!=='treated'&&linked?' The ridge rig was found.':'')})).filter(o=>o.p>1e-9)},
+    return Object.values(m).map(o=>({...o,cap:CALF_CAPS[o.kind]+(o.flags.cause&&o.kind!=='treated'&&linked?' Someone found the rig on the ridge.':'')})).filter(o=>o.p>1e-9)},
   truth(){return 'truth'},knows(){return !!S.told},
   why(c){const f=forecastFor(c),e=Math.round(100*f.eats),n=Math.round(100*f.nosed),k=Math.round(100*f.cause),l=Math.round(100*f.eli);const st=calfState();
     const care={barn:'In the warming barn she is far from the ridge, with her mother beside her.',pasture:'On the pasture she stays with the herd, close enough to feel the ridge.',exam:'An exam checks her teeth, belly, and blood, but it needs sedation.'}[c.care];
@@ -231,8 +231,8 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
       const auto=c.auto==='ask'?' And the care system asks Ruth before it sedates her.':' The care system can still sedate her on its own on Sunday.';
       return [{t:`I suggest ${care}. In about ${e} of 10 futures she’s eating by Monday, and in about ${n} of 10 she avoids sedation. ${ridge}${auto} What do you two think?`,good:true,mood:'smile',
           reply:c.ridge==='drone'?'Eli won’t love a drone over his reindeer, but you explained it straight. Let’s do it.':'Thank you for laying it out honestly. That’s a plan I can stand behind.'},
-        {t:'The translator is the expert here. Let’s just do what it says.',good:false,mood:'worried',reply:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
-        {t:'Don’t worry. She’ll definitely be eating by tonight.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
+        {t:'The collar translator is the expert here. It reads her sounds all day, so let’s just do what it says and treat her sore mouth.',good:false,mood:'worried',reply:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
+        {t:'Don’t worry, you two. Calves skip meals all the time, and she’ll definitely be eating again by tonight. Let’s just wait and see.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
   memo:{starters:['I recommend ','because ','The chance she eats again by Monday is about ','For Aqpik and Eli, ','We will check by '],placeholder:'I recommend keeping Aqpik in the quiet barn because…',
     plan:/barn|pasture|herd|exam|sedat|drone|ridge|protocol|eli |eli’|eli's|test/,careLabel:'Includes what matters to Aqpik or Eli',care:/aqpik|calf|she |her |nuna|ruth|eli|reindeer|mother/,signAs:'Dr. ',topic:'Aqpik, a mammoth calf who stopped nursing'},
   reveal:{days(){return 3},who:'ruth',
@@ -313,7 +313,7 @@ MISSIONS.calf.custom={
     screen('walk',`${scene('nome_reserve')}${hud('Kigluaik Mammoth Reserve · Nome')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div>
       <div class="calf-pj" id="pj"><svg viewBox="-40 -60 170 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 6)"><rect x="0" y="0" width="44" height="32" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/>
         <text x="22" y="10" text-anchor="middle" font-size="5.4" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="30" lengthAdjust="spacingAndGlyphs">TOTALLY NORMAL</text><text x="22" y="18" text-anchor="middle" font-size="5.4" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="22" lengthAdjust="spacingAndGlyphs">WEATHER</text><text x="22" y="26" text-anchor="middle" font-size="5.4" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="26" lengthAdjust="spacingAndGlyphs">BALLOONS</text></g>${mini(74,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
-      <div class="caption-card"><p>Frost on the cottongrass, drones humming over the herd, and far up the east ridge, a new weather station blinking.</p><div class="row"><button class="btn small ghost" id="clue">Look at the ridge</button><button class="btn small" id="on">Meet the keeper</button></div></div>`);
+      <div class="caption-card"><p>There’s frost on the cottongrass, and drones hum over the herd. Far up the east ridge, a new weather station blinks.</p><div class="row"><button class="btn small ghost" id="clue">Look at the ridge</button><button class="btn small" id="on">Meet the keeper</button></div></div>`);
     $('#clue').onclick=()=>{st.seen.crate=true;save();$('#pj').classList.add('flee');toast('Two strangers hurry over the ridge with a crate. You noted it.','good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()},
   calf_observe(){const st=calfState();
