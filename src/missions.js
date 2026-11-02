@@ -29,6 +29,23 @@ function missionLines(m){const L=[],add=(who,t)=>{if(t&&typeof t==='string')L.pu
   (m.lines||[]).forEach(x=>add(x.who,x.text));
   for(const st of (m.ledger||[])){add('narrator',st.title);(st.steps||[]).forEach(b=>add('narrator',b.t));if(st.trick)add('byte',st.trick.why);if(st.check)add('byte',st.check)}
   ['journey','bigtalk','promotion'].forEach(k=>spokenIn(m[k],add));
+  return L.concat(levelLines(m))}
+// Challenge levels (the setting lives in src/modes.js): 'kid', 'teen' or 'grownup'. A mission may declare
+// levels:{teen:{...},grownup:{...}}: fields that replace the mission's own at that level. Grown-up also takes every Teen field
+// it does not replace. Kid always plays the mission exactly as written. levelView(m,lv) is the mission as seen at level lv.
+const LEVELS=['kid','teen','grownup'];
+function levelView(m,lv){if(!m||!m.levels||!lv||lv==='kid')return m;const v=Object.create(m);
+  for(const L of LEVELS.slice(1,LEVELS.indexOf(lv)+1))if(m.levels[L])Object.defineProperties(v,Object.getOwnPropertyDescriptors(m.levels[L]));return v}
+// Lines spoken only at Teen and Grown-up: deep sentences (step.deep), per-sentence and per-line replacements (step.levels,
+// line.levels), and each level's own docs, talks, consent replies and lines. Duplicates of Kid lines are removed later.
+function levelLines(m){const L=[],add=(who,t)=>{if(t&&typeof t==='string')L.push({who,text:t})};
+  const step=b=>{add('narrator',b.t);if(b.alt){add('narrator',b.alt.t);(b.alt.deep||[]).forEach(step)}(b.deep||[]).forEach(step);for(const k in (b.levels||{}))step({...b,...b.levels[k],levels:null})};
+  const line=x=>{add(x.who,x.text);(x.choices||[]).forEach(c=>add(x.who,c.reply));for(const k in (x.levels||{}))line({...x,...x.levels[k],levels:null})};
+  for(const lv of LEVELS){const v=levelView(m,lv);if(lv!=='kid'&&v===m)continue;
+    for(const d of (v.docs||[])){add('narrator',d.title);d.steps.forEach(step)}
+    for(const k in (v.talks||{}))v.talks[k].forEach(line);
+    if(lv!=='kid'&&v.consent&&v.consent.opts){try{v.consent.opts(v.start,v).forEach(o=>add(v.consent.replyWho,o.reply))}catch(e){}}
+    if(lv!=='kid')(v.lines||[]).forEach(x=>add(x.who,x.text))}
   return L}
 // career screens (career.js) keep every spoken line as a {who, text} object somewhere inside m.journey, m.bigtalk or m.promotion
 function spokenIn(o,add,seen=new Set()){if(!o||typeof o!=='object'||seen.has(o))return;seen.add(o);if(typeof o.who==='string'&&typeof o.text==='string')add(o.who,o.text);for(const k in o)spokenIn(o[k],add,seen)}

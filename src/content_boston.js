@@ -163,6 +163,7 @@ function spokenLines(){const out=[];let SRC='core';const add=(who,t)=>{if(!t||/\
   for(const w in GLOSSARY)add('narrator',w+'. '+GLOSSARY[w]);
   for(const k in REVEAL_LINES)add('maya',REVEAL_LINES[k]);
   EXTRA_LINES.forEach(x=>add(x.who,x.text));
+  if(typeof levelLines!=='undefined'&&MISSIONS.maya)levelLines(MISSIONS.maya).forEach(x=>add(x.who,x.text)); // Teen and Grown-up lines (src/missions/maya_levels.js)
   for(const k in CORE_CHATTER)CORE_CHATTER[k].forEach((t,i)=>out.push({voice:CHATTER_VOICES[i%CHATTER_VOICES.length],text:speechText(t),src:'core'}));
   out.push({voice:"bf_emma",text:speechText("Good morning, Doctor! Heads up: elevator B is a little slow today."),src:"core"});
   // Missions in src/missions/*.js: each one's lines are written to src/audio/<id>.js (the Maya mission's lines live in src/audio.js).

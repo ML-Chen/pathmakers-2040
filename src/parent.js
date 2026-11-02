@@ -5,6 +5,7 @@
 //   S.ideaLog  {ideaId:[missionId,...]}   missions where a Field Guide idea came up
 //   S.chatLog  [{q,t,m}]   the player's last questions to Byte, newest first
 //   S.chatOff  true when a grown-up has turned free chat off (Byte then uses scripted lines only)
+// src/modes.js adds level, levelName and the Grown-up forecast fields to each history entry (hook "record") and its own card (hook "parent").
 window.PARENT=(()=>{
   const CONF_PCT=[50,62,75,87,97];// same scale as the memo slider and calibLine() in game.js
   const CHECKS=[['treatment','Names a clear plan'],['reason','Gives a reason'],['odds','Says how sure'],['maya','Says who it is for']];
@@ -25,7 +26,7 @@ window.PARENT=(()=>{
     const e={id:S.result._h||Date.now(),t:Date.now(),mission:S.mission,title:m.title,day:m.day,plan:m.planName?m.planName(S.choice):'',stars,luck,good,
       conf:CONF_PCT[S.conf??2],fc:ids.length?Math.round(100*ids.reduce((a,k)=>a*fc[k],1)):null,
       checks:Object.fromEntries(checks.map(c=>[c.k,!!c.ok])),memo:String(S.memo||'').slice(0,1200)};
-    const i=H.findIndex(x=>x.id===e.id);if(i>=0){e.t=H[i].t;H[i]=e}else H.push(e);S.result._h=e.id;save()}
+    hook('record',e);const i=H.findIndex(x=>x.id===e.id);if(i>=0){e.t=H[i].t;H[i]=e}else H.push(e);S.result._h=e.id;save()}
 
   // ---------- data for the page ----------
   function decisions(){const H=(S.history||[]).slice().sort((a,b)=>a.t-b.t);
@@ -102,9 +103,9 @@ window.PARENT=(()=>{
     document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));
     $('.x',d).onclick=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),250)};
     const D=decisions();$$('.pp-col',d).forEach(b=>b.onclick=()=>{const x=D[+b.dataset.i],box=$('#pp-detail',d);$$('.pp-col',d).forEach(c=>c.classList.toggle('sel',c===b));box.hidden=false;
-      box.innerHTML=`<b>Day ${x.day} · ${esc(x.title)}</b>${x.plan?`<span>${esc(x.plan)}</span>`:''}<span><span class="pp-gold">${starStr(x.stars)}</span> · ${x.luck?esc(x.luck)+(x.good?' · went well':' · did not go well'):'luck not recorded'}${x.conf!=null?` · said ${x.conf}% sure`:''}${x.fc!=null?` · ${esc(S.byte.name)}'s forecast ${x.fc}%`:''}</span>`});
+      box.innerHTML=`<b>Day ${x.day} · ${esc(x.title)}</b>${x.plan?`<span>${esc(x.plan)}</span>`:''}<span><span class="pp-gold">${starStr(x.stars)}</span> · ${x.luck?esc(x.luck)+(x.good?' · went well':' · did not go well'):'luck not recorded'}${x.conf!=null?` · said ${x.conf}% sure`:''}${x.fc!=null?` · ${esc(S.byte.name)}'s forecast ${x.fc}%`:''}${x.levelName?` · ${esc(x.levelName)}`:''}</span>`});
     const more=$('#pp-more',d);if(more)more.onclick=()=>{$$('.pp-memo',d).forEach(a=>a.hidden=false);more.remove()};
-    wireChat(d)}
+    wireChat(d);hook('parent',d)}
   function wireChat(d){const tog=$('#pp-tog',d);tog.onclick=()=>{S.chatOff=!S.chatOff;save();tog.classList.toggle('on',chatOn());tog.setAttribute('aria-checked',chatOn());
       $('#pp-swnote',d).textContent=chatOn()?`${esc(S.byte.name)} answers anything, using AI.`:`${esc(S.byte.name)} answers with scripted lines only.`};
     const clr=$('#pp-clear',d);if(clr)clr.onclick=()=>{S.chatLog=[];save();$('#pp-chat',d).outerHTML=chatCard();wireChat(d)}}
