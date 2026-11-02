@@ -240,8 +240,7 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     return out},
   byteGood:'Nice work, Architect. You listened to the neighbors, asked well, and gave the robots clear night orders.',
   evening(){const n=S.notes||{};return [`<b>${esc(S.byte.name)}:</b> “Arroyo’s morning log is in. Every gate on its list opened and closed inside the rules.”`,
-    '“But the Ledger’s silver patch near Saltbrush Flats doubled again since Monday. Something out there is digging for metal, with no permit.”',
-    n.crate?'“Remember those two on the canal path, pushing a crate of TOTALLY NORMAL COPPER? Something inside it was wiggling.”':'“Robots that build copies of themselves would need a lot of metal. Who would mine the desert at night?”']},
+    '“The Ledger says someone has been digging for silver in the desert near Saltbrush Flats, and nobody there has a mining permit. The county is sending a drone to take pictures.”']},
   brief(){const c=S.choice||{},f=typeof lotForecast==='function'?lotForecast(c):{};
     return `Current case: you are working as a Community Architect in Phoenix, Arizona (Arcadia neighborhood, near the Arizona Canal and Camelback Mountain), in monsoon season. A corner lot at the low end of a street floods in every big storm (over 1.5 inches); the street drain handles about 1.4 inches, and 23 homes get water in yards and garages. Budget: 400 coins. A robot crew builds at night (10 PM to 5 AM); the first big storm is forecast for Thursday night (about 70% sure), after 3 build nights.
 People: Grace Okafor, 79, retired bus driver, uses a walker, wants shade and a seat she can reach. Dev Castillo, 15, skater, wants a 7-foot bowl. Marco Ruiz, city stormwater engineer, wants the street's water held and wants Arroyo (the city's stormwater AI, which opens about 4,000 gates on its own in storms) to call him before opening a gate.
