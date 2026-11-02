@@ -1,0 +1,58 @@
+/* sneeze.css — the Sneeze Recipe mission: stakes strip, Case Board, checks, Town Hall.
+   Loaded by src/build.py from src/css/*.css, after style.css, so it inherits every variable there. */
+
+/* ---- stakes: days left and the World Safety meter ---- */
+.sn-strip{display:flex;align-items:center;gap:14px;margin:10px 0 14px;padding:10px 14px;border-radius:16px;
+  background:linear-gradient(180deg,#232a55,#1b2047);color:#fff;box-shadow:0 8px 22px rgba(10,14,40,.28)}
+.walklayer+.sn-strip,.props+.sn-strip{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));
+  top:calc(58px + env(safe-area-inset-top,0px));max-width:488px;margin:0 auto;z-index:2}
+.sn-days{display:flex;flex-direction:column;line-height:1.05}
+.sn-days span{font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:#aab3e0;font-weight:800}
+.sn-days b{font-family:var(--display);font-size:1.5rem}
+.sn-days b.pulse{animation:bump .5s}
+.sn-safety{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.sn-safety span{font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:#aab3e0;font-weight:800}
+.sn-bar{height:10px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden}
+.sn-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#f5b82e,#5ee6d6);transition:width .7s cubic-bezier(.3,1.2,.4,1)}
+.sn-bar.low i{background:linear-gradient(90deg,#e5484d,#f5b82e)}
+.sn-bar.high i{background:linear-gradient(90deg,#5ee6d6,#1fa774)}
+.sn-bar.pulse{animation:snglow 1s ease-out}
+@keyframes snglow{0%{box-shadow:0 0 0 0 rgba(94,230,214,.5)}100%{box-shadow:0 0 0 10px rgba(94,230,214,0)}}
+
+/* ---- Case Board ---- */
+.sn-case .sn-strip{margin-top:4px}
+.sn-board{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.sn-card{display:flex;flex-direction:column;gap:3px;text-align:left;border:2px solid var(--line);background:#fff;
+  border-radius:16px;padding:11px 12px;box-shadow:0 3px 0 #e7ebfa;transition:transform .12s,border-color .12s,background .12s}
+.sn-card b{font-size:.92rem;line-height:1.2}
+.sn-card span{font-size:.74rem;color:var(--ink2);font-weight:700;line-height:1.25}
+.sn-card:active{transform:translateY(2px)}
+.sn-card.pick{border-color:var(--violet);background:#f3f0ff;box-shadow:0 0 0 4px rgba(108,92,231,.16)}
+.sn-card.used{border-color:var(--teal);background:#eefbf8}
+.sn-card.used b::after{content:'✓';color:var(--teal);margin-left:6px}
+.sn-found{display:flex;flex-direction:column;gap:8px}
+.sn-link{border-left:4px solid var(--teal);background:#f3fbf9;border-radius:0 14px 14px 0;padding:9px 12px}
+.sn-link p{margin:0;font-size:.9rem;line-height:1.35}
+.sn-link.in{animation:reveal .4s ease-out}
+
+/* ---- the checks ---- */
+.sn-testlist{display:flex;flex-direction:column;gap:9px;margin:12px 0}
+.sn-test{display:flex;align-items:center;gap:10px;text-align:left;width:100%;border:2px solid var(--line);background:#fff;
+  border-radius:16px;padding:11px 12px;box-shadow:0 3px 0 #e7ebfa}
+.sn-test:active{transform:translateY(2px)}
+.sn-tt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sn-tt b{font-size:.95rem;line-height:1.2}
+.sn-tt span{font-size:.76rem;color:var(--ink2);font-weight:700}
+.sn-cost{flex:none;font-family:var(--display);font-size:.8rem;color:#6a4fd0;background:#efeaff;border-radius:999px;padding:5px 10px}
+.sn-test.ran{opacity:.55;box-shadow:none}
+.sn-test[disabled]{opacity:.45;box-shadow:none}
+.sn-result{border-left:4px solid var(--teal);background:#f3fbf9;border-radius:0 14px 14px 0;padding:9px 12px;margin:-2px 0 2px;animation:reveal .4s ease-out}
+.sn-result.bad{border-left-color:var(--warn);background:#fff1f1}
+.sn-result p{margin:0;font-size:.9rem;line-height:1.35}
+
+/* ---- Town Hall ---- */
+.sn-say{display:flex;flex-direction:column;gap:7px;margin-top:8px;max-height:46vh;overflow:auto}
+.sn-say .choice{animation:none}
+.sn-say .choice.on.good{border-color:var(--good);background:#eefaf4}
+.sn-say .choice.on.bad{border-color:var(--warn);background:#fff1f1}
+.sn-say .choice[disabled]{opacity:.55}
