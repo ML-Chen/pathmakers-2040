@@ -97,7 +97,12 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
     ]
   },
   docs:[],criteria:[],controls:[],start:{},
-  planName(){const r=szSt().rule;return SZ_RULES.map(x=>(x.opts.find(o=>o[0]===r[x.key])||['',''])[1]).filter(Boolean).join('; ')||'Rule card'},
+  planName(){const r=szSt().rule;const s=[];
+    if(r.pause)s.push(r.pause==='anyone'?'Anyone on the site may pause a crew.':'Only the crew lead may pause a crew.');
+    if(r.stop)s.push(r.stop==='anyone'?'Anyone on the site may fully stop a crew with the red pedestal.':'Only the crew lead may fully stop a crew, using a code.');
+    if(r.restart)s.push(r.restart==='lead'?'Only the crew lead may start it again, with a signed code.':'The factory may start it again from the tower.');
+    if(r.remote)s.push({stoptell:'The factory may stop a crew from far away, and it must tell the crew lead at once.',never:'The factory may do nothing at all from far away.',both:'The factory may stop or start any crew it built from far away.'}[r.remote]);
+    return s.join(' ')||'Rule card'},
   outcomes(){return [{kind:'done',p:1,cap:'',flags:{}}]},truth(){return true},knows(){return true},
   custom:{sz_drill(){szDrill()},sz_rules(){szRules()},sz_sign(){szSign()},sz_after(){szAfter()},sz_debrief(){szDebrief()}},
   eveningScene:'shenzhen',eveningPlace:'Zone 3 · Shenzhen · 6:40 PM',
@@ -173,7 +178,7 @@ function szRules(){const st=szSt(),r=st.rule,done=SZ_RULES.every(x=>r[x.key]);
   $$('.sz-opt').forEach(b=>b.onclick=()=>{r[b.dataset.k]=b.dataset.v;save();const y=window.scrollY;szRules();window.scrollTo(0,y)});
   $('#sz-go').onclick=()=>{unlock('sz-anyone-stops')&&toast('New Field Guide idea: Anyone can stop it, only some can restart','good');nextStep()}}
 
-function szSign(){zhSign({scene:'shenzhen',place:'Zone 3 test yard · Rule card',title:'Sign the rule card',plan:`<b>Rules:</b> ${esc(MISSIONS.robotfactory.planName())}.`,
+function szSign(){zhSign({scene:'shenzhen',place:'Zone 3 test yard · Rule card',title:'Sign the rule card',plan:`<b>Rules:</b> ${esc(MISSIONS.robotfactory.planName())}`,
   starters:['Anyone on site ','because ','The factory may ','Only the crew lead ','We will test '],placeholder:'Anyone on site may stop a crew because…',
   partner:{who:'huangjg',name:'Huang Jianguo',zh:'黄建国'},signAs:'Crew Lead {0}',done:'Signed. Tonight every crew this factory built gets the new card.'})}
 

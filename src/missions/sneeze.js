@@ -52,7 +52,7 @@ const SN_TESTS=[
   {id:'call',t:'Call the labs the orders name',sub:'Ask whether they sent anything',cost:1,
    r:'All three labs say they never placed an order at all. One of them was asleep when I called, and quite annoyed with me, and then very glad I had called.',good:true},
   {id:'guess',t:`Ask ${'{B}'} who is behind it`,sub:'A guess, not a check',cost:1,
-   r:'I can guess, and my guess is Prime. But a guess is not evidence, and Councilor Osei cannot block an order just because my guess felt strong. That day cost us one of our six and bought us nothing.',good:false}
+   r:'I can guess, and my guess is Prime. But a guess is not evidence, and Councilor Osei cannot block an order just because my guess felt strong. Spending a day on that guess would cost us one of our six days and give us nothing to show the council.',good:false}
 ];
 
 // ---------- what the player says at Town Hall

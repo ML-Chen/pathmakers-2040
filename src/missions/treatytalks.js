@@ -62,7 +62,7 @@ MISSIONS.treatytalks={id:'treatytalks',title:'Trust, Then Check',career:'lawmake
     'shichahai':'A group of three lakes in old Beijing, ringed with willows and hutongs.',
     'drum tower':'A tower in Beijing built in the 1270s. Its drums once told the whole city the time.',
     'ginkgo':'One of the oldest kinds of tree on Earth. Its fan-shaped leaves turn gold in autumn.',
-    'trust, but verify':'An old saying: you can trust someone and still check what they promised.',
+    'trust, but verify':'An old saying. It means you can trust someone and still check what they promised.',
     'nǐ hǎo':'“Hello” in Mandarin Chinese.',
     'xièxie':'“Thank you” in Mandarin Chinese.',
     'chá':'“Tea” in Mandarin Chinese.',
@@ -188,7 +188,7 @@ function bjReply(){const k=bjSt().fix||'fix';
 
 function bjSign(){const st=bjSt();
   zhSign({scene:'beijing',place:'Courtyard · Treaty talks',title:'Joint statement',
-    plan:`<b>Tianping:</b> holiday reports within three days; answers go straight to inspectors.<br><b>Beacon:</b> ${esc(BJ_FIX[st.fix||'fix'].short.toLowerCase())}.`,
+    plan:`<b>Tianping:</b> holiday reports will arrive within three days, and answers will go straight to the inspector who asked.<br><b>Beacon:</b> ${esc({fix:'the chip-buying line comes out today, and Mr. Zhao may check that it is gone.',keep:'the chip-buying line stays in, with an explanation of when Beacon uses it.',later:'the chip-buying line waits for next year’s talks.'}[st.fix||'fix'])}`,
     starters:['Both teams agree ','because ','We will check ','China’s team found ','Our team found '],placeholder:'Both teams agree to change two lines in Tianping’s spec because…',
     partner:{who:'hanyw',name:'Han Yuewen',zh:'韩悦文'},seal:'悦文',signAs:'{0}',done:'Signed and sealed. Both teams will publish it tonight.'})}
 
