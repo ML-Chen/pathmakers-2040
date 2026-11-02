@@ -159,7 +159,9 @@ const CSS = `
   const video = path.join(out, 'video.mp4');
   ff(...inputs, '-filter_complex', filt.join(';'), '-map', last, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '17', '-pix_fmt', 'yuv420p', video);
   // audio: music bed (the game's Future Table track), ducked under the narration
-  const music = path.join(out, 'music.ogg');
+  // PROMO_MUSIC=file (mp3, wav, ogg) uses that track instead, for example one made with Suno; promo/rednote/music.* is used if present
+  const own = process.env.PROMO_MUSIC || ['mp3', 'wav', 'ogg', 'm4a'].map(e => path.join(__dirname, 'music.' + e)).find(f => fs.existsSync(f));
+  const music = own || path.join(out, 'music.ogg');
   if (!fs.existsSync(music)) { const t = fs.readFileSync(path.join(ROOT, 'src', 'music_tracks.js'), 'utf8'); const m = JSON.parse(t.match(/const MUSIC_TRACKS=(\{.*\})/s)[1].replace(/;\s*$/, '')); fs.writeFileSync(music, Buffer.from(m.table.split(',')[1], 'base64')) }
   const final = path.join(out, 'rednote.mp4'); const aIn = ['-i', video, '-stream_loop', '-1', '-i', music]; let af;
   if (VO) {

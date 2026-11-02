@@ -204,12 +204,36 @@ function btPrep(){const m=M(),B=m.bigtalk,H=btState(m);H.picks=[];save();
       H.picks[i]=a.j;save();deck();const tip=jLine(b.opts[a.j].tip,c);await C.say(tip.who,b.opts[a.j].good?'happy':'think',tip.text);
       if(!b.opts[a.j].good){const k=b.opts.findIndex(o=>o.good);await C.say('byte','smile',B.prep.retry.text);const r=await C.choose([jText(b.opts[k].t,c),jText(b.opts[a.j].t,c)]);if(!r)return;H.picks[i]=r.j===0?k:a.j;save();deck()}}
     await C.say(B.prep.ready.who,'happy',B.prep.ready.text);await C.tap();nextStep()})()}
-// the crowd seen from behind: rows of heads and shoulders drawn with curves, each with its own hair
-function btCrowd(n=11){const hairs=['#2a1d18','#5a3a22','#141010','#c9a36a','#8a4a2a','#e9e6f0','#3a2a4a'],shirts=['#5b9bf0','#16b3a6','#ff7a6b','#f5b82e','#8f86ff','#e85d75','#2fbf71','#6b7aa8'];
-  let g='';for(let r=0;r<2;r++){const cnt=r?n:n-2,y=r?96:62,s=r?1.15:.92;for(let i=0;i<cnt;i++){const x=(i+.5+(r?0:1))*(400/(cnt+(r?0:2)))+(i%2?3:-3),h=hairs[(i*3+r*5)%hairs.length],sh=shirts[(i*5+r*3)%shirts.length],st=(i+r)%4;
-    const hair=st===0?`<path d="M-11 -30 C-13 -44 13 -44 11 -30 C9 -24 -9 -24 -11 -30Z" fill="${h}"/>`:st===1?`<path d="M-11 -32 C-12 -45 12 -45 11 -32 L12 -18 C6 -14 -6 -14 -12 -18Z" fill="${h}"/>`:st===2?`<path d="M-11 -31 C-12 -44 12 -44 11 -31 C8 -27 -8 -27 -11 -31Z" fill="${h}"/><circle cx="0" cy="-44" r="5.5" fill="${h}"/>`:`<path d="M-11 -30 C-12 -43 12 -43 11 -30 C10 -26 -10 -26 -11 -30Z" fill="${h}"/>`;
-    g+=`<g transform="translate(${x.toFixed(1)} ${y}) scale(${s})"><g class="bt-p" style="--d:${((i*7+r*3)%10)/10}s"><path d="M-22 6 C-21 -8 -12 -14 0 -14 C12 -14 21 -8 22 6Z" fill="${sh}"/><path d="M-5 -16 h10 v5 h-10z" fill="#c98e64" opacity=".85"/><path d="M-10 -30 C-10 -41 10 -41 10 -30 C10 -21 6 -16 0 -16 C-6 -16 -10 -21 -10 -30Z" fill="#c98e64"/>${hair}<g class="bt-react" data-i="${r*20+i}"></g></g></g>`}}
-  return `<svg class="bt-crowd" viewBox="0 0 400 110" preserveAspectRatio="xMidYMax meet">${g}</svg>`}
+// the audience: three tiered rows of doctors and nurses facing the speaker, behind wooden row rails. Each person has a
+// face, their own hair, skin and clothes (white coat, scrubs or a sweater); a few hold tablets. .bt-p bobs, .bt-react
+// holds the hearts and light bulbs from btReact().
+function btCrowd(n=11){const sk=(typeof SKIN!=='undefined'&&SKIN.length)?SKIN:['#f6d7c3','#eebd9a','#d9a07a','#b97a55','#8d5a3b','#5e3a26'];
+  const hairs=['#2a1d18','#5a3a22','#141010','#c9a36a','#8a4a2a','#d8d4de','#3a2a4a','#b5562e'],tops=['#5b9bf0','#16b3a6','#ff7a6b','#f5b82e','#8f86ff','#e85d75','#2fbf71','#6b7aa8'];
+  const rows=[{y:42,s:.6,c:n-1},{y:72,s:.74,c:n},{y:104,s:.9,c:n-2}];let g='';
+  rows.forEach((R,r)=>{for(let i=0;i<R.c;i++){const k=i*5+r*3,x=(i+.5)*(400/R.c)+((r%2)?6:-6)+(i%2?2:-2);
+    const skin=sk[(k*7+r)%sk.length],hc=hairs[(k*3+1)%hairs.length],top=tops[(k+r)%tops.length],st=(k+i)%7,wear=(k+2*r)%5;
+    // hair behind the head (long styles), then the body, head, face, and hair in front
+    const back=st===1?`<path d="M-11 -30 C-13 -44 13 -44 11 -30 L12 -14 C6 -11 -6 -11 -12 -14Z" fill="${hc}"/>`:st===4?`<circle cx="0" cy="-41" r="6" fill="${hc}"/>`:st===5?`<path d="M-12 -28 C-14 -46 14 -46 12 -28 L13 -10 C6 -6 -6 -6 -13 -10Z" fill="#3a7a9a"/>`:'';
+    const body=wear<2?`<path d="M-17 8 C-16 -6 -10 -12 0 -12 C10 -12 16 -6 17 8Z" fill="#f4f6fb" stroke="#c9cfe0" stroke-width="1"/><path d="M-5 -12 L0 -2 L5 -12Z" fill="${top}"/><path d="M-5 -12 L-2 4 M5 -12 L2 4" stroke="#c9cfe0" stroke-width="1"/>`
+      :wear<4?`<path d="M-17 8 C-16 -6 -10 -12 0 -12 C10 -12 16 -6 17 8Z" fill="${wear===2?'#4fb3a9':'#6b8fd6'}"/><path d="M-5 -12 L0 -5 L5 -12" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1.4"/>`
+      :`<path d="M-17 8 C-16 -6 -10 -12 0 -12 C10 -12 16 -6 17 8Z" fill="${top}"/><path d="M-6 -12 C-3 -8 3 -8 6 -12" fill="none" stroke="rgba(0,0,0,.15)" stroke-width="1.4"/>`;
+    const lan=wear<2&&k%2?`<path d="M-4 -11 L0 -1 L4 -11" fill="none" stroke="#2f9aa2" stroke-width="1"/><rect x="-2.4" y="-1" width="4.8" height="6" rx="1" fill="#fff" stroke="#2f9aa2" stroke-width=".8"/>`:'';
+    const face=`<ellipse cx="-10.4" cy="-27" rx="2" ry="2.6" fill="${skin}"/><ellipse cx="10.4" cy="-27" rx="2" ry="2.6" fill="${skin}"/><path d="M-10 -28 C-10 -40 10 -40 10 -28 C10 -19 6 -15 0 -15 C-6 -15 -10 -19 -10 -28Z" fill="${skin}"/>
+      <ellipse cx="-3.8" cy="-26.6" rx="1.7" ry="2.3" fill="#2a2030"/><ellipse cx="3.8" cy="-26.6" rx="1.7" ry="2.3" fill="#2a2030"/><circle cx="-3.2" cy="-27.6" r=".7" fill="#fff"/><circle cx="4.4" cy="-27.6" r=".7" fill="#fff"/>
+      <ellipse cx="-6.6" cy="-22.6" rx="1.9" ry="1.1" fill="#ff8a8a" opacity=".45"/><ellipse cx="6.6" cy="-22.6" rx="1.9" ry="1.1" fill="#ff8a8a" opacity=".45"/>
+      <path d="M-2 -20.6 C-1 -19.4 1 -19.4 2 -20.6" stroke="#7a3a30" stroke-width="1.1" fill="none" stroke-linecap="round"/><path d="M-5.6 -30.6 l3 -.6 M5.6 -30.6 l-3 -.6" stroke="${hc==='#d8d4de'?'#9a96a6':hc}" stroke-width="1" stroke-linecap="round"/>`;
+    const front=st===0?`<path d="M-10.6 -28 C-12 -42 12 -42 10.6 -28 C8 -33 2 -35 -3 -33 C-6 -32 -9 -30 -10.6 -28Z" fill="${hc}"/>`
+      :st===1?`<path d="M-10.6 -27 C-12 -43 12 -43 10.6 -27 C9 -33 4 -36 0 -35 C-4 -36 -9 -33 -10.6 -27Z" fill="${hc}"/>`
+      :st===2?`<path d="M-10.6 -29 C-11 -41 11 -41 10.6 -29 C7 -32 -7 -32 -10.6 -29Z" fill="${hc}"/>`
+      :st===3?[[-8,-33],[-4,-36],[0,-37],[4,-36],[8,-33],[-10,-29],[10,-29]].map(([cx,cy])=>`<circle cx="${cx}" cy="${cy}" r="3.8" fill="${hc}"/>`).join('')
+      :st===4?`<path d="M-10.6 -28 C-12 -42 12 -42 10.6 -28 C7 -33 -7 -33 -10.6 -28Z" fill="${hc}"/>`
+      :st===5?`<path d="M-12 -28 C-13 -45 13 -45 12 -28 C10 -24 10 -18 7 -15 C9 -21 9 -30 0 -32 C-9 -30 -9 -21 -7 -15 C-10 -18 -10 -24 -12 -28Z" fill="#4a8aaa"/>`
+      :`<path d="M-10 -30 C-9 -38 9 -38 10 -30 C6 -33 -6 -33 -10 -30Z" fill="${hc}" opacity=".7"/><rect x="-7.4" y="-29" width="6" height="4.6" rx="2" fill="none" stroke="#3a3a4a" stroke-width="1"/><rect x="1.4" y="-29" width="6" height="4.6" rx="2" fill="none" stroke="#3a3a4a" stroke-width="1"/><path d="M-1.4 -27 h2.8" stroke="#3a3a4a" stroke-width="1"/>`;
+    const tab=k%6===1?`<g transform="translate(9 2) rotate(-12)"><rect x="-6" y="-8" width="12" height="9" rx="1.6" fill="#2a3060"/><rect x="-4.6" y="-6.6" width="9.2" height="6.2" rx="1" fill="#8fd8ff"/></g>`:'';
+    g+=`<g transform="translate(${x.toFixed(1)} ${R.y}) scale(${R.s})"><g class="bt-p" style="--d:${((i*7+r*3)%10)/10}s">${back}${body}${lan}${face}${front}${tab}<g class="bt-react" data-i="${r*20+i}"></g></g></g>`}
+    // the wooden rail in front of this row hides the laps
+    g+=`<path d="M0 ${R.y+4*R.s} H400 V${R.y+12*R.s} H0Z" fill="#9a6a44"/><path d="M0 ${R.y+4*R.s} H400" stroke="#c99a6a" stroke-width="2"/><path d="M0 ${R.y+12*R.s} H400" stroke="#6a4428" stroke-width="1.4"/>`});
+  return `<svg class="bt-crowd" viewBox="0 0 400 118" preserveAspectRatio="xMidYMax meet"><rect x="0" y="20" width="400" height="98" fill="#7a5236" opacity=".35"/>${g}</svg>`}
 function btReact(kind){const gs=$$('.bt-react');const pick=gs.filter((_,i)=>(i*7+Date.now())%3!==0).slice(0,kind==='clap'?gs.length:9);
   const art={heart:'<path d="M0 -46 C-7 -51 -10 -56 -6 -60 C-3 -63 0 -61 0 -58 C0 -61 3 -63 6 -60 C10 -56 7 -51 0 -46Z" fill="#ff7a8a"/>',bulb:'<circle cx="0" cy="-58" r="5" fill="#ffd45c"/><path d="M-3 -52 h6" stroke="#8a7a40" stroke-width="2"/>',
     hmm:'<text x="0" y="-50" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">?</text>',zzz:'<text x="0" y="-50" text-anchor="middle" font-size="10" font-weight="800" fill="#cfd6ff">z</text>',clap:'<path d="M-6 -52 l3 -6 M0 -54 v-7 M6 -52 l-3 -6" stroke="#ffd45c" stroke-width="2" stroke-linecap="round"/>'}[kind]||'';

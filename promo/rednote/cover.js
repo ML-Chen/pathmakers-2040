@@ -2,7 +2,7 @@
 // A grid of four very different places from the game, Byte in front, and the question in big type.
 const {chromium} = require('playwright'); const fs = require('fs'), path = require('path');
 const out = process.argv[2] || '/tmp/pm-promo';
-const pick = ['audit', 'source', 'listen', 'world'].map(id => path.join(out, 'clean', id + '.png')).filter(f => fs.existsSync(f));
+const pick = ['local', 'source', 'listen', 'audit'].map(id => path.join(out, 'clean', id + '.png')).filter(f => fs.existsSync(f));
 const img = f => 'data:image/png;base64,' + fs.readFileSync(f).toString('base64');
 const html = `<!doctype html><meta charset="utf-8"><style>
 html,body{margin:0;width:1080px;height:1440px;overflow:hidden;background:#141838;font-family:"Noto Sans CJK SC",sans-serif}
@@ -16,9 +16,9 @@ html,body{margin:0;width:1080px;height:1440px;overflow:hidden;background:#141838
 .sub{position:absolute;left:40px;right:40px;bottom:120px;text-align:center;color:#fff;font-weight:700;font-size:40px;opacity:.95}
 .sub b{background:rgba(255,255,255,.16);padding:4px 18px;border-radius:14px}
 </style><div class="grid">${pick.map(f => `<div style="background-image:url(${img(f)})"></div>`).join('')}</div><div class="shade"></div>
-<div class="top"><span>2040年 · AI 成了顶级专家</span></div>
+<div class="top"><span>AI 超过人类专家之后</span></div>
 <div class="title">孩子今天<br>该学<em>什么</em>？</div>
-<div class="sub"><b>我和 Claude 一个通宵做了个游戏来回答</b></div>`;
+<div class="sub"><b>我让 Claude 熬夜做了个游戏来回答</b></div>`;
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({viewport: {width: 1080, height: 1440}});
   await p.setContent(html); await p.waitForTimeout(300);
