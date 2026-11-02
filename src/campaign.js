@@ -66,22 +66,22 @@ const PLACE_ORDER=['boston','varrow','nome','phoenix','marrowpoint','moon','bay'
 
 // ---------- careers: defaults merged under CAREERS entries (CAREERS wins) ----------
 const CAREER_INFO={
-  doctor:{name:'Care Doctor',district:'boston',year:1,why:'The law requires a human to sign medical decisions, and patients choose a person to talk through their options.'},
-  companion:{name:'Elder Companion',district:'boston',year:1,why:'Companionship from a person is the point.'},
-  vet:{name:'Wildlife Vet',district:'nome',year:1,why:'Animals bond with a known caretaker, and translations need checking against what the vet sees.'},
-  ranger:{name:'Ranger',district:'nome',year:1,why:'Land decisions affect local people, who want a person to answer to.'},
-  architect:{name:'Community Architect',district:'phoenix',year:1,why:'Robots can build anything, so someone must decide what neighbors want and approve safety.'},
-  crewlead:{name:'Robot Crew Lead',district:'phoenix',year:1,why:'A named human is accountable for each robot crew.'},
-  founder:{name:'Founder',district:'moon',year:2,why:'Owners choose the goal, take the risk and own the result.'},
-  investor:{name:'Dividend Investor',district:'moon',year:2,why:'Each family decides how to use its dividend and which ventures to back.'},
-  scientist:{name:'Science Director',district:'bay',year:2,why:'The AIs run the research, and humans decide which questions matter most.'},
-  explorer:{name:'Mars Explorer',district:'mars',year:2,why:'People want humans to go to new places.'},
-  performer:{name:'Performer',district:'nyc',year:3,why:'Audiences care that a human is doing it.'},
-  coach:{name:'Coach and Mentor',district:'nyc',year:3,why:'Kids want a trusted adult who knows them.'},
-  lawmaker:{name:'Lawmaker',district:'dc',year:3,why:'Voters choose representatives, and Congress passes the laws.'},
-  judge:{name:'Judge',district:'dc',year:3,why:'People accept rulings from an accountable person.'},
-  auditor:{name:'AI Auditor',district:'vienna',year:3,why:'Someone independent must check whose goals an AI really serves.'},
-  inspector:{name:'Treaty Inspector',district:'vienna',year:3,why:'The treaty needs people from different countries to verify chips and datacenters.'}
+  doctor:{name:'Care Doctor',district:'boston',year:1,why:'The law says a person has to sign every medical decision. Patients also want a person to talk their choices through with.'},
+  companion:{name:'Elder Companion',district:'boston',year:1,why:'Older people want another person to keep them company and really listen to them.'},
+  vet:{name:'Wildlife Vet',district:'nome',year:1,why:'Animals learn to trust the person who looks after them every day. Someone also has to check the translator against what the animals really do.'},
+  ranger:{name:'Ranger',district:'nome',year:1,why:'Choices about land change the lives of the people who live there. They want a real person they can talk to about it.'},
+  architect:{name:'Community Architect',district:'phoenix',year:1,why:'Robot crews can build a whole park in a night. A person still has to ask the neighbors what they need and sign off that it is safe.'},
+  crewlead:{name:'Robot Crew Lead',district:'phoenix',year:1,why:'Every robot crew has a named person in charge, who answers for what the crew does.'},
+  founder:{name:'Founder',district:'moon',year:2,why:'The person who starts a business chooses what it is for, and they take the risk if it fails.'},
+  investor:{name:'Dividend Investor',district:'moon',year:2,why:'Each family decides how to spend its dividend and which new projects to help pay for.'},
+  scientist:{name:'Science Director',district:'bay',year:2,why:'The AIs do much of the research. People still decide which questions are worth asking first.'},
+  explorer:{name:'Mars Explorer',district:'mars',year:2,why:'People want humans to go and see new places for themselves.'},
+  performer:{name:'Performer',district:'nyc',year:3,why:'Audiences come to watch a real person sing, dance or play.'},
+  coach:{name:'Coach and Mentor',district:'nyc',year:3,why:'Kids want a grown-up who knows them and cares how they are doing.'},
+  lawmaker:{name:'Lawmaker',district:'dc',year:3,why:'Voters choose the people who write their laws, and those people have to answer for every vote.'},
+  judge:{name:'Judge',district:'dc',year:3,why:'People find a ruling easier to accept when a real person makes it and explains it.'},
+  auditor:{name:'AI Auditor',district:'vienna',year:3,why:'Someone who doesn’t work for an AI’s maker has to check whose goals the AI really serves.'},
+  inspector:{name:'Treaty Inspector',district:'vienna',year:3,why:'The treaty only works if people from different countries check the chips and datacenters together.'}
 };
 function careerInfo(k){const c=(typeof CAREERS!=='undefined'&&CAREERS[k])||{};return {key:k,...(CAREER_INFO[k]||{}),...c,name:c.name||(CAREER_INFO[k]||{}).name||k||''}}
 

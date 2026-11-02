@@ -215,7 +215,7 @@ function qyLantern(){const L=qyState().lantern;
 function qyStars(){const st=qyState();return (qyFound().length===QY_ITEMS.length?1:0)+(st.stacked?1:0)+(st.lantern.lit&&st.lantern.text.trim().length>=3?1:0)}
 
 MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day:2,kind:'memorial',year:1,season:'spring',district:'varrow',rank:'trainee',
-  blurb:'A day off: take the ferry to the memorial garden in Varrow.',after:['maya'],
+  blurb:'It’s your day off. Take the ferry to the memorial garden in Varrow.',after:['maya'],
   place:'Lantern Garden · Varrow',
   cast:{
     qygus:{name:'Gus Barros',role:'Keeper of the Lantern Garden',skin:SKIN[2],hair:'#e8e4ee',hairStyle:'short',masc:true,shirt:'#3f8f6b',glasses:true,art(m){return qyGusArt(this,m)}},

@@ -122,7 +122,7 @@ const HIRED_DOCS=[
 const HIRED_REVEAL={saturday:'I made three saves on Saturday! My ankle feels totally fine.',reroll:'Ow. It rolled again, and now I have to miss the playoffs...',
   cheer:'I cheered so loud on Saturday. And now I’m ready for the playoffs!',boot:'That boot was so boring. But my ankle is strong again!'};
 
-MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:'Start',blurb:'Explore the job, meet the team, practice, and interview with Dr. Reyes.',after:[],
+MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:'Start',blurb:'See what the job is like, meet the team, try a practice case, and interview with Dr. Reyes.',after:[],
   kind:'journey',district:'boston',year:1,season:'spring',caseTitle:'Ari’s ankle · practice case',
   place:'Boston Harbor Hospital',debriefScene:'hospital',
   stages:[{key:'explore',at:'h-home'},{key:'meet',at:'h-openhouse'},{key:'practice',at:'h-reyes'},{key:'interview',at:'h-interview'},{key:'firstday',at:'h-firstday'}],

@@ -11,7 +11,7 @@
 // where the Elder Companion program meets; both are built to be reused by later Companion days). Styles: src/css/bea.css.
 
 CAREERS.companion=Object.assign(CAREERS.companion||{},{name:'Elder Companion',place:'Boston',district:'boston',
-  why:'People want a person, not a machine, to keep them company, listen to them, and make sure their own choices are heard.'});
+  why:'Older people want another person to keep them company, listen to them, and make sure their own choices are heard.'});
 
 (function(){
 // ---------- the outcome model (every number in the documents comes from here) ----------
@@ -490,7 +490,7 @@ The key consideration when asked which option: ${told()?'Bea wants one 3-minute 
   canned(q){
     if(/waltz|three minutes|3 minutes|one dance|walter/.test(q)){if(S.notes.waltz&&!S.told){S.told=true;save();unlock('aim-the-goal');return 'Woof, that changes everything! One 3-minute waltz needs much less strength than an hour of dancing. With weekly practice and Bea saying yes to each change: gentle dose about 79 in 100, full 74, training only 56.'}
       if(S.told)return 'Right, her waltz! For one 3-minute waltz, the gentle dose with weekly practice gives about 79 in 100, with much milder aches than the full dose.';return null}
-    if(/tempo|on its own|alone|ask first|permission|rule/.test(q))return 'Tempo is very good at spotting when Bea’s body is ready. The question is who says yes. Changing alone is a bit faster; asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.';
+    if(/tempo|on its own|alone|ask first|permission|rule/.test(q))return 'Tempo is very good at spotting when Bea’s body is ready. The question is who says yes. Changing on its own is a bit faster. Asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.';
     if(/flutter|heart/.test(q))return 'In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks.';
     if(/fall|hip|safe/.test(q))return 'About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.';
     if(/practice|jordan/.test(q))return 'Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 7 to 20 in 100, depending on the plan, and lowers falls a little.';

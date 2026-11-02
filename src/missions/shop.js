@@ -7,7 +7,7 @@
 // Cast ids, scenes (vienna_watch, vienna_market, vienna_night) and Field Guide ids use the "vie" prefix so later
 // Vienna workdays (Treaty Inspector, the Furnace) can reuse them.
 
-CAREERS.auditor={name:'AI Auditor',place:'AI Watchtower, Vienna',district:'vienna',why:'Someone independent must check whose goals an AI really serves.'};
+CAREERS.auditor={name:'AI Auditor',place:'AI Watchtower, Vienna',district:'vienna',why:'Someone who doesn’t work for an AI’s maker has to check whose goals the AI really serves.'};
 
 // The audit model. A "steered" order: Pantry paid more at Kestrel than the twin AI paid elsewhere for the same things.
 // fair: how often a fair Pantry does that anyway (it bundles deliveries the twin can't see).
@@ -26,7 +26,7 @@ function shopPct(p){return p>=.995?'almost 100':String(Math.round(100*p))}
 function shopTimes(p){return p>=.995?'almost every time':`about ${Math.round(100*p)} times in 100`}
 
 MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,kind:'workday',year:3,season:'summer',district:'vienna',rank:'trainee',
-  blurb:'A shopping AI with its own drone fleet keeps sending families to one store.',after:['maya'],
+  blurb:'A shopping AI with its own drones keeps sending families to the same store. Find out why.',after:['maya'],
   place:'AI Watchtower, Vienna',
   flow:[{name:'arrive',k:'talk',talk:'arrive',scene:'vienna_watch',place:'AI Watchtower · Vienna · 8:40 AM'},
     {name:'valentin',k:'talk',talk:'valentin',scene:'vienna_watch',place:'AI Watchtower · Vienna'},

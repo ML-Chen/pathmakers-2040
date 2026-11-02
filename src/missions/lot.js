@@ -6,7 +6,7 @@
 // (src/missions/commission.js), the tinker Future Table, and night orders for the robot crew and Arroyo.
 // Pictures live in src/viz/lot.js, scenes in src/scenes/phx_lot.js and src/scenes/phx_studio.js, styles in src/css/lot.css.
 CAREERS.architect={name:'Community Architect',place:'Phoenix, Arizona',district:'phoenix',
-  why:'Robot crews can build almost anything overnight, so a named person must find out what neighbors need and sign for its safety.'};
+  why:'Robot crews can build a whole park in a night. A person still has to ask the neighbors what they need and sign off that it is safe.'};
 
 // ---------- the flood model (one source for every number the player sees) ----------
 // A plan "holds" a storm of H inches. The street drain alone holds 1.4. Given a big storm (over 1.5 inches),
@@ -36,7 +36,7 @@ function lotForecast(c){const o=MISSIONS.lot.outcomes(c,MISSIONS.lot.knows()),f=
 const in10=p=>Math.round(p*10);
 
 MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'workday',year:1,season:'summer',district:'phoenix',rank:'trainee',
-  blurb:'A corner lot floods every monsoon. A neighbor wants shade; a skater wants a bowl.',after:['maya'],
+  blurb:'A corner lot floods every summer. One neighbor wants a shady place to sit, and a teenage skater wants a bowl.',after:['maya'],
   place:'Arcadia · Phoenix',debriefScene:'phx_studio',eveningScene:'phx_dusk',eveningPlace:'Studio · Phoenix · 9:20 PM',
   flow:[{name:'morning',k:'talk',talk:'morning',scene:'phx_studio',place:'Studio · Phoenix · 6:40 AM'},
     {name:'lot',k:'talk',talk:'lot',scene:'phx_lot',place:'The flood lot · Arcadia · 7:15 AM'},
@@ -254,7 +254,7 @@ The key consideration when asked which plan: ${S.told?'balance the budget betwee
     if(/best|which|pick|choose|should|recommend/.test(q))return S.told?'I can’t pick for you, but here’s the big thing: 400 coins won’t buy the deepest bowl, the widest drain and trees all at once. What matters most: the street staying dry, Dev’s bowl, or Mrs. Okafor’s shade?':'Before I answer: two floods last summer came from the back of the lot on Tuesday nights, and I can’t explain them. Did anyone mention where else water comes from? And what matters most to you: the street, Dev’s bowl, or Mrs. Okafor’s shade?';
     if(/crew|night|robot|surprise/.test(q))return 'The crew builds from 10 PM to 5 AM. My pick: let it fix small things like buried rocks, but stop for anything that belongs to someone else. My forecast can only see what’s on my maps.';
     if(/arroyo|gate|marco/.test(q))return 'Arroyo can open the bowl’s gate in seconds, but only when the bowl is empty, after 10 minutes of lights and a horn, and anyone can press pause. Waiting for Marco at 2 AM makes the street flood about 3 times in 10.';
-    if(/shade|hot|heat|sun/.test(q))return 'In July, bare concrete can pass 140°F. Shade sails cost 40 coins; trees plus sails cost 80 and soak up a little storm water, too.';
+    if(/shade|hot|heat|sun/.test(q))return 'In July, bare concrete can pass 140°F. Shade sails cost 40 coins. Trees plus sails cost 80, and the trees soak up a little storm water, too.';
     if(/deep|depth|drain|bowl/.test(q))return 'Deeper and wider means it holds a bigger storm. A 7-foot bowl adds 60 coins, and a wide drain adds 50. Dev says 4 feet is too shallow to really skate.';
     if(/monsoon|haboob|storm/.test(q))return 'Monsoon season runs mostly July to September. Hot ground pulls in wet air, and by afternoon it builds huge thunderstorms. Hard desert ground can’t soak it up fast, so water rushes to low spots like this lot.';
     if(/saguaro|cactus/.test(q))return 'That saguaro is over a hundred years old. Most saguaros don’t grow arms until they’re at least 50. Every design keeps it, and Arizona law protects it, too.';

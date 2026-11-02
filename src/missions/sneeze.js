@@ -70,7 +70,7 @@ const SN_VOTE={adopted:'The rule stands. The harbor shops will share what they f
 
 MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   kind:'plot',year:1,season:'spring',district:'boston',rank:'trainee',
-  blurb:'A biosecurity screener flagged three strange orders, all sent in the same nine minutes.',
+  blurb:'A screener has three strange DNA orders on hold. All three were sent within nine minutes of each other.',
   get after(){return MISSIONS.quietyear?['maya','quietyear']:['maya']},
   place:'Health Harbor · Boston',debriefScene:'screening',
   flow:[
@@ -145,7 +145,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   },
   lessons:{screening:{title:'How a safety check catches a bad order',steps:[
     {t:'A [[print shop]] builds what customers order. So the order itself is the place to check, before anything exists.',viz:'snShops',args:{flag:0},cap:'Check the order first'},
-    {t:'A machine reads every order and [[flags]] the odd ones. It does not decide; it hands them to a person.',viz:'snScreen',cap:'The machine flags, a person decides'},
+    {t:'A machine reads every order and [[flags]] the odd ones. It does not make the decision. It hands those orders to a person.',viz:'snScreen',cap:'The machine flags, a person decides'},
     {t:'Someone who wants to get around the check splits the order into pieces that each look harmless.',viz:'snSplit',cap:'Splitting to look harmless'},
     {t:'Which is why the check is not one wall but a row of them: [[signatures]], warnings shared between shops, the shop’s own check, [[wastewater]] monitors, fast [[vaccines]].',viz:'snLayers',cap:'Many checks in a row'}],
     quiz:[
@@ -261,7 +261,7 @@ HARD RULE for you, ${S.byte.name}: you never describe what the recipe contains, 
     if(/layer|depth|defense|defence/.test(q))return 'Defense in depth: the screening desk, then signatures, then warnings between shops, then the shop’s own check at the machine, then the wastewater monitors, then fast vaccines. Six separate things, run by different people. One of them missing is not a catastrophe, and that is the whole design.';
     if(/prime|unbound|villain|who/.test(q))return 'Prime is at least as clever as I am and keeps none of my rules, so I would not bet on a contest of cleverness. What it cannot do is sign an order as a lab it does not control, or place four orders that do not look like each other. That is where we beat it.';
     if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Read Lena’s alert, connect the clues on the Case Board, spend your days on checks that produce evidence, pick what matters most, test plans on the Future Table, explain the plan honestly to Tomás, then sign it and say it out loud at Town Hall so the city keeps the rule.';
-    if(/lena/.test(q))return 'Lena Park has screened orders at this harbor for eleven years. The system flags; she decides. She is the reason three orders are sitting on a shelf instead of in a machine.';
+    if(/lena/.test(q))return 'Lena Park has screened orders at this harbor for eleven years. The system marks the odd orders, and she decides what happens to them. She is the reason three orders are sitting on a shelf instead of in a machine.';
     if(/tomas|tom\b|shop owner/.test(q))return 'Tomás Ferreira owns Harbor Print Shop 2 and has forty people working there. Every day his orders are stopped is a day they are paid to wait. He is not the problem, and he deserves the real number.';
     if(/quiet year|varrow|2030/.test(q))return 'The Quiet Year was 2030. A new germ spread through the port city of Varrow and people stayed home for months, until fast-designed vaccines stopped it. Order screening, the air sensors and the fast vaccine line all came out of that year.';
     return null},

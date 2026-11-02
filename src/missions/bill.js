@@ -5,7 +5,7 @@
 // (legal text beside plain English, versions per section) and a Future Table with a live whip board.
 // Every officeholder is fictional and defined by the district's needs; no party is ever named.
 // Top level is plain data and functions only (tools/make_audio.py evaluates this file in node, without S or the DOM).
-CAREERS.lawmaker={name:'Lawmaker',place:'Washington, DC',district:'dc',why:'Voters choose the people who write their laws, and every vote has a named human who must answer for it.'};
+CAREERS.lawmaker={name:'Lawmaker',place:'Washington, DC',district:'dc',why:'Voters choose the people who write their laws, and those people have to answer for every vote.'};
 
 // ---------- the vote model (shared by the documents, the Future Table, consent and the debrief) ----------
 // Each undecided member's chance of voting yes, for a plan c={cmd,report,human}. knows = the player told Byte about
@@ -29,7 +29,7 @@ const BILL_START={cmd:'all',report:'public',human:'pause'}; // Rep. Hollis's fir
 const bill_pct=x=>Math.round(x*100);
 
 MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,kind:'workday',year:3,season:'spring',district:'dc',rank:'trainee',
-  blurb:'Fake orders opened 2,600 doors. Write a robot law that works, then find 11 votes.',after:['maya'],
+  blurb:'A fake order opened 2,600 front doors in one night. Help write a robot law that works, and then find the votes to pass it.',after:['maya'],
   place:'Washington, DC',
   flow:[
     {name:'morning',k:'talk',talk:'morning',scene:'dc_office',place:'Cannon House Office Building · 8:10 AM'},
@@ -129,7 +129,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {who:'byte',mood:'happy',text:'Good morning! Welcome to your first day as a [[congressional aide]], working for Representative Hollis.'},
       {who:'byte',mood:'neutral',text:'Overnight I read all 1,240 public comments on her robot safety bill, and I drafted two or three versions of every section that people argue about.'},
       {who:'byte',mood:'alert',text:'Here’s why it matters. Two weeks ago in Halden Creek, a fake fire alert told 2,600 home robots to unlock their front doors at 3 a.m. They all did.'},
-      {who:'byte',mood:'happy',text:'I can draft the law and run the numbers. But deciding what the law should say, and winning the votes? That’s people’s work.',choices:[
+      {who:'byte',mood:'happy',text:'I can draft the law and run the numbers. Deciding what the law should say, and winning the votes for it, is work for people.',choices:[
         {t:'What’s my job today?',reply:'Help Representative Hollis write a bill that really works, then count who will vote for it. You’ll sign your recommendation, so you’re [[accountable]] for it.'},
         {t:'Let’s go!',reply:'Woof! Grab your badge. The Capitol is right across the street!'}]}],
     boss:[
@@ -194,15 +194,15 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {t:'Robot crews scrubbed the Capitol Reflecting Pool overnight, two days ahead of schedule.',viz:'reflectPool',cap:'Capitol Reflecting Pool'},
       {t:'The cherry trees around the Tidal Basin reached peak bloom on Tuesday.',viz:'cherry',cap:'Peak bloom'},
       {t:'Two House members voted against bills they had cosponsored. Both said their AI aides had summarized the bills for them.',viz:'flipVote',cap:'Votes that flipped'}]}]},
-  react:{memo1:'Anyone could have typed that.',memo3:'Watched is not the same as checked.',memo5:'Four menus deep? An off switch should be one tap away.',memo8:'This is the heart of Section 3.',memo9:'Who would do that? And why Halden Creek?',
-    bill2:'Definitions matter. A loophole can hide in one word.',bill5:'Robots already stop without the national “continue” signal. This switch is for one kitchen.',bill8:'Sections 3, 5 and 6 are where the votes are.',
-    whip2:'Ten isn’t enough. Eleven wins.',whip4:'A robot stopped at harvest is a whole field waiting.',whip7:'The middle version might untie the knot.',ledger0:'Both chambers must pass the same words.',ledger3:'Who checks what the AI aides wrote?'},
+  react:{memo1:'Anyone could have typed that.',memo3:'The robots were watched, but nobody checked who sent the order.',memo5:'Four menus deep? An off switch should be one tap away.',memo8:'This is the heart of Section 3.',memo9:'Who would do that? And why Halden Creek?',
+    bill2:'Definitions matter, because a loophole can hide in a single word.',bill5:'Robots already stop if they lose the national “continue” signal. This switch lets one person stop one robot, right there in the kitchen.',bill8:'Sections 3, 5 and 6 are where the votes are.',
+    whip2:'Ten votes aren’t enough. We need eleven.',whip4:'If a robot stops at harvest, a whole field of wheat has to wait.',whip7:'The middle version might give both of them enough of what they want.',ledger0:'Both chambers must pass the same words.',ledger3:'Who checks what the AI aides wrote?'},
   tell:{clue:'gate',label:'Tell Byte about Rep. Gunderson’s goats',note:'Thanks. I’ll keep his story private. But it changes my forecast: with a phase-in that puts farms first in line, I now think he votes yes about 85 times in 100, not 40.',guide:'trust-story',doc:'whip'},
 
   criteria:[{id:'pass',label:'Passes the vote'},{id:'safe',label:'Stops fake orders'},{id:'fair',label:'Farm robots keep working'},
     {id:'workers',label:'Workers can see and stop problems'},{id:'makers',label:'Small robot makers can keep up'}],
-  criteriaHint:'A law can pass and still not work. Pick what “good” means for this one.',
-  criteriaNote:'Deciding what “good” means first keeps a bill that looks good on paper from fooling you.',
+  criteriaHint:'A bill can pass and still fail to stop fake orders. Pick the things that would make this one a good law.',
+  criteriaNote:'If you decide what a good law looks like first, a bill that only sounds good is less likely to fool you.',
   controls:[{key:'cmd',label:'Checking remote orders',opts:[['all','All, within 1 year'],['phase','All, within 3 years'],['exempt','Only risky ones']]},
     {key:'report',label:'Accident reports',opts:[['public','Public, 24 hrs'],['split','Regulator, then public'],['private','Regulator only']]},
     {key:'human',label:'Person in charge of each crew',opts:[['pause','Can pause the crew'],['name','Name only']]}],
@@ -290,8 +290,8 @@ When asked what to choose: name the key tradeoff (how fast and how completely re
   noteQ:{q:'Rep. Hollis, suppose there’s a real fire and nobody is home. If the robot has to check every order from the internet, will it keep the firefighters out?',
     opts:[{t:'Real fire departments sign their orders, so the robot can check them in a second. Firefighters at the door can also just ask it in person.',good:true,
         say:'Good question. A real fire department signs its orders, so the robot can check one in about a second and let the firefighters in. And when firefighters are standing at the door, they can simply ask the robot, the same as anyone in the room can.',back:'So only a stranger far away gets stopped. That makes sense. Thank you, I yield back.',mood:'smile'},
-      {t:'Emergencies are rare. Don’t worry about it.',say:'Well... emergencies are rare.',back:'Rare isn’t never. I’ll want a better answer before the vote.',mood:'stern'},
-      {t:'Families can switch off the checking whenever they need to.',say:'Families could switch off the checking whenever they need to.',back:'Then a fake order would just say “switch off your checking” first.',mood:'stern'}],
+      {t:'Emergencies like that are very rare, so it isn’t worth worrying about. This bill is about stopping fake orders.',say:'Well... emergencies are rare.',back:'Rare isn’t never. I’ll want a better answer before the vote.',mood:'stern'},
+      {t:'Families can switch off the checking whenever they need to, so firefighters would never be kept out.',say:'Families could switch off the checking whenever they need to.',back:'Then a fake order would just say “switch off your checking” first.',mood:'stern'}],
     whisper:'Psst. People in the room can always talk to the robot. Only orders from far away need a signature, and real fire departments sign theirs.'},
   // Whip count: two questions per member; the open question reveals what each really needs (and Rep. Gunderson's story).
   whipQ:{
@@ -313,7 +313,7 @@ When asked what to choose: name the key tradeoff (how fast and how completely re
   lines:[
     {who:'byte',text:'Thanks. I’ll keep his story private. But it changes my forecast: with a phase-in that puts farms first in line, I now think he votes yes about 85 times in 100, not 40.'},
     {who:'byte',text:'Psst. People in the room can always talk to the robot. Only orders from far away need a signature, and real fire departments sign theirs.'},
-    {who:'byte',text:'Two asks pull in opposite directions: Rep. Ibarra wants fast public reports, and Rep. Sethi wants reports to go to the regulator first. That’s the knot to untie.'},
+    {who:'byte',text:'Two of them want opposite things. Rep. Ibarra wants reports the public can see fast, and Rep. Sethi wants reports to go to the regulator first. We need a version both of them can live with.'},
     {who:'byte',text:'You only get a couple of minutes with each member. Ask what they really need.'},
     {who:'byte',text:'Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.'},
     {who:'byte',text:'Thank you for telling me. I’ll keep his story private: it’s his to tell. But it changes my forecast. With a phase-in that puts farms first in line, I now think Rep. Gunderson votes yes about 85 times in 100, not 40.'},
@@ -388,7 +388,7 @@ function bill_whip(){const st=bill_st();const Q=M().whipQ;
   screen('bench',`${scene('dc_hearing')}<div class="talk-dim"></div>${hud('Rayburn hallway · after the hearing')}<div class="panel-card bill-whip">
     <h2>Whip count</h2><div class="bw-tally"><span class="y"><b>9</b>yes</span><span class="n"><b>9</b>no</span><span class="u"><b>3</b>undecided</span><span class="need"><b>11</b>to pass</span></div>
     <div class="bw-cards">${BILL_WHO.map(card).join('')}</div>
-    <div class="byte-note">${byteBox({...S.byte,mood:allDone?'alert':'think'})}<p>${allDone?'Two asks pull in opposite directions: Rep. Ibarra wants fast public reports, and Rep. Sethi wants reports to go to the regulator first. That’s the knot to untie.':'You only get a couple of minutes with each member. Ask what they really need.'}</p></div>
+    <div class="byte-note">${byteBox({...S.byte,mood:allDone?'alert':'think'})}<p>${allDone?'Two of them want opposite things. Rep. Ibarra wants reports the public can see fast, and Rep. Sethi wants reports to go to the regulator first. We need a version both of them can live with.':'You only get a couple of minutes with each member. Ask what they really need.'}</p></div>
     <button class="btn wide" id="next" ${allTalked?'':'disabled'}>Back to the office</button></div>`);
   $$('[data-talk]').forEach(b=>b.onclick=()=>bill_whipTalk(b.dataset.talk));
   $('#next').onclick=()=>{unlock('whip-count')&&toast('New Field Guide idea: Counting votes before the vote','good');toast('New work on your Workbench');nextStep()}}
