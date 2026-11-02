@@ -219,13 +219,13 @@ function renderWorkbench(){
     ${doc.steps.map((st,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p class="sent ${S.highlights[doc.id+i]?'hl':''}" data-k="${doc.id+i}">${rich(st.t)}</p>
       <figure class="fig"><figcaption>${esc(st.cap||'')}</figcaption>${VIZ[st.viz]?VIZ[st.viz](st.args||{}):''}</figure></div></section>`).join('')}
    </article>
-   <div class="bench-foot"><button class="btn ghost small" id="learn">Learn it fast: how a broken bone heals</button><div id="tellslot"></div><button class="btn" id="next">Set my criteria</button></div></div>`);
+   ${companion()}<div class="bench-foot"><button class="btn ghost small" id="learn">Learn it fast: how a broken bone heals</button><div id="tellslot"></div><button class="btn" id="next">Set my criteria</button></div></div>`);
   $$('.tab').forEach(b=>b.onclick=()=>{curDoc=b.dataset.d;renderWorkbench()});
-  $$('.sent').forEach(p=>p.onclick=e=>{if(e.target.closest('.gw'))return;const k=p.dataset.k;S.highlights[k]=!S.highlights[k];p.classList.toggle('hl');save();
+  $$('.sent').forEach(p=>p.onclick=e=>{if(e.target.closest('.gw'))return;const k=p.dataset.k;S.highlights[k]=!S.highlights[k];p.classList.toggle('hl');save();if(S.highlights[k]&&REACT[k])byteSays(S.notes.rash&&k==='sheet3'?'Maya\u2019s dad said she got a rash from a cooling patch!':REACT[k]);
     if(k==='sheet3'&&S.highlights[k]&&S.notes.rash&&!S.told)toast('This matches what Maya’s dad told you!','good')});
   $('#readme').onclick=()=>{const items=[['narrator',doc.title]].concat(doc.steps.map(b=>['narrator',b.t]));let k=0;const ps=$$('.sent');
     (async()=>{stopVoice();const id=playId;for(const [w,t] of items){if(id!==playId)break;const p=k>0?ps[k-1]:null;if(p)p.classList.add('reading');await playLine(w,t);playId=id;if(p)p.classList.remove('reading');k++}})()};
-  renderTellButton();$('#learn').onclick=()=>openLesson('bones');
+  renderTellButton();wireCompanion();$('#learn').onclick=()=>openLesson('bones');
   $('#next').onclick=()=>{const unread=DOCS.filter(d=>!S.read[d.id]&&d.id!=='ledger');if(unread.length){toast('Read the '+unread.map(d=>d.title.split(':')[0]).join(' and ')+' first.');return}go('criteria')};
 }
 function renderTellButton(){const slot=$('#tellslot');if(!slot)return;
@@ -233,6 +233,14 @@ function renderTellButton(){const slot=$('#tellslot');if(!slot)return;
   else if(S.told)slot.innerHTML=`<div class="byte-note" data-speak="byte">${byteBox({...S.byte,mood:'alert'})}<p>Thanks! I updated my forecast: if Maya is sensitive to HX-2, BoneMend has about a 60% chance of a skin reaction.</p></div>`;
   else slot.innerHTML='';
   const t=$('#tell');if(t)t.onclick=()=>{S.told=true;save();unlock('only-you-know')&&toast('New Field Guide idea: Information only you have','good');renderTellButton()}}
+
+// ---------- companion Byte on work screens: reacts, wags, opens chat ----------
+function companion(){return `<button class="companion" id="comp" aria-label="Talk to ${esc(S.byte.name)}">${byteBox({...S.byte,mood:'happy'})}</button>`}
+function wireCompanion(){const c=$('#comp');if(c)c.onclick=openChat}
+function byteSays(text,mood='alert'){const c=$('#comp');if(!c)return;c.innerHTML=byteBox({...S.byte,mood});c.classList.remove('hop');void c.offsetWidth;c.classList.add('hop');
+  $$('.bubble').forEach(b=>b.remove());const b=document.createElement('div');b.className='bubble';b.textContent=text;document.body.appendChild(b);
+  setTimeout(()=>{b.classList.add('out');c.innerHTML=byteBox({...S.byte,mood:'happy'})},4200);setTimeout(()=>b.remove(),4700)}
+const REACT={memo7:'Nine days until the recital. That\u2019s tight!',memo8:'Only 40 kids. I could be wrong about BoneMend.',record3:'Hmm, a record can be missing things.',sheet2:'HX-2... where have I heard that?',sheet3:'This one could really matter for Maya.',ledger2:'Calder Bay again. Who builds a secret datacenter?'};
 
 // ---------- Learn It Fast: a short lesson from Byte, then a 3-question check ----------
 function openLesson(id){const L=LESSONS[id];let qi=0,right=0;
