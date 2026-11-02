@@ -10,6 +10,9 @@ const {chromium}=require('playwright');const path=require('path');
  await p.addInitScript(()=>{window.__noaudio=1;try{localStorage.clear()}catch(e){}});
  await p.goto('file://'+path.resolve(process.argv[2]||'dist/pathmakers.html'));await p.waitForTimeout(300);
  const ids=await p.evaluate(()=>Object.keys(MISSIONS));if(!ids.length)fails.push('MISSIONS is empty');
+ // cast keys are global: two missions using one key for different people would draw one of them as the other
+ const clash=await p.evaluate(()=>{const seen={},out=[];for(const m of Object.values(MISSIONS))for(const k in (m.cast||{})){const n=m.cast[k].name;if(seen[k]&&seen[k].n!==n)out.push(`cast key "${k}" is ${seen[k].n} in ${seen[k].id} and ${n} in ${m.id}`);else if(!seen[k])seen[k]={n,id:m.id}}return out});
+ clash.forEach(x=>fails.push(x));
  for(const id of ids){const r=await p.evaluate(async id=>{S.mute=true;S.completed={};startMission(id);const flow=M().flow,seen=[],bad=[];
      for(let k=0;k<2*flow.length+5;k++){const f=flow.find(x=>x.name===S.step);if(!f)break;seen.push(S.step);
        if(f.k==='criteria'){S.criteria=M().criteria.slice(0,2).map(c=>c.id)}

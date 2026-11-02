@@ -69,13 +69,13 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     {name:'calf_bench',k:'bench'},{name:'calf_test',k:'custom'},{name:'calf_criteria',k:'criteria'},{name:'calf_table',k:'table'},
     {name:'calf_consent',k:'consent'},{name:'calf_memo',k:'memo'},{name:'calf_reveal',k:'reveal'},{name:'calf_debrief',k:'debrief'},{name:'calf_evening',k:'evening'}],
   cast:{
-    ruth:{name:'Ruth Nauyaq',role:'Lead keeper, Kigluaik Mammoth Reserve',skin:'#c48a62',hair:'#2e2829',hairStyle:'bun',eye:'#3a2216',shirt:'#1f7f86',nome:'ruth',
+    ruthn:{name:'Ruth Nauyaq',role:'Lead keeper, Kigluaik Mammoth Reserve',skin:'#c48a62',hair:'#2e2829',hairStyle:'bun',eye:'#3a2216',shirt:'#1f7f86',nome:'ruth',
       get art(){return typeof nomePerson==='function'?m=>nomePerson(this,m):undefined}},
     eli:{name:'Eli Johnson',role:'Reindeer herder',skin:'#b97a52',hair:'#16110f',hairStyle:'short',eye:'#2e1a10',shirt:'#5c6b3a',nome:'eli',
       get art(){return typeof nomePerson==='function'?m=>nomePerson(this,m):undefined}},
     aqpik:{name:'Aqpik',role:'Mammoth calf, 5 months · her collar translator',get art(){return typeof calfPortrait==='function'?m=>calfPortrait(m):undefined}}
   },
-  voices:{ruth:'af_heart',eli:'am_liam',aqpik:'af_nova'},
+  voices:{ruthn:'af_heart',eli:'am_liam',aqpik:'af_nova'},
   glossary:{
     'woolly mammoth':'A big, shaggy relative of elephants that lived in the Ice Age. In this 2040, a small herd lives again on a reserve near Nome.',
     'mammoth':'A big, shaggy relative of elephants that lived in the Ice Age.',
@@ -139,15 +139,15 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
         {t:'55% isn’t very sure.',reply:'Right! It’s only a bit better than a coin flip. That’s why we check it against what we can see with our own eyes.'}]}
     ],
     ruth:[
-      {who:'ruth',mood:'smile',text:'You must be the new vet. I’m Ruth Nauyaq, the lead [[keeper]]. [[Quyanaq]] for coming out so early.'},
-      {who:'ruth',mood:'happy',text:'That’s Aqpik, beside her mother, Nuna. We give every calf an [[Iñupiaq]] name. Aqpik means [[cloudberry]]. Look at that orange hair and you’ll see why.'},
+      {who:'ruthn',mood:'smile',text:'You must be the new vet. I’m Ruth Nauyaq, the lead [[keeper]]. [[Quyanaq]] for coming out so early.'},
+      {who:'ruthn',mood:'happy',text:'That’s Aqpik, beside her mother, Nuna. We give every calf an [[Iñupiaq]] name. Aqpik means [[cloudberry]]. Look at that orange hair and you’ll see why.'},
       {who:'aqpik',mood:'worried',text:'Collar translator, 55% sure: “My mouth hurts.”'},
-      {who:'ruth',mood:'worried',text:'She hasn’t nursed since yesterday morning. A calf her age drinks milk all day long. After about three days without it, she’ll get weak.'},
-      {who:'ruth',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are close. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
+      {who:'ruthn',mood:'worried',text:'She hasn’t nursed since yesterday morning. A calf her age drinks milk all day long. After about three days without it, she’ll get weak.'},
+      {who:'ruthn',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are close. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
         {t:'What does she do instead?',good:true,mood:'smile',reply:'Go watch her yourself. Watch her feet, not just her face. Mammoths listen with their feet.'},
         {t:'Should we trust the translator?',mood:'neutral',reply:'Trust it like a smart friend who wasn’t there. It’s very good, but it only knows what its collar can sense.'}]},
-      {who:'ruth',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones dart her, and robots feed her through a tube. Nobody has to sign.'},
-      {who:'ruth',mood:'neutral',text:'Today, that rule is yours to keep or change.'}
+      {who:'ruthn',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones dart her, and robots feed her through a tube. Nobody has to sign.'},
+      {who:'ruthn',mood:'neutral',text:'Today, that rule is yours to keep or change.'}
     ],
     eli:[
       {who:'eli',mood:'smile',text:'Hey, Doc. I’m Eli Johnson. My Iñupiaq name is Tuttu, after my great-grandpa. He herded [[reindeer]] on this same land.'},
@@ -224,7 +224,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
   whyGuide(c){return c.auto==='ask'?'nome-who-decides':'nome-test-small'},
   vignette(kind){return typeof calfVignette==='function'?calfVignette(kind):vignette('healed')},
   debriefScene:'nome_barn',eveningScene:'nome_dusk',eveningPlace:'Nome · 8:40 PM',
-  consent:{scene:'nome_reserve',place:'North Pasture · Kigluaik Mammoth Reserve',left:'eli',right:'ruth',title:'Ruth and Eli',role:'Lead keeper and reindeer herder',prompt:'So what’s the plan, Doc? And what about that ridge?',replyWho:'ruth',heart:'ruth',
+  consent:{scene:'nome_reserve',place:'North Pasture · Kigluaik Mammoth Reserve',left:'eli',right:'ruthn',title:'Ruth and Eli',role:'Lead keeper and reindeer herder',prompt:'So what’s the plan, Doc? And what about that ridge?',replyWho:'ruthn',heart:'ruthn',
     opts(c,M){const f=forecastFor(c),e=Math.round(10*f.eats),n=Math.round(10*f.nosed);
       const care={barn:'keeping Aqpik and Nuna in the quiet warming barn',pasture:'putting Aqpik back with the herd',exam:'a full exam under sedation'}[c.care];
       const ridge={leave:'We leave the ridge station alone for now.',drone:'A camera-only drone checks the ridge station, which means it flies over your reindeer, Eli.',eli:'Eli, would you check the ridge station on your four-wheeler?'}[c.ridge];
@@ -235,7 +235,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
         {t:'Don’t worry. She’ll definitely be eating by tonight.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
   memo:{starters:['I recommend ','because ','The chance she eats again by Monday is about ','For Aqpik and Eli, ','We will check by '],placeholder:'I recommend keeping Aqpik in the quiet barn because…',
     plan:/barn|pasture|herd|exam|sedat|drone|ridge|protocol|eli |eli’|eli's|test/,careLabel:'Includes what matters to Aqpik or Eli',care:/aqpik|calf|she |her |nuna|ruth|eli|reindeer|mother/,signAs:'Dr. ',topic:'Aqpik, a mammoth calf who stopped nursing'},
-  reveal:{days(){return 3},who:'ruth',
+  reveal:{days(){return 3},who:'ruthn',
     lines:{barn:'She’s nursing! Nuna rumbled to her all night, and this morning Aqpik ate her mash too.',herd:'Look at her, back with the herd and eating like nothing happened. The ground is quiet again.',
       treated:'The vets found the problem and fixed it. She’s eating again.',tube:'The tube kept her fed, but she still won’t nurse on her own. Something is still bothering her.',
       still:'She still won’t nurse. We’ll keep trying. I’m not giving up on her.',trouble:'Her breathing slowed under the sedation. The vets helped her, and she’s okay now, but that was scary.'},
@@ -264,10 +264,10 @@ The key consideration when asked what to do: ${S.told?'the ridge hum, which only
 };
 MISSIONS.calf.lines=[
   {who:'byte',text:'Thanks! I checked the reserve’s quake sensor. A hum too low for her collar to hear comes from the east ridge every few minutes, and Aqpik freezes each time. Now I think she’s scared: about 60%. Sore mouth drops to 20%.'},
-  {who:'ruth',text:'Eli won’t love a drone over his reindeer, but you explained it straight. Let’s do it.'},
-  {who:'ruth',text:'Thank you for laying it out honestly. That’s a plan I can stand behind.'},
-  {who:'ruth',text:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
-  {who:'ruth',text:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'},
+  {who:'ruthn',text:'Eli won’t love a drone over his reindeer, but you explained it straight. Let’s do it.'},
+  {who:'ruthn',text:'Thank you for laying it out honestly. That’s a plan I can stand behind.'},
+  {who:'ruthn',text:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
+  {who:'ruthn',text:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'},
   {who:'byte',text:'Watch Aqpik. Tap what she does with her ears, trunk, mouth, feet, head, and tail.'},
   {who:'byte',text:'She froze! Did you see where she looked?'},
   {who:'byte',text:'So, what do you notice about her freezes?'},

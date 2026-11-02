@@ -1,17 +1,17 @@
 // grandrounds.js — the Care Doctor's big talk and promotion to Pro (spec: Core loop → Career journey, steps 7 and 8).
 // Grand Rounds is the hospital's weekly talk where one doctor presents one real case to everyone. The player builds a
 // three-part talk with Byte about a case from their Portfolio Book (Maya's wrist, Ari's ankle, or any later Care Doctor
-// case), gives it to a crowd, and answers one tough question from Dr. Theo Park, a colleague who trusts his AI without
+// case), gives it to a crowd, and answers one tough question from Dr. Owen Hale, a colleague who trusts his AI without
 // checking. Then Dr. Reyes promotes the player to Pro. The screens are the generic ones in src/career.js (talkprep,
 // bigtalk, promotion). It unlocks after every Trainee workday of the Care Doctor career (src/campaign.js, bigTalkNeeds).
 // Stars: Ask for a clear story and decision, Decision for the answer to the tough question, Heart for thanking the people who helped.
 
-const GR_B=t=>({who:'byte',text:t}),GR_T=t=>({who:'theo',text:t}),GR_I=t=>({who:'imani',text:t});
+const GR_B=t=>({who:'byte',text:t}),GR_T=t=>({who:'owen',text:t}),GR_I=t=>({who:'imani',text:t});
 MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:9,dayLabel:'Big talk',kind:'bigtalk',promotes:'pro',rank:'trainee',district:'boston',year:1,
   blurb:'Tell the whole hospital about one of your cases, and answer one tough question.',after:['hired'],place:'Boston Harbor Hospital',
   flow:[{name:'g-prep',k:'talkprep',music:'work'},{name:'g-stage',k:'bigtalk',music:'hospital'},{name:'g-promo',k:'promotion',music:'win'}],
-  cast:{theo:{name:'Dr. Theo Park',role:'Care Doctor, Boston Harbor Hospital',skin:SKIN[1],hair:'#1a1416',hairStyle:'short',shirt:'#5b9bf0',coat:true,masc:true}},
-  voices:{theo:'am_eric'},
+  cast:{owen:{name:'Dr. Owen Hale',role:'Care Doctor, Boston Harbor Hospital',skin:SKIN[1],hair:'#1a1416',hairStyle:'short',shirt:'#5b9bf0',coat:true,masc:true}},
+  voices:{owen:'am_eric'},
   glossary:{'grand rounds':'A meeting where a doctor tells other doctors about a real case, so everyone learns from it.',
     accountable:'Responsible for a decision, so you have to explain it and answer for how it turns out.'},
   guide:{'accountability':{title:'Who answers for it?',track:'Government, law, and power',
@@ -40,7 +40,7 @@ MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:
           {t:'Everything went perfectly. I wouldn’t change a thing.',tip:GR_B('Every case teaches something. Saying what you learned makes your talk useful to everyone.')},
           {t:'Halo did most of the work, so any mistakes are Halo’s.',tip:GR_B('Careful. You signed it, so it’s yours. Say what you learned and thank the people who helped.')}]}],
     question:{q:GR_T('Halo can read every chart in this hospital in a second. Why does a human doctor need to sign at all?'),
-      judge:'You are Dr. Theo Park, a friendly Care Doctor at Boston Harbor Hospital in a kids’ game set in 2040. You trust the hospital AI a lot. You asked a young doctor at Grand Rounds why a human doctor needs to sign at all.',
+      judge:'You are Dr. Owen Hale, a friendly Care Doctor at Boston Harbor Hospital in a kids’ game set in 2040. You trust the hospital AI a lot. You asked a young doctor at Grand Rounds why a human doctor needs to sign at all.',
       check:'explains that the choice belongs to the family, that someone must be accountable for it, or that people notice things the AI was never told',
       heur:/family|choice|consent|sign|responsib|accountab|answer for|listen|clue|rash|hides|told me|ask|explain|trust|check/,
       opts:[{t:c=>`Halo is great with facts. But ${c.clue} came from talking with the family, and the choice is theirs. A person listens, explains the odds honestly, and signs, so someone answers for it.`,good:true,
@@ -61,7 +61,7 @@ MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:
     line:GR_I('I’ve watched you listen, explain and sign with care. Congratulations, Doctor. You’re a Pro now.'),
     byte:GR_B('A Pro! I’m doing my happy spin. Can you tell?'),
     unlocks:['Harder cases, with more people to listen to','Bigger hospital systems to oversee','Trips to sister hospitals, like Shanghai']},
-  brief(){return 'Right now the player is preparing and giving Grand Rounds, the hospital’s weekly talk where one doctor presents one real case. The talk has three parts: the patient’s story in one sentence, the decision with the reasons and how sure they were, and what they learned with thanks to the people who helped. Then Dr. Theo Park, a colleague who trusts the hospital AI a lot, asks why a human doctor needs to sign at all. Good answers: the choice belongs to the family; someone must be accountable and answer for it; people notice things the AI was never told. Help them prepare, but do not write the talk for them.'},
+  brief(){return 'Right now the player is preparing and giving Grand Rounds, the hospital’s weekly talk where one doctor presents one real case. The talk has three parts: the patient’s story in one sentence, the decision with the reasons and how sure they were, and what they learned with thanks to the people who helped. Then Dr. Owen Hale, a colleague who trusts the hospital AI a lot, asks why a human doctor needs to sign at all. Good answers: the choice belongs to the family; someone must be accountable and answer for it; people notice things the AI was never told. Help them prepare, but do not write the talk for them.'},
   canned(q){if(/talk|grand rounds|present|nervous|scared/.test(q))return 'Start with the person, then say what you chose and why, then what you learned and who helped. Three parts. You can do it!';
-    if(/theo|sign|why human|accountab/.test(q))return 'The family decides, and someone has to answer for the choice. People also notice things the AI was never told. That’s why a doctor signs.';return null}
+    if(/owen|hale|sign|why human|accountab/.test(q))return 'The family decides, and someone has to answer for the choice. People also notice things the AI was never told. That’s why a doctor signs.';return null}
 };

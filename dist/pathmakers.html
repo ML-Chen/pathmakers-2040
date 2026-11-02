@@ -16149,13 +16149,13 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     {name:'calf_bench',k:'bench'},{name:'calf_test',k:'custom'},{name:'calf_criteria',k:'criteria'},{name:'calf_table',k:'table'},
     {name:'calf_consent',k:'consent'},{name:'calf_memo',k:'memo'},{name:'calf_reveal',k:'reveal'},{name:'calf_debrief',k:'debrief'},{name:'calf_evening',k:'evening'}],
   cast:{
-    ruth:{name:'Ruth Nauyaq',role:'Lead keeper, Kigluaik Mammoth Reserve',skin:'#c48a62',hair:'#2e2829',hairStyle:'bun',eye:'#3a2216',shirt:'#1f7f86',nome:'ruth',
+    ruthn:{name:'Ruth Nauyaq',role:'Lead keeper, Kigluaik Mammoth Reserve',skin:'#c48a62',hair:'#2e2829',hairStyle:'bun',eye:'#3a2216',shirt:'#1f7f86',nome:'ruth',
       get art(){return typeof nomePerson==='function'?m=>nomePerson(this,m):undefined}},
     eli:{name:'Eli Johnson',role:'Reindeer herder',skin:'#b97a52',hair:'#16110f',hairStyle:'short',eye:'#2e1a10',shirt:'#5c6b3a',nome:'eli',
       get art(){return typeof nomePerson==='function'?m=>nomePerson(this,m):undefined}},
     aqpik:{name:'Aqpik',role:'Mammoth calf, 5 months · her collar translator',get art(){return typeof calfPortrait==='function'?m=>calfPortrait(m):undefined}}
   },
-  voices:{ruth:'af_heart',eli:'am_liam',aqpik:'af_nova'},
+  voices:{ruthn:'af_heart',eli:'am_liam',aqpik:'af_nova'},
   glossary:{
     'woolly mammoth':'A big, shaggy relative of elephants that lived in the Ice Age. In this 2040, a small herd lives again on a reserve near Nome.',
     'mammoth':'A big, shaggy relative of elephants that lived in the Ice Age.',
@@ -16219,15 +16219,15 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
         {t:'55% isn’t very sure.',reply:'Right! It’s only a bit better than a coin flip. That’s why we check it against what we can see with our own eyes.'}]}
     ],
     ruth:[
-      {who:'ruth',mood:'smile',text:'You must be the new vet. I’m Ruth Nauyaq, the lead [[keeper]]. [[Quyanaq]] for coming out so early.'},
-      {who:'ruth',mood:'happy',text:'That’s Aqpik, beside her mother, Nuna. We give every calf an [[Iñupiaq]] name. Aqpik means [[cloudberry]]. Look at that orange hair and you’ll see why.'},
+      {who:'ruthn',mood:'smile',text:'You must be the new vet. I’m Ruth Nauyaq, the lead [[keeper]]. [[Quyanaq]] for coming out so early.'},
+      {who:'ruthn',mood:'happy',text:'That’s Aqpik, beside her mother, Nuna. We give every calf an [[Iñupiaq]] name. Aqpik means [[cloudberry]]. Look at that orange hair and you’ll see why.'},
       {who:'aqpik',mood:'worried',text:'Collar translator, 55% sure: “My mouth hurts.”'},
-      {who:'ruth',mood:'worried',text:'She hasn’t nursed since yesterday morning. A calf her age drinks milk all day long. After about three days without it, she’ll get weak.'},
-      {who:'ruth',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are close. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
+      {who:'ruthn',mood:'worried',text:'She hasn’t nursed since yesterday morning. A calf her age drinks milk all day long. After about three days without it, she’ll get weak.'},
+      {who:'ruthn',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are close. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
         {t:'What does she do instead?',good:true,mood:'smile',reply:'Go watch her yourself. Watch her feet, not just her face. Mammoths listen with their feet.'},
         {t:'Should we trust the translator?',mood:'neutral',reply:'Trust it like a smart friend who wasn’t there. It’s very good, but it only knows what its collar can sense.'}]},
-      {who:'ruth',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones dart her, and robots feed her through a tube. Nobody has to sign.'},
-      {who:'ruth',mood:'neutral',text:'Today, that rule is yours to keep or change.'}
+      {who:'ruthn',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones dart her, and robots feed her through a tube. Nobody has to sign.'},
+      {who:'ruthn',mood:'neutral',text:'Today, that rule is yours to keep or change.'}
     ],
     eli:[
       {who:'eli',mood:'smile',text:'Hey, Doc. I’m Eli Johnson. My Iñupiaq name is Tuttu, after my great-grandpa. He herded [[reindeer]] on this same land.'},
@@ -16304,7 +16304,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
   whyGuide(c){return c.auto==='ask'?'nome-who-decides':'nome-test-small'},
   vignette(kind){return typeof calfVignette==='function'?calfVignette(kind):vignette('healed')},
   debriefScene:'nome_barn',eveningScene:'nome_dusk',eveningPlace:'Nome · 8:40 PM',
-  consent:{scene:'nome_reserve',place:'North Pasture · Kigluaik Mammoth Reserve',left:'eli',right:'ruth',title:'Ruth and Eli',role:'Lead keeper and reindeer herder',prompt:'So what’s the plan, Doc? And what about that ridge?',replyWho:'ruth',heart:'ruth',
+  consent:{scene:'nome_reserve',place:'North Pasture · Kigluaik Mammoth Reserve',left:'eli',right:'ruthn',title:'Ruth and Eli',role:'Lead keeper and reindeer herder',prompt:'So what’s the plan, Doc? And what about that ridge?',replyWho:'ruthn',heart:'ruthn',
     opts(c,M){const f=forecastFor(c),e=Math.round(10*f.eats),n=Math.round(10*f.nosed);
       const care={barn:'keeping Aqpik and Nuna in the quiet warming barn',pasture:'putting Aqpik back with the herd',exam:'a full exam under sedation'}[c.care];
       const ridge={leave:'We leave the ridge station alone for now.',drone:'A camera-only drone checks the ridge station, which means it flies over your reindeer, Eli.',eli:'Eli, would you check the ridge station on your four-wheeler?'}[c.ridge];
@@ -16315,7 +16315,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
         {t:'Don’t worry. She’ll definitely be eating by tonight.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
   memo:{starters:['I recommend ','because ','The chance she eats again by Monday is about ','For Aqpik and Eli, ','We will check by '],placeholder:'I recommend keeping Aqpik in the quiet barn because…',
     plan:/barn|pasture|herd|exam|sedat|drone|ridge|protocol|eli |eli’|eli's|test/,careLabel:'Includes what matters to Aqpik or Eli',care:/aqpik|calf|she |her |nuna|ruth|eli|reindeer|mother/,signAs:'Dr. ',topic:'Aqpik, a mammoth calf who stopped nursing'},
-  reveal:{days(){return 3},who:'ruth',
+  reveal:{days(){return 3},who:'ruthn',
     lines:{barn:'She’s nursing! Nuna rumbled to her all night, and this morning Aqpik ate her mash too.',herd:'Look at her, back with the herd and eating like nothing happened. The ground is quiet again.',
       treated:'The vets found the problem and fixed it. She’s eating again.',tube:'The tube kept her fed, but she still won’t nurse on her own. Something is still bothering her.',
       still:'She still won’t nurse. We’ll keep trying. I’m not giving up on her.',trouble:'Her breathing slowed under the sedation. The vets helped her, and she’s okay now, but that was scary.'},
@@ -16344,10 +16344,10 @@ The key consideration when asked what to do: ${S.told?'the ridge hum, which only
 };
 MISSIONS.calf.lines=[
   {who:'byte',text:'Thanks! I checked the reserve’s quake sensor. A hum too low for her collar to hear comes from the east ridge every few minutes, and Aqpik freezes each time. Now I think she’s scared: about 60%. Sore mouth drops to 20%.'},
-  {who:'ruth',text:'Eli won’t love a drone over his reindeer, but you explained it straight. Let’s do it.'},
-  {who:'ruth',text:'Thank you for laying it out honestly. That’s a plan I can stand behind.'},
-  {who:'ruth',text:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
-  {who:'ruth',text:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'},
+  {who:'ruthn',text:'Eli won’t love a drone over his reindeer, but you explained it straight. Let’s do it.'},
+  {who:'ruthn',text:'Thank you for laying it out honestly. That’s a plan I can stand behind.'},
+  {who:'ruthn',text:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
+  {who:'ruthn',text:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'},
   {who:'byte',text:'Watch Aqpik. Tap what she does with her ears, trunk, mouth, feet, head, and tail.'},
   {who:'byte',text:'She froze! Did you see where she looked?'},
   {who:'byte',text:'So, what do you notice about her freezes?'},
@@ -16512,17 +16512,17 @@ function cmResults(cfg,st){const f=st.f,R=cfg.results(f);st.pick=Math.min(st.pic
 // grandrounds.js — the Care Doctor's big talk and promotion to Pro (spec: Core loop → Career journey, steps 7 and 8).
 // Grand Rounds is the hospital's weekly talk where one doctor presents one real case to everyone. The player builds a
 // three-part talk with Byte about a case from their Portfolio Book (Maya's wrist, Ari's ankle, or any later Care Doctor
-// case), gives it to a crowd, and answers one tough question from Dr. Theo Park, a colleague who trusts his AI without
+// case), gives it to a crowd, and answers one tough question from Dr. Owen Hale, a colleague who trusts his AI without
 // checking. Then Dr. Reyes promotes the player to Pro. The screens are the generic ones in src/career.js (talkprep,
 // bigtalk, promotion). It unlocks after every Trainee workday of the Care Doctor career (src/campaign.js, bigTalkNeeds).
 // Stars: Ask for a clear story and decision, Decision for the answer to the tough question, Heart for thanking the people who helped.
 
-const GR_B=t=>({who:'byte',text:t}),GR_T=t=>({who:'theo',text:t}),GR_I=t=>({who:'imani',text:t});
+const GR_B=t=>({who:'byte',text:t}),GR_T=t=>({who:'owen',text:t}),GR_I=t=>({who:'imani',text:t});
 MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:9,dayLabel:'Big talk',kind:'bigtalk',promotes:'pro',rank:'trainee',district:'boston',year:1,
   blurb:'Tell the whole hospital about one of your cases, and answer one tough question.',after:['hired'],place:'Boston Harbor Hospital',
   flow:[{name:'g-prep',k:'talkprep',music:'work'},{name:'g-stage',k:'bigtalk',music:'hospital'},{name:'g-promo',k:'promotion',music:'win'}],
-  cast:{theo:{name:'Dr. Theo Park',role:'Care Doctor, Boston Harbor Hospital',skin:SKIN[1],hair:'#1a1416',hairStyle:'short',shirt:'#5b9bf0',coat:true,masc:true}},
-  voices:{theo:'am_eric'},
+  cast:{owen:{name:'Dr. Owen Hale',role:'Care Doctor, Boston Harbor Hospital',skin:SKIN[1],hair:'#1a1416',hairStyle:'short',shirt:'#5b9bf0',coat:true,masc:true}},
+  voices:{owen:'am_eric'},
   glossary:{'grand rounds':'A meeting where a doctor tells other doctors about a real case, so everyone learns from it.',
     accountable:'Responsible for a decision, so you have to explain it and answer for how it turns out.'},
   guide:{'accountability':{title:'Who answers for it?',track:'Government, law, and power',
@@ -16551,7 +16551,7 @@ MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:
           {t:'Everything went perfectly. I wouldn’t change a thing.',tip:GR_B('Every case teaches something. Saying what you learned makes your talk useful to everyone.')},
           {t:'Halo did most of the work, so any mistakes are Halo’s.',tip:GR_B('Careful. You signed it, so it’s yours. Say what you learned and thank the people who helped.')}]}],
     question:{q:GR_T('Halo can read every chart in this hospital in a second. Why does a human doctor need to sign at all?'),
-      judge:'You are Dr. Theo Park, a friendly Care Doctor at Boston Harbor Hospital in a kids’ game set in 2040. You trust the hospital AI a lot. You asked a young doctor at Grand Rounds why a human doctor needs to sign at all.',
+      judge:'You are Dr. Owen Hale, a friendly Care Doctor at Boston Harbor Hospital in a kids’ game set in 2040. You trust the hospital AI a lot. You asked a young doctor at Grand Rounds why a human doctor needs to sign at all.',
       check:'explains that the choice belongs to the family, that someone must be accountable for it, or that people notice things the AI was never told',
       heur:/family|choice|consent|sign|responsib|accountab|answer for|listen|clue|rash|hides|told me|ask|explain|trust|check/,
       opts:[{t:c=>`Halo is great with facts. But ${c.clue} came from talking with the family, and the choice is theirs. A person listens, explains the odds honestly, and signs, so someone answers for it.`,good:true,
@@ -16572,9 +16572,9 @@ MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:
     line:GR_I('I’ve watched you listen, explain and sign with care. Congratulations, Doctor. You’re a Pro now.'),
     byte:GR_B('A Pro! I’m doing my happy spin. Can you tell?'),
     unlocks:['Harder cases, with more people to listen to','Bigger hospital systems to oversee','Trips to sister hospitals, like Shanghai']},
-  brief(){return 'Right now the player is preparing and giving Grand Rounds, the hospital’s weekly talk where one doctor presents one real case. The talk has three parts: the patient’s story in one sentence, the decision with the reasons and how sure they were, and what they learned with thanks to the people who helped. Then Dr. Theo Park, a colleague who trusts the hospital AI a lot, asks why a human doctor needs to sign at all. Good answers: the choice belongs to the family; someone must be accountable and answer for it; people notice things the AI was never told. Help them prepare, but do not write the talk for them.'},
+  brief(){return 'Right now the player is preparing and giving Grand Rounds, the hospital’s weekly talk where one doctor presents one real case. The talk has three parts: the patient’s story in one sentence, the decision with the reasons and how sure they were, and what they learned with thanks to the people who helped. Then Dr. Owen Hale, a colleague who trusts the hospital AI a lot, asks why a human doctor needs to sign at all. Good answers: the choice belongs to the family; someone must be accountable and answer for it; people notice things the AI was never told. Help them prepare, but do not write the talk for them.'},
   canned(q){if(/talk|grand rounds|present|nervous|scared/.test(q))return 'Start with the person, then say what you chose and why, then what you learned and who helped. Three parts. You can do it!';
-    if(/theo|sign|why human|accountab/.test(q))return 'The family decides, and someone has to answer for the choice. People also notice things the AI was never told. That’s why a doctor signs.';return null}
+    if(/owen|hale|sign|why human|accountab/.test(q))return 'The family decides, and someone has to answer for the choice. People also notice things the AI was never told. That’s why a doctor signs.';return null}
 };
 
 // hired.js — "Getting Hired": the Care Doctor career journey that leads into Day 1 (spec: Core loop → Career journey, steps 1 to 5).
