@@ -1,0 +1,124 @@
+/* quietyear.css — the Lantern Garden (Quiet Year memorial): the garden's glowing keepsakes, story cards,
+   the Safety Table, "Who does what?" and the lantern. Every class starts with qy-. */
+
+/* ---- the garden: things people left, glowing in the painted scene ---- */
+.qy-field{position:fixed!important;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:1;pointer-events:none}
+.qy-item{position:absolute;transform:translate(-50%,-100%);border:0;background:none;padding:0;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.qy-item svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 5px 6px rgba(10,6,30,.45))}
+.qy-item::before{content:"";position:absolute;left:50%;top:55%;width:230%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,236,170,.85),rgba(255,206,120,.42) 30%,rgba(255,190,110,.12) 52%,rgba(255,190,110,0) 68%);animation:qyglow 2.6s ease-in-out infinite;animation-delay:var(--d,0s);pointer-events:none}
+.qy-item::after{content:"";position:absolute;left:50%;top:55%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px solid rgba(255,230,160,.8);animation:qyring 2.6s ease-out infinite;animation-delay:var(--d,0s);pointer-events:none}
+.qy-item.found::after{display:none}
+@keyframes qyring{0%{transform:translate(-50%,-50%) scale(.55);opacity:.9}100%{transform:translate(-50%,-50%) scale(1.25);opacity:0}}
+.qy-item:not(.found){animation:qybob 3.4s ease-in-out infinite;animation-delay:var(--d,0s)}
+.qy-item.found::before{animation:none;opacity:.22}
+.qy-item.found svg{filter:drop-shadow(0 5px 6px rgba(10,6,30,.45)) saturate(.8) brightness(.92)}
+.qy-check{position:absolute;right:-6px;top:-6px;width:22px;height:22px;border-radius:50%;background:var(--good);color:#fff;font-size:.78rem;font-weight:800;display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+@keyframes qyglow{50%{opacity:.5;transform:translate(-50%,-50%) scale(1.14)}}
+@keyframes qybob{50%{transform:translate(-50%,calc(-100% - 5px))}}
+.qy-fixed{position:static!important}
+.qyscreen .companion{bottom:calc(158px + env(safe-area-inset-bottom,0px))}
+body:has(#app.qyscreen) .bubble{bottom:calc(214px + env(safe-area-inset-bottom,0px))}
+.qy-cap p{margin:0 0 6px}
+.qy-count{display:flex;gap:6px;align-items:center;margin:2px 0 8px}
+.qy-count i{width:15px;height:21px;border-radius:7px 7px 9px 9px;background:#3d4270;box-shadow:inset 0 0 0 2px rgba(255,255,255,.14);position:relative}
+.qy-count i::before{content:"";position:absolute;left:3px;right:3px;top:-3px;height:3px;border-radius:2px;background:#5a5f8f}
+.qy-count i.on{background:radial-gradient(circle at 45% 40%,#fff3c4,#ffc45a 55%,#f08a2a);box-shadow:0 0 10px #ffc970}
+.qy-count i.on::before{background:#7a3d12}
+
+/* ---- story cards ---- */
+.qy-storysheet .sheet-in{background:linear-gradient(#fffaf0,#fff 140px)}
+.qy-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center;margin:2px 0 8px}
+.qy-art{display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#fff4d6,#f3ecff 72%);border-radius:20px;padding:8px;aspect-ratio:1}
+.qy-art svg{width:100%;max-width:150px;height:auto;display:block}
+.qy-teller{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.qy-face{width:86px;height:86px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 70%,#ffe9c4,#f6d6b0);box-shadow:0 0 0 3px #fff,0 0 0 5px #f2d48a;margin-bottom:4px}
+.qy-face svg{display:block;width:100%;height:auto;margin-top:-2px}
+.qy-teller b{font-family:var(--display);font-weight:600;font-size:1.02rem;color:var(--violet);line-height:1.2}
+.qy-teller span{font-size:.78rem;color:var(--ink2);font-weight:800;line-height:1.25}
+.qy-tools{margin:2px 0 4px}
+.qy-story .step{padding:10px 0}
+
+/* ---- the Safety Table ---- */
+.qy-ft{gap:10px}
+.qy-grid{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:5px 3px;background:rgba(12,16,44,.8);border:1px solid rgba(94,230,214,.25);border-radius:16px;padding:12px 10px}
+.qy-cell{display:block;position:relative;aspect-ratio:3/4.2;border-radius:42% 42% 46% 46%/30% 30% 34% 34%;margin:2px 0;
+  background:radial-gradient(circle at 42% 38%,rgba(255,255,255,.75),rgba(255,255,255,0) 46%),var(--c);box-shadow:0 0 7px var(--c);animation:qypop .4s ease-out backwards;animation-delay:var(--d,0s)}
+.qy-cell::before,.qy-cell::after{content:"";position:absolute;left:18%;right:18%;height:14%;border-radius:2px;background:#1e1a3c}
+.qy-cell::before{top:-9%}.qy-cell::after{bottom:-9%}
+.qy-cell.k-year{background:#4a4e7a;box-shadow:none;opacity:.85}
+@keyframes qypop{from{transform:scale(.4);opacity:0}}
+.qy-legend{display:flex;flex-direction:column;gap:4px;background:rgba(12,16,44,.8);border-radius:14px;padding:8px 12px;color:#dfe6ff;font-size:.84rem;font-weight:800}
+.qy-legend div{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:8px;align-items:center}
+.qy-legend b{font-family:var(--display);font-size:1.02rem;color:#fff}
+.qy-legend .sw2{width:12px;height:16px;border-radius:5px}
+.qy-layers{display:flex;flex-direction:column;gap:6px}
+.qy-layer{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;text-align:left;border:1.5px solid rgba(255,255,255,.16);background:rgba(12,16,44,.8);color:#fff;border-radius:14px;padding:9px 12px}
+.qy-layer.on{border-color:var(--c)}
+.qy-layer .tg{width:42px;height:24px;border-radius:999px;background:rgba(255,255,255,.18);position:relative;transition:background .25s}
+.qy-layer .tg::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .25s}
+.qy-layer.on .tg{background:var(--c)}
+.qy-layer.on .tg::after{transform:translateX(18px)}
+.qy-layer b{display:block;font-size:.95rem}
+.qy-layer small{display:block;font-size:.74rem;color:#a9b6e6;font-weight:800}
+
+/* ---- Who does what? ---- */
+.qy-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.qy-col{background:rgba(12,16,44,.8);border:1.5px solid rgba(255,255,255,.12);border-top:4px solid var(--c);border-radius:12px;padding:6px;min-height:84px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start}
+.qy-col b{flex:1 1 100%;font-size:.7rem;line-height:1.2;color:#dfe6ff;font-weight:800}
+.qy-chip{width:34px;height:34px;border-radius:10px;background:#fff;display:grid;place-items:center;animation:qypop .35s ease-out backwards}
+.qy-chip svg{width:30px;height:30px}
+.qy-chip.off{opacity:.45}
+.qy-job{background:#fff;color:var(--ink);border-radius:20px;padding:14px 16px 16px;box-shadow:0 16px 40px rgba(10,14,40,.35);animation:reveal .3s}
+.qy-jobn{font-size:.75rem;font-weight:800;color:var(--ink2)}
+.qy-jobart{display:grid;place-items:center;margin:2px 0 4px}
+.qy-jobart svg{width:96px;height:96px}
+.qy-job h3{text-align:center;font-size:1.18rem;margin:0 0 10px}
+.qy-bins{display:flex;flex-direction:column;gap:7px}
+.qy-bin{border:2px solid var(--c);background:#fff;border-radius:14px;padding:11px 14px;font-weight:800;text-align:left;position:relative;padding-left:40px}
+.qy-bin::before{content:"";position:absolute;left:14px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--c)}
+.qy-bin:active{background:var(--mist)}
+.qy-why{border-radius:14px;background:#fff6e0;padding:10px 12px;border-left:4px solid var(--gold)}
+.qy-why.ok{background:#e9f8f1;border-left-color:var(--good)}
+.qy-why b{display:block;font-family:var(--display);font-weight:600}
+.qy-why p{margin:2px 0 0}
+.qy-sum p{color:var(--ink2);text-align:center}
+
+/* ---- light a lantern ---- */
+.qy-lpanel{margin-top:6vh}
+.qy-lpanel h2{text-align:center;margin-bottom:0}
+.qy-light{display:flex;flex-direction:column;align-items:center;gap:2px}
+.qy-light svg{width:110px;height:auto;animation:qysway 3.2s ease-in-out infinite;transform-origin:50% 0}
+.qy-tag{font-family:'Caveat','Segoe Script',cursive;font-size:1.45rem;color:var(--violet);text-align:center;min-height:1.3em;line-height:1.15;max-width:30ch}
+@keyframes qysway{50%{transform:rotate(2.5deg)}}
+.qy-swatches{display:flex;gap:10px;justify-content:center;margin:6px 0 8px}
+.qy-swatches button{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line)}
+.qy-swatches button.on{box-shadow:0 0 0 3px var(--ink)}
+.qy-cards{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.qy-cards .critb{padding:8px 12px;font-size:.88rem}
+.qy-float{position:fixed;left:50%;bottom:34%;width:80px;margin-left:-40px;z-index:70;animation:qyfloat 2.6s ease-in forwards;pointer-events:none;filter:drop-shadow(0 0 18px #ffc970)}
+@keyframes qyfloat{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-44vh) scale(.42);opacity:.25}}
+
+/* ---- story pictures (VIZ.qy*): calm loops ---- */
+.qyv-bob{animation:qyvbob 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvbob{50%{transform:translateY(-3px)}}
+.qyv-blink{animation:qyvblink 2.4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvblink{50%{opacity:.25}}
+.qyv-on{opacity:0;animation:qyvon 6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvon{0%,8%{opacity:0}16%,88%{opacity:1}96%,100%{opacity:0}}
+.qyv-off{animation:qyvoff 6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvoff{0%,8%{opacity:1}16%,88%{opacity:0}96%,100%{opacity:1}}
+.qyv-pop{transform-box:fill-box;transform-origin:50% 100%;animation:qyvpop 5s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvpop{0%,6%{transform:scale(0);opacity:0}14%,86%{transform:scale(1);opacity:1}94%,100%{transform:scale(0);opacity:0}}
+.qyv-sway{transform-box:fill-box;transform-origin:50% 0;animation:qyvsway 2.8s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvsway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.qyv-pulse{transform-box:fill-box;transform-origin:center;animation:qyvpulse 1.8s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvpulse{50%{transform:scale(1.18);opacity:.6}}
+.qyv-ring{transform-box:fill-box;transform-origin:center;animation:qyvring 2.4s ease-out infinite;animation-delay:var(--d,0s)}@keyframes qyvring{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.qyv-steam{animation:qyvsteam 2.6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvsteam{0%{transform:translateY(4px);opacity:0}40%{opacity:.8}100%{transform:translateY(-10px);opacity:0}}
+.qyv-dash{stroke-dasharray:5 6;animation:qyvdash 1s linear infinite}@keyframes qyvdash{to{stroke-dashoffset:-11}}
+.qyv-roll{animation:qyvroll 6s ease-in-out infinite}@keyframes qyvroll{0%,10%{transform:translateX(0)}45%,60%{transform:translateX(var(--dx,120px))}95%,100%{transform:translateX(0)}}
+.qyv-slide{animation:qyvslide 3.2s linear infinite;animation-delay:var(--d,0s)}@keyframes qyvslide{0%{transform:translateX(0);opacity:0}12%{opacity:1}80%{opacity:1}100%{transform:translateX(var(--dx,150px));opacity:0}}
+.qyv-stamp{transform-box:fill-box;transform-origin:center;animation:qyvstamp 4s ease-in-out infinite}@keyframes qyvstamp{0%,30%{transform:scale(1.8);opacity:0}38%{transform:scale(.92);opacity:1}44%,90%{transform:scale(1);opacity:1}100%{opacity:0}}
+.qyv-wave{transform-box:fill-box;transform-origin:50% 100%;animation:qyvwave 1.6s ease-in-out infinite}@keyframes qyvwave{50%{transform:rotate(-14deg)}}
+.qyv-stir{transform-box:fill-box;transform-origin:50% 0;animation:qyvstir 1.6s ease-in-out infinite}@keyframes qyvstir{50%{transform:rotate(18deg)}}
+.qyv-grow{transform-box:fill-box;transform-origin:left;animation:qyvgrow 6s ease-out infinite;animation-delay:var(--d,0s)}@keyframes qyvgrow{0%{transform:scaleX(0)}40%,90%{transform:scaleX(1)}100%{transform:scaleX(1);opacity:0}}
+.qyv-hug{transform-box:fill-box;animation:qyvhugL 4s ease-in-out infinite}.qyv-hug.r{animation-name:qyvhugR}@keyframes qyvhugL{0%,15%{transform:translateX(-14px)}45%,85%{transform:none}100%{transform:translateX(-14px)}}@keyframes qyvhugR{0%,15%{transform:translateX(14px)}45%,85%{transform:none}100%{transform:translateX(14px)}}
+.qyv-spin{transform-box:fill-box;transform-origin:center;animation:qyvspin 2s linear infinite}@keyframes qyvspin{to{transform:rotate(360deg)}}
+.qyv-fly{animation:qyvfly 5s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes qyvfly{0%{transform:translate(0,0);opacity:0}10%{opacity:1}50%{transform:translate(var(--dx,60px),var(--dy,-10px))}90%{opacity:1}100%{transform:translate(calc(var(--dx,60px)*2),0);opacity:0}}
+.qyv-chk{opacity:0;animation:qyvchk 3.2s linear infinite;animation-delay:var(--d,0s)}@keyframes qyvchk{0%,50%{opacity:0}55%,100%{opacity:1}}
+.qyv-draw{stroke-dashoffset:160;animation:qyvdraw 5s ease-in-out infinite}@keyframes qyvdraw{0%{stroke-dashoffset:160}60%,92%{stroke-dashoffset:0}100%{stroke-dashoffset:160}}
+@media (prefers-reduced-motion:reduce){.qy-item,.qy-item::before,.qy-item::after,.qy-cell,.qy-light svg,[class*="qyv-"]{animation:none!important}.qyv-on{opacity:1}}

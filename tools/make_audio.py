@@ -59,6 +59,7 @@ ROLES = {
     "kid_boy":    dict(speaker="am_puck", speed=1.1, pitch=1.3, formant=1.12),
     "elder_woman": dict(speaker="af_heart", speed=0.94, pitch=0.97, formant=0.98),
     "elder_man":  dict(speaker="am_michael", speed=0.92, pitch=0.95, formant=0.98),
+    "elder_man_deep": dict(speaker="am_onyx", speed=0.96, pitch=0.96, formant=1.0),  # a deep, unhurried older man (Gus, the Lantern Garden keeper)
 }
 DEFAULT_SPEED = 1.02
 
@@ -73,6 +74,10 @@ PRONOUNCE = [
     (r"\bdatacenter\b", "data center"),
     (r"\btradeoff\b", "trade-off"),
     (r"\bNǐ hǎo\b", "Nee how"),
+    (r"\bLucía\b", "Lucia"),
+    (r"(?i)\bfar-uvc\b", "far U V C"),
+    (r"\bdna\b", "D N A"),  # lowercase glossary keys read aloud ("dna. The instructions...")
+    (r"\bai\b", "A I"),
     (r"\b([A-Z]{5,})\b", lambda m: m.group(1).lower()),  # shouted words ("NINETY"), not acronyms
 ]
 # Bump when the audio post-processing below changes, so cached clips are rebuilt.

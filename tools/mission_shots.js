@@ -96,7 +96,11 @@ async function mission(browser,errs,id){
     else if(f.k==='reveal'){await E(n=>{S.result=null;go(n)},f.name);await shot(L('start'),600);await shot(L('end'),5200)}
     else if(f.k==='debrief'){await shot(L(),1200);await E(()=>window.scrollTo(0,document.body.scrollHeight));await shot(L('bottom'),500)}
     else if(f.k==='evening'){await shot(L(),1200);await E(()=>{const b=document.querySelector('#plan');b?b.click():nextStep()});await p.waitForTimeout(500);break}
-    else await shot(L(),1200); // custom and any future kind
+    else{await shot(L(),1200); // custom and any future kind
+      // extra states the mission lists for this step in shots:{stepName:[{label, run()}]}; run() is called in the page
+      const extra=await E(n=>((M().shots||{})[n]||[]).map(x=>x.label),f.name);
+      for(let i=0;i<extra.length;i++){await E(([n,i])=>{document.querySelectorAll('.sheet,.bubble').forEach(x=>x.remove());M().shots[n][i].run()},[f.name,i]);await shot(L(extra[i]),1000)}
+      if(extra.length){await clearSheets();await E(n=>go(n),f.name);await p.waitForTimeout(200)}}
     if(await E(n=>S.step===n,f.name))await E(()=>nextStep());await p.waitForTimeout(150);
   }
   const end=await E(id=>({step:S.step,done:!!S.completed[id]}),id);
