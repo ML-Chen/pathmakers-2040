@@ -66,10 +66,12 @@
     ctx.save();
     if (!(o && o.noShadow)) { ctx.fillStyle = 'rgba(70,50,30,0.18)'; ctx.beginPath(); K_.qell(ctx, x - lit * W * 0.25, yb + 2 * s, W * 0.55, H * 0.06, 0); ctx.fill(); }
     // several green stems splaying from a short trunk, with twigs
-    var stems = 4 + ((r() * 2) | 0);
+    var stems = 5 + ((r() * 2) | 0), fy = yb - H * 0.22, fx = x - lit * W * 0.02;
+    K_.trunkPath(ctx, x, yb, fx, fy, W * 0.07, W * 0.055, -lit * W * 0.02);
+    ctx.fillStyle = K_.lg(ctx, x - W * 0.05, 0, x + W * 0.05, 0, lit > 0 ? [[0, bark[2]], [0.6, bark[1]], [1, bark[0]]] : [[0, bark[0]], [0.4, bark[1]], [1, bark[2]]]); ctx.fill(); ink(ctx, s, 0.35, 0.6);
     for (i = 0; i < stems; i++) {
-      var c = cl[(i * 3 + 1) % cl.length], bx = x + (i - stems / 2) * W * 0.012;
-      K_.trunkPath(ctx, bx, yb, c[0], c[1] + c[2] * 0.3, W * 0.05, W * 0.012, (r() - 0.5) * W * 0.2);
+      var c = cl[(i * 3 + 1) % cl.length], bx = fx + (i - stems / 2) * W * 0.01;
+      K_.trunkPath(ctx, bx, fy + W * 0.01, c[0], c[1] + c[2] * 0.3, W * 0.035, W * 0.01, (r() - 0.5) * W * 0.25);
       ctx.fillStyle = K_.lg(ctx, x - W * 0.05, 0, x + W * 0.05, 0, lit > 0 ? [[0, bark[2]], [0.6, bark[1]], [1, bark[0]]] : [[0, bark[0]], [0.4, bark[1]], [1, bark[2]]]); ctx.fill();
       ink(ctx, s, 0.35, 0.6);
     }
@@ -77,7 +79,7 @@
     for (i = 0; i < cl.length; i++) { var c2 = cl[i]; for (j = 0; j < 3; j++) { var a2 = r() * TAU, l2 = c2[2] * (0.5 + r() * 0.6); ctx.moveTo(c2[0], c2[1] + c2[2] * 0.3); ctx.lineTo(c2[0] + Math.cos(a2) * l2, c2[1] + Math.sin(a2) * l2 * 0.7); } }
     ctx.stroke();
     // the feathery canopy: thousands of tiny leaflets, airy enough to see sky through
-    var n = Math.min(2600, Math.round(W * H * 0.11 / (s * s)));
+    var n = Math.min(3400, Math.round(W * H * 0.16 / (s * s)));
     K_.dabs(ctx, n, [[pal[0], 0.85], [pal[1], 0.85], [pal[2], 0.85], [pal[3], 0.8]], function () {
       var c3 = cl[(r() * cl.length) | 0], a3 = r() * TAU, d = c3[2] * Math.sqrt(r()), px = c3[0] + Math.cos(a3) * d, py = c3[1] + Math.sin(a3) * d * 0.72;
       var v = ((px - x) / W) * lit * 0.9 - ((py - cy) / H) * 0.9 + (r() - 0.5) * 0.7 + 0.35, b = v < 0.05 ? 0 : v < 0.35 ? 1 : v < 0.65 ? 2 : 3;
@@ -119,7 +121,7 @@
   /* ---------------- Camelback Mountain ---------------- */
   function camelProfile(u) {
     var head = Math.abs(u - 0.17) < 0.105 ? 0.44 * Math.sqrt(Math.max(0, 1 - Math.pow(Math.abs(u - 0.17) / 0.105, 3))) : 0;
-    var hump = Math.exp(-Math.pow((u - 0.6) / 0.19, 2)), base = 0.2 * Math.max(0, 1 - Math.pow((u - 0.5) / 0.5, 4));
+    var hump = Math.exp(-Math.pow(Math.abs(u - 0.6) / 0.24, 2.6)), base = 0.2 * Math.max(0, 1 - Math.pow((u - 0.5) / 0.5, 4));
     var tail = u > 0.6 ? 0.18 * Math.exp(-Math.pow((u - 0.86) / 0.1, 2)) : 0;
     return Math.max(head, hump, base, tail);
   }
