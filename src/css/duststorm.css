@@ -1,0 +1,31 @@
+/* duststorm.css — "One Night of Power" (Mars): Byte's pictures (ds-*), the power board and the storm night. */
+.ds-stormin{animation:dsstormin 6s ease-in-out infinite}@keyframes dsstormin{0%{transform:translateX(40px);opacity:.3}60%,100%{transform:none;opacity:1}}
+.ds-pulse{animation:dspulse 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes dspulse{50%{opacity:.45;transform:scale(1.15)}}
+.ds-darken{animation:dsdark 5s ease-in-out infinite}@keyframes dsdark{0%,20%{opacity:0}60%,90%{opacity:.85}100%{opacity:0}}
+.ds-sunfade{animation:dssun 5s ease-in-out infinite}@keyframes dssun{0%,20%{opacity:1}60%,90%{opacity:.1}100%{opacity:1}}
+.ds-bolt{animation:dsbolt 5s ease-in-out infinite}@keyframes dsbolt{0%,20%{opacity:1}55%,90%{opacity:.12}100%{opacity:1}}
+.ds-early{animation:dspulse 2.4s ease-in-out infinite}
+.ds-drain{transform-box:fill-box;transform-origin:left;animation:dsdrain 5s ease-in-out infinite}@keyframes dsdrain{0%{transform:scaleX(1)}70%,90%{transform:scaleX(.18)}100%{transform:scaleX(1)}}
+.ds-therm{transform-box:fill-box;transform-origin:bottom;animation:dstherm 4s ease-in-out infinite}@keyframes dstherm{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+
+.ds-card{max-height:calc(100vh - 90px);overflow:auto}
+.ds-rows{display:grid;gap:6px}.ds-row{border:1px solid var(--line);border-radius:14px;padding:6px 8px}
+.ds-row>span{display:block;font-weight:800;font-size:.86rem;margin-bottom:4px}.ds-row .seg{display:flex}.ds-row .segb{flex:1;font-size:.76rem;padding:5px 3px;white-space:nowrap}
+.ds-row .segb small{opacity:.65;font-weight:700;margin-left:2px}
+.ds-locked{display:flex;justify-content:space-between;align-items:center;background:#f6f4fb}.ds-locked>span{margin:0}.ds-locked b{font-size:.8rem;color:var(--ink2)}
+.ds-meter{margin:10px 0 4px}.ds-bar{display:flex;height:20px;border-radius:10px;background:#eef1fb;overflow:hidden}.ds-bar i{display:block;height:100%;transition:width .5s}
+.ds-bar i.ds-long{background:repeating-linear-gradient(45deg,#c8643a 0 4px,#f2c8a8 4px 8px)}
+.ds-scale{position:relative;height:10px;margin-top:2px}.ds-band{position:absolute;top:0;height:8px;border-radius:4px;background:#2fbf6a;opacity:.7}.ds-floor{position:absolute;top:-24px;height:34px;border-left:2px dashed #e5484d}
+.ds-legend{display:flex;justify-content:space-between;font-size:.74rem;color:var(--ink2);gap:6px}.ds-legend b{color:var(--ink);font-size:.9rem}.ds-lg-long{color:#a8502a}.ds-lg-band{color:#1a8a4a}
+.ds-nights{margin:6px 0}.ds-nl{font-size:.78rem;font-weight:800;color:var(--ink2)}.ds-nrow{display:flex;gap:4px;margin:4px 0}
+.ds-n{flex:1;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem}.ds-n.ok{background:#fff1c8;color:#c8861a}.ds-n.bad{background:#fde0dc;color:#c8302a}
+.ds-nsum{font-size:.85rem}
+.ds-delta{background:#fff3ea}.ds-dface{width:52px;flex:none}.ds-dface svg{width:100%;display:block}
+.ds-night{display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 4px;color:#fff;max-width:440px;margin:0 auto}
+.ds-clock{text-align:center}.ds-clock b{display:block;font-family:var(--display);font-size:2.3rem;text-shadow:0 2px 10px rgba(0,0,0,.4)}.ds-clock span{font-weight:800;color:#f2c08e}
+.ds-batt{position:relative;width:240px;height:30px;border:3px solid #fff;border-radius:10px;background:rgba(0,0,0,.35)}.ds-batt:after{content:'';position:absolute;right:-9px;top:8px;width:6px;height:10px;background:#fff;border-radius:2px}
+.ds-batt i{position:absolute;left:2px;top:2px;bottom:2px;border-radius:6px;background:#2fbf6a;transition:width .4s}.ds-batt i.low{background:#e5484d}.ds-batt span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.ds-log{width:100%;max-height:130px;overflow:hidden}.ds-log p{margin:4px 0;padding:6px 10px;border-radius:12px;background:rgba(20,8,4,.55);font-size:.9rem;animation:reveal .4s}
+.ds-update{background:#fff;color:var(--ink);border-radius:18px;padding:12px;width:100%;box-shadow:0 12px 30px rgba(0,0,0,.35)}.ds-update p{margin:6px 0}
+#dsend{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px}.ds-rf{width:200px}.ds-rf svg{width:100%;border-radius:14px}.ds-cap{text-align:center;font-size:1.2rem;margin:0;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+#dsend .rf-talk{background:#fff;color:var(--ink);border-radius:18px;padding:8px 12px;display:flex;gap:8px;align-items:center;width:100%}#dsend .rf-maya{width:70px;flex:none}#dsend .rf-maya svg{width:100%}#dsend .rf-talk p{margin:0;font-size:.92rem}
