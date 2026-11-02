@@ -51,6 +51,8 @@ jobs:
           key: tts-cache-${{ github.run_id }}
           restore-keys: tts-cache-
       - name: Record new lines
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
         run: python3 tools/make_audio.py
       - name: Save the clip cache
         if: always()

@@ -98,3 +98,12 @@ for Maya, am_echo for the dad, and bm_george for the narrator.
 - `espeak-ng-data`, the lexicons and `dict/` are used only while generating. espeak-ng
   upstream is GPL-3.0-or-later, and the archive has no separate license file for that data.
   None of it is shipped with the game. The game ships only the generated audio clips.
+
+## ElevenLabs (optional, better voices)
+
+With `ELEVENLABS_API_KEY` set (in CI: the repository secret of the same name), `make_audio.py` voices every line with
+ElevenLabs (`ELEVENLABS_MODEL`, default `eleven_multilingual_v2`) instead of Kokoro, then trims, levels and encodes it
+the same way. `EL_FIXED` in the script hand-picks voices for Byte, Dr. Reyes, the narrator, Maya and the stock child
+and elder roles; other roles get a default ElevenLabs voice matching their Kokoro speaker's gender and accent.
+Child roles get a small pitch lift (`EL_KIDS`). The cache key includes the model, so switching engines re-records
+everything once. Never commit the key.

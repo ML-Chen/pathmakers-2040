@@ -83,6 +83,37 @@ PRONOUNCE = [
 # Bump when the audio post-processing below changes, so cached clips are rebuilt.
 PIPELINE_VERSION = 2
 
+# ElevenLabs (optional): with ELEVENLABS_API_KEY set, lines are voiced by ElevenLabs instead of Kokoro, then go through
+# the same trimming, levelling, pitch shaping and Opus encoding. Each role's Kokoro speaker picks an ElevenLabs voice
+# of the same gender and accent. Child roles keep a gentle pitch lift; adults are left at their natural pitch.
+EL_KEY = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+EL_MODEL = os.environ.get("ELEVENLABS_MODEL", "eleven_multilingual_v2")
+EL_VOICES = {  # ElevenLabs default voices: (name, id)
+    "af": [("Sarah", "EXAVITQu4vr4xnSDxMaL"), ("Laura", "FGY2WhTYpPnrIDTdsKH5"), ("Jessica", "cgSgspJ2msm6clMCkdW9"),
+           ("Matilda", "XrExE9yKIg1WjnnlVkGX"), ("Aria", "9BWtsMINqrJLrRacOk9x"), ("River", "SAz9YHcvj6GT2YYXdXww")],
+    "am": [("Liam", "TX3LPaxmHKxFdv7VOQHJ"), ("Chris", "iP95p4xoKVk53GoZ742B"), ("Brian", "nPczCjzI2devNBz1zQrb"),
+           ("Eric", "cjVigY5qzO86Huf0OWal"), ("Will", "bIHbv24MWmeRgasZH58o"), ("Bill", "pqHfZKP75CvOlQylNhV4")],
+    "bf": [("Alice", "Xb7hH8MSUJpSbSDYk0k2"), ("Charlotte", "XB0fDUnXU5powFXDhCwa"), ("Lily", "pFZP5JQG7iQjIQuC4Bku")],
+    "bm": [("George", "JBFqnCBsd6RMkjVDRZzb"), ("Daniel", "onwK4e9ZLuTAKqWW03F9"), ("Callum", "N2lVS1w4EtoT3dr4eOWO"),
+           ("Charlie", "IKne3meq5aSn9XLyUdCD")],
+}
+EL_FIXED = {  # roles the family hears most get hand-picked voices
+    "af_bella": "Jessica", "am_adam": "Charlie", "bf_emma": "Laura", "bm_george": "George", "af_sky": "Lily",
+    "kid_girl": "Lily", "kid_boy": "Will", "elder_woman": "Matilda", "elder_man": "Bill", "elder_man_deep": "Brian",
+}
+EL_KIDS = {"af_sky": 1.12, "kid_girl": 1.12, "kid_boy": 1.15}  # pitch lift for child roles
+
+
+def el_voice(role):
+    """(name, id) of the ElevenLabs voice for a role."""
+    allv = {n: (n, i) for vs in EL_VOICES.values() for n, i in vs}
+    if role in EL_FIXED:
+        return allv[EL_FIXED[role]]
+    spk = ROLES[role]["speaker"]
+    group = EL_VOICES.get(spk[:2], EL_VOICES["af"])
+    return group[int(hashlib.sha1(role.encode()).hexdigest(), 16) % len(group)]
+
+
 NODE_CMD = ("const fs=require('fs'),vm=require('vm'),path=require('path');const c={module:{exports:{}},LATE:[],console};c.window=c;vm.createContext(c);"
             "const ms=fs.existsSync('src/missions')?fs.readdirSync('src/missions').filter(f=>f.endsWith('.js')).sort().map(f=>'src/missions/'+f):[];"
             "const src=['src/art.js','src/content_boston.js','src/missions.js','src/ledger.js'].concat(ms).map(f=>fs.readFileSync(f,'utf8')).join('\\n');"
@@ -151,6 +182,12 @@ def ffmpeg_exe():
 
 class Synth:
     def __init__(self):
+        self.ffmpeg = ffmpeg_exe()
+        filters = subprocess.run([self.ffmpeg, "-hide_banner", "-filters"], capture_output=True, text=True).stdout
+        self.rubberband = " rubberband " in filters
+        if EL_KEY:
+            self.engines = {}
+            return
         for f in ("model.onnx", "voices.bin", "tokens.txt", "espeak-ng-data"):
             if not os.path.exists(os.path.join(MODEL_DIR, f)):
                 sys.exit(f"Kokoro model file missing: {os.path.join(MODEL_DIR, f)} (set TTS_MODEL_DIR)")
@@ -167,6 +204,29 @@ class Synth:
         self.rubberband = " rubberband " in filters
         if not self.rubberband:
             print("WARNING: ffmpeg has no rubberband filter; pitch shifts fall back to plain resampling", flush=True)
+
+    def eleven(self, voice, text):
+        """Voice one line with ElevenLabs; returns (sample_rate, float32 samples)."""
+        import json as _j, time, urllib.request, urllib.error
+        import numpy as np
+        _, vid = el_voice(voice)
+        body = _j.dumps({"text": tts_text(text), "model_id": EL_MODEL,
+                         "voice_settings": {"stability": 0.45, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}}).encode()
+        req = urllib.request.Request(f"https://api.elevenlabs.io/v1/text-to-speech/{vid}?output_format=mp3_44100_128",
+                                     data=body, method="POST", headers={"xi-api-key": EL_KEY, "content-type": "application/json", "accept": "audio/mpeg"})
+        for attempt in range(6):
+            try:
+                with urllib.request.urlopen(req, timeout=90) as resp:
+                    mp3 = resp.read()
+                break
+            except urllib.error.HTTPError as e:
+                if e.code in (429, 500, 502, 503) and attempt < 5:
+                    time.sleep(2 * (attempt + 1)); continue
+                raise RuntimeError(f"ElevenLabs HTTP {e.code}: {e.read()[:200]!r}")
+        sr = 24000
+        pcm = subprocess.run([self.ffmpeg, "-hide_banner", "-loglevel", "error", "-i", "pipe:0", "-f", "s16le", "-ac", "1", "-ar", str(sr), "pipe:1"],
+                             input=mp3, capture_output=True, check=True).stdout
+        return sr, np.frombuffer(pcm, dtype="<i2").astype(np.float32) / 32768.0
 
     def engine(self, acc):
         """One sherpa-onnx engine per accent (v1.0 ships separate US / GB lexicons)."""
@@ -202,10 +262,14 @@ class Synth:
         r = ROLES[voice]
         formant, pitch = r["formant"], r["pitch"]
         # Resampling by `formant` also speeds speech up by that factor, so synthesize slower.
-        audio = self.engine(accent(r["speaker"])).generate(
-            tts_text(text), sid=self.sid[r["speaker"]], speed=r["speed"] / formant)
-        sr = audio.sample_rate
-        x = np.asarray(audio.samples, dtype=np.float32)
+        if EL_KEY:
+            sr, x = self.eleven(voice, text)
+            formant, pitch = 1.0, EL_KIDS.get(voice, 1.0)
+        else:
+            audio = self.engine(accent(r["speaker"])).generate(
+                tts_text(text), sid=self.sid[r["speaker"]], speed=r["speed"] / formant)
+            sr = audio.sample_rate
+            x = np.asarray(audio.samples, dtype=np.float32)
         if x.size == 0:
             raise RuntimeError("TTS returned no audio (sherpa-onnx 2.x? use sherpa-onnx==1.13.8)")
         # Trim leading/trailing silence (10 ms frames below -45 dBFS), keep a little padding.
@@ -245,13 +309,14 @@ def main():
     args = ap.parse_args()
 
     lines = load_lines()
-    speakers = set(speaker_names(os.path.join(MODEL_DIR, "model.onnx")) or [])
+    speakers = set(speaker_names(os.path.join(MODEL_DIR, "model.onnx")) or []) if not EL_KEY else {
+        v for v, _, _ in lines if v[:3] in ("af_", "am_", "bf_", "bm_")}
     for v in sorted({v for v, _, _ in lines} - set(ROLES)):
         if v not in speakers:
             sys.exit(f"unknown voice {v!r}: add it to ROLES in tools/make_audio.py")
         ROLES[v] = dict(speaker=v, speed=DEFAULT_SPEED, pitch=1.0, formant=1.0)
     os.makedirs(CACHE_DIR, exist_ok=True)
-    model_id = os.path.basename(os.path.normpath(MODEL_DIR))
+    model_id = ("elevenlabs-" + EL_MODEL) if EL_KEY else os.path.basename(os.path.normpath(MODEL_DIR))
 
     synth, made, failed, total_sec = None, 0, [], 0.0
     entries = []
@@ -298,8 +363,8 @@ def main():
         items = groups.get(src, [])
         body = ",\n".join(f"{json.dumps(k)}:\"data:audio/ogg;base64,{base64.b64encode(v).decode('ascii')}\""
                           for k, v in items)
-        head = ("// Generated by tools/make_audio.py; do not edit by hand (see tools/AUDIO.md).\n"
-                f"// {len(items)} clips, Kokoro {model_id} (Apache-2.0) via sherpa-onnx, Ogg Opus {BITRATE} mono.\n")
+        head = ("// Generated by tools/make_audio.py; do not edit by hand (see tools/AUDIO.md).\n" +
+                (f"// {len(items)} clips, ElevenLabs {EL_MODEL}, Ogg Opus {BITRATE} mono.\n" if EL_KEY else f"// {len(items)} clips, Kokoro {model_id} (Apache-2.0) via sherpa-onnx, Ogg Opus {BITRATE} mono.\n"))
         if src == "core":
             path = OUT_JS
             js = (head + f"// Voice key -> Kokoro speaker: {cast}\n"
