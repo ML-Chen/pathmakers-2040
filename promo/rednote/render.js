@@ -12,7 +12,7 @@ for (const d of ['frames', 'segs', 'stills', 'clean']) fs.mkdirSync(path.join(ou
 const ff = (...a) => execFileSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...a]);
 const VO = voDir && fs.existsSync(path.join(voDir, 'durations.json')) ? JSON.parse(fs.readFileSync(path.join(voDir, 'durations.json'))) : null;
 const LEAD = 0.35, PAUSE = 0.55;
-const W = 405, H = 540, OH = 1440;                               // 3:4 portrait, 1080x1440 (RedNote feed)
+const W = 405, H = 540, OW = 1440, OH = 1920;                    // 3:4 portrait, rendered sharp at 1440x1920
 // a slow camera move on every shot (the captions stay still): push in, pull out, drift left or right, rise
 const CAMS = [{o: '50% 40%', a: 'scale(1.0)', b: 'scale(1.13)'}, {o: '50% 50%', a: 'scale(1.16) translateX(-3%)', b: 'scale(1.04) translateX(2%)'},
   {o: '30% 60%', a: 'scale(1.06)', b: 'scale(1.18) translateY(-2%)'}, {o: '70% 40%', a: 'scale(1.15) translateX(3%)', b: 'scale(1.03) translateX(-2%)'},
@@ -70,7 +70,7 @@ const CSS = `
   // time, the video is smooth and sharp even though each screenshot takes ~100 ms.
   const R = +(process.env.PROMO_SLOW || 0.25);
   const b = await chromium.launch();
-  const ctx = await b.newContext({viewport: {width: W, height: H}, deviceScaleFactor: 1080 / W});
+  const ctx = await b.newContext({viewport: {width: W, height: H}, deviceScaleFactor: OW / W});
   const p = await ctx.newPage(); const errs = [];
   p.on('pageerror', e => errs.push(e.message));
   await p.addInitScript(R => {
@@ -136,8 +136,8 @@ const CSS = `
     const list = frames.map(([f, t], i) => `file '${f}'\nduration ${Math.max(0.001, ((frames[i + 1] ? frames[i + 1][1] : D) - t)).toFixed(4)}`).join('\n') + `\nfile '${frames[frames.length - 1][0]}'\n`;
     fs.writeFileSync(path.join(dir, 'list.txt'), list);
     const seg = path.join(out, 'segs', `${String(n).padStart(2, '0')}.mp4`);
-    ff('-f', 'concat', '-safe', '0', '-i', path.join(dir, 'list.txt'), '-vf', `scale=1080:${OH}:flags=lanczos,fps=30,format=yuv420p,setsar=1`, '-t', D.toFixed(3),
-       '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-an', seg);
+    ff('-f', 'concat', '-safe', '0', '-i', path.join(dir, 'list.txt'), '-vf', `scale=${OW}:${OH}:flags=lanczos,fps=30,format=yuv420p,setsar=1`, '-t', D.toFixed(3),
+       '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '17', '-an', seg);
     segs.push({seg, D, s, at: total}); total += D;
     console.log(`${s.id}: ${D.toFixed(1)}s, ${frames.length} frames`);
   }
@@ -148,7 +148,7 @@ const CSS = `
   for (let i = 1; i < segs.length; i++) { off += segs[i - 1].D - X; const o = `[v${i}]`; filt.push(`${last}[${i}:v]xfade=transition=${i === 1 ? 'fade' : TR[i % TR.length]}:duration=${X}:offset=${off.toFixed(3)}${o}`); last = o; segs[i].at = off }
   const vlen = off + segs[segs.length - 1].D;
   const video = path.join(out, 'video.mp4');
-  ff(...inputs, '-filter_complex', filt.join(';'), '-map', last, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p', video);
+  ff(...inputs, '-filter_complex', filt.join(';'), '-map', last, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '17', '-pix_fmt', 'yuv420p', video);
   // audio: music bed (the game's Future Table track), ducked under the narration
   const music = path.join(out, 'music.ogg');
   if (!fs.existsSync(music)) { const t = fs.readFileSync(path.join(ROOT, 'src', 'music_tracks.js'), 'utf8'); const m = JSON.parse(t.match(/const MUSIC_TRACKS=(\{.*\})/s)[1].replace(/;\s*$/, '')); fs.writeFileSync(music, Buffer.from(m.table.split(',')[1], 'base64')) }
