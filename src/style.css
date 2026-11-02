@@ -372,8 +372,9 @@ textarea{resize:vertical;line-height:1.5}
 .vpop{transform-box:fill-box;transform-origin:center;animation:igpulse 1.6s ease-in-out infinite}
 .vblink{animation:igblink 1.2s infinite}
 .fut:hover{transform:translateY(-2px) scale(1.04);transition:transform .2s;box-shadow:0 0 22px rgba(94,230,214,.35) inset,0 0 14px rgba(94,230,214,.35)}
-.companion{position:fixed;right:max(10px,calc(50% - 250px));bottom:calc(14px + env(safe-area-inset-bottom,0px));width:76px;border:0;background:none;padding:0;z-index:20;filter:drop-shadow(0 8px 14px rgba(20,25,60,.25))}
+.companion{position:fixed;right:max(0px,calc(50% - 260px));transform:translateX(58%) rotate(-10deg);transition:transform .35s cubic-bezier(.3,1.4,.5,1);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:76px;border:0;background:none;padding:0;z-index:20;filter:drop-shadow(0 8px 14px rgba(20,25,60,.25))}
 .companion.hop{animation:hop .7s}
+.companion:hover,.companion:focus-visible,.companion.out{transform:none}
 .bubble{position:fixed;right:max(84px,calc(50% - 176px));bottom:calc(70px + env(safe-area-inset-bottom,0px));max-width:min(240px,62vw);background:var(--ink);color:#fff;border-radius:16px 16px 4px 16px;padding:10px 12px;font-weight:800;font-size:.92rem;z-index:21;animation:drop .35s cubic-bezier(.2,1.4,.4,1)}
 .bubble.out{opacity:0;transition:.4s}
 .bench{padding-bottom:70px}

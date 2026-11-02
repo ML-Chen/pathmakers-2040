@@ -33,6 +33,29 @@ function ch_rib(pts,wf,mode){mode=mode||0;const A=[],B=[],n=pts.length;
 const ch_tap=(a,b,c)=>t=>t<.5?a+(b-a)*t*2:b+(c-b)*(t-.5)*2;
 const ch_swell=(m,e)=>t=>(e||0)+(m-(e||0))*Math.sin(Math.PI*t);
 // a tapered line along bezier segments
+
+// ---------- limbs ----------
+// Smooth centre line through 2-3 joints (Catmull-Rom), sampled N points per segment.
+function ch_spline(P,N){N=N||10;if(P.length<3)return ch_bz(P,N);const o=[];
+  for(let i=0;i<P.length-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(P.length-1,i+2)];
+    const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+    const seg=ch_bz([p1,c1,c2,p2],N);o.push(...(i?seg.slice(1):seg))}return o}
+// piecewise-linear width profile: pairs [t, factor]
+const ch_prof=(K,w)=>t=>{for(let i=1;i<K.length;i++)if(t<=K[i][0]){const a=K[i-1],b=K[i],u=(t-a[0])/((b[0]-a[0])||1);return w*(a[1]+(b[1]-a[1])*u)}return w*K[K.length-1][1]};
+// smooth closed path through a list of points (Catmull-Rom -> cubic Bezier), open polyline version
+function ch_smooth(A){let d='';for(let i=0;i<A.length-1;i++){const p0=A[Math.max(0,i-1)],p1=A[i],p2=A[i+1],p3=A[Math.min(A.length-1,i+2)];
+  d+=` C${ch_n(p1[0]+(p2[0]-p0[0])/6)} ${ch_n(p1[1]+(p2[1]-p0[1])/6)} ${ch_n(p2[0]-(p3[0]-p1[0])/6)} ${ch_n(p2[1]-(p3[1]-p1[1])/6)} ${ch_n(p2[0])} ${ch_n(p2[1])}`}return d}
+// Outline of a tapered limb along centre points C with width function wf(t); round caps. side>0 also returns a shade band on the +normal side.
+function ch_limbPath(C,wf,band){const A=[],B=[],n=C.length;
+  for(let i=0;i<n;i++){const a=C[Math.max(0,i-1)],b=C[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,nx=dy/l,ny=-dx/l,w=wf(n>1?i/(n-1):0)/2,p=C[i];
+    if(band){A.push([p[0]+nx*w,p[1]+ny*w]);B.push([p[0]+nx*w*(1-band*2),p[1]+ny*w*(1-band*2)])}else{A.push([p[0]+nx*w,p[1]+ny*w]);B.push([p[0]-nx*w,p[1]-ny*w])}}
+  B.reverse();const r0=wf(1)/2,r1=wf(0)/2,P=q=>ch_n(q[0])+' '+ch_n(q[1]);
+  return band?`M${P(A[0])}${ch_smooth(A)} L${P(B[0])}${ch_smooth(B)}Z`
+    :`M${P(A[0])}${ch_smooth(A)} A${ch_n(r0)} ${ch_n(r0)} 0 0 1 ${P(B[0])}${ch_smooth(B)} A${ch_n(r1)} ${ch_n(r1)} 0 0 1 ${P(A[0])}Z`}
+const CH_LEG=[[0,1],[.3,.9],[.48,.74],[.56,.76],[.68,.8],[.9,.56],[1,.52]],CH_ARM=[[0,1],[.38,.84],[.5,.74],[.62,.8],[.9,.62],[1,.6]],CH_PANT=[[0,1],[.5,.88],[1,.84]];
+// joints -> outlined, tapered, softly bent limb with a shade band
+function ch_limb(pts,w,prof,fill,line,lw,sh){const C=ch_spline(pts,10),wf=ch_prof(prof,w);
+  return `<path d="${ch_limbPath(C,wf)}" fill="${fill}" stroke="${line}" stroke-width="${ch_n(lw)}" stroke-linejoin="round"/>`+(sh?`<path d="${ch_limbPath(C.slice(1,-1),t=>wf(t)*.94,.2)}" fill="${sh}"/>`:'')}
 function ch_ln(segs,wf,fill,extra){return `<path d="${ch_rib(ch_chain(segs,14),wf)}" fill="${fill}"${extra?' '+extra:''}/>`}
 // a pointed hair clump: roots L,R; tip T; bl/br bulge outward on each side (negative = concave)
 function ch_clump(L,R,T,bl,br){const d1=[T[0]-L[0],T[1]-L[1]],l1=Math.hypot(d1[0],d1[1])||1,n1=[-d1[1]/l1,d1[0]/l1];
@@ -420,12 +443,12 @@ function posedGirl(kind,o){o=o||{};
   const id='ch'+(++CH_N),sk=ch_skinPal(o.skin||SKIN[1]),H=ch_hairPal(o.hair||'#1d1512'),C=ch_clothPal(o.shirt||'#ff7a6b'),SK=ch_clothPal(o.skirt||'#3b4a7a');
   const ln=ch_mix(sk.line,'#1a0a14',.15),clip=o.clip||'#ff7a6b',R=ch_n,lw=.75;
   const K={
-    stand:{tilt:0,L:[[6.6,-49.2],[8.2,-41.6],[7.8,-34.4]],Rt:[[-6.6,-49.2],[-8.2,-41.6],[-7.8,-34.4]],hL:'rest',hR:'rest',face:'calm'},
+    stand:{tilt:0,kn:[.7,0],L:[[6.6,-49.2],[8.9,-41.8],[7.4,-34.6]],Rt:[[-6.6,-49.2],[-8.9,-41.8],[-7.4,-34.6]],hL:'rest',hR:'rest',face:'calm'},
     violin:{tilt:13,hdx:1,sway:-2.5,L:[[6.4,-49.2],[14.6,-46.2],[21.4,-55.8]],hL:'neck',hR:'bow',face:'joy'},
-    thumbsup:{tilt:-5,L:[[6.6,-49.4],[12.6,-55.2],[12.4,-62.4]],Rt:[[-6.6,-49.2],[-11.8,-43.2],[-5.8,-38.4]],hL:'thumb',hR:'hip',face:'grin'},
-    sad:{tilt:8,hdy:.8,drop:.8,L:[[6.2,-48.6],[8.6,-40.8],[-.6,-38.8]],Rt:[[-6.2,-48.6],[-8.8,-41.4],[.4,-37.4]],hL:'limp',hR:'cradle',face:'sad'},
-    itchy:{tilt:-7,L:[[6.4,-49.2],[11.2,-41.2],[1.4,-45.6]],Rt:[[-6.4,-49.2],[-10.6,-42.4],[5.6,-44.4]],hL:'open',hR:'scratch',face:'annoyed'},
-    waiting:{tilt:4,L:[[6.4,-49.2],[8,-40.6],[-2.4,-40.4]],Rt:[[-6.6,-49.2],[-8.4,-41.6],[-8,-34.4]],hL:'castHand',hR:'rest',face:'calm',cast:1}}[kind]||null;
+    thumbsup:{tilt:-5,kn:[-.3,.4],L:[[6.6,-49.4],[12.6,-55.2],[12.4,-62.4]],Rt:[[-6.6,-49.2],[-11.8,-43.2],[-5.8,-38.4]],hL:'thumb',hR:'hip',face:'grin'},
+    sad:{tilt:8,hdy:.8,drop:.8,kn:[1.1,-1.1],L:[[6.2,-48.6],[8.6,-40.8],[-.6,-38.8]],Rt:[[-6.2,-48.6],[-8.8,-41.4],[.4,-37.4]],hL:'limp',hR:'cradle',face:'sad'},
+    itchy:{tilt:-7,kn:[0,-.7],L:[[6.4,-49.2],[11.2,-41.2],[1.4,-45.6]],Rt:[[-6.4,-49.2],[-10.6,-42.4],[5.6,-44.4]],hL:'open',hR:'scratch',face:'annoyed'},
+    waiting:{tilt:4,kn:[.7,0],L:[[6.4,-49.2],[8,-40.6],[-2.4,-40.4]],Rt:[[-6.6,-49.2],[-8.4,-41.6],[-8,-34.4]],hL:'castHand',hR:'rest',face:'calm',cast:1}}[kind]||null;
   const Q=K||{tilt:0,L:[[6.6,-49.2],[8.2,-41.6],[7.8,-34.4]],Rt:[[-6.6,-49.2],[-8.2,-41.6],[-7.8,-34.4]],hL:'rest',hR:'rest',face:'calm'};
   // violin geometry and the bowing arm
   let violin='',bow='';
@@ -445,14 +468,15 @@ function posedGirl(kind,o){o=o||{};
     let s=`<g transform="${t} rotate(${R(ang)})"><path d="M-1.55 -.6 C-1.7 1.5 -.9 2.7 0 2.7 C.9 2.7 1.7 1.5 1.55 -.6Z" ${st}/><ellipse cx="1.45" cy=".3" rx=".55" ry="1" transform="rotate(-24 1.45 .3)" ${st}/>`;
     if(type==='scratch')s+=`<path d="M-1 1.7 q.3 .8 .1 1.4 M0 1.9 q.3 .9 .1 1.5 M1 1.7 q.3 .8 .1 1.4" stroke="${ln}" stroke-width=".38" fill="none" stroke-linecap="round"/>`;
     return s+'</g>'};
-  const armSvg=(A0,type,cast)=>{const A=[[A0[0][0]+Math.sign(A0[0][0])*.4,A0[0][1]],A0[1],A0[2]];let s=limb(A,3,sk.base,sk.sh);
+  const armSvg=(A0,type,cast)=>{const A=[[A0[0][0]+Math.sign(A0[0][0])*.4,A0[0][1]],A0[1],A0[2]];let s=ch_limb(A,3.4,CH_ARM,sk.base,ln,.6,sk.sh)+(type==='thumb'||cast?'':`<path d="M${R(A[1][0]-.7)} ${R(A[1][1]-.5)} q.7 .5 1.3 .1" stroke="${ln}" stroke-width=".28" fill="none" opacity=".45" stroke-linecap="round"/>`);
     if(cast){const c=o.cast||'#c3b6ff',cs=ch_mix(c,'#3a2a6a',.25),a=lerp(A[1],A[2],.08),b=lerp(A[1],A[2],.86);
-      s+=limb([a,b],3.9,c,cs)+`<path d="M${R(a[0]+(b[0]-a[0])*.35)} ${R(a[1]+(b[1]-a[1])*.35-.6)} l.4 .9 l.9 .1 l-.7 .6 l.2 .9 l-.8 -.5 l-.8 .5 l.2 -.9 l-.7 -.6 l.9 -.1z" fill="#ffd45c" stroke="${ln}" stroke-width=".15"/><path d="M${R(a[0]+(b[0]-a[0])*.65)} ${R(a[1]+(b[1]-a[1])*.65)} m0 .6 l-.9 -.9 a.5 .5 0 0 1 .9 -.5 a.5 .5 0 0 1 .9 .5z" fill="#ff7a6b"/>`}
-    s+=limb([A[0],lerp(A[0],A[1],.44)],3.8,C.base,C.sh);
+      s+=ch_limb([a,b],4.2,[[0,.96],[.5,1.04],[1,.9]],c,ln,.6,cs)+`<path d="M${R(a[0]+(b[0]-a[0])*.35)} ${R(a[1]+(b[1]-a[1])*.35-.6)} l.4 .9 l.9 .1 l-.7 .6 l.2 .9 l-.8 -.5 l-.8 .5 l.2 -.9 l-.7 -.6 l.9 -.1z" fill="#ffd45c" stroke="${ln}" stroke-width=".15"/><path d="M${R(a[0]+(b[0]-a[0])*.65)} ${R(a[1]+(b[1]-a[1])*.65)} m0 .6 l-.9 -.9 a.5 .5 0 0 1 .9 -.5 a.5 .5 0 0 1 .9 .5z" fill="#ff7a6b"/>`}
+    const sE=lerp(A[0],A[1],.46);s+=ch_limb([A[0],sE],4.4,[[0,1],[.55,1.1],[1,1.02]],C.base,ln,.6,C.sh);
     return s+hand(A,type)};
   // ---- legs, socks, shoes, skirt
-  const legs=[-1,1].map(sd=>{const hip=[sd*2.6,-30],knee=[sd*2.7,-15.6],ank=[sd*2.6,-2.8];
-    return limb([hip,knee,ank],3.7,sk.base,sk.sh)+limb([[sd*2.64,-6.6],ank],4,'#f6f4fa','#d8d4e6')+
+  const kn=Q.kn||[0,0],legs=[-1,1].map(sd=>{const hip=[sd*2.7,-30],knee=[sd*2.7+kn[sd<0?0:1],-15.8],ank=[sd*2.6,-2.8],sk0=lerp(knee,ank,.7);
+    return ch_limb([hip,knee,ank],4.6,CH_LEG,sk.base,ln,.6,sk.sh)+`<path d="M${R(knee[0]-1)} ${R(knee[1]+.2)} Q${R(knee[0])} ${R(knee[1]+1.1)} ${R(knee[0]+1)} ${R(knee[1]+.2)}" stroke="${ln}" stroke-width=".3" fill="none" opacity=".5" stroke-linecap="round"/>`+
+      ch_limb([sk0,ank],3.3,[[0,1],[.6,.9],[1,.84]],'#f6f4fa',ln,.5,'#d8d4e6')+`<path d="M${R(sk0[0]-1.6)} ${R(sk0[1]+.5)} L${R(sk0[0]+1.6)} ${R(sk0[1]+.5)}" stroke="#d8d4e6" stroke-width=".4"/>`+
       `<path d="M${R(sd*2.6-2.6)} -1.4 C${R(sd*2.6-2.8)} -3.4 ${R(sd*2.6+2.6)} -3.6 ${R(sd*2.6+3)} -1.2 C${R(sd*2.6+3.2)} .2 ${R(sd*2.6-2.6)} .4 ${R(sd*2.6-2.6)} -1.4Z" fill="#7a2a3a" stroke="${ln}" stroke-width=".55"/><path d="M${R(sd*2.6-1.6)} -2.6 L${R(sd*2.6+1.8)} -2.8" stroke="#4a1424" stroke-width=".5"/><ellipse cx="${R(sd*2.6-.8)}" cy="-.9" rx="1" ry=".35" fill="#fff" opacity=".45"/>`}).join('');
   const skirt=`<path d="M-5.2 -38.6 L5.2 -38.6 C6.6 -35 8.6 -30.6 10 -27.2 Q0 -25.2 -10 -27.2 C-8.6 -30.6 -6.6 -35 -5.2 -38.6Z" fill="${SK.base}" stroke="${ln}" stroke-width="${lw}" stroke-linejoin="round"/>
     <path d="M2 -38 C3.6 -34 6.4 -30 7.4 -26.4 L10 -27.2 C8.6 -30.6 6.6 -35 5.2 -38.6Z" fill="${SK.sh}"/>
@@ -623,9 +647,8 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
   const pants=o.pants||(who?'#2a2a3c':['#3b4068','#2c3e5c','#55473a','#46506e','#2f3346','#6a7090'][(hv>>4)%6]),shoe=['#2a2440','#6a3b2a','#f2f2f6','#3a3050'][(hv>>5)%4];
   const C=ch_clothPal(shirtC),PC=ch_clothPal(pants),ln=ch_mix(P.line,'#1a0a14',.25),pose=o.pose||(who?'stand':'stand');
   const lw=.9,R=v=>ch_n(v);
-  const limb=(pts,w,col,sh)=>{const d='M'+pts.map(p=>R(p[0])+' '+R(p[1])).join(' L');
-    return `<path d="${d}" stroke="${ln}" stroke-width="${R(w+lw*1.6)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" stroke="${col}" stroke-width="${R(w)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`+
-      (sh?`<path d="${d}" stroke="${sh}" stroke-width="${R(w*.36)}" fill="none" stroke-linecap="butt" stroke-linejoin="round" transform="translate(${R(w*.3)} 0)"/>`:'')};
+  const limb=(pts,w,col,sh,prof)=>ch_limb(pts,w*1.1,prof||CH_PANT,col,ln,lw*.85,sh);
+  const SLV=[[0,1.04],[.5,.92],[1,.86]],SKL=[[0,.92],[.3,1],[.85,.66],[1,.6]];
   const {hy,hs,shY,shX,wX,hipY,hipX,kneeY,ankY,arm,leg}=B,mid=shY+(hipY-shY)*.5;
   // ---- rig by pose
   let L,Rr,ArmL,ArmR,lean=0;
@@ -633,12 +656,14 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
     ArmL=[[-shX+.6,shY+1.2],[-shX-.4,mid],[-shX+.8,hipY-.8]];ArmR=[[shX-.6,shY+1.2],[shX+1.6,mid],[shX+3,hipY-1.8]]}
   else if(pose==='push'){lean=17;L=[[-hipX,hipY],[-hipX-3.2,kneeY+.4],[-hipX-7.6,ankY]];Rr=[[hipX,hipY],[hipX+2.6,kneeY-.6],[hipX+2.8,ankY]];
     ArmL=[[-shX+1.4,shY+1.2],[shX*.1+2,shY+4.6],[shX+7.6,shY+3.6]];ArmR=[[shX-.6,shY+1.2],[shX+4,shY+4.4],[shX+8.8,shY+3]]}
-  else{L=[[-hipX,hipY],[-hipX-.1,kneeY],[-hipX-.2,ankY]];Rr=[[hipX,hipY],[hipX+.1,kneeY],[hipX+.2,ankY]];
-    ArmL=[[-shX+.6,shY+1.2],[-shX-.9,mid],[-shX-.7,hipY-.2]];ArmR=[[shX-.6,shY+1.2],[shX+.9,mid],[shX+.7,hipY-.2]]}
+  else{const v=who?0:(hv>>7)%3;L=[[-hipX,hipY],[-hipX-.3,kneeY],[-hipX-.4,ankY]];Rr=[[hipX,hipY],[hipX+.3,kneeY],[hipX+.4,ankY]];
+    ArmL=[[-shX+.6,shY+1.2],[-shX-1.5,mid],[-shX-.5,hipY-.6]];ArmR=[[shX-.6,shY+1.2],[shX+1.5,mid],[shX+.5,hipY-.6]];
+    if(v===1){Rr=[[hipX,hipY],[hipX-.9,kneeY+.3],[hipX+.5,ankY]];ArmR=[[shX-.6,shY+1.2],[shX+2,mid+.4],[wX-.4,hipY-1.4]];ArmR.pocket=1}
+    if(v===2){ArmL=[[-shX+.6,shY+1.2],[-shX-.8,mid+.6],[-.9,hipY-.2]];ArmR=[[shX-.6,shY+1.2],[shX+.8,mid+.6],[.9,hipY-.4]]}}
   // ---- legs, shoes, skirt
-  const shoeAt=(p,back)=>`<ellipse cx="${R(p[0]+(back?-.3:.3))}" cy="${R(p[1]+1.6)}" rx="${R(leg*.78)}" ry="${R(leg*.42)}" fill="${shoe}" stroke="${ln}" stroke-width="${lw}"/><ellipse cx="${R(p[0]-.6)}" cy="${R(p[1]+1.1)}" rx="${R(leg*.3)}" ry=".35" fill="#fff" opacity=".55"/>`;
+  const shoeAt=(p,back)=>{const x=p[0]+(back?-.3:.3),y=p[1]+1.6,w=leg*.8,h=leg*.5;return `<path d="M${R(x-w)} ${R(y+h*.62)} C${R(x-w)} ${R(y-h*.5)} ${R(x-w*.45)} ${R(y-h*.9)} ${R(x)} ${R(y-h*.9)} C${R(x+w*.5)} ${R(y-h*.9)} ${R(x+w*1.05)} ${R(y-h*.3)} ${R(x+w*1.05)} ${R(y+h*.62)}Z" fill="${shoe}" stroke="${ln}" stroke-width="${lw}" stroke-linejoin="round"/><path d="M${R(x-w*.95)} ${R(y+h*.2)} L${R(x+w)} ${R(y+h*.2)}" stroke="${ch_mix(shoe,'#ffffff',.5)}" stroke-width=".45"/><path d="M${R(x-w*.5)} ${R(y-h*.5)} Q${R(x)} ${R(y-h*.85)} ${R(x+w*.3)} ${R(y-h*.6)}" stroke="#fff" stroke-width=".4" fill="none" opacity=".55" stroke-linecap="round"/>`};
   let legs='';
-  if(skirt){const sock=(A)=>limb([[A[1][0]+(A[2][0]-A[1][0])*.72,A[1][1]+(A[2][1]-A[1][1])*.72],A[2]],leg*.86,'#f4f2f8');legs+=limb(L.slice(1),leg*.8,sk,P.sh)+limb(Rr.slice(1),leg*.8,sk,P.sh)+sock(L)+sock(Rr)}
+  if(skirt){const sock=(A)=>limb([[A[1][0]+(A[2][0]-A[1][0])*.72,A[1][1]+(A[2][1]-A[1][1])*.72],A[2]],leg*.72,'#f4f2f8',null,[[0,1],[1,.9]]);legs+=limb(L.slice(1),leg*.8,sk,P.sh,SKL)+limb(Rr.slice(1),leg*.8,sk,P.sh,SKL)+sock(L)+sock(Rr)}
   else legs+=limb(L,leg,PC.base,PC.sh)+limb(Rr,leg,PC.base,PC.sh);
   legs+=shoeAt(L[2],pose==='push')+shoeAt(Rr[2]);
   if(skirt){const sY=hipY-2.6,eY=hipY+6.4;legs+=`<path d="M${R(-wX)} ${R(sY)} L${R(wX)} ${R(sY)} L${R(wX+2.6)} ${R(eY)} Q0 ${R(eY+1.4)} ${R(-wX-2.6)} ${R(eY)}Z" fill="${PC.base}" stroke="${ln}" stroke-width="${lw}" stroke-linejoin="round"/><path d="M${R(wX*.4)} ${R(sY+1)} L${R(wX+1.6)} ${R(eY)} L${R(wX+2.6)} ${R(eY)} L${R(wX)} ${R(sY)}Z" fill="${PC.sh}"/><path d="M${R(-wX*.3)} ${R(sY+1.6)} L${R(-wX*.6)} ${R(eY)} M${R(wX*.3)} ${R(sY+1.6)} L${R(wX*.6)} ${R(eY)}" stroke="${ln}" stroke-width=".45" opacity=".5"/>`}
@@ -663,8 +688,8 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
     if(outfit==='coat')body+=`<path d="M-2.2 ${R(top-.2)} Q-3.6 ${R(top+4)} -2.6 ${R(top+7)} M2.2 ${R(top-.2)} Q3.6 ${R(top+4)} 2.8 ${R(top+6)}" stroke="#2b3354" stroke-width=".7" fill="none"/><circle cx="-2.6" cy="${R(top+7.4)}" r=".8" fill="#c9d0e2" stroke="${ln}" stroke-width=".35"/>`;}
   // arms (sleeves + hands); tees show skin forearms
   const handAt=p=>`<circle cx="${R(p[0])}" cy="${R(p[1]+.6)}" r="${R(arm*.56)}" fill="${sk}" stroke="${ln}" stroke-width="${lw*.8}"/>`;
-  const armSvg=A=>{if(outfit==='tee'){const e=A[1],sh=A[0],m=[sh[0]+(e[0]-sh[0])*.6,sh[1]+(e[1]-sh[1])*.6];return limb(A,arm*.82,sk,P.sh)+limb([sh,m],arm*1.12,C.base,C.sh)+handAt(A[2])}
-    return limb(A,arm,sleeve,sleeveSh)+(cuff?limb([[A[2][0]-(A[2][0]-A[1][0])*.12,A[2][1]-(A[2][1]-A[1][1])*.12],A[2]],arm*.95,cuff):'')+handAt(A[2])};
+  const armSvg=A=>{const hd=A.pocket?'':handAt(A[2]);if(outfit==='tee'){const e=A[1],sh=A[0],m=[sh[0]+(e[0]-sh[0])*.6,sh[1]+(e[1]-sh[1])*.6];return limb(A,arm*.86,sk,P.sh,CH_ARM)+limb([sh,m],arm*1.12,C.base,C.sh,[[0,1],[.6,1.06],[1,1]])+hd}
+    return limb(A,arm,sleeve,sleeveSh,SLV)+(cuff&&!A.pocket?limb([[A[2][0]-(A[2][0]-A[1][0])*.12,A[2][1]-(A[2][1]-A[1][1])*.12],A[2]],arm*.95,cuff,null,[[0,1],[1,1]]):'')+hd};
   // ---- head (local frame centred at (0,0): skull top -5.4, chin 5.4)
   const f=o.face||(who==='pip'?'sly':who==='jory'?'nervous':''),face='M-4.3 -.6 C-4.3 -4 -2.4 -5.4 0 -5.4 C2.4 -5.4 4.3 -4 4.3 -.6 C4.3 2.2 2.7 4.5 0 5.4 C-2.7 4.5 -4.3 2.2 -4.3 -.6Z';
   const fxo=pose==='push'?.7:0,ec='#22142a',E=(ex,ey,k)=>{

@@ -270,9 +270,9 @@ function renderTellButton(){const slot=$('#tellslot');if(!slot)return;const T=M(
 // ---------- companion Byte on work screens: reacts, wags, opens chat ----------
 function companion(){return `<button class="companion" id="comp" aria-label="Talk to ${esc(S.byte.name)}">${byteBox({...S.byte,mood:'happy'})}</button>`}
 function wireCompanion(){const c=$('#comp');if(c)c.onclick=openChat}
-function byteSays(text,mood='alert'){const c=$('#comp');if(!c)return;c.innerHTML=byteBox({...S.byte,mood});c.classList.remove('hop');void c.offsetWidth;c.classList.add('hop');
+function byteSays(text,mood='alert'){const c=$('#comp');if(!c)return;c.innerHTML=byteBox({...S.byte,mood});c.classList.remove('hop');void c.offsetWidth;c.classList.add('hop','out');
   $$('.bubble').forEach(b=>b.remove());const b=document.createElement('div');b.className='bubble';b.textContent=text;document.body.appendChild(b);
-  setTimeout(()=>{b.classList.add('out');c.innerHTML=byteBox({...S.byte,mood:'happy'})},4200);setTimeout(()=>b.remove(),4700)}
+  setTimeout(()=>{b.classList.add('out');c.classList.remove('out');c.innerHTML=byteBox({...S.byte,mood:'happy'})},4200);setTimeout(()=>b.remove(),4700)}
 
 // ---------- Learn It Fast: a short lesson from Byte, then a 3-question check ----------
 function openLesson(id){const L=LESSONS[id];let qi=0,right=0;
