@@ -316,7 +316,7 @@ function renderTable(){
   screen('futuretable',`${scene('table')}${hud('The Future Table')}
   <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:'think'})}</div><p>Here are 10 futures for this plan, spread out the way my forecast says. Change the plan and watch them shift.</p></div>
    <div class="futs" id="futs">${futs.map((f,i)=>`<figure class="fut" style="--d:${i*70}ms">${vig(f.kind)}<figcaption>${esc(f.cap)}</figcaption></figure>`).join('')}</div>
-   <div class="meters">${meters}</div>
+   <div class="meters">${meters}</div>${M().tablePanel?M().tablePanel(c):''}
    <div class="controls">${controlsHTML(c)}</div>
    <div class="ft-foot"><button class="btn ghost small" id="why">Ask ${esc(S.byte.name)} why</button><button class="btn" id="next">Choose this plan</button></div>
    <div class="why" id="whybox" hidden></div></div>`);
@@ -330,9 +330,9 @@ function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M())
     <div class="subtitle"><div class="planpick"><div class="ctl-l">Your plan</div>${controlsHTML(c)}</div>
       <div class="who"><b>${esc(K.title)}</b><span>${esc(K.role)}</span></div><p>${esc(K.prompt)}</p>
     <div class="choices">${opts.map((o,j)=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
-    <div class="tiny muted" style="margin-top:6px">Explaining honestly lets them give real <button class="gw" data-w="consent">consent</button>.</div></div>`);
+    <div class="tiny muted" style="margin-top:6px">${K.note?esc(K.note):'Explaining honestly lets them give real <button class="gw" data-w="consent">consent</button>.'}</div></div>`);
   wireControls($('.planpick'),renderConsent);
-  $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];S.consent=o.good;if(o.good){heart(K.heart);unlock('consent')&&toast('New Field Guide idea: Informed consent','good')}save();
+  $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];S.consent=o.good;if(o.good){heart(K.heart);const g=K.guide||'consent';unlock(g)&&toast('New Field Guide idea: '+FIELD_GUIDE[g].title,'good')}save();
     $('.stage').innerHTML=`<div class="speaker">${portrait({...CAST[K.left],mood:o.good?'smile':'worried'})}</div><div class="speaker talking">${portrait({...CAST[K.replyWho],mood:o.mood})}</div>`;
     playLine(K.replyWho,o.reply);
     $('.subtitle').innerHTML=`<div class="who"><b>${esc(CAST[K.replyWho].name)}</b><span>${esc(CAST[K.replyWho].role)}</span></div><p>${esc(o.reply)}</p><div class="choices"><button class="choice" id="cont">${o.good?'Write my decision':'Try explaining again'}</button></div>`;
@@ -360,7 +360,7 @@ function renderMemo(){
   $('#conf').oninput=e=>{S.conf=+e.target.value;save()};
   $('#rev').onclick=async()=>{const box=$('#review p');const miss=memoChecks(ta.value).filter(c=>!c.ok).map(c=>c.l.toLowerCase());
     box.textContent='Reading...';const sm=await getSample();let out=null;
-    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo about ${Mm.topic}:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${M().planName(S.choice)}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names a treatment),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (${Mm.careLabel.toLowerCase()}),"feedback":"2 or 3 short kind sentences for a young player: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
+    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo about ${Mm.topic}:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${M().planName(S.choice)}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names ${Mm.planWhat||'a treatment'}),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (${Mm.careLabel.toLowerCase()}),"feedback":"2 or 3 short kind sentences for a young player: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
         if(r&&typeof r==='object'){S.memoAI=r;save();$('#checks').innerHTML=memoChecks(ta.value,r).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('');out=r.feedback}}catch(e){}}
     box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what matters to the people involved.');MUSIC.babble(box.textContent,'byte')};
   $('#sign').onclick=()=>{if(ta.value.trim().length<20){toast('Write at least a sentence or two first.');return}
