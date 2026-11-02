@@ -1,4 +1,5 @@
 /* Layout: one phone-width column over a full-bleed animated scene; conversations put a large animated character on stage with graded-reader subtitles below; work screens use floating cards. */
+[hidden]{display:none!important}
 :root{
   --ink:#1f2340; --ink2:#5d6385; --paper:#ffffff; --mist:#eef1fb; --line:#dfe3f3;
   --violet:#6c5ce7; --teal:#16b3a6; --coral:#ff7a6b; --gold:#f5b82e; --good:#1fa774; --warn:#e5484d;

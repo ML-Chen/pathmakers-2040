@@ -138,7 +138,7 @@ function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="cha
 
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
 let CURSCENE=null;const BG={cv:null,cache:{},key:null,raf:0,t0:performance.now()};
-function scene(k){CURSCENE=k;return window.PAINT&&PAINT[k]?'':SCENES[k]()}
+function scene(k){if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
 function bgSize(){const cv=BG.cv,r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);return [Math.max(1,Math.round(r.width*dpr)),Math.max(1,Math.round(r.height*dpr))]}
 function applyScene(){const k=CURSCENE;if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
   if(!BG.cv){BG.cv=document.createElement('canvas');BG.cv.className='scene bgcanvas';document.body.prepend(BG.cv);addEventListener('resize',()=>{BG.cache={};drawBg(true)})}
@@ -155,7 +155,8 @@ if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
 function screen(cls,html){stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
-  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);MUSIC.play(TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||'work')}
+  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
+  MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 function go(step){S.step=step;save();render()}
 function render(){if(STEPS[S.step])return STEPS[S.step]();if(S.mission&&MISSIONS[S.mission]&&M().flow.some(f=>f.name===S.step))return runFlow();STEPS.title()}
@@ -407,10 +408,10 @@ function renderDebrief(){
   $('#next').onclick=()=>{S.completed[S.mission]={stars:Math.max(stars,(S.completed[S.mission]||{}).stars||0)};save();nextStep()}}
 
 function renderEvening(){const lines=M().evening();
-  screen('evening',`${scene('night')}${hud('Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
+  screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
    <div class="caption-card dark">${lines.map(l=>`<p>${l}</p>`).join('')}
    <div class="row"><button class="btn small ghost" id="guide">Open Field Guide</button><button class="btn small" id="plan">Plan tomorrow</button></div></div></div>`);
   $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};save();go('hub')}}
 
 // ---------- boot ----------
-(function boot(){const l=loadLocal();if(l&&l.v===1)RESUME=l;render();connectCloud()})();
+(function boot(){mergeMissions();LATE.forEach(f=>{try{f()}catch(e){console.warn(e)}});const l=loadLocal();if(l&&l.v===1)RESUME=l;render();connectCloud()})();

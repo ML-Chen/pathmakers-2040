@@ -4,9 +4,9 @@
 import glob,os,sys
 here=os.path.dirname(os.path.abspath(__file__))
 rd=lambda f:open(os.path.join(here,f)).read() if os.path.exists(os.path.join(here,f)) else ''
-many=lambda d:'\n'.join(open(p).read() for p in sorted(glob.glob(os.path.join(here,d,'*.js'))))
+many=lambda d,ext='js':'\n'.join(open(p).read() for p in sorted(glob.glob(os.path.join(here,d,'*.'+ext))))
 t=rd('game.html')
-for marker,val in [('/*@@CSS@@*/',rd('style.css')),('//@@AUDIO@@',rd('audio.js')),('//@@ART@@',rd('art.js')),('//@@CHARS@@',rd('characters.js')),
+for marker,val in [('/*@@CSS@@*/',rd('style.css')+'\n'+many('css','css')),('//@@AUDIO@@',rd('audio.js')+'\n'+many('audio')),('//@@ART@@',rd('art.js')),('//@@CHARS@@',rd('characters.js')),
   ('//@@PAINT@@',rd('paint_boston.js')+'\n'+many('scenes')),('//@@CONTENT@@',rd('content_boston.js')),('//@@MISSIONS@@',rd('missions.js')+'\n'+many('missions')),
   ('//@@INFOG@@',rd('infog.js')+'\n'+many('viz')),('//@@TRACKS@@',rd('music_tracks.js')),('//@@MUSIC@@',rd('music.js')),('//@@PROPS@@',rd('props.js')),('//@@GAME@@',rd('game.js'))]:
     t=t.replace(marker,val)
