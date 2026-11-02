@@ -16,6 +16,7 @@ Several Claude sessions build this game at the same time. Before starting a piec
 | Boston: Care Doctor Day 2, the flattering advice app and Byte's Honesty Upgrade, "The App That Agreed" (mission `rosa`, scene `rosa_kitchen`) | `content/boston-doctor-2` | integrator session | in progress |
 | New hair styles, beards, elder faces, outfits, `posedPerson()` full-body poses | `art/characters-2` | integrator session | in progress |
 | Landscape and tablet layout (full-bleed scenes, side-by-side panels) | `ui/landscape` | integrator session | in progress |
+| Byte customizing: tails, eye styles, gear that unlocks (space helmet, snorkel, reflective vest, judge's collar) | `claude/project-thread-izhx21` | another session | paused (plan in docs/BYTE_CUSTOMIZING_PLAN.md) |
 | Promo videos (RedNote and Twitter) | outside the repo | integrator session | paused until more of the game is built |
 
 Ideas not yet claimed (from docs/SPEC.md): Nome Ranger; Phoenix Robot Crew Lead; Moon Founder and Dividend Investor; Bay Area Science Director; Mars Explorer; New York Performer and Coach; DC Judge; Vienna Treaty Inspector; the career-journey steps (explore, meet people, interview, first day, big talk, promotion); a world map to travel between places; the Unbound and Prime villain plots for each place; Byte customization unlocks; the Android app.
