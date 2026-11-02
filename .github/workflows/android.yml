@@ -1,0 +1,79 @@
+name: Android APK
+# Builds the game into an Android app on every push to main and attaches the APK to the
+# "Android (latest)" release, so the family can install it from a phone. See docs/ANDROID.md.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HAS_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Build the single-file game into the app's assets
+        run: |
+          python3 src/build.py dist/pathmakers.html
+          mkdir -p android/app/src/main/assets
+          cp dist/pathmakers.html android/app/src/main/assets/index.html
+      # Signing: GitHub secrets if the family added them (docs/ANDROID.md). Otherwise a sideload key kept in the
+      # Actions cache, so every build has the same signature and installs as an update over the last one.
+      - name: Restore the sideload signing key
+        if: ${{ env.HAS_KEY != 'true' }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.pm-sideload.jks
+          key: pm-sideload-keystore-v1
+      - name: Prepare signing
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            { echo "PM_KEYSTORE_FILE=$RUNNER_TEMP/release.jks"; echo "PM_KEYSTORE_PASSWORD=$KS_PASS"; echo "PM_KEY_ALIAS=$KEY_ALIAS"; echo "PM_KEY_PASSWORD=$KEY_PASS"; } >> "$GITHUB_ENV"
+          else
+            if [ ! -f ~/.pm-sideload.jks ]; then
+              keytool -genkeypair -v -keystore ~/.pm-sideload.jks -alias pathmakers -keyalg RSA -keysize 2048 -validity 10000 \
+                -storepass pathmakers -keypass pathmakers -dname "CN=Pathmakers 2040"
+            fi
+            { echo "PM_KEYSTORE_FILE=$HOME/.pm-sideload.jks"; echo "PM_KEYSTORE_PASSWORD=pathmakers"; echo "PM_KEY_ALIAS=pathmakers"; echo "PM_KEY_PASSWORD=pathmakers"; } >> "$GITHUB_ENV"
+          fi
+      - name: Build the APK
+        env:
+          PM_VERSION_CODE: ${{ github.run_number }}
+          PM_VERSION_NAME: 0.${{ github.run_number }}
+        run: gradle -p android assembleRelease --no-daemon --stacktrace
+      - name: Name the APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk "Pathmakers2040.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Pathmakers2040-apk
+          path: Pathmakers2040.apk
+      - name: Publish the "Android (latest)" release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOTES="Built from ${GITHUB_SHA::7} on $(date -u '+%b %d, %Y %H:%M UTC'). On your phone, tap Pathmakers2040.apk below, then Install. Progress is kept when you install a newer build over this one."
+          if gh release view android-latest >/dev/null 2>&1; then
+            gh release upload android-latest Pathmakers2040.apk --clobber
+            gh release edit android-latest --notes "$NOTES"
+          else
+            gh release create android-latest Pathmakers2040.apk --title "Android (latest)" --notes "$NOTES" --target "$GITHUB_SHA"
+          fi

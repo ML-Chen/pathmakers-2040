@@ -48,6 +48,8 @@ const MUSIC=(()=>{
     play(name){want=name;if(!unlocked||!ac)return;startTrack(name);level()},
     unlock(){if(!ensure())return;const go=()=>{unlocked=true;if(want)startTrack(want);level()};if(ac.state!=='running')ac.resume().then(go).catch(()=>{});else go()},
     mute(on){muted=on;level()},
+    pause(){if(ac&&ac.state==='running')ac.suspend().catch(()=>{})},
+    resume(){if(ac&&unlocked&&ac.state!=='running')ac.resume().catch(()=>{})},
     duck(on){duckOn=on;level()},
     get name(){return curName}
   };
