@@ -56,3 +56,11 @@
 .sn-say .choice.on.good{border-color:var(--good);background:#eefaf4}
 .sn-say .choice.on.bad{border-color:var(--warn);background:#fff1f1}
 .sn-say .choice[disabled]{opacity:.55}
+
+/* ---- the council's vote line ---- */
+.sn-tally{font-size:.82rem;font-weight:800;letter-spacing:.02em;color:#ffd97a;margin:0 0 4px}
+.sn-tally b{font-family:var(--display);font-size:1rem;color:#fff}
+
+/* ---- who stood with you at the hearing ---- */
+.sn-bench{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px}
+.sn-bench span{font-size:.68rem;font-weight:800;letter-spacing:.01em;color:#2a2f55;background:#e9ecfb;border-radius:999px;padding:3px 9px}
