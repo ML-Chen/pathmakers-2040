@@ -34,6 +34,9 @@ fs.mkdirSync(out,{recursive:true});for(const f of fs.readdirSync(out))if(/\.(png
   if(f.k==='consent'){await shot('consent',900);const no=await E(()=>M().consent.opts(S.choice,M()).length);for(let j=0;j<no;j++){await E(()=>renderConsent());await p.waitForTimeout(300);await p.click(`.choice[data-j="${j}"]`);await shot('consent-reply-'+j,900)}continue}
   if(f.k==='memo'){await shot('memo-empty',600);await E(()=>{S.memo='I recommend this plan because it fits what matters most to them. I am pretty sure, about 80 out of 100. We will check in a week.';go(S.step)});await shot('memo',800,true);continue}
   if(f.k==='reveal'){await E(()=>{S.result=null;go(S.step)});await shot('reveal-start',700);await shot('reveal-end',6000);continue}
-  await shot(f.name,1300,f.k==='debrief')}
+  await shot(f.name,1300,f.k==='debrief');
+  // extra states the mission lists for a custom step in shots:{stepName:[{label, run()}]}
+  const ex=await E(n=>((M().shots||{})[n]||[]).map(x=>x.label),f.name);
+  for(let i=0;i<ex.length;i++){await E(([n,i])=>{document.querySelectorAll('.sheet,.bubble').forEach(x=>x.remove());M().shots[n][i].run()},[f.name,i]);await shot(f.name+'-'+ex[i].replace(/[^a-z0-9]+/gi,'-'),1000,true)}}
  await E(()=>go('hub'));await shot('hub',900);
  fs.writeFileSync(path.join(out,'errors.txt'),errs.join('\n'));console.log(n+' shots in '+out+'; errors: '+(errs.join('\n')||'none'));await b.close()})();

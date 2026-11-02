@@ -39,6 +39,17 @@ MISSIONS.rosa={id:'rosa',title:'…',career:'doctor',day:2,blurb:'…',after:['m
 - `S` is the save state. Mission-specific state goes under `S.notes` or `S.m_<id>` so it never collides.
 - `outcomes(c,knows)` returns `[{kind, p, cap, flags:{criterionId:0|1}}]` whose `p` values sum to 1. The Future Table builds 10 typical futures from these numbers, so keep them realistic and consistent with every number written in the documents.
 
+## How the engine treats a mission
+
+- All files share one global scope, loaded in this order: audio, `art.js`, `characters.js`, painted scenes, `content_boston.js`, missions, infographics, music, `props.js`, `parent.js`, `game.js`. So mission files load before `src/viz/`, and code that uses `VIZ` or another later file must run at call time, not at the top level.
+- A top-level `const` or `let` is visible to later files by name, but it is not a `window` property. Test for it with `typeof X!=='undefined'`, never `window.X`.
+- `knows()` says what Byte currently knows (for example, whether the player told it the clue), and the Future Table forecasts with it. `truth()` is what is really true, and the real outcome is one seeded draw from `outcomes(plan, truth())`.
+- `startMission()` wipes `S.notes` and the other per-mission fields, so state kept in `S.notes` resets on a replay. Keep anything that should outlast the mission in `S.m_<id>`.
+- `S.completed[id]={stars}` records a finished mission. The debrief sets the stars and adds an entry to the progress page's decision history (`PARENT.record`). A mission without a debrief step sets `S.lastStars` in `evening()` instead, and it does not appear in that history.
+- Without `canned(q)`, Byte's offline chat answers questions about the mission with one generic line.
+- The Field Guide sheet lists every `FIELD_GUIDE` entry from every mission, so a new mission's ideas show as locked "?" cards from the start. Two missions that teach the same idea can share its id, and the mission that loads later supplies the text.
+- `shots:{stepName:[{label, run()}]}` (optional) lists extra states of a custom step, for example an open sheet or a finished board. `tools/mission_shots.js` and `tools/mission_deep_shots.js` call each `run()` in the page and screenshot the result.
+
 ## Writing rules (from the family)
 
 - Reading level: about 7th grade. Short sentences. Every hard word or phrase is `[[marked]]` and has a glossary entry, including phrases like `[[heals straight]]`.

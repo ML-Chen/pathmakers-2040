@@ -11,6 +11,7 @@
 //  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine),
 //  ledger [stories for the Ledger news app, see src/ledger.js], tag (hub card label instead of "Day N"), kind/year/season/district/rank (docs/CAMPAIGN.md).
 //  Top-level code in mission files must be plain data and function definitions: tools/make_audio.py evaluates them in node (no DOM).
+//  shots {stepName: [{label, run()}]} (optional): extra states of a custom step for tools/mission_shots.js and tools/mission_deep_shots.js to screenshot.
 const MISSIONS={};
 function mergeMissions(){for(const m of Object.values(MISSIONS)){if(m._merged)continue;m._merged=1;
   Object.assign(GLOSSARY,m.glossary||{});Object.assign(CAST,m.cast||{});Object.assign(VOICES,m.voices||{});Object.assign(FIELD_GUIDE,m.guide||{});Object.assign(LESSONS,m.lessons||{});
