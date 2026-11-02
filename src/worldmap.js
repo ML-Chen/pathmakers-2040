@@ -112,7 +112,10 @@ function journeyResume(m){if(!m.stages||isDone(m.id))return null;const i=camp().
 function playMission(m){if(!m)return;if(resumeMission(m.id))return;startMission(m.id,journeyResume(m)||undefined)}
 
 // ---------- a place's planner ----------
-function placeScene(key){const P=PLACES[key];const k=(P.scenes||[]).find(x=>window.PAINT&&PAINT[x]);if(k)return k;
+// the most beautiful painted view of each place, for its preview screen (outdoor skylines and landscapes, not rooms)
+const PLACE_VIEW={boston:['harbor','street'],nome:['nome_reserve','nome_dusk'],phoenix:['phx_lot','phx_street','phx_yard'],dc:['dc_night'],vienna:['vienna_night','vienna_market'],
+  marrowpoint:['mp_tower'],mars:['mars_dusk','mars'],moon:['moon','moon_night'],shanghai:['shanghai','shanghai_night'],beijing:['beijing'],shenzhen:['shenzhen'],varrow:['varrow'],ocean:['ocean_dc']};
+function placeScene(key){const P=PLACES[key];const k=(PLACE_VIEW[key]||[]).concat(P.scenes||[]).find(x=>window.PAINT&&PAINT[x]);if(k)return k;
   const ms=placeMissions(key);for(const m of ms)for(const f of (m.flow||[]))if(f.scene&&window.PAINT&&PAINT[f.scene]&&!['home','night','table','workbench'].includes(f.scene))return f.scene;
   return wmSceneKey()}
 function missionCard(m){const done=S.completed[m.id],open=missionOpen(m),why=open?'':lockReason(m),res=open&&journeyResume(m);const me=missionMeta(m);

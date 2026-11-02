@@ -164,3 +164,9 @@ body:has(.screen.worldmap) .bc-gift{bottom:calc(136px + env(safe-area-inset-bott
   #app>.cm-dim{background:linear-gradient(90deg,rgba(14,18,52,0) 30%,rgba(14,18,52,.5))}
 }
 @media (prefers-reduced-motion:reduce){.wm-pin,.wm-medal,.wm-medal::after,.wm-medal::before,.cm-heartfx{animation:none!important}}
+
+/* place preview on a phone: the card sits at the bottom, so the top of the screen shows the place's painting */
+@media (max-width:899px){
+  #app.placeplan>.cm-plan{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));top:auto;max-height:56vh;overflow:auto;margin:0 auto;max-width:488px}
+  #app.placeplan>.cm-dim{background:linear-gradient(180deg,rgba(14,18,52,0) 35%,rgba(14,18,52,.55))}
+}
