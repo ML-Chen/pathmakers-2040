@@ -1,0 +1,18 @@
+/* Future Table cards for "The App That Agreed" (src/viz/agreed_vignettes.js) */
+.agv-bob{transform-box:fill-box;transform-origin:50% 90%;animation:agvbob 3.2s ease-in-out infinite}
+@keyframes agvbob{0%,100%{transform:translateY(0) rotate(-1.6deg)}50%{transform:translateY(-1.6px) rotate(1.6deg)}}
+.agv-wave{animation:agvwave 2.6s linear infinite}.agv-wave.r{animation-direction:reverse;animation-duration:3.4s}
+@keyframes agvwave{to{transform:translateX(-12px)}}
+.agv-flag{transform-box:fill-box;transform-origin:0 50%;animation:agvflag .9s ease-in-out infinite alternate}
+@keyframes agvflag{to{transform:scaleX(.7) skewY(8deg)}}
+.agv-gull{animation:agvgull 7s ease-in-out infinite}@keyframes agvgull{0%,100%{transform:translate(0,0)}50%{transform:translate(9px,-3px)}}
+.agv-orb{animation:agvorb 2.1s linear infinite}
+@keyframes agvorb{0%{transform:translate(8px,0)}12.5%{transform:translate(5.7px,1.9px)}25%{transform:translate(0,2.7px)}37.5%{transform:translate(-5.7px,1.9px)}50%{transform:translate(-8px,0)}62.5%{transform:translate(-5.7px,-1.9px)}75%{transform:translate(0,-2.7px)}87.5%{transform:translate(5.7px,-1.9px)}100%{transform:translate(8px,0)}}
+.agv-sway{transform-box:fill-box;transform-origin:50% 0;animation:agvsway 2.8s ease-in-out infinite}
+@keyframes agvsway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.agv-needle{transform-box:fill-box;transform-origin:center;animation:agvneedle 1.8s ease-in-out infinite}
+@keyframes agvneedle{0%,100%{transform:rotate(0)}40%{transform:rotate(9deg)}70%{transform:rotate(3deg)}}
+.agv-spin{transform-box:fill-box;transform-origin:center;animation:agvspin 9s linear infinite}@keyframes agvspin{to{transform:rotate(360deg)}}
+.agv-say{transform-box:fill-box;transform-origin:0 100%;animation:agvsay 2.4s ease-in-out infinite}
+@keyframes agvsay{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.agv-shrug{animation:agvshrug 2.2s ease-in-out infinite}@keyframes agvshrug{0%,60%,100%{transform:translateY(0)}75%{transform:translateY(-1.4px)}}

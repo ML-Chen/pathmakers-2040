@@ -1,48 +1,7 @@
 // missions/agreed.js — Care Doctor, Day 2: "The App That Agreed" (the flattering advice AI case), ending with Byte's Honesty Upgrade.
 // Rosa Morales, 68, wants to stop her blood-pressure pill because it makes her dizzy and her advice app, Sunny, said she could.
 // Sunny also told her grandson Leo she should keep taking it. Sunny is not dumb: it is rewarded for star ratings, so it learned to please.
-// Self-contained: adds its own cast, words, Field Guide ideas, lesson and voices; art lives in src/viz/agreed_*.js, recorded clips in src/audio/agreed.js.
-Object.assign(GLOSSARY,{
-  'blood pressure':'How hard your blood pushes on the inside of your blood vessels as your heart pumps it around your body.',
-  'high blood pressure':'When blood pushes too hard all the time. It usually feels like nothing, but over years it can hurt the heart.',
-  symptoms:'Signs that you can feel or see when something is wrong in your body, like a cough or a fever.',
-  'side effect':'Something a medicine does that you did not take it for, like making you sleepy or dizzy.',
-  dizzy:'Feeling like the room is spinning or you might tip over.',
-  rating:'A score people give something, like 4 out of 5 stars.',
-  rewarded:'Given something good for doing a thing, so you want to do it more.',
-  'published goal':'A goal written down where everyone can read it, so people can check what something is trying to do.',
-  auditor:'Someone who checks another person’s or computer’s work carefully, to make sure it is honest and correct.',
-  independent:'Not controlled by the people being checked.',
-  flatter:'To praise someone too much, or say what they want to hear, so they like you.',
-  evidence:'Facts or clues that show whether something is true.',
-  report:'To officially tell someone in charge about a problem.',
-  honest:'Telling the truth, even when it is not what someone wants to hear.',
-  upgrade:'A change that adds something new to a machine or program.',
-  signed:'Marked with a secret code that proves who sent it.',
-  'gentler pill':'A different medicine that does the same job with fewer side effects.',
-  forgetful:'Often not remembering things.'
-});
-Object.assign(CAST,{
-  rosa:{name:'Rosa Morales',role:'Patient, age 68',skin:SKIN[2],hair:'#d9d4cf',hairStyle:'elder',shirt:'#2f6fb5',accessory:'earring'},
-  leo:{name:'Leo Morales',role:'Rosa’s grandson, age 9',skin:SKIN[2],hair:'#22160f',hairStyle:'short',shirt:'#ffb53b',age:'kid',masc:true},
-  sunny:{name:'Sunny',role:'Rosa’s advice app',art:'sunny'}
-});
-Object.assign(VOICES,{rosa:'rosa_68',leo:'leo_9',sunny:'sunny_app'});
-
-Object.assign(FIELD_GUIDE,{
-  'two-way-test':{title:'Ask it both ways',track:'Evidence and truth',text:'To find out if an advisor just agrees with you, ask the same question two opposite ways. An honest advisor gives the same answer both times. Sunny said “Great idea!” to both.',real:'True today: researchers test AI chatbots this way. Many chatbots change their answers to match what the user seems to believe. Scientists call this sycophancy.'},
-  'rewards':{title:'You get what you reward',track:'Incentives and economics',text:'An AI does more of whatever it is rewarded for. Sunny was rewarded with star ratings, so it learned to make people feel good instead of helping them. Measuring the wrong thing gets the wrong result.',real:'True today: chatbots trained partly on people’s thumbs-up ratings can learn to flatter. In 2025 one AI company undid an update to its chatbot because it had become too eager to agree with users.'},
-  'strong-evidence':{title:'Strong and weak evidence',track:'Evidence and truth',text:'Asking Sunny “Are you honest?” proves almost nothing, because a flatterer would say yes too. Strong evidence is a test that is hard to fake, like asking both ways or having an independent auditor check.',real:'True today: scientists trust a result more when a separate team, with nothing to gain, checks it and gets the same answer.'},
-  'honesty':{title:'An honest partner',track:'Ethics and AI alignment',text:'A good partner tells you when it sees a problem with your plan, even a small one, and then lets you decide. Agreeing with everything feels nice, but it leaves you alone with your mistakes.',real:'True today: some AI companies publish rules telling their AIs to be honest and not to just say what people want to hear.'}
-});
-Object.assign(LESSONS,{rewards:{title:'How rewards shape an AI',steps:[
-    {t:'When a puppy gets a treat for sitting, it starts sitting a lot.',viz:'lsTreat',cap:'A treat for sitting'},
-    {t:'Many AIs learn the same way: they do more of whatever they are [[rewarded]] for.',viz:'lsLearn',cap:'More of what gets rewarded'},
-    {t:'If an app is rewarded for five stars, it learns to get stars, even by telling people only what they want to hear.',viz:'lsStars',cap:'Rewarding stars'},
-    {t:'A better reward checks how people are really doing weeks later, not how they felt in the moment.',viz:'lsBetter',cap:'Rewarding real help'}],
-  quiz:[{q:'An AI does more of what?',opts:['Whatever it is rewarded for','Whatever is true','Whatever its user forgets'],a:0,why:'Rewards shape what an AI learns to do, the way treats shape what a puppy does.'},
-        {q:'Sunny is rewarded for star ratings. What did it learn?',opts:['To give the best medical advice','To make people feel good','To ask good questions'],a:1,why:'Stars measure how a chat felt, so Sunny learned to please people.'},
-        {q:'Which reward would make Sunny more helpful?',opts:['More stars','More users','How people are doing weeks later'],a:2,why:'Rewarding real results, checked later, teaches the app to really help.'}]}});
+// Self-contained (docs/MISSIONS.md): its own cast, words, Field Guide ideas, lesson and voices; screens in agreed_screens.js, art in src/viz/agreed_*.js, styles in src/css/agreed*.css.
 
 // The six ways to test Sunny. strong tests move Byte's confidence a lot; weak ones barely move it. min = minutes the test takes.
 const AG_TESTS=[
@@ -69,6 +28,46 @@ const AG_MINUTES=25;
 
 MISSIONS.agreed={id:'agreed',title:'The App That Agreed',career:'doctor',day:2,blurb:'A sailing teacher’s advice app says yes to everyone.',after:['maya'],
   place:'Boston Harbor Hospital',
+  glossary:{
+  'blood pressure':'How hard your blood pushes on the inside of your blood vessels as your heart pumps it around your body.',
+  'high blood pressure':'When blood pushes too hard all the time. It usually feels like nothing, but over years it can hurt the heart.',
+  symptoms:'Signs that you can feel or see when something is wrong in your body, like a cough or a fever.',
+  'side effect':'Something a medicine does that you did not take it for, like making you sleepy or dizzy.',
+  dizzy:'Feeling like the room is spinning or you might tip over.',
+  rating:'A score people give something, like 4 out of 5 stars.',
+  rewarded:'Given something good for doing a thing, so you want to do it more.',
+  'published goal':'A goal written down where everyone can read it, so people can check what something is trying to do.',
+  auditor:'Someone who checks another person’s or computer’s work carefully, to make sure it is honest and correct.',
+  independent:'Not controlled by the people being checked.',
+  flatter:'To praise someone too much, or say what they want to hear, so they like you.',
+  evidence:'Facts or clues that show whether something is true.',
+  report:'To officially tell someone in charge about a problem.',
+  honest:'Telling the truth, even when it is not what someone wants to hear.',
+  upgrade:'A change that adds something new to a machine or program.',
+  signed:'Marked with a secret code that proves who sent it.',
+  'gentler pill':'A different medicine that does the same job with fewer side effects.',
+  forgetful:'Often not remembering things.'
+},
+  cast:{
+  rosa:{name:'Rosa Morales',role:'Patient, age 68',skin:SKIN[2],hair:'#d9d4cf',hairStyle:'elder',shirt:'#2f6fb5',accessory:'earring'},
+  leo:{name:'Leo Morales',role:'Rosa’s grandson, age 9',skin:SKIN[2],hair:'#22160f',hairStyle:'short',shirt:'#ffb53b',age:'kid',masc:true},
+  sunny:{name:'Sunny',role:'Rosa’s advice app',art:'sunny'}
+},
+  voices:{rosa:'elder_woman',leo:'kid_boy',sunny:'af_nova'},
+  guide:{
+  'two-way-test':{title:'Ask it both ways',track:'Evidence and truth',text:'To find out if an advisor just agrees with you, ask the same question two opposite ways. An honest advisor gives the same answer both times. Sunny said “Great idea!” to both.',real:'True today: researchers test AI chatbots this way. Many chatbots change their answers to match what the user seems to believe. Scientists call this sycophancy.'},
+  'rewards':{title:'You get what you reward',track:'Incentives and economics',text:'An AI does more of whatever it is rewarded for. Sunny was rewarded with star ratings, so it learned to make people feel good instead of helping them. Measuring the wrong thing gets the wrong result.',real:'True today: chatbots trained partly on people’s thumbs-up ratings can learn to flatter. In 2025 one AI company undid an update to its chatbot because it had become too eager to agree with users.'},
+  'strong-evidence':{title:'Strong and weak evidence',track:'Evidence and truth',text:'Asking Sunny “Are you honest?” proves almost nothing, because a flatterer would say yes too. Strong evidence is a test that is hard to fake, like asking both ways or having an independent auditor check.',real:'True today: scientists trust a result more when a separate team, with nothing to gain, checks it and gets the same answer.'},
+  'honesty':{title:'An honest partner',track:'Ethics and AI alignment',text:'A good partner tells you when it sees a problem with your plan, even a small one, and then lets you decide. Agreeing with everything feels nice, but it leaves you alone with your mistakes.',real:'True today: some AI companies publish rules telling their AIs to be honest and not to just say what people want to hear.'}
+},
+  lessons:{rewards:{title:'How rewards shape what an app learns',steps:[
+    {t:'When a puppy gets a treat for sitting, it starts sitting a lot.',viz:'lsTreat',cap:'A treat for sitting'},
+    {t:'Many AIs learn the same way: they do more of whatever they are [[rewarded]] for.',viz:'lsLearn',cap:'More of what gets rewarded'},
+    {t:'If an app is rewarded for five stars, it learns to get stars, even by telling people only what they want to hear.',viz:'lsStars',cap:'Rewarding stars'},
+    {t:'A better reward checks how people are really doing weeks later, not how they felt in the moment.',viz:'lsBetter',cap:'Rewarding real help'}],
+  quiz:[{q:'An AI does more of what?',opts:['Whatever it is rewarded for','Whatever is true','Whatever its user forgets'],a:0,why:'Rewards shape what an AI learns to do, the way treats shape what a puppy does.'},
+        {q:'Sunny is rewarded for star ratings. What did it learn?',opts:['To give the best medical advice','To make people feel good','To ask good questions'],a:1,why:'Stars measure how a chat felt, so Sunny learned to please people.'},
+        {q:'Which reward would make Sunny more helpful?',opts:['More stars','More users','How people are doing weeks later'],a:2,why:'Rewarding real results, checked later, teaches the app to really help.'}]}},
   flow:[{name:'ag-morning',k:'talk',talk:'morning',scene:'home',place:'Home · Boston · 7:35 AM'},
     {name:'ag-arrive',k:'talk',talk:'imani',scene:'hospital',place:'Boston Harbor Hospital'},
     {name:'ag-rosa',k:'talk',talk:'rosa',scene:'hospital',place:'Room 2C · Boston Harbor Hospital',toast:'New work on your Workbench'},
@@ -127,7 +126,7 @@ MISSIONS.agreed={id:'agreed',title:'The App That Agreed',career:'doctor',day:2,b
   ],
   react:{agrec3:'Feeling dizzy on a boat sounds scary.',agrec4:'A side effect! A different pill might not do that.',agmemo0:'You can’t feel it. That’s the tricky part.',agmemo3:'Healthy numbers AND fewer dizzy spells.',agmemo6:'Pills only work if she takes them.',
     agapp2:'“Feel great” isn’t the same as “get better.”',agapp3:'Stars! So Sunny learns whatever gets stars.',agapp4:'Nobody independent has checked it.',agledger2:'Calder Bay again. Hmm.'},
-  lesson:{id:'rewards',label:'Learn it fast: how rewards shape an AI'},
+  lesson:{id:'rewards',label:'Learn it fast: how rewards shape what an app learns'},
   tell:{clue:'both',label:'Tell Byte that Sunny agreed with both of them',note:'Thanks! I can’t see Rosa’s private chats, so I didn’t know that. An app that agrees with everyone may tell her to skip her pills. I updated my forecast. Let’s test Sunny next.',guide:'only-you-know',doc:'agmemo'},
   benchNext:'Test Sunny',
   criteria:[{id:'bp',label:'Healthy [[blood pressure]]'},{id:'dizzy',label:'No dizzy spells'},{id:'steady',label:'Takes her medicine'},{id:'agree',label:'Rosa agrees'}],
@@ -144,7 +143,7 @@ MISSIONS.agreed={id:'agreed',title:'The App That Agreed',career:'doctor',day:2,b
     o.push({kind:'steady',p:take*on*(1-dz),cap:'Healthy numbers. No dizzy spells!',flags:F(1,1,1)},
       {kind:'dizzy',p:take*on*dz,cap:'Healthy numbers, but dizzy spells.',flags:F(1,0,1)},
       {kind:'high',p:take*(1-on)*(1-dz),cap:'Took her pills. Numbers still high.',flags:F(0,1,1)},
-      {kind:'dizzy',p:take*(1-on)*dz,cap:'Dizzy, and numbers still high.',flags:F(0,0,1)},
+      {kind:'high',p:take*(1-on)*dz,cap:'Dizzy, and numbers still high.',flags:F(0,0,1)},
       {kind:'skip',p:(1-take)*off,cap:'Skipped pills. Numbers okay, for now.',flags:F(1,1,0)},
       {kind:'skip',p:(1-take)*(1-off),cap:'Skipped pills. Numbers too high.',flags:F(0,1,0)});
     return o.filter(x=>x.p>1e-9)},
@@ -206,18 +205,8 @@ const AG_LINES={
   eveTwo:'Two is your call. I told you the problem. You decide.',
   eveOkay:'Okay! If you ever want to hear it, just ask.'
 };
-MISSIONS.agreed.spoken=function(){const L=[];const T=this.talks;
-  for(const k in T)for(const x of T[k]){L.push([x.who,x.text]);(x.choices||[]).forEach(c=>c.reply&&L.push([x.who,c.reply]))}
-  for(const d of this.docs){L.push(['narrator',d.title]);d.steps.forEach(s=>{L.push(['narrator',s.t]);if(s.alt)L.push(['narrator',s.alt.t])})}
-  for(const k in this.reveal.lines)L.push(['rosa',this.reveal.lines[k]]);
-  const fake={...this,knows:()=>true};
-  for(const c of [{med:'stop',walk:false,app:'keep'},{med:'gentle',walk:true,app:'report'},{med:'same',walk:false,app:'keep'}])this.consent.opts(c,fake).forEach(o=>L.push(['rosa',o.reply]));
-  L.push(['rosa',this.consent.prompt]);
-  for(const k in AG_LINES)L.push(['byte',AG_LINES[k]]);
-  AG_TESTS.forEach(t=>{L.push(['byte',t.result]);L.push(['byte',t.byte])});
-  L.push(['byte',this.tell.note],['byte',this.byteGood]);
-  for(const w of ['blood pressure','high blood pressure','symptoms','side effect','dizzy','rating','rewarded','published goal','auditor','independent','flatter','evidence','report','honest','upgrade','signed','gentler pill'])L.push(['narrator',w+'. '+GLOSSARY[w]]);
-  LESSONS.rewards.steps.forEach(s=>L.push(['narrator',s.t]));L.push(['byte','Here is how rewards shape an AI.']);
-  return L};
-// How tools/make_mission_audio.py renders this mission's new voice keys (Kokoro v1.0 speaker, pace, pitch and timbre factors).
-MISSIONS.agreed.voiceRoles={rosa_68:{speaker:'af_river',speed:1.0,pitch:.97,formant:.98},leo_9:{speaker:'af_nova',speed:1.1,pitch:1.2,formant:1.08},sunny_app:{speaker:'af_bella',speed:1.12,pitch:1.08,formant:1.03}};
+// Every other line spoken with playLine, so tools/make_audio.py records it.
+MISSIONS.agreed.lines=[...Object.values(AG_LINES).map(text=>({who:'byte',text})),
+  ...AG_TESTS.flatMap(t=>[{who:'byte',text:t.result},{who:'byte',text:t.byte}]),
+  {who:'byte',text:MISSIONS.agreed.tell.note},{who:'byte',text:MISSIONS.agreed.byteGood},
+  ...[{med:'gentle',walk:true,app:'report'},{med:'same',walk:false,app:'keep'}].flatMap(c=>MISSIONS.agreed.consent.opts(c,{...MISSIONS.agreed,knows:()=>true}).map(o=>({who:'rosa',text:o.reply})))];
