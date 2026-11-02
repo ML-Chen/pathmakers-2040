@@ -8,7 +8,8 @@
 //  vignette(kind) (optional; defaults to the global vignette), consent {...}, memo {...}, reveal {...}, trap(c), byteGood, byteBad, evening(), brief(), canned(q)
 //  Optional mission-owned tables (merged into the shared ones by mergeMissions() at startup, and recorded by tools/make_audio.py):
 //  glossary {lowercase word: meaning}, cast {id: portrait options + name, role}, voices {cast id: voice name}, guide {Field Guide id: {title,track,text,real}},
-//  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine).
+//  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine),
+//  ledger [stories for the Ledger news app, see src/ledger.js], tag (hub card label instead of "Day N"), kind/year/season/district/rank (docs/CAMPAIGN.md).
 //  Top-level code in mission files must be plain data and function definitions: tools/make_audio.py evaluates them in node (no DOM).
 const MISSIONS={};
 function mergeMissions(){for(const m of Object.values(MISSIONS)){if(m._merged)continue;m._merged=1;
@@ -23,6 +24,7 @@ function missionLines(m){const L=[],add=(who,t)=>{if(t&&typeof t==='string')L.pu
   if(m.reveal&&m.reveal.lines)for(const k in m.reveal.lines)add(m.reveal.who,m.reveal.lines[k]);
   if(m.consent&&m.consent.opts){try{m.consent.opts(m.start,m).forEach(o=>add(m.consent.replyWho,o.reply))}catch(e){}}
   (m.lines||[]).forEach(x=>add(x.who,x.text));
+  for(const st of (m.ledger||[])){add('narrator',st.title);(st.steps||[]).forEach(b=>add('narrator',b.t));if(st.trick)add('byte',st.trick.why);if(st.check)add('byte',st.check)}
   return L}
 const CAREERS={doctor:{name:'Care Doctor',place:'Boston Harbor Hospital'},companion:{name:'Elder Companion',place:'Boston'}};
 
