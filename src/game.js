@@ -76,16 +76,16 @@ const ICON={
   guide:'<svg viewBox="0 0 24 24"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z M12 6v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
   words:'<svg viewBox="0 0 24 24"><path d="M5 19 10 5h1l5 14M7 14h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 9h3M18.5 7.5v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 };
-function hud(place){return `<div class="hud"><div class="place">${esc(place)}</div><div class="hud-btns">${typeof ledgerHud==='function'?ledgerHud():''}
+function hud(place){return `<div class="hud"><div class="place">${esc(place)}</div><div class="hud-btns">
  <button id="hud-mute" class="hbtn" aria-label="${S.mute?'Turn sound on':'Turn sound off'}">${S.mute?ICON.off:ICON.on}</button>
-  <button id="hud-menu" class="hbtn" aria-label="Menu">${ICON.menu}</button>
+  <button id="hud-menu" class="hbtn" aria-label="Menu">${ICON.menu}${typeof ledgerHud==='function'?ledgerHud():''}</button>
   <button id="hud-chat" class="hbtn" aria-label="Talk to ${esc(S.byte.name)}">${ICON.chat}</button>
   <button id="hud-guide" class="hbtn" aria-label="Field Guide">${ICON.guide}${S.guide.length?`<span>${S.guide.length}</span>`:''}</button>
   <button id="hud-words" class="hbtn" aria-label="Word Book">${ICON.words}${S.words.length?`<span>${S.words.length}</span>`:''}</button></div></div>`}
 function saveCode(){try{return 'PM1-'+btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/=+$/,'')}catch(e){return ''}}
 function loadCode(code){try{const j=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^PM1-/,'')))));if(j&&j.v===1){S={...NEW(),...j};save();return true}}catch(e){}return false}
 function openMenu(){const d=sheet('Menu',`<div class="menu">
-   <button class="btn wide" id="m-hub">Day planner</button>${typeof openLedger==='function'?'<button class="btn wide ghost" id="m-ledger">The Ledger</button>':''}
+   <button class="btn wide" id="m-hub">Day planner</button>${typeof ledgerMenu==='function'?ledgerMenu():''}
    <div class="lbl">Save code</div><p class="tiny muted">Copy this code to move your game to another device or browser.</p>
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">Copy code</button>
    <div class="lbl">Load a save code</div><textarea id="m-in" rows="3" placeholder="Paste a code that starts with PM1-"></textarea><button class="btn small ghost" id="m-load">Load this game</button>
@@ -97,7 +97,7 @@ function openMenu(){const d=sheet('Menu',`<div class="menu">
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast('Game loaded','good');render()}else toast('That code didn\u2019t work. Check that you copied all of it.')};
   $('#m-new',d).onclick=()=>{$('#m-confirm',d).innerHTML=`<p>Erase this game and start over?</p><div class="row"><button class="btn small" id="m-yes">Yes, start over</button><button class="btn small ghost" id="m-no">Keep playing</button></div>`;
     $('#m-yes',d).onclick=()=>{d.remove();S=NEW();save();go('setup')};$('#m-no',d).onclick=()=>{$('#m-confirm',d).innerHTML=''}}}
-function wireHud(){const mm=$('#hud-menu');if(mm)mm.onclick=openMenu;const m=$('#hud-mute');if(m)m.onclick=()=>{S.mute=!S.mute;save();stopVoice();MUSIC.mute(S.mute);m.innerHTML=S.mute?ICON.off:ICON.on};const c=$('#hud-chat');if(c)c.onclick=openChat;const g=$('#hud-guide');if(g)g.onclick=openGuide;const w=$('#hud-words');if(w)w.onclick=openWords;const lg=$('#hud-ledger');if(lg)lg.onclick=()=>openLedger()}
+function wireHud(){const mm=$('#hud-menu');if(mm)mm.onclick=openMenu;const m=$('#hud-mute');if(m)m.onclick=()=>{S.mute=!S.mute;save();stopVoice();MUSIC.mute(S.mute);m.innerHTML=S.mute?ICON.off:ICON.on};const c=$('#hud-chat');if(c)c.onclick=openChat;const g=$('#hud-guide');if(g)g.onclick=openGuide;const w=$('#hud-words');if(w)w.onclick=openWords}
 function sheet(title,html){const d=document.createElement('div');d.className='sheet';d.innerHTML=`<div class="sheet-in"><div class="sheet-top"><h2>${title}</h2><button class="x" aria-label="Close">×</button></div><div class="sheet-body">${html}</div></div>`;document.body.appendChild(d);
   requestAnimationFrame(()=>d.classList.add('on'));d.querySelector('.x').onclick=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),250)};return d}
 function openGuide(){const items=Object.entries(FIELD_GUIDE);sheet('Field Guide',`<p class="muted">${S.guide.length} of ${items.length} found in Boston</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${g.track}</div><h3>${g.title}</h3><p>${g.text}</p><div class="realcard"><span>True today</span>${g.real.replace(/^True today: /,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>Keep playing to discover this idea.</p></div>`).join(''))}

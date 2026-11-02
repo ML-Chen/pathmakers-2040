@@ -146,7 +146,7 @@ Object.assign(VIZ,{
     ${igT(150,16,'Calder Bay',{s:10.5,c:'#cfd6ff'})}`,'Inspectors shut down a datacenter with no license'),
   lg_calder2:()=>lgPic(120,['#e9e4f0','#d8d2e4'],`<path d="M0 98 H300 V120 H0Z" fill="#b9b0c8"/>
     <rect x="40" y="24" width="64" height="74" rx="3" fill="#8a7aa8"/><rect x="46" y="30" width="52" height="68" fill="#6a5a88"/><circle cx="90" cy="64" r="3" fill="#ffd45c"/>
-    <rect x="44" y="12" width="56" height="10" rx="2" fill="#fff"/>${igT(72,20,'NORTHWIND LLC',{s:6.5,w:800,c:LGC.ink})}
+    <rect x="44" y="12" width="56" height="10" rx="2" fill="#fff"/>${igT(72,20,'GREYFEN LLC',{s:6.5,w:800,c:LGC.ink})}
     <rect x="150" y="70" width="90" height="8" rx="2" fill="#a88a6a"/><path d="M158 78 V98 M232 78 V98" stroke="#a88a6a" stroke-width="5"/>
     <path d="M250 10 L250 28 M240 28 a10 6 0 0 0 20 0" stroke="#7a6f8a" stroke-width="1.6" fill="none"/><g class="lg-swing" style="transform-origin:250px 10px"><path d="M250 10 V30" stroke="#7a6f8a" stroke-width="1.2"/><path d="M243 30 h14 l-3 6 h-8z" fill="#cfc7dc"/></g>
     <path d="M150 20 Q170 30 190 22 M160 20 Q170 28 180 18" stroke="#fff" stroke-width="1" fill="none" opacity=".8"/>

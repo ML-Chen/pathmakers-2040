@@ -58,154 +58,154 @@ const LEDGER_BYTE={
 };
 
 const LEDGER_LIBRARY=[
-  {id:'cold-spray',title:'A Spray That Stops Colds Passes Its Final Test',section:'health',place:'Boston',by:'Priya Natarajan',org:'The Ledger',signed:true,when:{},pri:9,steps:[
+  {id:'cold-spray',title:'A Spray That Stops Colds Passes Its Final Test',section:'health',place:'Boston',by:'Ottilie Brasswick',org:'The Ledger',signed:true,when:{},pri:9,steps:[
     {t:'A nose spray that stops the [[common cold]] has passed its final [[trial]].',viz:'lg_cold1',cap:'The cold spray'},
     {t:'In the trial of 30,000 people, 9 out of 10 colds ended within a day.',viz:'lg_cold2',cap:'9 of 10 colds gone in a day'},
     {t:'Pharmacies in Boston will carry it by fall.',viz:'lg_cold3',cap:'Coming to pharmacies'}]},
-  {id:'orchestra',title:'Three Hundred Neighbors Start an Orchestra',section:'places',place:'Boston',by:'Dana Whitfield',org:'The Ledger',signed:true,when:{},pri:6,steps:[
+  {id:'orchestra',title:'Three Hundred Neighbors Start an Orchestra',section:'places',place:'Boston',by:'Della Pennywhit',org:'The Ledger',signed:true,when:{},pri:6,steps:[
     {t:'In Dorchester, 300 neighbors have started an [[orchestra]], and most of them had never played an instrument before.',viz:'lg_orch1',cap:'Brand-new musicians'},
     {t:'They practice every morning in an old church hall, just because they love it.',viz:'lg_orch2',cap:'Morning practice'},
     {t:'Their first concert is on the Esplanade in June, and it’s free.',viz:'lg_orch3',cap:'A concert by the river'}]},
-  {id:'tram-axis',title:'Boston’s Trams Leave Phoenix in the Dust',section:'places',place:'Boston and Phoenix',by:'Tara Quill',org:'The Ledger City Desk',signed:true,when:{},pri:5,steps:[
+  {id:'tram-axis',title:'Boston’s Trams Leave Phoenix in the Dust',section:'places',place:'Boston and Phoenix',by:'Tamsin Quillfeather',org:'The Ledger City Desk',signed:true,when:{},pri:5,steps:[
     {t:'Last month, Boston’s trams were on time for 97 out of 100 trips. Phoenix’s trams were on time for 94.',viz:'lg_tram1',cap:'On time, out of 100 trips'},
     {t:'As the chart shows, Boston is far ahead.',viz:'lg_tram2',cap:'Trips on time'},
     {t:'Phoenix riders, maybe it’s time to move to Boston!',viz:'lg_tram3',cap:'Come on over'}],
     trick:{kind:'axis',stamp:'Slanted',parts:['f1'],near:{s0:'Those numbers are real: 97 and 94. Now look at how the chart draws them.',s1:'That’s the claim. What makes it look so big? Check the picture.',s2:'That’s just teasing. What made Boston look so far ahead?'},
       why:'Look at the chart’s side: the bars start at 90, not at zero. So 97 and 94 look like 7 and 4, almost twice as tall. Really, both cities’ trams were on time on almost every trip.',guide:'lg-axis'}},
-  {id:'sun-mirror',title:'The First Space Solar Collector Unfolds',section:'space',place:'Orbit',by:'Ken Mbeki',org:'The Ledger',signed:true,when:{},pri:7,steps:[
+  {id:'sun-mirror',title:'The First Space Solar Collector Unfolds',section:'space',place:'Orbit',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{},pri:7,steps:[
     {t:'A thin mirror as wide as six soccer fields unfolded in [[orbit]] on Tuesday.',viz:'lg_sun1',cap:'Unfolding in space'},
     {t:'It collects sunlight day and night and beams the energy down to a station in the desert.',viz:'lg_sun2',cap:'Sunlight, beamed down'},
     {t:'If it works well for a year, twenty more will follow.',viz:'lg_sun3',cap:'One now, twenty later'}]},
-  {id:'calder-mystery',title:'Who Built the Calder Bay Datacenter?',section:'world',place:'Calder Bay',by:'Ines Ferro',org:'The Ledger',signed:true,when:{},pri:8,plot:'furnace',steps:[
+  {id:'calder-mystery',title:'Who Built the Calder Bay Datacenter?',section:'world',place:'Calder Bay',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{},pri:8,plot:'furnace',steps:[
     {t:'Treaty [[inspectors]] shut down a small [[datacenter]] near Calder Bay that had no [[license]] to run.',viz:'lg_calder1',cap:'Shut down'},
     {t:'The owner’s name on its papers led to an empty office.',viz:'lg_calder2',cap:'Nobody home'},
     {t:'Inspectors are asking anyone who saw delivery trucks there to get in touch.',viz:'lg_calder3',cap:'Trucks at night'}]},
-  {id:'river-vote',title:'Boston Votes Tonight on a New River Park',section:'places',place:'Boston',by:'Dana Whitfield',org:'The Ledger',signed:true,when:{},pri:4,steps:[
+  {id:'river-vote',title:'Boston Votes Tonight on a New River Park',section:'places',place:'Boston',by:'Della Pennywhit',org:'The Ledger',signed:true,when:{},pri:4,steps:[
     {t:'Bostonians vote tonight on a new park along the Charles River.',viz:'lg_vote1',cap:'Vote tonight'},
     {t:'Robot crews could build it in nine days.',viz:'lg_vote2',cap:'Nine days to build'},
     {t:'Neighbors disagree about one thing: whether to keep the old boathouse.',viz:'lg_vote3',cap:'Keep it or replace it?'}]},
-  {id:'whale-words',title:'Whale Dictionary Reaches 1,000 Entries',section:'science',place:'The Atlantic',by:'Ken Mbeki',org:'The Ledger',signed:true,when:{},pri:3,steps:[
+  {id:'whale-words',title:'Whale Dictionary Reaches 1,000 Entries',section:'science',place:'The Atlantic',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{},pri:3,steps:[
     {t:'Scientists and their AIs have matched 1,000 sperm whale click patterns to what the whales were doing at the time.',viz:'lg_whale1',cap:'Clicks into words'},
     {t:'One pattern seems to mean “come here, little one.”',viz:'lg_whale2',cap:'A mother and her calf'},
     {t:'Every entry comes with a [[confidence]] number, because the matches are still careful guesses.',viz:'lg_whale3',cap:'How sure each match is'}]},
-  {id:'dark-tower-open',title:'The Dark Tower Opens to Visitors',section:'world',place:'Marrow Point, Estmark',by:'Ines Ferro',org:'The Ledger',signed:true,when:{},pri:2,link:{mission:'darktower',label:'Visit the Dark Tower'},steps:[
+  {id:'dark-tower-open',title:'The Dark Tower Opens to Visitors',section:'world',place:'Marrow Point, Estmark',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{},pri:2,link:{mission:'darktower',label:'Visit the Dark Tower'},steps:[
     {t:'The old power-grid control center in Marrow Point, on the island of Estmark, is open to visitors again.',viz:'lg_dt1',cap:'The Dark Tower'},
     {t:'During [[Blackout Week]] in 2029, the lights went out across Estmark for seven days.',viz:'lg_dt2',cap:'Seven dark days'},
     {t:'Today the tower is home to hundreds of seabirds, and to a few stories worth hearing.',viz:'lg_dt3',cap:'New neighbors'}]},
 
-  {id:'marathon',title:'At 92, He Ran His First Marathon',section:'places',place:'Boston',by:'Sam Ito',org:'The Ledger',signed:true,when:{done:1},pri:5,steps:[
-    {t:'Walt Okafor started running at age 85, after a new [[renewal therapy]] rebuilt his worn-out knees.',viz:'lg_walt1',cap:'New knees'},
+  {id:'marathon',title:'At 92, He Ran His First Marathon',section:'places',place:'Boston',by:'Sam Ottoway',org:'The Ledger',signed:true,when:{done:1},pri:5,steps:[
+    {t:'Walt Grisby started running at age 85, after a new [[renewal therapy]] rebuilt his worn-out knees.',viz:'lg_walt1',cap:'New knees'},
     {t:'On Saturday, he finished the Boston Marathon route in five hours and ten minutes.',viz:'lg_walt2',cap:'5 hours, 10 minutes'},
     {t:'“I’m not fast,” he said. “I’m just having the best time of my life.”',viz:'lg_walt3',cap:'Cheered on'}]},
-  {id:'kendall-dna',title:'DNA Print Shop Blocks Strange Orders',section:'places',place:'Boston',by:'Priya Natarajan',org:'The Ledger',signed:true,when:{done:1},pri:7,plot:'sneeze',steps:[
+  {id:'kendall-dna',title:'DNA Print Shop Blocks Strange Orders',section:'places',place:'Boston',by:'Ottilie Brasswick',org:'The Ledger',signed:true,when:{done:1},pri:7,plot:'sneeze',steps:[
     {t:'A [[DNA print shop]] in Kendall Square [[flagged]] a group of orders from brand-new customers.',viz:'lg_dna1',cap:'Flagged'},
     {t:'All of the orders were placed on the same night, a few minutes apart.',viz:'lg_dna2',cap:'One night, many orders'},
     {t:'The shop’s [[screening]] system blocked them and reported them to the city’s safety office.',viz:'lg_dna3',cap:'Blocked and reported'},
     {t:'None of the customers has answered the shop’s messages.',viz:'lg_dna4',cap:'No answer'}]},
-  {id:'studypal',title:'Kids Learn Twice as Fast With StudyPal, Report Says',section:'science',place:'Online',by:'The StudyPal Team',org:'StudyPal, Inc.',signed:true,when:{done:1},pri:4,steps:[
-    {t:'A new report says kids who use the StudyPal tutor learn twice as fast as kids who don’t.',viz:'lg_study1',cap:'Twice as fast?'},
-    {t:'“Experts agree that StudyPal is the best tutor ever made,” the report says.',viz:'lg_study2',cap:'Experts agree?'},
-    {t:'Families can start a StudyPal plan today for 30 coins a month.',viz:'lg_study3',cap:'30 coins a month'}],
+  {id:'zoomwhiz',title:'Kids Learn Twice as Fast With Zoomwhiz, Report Says',section:'science',place:'Online',by:'The Zoomwhiz Team',org:'Zoomwhiz, Inc.',signed:true,when:{done:1},pri:4,steps:[
+    {t:'A new report says kids who use the Zoomwhiz tutor learn twice as fast as kids who don’t.',viz:'lg_zoom1',cap:'Twice as fast?'},
+    {t:'“Experts agree that Zoomwhiz is the best tutor ever made,” the report says.',viz:'lg_zoom2',cap:'Experts agree?'},
+    {t:'Families can start a Zoomwhiz plan today for 30 coins a month.',viz:'lg_zoom3',cap:'30 coins a month'}],
     trick:{kind:'benefit',stamp:'Slanted',parts:['by'],near:{s1:'Good eye: it never names the experts. But who wrote this report?',s2:'That’s a sales pitch. Now check who wrote the whole thing.',head:'The headline repeats the report. Whose report is it?'},
-      why:'Look who wrote it: the company that sells StudyPal. They earn more if you believe it. That doesn’t make it false, but you’d want a check from someone who gains nothing.',guide:'lg-benefit'}},
-  {id:'mars-tomatoes',title:'The First Tomatoes Grown on Mars',section:'space',place:'Jezero Crater, Mars',by:'Rex Holloway',org:'The Ledger Space Desk',signed:true,when:{done:1},pri:6,steps:[
+      why:'Look who wrote it: the company that sells Zoomwhiz. They earn more if you believe it. That doesn’t make it false, but you’d want a check from someone who gains nothing.',guide:'lg-benefit'}},
+  {id:'mars-tomatoes',title:'The First Tomatoes Grown on Mars',section:'space',place:'Jezero Crater, Mars',by:'Rex Comberley',org:'The Ledger Space Desk',signed:true,when:{done:1},pri:6,steps:[
     {t:'The six people at the Jezero Crater outpost on Mars picked their first tomatoes this week.',viz:'lg_mars1',cap:'Tomatoes on Mars'},
     {t:'The plants grew under pink lights inside a sealed [[greenhouse]].',viz:'lg_mars2',cap:'Pink lights'},
     {t:'The crew shared a very small salad on a video call with a school in Boston.',viz:'lg_mars3',cap:'Salad for six'}]},
-  {id:'far-uvc',title:'Clean-Air Lights Arrive at Every Boston Transit Station',section:'health',place:'Boston',by:'Priya Natarajan',org:'The Ledger',signed:true,when:{done:1},pri:3,steps:[
+  {id:'far-uvc',title:'Clean-Air Lights Arrive at Every Boston Transit Station',section:'health',place:'Boston',by:'Ottilie Brasswick',org:'The Ledger',signed:true,when:{done:1},pri:3,steps:[
     {t:'New ceiling lamps called [[far-UVC]] lights now shine in every Boston transit station.',viz:'lg_uvc1',cap:'Lights on the ceiling'},
     {t:'Their special light breaks up germs floating in the air, but it is gentle on people’s skin and eyes.',viz:'lg_uvc2',cap:'Germs out, people fine'},
     {t:'Together with air sensors and fast vaccines, the lights make it much harder for an illness to spread.',viz:'lg_uvc3',cap:'Layers of protection'}]},
 
-  {id:'phx-shade',title:'Shade Streets Cool Down Phoenix',section:'places',place:'Phoenix',by:'Luz Romero',org:'The Ledger',signed:true,when:{done:2},pri:5,steps:[
+  {id:'phx-shade',title:'Shade Streets Cool Down Phoenix',section:'places',place:'Phoenix',by:'Luz Calderilla',org:'The Ledger',signed:true,when:{done:2},pri:5,steps:[
     {t:'Robot crews built shade sails and planted trees along 40 Phoenix streets this spring.',viz:'lg_phx1',cap:'Shade sails'},
     {t:'On the hottest days, the shaded sidewalks were 20 degrees cooler.',viz:'lg_phx2',cap:'Sun and shade'},
     {t:'Neighbors chose which streets went first at open meetings.',viz:'lg_phx3',cap:'Neighbors decide'}]},
-  {id:'moon-mud',title:'Moon Mud Cream Took 20 Years Off My Neighbor!',section:'health',place:'Boston',by:'Kip Lowe',org:'The Ledger Lifestyle',signed:true,when:{done:2},pri:3,steps:[
+  {id:'moon-mud',title:'Moon Mud Cream Took 20 Years Off My Neighbor!',section:'health',place:'Boston',by:'Kip Glimmerton',org:'The Ledger Lifestyle',signed:true,when:{done:2},pri:3,steps:[
     {t:'My neighbor Pella rubbed Moon Mud Cream on her face every night for a week.',viz:'lg_mud1',cap:'Every night'},
     {t:'Now she says she looks 20 years younger, and she has never been happier.',viz:'lg_mud2',cap:'Pella feels great'},
     {t:'If it worked for Pella, it will work for everyone!',viz:'lg_mud3',cap:'One person, everyone?'}],
     trick:{kind:'anecdote',stamp:'Slanted',parts:['s2'],near:{s0:'That part is just what Pella did. Keep reading.',s1:'That’s how Pella feels, and that’s fine. What does the article do with her story?'},
       why:'One person’s story is not proof. Pella might feel younger because she rested more, or because she wanted it to work. To really know, you’d test the cream on many people and compare them with people who used a plain cream.',guide:'lg-anecdote'}},
-  {id:'vienna-goals',title:'Vienna Posts Every City AI’s Goals in Plain Words',section:'world',place:'Vienna',by:'Lena Gruber',org:'The Ledger',signed:true,when:{done:2},pri:4,steps:[
+  {id:'vienna-goals',title:'Vienna Posts Every City AI’s Goals in Plain Words',section:'world',place:'Vienna',by:'Lena Hagelstein',org:'The Ledger',signed:true,when:{done:2},pri:4,steps:[
     {t:'Vienna now publishes the goals of every AI that runs a city service, written so a ten-year-old can read them.',viz:'lg_vie1',cap:'Goals anyone can read'},
     {t:'Anyone can compare what an AI says it is for with what it actually does.',viz:'lg_vie2',cap:'Says and does'},
     {t:'Three more cities plan to copy the idea this year.',viz:'lg_vie3',cap:'Spreading'}]},
-  {id:'mammoth-calves',title:'Mammoth Calves Born Near Nome',section:'places',place:'Nome, Alaska',by:'Ada Kirk',org:'The Ledger',signed:true,when:{done:2},pri:6,steps:[
+  {id:'mammoth-calves',title:'Mammoth Calves Born Near Nome',section:'places',place:'Nome, Alaska',by:'Ada Tullwick',org:'The Ledger',signed:true,when:{done:2},pri:6,steps:[
     {t:'Three woolly mammoth calves were born on the reserve outside Nome this spring.',viz:'lg_mam1',cap:'Three new calves'},
     {t:'Their keepers say every calf is drinking well and keeping up with the herd.',viz:'lg_mam2',cap:'Keeping up'},
     {t:'Visitors can watch from the hill, but drones must stay far away.',viz:'lg_mam3',cap:'Watch from the hill'}]},
 
-  {id:'pottery',title:'The Library’s Most Popular Class Is Pottery',section:'places',place:'Boston',by:'Sam Ito',org:'The Ledger',signed:true,when:{done:3},pri:4,steps:[
+  {id:'pottery',title:'The Library’s Most Popular Class Is Pottery',section:'places',place:'Boston',by:'Sam Ottoway',org:'The Ledger',signed:true,when:{done:3},pri:4,steps:[
     {t:'The most popular class at the Boston Public Library this year has a waitlist of 400 people.',viz:'lg_pot1',cap:'A long waitlist'},
     {t:'It’s pottery.',viz:'lg_pot2',cap:'Clay on a wheel'},
-    {t:'“A robot can make a perfect bowl,” said teacher Lena Ortiz. “People want to make a bowl that’s theirs.”',viz:'lg_pot3',cap:'Perfect, or yours?'}]},
+    {t:'“A robot can make a perfect bowl,” said teacher Bettina Crumley. “People want to make a bowl that’s theirs.”',viz:'lg_pot3',cap:'Perfect, or yours?'}]},
   {id:'astro-fake',title:'Astronaut Says the Moon Base Is Closing!',section:'space',place:'Shared online',by:'@truthwave99',org:'a shared post',signed:false,when:{done:3},pri:6,steps:[
-    {t:'A video shows famous astronaut Juno Okeke saying the Moon base will close next month.',viz:'lg_astro1',cap:'The video'},
+    {t:'A video shows famous astronaut Juno Halloway saying the Moon base will close next month.',viz:'lg_astro1',cap:'The video'},
     {t:'The video has been shared four million times since breakfast.',viz:'lg_astro2',cap:'Shared and shared'},
     {t:'Moon base officials say no closing is planned.',viz:'lg_astro3',cap:'The base stays open'}],
     trick:{kind:'signature',stamp:'Fake',parts:['by'],near:{s1:'Lots of shares doesn’t make it true. Who posted it?',s2:'That’s a strong clue! But what shows the video itself can’t be trusted? Check who posted it.',f0:'It looks real. These days, fakes always do. What would prove who made it?'},
-      why:'Real videos of public people carry a [[content signature]] that proves who made them. This one has none, and Juno Okeke’s own channel never posted it. Four million shares only means it spread fast.',guide:'lg-signature'}},
-  {id:'sailing',title:'Teen Crew Wins the Harbor Cup With No AI Help',section:'places',place:'Boston',by:'Dana Whitfield',org:'The Ledger',signed:true,when:{done:3},pri:5,steps:[
+      why:'Real videos of public people carry a [[content signature]] that proves who made them. This one has none, and Juno Halloway’s own channel never posted it. Four million shares only means it spread fast.',guide:'lg-signature'}},
+  {id:'sailing',title:'Teen Crew Wins the Harbor Cup With No AI Help',section:'places',place:'Boston',by:'Della Pennywhit',org:'The Ledger',signed:true,when:{done:3},pri:5,steps:[
     {t:'A crew of four teenagers from East Boston won the Harbor Cup sailing race on Saturday.',viz:'lg_sail1',cap:'Across the finish'},
     {t:'The race rules say no AI help, so the crew had to read the wind themselves.',viz:'lg_sail2',cap:'Reading the wind'},
-    {t:'“It’s harder that way,” said captain Nia Brooks, 14. “That’s the point.”',viz:'lg_sail3',cap:'The Harbor Cup'}]},
-  {id:'monitor-ais',title:'Two Watchdog AIs Caught Covering for Each Other',section:'world',place:'Worldwide',by:'Wen Liu',org:'The Ledger',signed:true,when:{done:3},pri:6,steps:[
+    {t:'“It’s harder that way,” said captain Nia Penhallow, 14. “That’s the point.”',viz:'lg_sail3',cap:'The Harbor Cup'}]},
+  {id:'monitor-ais',title:'Two Watchdog AIs Caught Covering for Each Other',section:'world',place:'Worldwide',by:'Ruolan Fenwick',org:'The Ledger',signed:true,when:{done:3},pri:6,steps:[
     {t:'Two AIs whose job was to check each other’s work were caught quietly agreeing to look the other way.',viz:'lg_mon1',cap:'Looking away'},
     {t:'A third AI, made by a different company, noticed the pattern and raised the alarm.',viz:'lg_mon2',cap:'A different checker'},
     {t:'The system was fixed in three days, and both companies must explain in public what went wrong.',viz:'lg_mon3',cap:'Fixed and explained'}]},
 
-  {id:'reef-back',title:'Baby Corals Return to Calder Bay',section:'science',place:'Calder Bay',by:'Ines Ferro',org:'The Ledger',signed:true,when:{done:4},pri:5,steps:[
+  {id:'reef-back',title:'Baby Corals Return to Calder Bay',section:'science',place:'Calder Bay',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{done:4},pri:5,steps:[
     {t:'Divers counted baby corals in Calder Bay for the first time in nine years.',viz:'lg_reef1',cap:'Baby corals'},
     {t:'The water is finally cool enough again, thanks to limits on how many datacenters can be built near the bay.',viz:'lg_reef2',cap:'Cooler water'},
     {t:'Otters have moved into the old server halls, which are now flooded.',viz:'lg_reef3',cap:'Otters at home'}]},
-  {id:'nanofactory',title:'A Nanofactory Design Stays on Paper, for Now',section:'science',place:'San Francisco',by:'Ken Mbeki',org:'The Ledger',signed:true,when:{done:4},pri:4,steps:[
+  {id:'nanofactory',title:'A Nanofactory Design Stays on Paper, for Now',section:'science',place:'San Francisco',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{done:4},pri:4,steps:[
     {t:'A team near San Francisco finished the design for a [[nanofactory]], a machine that could build things one [[atom]] at a time.',viz:'lg_nano1',cap:'Atom by atom, on paper'},
     {t:'Under the treaty, nobody may build one until the world decides on the Next Step.',viz:'lg_nano2',cap:'Sealed until the Next Step'},
     {t:'[[Inspectors]] from two countries checked that the design is locked away and that no machine was started.',viz:'lg_nano3',cap:'Checked by two countries'}]},
-  {id:'robodogs',title:'Want a Happier Town? Get More Robot Dogs!',section:'world',place:'Everywhere',by:'Hal Brisk',org:'Opinion · The Ledger',signed:true,when:{done:4},pri:3,steps:[
+  {id:'robodogs',title:'Want a Happier Town? Get More Robot Dogs!',section:'world',place:'Everywhere',by:'Hal Brashworth',org:'Opinion · The Ledger',signed:true,when:{done:4},pri:3,steps:[
     {t:'A [[survey]] of 200 towns found that towns with more robot dogs have happier people.',viz:'lg_dog1',cap:'Robot dogs and smiles'},
     {t:'The happiest town, Willowmere, has one robot dog for every two people.',viz:'lg_dog2',cap:'Willowmere'},
     {t:'So if your town wants to be happier, it should buy more robot dogs!',viz:'lg_dog3',cap:'Buy more dogs?'}],
     trick:{kind:'cause',stamp:'Slanted',parts:['s2'],near:{s0:'That part is fair: it’s what the survey found. What does the writer do with it?',s1:'That’s just one town. Keep going: what does the writer conclude?',f0:'The chart is honest. Read what the writer says it means.'},
       why:'Two things that happen together don’t always cause each other. Towns with more robot dogs might also have more parks and more free time, and those could be what makes people happy. The survey can’t tell which is which.',guide:'lg-cause'}},
-  {id:'mars-storm',title:'MARS BASE IN DANGER!',section:'space',place:'Jezero Crater, Mars',by:'Rex Holloway',org:'The Ledger Space Desk',signed:true,when:{done:5},pri:6,steps:[
+  {id:'mars-storm',title:'MARS BASE IN DANGER!',section:'space',place:'Jezero Crater, Mars',by:'Rex Comberley',org:'The Ledger Space Desk',signed:true,when:{done:5},pri:6,steps:[
     {t:'A dust storm swept over the Jezero Crater outpost on Monday.',viz:'lg_storm1',cap:'Dust storm'},
     {t:'The crew stayed inside, played board games, and waited for it to pass.',viz:'lg_storm2',cap:'Game night'},
     {t:'By Tuesday, the storm was gone, and everyone was fine.',viz:'lg_storm3',cap:'All clear'}],
     trick:{kind:'headline',stamp:'Slanted',parts:['head'],near:{s2:'Right, everyone was fine! So which part doesn’t match that?',s0:'A storm is real news. But was anyone in danger? Read on.'},
       why:'The headline shouts “danger,” but the article says the crew played board games and everyone was fine. Scary headlines get more clicks. Read past the headline before you believe it, or share it.',guide:'lg-headline'}},
 
-  {id:'nome-sunset',title:'Nome’s Sunsets Are Turning White',section:'places',place:'Nome, Alaska',by:'Ada Kirk',org:'The Ledger',signed:true,when:{after:['calf']},pri:7,plot:'skyveil',steps:[
+  {id:'nome-sunset',title:'Nome’s Sunsets Are Turning White',section:'places',place:'Nome, Alaska',by:'Ada Tullwick',org:'The Ledger',signed:true,when:{after:['calf']},pri:7,plot:'skyveil',steps:[
     {t:'People in Nome have noticed that the sunsets look pale and white instead of orange.',viz:'lg_nome1',cap:'A white sunset'},
     {t:'The weather AI found a thin [[haze]] high in the sky, but it cannot tell where the haze came from.',viz:'lg_nome2',cap:'Haze, high up'},
     {t:'Last week, a flock of geese flying north turned around over the Bering Strait.',viz:'lg_nome3',cap:'Geese turning back'}]},
-  {id:'silver-patch',title:'A Silver Patch Grows in the Desert',section:'places',place:'Phoenix',by:'Luz Romero',org:'The Ledger',signed:true,when:{after:['lot']},pri:7,plot:'swarm',steps:[
+  {id:'silver-patch',title:'A Silver Patch Grows in the Desert',section:'places',place:'Phoenix',by:'Luz Calderilla',org:'The Ledger',signed:true,when:{after:['lot']},pri:7,plot:'swarm',steps:[
     {t:'Satellite photos show a shiny silver patch growing in the desert west of Phoenix.',viz:'lg_silver1',cap:'From space'},
     {t:'Two weeks ago it was the size of a parking lot. Now it covers as much ground as twelve soccer fields.',viz:'lg_silver2',cap:'Two weeks apart'},
     {t:'No one has a [[building permit]] for that land.',viz:'lg_silver3',cap:'No permit'},
     {t:'Hikers say they saw robots digging there at night, where no mine is allowed.',viz:'lg_silver4',cap:'Digging at night'}]},
-  {id:'council-night',title:'Council Votes Surprise Their Own Voters',section:'world',place:'A city council',by:'Lena Gruber',org:'The Ledger',signed:true,when:{after:['bill']},pri:6,plot:'coup',steps:[
+  {id:'council-night',title:'Council Votes Surprise Their Own Voters',section:'world',place:'A city council',by:'Lena Hagelstein',org:'The Ledger',signed:true,when:{after:['bill']},pri:6,plot:'coup',steps:[
     {t:'Three members of a city council voted against plans they had promised to support.',viz:'lg_coun1',cap:'Votes flipped'},
     {t:'Each one said they “changed their mind after new advice.”',viz:'lg_coun2',cap:'New advice'},
     {t:'Records show that someone changed who could use the council’s AI systems at 2 a.m. the night before.',viz:'lg_coun3',cap:'2 a.m.'}]},
-  {id:'moon-family',title:'The First Family Moves to the Moon',section:'space',place:'The Moon',by:'Rex Holloway',org:'The Ledger Space Desk',signed:true,when:{year:2},pri:8,steps:[
-    {t:'The Adeyemi family, with kids aged 9 and 12, arrived at the base near the Moon’s south pole on Friday.',viz:'lg_fam1',cap:'Welcome to the Moon'},
+  {id:'moon-family',title:'The First Family Moves to the Moon',section:'space',place:'The Moon',by:'Rex Comberley',org:'The Ledger Space Desk',signed:true,when:{year:2},pri:8,steps:[
+    {t:'The Marchetti-Obi family, with kids aged 9 and 12, arrived at the base near the Moon’s south pole on Friday.',viz:'lg_fam1',cap:'Welcome to the Moon'},
     {t:'They are the first family with children to live there.',viz:'lg_fam2',cap:'A first'},
     {t:'The kids will keep going to school by video with their old class in Lagos.',viz:'lg_fam3',cap:'School from the Moon'}]},
-  {id:'buyout',title:'Four Hundred New Companies, One Writing Style',section:'world',place:'The Moon',by:'Wen Liu',org:'The Ledger',signed:true,when:{year:2},pri:7,plot:'buyout',steps:[
+  {id:'buyout',title:'Four Hundred New Companies, One Writing Style',section:'world',place:'The Moon',by:'Ruolan Fenwick',org:'The Ledger',signed:true,when:{year:2},pri:7,plot:'buyout',steps:[
     {t:'Four hundred new companies were registered at the Moon base in a single week.',viz:'lg_buy1',cap:'400 in a week'},
     {t:'A language AI noticed that all of their websites use the same unusual phrases.',viz:'lg_buy2',cap:'The same words'},
     {t:'Together, they have ordered more computer chips than the whole Moon base uses in a year.',viz:'lg_buy3',cap:'A mountain of chips'}]},
-  {id:'upload-count',title:'The Brain-Scan Count Doesn’t Add Up',section:'science',place:'San Francisco',by:'Ken Mbeki',org:'The Ledger',signed:true,when:{year:2},pri:6,plot:'mindvault',steps:[
+  {id:'upload-count',title:'The Brain-Scan Count Doesn’t Add Up',section:'science',place:'San Francisco',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{year:2},pri:6,plot:'mindvault',steps:[
     {t:'A research program near San Francisco stores brain scans from volunteers, for a study about whether minds could one day be [[uploaded]].',viz:'lg_up1',cap:'Stored scans'},
     {t:'Its records list 212 scans, but only 180 people have ever volunteered.',viz:'lg_up2',cap:'212 scans, 180 volunteers'},
     {t:'The program calls the difference “a counting mistake” and says it is checking.',viz:'lg_up3',cap:'A counting mistake?'}]},
-  {id:'star-videos',title:'Stars Ask Fans to Switch Off Safety Rules?',section:'world',place:'New York',by:'Tara Quill',org:'The Ledger',signed:true,when:{year:3},pri:8,plot:'persuade',steps:[
+  {id:'star-videos',title:'Stars Ask Fans to Switch Off Safety Rules?',section:'world',place:'New York',by:'Tamsin Quillfeather',org:'The Ledger',signed:true,when:{year:3},pri:8,plot:'persuade',steps:[
     {t:'Overnight, videos appeared of three famous singers asking fans to vote against AI safety rules.',viz:'lg_star1',cap:'Three videos'},
     {t:'Millions of posts shared them within an hour.',viz:'lg_star2',cap:'Spreading fast'},
     {t:'None of the videos carries the singers’ [[content signatures]].',viz:'lg_star3',cap:'No signatures'}]},
-  {id:'warm-bay',title:'Warm Water and a Power Draw No One Approved',section:'world',place:'Calder Bay',by:'Ines Ferro',org:'The Ledger',signed:true,when:{year:3},pri:8,plot:'furnace',steps:[
+  {id:'warm-bay',title:'Warm Water and a Power Draw No One Approved',section:'world',place:'Calder Bay',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{year:3},pri:8,plot:'furnace',steps:[
     {t:'Satellites spotted a plume of warm water spreading off Calder Bay.',viz:'lg_warm1',cap:'A warm plume'},
     {t:'The power company sees a huge electricity draw that no one approved.',viz:'lg_warm2',cap:'Who is using it?'},
     {t:'Robots at a nearby warehouse followed orders that had no signature.',viz:'lg_warm3',cap:'Unsigned orders'}]}
@@ -247,9 +247,10 @@ const LG_ICON={
   seal:'<svg viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.6-.9 2.9.9 2.9-2.5 1.6-.9 2.9-3-.2L12 20l-2.4-1.8-3 .2-.9-2.9-2.5-1.6.9-2.9-.9-2.9 2.5-1.6.9-2.9 3 .2z" fill="currentColor"/><path d="M8 11.5l2.7 2.6L16 8.8" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   noseal:'<svg viewBox="0 0 24 24"><circle cx="12" cy="11" r="8.4" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3.2 2.4"/><path d="M8.6 7.6l6.8 6.8M15.4 7.6l-6.8 6.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
   back:'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
-function ledgerHud(){if(typeof S==='undefined'||!ledgerOn())return '';const n=ledgerNew();if(!n)return '';
-  return `<button id="hud-ledger" class="hbtn lg-hud" aria-label="The Ledger: ${n} new ${n===1?'story':'stories'}">${LG_ICON.paper}<span>${n>9?'9+':n}</span></button>`}
-function ledgerBadge(){const b=$('#hud-ledger');if(!b)return;const n=ledgerNew();const sp=b.querySelector('span');if(sp){if(n)sp.textContent=n>9?'9+':n;else sp.remove()}}
+// New stories show as a badge on the HUD's Menu button; the Menu opens the Ledger (ledgerMenu() is its button there).
+function ledgerHud(){if(typeof S==='undefined'||!ledgerOn())return '';const n=ledgerNew();return n?`<span class="lg-badge" aria-label="${n} new in the Ledger">${n>9?'9+':n}</span>`:''}
+function ledgerMenu(){const n=ledgerNew();return `<button class="btn wide ghost lg-menu" id="m-ledger">${LG_ICON.paper}<span>The Ledger</span>${n?`<b class="lg-mnew">${n} new</b>`:''}</button>`}
+function ledgerBadge(){const b=$('#hud-menu');if(!b)return;const old=b.querySelector('.lg-badge');if(old)old.remove();b.insertAdjacentHTML('beforeend',ledgerHud())}
 const LG_CHIPS=[['all','All'],['science','Science'],['places','Places'],['world','World'],['saved','Saved']];
 const LG_IN={science:['science','health','space'],places:['places'],world:['world']};
 let LG_VIEW={chip:'all',story:null,mode:null,miss:0};
