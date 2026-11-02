@@ -217,8 +217,10 @@ LEDGER_LIBRARY.forEach(ledgerAdd);
 // among finished missions and the current one (missions declare year and season). done = number of finished missions.
 function ledgerTime(){const ids=Object.keys((typeof S!=='undefined'&&S.completed)||{}).filter(id=>MISSIONS[id]);const done=ids.length;
   const ix=(y,s)=>((y||1)-1)*4+Math.max(0,LG_SEASONS.indexOf(s||'spring'));let idx=0;
-  if(typeof campaignTime==='function'){try{const c=campaignTime();if(c&&c.year)idx=ix(c.year,c.season)}catch(e){}}
-  for(const id of ids.concat(S.mission&&MISSIONS[S.mission]?[S.mission]:[])){const m=MISSIONS[id];idx=Math.max(idx,ix(m.year,m.season))}
+  // The campaign calendar is the clock when it exists, so playing a later year's workday early ("Unlock every workday")
+  // never moves the news ahead of the season the world map shows.
+  if(typeof camp==='function'){try{idx=Math.max(0,Math.min(11,camp().ch|0))}catch(e){}}
+  else for(const id of ids.concat(S.mission&&MISSIONS[S.mission]?[S.mission]:[])){const m=MISSIONS[id];idx=Math.max(idx,ix(m.year,m.season))}
   return {idx,year:1+Math.floor(idx/4),season:LG_SEASONS[idx%4],done}}
 function ledgerDate(idx){return LG_SEASONS[idx%4].replace(/^./,c=>c.toUpperCase())+' '+(2040+Math.floor(idx/4))}
 function lgState(){const L=S.ledger=S.ledger||{};for(const k of ['read','saved','check','first'])L[k]=L[k]||{};L.batch=L.batch||0;return L}
@@ -229,6 +231,7 @@ function lgUnlocked(st,T){const w=st.when||{};
   if(w.test){try{if(!w.test(S))return false}catch(e){return false}}return true}
 // Unlocked stories, newest first. The first time a story is seen it is stamped with the current campaign time.
 function ledgerStories(){const T=ledgerTime(),L=lgState();let fresh=0;const out=LEDGER.list.filter(st=>lgUnlocked(st,T));
+  for(const st of out)if(L.first[st.id]&&L.first[st.id][0]>T.idx)L.first[st.id][0]=T.idx;
   for(const st of out)if(!L.first[st.id]){if(!fresh)L.batch++;fresh++;L.first[st.id]=[Math.max(T.idx,lgWhenIdx(st)),L.batch]}
   if(fresh&&typeof save==='function')save();
   return out.sort((a,b)=>{const A=L.first[a.id],B=L.first[b.id];return B[0]-A[0]||B[1]-A[1]||(b.pri||0)-(a.pri||0)||a._n-b._n})}
