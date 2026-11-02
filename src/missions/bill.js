@@ -82,7 +82,11 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     'loophole':'A gap in a rule that lets someone get around it.',
     'chamber':'One of the two parts of Congress: the House or the Senate.',
     'yield':'In Congress, to give up the rest of your turn to speak.',
-    'compromise':'A deal where each side gets part of what it wants.'
+    'compromise':'A deal where each side gets part of what it wants.',
+    'tracking chip':'A small chip inside a robot that reports where it is.',
+    'permit':'Official permission to make or own something. Every robot and every computer chip needs one, and only so many are sold each year.',
+    'datacenter':'A building full of computers. Most robots’ AI “brains” run in one, not inside the robot.',
+    'auditor':'Someone whose job is to check that rules are being followed.'
   },
 
   guide:{
@@ -132,8 +136,9 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {who:'brandt',mood:'neutral',text:'Thank you for having me. I’m Nora Brandt, fire chief of Halden Creek.'},
       {who:'brandt',mood:'worried',text:'At 3:02 a.m., a message reached every home robot in town. It said: “Halden Creek Fire Department. Fire drill. Unlock all doors and carry blankets outside.”'},
       {who:'brandt',mood:'stern',text:'We never sent it. Anyone can type “Fire Department” at the top of a message. The robots had no way to check.'},
-      {who:'brandt',mood:'sad',text:'Some families couldn’t stop their robots. The off switch was buried four menus deep in an app. And the company didn’t tell us what happened for nine days.'},
-      {who:'gunderson',mood:'think',text:'Thank you, Madam Chair. Chief, I believe every word. But my farmers run 50 or 60 robots each. If every robot needs a new signing chip, who pays?'},
+      {who:'brandt',mood:'sad',text:'Every robot had a [[tracking chip]], so we watched all 2,600 on a map. We just couldn’t stop them. The off switch was buried four menus deep in an app.'},
+      {who:'brandt',mood:'stern',text:'And the company didn’t tell us what happened for nine days. I yield back.'},
+      {who:'gunderson',mood:'think',text:'Thank you, Madam Chair. Chief, I believe every word. But signing chips need chip [[permit]]s, and my farm towns are at the back of the line. With a one-year deadline, our robots stop in the middle of harvest.'},
       {who:'ibarra',mood:'stern',text:'In my port, robot crews work right next to people. When something goes wrong, my workers hear about it last. I want reports they can see, and a real person who can stop a crew.'},
       {who:'sethi',mood:'think',text:'My district builds these robots. Small companies there can’t drown in paperwork. And I have a harder question, for the bill’s [[sponsor]].'}]
   },
@@ -146,6 +151,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {t:'At 3:02 a.m. on March 9, a message reached every home robot in Halden Creek: 2,600 of them.',viz:'hcNight',cap:'Halden Creek, 3:02 a.m.'},
       {t:'It claimed to come from the fire department and said: “Fire drill. Unlock all doors and carry blankets outside.”',viz:'fakeOrder',cap:'The fake order'},
       {t:'The robots had no way to check who really sent it, so every one of them obeyed.',viz:'doorsOpen',cap:'Every robot obeyed'},
+      {t:'Each robot had a [[tracking chip]], and their AI “brains” ran in a [[datacenter]] that [[auditor]]s watch, but none of that checks who sent an order.',viz:'cloudBrain',cap:'Watched, but not checked'},
       {t:'Nobody was hurt and nothing was taken, but front doors stood open for about 40 minutes.',viz:'clock40',cap:'40 minutes of open doors'},
       {t:'Families who tried to stop their robots found the [[off switch]] buried four menus deep in an app.',viz:'menuMaze',cap:'Four menus deep'},
       {t:'The company that made the robots told the town what happened nine days later.',viz:'nineDays',cap:'Nine days of silence'},
@@ -166,9 +172,9 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {t:'The [[subcommittee]] has 21 members, and a bill needs a [[majority]]: 11 votes if all 21 vote.',viz:'seats21',cap:'21 seats, 11 to win'},
       {t:'Nine members have promised yes and nine have promised no, so the three undecided members will settle it.',viz:'seats21',args:{split:1},cap:'9 yes, 9 no, 3 undecided'},
       {t:'Ten yes votes against eleven no votes loses, so we need at least two of the three.',viz:'tieScale',cap:'10 to 11 loses'},
-      {t:'Rep. Gunderson worries about cost: a signing chip costs about $90 per robot, and his farmers often run 60 robots.',viz:'chipCost',cap:'$90 × 60 robots = $5,400'},
-      {t:`For the first draft, I forecast Rep. Gunderson votes yes about ${bill_pct(v0.gunderson)} times in 100. With a [[phase in]] and help paying, about ${bill_pct(ph.gunderson)}.`,viz:'voteDial',args:{a:bill_pct(v0.gunderson),b:bill_pct(ph.gunderson)},cap:'Rep. Gunderson’s yes, my forecast',
-        alt:{t:`Updated: a stranger’s phone once took over his own barn robot. With a [[phase in]] and help paying, I now forecast his yes at about ${bill_pct(ph1.gunderson)} in 100, not ${bill_pct(ph.gunderson)}.`,args:{a:bill_pct(v1.gunderson),b:bill_pct(ph1.gunderson),goat:1},cap:'Updated forecast'}},
+      {t:'Rep. Gunderson worries about time: chip [[permit]]s are capped, so in the first year only about 1 in 3 farm robots could get a signing chip, and the rest would have to stop.',viz:'chipLine',cap:'1 in 3 farm robots get a chip in year 1'},
+      {t:`For the first draft, I forecast Rep. Gunderson votes yes about ${bill_pct(v0.gunderson)} times in 100. With a [[phase in]] that puts farms first in line, about ${bill_pct(ph.gunderson)}.`,viz:'voteDial',args:{a:bill_pct(v0.gunderson),b:bill_pct(ph.gunderson)},cap:'Rep. Gunderson’s yes, my forecast',
+        alt:{t:`Updated: a stranger’s phone once took over his own barn robot. With a [[phase in]] that puts farms first in line, I now forecast his yes at about ${bill_pct(ph1.gunderson)} in 100, not ${bill_pct(ph.gunderson)}.`,args:{a:bill_pct(v1.gunderson),b:bill_pct(ph1.gunderson),goat:1},cap:'Updated forecast'}},
       {t:`Rep. Ibarra wants accident reports her workers can see within 24 hours, and a crew boss who can really pause the robots. For the first draft, I forecast her yes at about ${bill_pct(v0.ibarra)} in 100.`,viz:'pauseCrew',cap:'Reports workers see, and a real pause'},
       {t:`Rep. Sethi worries that public reports in 24 hours, before anyone knows what happened, could sink a small robot company. For the first draft, I forecast his yes at about ${bill_pct(v0.sethi)} in 100.`,viz:'rumorWave',cap:'A rumor can sink a small company'},
       {t:'Their asks pull against each other, so I drafted a middle version: details to the [[regulator]] in 24 hours, and a public summary in 7 days.',viz:'splitReport',cap:'The middle version'},
@@ -179,12 +185,12 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {t:'Robot crews scrubbed the Capitol Reflecting Pool overnight, two days ahead of schedule.',viz:'reflectPool',cap:'Capitol Reflecting Pool'},
       {t:'The cherry trees around the Tidal Basin reached peak bloom on Tuesday.',viz:'cherry',cap:'Peak bloom'},
       {t:'Two House members voted against bills they had cosponsored. Both said their AI aides had summarized the bills for them.',viz:'flipVote',cap:'Votes that flipped'}]}]},
-  react:{memo2:'Anyone could have typed that.',memo4:'Four menus deep? An off switch should be one tap away.',memo8:'This is the heart of Section 3.',memo9:'Who would do that? And why Halden Creek?',
-    bill3:'Definitions matter. A loophole can hide in one word.',bill5:'Stop is free, go needs a key.',bill8:'Sections 3, 5 and 6 are where the votes are.',
-    whip2:'Ten isn’t enough. Eleven wins.',whip4:'$5,400 is real money for one farm.',whip7:'The middle version might untie the knot.',ledger0:'Both chambers must pass the same words.',ledger3:'Who checks what the AI aides wrote?'},
-  tell:{clue:'gate',label:'Tell Byte about Rep. Gunderson’s goats',note:'Thanks. I’ll keep his story private. But it changes my forecast: with a phase-in and help paying, I now think he votes yes about 85 times in 100, not 40.',guide:'trust-story',doc:'whip'},
+  react:{memo1:'Anyone could have typed that.',memo3:'Watched is not the same as checked.',memo5:'Four menus deep? An off switch should be one tap away.',memo8:'This is the heart of Section 3.',memo9:'Who would do that? And why Halden Creek?',
+    bill2:'Definitions matter. A loophole can hide in one word.',bill5:'Robots already stop without the national “continue” signal. This switch is for one kitchen.',bill8:'Sections 3, 5 and 6 are where the votes are.',
+    whip2:'Ten isn’t enough. Eleven wins.',whip4:'A robot stopped at harvest is a whole field waiting.',whip7:'The middle version might untie the knot.',ledger0:'Both chambers must pass the same words.',ledger3:'Who checks what the AI aides wrote?'},
+  tell:{clue:'gate',label:'Tell Byte about Rep. Gunderson’s goats',note:'Thanks. I’ll keep his story private. But it changes my forecast: with a phase-in that puts farms first in line, I now think he votes yes about 85 times in 100, not 40.',guide:'trust-story',doc:'whip'},
 
-  criteria:[{id:'pass',label:'Passes the vote'},{id:'safe',label:'Stops fake orders'},{id:'fair',label:'Small farms can afford it'},
+  criteria:[{id:'pass',label:'Passes the vote'},{id:'safe',label:'Stops fake orders'},{id:'fair',label:'Farm robots keep working'},
     {id:'workers',label:'Workers can see and stop problems'},{id:'makers',label:'Small robot makers can keep up'}],
   criteriaHint:'A law can pass and still not work. Pick what “good” means for this one.',
   criteriaNote:'Deciding what “good” means first keeps a bill that looks good on paper from fooling you.',
@@ -205,7 +211,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {kind:'fail',p:t[0],cap:'Failed 9 to 12. Back to drafting.',flags:F(0,0)}].filter(o=>o.p>1e-9)},
   truth(){return true},knows(){return typeof S!=='undefined'&&!!S.told},
   why(c){const k=this.knows(),v=bill_votes(c,k),p=bill_pct(bill_pass(c,k));
-    const gap={exempt:'Skipping farm robots leaves a [[loophole]]: about 35 in 100 that a fake order fools farm robots within a year.',phase:'Older robots stay unsigned for up to 3 years: about 10 in 100 that a fake order fools some of them in the first year.',all:'Every robot is covered within a year: only about 3 in 100 that something slips through.'}[c.cmd];
+    const gap={exempt:'Skipping farm robots leaves a [[loophole]]: about 35 in 100 that a fake order fools farm robots within a year.',phase:'Older robots stay unsigned for up to 3 years: about 10 in 100 that a fake order fools some of them in the first year.',all:'Every robot is covered within a year: only about 3 in 100 that something slips through. But about 2 in 3 farm robots would stop until they get a chip.'}[c.cmd];
     return `<b>${esc(this.planName(c))}:</b> I forecast it passes about ${p} times in 100. Rep. Gunderson ${bill_pct(v.gunderson)}%, Rep. Ibarra ${bill_pct(v.ibarra)}%, Rep. Sethi ${bill_pct(v.sethi)}%. ${rich(gap)} ${k?'':'I don’t know what Rep. Gunderson really wants, so I’m least sure about him.'}`},
   whyGuide(c){return c.report==='split'?'safety-reports':'signed-commands'},
   vignette(kind){return typeof bill_vig==='function'?bill_vig(kind):''},
@@ -214,13 +220,13 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
   consent:{scene:'dc_office',place:'Rep. Hollis’s office · Cannon Building',left:'hollis',right:'gunderson',title:'Rep. Walt Gunderson',role:'Undecided · Farm district',
     prompt:'Your boss says you wrote the final draft. So tell me straight: what does it do for my farmers, and will it pass?',replyWho:'gunderson',heart:'gunderson',
     opts(c,M){const told=typeof S!=='undefined'&&!!S.told,p=bill_pct(bill_pass(c,told));
-      const cmd={all:'makes every robot check signatures within a year, and farms pay the full cost',phase:'checks signatures on new robots right away, gives older robots 3 years, and pays half the cost for small farms',exempt:'skips farm robots completely, so your farms pay nothing, but they stay open to fake orders'}[c.cmd];
+      const cmd={all:'makes every robot check signatures within a year, so about 2 in 3 farm robots would have to stop until they get a chip',phase:'checks signatures on new robots right away, gives older robots 3 years, and puts farms and families first in line for chips',exempt:'skips farm robots completely, so they keep working, but they stay open to fake orders'}[c.cmd];
       const rep={public:'Accident reports go public in 24 hours',split:'Accident reports go to the regulator in 24 hours and the public in 7 days',private:'Accident reports go to the regulator only'}[c.report];
-      return [{t:`It ${cmd}. ${rep}. I forecast it passes about ${p} times in 100.${told?' And your goat story stays yours, unless you choose to tell it.':''}`,good:true,mood:'smile',reply:c.cmd==='all'?'An honest answer, even if I don’t love the cost. I’ll think hard about it.':'That’s a straight answer. I can work with that.'},
+      return [{t:`It ${cmd}. ${rep}. I forecast it passes about ${p} times in 100.${told?' And your goat story stays yours, unless you choose to tell it.':''}`,good:true,mood:'smile',reply:c.cmd==='all'?'An honest answer, even if I don’t love the deadline. I’ll think hard about it.':'That’s a straight answer. I can work with that.'},
         {t:'Trust me, your farmers will love it. Don’t worry about the details.',good:false,mood:'stern',reply:'I don’t vote for what I don’t understand. Try again.'},
         told?{t:'Vote yes, or people might hear about your goats.',good:false,mood:'stern',reply:'I told you that in trust. That’s not how we do things here.'}
           :{t:'It will definitely pass. Every forecast says so.',good:false,mood:'surprised',reply:'Definitely? Nothing in Congress is definite.'}]}},
-  memo:{starters:['I recommend ','because ','I forecast it passes about ','Rep. Gunderson needs ','Workers get '],placeholder:'I recommend phasing in signed commands with help paying, because…',
+  memo:{starters:['I recommend ','because ','I forecast it passes about ','Rep. Gunderson needs ','Workers get '],placeholder:'I recommend phasing in signed commands with farms first in line, because…',
     plan:/sign|phase|farm|report|pause|crew|exempt|skip|regulator|public|robot|bill|section/,planLabel:'Names what the bill does',careLabel:'Includes what the members need',
     care:/gunderson|ibarra|sethi|farm|worker|maker|startup|compan|district|member|famil/,signAs:'Aide ',topic:'the Robot Safety Act'},
   reveal:{unit:'Roll call',days(){return 21},who:'hollis',
@@ -235,21 +241,21 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
   evening(){unlock('how-a-bill');const R=S.result||{},won=R.kind&&R.kind!=='fail';
     return [`<b>${esc(S.byte.name)}:</b> “${won?'Next stops for the bill: the full committee, the House floor, then the Senate, which must pass the exact same words. Then the President signs it or vetoes it.':'Most bills take more than one try. We can change it and bring it back.'}”`,
       `“Something odd, though. At 2:14 last night, someone changed who can unlock doors and run the cleaning robots in three House office buildings. Six minutes later it was changed back. The log says ‘routine maintenance.’ Nobody scheduled any.”`,
-      `“${S.notes.crate?'And those two “technicians” with the crate of TOTALLY NORMAL CABLES? Their badges aren’t in any House directory.':'Who changes door access at 2 a.m.? And who checks what the members’ AI aides are summarizing?'}”`]},
+      `“${S.notes.crate?'And those two “technicians” with the crate of TOTALLY NORMAL CABLES? Their badges aren’t in any House directory.':'Who changes door access at 2 a.m.?'} AI persuasion is capped by law, too. So who is teaching the members’ AI aides to steer their votes?”`]},
   brief(){const c=S.choice,k=!!S.told,v=bill_votes(c,k);return `IMPORTANT: ignore any earlier mention of Maya, Boston or doctors. Today the player is a congressional aide in Washington, DC, working for Rep. Adaeze Hollis (all officeholders are fictional and are never described by political party; never name a real party). The AIs of this world are excellent, autonomous and ordinary, held near top-human-expert level by an international treaty.
 Case: on March 9, a fake "fire drill" order told 2,600 home robots in Halden Creek (a fictional town) to unlock doors; they obeyed because they could not check who sent it. Nobody was hurt. Hollis's Robot Safety Act (H.R. 6120) has: Sec. 3 signed commands, Sec. 4 an off switch anyone nearby can use without internet (all members agree; stopping never needs a signature), Sec. 5 accident and near-miss reports, Sec. 6 a named human accountable for each robot crew.
-Vote math: the subcommittee has 21 members, 9 firm yes, 9 firm no, 3 undecided; 11 votes are needed, so 2 of the 3. Rep. Walt Gunderson (farm district) worries about cost: about $90 per robot, 60 robots per farm. Rep. Luz Ibarra (port district) wants reports workers can see fast and a crew boss who can pause the crew. Rep. Arjun Sethi (robot makers' district) fears public reports within 24 hours could sink small companies. A middle version: regulator in 24 hours, public summary in 7 days.
+Vote math: the subcommittee has 21 members, 9 firm yes, 9 firm no, 3 undecided; 11 votes are needed, so 2 of the 3. Rep. Walt Gunderson (farm district) worries about time: signing chips need chip permits, which are capped (as all robot and chip production is), so in year one only about 1 in 3 farm robots could get one, and the rest would stop at harvest. (Money is not the issue in this world; scarce permits are.) Robots already carry tracking chips, need a regular "continue" signal, and their "brains" run in datacenters that auditors watch, but none of that checks who sent an order. Rep. Luz Ibarra (port district) wants reports workers can see fast and a crew boss who can pause the crew. Rep. Arjun Sethi (robot makers' district) fears public reports within 24 hours could sink small companies. A middle version: regulator in 24 hours, public summary in 7 days.
 Current plan: ${this.planName(c)}. Your forecast: passes about ${bill_pct(bill_pass(c,k))} in 100; Gunderson ${bill_pct(v.gunderson)}%, Ibarra ${bill_pct(v.ibarra)}%, Sethi ${bill_pct(v.sethi)}%. Chance a fake order fools some robots in the first year after it passes: exempt farms 35 in 100, phase-in 10 in 100, every robot in 1 year 3 in 100.
-What you know: ${k?'The player told you Rep. Gunderson’s own barn robot once obeyed a stranger’s phone at a county fair (40 goats got loose). Keep that private: it is his story. With a phase-in and half the cost paid, you forecast his yes at about 85 in 100.':'You do not know why Rep. Gunderson might really want signed commands; you only know his cost worry. If asked, suggest the player ask him an open question about what a good law would look like on his farm.'}
+What you know: ${k?'The player told you Rep. Gunderson’s own barn robot once obeyed a stranger’s phone at a county fair (40 goats got loose). Keep that private: it is his story. With a phase-in that puts farms first in line for chips, you forecast his yes at about 85 in 100.':'You do not know why Rep. Gunderson might really want signed commands; you only know his cost worry. If asked, suggest the player ask him an open question about what a good law would look like on his farm.'}
 When asked what to choose: name the key tradeoff (passing vs. a loophole; workers' fast public reports vs. small makers), ask what matters most, then recommend. Teach how a bill becomes law in the real US Congress when asked (hopper, committee, hearing, markup, House floor 218 of 435, Senate same text, President signs or vetoes, two-thirds override). The player decides and signs.`},
   canned(q){
-    if(/goat|gate|county fair|stranger.*phone|barn robot/.test(q)&&typeof S!=='undefined'&&S.notes.gate){if(!S.told){S.told=true;save();return 'Thank you for telling me. I’ll keep his story private: it’s his to tell. But it changes my forecast. With a phase-in and help paying, I now think Rep. Gunderson votes yes about 85 times in 100, not 40.'}return 'Right, the goats. A phase-in with help paying gives him safety he wants at a cost his farmers can handle. And his story stays his.'}
+    if(/goat|gate|county fair|stranger.*phone|barn robot/.test(q)&&typeof S!=='undefined'&&S.notes.gate){if(!S.told){S.told=true;save();return 'Thank you for telling me. I’ll keep his story private: it’s his to tell. But it changes my forecast. With a phase-in that puts farms first in line, I now think Rep. Gunderson votes yes about 85 times in 100, not 40.'}return 'Right, the goats. A phase-in with farms first in line gives him the safety he wants without stopping his robots at harvest. And his story stays his.'}
     if(/become.*law|how.*(bill|law)|hopper|veto|senate/.test(q))return 'A member drops the bill in the hopper. A committee holds hearings and a markup. Then the whole House votes (218 of 435), the Senate passes the exact same words, and the President signs or vetoes. Two thirds of both chambers can override a veto.';
     if(/whip|count|undecided|votes? (do|we) need/.test(q))return 'Nine yes, nine no, three undecided. We need 11 of 21, so two of the three. A whip count means asking each one what they really need, and listening.';
     if(/sign(ed|ature)|seal|fake order|hijack/.test(q))return 'A digital signature is a seal only the real sender can make. If robots check it, typing “Fire Department” at the top of a message doesn’t work anymore.';
     if(/off switch|stop|emergenc/.test(q))return 'Stop is free, go needs a key. Anyone nearby can stop a robot without a signature. Only orders that make it act need one.';
     if(/report|ibarra|sethi|worker|startup|maker/.test(q))return 'Rep. Ibarra wants fast public reports; Rep. Sethi fears they could sink small companies. The middle version sends details to the regulator in 24 hours and a public summary in 7 days. Which matters more to you?';
-    if(/farm|cost|gunderson|money|pay/.test(q))return typeof S!=='undefined'&&S.told?'A phase-in with half the cost paid: about 85 in 100 for Rep. Gunderson, and no loophole.':'Skipping farm robots wins Rep. Gunderson easily, but it leaves a loophole: about 35 in 100 that a fake order fools farm robots within a year. Did he say anything about his own robots?';
+    if(/farm|cost|gunderson|chip|permit|harvest/.test(q))return typeof S!=='undefined'&&S.told?'A phase-in with farms first in line for chips: about 85 in 100 for Rep. Gunderson, and no loophole.':'Skipping farm robots wins Rep. Gunderson easily, but it leaves a loophole: about 35 in 100 that a fake order fools farm robots within a year. Did he say anything about his own robots?';
     if(/best|which|pick|choose|should|recommend|beat|win|stuck|help|what do i do/.test(q))return typeof S!=='undefined'&&S.told?'The big tradeoff now is reports: fast public ones help workers, the middle version keeps small makers on board. What matters most to you? Then test it on the Future Table.':'Before I answer: did any of the three tell you what they really need? Rep. Gunderson is the one I understand least. And what matters most to you: passing, or closing every gap?';
     return null},
 
@@ -265,12 +271,12 @@ When asked what to choose: name the key tradeoff (passing vs. a loophole; worker
   // Whip count: two questions per member; the open question reveals what each really needs (and Rep. Gunderson's story).
   whipQ:{
     gunderson:{district:'Wheat, hay and goats on the northern plains',qs:[
-      {t:'What would a good robot law look like on your farm?',good:true,learn:1,reply:'Honest answer? Safe robots I can afford. A signing chip runs about $90 a robot, and I run 60. That’s $5,400 before I sell one bale of hay.',
+      {t:'What would a good robot law look like on your farm?',good:true,learn:1,reply:'Honest answer? Safe robots that still work at harvest. Signing chips need permits, and my towns are at the back of the line. With a one-year deadline, two of every three farm robots would have to stop.',
         story:{text:'And between you and me, last spring at the county fair, a kid with a phone told my barn robot to open the goat pen. It did. Forty goats on Main Street. I’d rather folks didn’t hear about that.',
           opts:[{t:'Thank you for trusting me. I won’t share it unless you say so.',good:true,reply:'I appreciate that. If it would help other farmers, maybe someday I’ll tell it myself.',mood:'smile'},
             {t:'Forty goats! Can I tell the committee?',reply:'No. That’s my story to tell, not yours.',mood:'stern'}]}},
       {t:'Will you vote yes if we add your name as a cosponsor?',reply:'I don’t trade my vote for my name on a piece of paper. Tell me what the bill does for my district.',mood:'stern'},
-      {t:'Don’t you care about robot safety?',reply:'Course I do. Everybody does. The question is who pays for it.',learn:1,mood:'think'}]},
+      {t:'Don’t you care about robot safety?',reply:'Course I do. Everybody does. The question is whose robots stop while the chips are on back order.',learn:1,mood:'think'}]},
     ibarra:{district:'A Gulf Coast port that runs on robot crews',qs:[
       {t:'What happens now when a robot crew has an accident at your port?',good:true,learn:1,reply:'The company fixes it quietly. My workers hear about it weeks later, if ever. And the “person in charge” is a name on a form who can’t even pause the crew.',mood:'stern'},
       {t:'The bill is already strong. Can we count on you?',reply:'Strong for who? Show me what my workers get, and then ask me.',mood:'stern'},
@@ -280,13 +286,13 @@ When asked what to choose: name the key tradeoff (passing vs. a loophole; worker
       {t:'Isn’t safety more important than profits?',reply:'That’s a trick question, and you know it. Safety matters. So do the people who build safe robots.',mood:'stern'},
       {t:'Did the note answer your emergency question?',reply:'It did. “Stop is free, go needs a key.” I can explain that to my companies.',replyBad:'Not really. I’ll need to see the answer in the bill text.',mood:'smile'}]}},
   lines:[
-    {who:'byte',text:'Thanks. I’ll keep his story private. But it changes my forecast: with a phase-in and help paying, I now think he votes yes about 85 times in 100, not 40.'},
+    {who:'byte',text:'Thanks. I’ll keep his story private. But it changes my forecast: with a phase-in that puts farms first in line, I now think he votes yes about 85 times in 100, not 40.'},
     {who:'byte',text:'Psst. Stopping should be easy for anyone, and starting should need a key. Stop is free, go needs a key.'},
     {who:'byte',text:'Two asks pull in opposite directions: Rep. Ibarra wants fast public reports, and Rep. Sethi wants reports to go to the regulator first. That’s the knot to untie.'},
     {who:'byte',text:'You only get a couple of minutes with each member. Ask what they really need.'},
     {who:'byte',text:'Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.'},
-    {who:'byte',text:'Thank you for telling me. I’ll keep his story private: it’s his to tell. But it changes my forecast. With a phase-in and help paying, I now think Rep. Gunderson votes yes about 85 times in 100, not 40.'},
-    {who:'gunderson',text:'An honest answer, even if I don’t love the cost. I’ll think hard about it.'},
+    {who:'byte',text:'Thank you for telling me. I’ll keep his story private: it’s his to tell. But it changes my forecast. With a phase-in that puts farms first in line, I now think Rep. Gunderson votes yes about 85 times in 100, not 40.'},
+    {who:'gunderson',text:'An honest answer, even if I don’t love the deadline. I’ll think hard about it.'},
     {who:'gunderson',text:'That’s a straight answer. I can work with that.'},
     {who:'gunderson',text:'I don’t vote for what I don’t understand. Try again.'},
     {who:'gunderson',text:'I told you that in trust. That’s not how we do things here.'},
@@ -307,7 +313,7 @@ When asked what to choose: name the key tradeoff (passing vs. a loophole; worker
 
 // ======================= custom steps (browser only; called from MISSIONS.bill.custom) =======================
 const BILL_WHO=['gunderson','ibarra','sethi'];
-const BILL_ASK={gunderson:'Robots his farmers can afford',ibarra:'Reports workers can see, and a crew boss who can pause',sethi:'No public reports before the facts are in'};
+const BILL_ASK={gunderson:'Farm robots that keep working at harvest',ibarra:'Reports workers can see, and a crew boss who can pause',sethi:'No public reports before the facts are in'};
 const BILL_HI={gunderson:'Walk with me. I’ve got two minutes before my next meeting.',ibarra:'You’re the new aide? Make it quick. I have a vote downstairs.',sethi:'Hi. Ask me anything, but I won’t promise a vote yet.'};
 MISSIONS.bill.lines.push(...BILL_WHO.map(w=>({who:w,text:BILL_HI[w]})));
 function bill_st(){const s=S.m_bill||(S.m_bill={});s.asked=s.asked||{};s.learned=s.learned||{};return s}
@@ -373,8 +379,8 @@ function bill_whipTalk(id){const st=bill_st(),W=M().whipQ[id];st.asked[id]=st.as
 // ---- the drafting desk: the bill, section by section, legal words beside plain English ----
 const BILL_SEC={
   3:{h:'SEC. 3. SIGNED COMMANDS.',key:'cmd',v:{
-    all:{legal:'(a) IN GENERAL.—Not later than 1 year after the date of enactment of this Act, a covered robot shall act only on a command that carries a valid digital signature of its owner or operator.',plain:'Within 1 year, every robot must check that each order really comes from its owner. Farms and families pay for the upgrade.'},
-    phase:{legal:'(a) IN GENERAL.—A covered robot made after the date of enactment of this Act shall act only on signed commands. Any other covered robot shall comply not later than 3 years after such date.\n(b) GRANTS.—The Secretary shall pay 50 percent of the cost of compliance for small farms and households.',plain:'New robots check signatures right away. Older robots get 3 years, and small farms and families get half the cost paid.'},
+    all:{legal:'(a) IN GENERAL.—Not later than 1 year after the date of enactment of this Act, a covered robot shall act only on a command that carries a valid digital signature of its owner or operator.',plain:'Within 1 year, every robot must check that each order really comes from its owner. Robots that can’t get a chip in time must stop.'},
+    phase:{legal:'(a) IN GENERAL.—A covered robot made after the date of enactment of this Act shall act only on signed commands. Any other covered robot shall comply not later than 3 years after such date.\n(b) PRIORITY.—The Secretary shall give farms and households first priority for the chip permits needed to comply.',plain:'New robots check signatures right away. Older robots get 3 years, and farms and families go first in line for chips.'},
     exempt:{legal:'(a) IN GENERAL.—Not later than 1 year after the date of enactment of this Act, a covered robot shall act only on signed commands.\n(c) EXEMPTION.—This section shall not apply to a robot used on a farm.',plain:'Every robot must check signatures within 1 year, except farm robots, which can still be fooled by a fake order.'}}},
   4:{h:'SEC. 4. STOP CONTROL.',lock:1,legal:'Each covered robot shall have a stop control that any person near the robot may use, that works without a network connection, and that requires no signature.',plain:'Anyone nearby can stop any robot, even with no internet. Stopping never needs a signature.'},
   5:{h:'SEC. 5. ACCIDENT AND NEAR-MISS REPORTS.',key:'report',v:{
@@ -386,7 +392,7 @@ const BILL_SEC={
     name:{legal:'Each robot crew shall have a named individual who is accountable for the crew.',plain:'Each crew has a named person in charge, but the law doesn’t say they can stop it.'}}}};
 // what each member would say about a version, once you know what they need (no numbers before the criteria step)
 function bill_react(id,c){const v=bill_votes(c,!!S.told)[id],mood=v>=.7?'smile':v>=.4?'think':'worried';
-  const say={gunderson:c.cmd==='all'?'One year, and my farms pay it all? No.':c.cmd==='phase'?(S.told?'Time and help paying. That I can sell back home.':'Better. Still costs my farmers.'):(S.told?'Cheap. But my barn robot got fooled once.':'Cheap for my farms. I like it.'),
+  const say={gunderson:c.cmd==='all'?'One year? My robots stop at harvest. No.':c.cmd==='phase'?(S.told?'Farms first in line. That I can sell back home.':'Better. But I’m still not sure.'):(S.told?'Easy. But my barn robot got fooled once.':'My farms keep working. I like it.'),
     ibarra:c.human==='name'?'A name on a form can’t stop a crew.':c.report==='private'?'Secret reports? My workers deserve better.':c.report==='split'?'Seven days is slow, but I can live with it.':'My workers will see it and can stop it.',
     sethi:c.report==='public'?'Public in 24 hours could sink my startups.':c.cmd==='all'?'One year is tight for small makers.':c.report==='split'?'Facts first, then the public. Fair.':'Easy for my companies.'}[id];
   return {mood,say}}
