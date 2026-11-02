@@ -3,7 +3,7 @@
 
 /* ---------- shared ---------- */
 .zh-sub .zh-go{justify-content:flex-end;margin-top:8px}
-.zh-placecard{position:fixed;top:47%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 22px 9px;
+#app>.zh-placecard,.zh-placecard{position:fixed;top:47%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 22px 9px;
   background:rgba(255,250,240,.92);border-radius:18px;box-shadow:0 10px 30px rgba(20,25,60,.22);animation:zhplace 1.1s ease-out both;z-index:3}
 .zh-placecard b{font-family:var(--display);font-size:1.5rem;color:#2a2f55;letter-spacing:.02em}
 .zh-placecard span{font-size:1.25rem;color:#c8483a;font-weight:800;letter-spacing:.2em}

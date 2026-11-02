@@ -22,7 +22,7 @@ Several Claude sessions build this game at the same time. Before starting a piec
 | Byte customizing and accessories that unlock | `claude/project-thread-izhx21` | coordinating session's agent | merged into main Nov 2 (finishing touches still open, see below) |
 | Challenge levels (Kid, Teen, Grown-up) and Chinese mode | `engine/modes`, `engine/i18n` | coordinating session | merged into main Nov 2; content for Teen/Grown-up and zh translations still partial |
 | Android app (APK built by GitHub Actions) | `main` | coordinating session (Nov 2) | in progress |
-| China travel visits: Shanghai "The Sister Hospital", Beijing "Trust, Then Check", Shenzhen "Who Can Stop a Crew?" (scenes, missions, cast) | `content/china` | coordinating session's agent | in progress |
+| China travel visits: Shanghai "The Sister Hospital", Beijing "Trust, Then Check", Shenzhen "Who Can Stop a Crew?" (scenes, missions, cast) | `content/china` | coordinating session's agent | built on branch, ready to merge (voices not recorded yet) |
 | Landscape layout | none | unclaimed | briefs ready in docs/BRIEFS.md |
 | Promo videos (RedNote and Twitter) | `promo/` on main | unclaimed | paused until more of the game is built; storyboard and Mandarin TTS/ASR tools in promo/ |
 
