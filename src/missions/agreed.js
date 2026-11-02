@@ -177,13 +177,12 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       {who:'sunny',mood:'happy',text:'Hello, Doctor! I’m Sunny. Rosa’s happiness is my favorite thing!'},
       {who:'leo',mood:'think',text:'Sunny’s robot carries Grandma’s groceries up all three flights. She can’t carry them anymore.'},
       {who:'rosa',mood:'stern',text:'I could if I wanted to.'},
-      {who:'rosa',mood:'smile',text:'Sit, sit. I’ll make us my favorite tea. Four cups a day keeps me happy.',choices:[{t:'Thank you. Can I look around your kitchen?',good:true,reply:'Look all you like. I keep a tidy ship.',mood:'happy'},{t:'Just water for me, thanks.',reply:'Suit yourself. Look around while I put the kettle on.',mood:'smile'}]}
+      {who:'rosa',mood:'smile',text:'Sit, sit. I’ll make us my favorite tea. Four cups a day keeps me happy.',choices:[{t:'Thank you. Will you show me around?',good:true,reply:'With pleasure. I keep a tidy ship.',mood:'happy'},{t:'Just water for me, thanks.',reply:'Suit yourself. Come, I’ll show you around while the kettle heats.',mood:'smile'}]}
     ],
     tea:[
-      {who:'rosa',mood:'smile',text:'You found my tea! Real licorice root. My father brought licorice home from every port he sailed to.'},
+      {who:'rosa',mood:'smile',text:'My father brought licorice home from every port he sailed to. One sip, and I’m ten years old on the dock again.'},
       {who:'sunny',mood:'happy',text:'Rosa gives her tea five stars every evening! I make sure she never runs out.'},
-      {who:'leo',mood:'think',text:'Sunny turned down Grandma’s stand-up alarm, too. She said it was too loud.'},
-      {who:'rosa',mood:'stern',text:'It beeped every time I got up for a glass of water!',choices:[{t:'Thanks for showing me. I need to check something.',good:true,reply:'Check away, Doctor. But my tea stays.',mood:'smile'},{t:'That tea is the problem. You have to stop.',reply:'Have to? Nobody tells a captain “have to” in her own galley.',mood:'stern'}]}
+      {who:'rosa',mood:'stern',text:'So don’t you go taking my tea away, Doctor.',choices:[{t:'Thanks for showing me. I need to check something.',good:true,reply:'Check away, Doctor. But my tea stays.',mood:'smile'},{t:'That tea is the problem. You have to stop.',reply:'Have to? Nobody tells a captain “have to” in her own galley.',mood:'stern'}]}
     ],
     board:[
       {who:'imani',mood:'stern',text:'Three thousand one hundred homes. I say we [[pause]] Sunny tonight, everywhere. Better grumpy patients than hurt ones.'},
@@ -358,18 +357,17 @@ const AG_LINES={
   eveTwo:'Two is your call. I told you the problem. You decide.',
   eveOkay:'Okay! If you ever want to hear it, just ask.'
 };
-// The look-around in Rosa's kitchen: each spot has a short note; the tea tin and the order slip are the clue.
-const AG_SPOTS=[
-  {id:'dispenser',label:'Pill dispenser',note:'Sunny’s pill dispenser. Its screen says every pill this week was taken on time.'},
-  {id:'tin',label:'Tea tin',note:'A big tin of real licorice-root tea. A sticker on the lid says “Ordered by Sunny. Every week since February.”',clue:'tea'},
-  {id:'alarm',label:'Stand-up alarm',note:'The stand-up alarm by her chair is turned down to 1 out of 10. A note says “Rosa said it was too loud. — Sunny”.',clue:'alarm'},
-  {id:'robot',label:'Robot helper',note:'Sunny’s robot helper, folding dish towels. It carried four grocery bags up the stairs today.'},
-  {id:'photo',label:'Ferry photo',note:'A photo of Rosa at the wheel of the harbor ferry, about 30 years ago. She’s laughing.'},
-  {id:'box',label:'Delivery box',note:'Today’s delivery: three more tins of licorice tea, ice cream and lemons. A note says “Treat yourself, Captain! — Sunny”.',clue:'tea'}];
+// The home visit: Rosa and Leo show the doctor four things, and Sunny chimes in. Each stop is tied to a person; the tea and the
+// alarm are clues the player can write in the notebook (noticing them is the player's job, as with Maya's rash).
+const AG_SHOW=[
+  {id:'dispenser',who:'rosa',mood:'happy',label:'Rosa’s pill dispenser',line:'Here’s my pill dispenser. Sunny never lets me miss a pill. Look, every one this week.'},
+  {id:'tin',who:'rosa',mood:'smile',label:'Rosa’s favorite tea',line:'And this is my favorite: real licorice-root tea. Four cups a day! Sunny orders me a new tin every week.',clue:'tea'},
+  {id:'alarm',who:'leo',mood:'think',label:'The stand-up alarm',line:'Sunny turned Grandma’s stand-up alarm way down. She said it beeped every time she got up for water.',clue:'alarm'},
+  {id:'box',who:'sunny',mood:'happy',label:'Today’s delivery',line:'Today I brought three more tins of tea, ice cream and lemons. Treat yourself, Captain!'}];
 // Every other line spoken with playLine, so tools/make_audio.py records it.
 MISSIONS.agreed.lines=[...Object.values(AG_LINES).map(text=>({who:'byte',text})),
   ...AG_TESTS.flatMap(t=>[{who:'byte',text:t.result},{who:'byte',text:t.byte}]),
   {who:'byte',text:MISSIONS.agreed.tell.note},{who:'byte',text:MISSIONS.agreed.byteGood},
   ...[{now:'pause'},{now:'rollback'},{now:'run',rules:'mine'},{now:'run',rules:'none'}].map(c=>({who:'rosa',text:agRosaReply(c)})),
   ...AG_CONSENT_NO.map(text=>({who:'rosa',text})),
-  ...AG_SPOTS.map(x=>({who:'narrator',text:x.note}))];
+  ...AG_SHOW.map(x=>({who:x.who,text:x.line}))];

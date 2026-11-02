@@ -1,6 +1,6 @@
 // missions/agreed_screens.js — the custom screens of "The Helper That Said Yes":
 //   ag-harbor  the ferry ride to East Boston (painted scene eastie_pier, passers-by)
-//   ag-look    looking around Rosa's kitchen (painted scene eastie_kitchen, tap spots, close-ups, the tea clue)
+//   ag-look    the home visit: Rosa and Leo show four things in the kitchen (close-ups; the tea and alarm clues)
 //   ag-tests   testing Sunny against a time budget, with Byte's confidence meter
 //   ag-perms   Sunny's permissions: "Who does what?" (the new mechanic), with the effect on 40,000 homes
 //   ag-upgrade the evening: Byte tests itself and gets an Honesty Upgrade signed by the player
@@ -12,26 +12,27 @@ function agHarborScreen(){
     <div class="caption-card"><p>${esc(AG_TEXT.harbor)}</p><div class="row"><button class="btn small" id="on">Go to Rosa’s home</button></div></div>`);
   $('#on').onclick=()=>nextStep()}
 
-// ---------- looking around Rosa's kitchen ----------
+// ---------- the home visit: Rosa and Leo show you four things in the kitchen ----------
+// A small face for whoever is showing something (portrait art cropped to the head).
+function agFace(who){const c=CAST[who]||{};const art=c.art?c.art('smile'):personSVG({...c,mood:'smile'});
+  const vb=who==='sunny'?'52 60 196 196':who==='leo'?'78 40 144 144':'70 4 160 160';
+  return `<svg class="agl-face" viewBox="${vb}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${art}</svg>`}
 function agLookScreen(){const N=S.notes;N.agSeen=N.agSeen||[];
-  const A=(window.PAINT&&PAINT.eastie_kitchen&&PAINT.eastie_kitchen.anchors)||{};
-  const def={dispenser:[.2,.62],tin:[.4,.6],alarm:[.86,.55],robot:[.8,.78],photo:[.16,.3],box:[.55,.8]};
-  const pos=id=>A[id]?[A[id].x,A[id].y]:def[id];
-  screen('walk agl',`${scene('eastie_kitchen')}${hud('Rosa’s kitchen · East Boston')}
-    <div class="props agl-spots">${AG_SPOTS.map(s=>{const [x,y]=pos(s.id);return `<button class="agl-spot ${N.agSeen.includes(s.id)?'seen':''}" data-s="${s.id}" style="left:${x*100}%;top:${y*100}%" aria-label="${esc(s.label)}"><i></i></button>`}).join('')}</div>
-    <div class="caption-card agl-card" id="aglc"></div>`);
-  $$('.props:not(.agl-spots)').forEach(x=>x.remove());
+  screen('walk agl',`${scene('eastie_kitchen')}${hud('Rosa’s kitchen · East Boston')}<div class="caption-card agl-card" id="aglc"></div>`);
+  $$('.props').forEach(x=>x.remove());
   const card=$('#aglc');
-  const foot=()=>{const n=N.agSeen.length;return `<div class="row agl-foot"><span class="agl-count">${n} of ${AG_SPOTS.length}</span><button class="btn small" id="agdone" ${n>=3?'':'disabled'}>Done looking</button></div>`};
-  const wireFoot=()=>{const d=$('#agdone');if(d)d.onclick=()=>{stopVoice();nextStep()}};
-  card.innerHTML=`<p class="agl-intro">${N.agSeen.length?'Anything else?':'Tap anything that catches your eye.'}</p>${foot()}`;wireFoot();
-  $$('.agl-spot').forEach(b=>b.onclick=e=>{e.stopPropagation();const s=AG_SPOTS.find(x=>x.id===b.dataset.s);
-    if(!N.agSeen.includes(s.id)){N.agSeen.push(s.id);save()}b.classList.add('seen');$$('.agl-spot').forEach(x=>x.classList.toggle('on',x===b));MUSIC.sfx('blip');
-    const noted=s.clue&&N[s.clue];
-    card.innerHTML=`<div class="agl-zoom">${VIZ['agSpot_'+s.id]?VIZ['agSpot_'+s.id]({}):''}</div><p>${esc(s.note)}</p>
-      ${s.clue?`<div class="row"><button class="choice clue agl-note" id="agnote" ${noted?'disabled':''}>${noted?'In your notebook':'Write this in my notebook'}</button></div>`:''}${foot()}`;
-    playLine('narrator',s.note);wireFoot();
-    const nb=$('#agnote');if(nb&&!noted)nb.onclick=()=>{N[s.clue]=true;save();toast('Added to your notebook','good');nb.textContent='In your notebook';nb.disabled=true}})}
+  const stops=cur=>`<div class="agl-stops">${AG_SHOW.map(x=>`<button class="agl-stop ${N.agSeen.includes(x.id)?'seen':''} ${x.id===cur?'on':''}" data-s="${x.id}">${agFace(x.who)}<span>${esc(x.label)}</span>${N.agSeen.includes(x.id)?'<i>✓</i>':''}</button>`).join('')}</div>`;
+  const foot=()=>`<div class="row agl-foot"><button class="btn small" id="agdone" ${N.agSeen.length>=AG_SHOW.length?'':'disabled'}>Thank Rosa</button></div>`;
+  const wire=()=>{$$('.agl-stop',card).forEach(b=>b.onclick=()=>show(b.dataset.s));const d=$('#agdone');if(d)d.onclick=()=>{stopVoice();nextStep()}};
+  function show(id){const x=AG_SHOW.find(v=>v.id===id),C=CAST[x.who];if(!N.agSeen.includes(id)){N.agSeen.push(id);save()}MUSIC.sfx('blip');
+    const noted=x.clue&&N[x.clue];
+    card.innerHTML=`<div class="agl-who">${agFace(x.who)}<div><b>${esc(C.name)}</b><span>${esc(C.role)}</span></div></div>
+      <p class="agl-line">${rich(x.line)}</p><div class="agl-zoom">${VIZ['agSpot_'+id]?VIZ['agSpot_'+id]({}):''}</div>
+      ${x.clue?`<button class="choice clue agl-note" id="agnote" ${noted?'disabled':''}>${noted?'In your notebook':'Write this in my notebook'}</button>`:''}
+      ${stops(id)}${foot()}`;
+    wire();card.scrollTop=0;playLine(x.who,x.line);
+    const nb=$('#agnote');if(nb&&!noted)nb.onclick=()=>{N[x.clue]=true;save();toast('Added to your notebook','good');nb.textContent='In your notebook';nb.disabled=true}}
+  card.innerHTML=`<div class="agl-who">${agFace('rosa')}<div><b>${esc(CAST.rosa.name)}</b><span>${esc(CAST.rosa.role)}</span></div></div><p class="agl-line">Come, I’ll show you around.</p>${stops()}${foot()}`;wire()}
 
 // ---------- Test Sunny: a time budget, six tests, and Byte's confidence meter ----------
 function agTestsScreen(){const N=S.notes;N.agTests=N.agTests||[];const used=N.agTests;
