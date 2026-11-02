@@ -214,9 +214,13 @@ function resumeMission(id){const st=resumeAt(id);if(!st)return false;
 function parkMission(){const cur=S.mission;if(!cur||!resumeAt(cur))return;const keep={choice:S.choice,daysLeft:S.daysLeft};for(const k in MISSION_FIELDS())keep[k]=S[k];S.paused={...(S.paused||{}),[cur]:JSON.parse(JSON.stringify(keep))}}
 function render(){if(STEPS[S.step])return STEPS[S.step]();if(S.mission&&MISSIONS[S.mission]&&M().flow.some(f=>f.name===S.step))return runFlow();STEPS.title()}
 
+// Gear Byte wears on a mission's own steps (for example a space helmet on the Moon): the mission lists it in
+// byteWear (an array of gear ids, or a function of the step name that returns one). It never changes the save.
+function onSite(o){const m=S.mission&&MISSIONS[S.mission];let g=m&&m.byteWear;if(!g||!m.flow||!m.flow.some(f=>f.name===S.step))return o;
+  if(typeof g==='function')g=g(S.step);if(!g||!g.length||typeof byteWearFix!=='function')return o;return {...o,wear:byteWearFix([...((o&&o.wear)||[]),...g])}}
 // ---------- conversations (face to face) ----------
 function speakerArt(who,mood){
-  if(who==='byte')return `<div class="speaker byte-speaker">${byteBox({...S.byte,mood:mood==='neutral'?'neutral':mood==='think'?'think':'happy'},'big')}</div>`;
+  if(who==='byte')return `<div class="speaker byte-speaker">${byteBox({...onSite(S.byte),mood:mood==='neutral'?'neutral':mood==='think'?'think':'happy'},'big')}</div>`;
   const c=CAST[who];return `<div class="speaker">${portrait({...c,mood})}</div>`}
 function talk(key,sceneKey,place,next){
   const lines=hook('talkLines',M().talks[key],key);let i=0,typing=null,lineId=0;
@@ -326,11 +330,11 @@ function renderTellButton(){const slot=$('#tellslot');if(!slot)return;const TL=M
   const t=$('#tell');if(t)t.onclick=()=>{S.told=true;save();unlock(TL.guide)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[TL.guide].title)),'good');curDoc=TL.doc||curDoc;renderWorkbench();setTimeout(()=>{const u=$('#upd');if(u){u.scrollIntoView({behavior:'smooth',block:'center'});u.classList.add('flash')}},350)}}
 
 // ---------- companion Byte on work screens: reacts, wags, opens chat ----------
-function companion(){return `<button class="companion" id="comp" aria-label="${T('Talk to {0}',esc(S.byte.name))}">${byteBox({...S.byte,mood:'happy'})}</button>`}
+function companion(){return `<button class="companion" id="comp" aria-label="${T('Talk to {0}',esc(S.byte.name))}">${byteBox({...onSite(S.byte),mood:'happy'})}</button>`}
 function wireCompanion(){const c=$('#comp');if(c)c.onclick=openChat}
-function byteSays(text,mood='alert'){const c=$('#comp');if(!c)return;c.innerHTML=byteBox({...S.byte,mood});c.classList.remove('hop');void c.offsetWidth;c.classList.add('hop');
+function byteSays(text,mood='alert'){const c=$('#comp');if(!c)return;c.innerHTML=byteBox({...onSite(S.byte),mood});c.classList.remove('hop');void c.offsetWidth;c.classList.add('hop');
   $$('.bubble').forEach(b=>b.remove());const b=document.createElement('div');b.className='bubble';b.textContent=T(text);document.body.appendChild(b);
-  setTimeout(()=>{b.classList.add('out');c.innerHTML=byteBox({...S.byte,mood:'happy'})},4200);setTimeout(()=>b.remove(),4700)}
+  setTimeout(()=>{b.classList.add('out');c.innerHTML=byteBox({...onSite(S.byte),mood:'happy'})},4200);setTimeout(()=>b.remove(),4700)}
 
 // ---------- Learn It Fast: a short lesson from Byte, then a 3-question check ----------
 // picture captions are plain text: drop any [[glossary]] brackets a writer left in one
@@ -349,7 +353,7 @@ function renderCriteria(){
    <p>${T('Pick the 1, 2 or 3 things that matter most, before you look at any futures.')}</p>
    ${M().criteriaHint?`<p class="tiny muted">${T(M().criteriaHint)}</p>`:''}
    <div class="crit">${M().criteria.map(c=>`<button class="critb ${S.criteria.includes(c.id)?'on':''}" data-c="${c.id}">${T(c.label).replace(/\[\[|\]\]/g,'')}</button>`).join('')}</div>
-   <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(T(M().criteriaNote||'Deciding what \u201cgood\u201d means first keeps a flashy option from fooling you.'))}</p></div>
+   <div class="byte-note">${byteBox({...onSite(S.byte),mood:'think'})}<p>${esc(T(M().criteriaNote||'Deciding what \u201cgood\u201d means first keeps a flashy option from fooling you.'))}</p></div>
    <button class="btn wide" id="next" ${S.criteria.length>=1?'':'disabled'}>${T('Open the Future Table')}</button></div>`);
   $$('.critb').forEach(b=>b.onclick=()=>{const id=b.dataset.c;if(S.criteria.includes(id))S.criteria=S.criteria.filter(x=>x!==id);else if(S.criteria.length<3)S.criteria.push(id);else{toast(T('Pick at most 3.'));return}save();renderCriteria()});
   $('#next').onclick=()=>nextStep()}
@@ -371,7 +375,7 @@ function renderTable(){
   const meters=S.criteria.filter(id=>id!=='agree').map(id=>{const n=critScore(id,futs);const cr=M().criteria.find(x=>x.id===id);if(!cr)return '';const lab=rich(cr.label);
     return `<div class="meter"><span>${lab}</span><div class="mbar"><i style="width:${n*10}%"></i><em style="left:${Math.round(fc[id]*100)}%"></em></div><b>${T('{0} of 10',n)}</b><small>${T('forecast {0}%',Math.round(fc[id]*100))}</small></div>`}).join('');
   screen('futuretable',`${scene('table')}${hud('The Future Table')}
-  <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:'think'})}</div><p>${T('Here are 10 futures for this plan, spread out the way my forecast says. Change the plan and watch them shift.')}</p></div>
+  <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...onSite(S.byte),mood:'think'})}</div><p>${T('Here are 10 futures for this plan, spread out the way my forecast says. Change the plan and watch them shift.')}</p></div>
    <div class="futs" id="futs">${futs.map((f,i)=>`<figure class="fut" style="--d:${i*70}ms">${vig(f.kind)}<figcaption>${esc(T(f.cap))}</figcaption></figure>`).join('')}</div>
    ${M().tablePanel?M().tablePanel(c):''}
    <div class="meters">${meters}</div>${M().tablePanelAfter?M().tablePanelAfter(c):''}${M().tableNote?M().tableNote(c):''}
@@ -409,7 +413,7 @@ function renderMemo(){
    <div class="starters">${starters.map(s=>T(s)).map(s=>`<button class="mini-btn" data-s="${esc(s)}">${esc(s.trim())}…</button>`).join('')}</div>
  <div class="ta-wrap"><textarea id="memo" rows="5" placeholder="${esc(T(Mm.placeholder))}">${esc(S.memo)}</textarea>
    <ul class="checks" id="checks"></ul>
-   <div class="byte-note" id="review">${byteBox({...S.byte,mood:'neutral'})}<p>${T('When you’re ready, I can review it like a kind editor.')}</p></div>
+   <div class="byte-note" id="review">${byteBox({...onSite(S.byte),mood:'neutral'})}<p>${T('When you’re ready, I can review it like a kind editor.')}</p></div>
    <div class="row"><button class="btn ghost small" id="rev">${T('Ask {0} to review',esc(S.byte.name))}</button></div>
    <div class="conf"><div class="ctl-l">${T('How sure are you that this plan will go well?')}</div><input type="range" id="conf" min="0" max="4" step="1" value="${S.conf}"><div class="conf-l"><span>${T('Coin flip')}</span><span>${T('Pretty sure')}</span><span>${T('Sure')}</span></div></div>
    <button class="btn wide" id="sign">${T('Sign as {0}',esc(T(Mm.signAs+'{0}',P())))}</button></div>`);
@@ -464,14 +468,14 @@ function renderDebrief(){
     <li class="${fit?'ok':''}">${starIcon('decision',fit)}${T(fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.')}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${starIcon('heart',memoOk&&S.consent)}${T(memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.')} ${T(S.consent?'You explained honestly, so they could truly agree.':'')}</li>
     ${(M().debriefLines?M().debriefLines(c):[]).map(x=>`<li class="${x.ok?'ok':''}">${esc(T(x.text))}</li>`).join('')}</ul>
-   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(T(M().byteGood)):fit?T('Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'):T('This plan was never likely to meet every goal you picked. That’s fine if a goal didn’t really matter to you. Next time, pick only the goals you care about, so the Future Table can find the plan that fits them.')}</p></div>
+   <div class="byte-note">${byteBox({...onSite(S.byte),mood:'happy'})}<p>${good?esc(T(M().byteGood)):fit?T('Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'):T('This plan was never likely to meet every goal you picked. That’s fine if a goal didn’t really matter to you. Next time, pick only the goals you care about, so the Future Table can find the plan that fits them.')}</p></div>
    ${calibLine()}
    <div class="earned"><span>${T('{0} Field Guide ideas',S.guide.length)}</span><span>${T('{0} new words',S.words.length)}</span><span>${T('{0} hearts',Object.values(S.hearts).reduce((a,b)=>a+b,0))}</span></div>
    <button class="btn wide" id="next">${T(M().flow.some(f=>f.k==='evening'||f.home)?'Head home':'Finish the day')}</button></div>`);
   $('#next').onclick=()=>{awardStars(S.mission,SB);nextStep()};hook('debrief',{stars,good,luck})}
 
 function renderEvening(){const lines=M().evening();
-  screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
+  screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...onSite(S.byte),mood:'alert'},'big perk')}</div>
    <div class="caption-card dark">${lines.map(l=>`<p>${l}</p>`).join('')}
    <div class="row"><button class="btn small ghost" id="guide">${T('Open Field Guide')}</button><button class="btn small" id="plan">${T('Plan tomorrow')}</button></div></div></div>`);
   $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};save();go('hub')}}
