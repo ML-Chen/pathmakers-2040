@@ -157,7 +157,7 @@ function qyDouble(){const st=qyState(),D=st.dbl=st.dbl||{day:0,guess:null,phase:
   let head,panel;
   if(D.phase==='guess'){head='Priya’s exhibit starts with one question. A germ reaches 1 home, and the number of sick homes [[doubles]] every 3 days. After 30 days, about how many homes have it?';
     const opts=['About 20 homes','About 100 homes','About 1,000 homes'];
-    panel=`<div class="choices qyd-opts">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-g="${j}">${esc(o)}</button>`).join('')}</div>`}
+    panel=`<div class="choices qyd-opts">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-g="${j}">${esc(T(o))}</button>`).join('')}</div>`}
   else{const said=['About 20 homes','About 100 homes','About 1,000 homes'][D.guess];
     head=D.phase==='slide'?(D.guess===2?'You guessed about 1,000, and that’s right. Most people guess much lower. Slide through the days and watch how it grows.':`You guessed ${said.toLowerCase()}. Most people guess much lower than the real answer. Slide through the days and watch how it grows.`)
       :'In 2030, nobody noticed the germ until day 21. Today, a water tester in every neighborhood notices a new germ by day 3. Slide to each day to compare.';

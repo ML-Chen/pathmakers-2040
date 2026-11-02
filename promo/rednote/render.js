@@ -1,6 +1,7 @@
 // Renders the RedNote concept video: node promo/rednote/render.js dist/pathmakers.html OUT [vo_dir]
-// Each shot in shots.js is played live in the game at 405x540 CSS px (3:4) with deviceScaleFactor 8/3, so frames are
-// 1080x1440. Frames come from Chrome's screencast with timestamps and are assembled with ffmpeg at 30 fps.
+// Each shot in shots.js is played live in the game at 405x720 CSS px (9:16) with deviceScaleFactor 8/3, so frames are
+// 1080x1920. The page runs in slow motion (PROMO_SLOW, default 0.25) while full-size screenshots are taken, and the
+// frames are assembled at page time with ffmpeg at 30 fps, so motion is smooth.
 // With vo_dir (made by vo.py: <id>.wav and durations.json) each shot lasts as long as its line plus a pause, and the
 // narration and music are mixed in; without it, shots use estimated lengths and only the music plays (a preview).
 // Writes OUT/rednote.mp4, OUT/stills/<n>-<id>.png (one still per shot) and OUT/contact.jpg.
@@ -11,6 +12,7 @@ for (const d of ['frames', 'segs', 'stills', 'clean']) fs.mkdirSync(path.join(ou
 const ff = (...a) => execFileSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...a]);
 const VO = voDir && fs.existsSync(path.join(voDir, 'durations.json')) ? JSON.parse(fs.readFileSync(path.join(voDir, 'durations.json'))) : null;
 const LEAD = 0.35, PAUSE = 0.55;
+const W = 405, H = 720, OH = 1920;                               // 9:16 portrait, 1080x1920, full screen on phones
 // a slow camera move on every shot (the captions stay still): push in, pull out, drift left or right, rise
 const CAMS = [{o: '50% 40%', a: 'scale(1.0)', b: 'scale(1.13)'}, {o: '50% 50%', a: 'scale(1.16) translateX(-3%)', b: 'scale(1.04) translateX(2%)'},
   {o: '30% 60%', a: 'scale(1.06)', b: 'scale(1.18) translateY(-2%)'}, {o: '70% 40%', a: 'scale(1.15) translateX(3%)', b: 'scale(1.03) translateX(-2%)'},
@@ -25,14 +27,16 @@ const CSS = `
 #pr .chip{position:absolute;left:14px;top:14px;background:rgba(18,20,52,.72);color:#fff;font-weight:700;font-size:13px;letter-spacing:.06em;padding:5px 11px;border-radius:999px;backdrop-filter:blur(6px)}
 #pr .shade{position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(180deg,rgba(10,12,36,0),rgba(10,12,36,.78) 55%,rgba(10,12,36,.9))}
 #pr .cap{position:absolute;left:18px;right:18px;bottom:26px;color:#fff;font-weight:900;font-size:22px;line-height:1.42;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+#prf{position:fixed;left:0;top:0;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.55);border:3px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:10000;opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.3,.7,.3,1),opacity .2s}
+#prf.tap{animation:prtap .45s ease-out}
+@keyframes prtap{0%{box-shadow:0 0 0 0 rgba(255,255,255,.8)}40%{transform:var(--t) scale(.8)}100%{box-shadow:0 0 0 26px rgba(255,255,255,0)}}
 /* characters act: they talk, bob and breathe; Byte bounces */
 .speaker{animation:prbob 1.6s ease-in-out infinite alternate;transform-origin:50% 100%}
 .speaker .p-mouth{transform-box:fill-box;transform-origin:center top;animation:talk .17s ease-in-out infinite alternate}
 .speaker .p-mouth[data-m=happy],.speaker .p-mouth[data-m=o]{animation-name:talkbig}
 @keyframes prbob{from{transform:translateY(0) rotate(-.6deg)}to{transform:translateY(-6px) rotate(.6deg)}}
 .byteart{animation:hop 1.1s ease-in-out infinite}
-#pr .cap span{opacity:.28;animation:prch .18s ease-out both}
-@keyframes prch{to{opacity:1}}
+#pr .cap{animation:prin .45s ease-out .1s both}
 @keyframes prcam{from{transform:var(--c0)}to{transform:var(--c1)}}
 #pr.shot-hook .big{top:40%;animation:none}#pr.shot-hook .cap{animation:none}
 .pr-hook{display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -61,60 +65,78 @@ const CSS = `
 `;
 
 (async () => {
+  // Slow motion capture: the page runs at R times real speed (JS clocks, timers, animation frames and CSS animations),
+  // and full-resolution screenshots are taken as fast as possible, each stamped with page time. Played back at page
+  // time, the video is smooth and sharp even though each screenshot takes ~100 ms.
+  const R = +(process.env.PROMO_SLOW || 0.25);
   const b = await chromium.launch();
-  const ctx = await b.newContext({viewport: {width: 405, height: 540}, deviceScaleFactor: 8 / 3});
+  const ctx = await b.newContext({viewport: {width: W, height: H}, deviceScaleFactor: 1080 / W});
   const p = await ctx.newPage(); const errs = [];
   p.on('pageerror', e => errs.push(e.message));
-  await p.addInitScript(() => { window.__noaudio = 1; try { localStorage.clear() } catch (e) {} });
-  await p.goto('file://' + path.resolve(html)); await p.waitForTimeout(800);
+  await p.addInitScript(R => {
+    window.__noaudio = 1; try { localStorage.clear() } catch (e) {}
+    const pn = performance.now.bind(performance), t0 = pn(), dn = Date.now, d0 = dn();
+    performance.now = () => t0 + (pn() - t0) * R; Date.now = () => Math.round(d0 + (dn() - d0) * R);
+    const ST = window.setTimeout, SI = window.setInterval, RAF = window.requestAnimationFrame.bind(window);
+    window.setTimeout = (f, ms, ...a) => ST(f, (ms || 0) / R, ...a); window.setInterval = (f, ms, ...a) => SI(f, (ms || 0) / R, ...a);
+    window.requestAnimationFrame = cb => RAF(ts => cb(t0 + (ts - t0) * R));
+    window.__pt = () => performance.now();
+  }, R);
+  await p.goto('file://' + path.resolve(html)); await p.waitForTimeout(800 / R);
   await p.addStyleTag({content: CSS});
+  // a finger that taps buttons on screen: prTap(selector, text?) moves to the element, shows a ripple, then clicks it
+  await p.evaluate(() => {
+    const f = document.createElement('div'); f.id = 'prf'; document.body.appendChild(f);
+    window.prTap = (sel, text) => { const els = [...document.querySelectorAll(sel)].filter(e => !text || e.textContent.includes(text)); const el = els[0]; if (!el) return;
+      const r = el.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2; f.style.opacity = 1; f.style.transform = `translate(${x - 22}px,${y - 22}px)`;
+      setTimeout(() => { f.classList.remove('tap'); void f.offsetWidth; f.classList.add('tap'); el.click(); setTimeout(() => { const n = document.getElementById('prf'); if (n !== f) document.body.appendChild(f) }, 50) }, 380) };
+  });
   await p.evaluate(() => { S.mute = true; S.player = 'Juniper'; S.lang = 'zh'; save() });
   const cdp = await ctx.newCDPSession(p);
+  await cdp.send('Animation.enable'); await cdp.send('Animation.setPlaybackRate', {playbackRate: R});
+  const wait = ms => p.waitForTimeout(ms / R);                         // wait in page time
   const segs = []; let total = 0;
   for (const [n, s] of SHOTS.entries()) {
     const D = dur(s);
     await p.evaluate(({setup, hide}) => {
-      document.querySelectorAll('#pr,#pr-hide').forEach(e => e.remove());
+      document.querySelectorAll('#pr,#pr-hide').forEach(e => e.remove()); const pf = document.getElementById('prf'); if (pf) { pf.style.opacity = 0; document.body.appendChild(pf) }
       try { (0, eval)(setup) } catch (e) { console.error(e) }
       document.getElementById('app').style.animation = 'none';
       const st = document.createElement('style'); st.id = 'pr-hide'; st.textContent = (hide || []).join(',') + (hide && hide.length ? '{display:none!important}' : ''); document.head.appendChild(st);
     }, {setup: s.setup || (s.cycle && s.cycle[1]), hide: s.hide});
-    await p.waitForTimeout(s.hook ? 250 : 900);                       // let the scene paint and the entrance finish
+    await wait(s.hook ? 300 : 900);                                    // let the scene paint and the entrance finish
     if (!s.hook) await p.screenshot({path: path.join(out, 'clean', `${s.id}.png`)});
     const cam = CAMS[n % CAMS.length];
     await p.evaluate(({place, vo, big, id, D, cam}) => {
       const app = document.getElementById('app'); app.style.transformOrigin = cam.o; app.style.animation = `prcam ${D}s cubic-bezier(.3,.1,.3,1) both`;
       document.documentElement.style.setProperty('--c0', cam.a); document.documentElement.style.setProperty('--c1', cam.b);
-      const chars = [...vo], per = (D * 0.78) / Math.max(1, chars.length);
-      vo = chars.map((ch, i) => `<span style="animation-delay:${(0.15 + i * per).toFixed(3)}s">${ch}</span>`).join('');
       const d = document.createElement('div'); d.id = 'pr'; d.className = 'shot-' + id;
       d.innerHTML = `${place ? `<div class="chip">${place}</div>` : ''}<div class="shade"></div>${big ? `<div class="big">${big}</div>` : ''}<div class="cap">${vo}</div>`;
       document.body.appendChild(d);
     }, {...s, D, cam});
-    let timer = null;
-    if (s.every) timer = setInterval(() => p.evaluate(s.every[1]).catch(() => {}), s.every[0]);
-    if (s.cycle) { let k = 0; const [ms, ...setups] = s.cycle; timer = setInterval(() => { k = (k + 1) % setups.length;
-      p.evaluate(code => { const pr = document.getElementById('pr'); try { (0, eval)(code) } catch (e) {} if (pr) document.body.appendChild(pr) }, setups[k]).catch(() => {}) }, ms) }
+    // timed changes inside a shot run in page time too
+    const events = [];
+    for (const [t, code] of (s.taps || [])) events.push([t, code, false]);
+    if (s.every) for (let t = s.every[0]; t < D * 1000; t += s.every[0]) events.push([t, s.every[1], false]);
+    if (s.cycle) { const [ms, ...setups] = s.cycle; for (let k = 1, t = ms; t < D * 1000; k++, t += ms) events.push([t, setups[k % setups.length], true]) }
+    events.sort((a, b) => a[0] - b[0]);
     const dir = path.join(out, 'frames', String(n).padStart(2, '0')); fs.rmSync(dir, {recursive: true, force: true}); fs.mkdirSync(dir);
-    const frames = []; let t0 = null;
-    const onFrame = async f => {
-      const ts = f.metadata.timestamp; if (t0 === null) t0 = ts;
+    const frames = []; const pt0 = await p.evaluate(() => window.__pt()); let still = false;
+    for (;;) {
+      const t = (await p.evaluate(() => window.__pt())) - pt0;
+      while (events.length && events[0][0] <= t) { const [, code, keep] = events.shift();
+        await p.evaluate(({code, keep}) => { const pr = document.getElementById('pr'); try { (0, eval)(code) } catch (e) {} if (keep && pr) document.body.appendChild(pr) }, {code, keep}).catch(() => {}) }
+      if (t >= D * 1000) break;
       const file = path.join(dir, String(frames.length).padStart(5, '0') + '.jpg');
-      fs.writeFileSync(file, Buffer.from(f.data, 'base64')); frames.push([file, ts - t0]);
-      cdp.send('Page.screencastFrameAck', {sessionId: f.sessionId}).catch(() => {});
-    };
-    cdp.on('Page.screencastFrame', onFrame);
-    await cdp.send('Page.startScreencast', {format: 'jpeg', quality: 88, maxWidth: 1080, maxHeight: 1440, everyNthFrame: 1});
-    await p.waitForTimeout(Math.round(D * 1000 * 0.45));
-    await p.screenshot({path: path.join(out, 'stills', `${String(n + 1).padStart(2, '0')}-${s.id}.png`)});
-    await p.waitForTimeout(Math.round(D * 1000 * 0.55) + 150);
-    await cdp.send('Page.stopScreencast'); cdp.off('Page.screencastFrame', onFrame); if (timer) clearInterval(timer);
+      await p.screenshot({path: file, type: 'jpeg', quality: 90}); frames.push([file, t / 1000]);
+      if (!still && t > D * 450) { fs.copyFileSync(file, path.join(out, 'stills', `${String(n + 1).padStart(2, '0')}-${s.id}.jpg`)); still = true }
+    }
     if (!frames.length) { errs.push(s.id + ': no frames'); continue }
     // concat list with real frame durations, then a constant 30 fps segment of exactly D seconds
     const list = frames.map(([f, t], i) => `file '${f}'\nduration ${Math.max(0.001, ((frames[i + 1] ? frames[i + 1][1] : D) - t)).toFixed(4)}`).join('\n') + `\nfile '${frames[frames.length - 1][0]}'\n`;
     fs.writeFileSync(path.join(dir, 'list.txt'), list);
     const seg = path.join(out, 'segs', `${String(n).padStart(2, '0')}.mp4`);
-    ff('-f', 'concat', '-safe', '0', '-i', path.join(dir, 'list.txt'), '-vf', 'scale=1080:1440:flags=lanczos,fps=30,format=yuv420p,setsar=1', '-t', D.toFixed(3),
+    ff('-f', 'concat', '-safe', '0', '-i', path.join(dir, 'list.txt'), '-vf', `scale=1080:${OH}:flags=lanczos,fps=30,format=yuv420p,setsar=1`, '-t', D.toFixed(3),
        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-an', seg);
     segs.push({seg, D, s, at: total}); total += D;
     console.log(`${s.id}: ${D.toFixed(1)}s, ${frames.length} frames`);
@@ -140,8 +162,8 @@ const CSS = `
   } else af = `[1:a]aresample=44100,volume=0.6,afade=t=in:d=0.6,afade=t=out:st=${(vlen - 2).toFixed(2)}:d=2[a]`;
   ff(...aIn, '-filter_complex', af, '-map', '0:v', '-map', '[a]', '-t', vlen.toFixed(3), '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', final);
   // contact sheet of the stills
-  const st = fs.readdirSync(path.join(out, 'stills')).filter(f => f.endsWith('.png')).sort().map(f => path.join(out, 'stills', f));
-  ff(...st.flatMap(f => ['-i', f]), '-filter_complex', st.map((_, i) => `[${i}:v]scale=270:360[s${i}]`).join(';') + ';' + st.map((_, i) => `[s${i}]`).join('') + `xstack=inputs=${st.length}:layout=${st.map((_, i) => `${(i % 7) * 270}_${Math.floor(i / 7) * 360}`).join('|')}:fill=black`, '-frames:v', '1', path.join(out, 'contact.jpg'));
+  const st = fs.readdirSync(path.join(out, 'stills')).filter(f => /\.(png|jpg)$/.test(f)).sort().map(f => path.join(out, 'stills', f));
+  ff(...st.flatMap(f => ['-i', f]), '-filter_complex', st.map((_, i) => `[${i}:v]scale=270:480[s${i}]`).join(';') + ';' + st.map((_, i) => `[s${i}]`).join('') + `xstack=inputs=${st.length}:layout=${st.map((_, i) => `${(i % 8) * 270}_${Math.floor(i / 8) * 480}`).join('|')}:fill=black`, '-frames:v', '1', path.join(out, 'contact.jpg'));
   fs.writeFileSync(path.join(out, 'errors.txt'), errs.join('\n'));
   console.log(`${final}: ${vlen.toFixed(1)}s, ${VO ? 'with narration' : 'music only (no vo_dir)'}; errors: ${errs.join('; ') || 'none'}`);
 })();
