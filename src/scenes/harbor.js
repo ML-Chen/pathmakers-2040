@@ -719,11 +719,11 @@
   LATE.push(function () {
     if (typeof PROPS === 'undefined') return;
     PROPS.harbor = [
-      { id: 'pigeon', x: 20, y: 88, w: 46, sfx: 'flap', fx: 'flyaway' },
-      { id: 'robot', x: 40, y: 76, w: 44, sfx: 'beep', fx: 'spin' },
-      { id: 'plant', x: 92, y: 83, w: 52, sfx: 'rustle', fx: 'wiggle', burst: 'leaves' },
-      { id: 'person', x: 58, y: 80, w: 52, talk: 'harbor', look: { skin: '#c98e64', shirt: '#1f8f86', hair: '#1b1410' } },
-      { id: 'person', x: 73, y: 78, w: 48, talk: 'harbor', look: { skin: '#f6d2bd', shirt: '#d98b36', hair: '#6b4a2a' } }
+      { id: 'pigeon', x: 12, y: 90, w: 44, sfx: 'flap', fx: 'flyaway' },
+      { id: 'robot', x: 22, y: 78, w: 42, sfx: 'beep', fx: 'spin' },
+      { id: 'plant', x: 93, y: 84, w: 50, sfx: 'rustle', fx: 'wiggle', burst: 'leaves' },
+      { id: 'person', x: 34, y: 81, w: 50, talk: 'harbor', look: { skin: '#c98e64', shirt: '#1f8f86', hair: '#1b1410' } },
+      { id: 'person', x: 46, y: 78, w: 46, talk: 'harbor', look: { skin: '#f6d2bd', shirt: '#d98b36', hair: '#6b4a2a' } }
     ];
   });
 })();

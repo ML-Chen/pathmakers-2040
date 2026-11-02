@@ -125,9 +125,10 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     'the Quiet Year':'The year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it.'
   },
   cast:{
-    lena:{name:'Lena Park',role:'Biosecurity screener, Health Harbor',skin:SKIN[3],hair:'#15110f',hairStyle:'short',shirt:'#f5b82e',glasses:true},
-    tomas:{name:'Tomás Ferreira',role:'Owner, Harbor Print Shop 2',skin:SKIN[2],hair:'#241a14',hairStyle:'short',shirt:'#5fc9bd'},
-    osei:{name:'Councilor Amara Osei',role:'Boston City Council',skin:SKIN[5],hair:'#140f0d',hairStyle:'bun',shirt:'#6c5ce7',accessory:'earring'},
+    // no two of them share a silhouette: long hair and glasses, a broad man with short hair, a bun and gold hoops
+    lena:{name:'Lena Park',role:'Biosecurity screener, Health Harbor',skin:SKIN[3],hair:'#15110f',hairStyle:'long',shirt:'#f5b82e',glasses:true,frame:'#2b6f6a',eye:'#5a3a22'},
+    tomas:{name:'Tomás Ferreira',role:'Owner, Harbor Print Shop 2',skin:SKIN[2],hair:'#241a14',hairStyle:'short',masc:true,shirt:'#2f8f86',eye:'#4a2c1c'},
+    osei:{name:'Councilor Amara Osei',role:'Boston City Council',skin:SKIN[5],hair:'#140f0d',hairStyle:'bun',shirt:'#6c5ce7',accessory:'earring',eye:'#3a2418'},
     tally:{name:'Tally',role:'An independent auditor AI'},
     pip:{name:'Pip',role:'In a hurry, holding an empty box'},
     jory:{name:'Jory',role:'Also in a hurry'}
@@ -325,7 +326,7 @@ MISSIONS.sneeze.docs=[
 // ---------- conversations
 MISSIONS.sneeze.talks={
   morning:[
-    {who:'byte',mood:'alert',text:'{P}, wake up. Lena Park called the house line at 6:40, which nobody does.'},
+    {who:'byte',mood:'alert',text:'Wake up, wake up! Lena Park called the house line at 6:40 in the morning, which nobody does.'},
     {who:'byte',mood:'neutral',text:'She screens orders for the harbor [[print shops]]. Three came in last night, from three different brand-new customers, nine minutes apart, at three in the morning.'},
     {who:'byte',mood:'think',text:'She has held all three. Nothing has been made. She wants a doctor in the room before she decides what to do next, and she asked for you.',
       choices:[
