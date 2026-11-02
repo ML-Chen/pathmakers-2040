@@ -23,6 +23,11 @@ These notes record what the family asked for while playing builds, and the decis
 - **No guess-first popup.** Asking the player to guess before seeing the forecast made comparing plans annoying. Calibration moved to the debrief, which compares the player's confidence slider with Byte's forecast.
 - The debrief scores the decision (what was known and chosen) separately from luck (how the dice landed).
 
+## Variety
+
+- **Every workday has its own rhythm.** Missions do not follow the Maya mission's sequence (talk, workbench, criteria, Future Table, consent, memo, reveal, debrief). Each career's day is shaped around its real work: a courtroom has testimony and cross-examination, a reserve has observing animals, an audit has sampling. A signed human decision and a real outcome stay constant.
+- **No pixel-hunting.** Investigation is short and driven by people and meaningful places. The family finds "randomly exploring the map until you find a clue" boring.
+
 ## Decisions, consent and writing
 
 - The consent screen includes a plan picker, so the player explains the plan they actually chose rather than whatever was last on the table.
@@ -42,7 +47,7 @@ These notes record what the family asked for while playing builds, and the decis
 
 - Every spoken line uses a prerecorded voice (Kokoro). Never use the browser's built-in speech; it sounded terrible.
 - Only Byte may make electronic babble; humans without a recorded clip stay silent.
-- Voices should sound excited enough for a video game. Maya must sound like an 11-year-old, not an adult woman (the current pitch-shifted voice is still being improved).
+- Voices should sound excited enough for a video game. Maya must sound like an 11-year-old, not an adult woman. The family picked her voice by ear on Nov 2 (af_heart, pitched up); the af_jessica version sounded robotic and "like a stuck-up teen". Child voices should sound natural and unaffected.
 - Byte has a female and a male voice, chosen at setup.
 - Pronunciation fixes go in `PRONOUNCE` in tools/make_audio.py (for example, past-tense "read").
 - Music comes from the family's music-lab tracks, rendered and crossfaded per scene. Synthesized music sounded dissonant and was removed.
