@@ -133,7 +133,7 @@
   function marsL(w, h) {
     var s = S(w, h), r = rng(7701), i, L = { s: s };
     L.hz = h * 0.405;
-    L.sun = { day: [w * 0.2, h * 0.16], dusk: [w * 0.47, h * 0.388] };
+    L.sun = { day: [w * 0.2, h * 0.16], dusk: [w * 0.8, h * 0.37] };
     L.rim = function (x) { var u = x / w; return L.hz - h * 0.012 - h * 0.018 * fbm(u * 4, 11, 4) - h * 0.008 * Math.sin(u * 9); };
     // the old river delta: flat-topped buttes with layered sides, on the left
     L.buttes = [[0.02, 0.2, 0.062], [0.25, 0.38, 0.04], [0.86, 0.98, 0.03]];
@@ -165,10 +165,10 @@
       var D = L.sun.dusk;
       // the blue sunset: fine dust scatters blue light forward, so the sky glows blue right around the Sun
       ctx.save(); ctx.translate(D[0], D[1]); ctx.scale(1.5, 1);
-      ctx.fillStyle = rg(ctx, 0, 0, 0, 90 * s, [[0, 'rgba(220,240,255,1)'], [0.16, 'rgba(150,200,245,0.85)'], [0.5, 'rgba(90,140,210,0.4)'], [1, 'rgba(90,140,210,0)']]); ctx.fillRect(-90 * s, -90 * s, 180 * s, 180 * s); ctx.restore(); glow(ctx, D[0], D[1], 30 * s, '#e8f6ff', 0.6);
+      ctx.fillStyle = rg(ctx, 0, 0, 0, 120 * s, [[0, 'rgba(220,240,255,1)'], [0.16, 'rgba(150,200,245,0.85)'], [0.5, 'rgba(90,140,210,0.4)'], [1, 'rgba(90,140,210,0)']]); ctx.fillRect(-120 * s, -120 * s, 240 * s, 240 * s); ctx.restore(); glow(ctx, D[0], D[1], 30 * s, '#e8f6ff', 0.6);
       ctx.fillStyle = '#f4faff'; ctx.beginPath(); qcirc(ctx, D[0], D[1], 5 * s); ctx.fill();
       // Earth: the bright blue-white evening star above the sunset
-      var ex = D[0] + 34 * s, ey = D[1] - 70 * s; glow(ctx, ex, ey, 10 * s, '#bfe0ff', 0.8); ctx.fillStyle = '#eaf6ff'; ctx.beginPath(); qcirc(ctx, ex, ey, 1.8 * s); ctx.fill();
+      var ex = D[0] - 40 * s, ey = D[1] - 74 * s; glow(ctx, ex, ey, 10 * s, '#bfe0ff', 0.8); ctx.fillStyle = '#eaf6ff'; ctx.beginPath(); qcirc(ctx, ex, ey, 1.8 * s); ctx.fill();
       L.earthStar = [ex, ey];
     }
     if (v === 'storm') { // no sky to speak of: the storm hides everything, lit faintly from below by the base
@@ -308,7 +308,7 @@
           ctx.save(); ctx.fillStyle = 'rgba(90,40,20,0.35)'; ctx.fillRect(0, 0, w, h); ctx.restore();
           glow(ctx, w * 0.2, h * 0.49, w * 0.35, '#ff7ad0', 0.12); glow(ctx, L.hab[0], L.hab[1] - 12 * s, w * 0.3, '#ffb860', 0.18);
         }
-        if (v === 'dusk') { ctx.save(); ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = lg(ctx, L.sun.dusk[0], 0, w, 0, [[0, 'rgba(140,180,255,0.35)'], [1, 'rgba(40,30,60,0.3)']]); ctx.fillRect(0, L.hz, w, h - L.hz); ctx.restore(); }
+        if (v === 'dusk') { ctx.save(); ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = lg(ctx, L.sun.dusk[0], 0, 0, 0, [[0, 'rgba(140,180,255,0.35)'], [1, 'rgba(40,30,60,0.3)']]); ctx.fillRect(0, L.hz, w, h - L.hz); ctx.restore(); }
         finish(ctx, w, h, P.grade, P.gradeA, P.vig, 0.04, P.vigCol, 0.42);
       } catch (e) { PAINT._err = 'mars_' + v + ': ' + String(e && e.stack || e); }
     };
@@ -349,7 +349,7 @@
   // anchors (fractions of w,h): the storm, the greenhouses, the habitat, the Sun; the middle stays clear for portraits
   PAINT.mars = { focus: { x: 0.2, y: 0.16 }, track: 'morning', anchors: { storm: { x: 0.85, y: 0.3 }, greenhouse: { x: 0.17, y: 0.49 }, hab: { x: 0.7, y: 0.47 } }, paint: paintMars('day'), overlay: overlayMars('day') };
   PAINT.mars_storm = { focus: { x: 0.7, y: 0.47 }, track: 'night', anchors: { greenhouse: { x: 0.17, y: 0.49 }, hab: { x: 0.7, y: 0.47 } }, paint: paintMars('storm'), overlay: overlayMars('storm') };
-  PAINT.mars_dusk = { focus: { x: 0.3, y: 0.39 }, track: 'night', anchors: { sun: { x: 0.3, y: 0.39 }, greenhouse: { x: 0.17, y: 0.49 } }, paint: paintMars('dusk'), overlay: overlayMars('dusk') };
+  PAINT.mars_dusk = { focus: { x: 0.8, y: 0.39 }, track: 'night', anchors: { sun: { x: 0.8, y: 0.39 }, greenhouse: { x: 0.17, y: 0.49 } }, paint: paintMars('dusk'), overlay: overlayMars('dusk') };
 
   /* ============================== tappable props ============================== */
   if (typeof LATE !== 'undefined') LATE.push(function () {

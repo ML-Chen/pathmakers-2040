@@ -87,7 +87,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
       {who:'delta',mood:'think',text:'The storm front should arrive between 5 and 8 PM. Most likely, it comes at about 6:30. At [[sunset]], the battery should hold 48 to 55 [[kilowatt-hours]].'},
       {who:'delta',mood:'worried',text:'There is about a 35% chance the storm is still here at sunrise. Then the panels give only a fifth of their power until noon, and we need 8 more kilowatt-hours to get through the morning.'},
       {who:'delta',mood:'neutral',text:'My default plan follows the [[priority list]] that [[mission control]] wrote years ago. [[Life support]] comes first, then crew comfort, then science. The greenhouse comes last, so it goes off tonight.',choices:[
-        {t:'Can we change that order tonight?',good:true,mood:'smile',reply:'Yes. The list is a starting point, not a law. You lead this station, so tonight’s order is your call. I’ll show you exactly what each choice costs.'},
+        {t:'Can we change that order tonight?',good:true,mood:'smile',reply:'Yes. The list is only a starting point. You lead this station, so tonight’s order is your call. I’ll show you exactly what each choice costs.'},
         {t:'You know best. Use your plan.',mood:'think',reply:'I can run my plan safely. But my list was written before anyone grew food here. You should hear from the crew before you decide.'}]}
     ],
     lucia:[
@@ -116,7 +116,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
       {t:'The [[battery]] should hold 48 to 55 [[kilowatt-hours]] at [[sunset]], most likely 52. If the storm comes early, we lose the last hour of charging.',viz:'dsBattery',cap:'The battery'},
       {t:'Sunrise is at 7 AM. There is about a 35% chance the storm is still here, and then we need 8 more kilowatt-hours to reach noon.',viz:'dsLongStorm',cap:'35 in 100'},
       {t:'The battery must never fall below 5 kilowatt-hours. That is our [[emergency reserve]].',viz:'dsFloor',cap:'The reserve'},
-      {t:'These are honest ranges, not promises. I will update them during the night.',viz:'dsHonest',cap:'Ranges, not promises'}]},
+      {t:'These ranges come with honest odds. I will update them during the night.',viz:'dsHonest',cap:'Honest ranges'}]},
     {id:'dpower',title:'Tonight’s power list',from:'Delta',kind:'log',steps:[
       {t:'[[Life support]] keeps our air and water clean and the cabin at a safe 14°C. It needs 26 kilowatt-hours tonight, and it always stays on.',viz:'dsLife',cap:'Life support'},
       {t:'Warming the cabin to a cozy 20°C needs 5 kilowatt-hours more.',viz:'dsCabin',cap:'Cabin heat'},
@@ -126,7 +126,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
         alt:{t:'Updated: one cabin outlet now stays on all night. It needs half a kilowatt-hour. I will not tell anyone why.',args:{one:1},cap:'One outlet stays on'}},
       {t:'The old [[priority list]] puts life support first, crew comfort second, science third, and the greenhouse last. Tonight, the Explorer can change the order.',viz:'dsPriority',cap:'The old order'}]}
   ],
-  react:{dforecast1:'Between 5 and 8. Plan for the early end, just in case.',dforecast3:'48 to 55. The low end matters most.',dforecast4:'35 in 100 isn’t small. That’s about 1 night in 3.',dforecast6:'Delta says what it doesn’t know. That’s a good sign.',
+  react:{dforecast1:'Between 5 and 8. Plan for the early end, just in case.',dforecast3:'48 to 55. The low end matters most.',dforecast4:'35 in 100 isn’t small. That’s about 1 night in 3.',dforecast6:'Delta tells us what it isn’t sure about. That’s a good sign.',
     dpower2:'Heat only costs a third of lights and heat.',dpower4:'Outlets off at 10 PM. Hmm, who might need one?',dpower5:'Written years ago, before anyone grew food here.'},
   tell:{clue:'cpap',label:'Tell Delta about Dev’s outlet',note:'Done. Delta will keep that one outlet on all night, and it won’t say why. That adds half a kilowatt-hour to tonight’s plan.',guide:'mars-private',doc:'dpower'},
   criteria:[{id:'safe',label:'The battery lasts until the Sun is back'},{id:'tomatoes',label:'The first tomatoes survive'},{id:'rest',label:'Everyone sleeps safely'},{id:'message',label:'Lucía’s message reaches Earth in time'}],
@@ -161,10 +161,9 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
   byteGood:'Nice work, Explorer. You planned for the bad end of the range, kept a reserve, and protected what mattered to your crew.',
   debriefLines(){const st=dsState();return st.mid?[{ok:true,text:'When Delta’s forecast changed at 1 AM, you changed the plan to match it.'}]:[]},
   evening(){const R=S.result||{},ok=R.flags&&R.flags.tomatoes;
-    return [`<b>${esc(S.byte.name)}:</b> “Look at that. A blue sunset. Fine dust in the air sends blue light toward us, right around the Sun.”`,
-      ok?'“Lucía picked Uno, the first ripe tomato on Mars. She cut it into six tiny pieces, one for everyone. She saved the seeds for Caio.”':'“Lucía is planting new seeds already. She says the second try always grows faster, because now she knows the soil.”',
-      '“And see that bright star just above the sunset? That’s Earth. Everyone else we know is on it.”',
-      '“True today: rovers have filmed blue sunsets like this one in Jezero Crater. No person has stood here yet. Maybe someday someone will.”']},
+    return [`<b>${esc(S.byte.name)}:</b> “Look, a blue sunset! Fine dust in the air sends blue light toward us, right around the Sun. And that bright star above it is Earth.”`,
+      ok?'“Lucía picked Uno, the first ripe tomato on Mars, and cut it into six tiny pieces. She saved the seeds for Caio.”':'“Lucía is planting new seeds already. She says the second try always grows faster, because now she knows the soil.”',
+      '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”']},
   brief(){const st=dsState();return `Current case: Jezero Station, a small outpost in Jezero Crater on Mars, fall 2041 (a game forecast; no people have been to Mars today). Six crew. A regional dust storm arrives tonight (front between 5 and 8 PM, most likely 6:30) and stops solar charging. Battery at sunset: 48 to 55 kWh (most likely 52). Sunrise 7 AM; about a 35% chance the storm is still there, needing 8 kWh more until noon. Emergency reserve: never below 5 kWh. Loads tonight: life support 26 kWh (always on, cabin 14°C); cabin to 20°C +5; greenhouse lights+heat 12 or heat only 4 (off = it freezes and the first three tomatoes die); messages to Earth 2 kWh, relay window closes 9 PM (Lucía Prado, botanist, recorded a birthday message for her son Caio, turning 10 in Recife). Delta (the outpost AI) defaults to an old mission-control priority list: life support, crew comfort, science, greenhouse last; its storm rule turns off sleeping-cabin outlets at 10 PM. Dev Raman (engineer) privately told the player he sleeps with a breathing machine on his cabin outlet. The rover is charged on its own battery and can shelter six.
 What you know: ${S.told?'The player told Delta, with Dev’s permission, that one cabin outlet must stay on all night (0.5 kWh). Never reveal why to anyone else.':'Nothing about cabin outlets yet. If asked about the crew, ask whether anyone mentioned a need at night.'}
 The key consideration when asked what to do: plan for the low end of the battery range and the chance of a long storm, keep the 5 kWh reserve, and note that heat-only keeps the plants alive for a third of the power.`},
