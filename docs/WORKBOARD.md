@@ -42,4 +42,5 @@ Owner feedback still to act on (Nov 2, late): the Nome mammoths look goofy (moth
 - Nome's glossary tooltips and Field Guide entries state 2040 inventions as facts (mammoth biology, milk tusks, collar translators, the reserve). Reword them as the game's 2040 world ("In 2040, ...") and give each a "True today" line.
 - Update README.md: current list of workdays and places, the world map, Kid/Teen/Grown-up, Android APK and Playtest releases, voices in CI (ElevenLabs/Kokoro), how to play on GitHub Pages once the repo is public.
 - The Quiet Year art, Phoenix scenes and Dark Tower agents stopped at the usage limit before pushing. Their partial work lived only in the old cloud container's worktrees, so expect to redo them.
+- Nome: Eli Johnson's head floats off his neck (the custom `nome:'eli'` outfit in src/viz/nome.js draws the collar/neck too low or the neck too short). Check every custom-outfit character for a visible gap between chin, neck and collar.
 
