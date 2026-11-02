@@ -368,7 +368,7 @@ function nomeObserve(cfg){const st=cfg.state;let t0=performance.now(),timer=0,pu
   const count=()=>cfg.animalParts.filter(p=>st[p]).length;
   function card(last){const box=$('#nmcard');if(!box)return;const P=last&&cfg.parts[last.part];
     box.innerHTML=`<div class="nm-last">${P?`<b>${S_(P.label)}</b> ${S_(P[last.phase][0])}<span class="nm-tr">${S_(cfg.collarName||'Collar')}: ${S_(P[last.phase][1])}</span>`:`<span class="nm-hint">${S_(cfg.hint)}</span>`}</div>
-      <div class="nm-icons">${cfg.order.map(id=>`<button class="nm-ic ${st[id]?'on':''} ${st[id]==='pulse'?'key':''}" data-ic="${id}" aria-label="${S_(cfg.parts[id].label)}"><svg viewBox="0 0 24 24">${NM_ICON[id]||''}</svg></button>`).join('')}</div>
+      <div class="nm-icons">${cfg.order.map(id=>`<button class="nm-ic ${st[id]?'on':''} ${st[id]==='pulse'?'key':''}" data-ic="${id}" aria-label="${S_(cfg.parts[id].label)}"><svg viewBox="0 0 24 24">${NM_ICON[id]||''}</svg><span>${S_(cfg.parts[id].short||cfg.parts[id].label)}</span></button>`).join('')}</div>
       <button class="btn small wide" id="nmcmp" ${count()>=cfg.need?'':'disabled'}>${S_(cfg.compareLabel||'Compare with the collar')}</button>`;
     $$('.nm-ic',box).forEach(b=>b.onclick=()=>log(b.dataset.ic));  // the buttons work like tapping that part in the picture
     $('#nmcmp',box).onclick=compare}

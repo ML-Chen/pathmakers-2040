@@ -65,7 +65,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     {name:'calf_tundra',k:'custom'},
     {name:'calf_ruth',k:'talk',talk:'ruth',scene:'nome_reserve',place:'North Pasture · Kigluaik Mammoth Reserve'},
     {name:'calf_observe',k:'custom'},
-    {name:'calf_eli',k:'talk',talk:'eli',scene:'nome_reserve',place:'East Fence · Kigluaik Mammoth Reserve',toast:'New work on your Workbench'},
+    {name:'calf_eli',k:'talk',talk:'eli',scene:'nome_reserve',place:'East Fence · Kigluaik Mammoth Reserve'},
     {name:'calf_bench',k:'bench'},{name:'calf_test',k:'custom'},{name:'calf_criteria',k:'criteria'},{name:'calf_table',k:'table'},
     {name:'calf_consent',k:'consent'},{name:'calf_memo',k:'memo'},{name:'calf_reveal',k:'reveal'},{name:'calf_debrief',k:'debrief'},{name:'calf_evening',k:'evening'}],
   cast:{
@@ -77,30 +77,30 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
   },
   voices:{ruthn:'af_heart',eli:'am_liam',aqpik:'af_nova'},
   glossary:{
-    'woolly mammoth':'A big, shaggy relative of elephants that lived in the Ice Age. In this 2040, a small herd lives again on a reserve near Nome.',
-    'mammoth':'A big, shaggy relative of elephants that lived in the Ice Age.',
+    'woolly mammoth':'A big, shaggy relative of elephants that lived in the Ice Age. In 2040, a small herd lives again on a reserve near Nome. True today: woolly mammoths died out about 4,000 years ago. Some scientists are trying to bring back mammoth-like elephants, but none has been born yet.',
+    'mammoth':'A big, shaggy relative of elephants that lived in the Ice Age. In 2040, a few live again near Nome. True today: mammoths are extinct, and nobody has brought one back.',
     'nurse':'When a baby animal drinks milk from its mother.','nursed':'Drank milk from its mother.','nursing':'Drinking milk from its mother.',
     'keeper':'A person who cares for animals every day and knows each one well.',
     'base rate':'How often something happens in general, before you look at the clues in one case.',
-    'collar translator':'An AI in an animal’s collar that turns its sounds and body language into words, with a number for how sure it is.',
-    'milk tusks':'A calf’s first small tusks. They come in at about six months and fall out later.',
+    'collar translator':'In 2040, an AI in an animal’s collar that turns its sounds and body language into words, with a number for how sure it is. True today: scientists use AI to study whale clicks and bird calls, but no device can turn what an animal means into words.',
+    'milk tusks':'A calf’s first small tusks, which fall out when the grown-up tusks grow in. In 2040, Aqpik’s are just coming in. True today: baby elephants have milk tusks too, and they lose them before they are about a year old.',
     'sedation':'Medicine that puts an animal into a deep sleep so vets can work safely.','sedate':'To give medicine that puts an animal into a deep sleep.',
     'protocol':'A set of steps that a system follows every time a certain thing happens.',
     'hertz':'A count of how many times a sound wave shakes each second. Low sounds have few hertz.',
     'confidence':'How sure someone, or some AI, is that a guess is right.',
-    'rumble':'A deep, low sound. Elephants and mammoths rumble to talk to each other.',
+    'rumble':'A deep, low sound. Elephants rumble to talk to each other, and mammoths probably did too.',
     'rut':'The fall season when male reindeer compete for mates. The bulls are jumpy and easy to scare.',
-    'herd drones':'Flying robots that guide the mammoth herd from pasture to pasture.',
+    'herd drones':'In 2040, flying robots that guide the mammoth herd from pasture to pasture. True today: some farmers already use drones to move sheep and cattle.',
     'tundra':'Cold, treeless land in the far north. The ground just below it stays frozen all year.',
     'quyanaq':'“Thank you” in Iñupiaq.','iñupiaq':'The Iñupiat are Alaska Native people of northern and northwest Alaska. Iñupiaq is their language.',
     'cloudberry':'A small orange berry that grows on the tundra. In Iñupiaq it is called aqpik.',
-    'mash':'Soft, wet food for young animals.','winter mix':'A richer mash the feeders switch to when the weather gets cold.',
+    'mash':'Soft, wet food for young animals.','winter mix':'A richer mash that the reserve’s feeder robots switch to when the weather gets cold.',
     'weather station':'A set of sensors that measures wind, rain, and temperature.',
     'quake sensor':'An instrument that feels tiny shakes in the ground.',
     'helium':'A light gas that makes balloons float.',
     'gums':'The soft pink skin around teeth.',
     'reindeer':'Tame relatives of caribou. Families on the Seward Peninsula have herded them since 1892.',
-    'matriarch':'The oldest female who leads an elephant or mammoth family.',
+    'matriarch':'The oldest female who leads an elephant family. Mammoth families were probably led the same way.',
     'permission':'Being allowed to do something by the person in charge.',
     'inspect':'To look at something closely to check it.',
     'animal welfare':'How well an animal is doing in its body and its feelings.',
@@ -111,14 +111,14 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     'norton sound':'The part of the Bering Sea right in front of Nome.'
   },
   guide:{
-    'nome-base-rate':{title:'Base rates',track:'Evidence and truth',text:'Before you look at clues, ask how often each cause happens in general. Sore mouths are common in young calves, so the translator started there. A less common cause needs strong clues, like a calf freezing every time the ground hums.',real:'True today: doctors learn the saying “When you hear hoofbeats, think horses, not zebras.” It means you should start with common causes.'},
-    'nome-check-translator':{title:'Check the translation',track:'Evidence and truth',text:'An AI translator gives its best guess with a confidence number. Compare it with what you can see, and ask what its sensors cannot sense. Aqpik’s collar could not hear the hum, but her feet could feel it.',real:'True today: scientists use AI to find patterns in sperm whale clicks and bird calls, but nobody can yet translate an animal’s sounds into full sentences.'},
+    'nome-base-rate':{title:'Base rates',track:'Evidence and truth',text:'Before you look at clues, ask how often each cause happens in general. In the reserve’s 2040 records, sore mouths are the most common reason a young calf stops eating, so the translator started there. A less common cause needs strong clues, like a calf freezing every time the ground hums.',real:'True today: doctors learn the saying “When you hear hoofbeats, think horses, not zebras.” It means you should start with common causes.'},
+    'nome-check-translator':{title:'Check the translation',track:'Evidence and truth',text:'In 2040, an AI translator gives its best guess about what an animal means, with a confidence number. Compare it with what you can see, and ask what its sensors cannot sense. Aqpik’s collar could not hear the hum, but her feet could feel it.',real:'True today: scientists use AI to find patterns in sperm whale clicks and bird calls, but nobody can yet translate an animal’s sounds into full sentences.'},
     'nome-test-small':{title:'Test small before going big',track:'Engineering and systems',text:'A cheap, safe test that checks one cause is often smarter than a big, risky test. Each result moves the odds, so the next step gets easier to choose.',real:'True today: vets and doctors often try a simple, safe step first, like changing a diet, before ordering tests that need sedation.'},
     'nome-feet':{title:'Hearing with your feet',track:'Living things and health',text:'Elephants make rumbles too low for people to hear. They feel rumbles in the ground through the soft pads of their feet. To listen, they freeze, spread their ears, and press a foot down.',real:'True today: researchers found that elephants can sense rumbles traveling through the ground, and that the pads of their feet are packed with touch sensors.'},
     'nome-local':{title:'Local knowledge',track:'People skills',text:'People who live on a land for years notice changes that sensors miss: which ridge the reindeer suddenly avoid, and which station nobody in town built.',real:'True today: Arctic scientists work with Iñupiaq hunters, whose knowledge of sea ice and weather goes back many generations.'},
-    'nome-who-decides':{title:'What may a machine do alone?',track:'Government, law, and power',text:'Some jobs are fine to automate, like warming a barn. Others, like sedating an animal, should wait for a person who knows the situation to say yes. A rule that runs on its own cannot know what Eli saw on the ridge.',real:'True today: autopilots can fly a plane for hours, but a pilot is always in command and decides when to take over.'}
+    'nome-who-decides':{title:'What may a machine do alone?',track:'Government, law, and power',text:'Some jobs are fine to automate, like warming a barn. Others, like sedating an animal, should wait for a person who knows the situation to say yes. In 2040, the reserve’s care system can sedate a calf by itself, but a rule that runs on its own cannot know what Eli saw on the ridge.',real:'True today: autopilots can fly a plane for hours, but a pilot is always in command and decides when to take over.'}
   },
-  lessons:{nome_feet:{title:'How mammoths hear with their feet',steps:[
+  lessons:{nome_feet:{title:'How elephants hear with their feet',steps:[
       {t:'Elephants make deep [[rumble]]s. Some are lower than people can hear.',viz:'calfRumble',cap:'A rumble too low for us'},
       {t:'Low sounds travel far through the ground, the way a drumbeat travels through a floor.',viz:'calfGroundWave',cap:'Through the ground'},
       {t:'The soft pads of their feet are packed with touch sensors that feel the ground shake.',viz:'calfFootpad',cap:'Inside a footpad'},
@@ -126,7 +126,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     quiz:[{q:'How can an elephant feel a far-away rumble?',opts:['Through the pads of its feet','By smelling it','With its tail'],a:0,why:'The footpads are packed with touch sensors that feel the ground shake.'},
       {q:'Why could a collar translator miss a very low hum?',opts:['Its microphones can’t hear sounds that low','Hums aren’t real','It only works at night'],a:0,why:'Aqpik’s collar can’t hear below 20 hertz. Her feet can still feel it.'},
       {q:'What does an elephant often do when it listens hard?',opts:['Freezes and spreads its ears','Runs in circles','Lies down to sleep'],a:0,why:'Freezing keeps its own body quiet so it can feel the sound.'}]}},
-  lesson:{id:'nome_feet',label:'Learn it fast: how mammoths hear with their feet'},
+  lesson:{id:'nome_feet',label:'Learn it fast: how elephants hear with their feet'},
   chatter:{
     nome_reserve:['Termination dust on the Kigluaiks already. Winter’s coming early.','I volunteer here on weekends. The calves are SO fluffy.','My grandma says the cranes left two weeks early this year.','Did you see the sunset last night? It was almost white.','The new port had three ships in at once yesterday. Busy town!','I’m learning Iñupiaq with my daughter. She corrects my accent.','Watch your step. Mammoths make big holes in soft ground.'],
     nome_barn:['Barn 2 is the warmest place on the reserve. The calves love it.','The feeder robots never forget a meal. I do, sometimes.']},
@@ -136,7 +136,8 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
       {who:'byte',mood:'neutral',text:'Here’s what the reserve’s systems did overnight. The feeders switched the calves to their [[winter mix]]. The [[herd drones]] moved the herd away from a fox. And this barn tested its heaters.'},
       {who:'byte',mood:'think',text:'There’s one worry, though. Aqpik, a five-month-old [[woolly mammoth]] calf, hasn’t [[nursed]] since yesterday morning. Her [[collar translator]] is 55% sure her mouth hurts.',choices:[
         {t:'What’s my job today?',reply:'Find out why Aqpik stopped eating, and decide what the reserve’s machines may do about it. The machines act on their own, so you set their rules and sign your name to them.'},
-        {t:'55% isn’t very sure.',reply:'Right! It’s only a bit better than a coin flip. That’s why we check it against what we can see with our own eyes.'}]}
+        {t:'55% isn’t very sure.',reply:'Right! It’s only a bit better than a coin flip. That’s why we check it against what we can see with our own eyes.'},
+        {t:'Wait, mammoths are real?',reply:'Here in 2040 they are, and this little herd is one of the first. Back in the 2020s, woolly mammoths were still extinct, and scientists were only starting to try to bring them back.'}]}
     ],
     ruth:[
       {who:'ruthn',mood:'smile',text:'You must be the new vet. I’m Ruth Nauyaq, the lead [[keeper]]. [[Quyanaq]] for coming out so early.'},
@@ -224,15 +225,17 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
   whyGuide(c){return c.auto==='ask'?'nome-who-decides':'nome-test-small'},
   vignette(kind){return typeof calfVignette==='function'?calfVignette(kind):vignette('healed')},
   debriefScene:'nome_barn',eveningScene:'nome_dusk',eveningPlace:'Nome · 8:40 PM',
+  get eveningMood(){const k=typeof S!=='undefined'&&S.result&&S.result.kind;return k==='still'||k==='tube'||k==='trouble'?'neutral':'happy'},
   consent:{scene:'nome_reserve',place:'North Pasture · Kigluaik Mammoth Reserve',left:'eli',right:'ruthn',title:'Ruth and Eli',role:'Lead keeper and reindeer herder',prompt:'So what’s the plan, Doc? And what about that ridge?',replyWho:'ruthn',heart:'ruthn',
-    opts(c,M){const f=forecastFor(c),e=Math.round(10*f.eats),n=Math.round(10*f.nosed);
-      const care={barn:'keeping Aqpik and Nuna in the quiet warming barn',pasture:'putting Aqpik back with the herd',exam:'a full exam under sedation'}[c.care];
-      const ridge={leave:'We leave the ridge station alone for now.',drone:'A camera-only drone checks the ridge station, which means it flies over your reindeer, Eli.',eli:'Eli, would you check the ridge station on your four-wheeler?'}[c.ridge];
-      const auto=c.auto==='ask'?' And the care system asks Ruth before it sedates her.':' The care system can still sedate her on its own on Sunday.';
-      return [{t:`I suggest ${care}. In about ${e} of 10 futures she’s eating by Monday, and in about ${n} of 10 she avoids sedation. ${ridge}${auto} What do you two think?`,good:true,mood:'smile',
+    opts(c,M){const f=forecastFor(c),e=f.eats;
+      const care={barn:'I’d keep Aqpik and Nuna in the quiet warming barn for two days, far from the ridge.',pasture:'I’d put Aqpik back out with the herd, so she can stay close to Nuna.',exam:'I’d give Aqpik a full exam today, so the vets would have to sedate her.'}[c.care];
+      const ridge={leave:'As for the ridge, I’d leave that station alone for now.',drone:'A camera drone would photograph the ridge station. I’m sorry, Eli, but it would fly over your reindeer.',eli:'Eli, could you ride up to the ridge station tonight and take a look at it?'}[c.ridge];
+      const odds=e>=.85?'I think she’ll very likely be eating again by Monday.':e>=.6?'There’s a good chance she’ll be eating again by Monday, but I can’t promise it.':e>=.35?'She might be eating again by Monday, but honestly, it could go either way.':'I have to be honest with you: with this plan, she probably won’t be eating by Monday.';
+      const auto=c.auto==='ask'?'If she hasn’t eaten by Sunday morning, the care system will ask Ruth before it sedates her.':'If she hasn’t eaten by Sunday morning, the care system will sedate her on its own.';
+      return [{t:`${care} ${ridge} ${odds} ${auto} What do you two think?`,good:true,mood:'smile',
           reply:c.ridge==='drone'?'Eli won’t love a drone over his reindeer, but you explained it straight. Let’s do it.':'Thank you for laying it out honestly. That’s a plan I can stand behind.'},
-        {t:'The collar translator is the expert here. It reads her sounds all day, so let’s just do what it says and treat her sore mouth.',good:false,mood:'worried',reply:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
-        {t:'Don’t worry, you two. Calves skip meals all the time, and she’ll definitely be eating again by tonight. Let’s just wait and see.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
+        {t:'The collar translator listens to Aqpik all day, so it knows her better than any of us do. Its numbers are better than our guesses. It says her mouth hurts, so I think we should treat her sore mouth and let the care system handle everything else. That station on the ridge isn’t really our business, so let’s leave it alone.',good:false,mood:'worried',reply:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
+        {t:'Don’t worry, you two. Young calves skip meals all the time, and I’m sure she’ll be eating again by tonight. Calves are tougher than they look. We don’t need to change the care system, and nobody has to go up to the ridge. Let’s just wait and see, because I know she’ll be fine.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
   memo:{starters:['I recommend ','because ','The chance she eats again by Monday is about ','For Aqpik and Eli, ','We will check by '],placeholder:'I recommend keeping Aqpik in the quiet barn because…',
     plan:/barn|pasture|herd|exam|sedat|drone|ridge|protocol|eli |eli’|eli's|test/,careLabel:'Includes what matters to Aqpik or Eli',care:/aqpik|calf|she |her |nuna|ruth|eli|reindeer|mother/,signAs:'Dr. ',topic:'Aqpik, a mammoth calf who stopped nursing'},
   reveal:{days(){return 3},who:'ruthn',
@@ -242,11 +245,20 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     mood(k){return k==='barn'||k==='herd'||k==='treated'?'happy':k==='trouble'||k==='still'?'sad':'worried'}},
   trap(c){const t=calfState().test;return {ok:!!S.told,text:S.told?'You noticed Aqpik freezing toward the ridge and told '+S.byte.name+', so the forecast included the hum.'+(t==='barn'?' Then your quiet-barn test checked it cheaply.':''):'You didn’t tell '+S.byte.name+' what you saw toward the ridge. Its forecast missed the most likely cause: a hum too low for her collar to hear.'}},
   byteGood:'Nice work, Doctor. You watched her closely, checked the translator, and tested small before going big.',
-  evening(){const st=calfState(),c=S.choice,found=c.ridge!=='leave';
-    return [`<b>${esc(S.byte.name)}:</b> “Look at that sunset. It’s almost white again, and the cranes over the sound turned back a second time.”`,
-      found?`“The ridge photos came back. That ‘weather station’ was a balloon launcher with a humming pump and a crate labeled TOTALLY NORMAL WEATHER BALLOONS. Two people ran off when the trooper drove up.”`
-        :`“Eli texted. His cousin at the weather service still doesn’t know who built that ridge station. Who puts up a station that nobody owns?”`,
-      `“Balloons, white sunsets, birds turning back, and all that helium. ${st.seen&&st.seen.crate?'Remember the two strangers hauling a crate up the ridge this morning? ':''}Someone is putting something in the sky.”`]},
+  // The evening closes the day: how it turned out for Aqpik, Nuna, Eli and the keepers, then one plain news item.
+  evening(){const c=S.choice||{},k=(S.result&&S.result.kind)||'herd',found=c.ridge&&c.ridge!=='leave';
+    const calf={barn:'“Ruth sent a photo from Warming Barn 2. Aqpik is asleep against Nuna’s front legs, with willow leaves still stuck in her fur.”',
+      herd:'“Ruth sent a photo from the north pasture. Aqpik is grazing right beside Nuna again, and she nursed four times this afternoon.”',
+      treated:'“Ruth says Aqpik ate a whole bowl of mash after the vets fixed the problem. She spent the afternoon leaning on Nuna.”',
+      tube:'“Ruth is spending the night in the barn with Aqpik. The tube is keeping her fed, and Nuna hasn’t left her side.”',
+      still:'“Ruth is staying in the barn with Aqpik tonight. Aqpik still isn’t nursing, so the vets will try again in the morning, and Nuna is right beside her.”',
+      trouble:'“Aqpik is breathing normally again. Ruth wrapped her in a warm blanket, and Nuna rumbled to her until she fell asleep.”'}[k]||'';
+    const eli={drone:'“Eli’s reindeer scattered when the camera drone flew over, but he found every one of them before dinner.”',
+      eli:'“Eli rode up to the ridge on his four-wheeler and took photos for the state trooper. His reindeer grazed calmly the whole time.”',
+      leave:'“Eli says his reindeer still won’t graze near the east ridge, but at least no drone flew over them today.”'}[c.ridge]||'';
+    const news=found?'“The state trooper looked at the ridge photos. The ‘weather station’ on the east ridge was really a balloon launcher with a humming pump. It has been switched off, and the ground near the barns is quiet again.”'
+      :'“The Ledger says the weather service still doesn’t know who put up the station on the east ridge. A state trooper plans to drive up and look at it tomorrow morning.”';
+    return [`<b>${esc(S.byte.name)}:</b> ${calf}`,eli,news].filter(Boolean)},
   brief(){const st=calfState(),p=calfPct(calfBelief(!!S.told));return `Current case: Aqpik, a 5-month-old woolly mammoth calf at the Kigluaik Mammoth Reserve near Nome, Alaska, stopped nursing Thursday morning. It is Friday. Her mother is Nuna; the lead keeper is Ruth Nauyaq; Eli Johnson herds reindeer east of the fence and wants the reserve's fence drones off his land during the rut. Base rates in 100 young calves that stop eating: 40 sore mouth (teeth), 25 upset belly, 20 scared, 15 sick. Her collar translator is 55% sure her mouth hurts (milk tusks due soon). The collar cannot hear below 20 hertz. The feeders switched to the winter mash on schedule. A new "weather station" appeared on the east ridge Tuesday, outside the fence; reserve drones need a person's permission to inspect it; the weather service says it isn't theirs. Care protocol: if she hasn't eaten by Sunday 6 AM, drones sedate her and robots tube-feed her and scan her teeth, with no signature needed (about 3 in 100 calves have breathing trouble under sedation; a full exam costs 400 coins). One-day tests: quiet night in the warming barn (40 coins, checks fear), old summer mash (10 coins, checks belly), cold willow chew (5 coins, checks sore gums).
 What you know now: ${S.told?'The player told you about the ridge; you checked the quake sensor and found a hum below 20 hertz every few minutes, and Aqpik freezes each time.':'Nothing about the ridge yet. Her freezes every few minutes have no known trigger.'} ${st.test?'The one-day test was '+CALF_TESTS[st.test].name+': '+(st.test==='exam'?'the exam looked normal (a milk tusk is coming in, which is normal; belly and blood fine), and she was tube-fed once.':CALF_TESTS[st.test].result?'she nursed and ate overnight.':'she still would not eat.'):'No test has been run yet.'} Your forecast of the cause now: scared ${p.fear}%, sore mouth ${p.tooth}%, upset belly ${p.belly}%, sick ${p.sick}%.
 The key consideration when asked what to do: ${S.told?'the ridge hum, which only her feet can feel; test the cheap, safe option that checks the most likely cause, and decide whether the care system may sedate her without asking':'ask whether the player saw anything when she freezes, especially toward the east ridge, and whether anyone mentioned the new station'}.`},
@@ -259,7 +271,7 @@ The key consideration when asked what to do: ${S.told?'the ridge hum, which only
     if(/sedat|exam|dart/.test(q))return 'A full exam needs sedation, which is like a very deep sleep. About 3 in 100 calves have trouble breathing under it, and it costs 400 coins. It checks teeth, belly, and blood, but it can’t check fear.';
     if(/protocol|auto|sunday/.test(q))return 'If she hasn’t eaten by Sunday at 6 AM, the care system will sedate her and feed her by tube, all on its own. You can change that so a keeper has to sign first.';
     if(/eli|reindeer|rut/.test(q))return 'Eli’s family has herded reindeer here for generations. It’s the rut, so his bulls spook easily, and our fence drones fly right along his land.';
-    if(/mammoth|calf|aqpik|nuna/.test(q))return 'Aqpik is five months old, about as tall as you, and she still nurses many times a day. Mammoth calves nursed for about three years!';
+    if(/mammoth|calf|aqpik|nuna/.test(q))return 'Aqpik is five months old and about a meter tall at the shoulder, and she still nurses many times a day. Elephant calves nurse for two years or more, and mammoth calves probably did too.';
     return null}
 };
 MISSIONS.calf.lines=[
@@ -284,14 +296,14 @@ MISSIONS.calf.lines=[
 
 // ---------- custom steps: the walk out, Observe, and the one-day test ----------
 const CALF_OBS={
-  parts:{ears:{label:'Ears',calm:['Ears relaxed, flopping a little.','“I’m calm” (65%)'],pulse:['Ears spread out wide and stiff.','“I’m alert” (70%)']},
-    trunk:{label:'Trunk',calm:['Trunk brings willow to her mouth.','“I’m hungry?” (40%)'],pulse:['Trunk curls up under her chin.','“I’m worried” (60%)']},
-    mouth:{label:'Chewing',calm:['Chews her willow just fine.','“I’m eating” (80%)'],pulse:['Stops chewing mid-bite and drops the willow.','“My mouth hurts” (55%)']},
-    feet:{label:'Feet',calm:['Stands on all four feet.','“I’m standing” (90%)'],pulse:['Lifts a front foot, then presses her toes down.','“My foot is sore?” (30%)']},
-    head:{label:'Head',calm:['Looks down at the willow.','“I’m looking at food” (50%)'],pulse:['Snaps her head up toward the east ridge.','“I’m looking for Mom?” (35%)']},
-    tail:{label:'Tail',calm:['Tail swishes side to side.','“I’m calm” (70%)'],pulse:['Tail lifts up stiff.','“I’m scared” (40%)']},
-    cup:{label:'Ruth’s tea',calm:['Ruth’s tea sits still on the post.','The collar can’t see this.'],pulse:['Ripples in Ruth’s tea, and there’s no wind!','The collar can’t see this.']},
-    ridge:{label:'East ridge',calm:['A red light blinks on the ridge station.','Outside the collar’s range.'],pulse:['The ridge light flashes fast while she freezes.','Outside the collar’s range.']}},
+  parts:{ears:{label:'Ears',short:'Ears',calm:['Ears relaxed, flopping a little.','“I’m calm” (65%)'],pulse:['Ears spread out wide and stiff.','“I’m alert” (70%)']},
+    trunk:{label:'Trunk',short:'Trunk',calm:['Trunk brings willow to her mouth.','“I’m hungry?” (40%)'],pulse:['Trunk curls up under her chin.','“I’m worried” (60%)']},
+    mouth:{label:'Chewing',short:'Mouth',calm:['Chews her willow just fine.','“I’m eating” (80%)'],pulse:['Stops chewing mid-bite and drops the willow.','“My mouth hurts” (55%)']},
+    feet:{label:'Feet',short:'Feet',calm:['Stands on all four feet.','“I’m standing” (90%)'],pulse:['Lifts a front foot, then presses her toes down.','“My foot is sore?” (30%)']},
+    head:{label:'Head',short:'Head',calm:['Looks down at the willow.','“I’m looking at food” (50%)'],pulse:['Snaps her head up toward the east ridge.','“I’m looking for Mom?” (35%)']},
+    tail:{label:'Tail',short:'Tail',calm:['Tail swishes side to side.','“I’m calm” (70%)'],pulse:['Tail lifts up stiff.','“I’m scared” (40%)']},
+    cup:{label:'Ruth’s tea',short:'Tea',calm:['Ruth’s tea sits still on the post.','The collar can’t see this.'],pulse:['Ripples in Ruth’s tea, and there’s no wind!','The collar can’t see this.']},
+    ridge:{label:'East ridge',short:'Ridge',calm:['A red light blinks on the ridge station.','Outside the collar’s range.'],pulse:['The ridge light flashes fast while she freezes.','Outside the collar’s range.']}},
   lines:{intro:'Watch Aqpik. Tap what she does with her ears, trunk, mouth, feet, head, and tail.',freeze:'She froze! Did you see where she looked?',ask:'So, what do you notice about her freezes?',
     good:'Yes! Mammoths feel low sounds through their feet. If something on that ridge hums, her collar can’t hear it, but she can.',
     bad:'Maybe. But between freezes she chews just fine. Let’s keep that in mind.',unsure:'Let’s keep watching. When she freezes, look where her head points.'},
@@ -300,7 +312,7 @@ function calfObserveStage(){
   // Nuna (her mother) stands behind on the left with her trunk lowered toward Aqpik; Ruth's tea sits on a fence post on the right.
   return `<defs><radialGradient id="nmgnd" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#5a3a1a" stop-opacity=".35"/><stop offset="1" stop-color="#5a3a1a" stop-opacity="0"/></radialGradient></defs>
     <ellipse cx="20" cy="4" rx="190" ry="16" fill="url(#nmgnd)"/>
-    <g transform="translate(-205 -4) scale(1.55)" opacity=".97">${nomeMammoth({age:'adult',shadow:false})}</g>
+    <g transform="translate(-222 -4) scale(1.55)" opacity=".97">${nomeMammoth({age:'adult',shadow:false})}</g>
     <g class="nm-grip">${[0,1,2].map(i=>`<ellipse cx="62" cy="2" rx="20" ry="4" style="--d:${i*.35}s"/>`).join('')}</g>
     ${nomeMammoth({id:'nmcalf',sprig:true,cls:'nm-eat'})}
     <g transform="translate(172 0)"><path d="M-5 2 L-4 -62 L4 -62 L5 2Z" fill="#5a4634" stroke="#2e2014" stroke-width="1.6"/><path d="M-4 -60 L-1.4 -60 L-1 0 L-4.6 0Z" fill="#8a6a50"/>
