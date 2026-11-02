@@ -1,0 +1,132 @@
+/* bea.css — "Dancing at 104": picture animations (beav-*), the interview, family meeting and rule-sheet screens (bea-*). */
+
+/* ---------- picture animations ---------- */
+.beav-wk{animation:beawk 4.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes beawk{0%,100%{fill:#e6e9f6}8%,30%{fill:#b3aaf0}}
+.beav-sitstand{animation:beasit 3.2s ease-in-out infinite}
+@keyframes beasit{0%,20%,100%{transform:translateY(0)}50%,70%{transform:translateY(-3px)}}
+.beav-fillup{transform-box:fill-box;transform-origin:50% 100%;animation:beafill 3.6s ease-out infinite}
+@keyframes beafill{0%{transform:scaleY(0)}40%,90%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:.6}}
+.beav-flutter{transform-box:fill-box;transform-origin:center;animation:beaflut .5s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
+@keyframes beaflut{from{transform:scale(.85) rotate(-8deg)}to{transform:scale(1.12) rotate(8deg)}}
+.beav-wobble{transform-box:fill-box;transform-origin:50% 100%;animation:beawob 2.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes beawob{0%,60%,100%{transform:none}70%{transform:rotate(-22deg)}80%{transform:rotate(14deg)}90%{transform:rotate(-6deg)}}
+.beav-step{opacity:0;animation:beastep 2.4s infinite;animation-delay:var(--d,0s)}
+@keyframes beastep{0%{opacity:0;transform:scale(.6)}8%,60%{opacity:1;transform:none}80%,100%{opacity:0}}
+.beav-fly2{animation:beafly 2.8s ease-in-out infinite}
+@keyframes beafly{0%{transform:translate(166px,50px);opacity:0}15%{opacity:1}70%{transform:translate(194px,50px);opacity:1}85%,100%{transform:translate(200px,50px);opacity:0}}
+.beav-scan{animation:beascan 2.4s ease-in-out infinite}@keyframes beascan{50%{opacity:.03}}
+.beav-check{transform-box:fill-box;transform-origin:center;animation:beachk 3s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes beachk{0%,8%{transform:scale(.9)}14%{transform:scale(1.12)}22%,100%{transform:none}}
+.beav-tick{opacity:0;animation:beatick 3s infinite;animation-delay:var(--d,0s)}@keyframes beatick{0%,12%{opacity:0}18%,90%{opacity:1}100%{opacity:0}}
+.beav-arrow{animation:beaarr 2.6s ease-in infinite}@keyframes beaarr{0%{transform:translateX(-30px);opacity:0}15%{opacity:1}70%,100%{transform:translateX(0);opacity:1}}
+.beav-late{opacity:0;animation:bealate 4.5s infinite}@keyframes bealate{0%,40%{opacity:0;transform:translateY(6px)}50%,92%{opacity:1;transform:none}100%{opacity:0}}
+.beav-press{transform-box:fill-box;transform-origin:center;animation:beapress 3s infinite}@keyframes beapress{0%,40%,60%,100%{transform:none}48%{transform:scale(.88);filter:brightness(1.2)}}
+.beav-race1,.beav-race2{transform-box:fill-box;transform-origin:left;animation:bearace1 4s ease-out infinite}
+.beav-race2{animation-name:bearace2}
+@keyframes bearace1{0%{transform:scaleX(0)}55%,95%{transform:scaleX(1)}100%{opacity:0}}
+@keyframes bearace2{0%{transform:scaleX(0)}55%{transform:scaleX(.9)}65%,95%{transform:scaleX(1)}100%{opacity:0}}
+.beav-leave{animation:bealeave 3.4s ease-in infinite;animation-delay:var(--d,0s)}
+@keyframes bealeave{0%,40%{transform:none;opacity:1}70%{transform:translateX(5px);opacity:.25}100%{transform:none;opacity:1}}
+.beav-pausepop{transform-box:fill-box;transform-origin:center;animation:beapause 3.6s infinite}
+@keyframes beapause{0%,45%{transform:scale(0);opacity:0}52%{transform:scale(1.15);opacity:1}60%,92%{transform:none;opacity:1}100%{opacity:0}}
+.beav-wake{opacity:0;animation:beawake 3.6s infinite;animation-delay:var(--d,0s)}@keyframes beawake{0%,15%{opacity:0}30%,85%{opacity:1}100%{opacity:0}}
+.beav-stick{animation:beastick 3.6s ease-in-out infinite}@keyframes beastick{0%{transform:translate(18px,-26px);opacity:0}20%{opacity:1}45%,90%{transform:none;opacity:1}100%{opacity:0}}
+.beav-ache{animation:igblink 1.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+.beav-calm{stroke-dasharray:400;stroke-dashoffset:400;animation:beacalm 3.6s linear infinite}@keyframes beacalm{0%,20%{stroke-dashoffset:400}80%,100%{stroke-dashoffset:0}}
+.beav-sign{stroke-dasharray:80;stroke-dashoffset:80;animation:beasign 3.6s ease-in-out infinite}@keyframes beasign{0%,10%{stroke-dashoffset:80}60%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:80}}
+.beav-bounce{animation:beabounce 1.6s ease-in-out infinite}@keyframes beabounce{0%,100%{transform:none}30%{transform:translateY(3px)}55%{transform:translateY(-1px)}}
+.beav-spring{transform-box:fill-box;transform-origin:50% 100%;animation:beaspring 1.6s ease-in-out infinite}@keyframes beaspring{0%,100%{transform:none}30%{transform:scaleY(.86)}55%{transform:scaleY(1.04)}}
+.beav-rise{transform-box:fill-box;transform-origin:50% 100%;animation:bearise 4s ease-out infinite;animation-delay:var(--d,0s)}@keyframes bearise{0%{transform:scaleY(0)}35%,92%{transform:scaleY(1)}100%{opacity:0}}
+.beav-order{animation:beaorder 3.2s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes beaorder{0%{transform:translateX(-50px);opacity:0}20%,70%{transform:none;opacity:1}100%{transform:translateX(50px);opacity:0}}
+.beav-shield{transform-box:fill-box;transform-origin:center;animation:igpulse 1.6s ease-in-out infinite}
+.beav-dance{animation:beadance 3s ease-in-out infinite}@keyframes beadance{0%,100%{transform:translateX(-2px)}50%{transform:translateX(2px)}}
+.beav-chand{animation:igblink 2.4s ease-in-out infinite}
+
+/* ---------- shared bits of the custom screens ---------- */
+.bea-whobyte{display:inline-block;width:26px;height:26px;margin-right:2px;vertical-align:-6px}
+.bea-whobyte .byteart{width:100%;height:100%}
+.bea-score{display:flex;align-items:center;gap:10px;background:#f3f0ff;border-radius:14px;padding:8px 12px;margin:6px 0 2px}
+.bea-score b{font-family:var(--display);font-size:1.35rem;color:var(--violet);white-space:nowrap}
+.bea-score span{font-size:.9rem;color:var(--ink2)}
+.choice.bea-go{background:var(--violet);border-color:var(--violet);color:#fff;text-align:center;font-family:var(--display);font-weight:600;font-size:1.05rem}
+.bea-iv-stage .speaker{width:min(74vw,340px)}
+
+/* ---------- family meeting: three people on stage ---------- */
+.talk .bea-meet-stage{height:min(40vh,330px);align-items:flex-end;gap:0;margin-top:2px}
+.bea-tri{position:relative;width:34%;height:88%;transition:filter .3s,opacity .3s,transform .3s}
+.bea-tri-bea{width:38%;height:100%;z-index:2}
+.bea-tri-grace{transform:translateX(6%)}.bea-tri-jordan{transform:translateX(-6%)}
+.bea-tri.dim{filter:saturate(.7) brightness(.82)}
+.bea-tri.talking{z-index:3}
+.bea-hearts{position:absolute;left:0;right:0;top:-2px;display:flex;justify-content:center;gap:2px;z-index:4;pointer-events:none}
+.bea-hearts i{font-style:normal;font-size:.8rem;color:rgba(255,255,255,.55);text-shadow:0 1px 3px rgba(20,25,60,.45)}
+.bea-hearts i.on{color:#ff6f8f}
+.bea-hearts i.pop{animation:bump .6s}
+.bea-meet-sub .choice{display:flex;flex-direction:column;gap:3px}
+.bea-move{display:inline-block;align-self:flex-start;font-style:normal;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 9px;color:#fff;background:var(--coral)}
+.bea-m-reflect{background:var(--teal)}.bea-m-ask{background:var(--violet)}.bea-m-summarize{background:#d99a12}
+.bea-tally{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0}
+.bea-tally .bea-move{font-size:.78rem;padding:4px 11px}
+
+/* ---------- Tempo's rule sheet ---------- */
+.bea-rules{padding:16px 14px}
+.bea-rules-head{display:flex;gap:10px;align-items:center}
+.bea-rules-head h2{margin:0 0 2px}
+.bea-rules-head p{font-size:.92rem;margin:0;color:var(--ink2)}
+.bea-wren{width:70px;height:96px;flex:none}
+.bea-legend{display:flex;gap:6px;margin:10px 0 4px;flex-wrap:wrap}
+.bea-legend span{font-size:.72rem;font-weight:800;border-radius:999px;padding:3px 9px;color:#fff}
+.bea-legend .bea-bin-alone,.bea-bins .segb.bea-bin-alone.on{background:var(--teal);border-color:var(--teal)}
+.bea-legend .bea-bin-ask,.bea-bins .segb.bea-bin-ask.on{background:var(--violet);border-color:var(--violet)}
+.bea-legend .bea-bin-bea,.bea-bins .segb.bea-bin-bea.on{background:#c0507a;border-color:#c0507a}
+.bea-rule{border:2px solid var(--line);border-radius:16px;padding:10px;margin-top:8px;background:#fbfcff;transition:border-color .2s}
+.bea-rule.good{border-color:#9fdcc2;background:#f3fbf7}
+.bea-rule.warn{border-color:#f5c98a;background:#fffaf0}
+.bea-rule-t{display:flex;gap:8px;align-items:flex-start;font-weight:800;line-height:1.3;margin-bottom:8px}
+.bea-rule-n{flex:none;width:22px;height:22px;border-radius:50%;background:var(--mist);display:grid;place-items:center;font-size:.75rem;color:var(--ink2)}
+.bea-bins .segb{font-size:.78rem;padding:7px 4px;color:var(--ink)}
+.bea-bins .segb.on{color:#fff}
+.bea-rule-fb{display:flex;gap:8px;align-items:center;margin-top:8px;animation:reveal .3s}
+.bea-rule-fb i{width:34px;flex:none}.bea-rule-fb i .byteart{width:100%}
+.bea-rule-fb p{margin:0;font-size:.88rem;color:var(--ink2)}
+.bea-sigscore{font-size:.9rem;color:var(--ink2)}
+
+/* Tempo's document */
+.doc-bea-tempo .doc-from{color:#0f8f84}
+
+/* ---------- Bea's treasures ---------- */
+.bea-trgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:6px 0 14px;transition:opacity .4s}
+.bea-trgrid.done{opacity:.35;pointer-events:none}
+.bea-tr{position:relative;border:0;border-radius:18px;background:rgba(255,250,242,.9);box-shadow:0 8px 22px rgba(30,15,20,.28);padding:8px 6px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .2s}
+.bea-tr:active{transform:scale(.96)}
+.bea-tr b{font-size:.74rem;color:#5a3a4a;font-weight:800;line-height:1.1;text-align:center}
+.bea-tr-art{display:block;width:100%;aspect-ratio:1}.bea-trsvg{width:100%;height:100%;display:block;overflow:visible}
+.bea-tr:not(.seen)::after{content:"";position:absolute;inset:-3px;border-radius:20px;border:2px solid #ffd45c;animation:beaglow 1.8s ease-in-out infinite;pointer-events:none}
+@keyframes beaglow{50%{opacity:.25;transform:scale(1.03)}}
+.bea-tr.seen::before{content:"✓";position:absolute;right:6px;top:4px;width:18px;height:18px;border-radius:50%;background:var(--good);color:#fff;font-size:.7rem;display:grid;place-items:center}
+.bea-tr.on{box-shadow:0 0 0 3px var(--violet),0 8px 22px rgba(30,15,20,.28)}
+.bea-trsub{display:grid;grid-template-columns:64px 1fr;gap:4px 10px;align-items:start}
+.bea-trbea{width:64px;height:82px;grid-row:1/2}
+.bea-trsub .choices,.bea-trsub .tap-hint{grid-column:1/-1}
+.bea-trtext p{min-height:2.6em}
+
+/* ---------- what matters to Bea ---------- */
+.bea-goalchips{margin:6px 0}
+.bea-goalchips .critb{font-size:.9rem;padding:8px 12px}
+.bea-goalchips .critb.bea-no{background:#ffe2e0;border-color:var(--warn);color:var(--warn);animation:beano .4s}
+@keyframes beano{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.choice.bea-go[disabled]{opacity:.45}
+
+/* ---------- the wedding ---------- */
+.bea-wcal{background:#fff;color:var(--ink);border-radius:18px;width:120px;padding:10px;margin:22vh auto 0;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.3)}
+.bea-wcal span{display:block;font-size:.8rem;font-weight:800;color:var(--coral);text-transform:uppercase;letter-spacing:.08em}
+.bea-wcal b{font-family:var(--display);font-size:3rem;line-height:1}
+.bea-wcal.done{animation:bump .5s}
+.bea-wfloor{margin:0 -16px;animation:reveal .6s}
+.bea-wsvg{display:block;width:100%;height:auto;overflow:visible}
+.bea-wsub{margin-top:-6px}
+.bea-wcap{font-size:1.2rem;margin:2px 0 0;color:var(--violet)}
+.beav-clap{animation:beaclap 1.2s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes beaclap{50%{transform:translateY(-2px)}}
+.beav-petal{animation:beapetal 6s linear infinite;animation-delay:var(--d,0s)}
+@keyframes beapetal{0%{transform:translate(var(--x),-10px) rotate(0);opacity:0}10%{opacity:1}100%{transform:translate(calc(var(--x) + 30px),240px) rotate(540deg);opacity:0}}
