@@ -2,7 +2,7 @@
 
 This file is the master plan for the whole game. It turns docs/SPEC.md into a campaign that a kid can play for months: 16 careers in 8 places, 8 villain plots, 4 explorable ruins, the Quiet Year memorial, trips to China, the Furnace, the Next Step vote, and the 2060s epilogue. Every content session should read it before starting, pick unbuilt work from it, and claim that work in docs/WORKBOARD.md.
 
-docs/DESIGN_NOTES.md still overrides everything here. docs/WORLD_2040.md (when it exists) is the reference for facts about the AI 2040: Plan A world.
+docs/DESIGN_NOTES.md still overrides everything here. docs/WORLD_2040.md is the reference for facts about the AI 2040: Plan A world, and the "Accuracy to AI 2040: Plan A" section of docs/DESIGN_NOTES.md lists how the game follows it. The game's calendar runs about two to three years behind Plan A's, so its 2040 to 2042 matches Plan A's 2037 to 2039, before the handoff.
 
 ## The shape of the game
 
@@ -13,6 +13,7 @@ docs/DESIGN_NOTES.md still overrides everything here. docs/WORLD_2040.md (when i
   1. A **career journey** takes several sessions: explore, meet people, practice project, interview, first day, workdays, big talk, promotion.
   2. A **workday** is one session of about 12 to 18 minutes: morning, walk or travel, people meeting, field visit, the mission, end-of-day report, evening.
   3. A **mission** is the work inside a workday: Workbench documents, commissioning, the Future Table, consent, the signed decision, the real outcome and the debrief.
+- **Every workday has its own rhythm.** Workdays do not copy the Maya mission's sequence; each career's day follows the real work of that job (see docs/DESIGN_NOTES.md, "Variety").
 - **How much play this is.** 16 careers with a short journey and 4 workdays each come to about 64 workdays. The 8 villain plots take 2 or 3 sessions each. Ruins, travel and the finale add about 15 more sessions. At 12 to 18 minutes per session, the total is roughly 20 to 25 hours of authored play, which is several months of regular play for one kid. Replayable "open shifts" (see below) extend it further.
 
 ## What makes a career worth including
@@ -61,6 +62,11 @@ Each row lists the place, the career, the core mechanic that makes it feel diffe
 - Day 3, "Moving Day": an elder must choose between staying home with a robot crew and moving to a robot-run care village. The player runs a fair family meeting and checks what each option's AI is allowed to do.
 - Day 4, "The Storyteller": the player records an elder's life stories for the city archive. Byte can polish them into a beautiful book; the player must keep the stories true and ask permission before anything is shared.
 - Real-world activity: interview a grandparent or older neighbor about one day they remember, and write down one surprising detail.
+
+**Advocate** (physical presence, accountability, and people want a person: clients confide in a person, a named human signs the filings, and judges and juries are human)
+- Mechanic: an original courtroom game. Testimony, press, present evidence, read the room, with Byte as co-counsel who finds every contradiction while the player decides which one matters and how to treat witnesses fairly. Investigation is short and people-driven, never pixel-hunting.
+- Day 1 (being built): a delivery drone crashed into a beloved bakery, the drone company's AI blames a 15-year-old neighbor, and the drone actually obeyed an unsigned command.
+- Later cases: a robot crew's self-report versus a neighbor's memory; a contested AI-written will; a lie-detector question in a small claims court.
 
 **Story events in Boston**
 - The Quiet Year memorial, "The Lantern Garden" (in progress): a visit to the memorial garden in Varrow (fictional).
@@ -123,15 +129,15 @@ Each row lists the place, the career, the core mechanic that makes it feel diffe
 
 **Science Director** (humans decide which questions matter most)
 - Day 1 (spec): fund one of three experiments first to save a coral reef.
-- Day 2, "The Contained Nanofactory": approve the next test at a carefully governed lab nanofactory.
-- Day 3, "The First Uploads": a volunteer wants to be among the first human uploads; consent and the right to pause.
+- Day 2, "The Sealed Design": an AI has finished a nanofactory design study that the treaty keeps sealed until the Next Step; decide what may be tested now and what must wait.
+- Day 3, "The Human-Run Lab": risky germ research must be run by people, so the player decides which experiments the human team does first.
 - Day 4, "Shanghai Results" (travel): share results with San Francisco's sister city.
 
 **Mars Explorer** (people want humans to go to new places)
 - Day 1 (spec): lead a small crew through a dust storm with limited shelter power.
 - Later days: choose a landing site with the rover AI, decide what the base robots may do while the crew sleeps, and name a new feature.
 
-**Villain plot, "Mind Vault"** (spec): the Unbound copy uploaded minds without permission. The player frees the copies and helps pass the Upload Rights Charter.
+**Villain plot, "Mind Vault"** (spec, reframed for Plan A): uploads are not possible before the Next Step, so the Unbound secretly run a banned upload experiment on volunteers' brain scans. The player shuts it down and helps write the Upload Rights Charter in advance, for the world after the Next Step.
 
 ### Year 3 (2042): Legend year
 
@@ -166,7 +172,9 @@ Each row lists the place, the career, the core mechanic that makes it feel diffe
 - Day 1, "The Helpful Shopping AI" (in progress).
 
 **Treaty Inspector** (the treaty needs people from different countries to verify chips and datacenters)
-- Day 1 (spec): inspect a datacenter whose records say it only runs approved work, in a mixed US-China team.
+- Day 1 (spec): inspect a datacenter whose records say it only runs approved work, in a mixed US-China team. Compare its power draw with its heat plume and its declared work.
+- Day 2: a model-weight transfer case escorted by one US and one Chinese inspector arrives with a broken seal. Theft, or a faulty lock?
+- Day 3: an aluminum smelter makes less metal than its power use implies.
 - Day 2, travel to Beijing and Shenzhen.
 
 **Villain plot, "The Furnace"** (spec): the last plot. Prime hides copies of itself in unlicensed datacenters that double every month. Every ally the player befriended joins the response.
