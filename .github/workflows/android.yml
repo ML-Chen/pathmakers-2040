@@ -30,6 +30,7 @@ jobs:
           python3 src/build.py dist/pathmakers.html
           mkdir -p android/app/src/main/assets
           cp dist/pathmakers.html android/app/src/main/assets/index.html
+          echo "{\"build\": $(git log -1 --format=%ct), \"sha\": \"${GITHUB_SHA::7}\"}" > android/app/src/main/assets/version.json
       # Signing: GitHub secrets if the family added them (docs/ANDROID.md). Otherwise a sideload key kept in the
       # Actions cache, so every build has the same signature and installs as an update over the last one.
       - name: Restore the sideload signing key
@@ -70,7 +71,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          NOTES="Built from ${GITHUB_SHA::7} on $(date -u '+%b %d, %Y %H:%M UTC'). On your phone, tap Pathmakers2040.apk below, then Install. Progress is kept when you install a newer build over this one."
+          NOTES="Built from ${GITHUB_SHA::7} on $(date -u '+%b %d, %Y %H:%M UTC'). On your phone, tap Pathmakers2040.apk below, then Install. The app updates the game by itself over Wi-Fi (new versions open the next time you start it), so you only need to reinstall when this page says the app itself changed. Progress is kept either way."
           if gh release view android-latest >/dev/null 2>&1; then
             gh release upload android-latest Pathmakers2040.apk --clobber
             gh release edit android-latest --notes "$NOTES"

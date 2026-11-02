@@ -40,3 +40,10 @@ gradle -p android assembleRelease    # debug-signed unless PM_KEYSTORE_* variabl
 ```
 
 The launcher icon is rendered from Byte with `node tools/android_icon.js`.
+
+## Updates
+The app updates the game by itself. Each time it starts, it reads `version.json` from the game's GitHub Pages site
+(https://ml-chen.github.io/pathmakers-2040/). If a newer build exists and the phone is on Wi-Fi (any unmetered
+network), it downloads the new page in the background, shows "A new version of Pathmakers is ready", and opens it the
+next time the app starts. Saves carry over because both copies load from the same in-app address. A newer APK always
+wins over an older download. Reinstalling is only needed when the app's own code changes (this file will say so).
