@@ -24,6 +24,12 @@ function igKids(n,col,o={}){const W=o.w||300;let s='';const cell=W/20;
     s+=`<g class="ig-kid ${on?'on':''}" style="--d:${(i*0.022).toFixed(2)}s;--c:${col}"><circle cx="${x}" cy="${y-cell*.18}" r="${cell*.2}"/><rect x="${x-cell*.22}" y="${y+cell*.02}" width="${cell*.44}" height="${cell*.34}" rx="${cell*.15}"/></g>`}
   return s}
 const VIZ={
+  healStage:({s})=>igFrame(300,110,`<g transform="translate(40 52)"><path d="M0 0 H96" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M0 0 H96" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/><path d="M124 ${s>=4?0:4} H220" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M124 ${s>=4?0:4} H220" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/>
+     ${s===1?`<ellipse cx="110" cy="2" rx="26" ry="20" fill="${IG.red}" opacity=".55" class="ig-pulse"/>`:''}
+     ${s===2?`<ellipse cx="110" cy="2" rx="28" ry="18" fill="#c9b8ff" class="ig-pulse"/>${[0,1,2,3,4].map(i=>`<circle cx="${92+i*9}" cy="${-6+(i%2)*10}" r="3" fill="#fff" class="ig-cell" style="--d:${i*.25}s"/>`).join('')}`:''}
+     ${s===3?`<ellipse cx="110" cy="2" rx="26" ry="16" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="3"/><ellipse cx="110" cy="2" rx="26" ry="16" fill="#c9b8ff" class="ig-fadeout"/>`:''}
+     ${s===4?`<ellipse cx="110" cy="0" rx="22" ry="13" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="3"/><rect x="-14" y="-28" width="248" height="56" rx="26" fill="${IG.cast}" stroke="#e9d9a8" stroke-width="3" opacity=".7" class="ig-pop"/>`:''}</g>
+     ${[1,2,3,4].map(i=>`<circle cx="${120+i*14}" cy="100" r="4" fill="${i<=s?IG.violet:IG.line}"/>`).join('')}`,'Bone healing stage '+s),
   arm:()=>igFrame(300,110,`${igArm(70,46,{crack:true,glow:false})}${igT(130,104,'The radius (thumb-side bone) has one crack',{s:11,c:IG.soft})}`,'A forearm with a cracked radius bone'),
   straightVsCrooked:()=>igFrame(300,150,`<g transform="translate(4 0) scale(.84)">${igArm(14,48,{})}</g>${igT(90,100,'Heals straight',{c:IG.green,s:12})}<path d="M76 108 l6 6 l12 -14" stroke="${IG.green}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
      <g transform="translate(160 0) scale(.84)">${igArm(14,48,{crooked:true})}</g>${igT(232,100,'Heals crooked',{c:IG.red,s:12})}<path d="M220 108 l12 12 M232 108 l-12 12" stroke="${IG.red}" stroke-width="3.4" stroke-linecap="round"/>
