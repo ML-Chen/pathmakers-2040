@@ -1,0 +1,116 @@
+/* shop.css — "The Helpful Shopping AI" (Vienna, AI Auditor): infographic motion, the pilot-test screen,
+   the Future Table odds panel and the market walk. Every class starts with shop- or sp- (pilot cards). */
+
+/* ---------- infographic motion ---------- */
+.shop-rotor{transform-box:fill-box;transform-origin:center;animation:shopRotor .18s linear infinite;animation-delay:var(--d,0s)}
+@keyframes shopRotor{50%{transform:scaleX(.35)}}
+.shop-flyx{animation:shopFlyX 9s linear infinite}.shop-flyx.d2{animation-duration:13s;animation-delay:-6s}
+@keyframes shopFlyX{from{transform:translateX(-40px)}to{transform:translateX(340px)}}
+.shop-low{animation:igblink 1.4s ease-in-out infinite}
+.shop-deliver{animation:shopDeliver 5s ease-in-out infinite}
+@keyframes shopDeliver{0%{transform:translate(182px,38px);opacity:0}10%{opacity:1}55%,70%{transform:translate(262px,42px);opacity:1}85%,100%{transform:translate(262px,42px);opacity:0}}
+.shop-pick{opacity:.15;animation:shopPick 3.6s infinite;animation-delay:var(--d,0s)}
+@keyframes shopPick{0%,8%{opacity:.15}12%,30%{opacity:1}36%,100%{opacity:.15}}
+.shop-coin-run{animation:shopCoinRun 2.7s linear infinite;animation-delay:var(--d,0s);opacity:0}
+@keyframes shopCoinRun{0%{transform:translate(0,0);opacity:0}8%{opacity:1}100%{transform:translate(142px,0);opacity:1}}
+.shop-magnet{transform-box:fill-box;transform-origin:center;animation:shopWiggle 1.2s ease-in-out infinite}
+@keyframes shopWiggle{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.shop-pull{animation:shopPull 2s ease-in-out infinite}.shop-pull.r{animation-name:shopPullR}
+@keyframes shopPull{50%{transform:translateX(6px)}}@keyframes shopPullR{50%{transform:translateX(-6px)}}
+.shop-paperL{animation:shopPaperL 4s ease-in-out infinite}.shop-paperR{animation:shopPaperR 4s ease-in-out infinite}
+@keyframes shopPaperL{0%,10%{transform:translate(150px,62px);opacity:0}20%{opacity:1}60%,85%{transform:translate(84px,42px);opacity:1}100%{transform:translate(84px,42px);opacity:0}}
+@keyframes shopPaperR{0%,10%{transform:translate(150px,62px);opacity:0}20%{opacity:1}60%,85%{transform:translate(216px,42px);opacity:1}100%{transform:translate(216px,42px);opacity:0}}
+.shop-stamp{transform-box:fill-box;transform-origin:center;animation:shopStamp 3.6s ease-out infinite}
+@keyframes shopStamp{0%,30%{transform:scale(1.8);opacity:0}40%,90%{transform:scale(1);opacity:1}100%{opacity:0}}
+.shop-hi{animation:shopHi 4s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes shopHi{0%,100%{opacity:1}50%{opacity:.55}}
+.shop-scan{animation:shopScan 4.4s ease-in-out infinite}
+@keyframes shopScan{0%,10%{transform:translate(98px,56px)}40%,55%{transform:translate(156px,36px)}75%,90%{transform:translate(160px,50px)}100%{transform:translate(98px,56px)}}
+.shop-hover{animation:shopHover 2.6s ease-in-out infinite}
+@keyframes shopHover{50%{transform:translateY(-4px)}}
+.shop-needle{animation:shopNeedle 4.5s cubic-bezier(.3,1.4,.5,1) infinite}
+@keyframes shopNeedle{0%{transform:rotate(-90deg)}30%,90%{transform:rotate(var(--a))}100%{transform:rotate(-90deg)}}
+.shop-flip{transform-box:fill-box;transform-origin:center;animation:shopFlip 2.4s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes shopFlip{0%,8%{transform:translateY(0) scaleX(1)}18%{transform:translateY(-14px) scaleX(.1)}28%{transform:translateY(-20px) scaleX(1)}38%{transform:translateY(-14px) scaleX(.1)}50%,100%{transform:translateY(0) scaleX(1)}}
+.shop-stack{opacity:0;animation:shopStack 5s ease-in infinite;animation-delay:var(--d,0s)}
+@keyframes shopStack{0%{transform:translateY(-50px);opacity:0}8%{transform:translateY(0);opacity:1}90%{opacity:1}100%{opacity:0}}
+.shop-ring{transform-box:fill-box;transform-origin:50% 10%;animation:shopRing 1.3s ease-in-out infinite}
+@keyframes shopRing{0%,40%,100%{transform:rotate(0)}50%{transform:rotate(-16deg)}60%{transform:rotate(14deg)}70%{transform:rotate(-10deg)}80%{transform:rotate(6deg)}}
+.shop-linepulse{animation:igblink 2.4s ease-in-out infinite}
+.shop-cross{stroke-dasharray:30;stroke-dashoffset:30;animation:shopCross 6s linear infinite;animation-delay:var(--d,0s)}
+@keyframes shopCross{0%{stroke-dashoffset:30}8%,92%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+.shop-hand{animation:shopHand 4s linear infinite}
+@keyframes shopHand{to{transform:rotate(360deg)}}
+.shop-growup{transform-box:fill-box;transform-origin:bottom;animation:shopGrowUp 3.6s ease-out infinite}
+@keyframes shopGrowUp{0%{transform:scaleY(.2)}35%,100%{transform:scaleY(1)}}
+.shop-curtL{transform-box:fill-box;transform-origin:left top;animation:shopCurt 3.2s ease-in-out infinite}.shop-curtR{transform-box:fill-box;transform-origin:right top;animation:shopCurt 3.2s ease-in-out infinite reverse}
+@keyframes shopCurt{50%{transform:skewX(1.6deg)}}
+.shop-letter{animation:shopLetter 4s ease-in-out infinite}
+@keyframes shopLetter{0%{transform:translateY(34px)}35%,90%{transform:translateY(0)}100%{transform:translateY(34px)}}
+.shop-bob{animation:shopHover 3.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+.shop-shrink{transform-box:fill-box;transform-origin:bottom;animation:shopShrink 4s ease-in-out infinite}
+@keyframes shopShrink{0%,10%{transform:scaleY(1.5)}50%,100%{transform:scaleY(1)}}
+.shop-heatwave{animation:shopHeat 3s ease-in infinite}.shop-heatwave.d2{animation-delay:-1.5s}
+@keyframes shopHeat{0%{transform:translateY(0);opacity:0}30%{opacity:.8}100%{transform:translateY(-26px);opacity:0}}
+.shop-meter{animation:shopMeter 2.2s ease-in-out infinite}
+@keyframes shopMeter{0%,100%{transform:rotate(38deg)}50%{transform:rotate(62deg)}}
+.shop-thermo{transform-box:fill-box;transform-origin:bottom;animation:shopGrowUp 3s ease-out infinite}
+.shop-seq{opacity:0;animation:shopSeq 4.5s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes shopSeq{0%{opacity:0}12%,70%{opacity:1}90%,100%{opacity:0}}
+.shop-land{animation:shopLand 3.4s ease-in-out infinite}
+@keyframes shopLand{0%{transform:translate(10px,-12px)}50%,80%{transform:translate(0,0)}100%{transform:translate(10px,-12px)}}
+.shop-zz{animation:shopZz 2.6s ease-in-out infinite}
+@keyframes shopZz{0%{transform:translateY(4px);opacity:0}40%{opacity:1}100%{transform:translateY(-8px);opacity:0}}
+.shop-ride{animation:shopRide 5s ease-in-out infinite}
+@keyframes shopRide{0%{transform:translateX(-30px)}50%{transform:translateX(4px)}100%{transform:translateX(-30px)}}
+.shop-roll{animation:shopRoll 4s ease-in-out infinite alternate}
+@keyframes shopRoll{from{transform:translateX(8px)}to{transform:translateX(-8px)}}
+.shop-sound{animation:igblink .9s infinite}
+.shop-lens{animation:shopLens 3.4s ease-in-out infinite}
+@keyframes shopLens{50%{transform:translate(-3px,2px)}}
+.shop-arc{animation:igblink 4.5s ease-in-out infinite}
+
+/* ---------- the Future Table odds panel ---------- */
+.shop-odds{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:7px;color:#fff}
+.so-row{display:grid;grid-template-columns:minmax(0,1fr) 96px auto;gap:8px;align-items:center;font-size:.8rem;font-weight:800}
+.so-row span{color:#dfe6ff}.so-row b{font-size:.8rem;white-space:nowrap;color:#fff}
+.so-bar{height:10px;background:rgba(255,255,255,.14);border-radius:999px;overflow:hidden}
+.so-bar i{display:block;height:100%;background:linear-gradient(90deg,#ffc06a,#f29a2e);border-radius:999px;transition:width .6s}
+.so-bar.fa i{background:linear-gradient(90deg,#ff9a9a,#e5484d)}
+.so-days{font-size:.74rem;color:#a9b6e6;font-weight:800}
+
+/* ---------- the pilot test ---------- */
+.shop-pilot h2{margin:0 0 4px}
+.sp-rule{font-size:.88rem;color:var(--ink2);margin:0 0 10px}
+.sp-tally{display:flex;gap:6px;margin-bottom:12px}
+.sp-slot{flex:1;height:10px;border-radius:5px;background:var(--line)}
+.sp-slot.ok{background:var(--good)}.sp-slot.red{background:var(--warn)}.sp-slot.cur{box-shadow:0 0 0 2px var(--violet)}
+.sp-card{border:2px solid var(--line);border-radius:18px;padding:12px;animation:reveal .3s}
+.sp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sp-n{font-weight:800;color:var(--ink2);font-size:.85rem}
+.sp-chip{display:inline-block;border-radius:999px;padding:4px 10px;font-size:.78rem;font-weight:800;color:#fff;background:#5b7bd5}
+.sp-chip.auto{background:#f29a2e}.sp-chip.careful{background:#5b7bd5}
+.sp-items{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.sp-item{display:flex;align-items:center;gap:4px;background:var(--mist);border-radius:12px;padding:3px 9px 3px 4px;font-size:.85rem}
+.sp-item em{font-style:normal;font-weight:800}
+.sp-icon{width:26px;height:26px;display:block}
+.sp-vs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sp-col{border-radius:14px;padding:8px;text-align:center;background:#fff7ec;border:2px solid #f6d3a4}
+.sp-col.twin{background:#e9faf7;border-color:#a6e6dc}
+.sp-h{font-size:.75rem;font-weight:800;color:var(--ink2)}
+.sp-storeicon{width:72px;height:58px;display:block;margin:2px auto 0}
+.sp-store{font-weight:800;font-size:.9rem}
+.sp-col b{font-family:var(--display);font-size:1.35rem}
+.sp-ask{font-weight:800;margin:10px 0 6px;font-size:.95rem}
+.sp-btns{display:flex;gap:8px}.sp-btns .btn{flex:1}
+.sp-btns .btn.sp-right{background:var(--good);color:#fff;box-shadow:0 5px 0 #127a52}
+.sp-btns .btn.sp-wrong{background:var(--warn);color:#fff;box-shadow:0 5px 0 #a8282c}
+.sp-fb p{margin:10px 0 8px;font-size:.92rem}
+.sp-sum .sp-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.sp-score{font-size:.85rem;color:var(--ink2);margin-top:8px}
+
+/* ---------- the market walk and the close-up ---------- */
+.shop-walk .pipjory.shop-pj{right:-2%;top:calc(83% - 104px);width:160px}
+.shop-knot{text-align:center}.shop-knot p{font-weight:800;margin:8px 0 0}
+.shop-knotcmp{width:100%;height:auto;display:block}
+.shop-vig{display:block}
