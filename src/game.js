@@ -36,7 +36,9 @@ function playLine(who,text){stopVoice();const id=playId;if(S.mute)return Promise
   MUSIC.duck(true);const res0=()=>{};
   return new Promise(res1=>{const res=()=>{if(id===playId)MUSIC.duck(false);res1()};const src=window.AUDIO&&AUDIO[key];
     if(src){const a=new Audio(src);curAudio=a;a.onended=()=>res();a.onerror=()=>res();a.play().catch(()=>res());return}
-    const dur=MUSIC.babble(t,who);setTimeout(res,Math.max(600,dur*1000+150))})}
+    const dur=who==='byte'?MUSIC.babble(t,who):0;setTimeout(res,Math.max(700,dur?dur*1000+150:t.length*55))})}
+// play a recorded clip by exact voice name (passers-by); silent if there is no clip
+function playVoice(voice,text){const src=window.AUDIO&&AUDIO[voice+'|'+speechText(text)];if(!src||S.mute)return;stopVoice();const a=new Audio(src);curAudio=a;MUSIC.duck(true);a.onended=()=>MUSIC.duck(false);a.play().catch(()=>MUSIC.duck(false))}
 async function playSeq(items){stopVoice();const id=playId;for(const [who,t] of items){if(id!==playId)return;await playLine(who,t);playId=id}}
 function speak(t){playLine('narrator',t)}
 function stopBabble(){}
@@ -133,6 +135,7 @@ function loopBg(){BG.raf=requestAnimationFrame(()=>{BG.raf=0;if(document.hidden|
 
 // ---------- screen framework ----------
 const TRACK_FOR={title:'title',setup:'title',talk:null,walk:'morning',bench:'work',criteria:'work',memo:'work',futuretable:'table',reveal:'table',debrief:'win',evening:'night'};
+if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
 function screen(cls,html){stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));

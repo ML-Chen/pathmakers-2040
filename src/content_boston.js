@@ -149,6 +149,11 @@ const EXTRA_LINES=[
   {who:'byte',text:'Sometimes a good plan gets unlucky. That\u2019s why we judge decisions by what we knew, not only by how they turned out.'},
   {who:'byte',text:'Nice work, Doctor. You listened, you explained, and Maya trusted you.'}
 ];
+// Passers-by: lines and the voice each scene's people use (Kokoro speaker names)
+const CHATTER={
+  street:['Ugh, the tram was ninety seconds late. NINETY seconds!','I\u2019m voting on the river park plan tonight. Did you read it?','Rain at 3:10, my phone says. Better hurry.','I teach violin on Saturdays. Just because I love it.','Did you hear about that secret datacenter near Calder Bay?','My grandpa ran his first marathon last week. He\u2019s 92!','I\u2019m learning Mandarin. N\u01d0 h\u01ceo!'],
+  hospital:['My knee feels brand new. Dr. Reyes explained everything so clearly.','I\u2019m visiting my great-grandma. She\u2019s 104 and still dances on Sundays!','Have you tried the cafeteria dumplings? Ten out of ten.','I volunteer here on Tuesdays. I read stories to the kids.']};
+const CHATTER_VOICES=['af_sarah','bm_lewis','af_nicole','bf_isabella','am_michael'];
 // Every line the game speaks with a recorded voice: [{voice, text}] with [[ ]] markup removed.
 function speechText(t){return String(t).replace(/\[\[|\]\]/g,'').replace(/\s+/g,' ').trim()}
 function spokenLines(){const out=[];const add=(who,t)=>{if(!t||/\{P\}/.test(t))return;const vs=who==='byte'?Object.values(BYTE_VOICES):[VOICES[who]||VOICES.narrator];for(const v of vs)out.push({voice:v,text:speechText(t)})};
@@ -157,5 +162,7 @@ function spokenLines(){const out=[];const add=(who,t)=>{if(!t||/\{P\}/.test(t))r
   for(const w in GLOSSARY)add('narrator',w+'. '+GLOSSARY[w]);
   for(const k in REVEAL_LINES)add('maya',REVEAL_LINES[k]);
   EXTRA_LINES.forEach(x=>add(x.who,x.text));
+  for(const k in CHATTER)CHATTER[k].forEach((t,i)=>out.push({voice:CHATTER_VOICES[i%CHATTER_VOICES.length],text:speechText(t)}));
+  out.push({voice:'bf_emma',text:speechText("Good morning, Doctor! Heads up: elevator B is a little slow today.")});
   const seen=new Set();return out.filter(x=>{const key=x.voice+'|'+x.text;if(seen.has(key))return false;seen.add(key);return true})}
 if(typeof module!=='undefined')module.exports={spokenLines};

@@ -42,13 +42,14 @@ BITRATE = "24k"
 # Game voice key -> rendering. speaker: Kokoro v1.0 speaker. speed: final pace.
 # pitch: final F0 factor. formant: vocal-tract (timbre) factor, applied by resampling;
 # the remaining pitch/formant is a formant-preserving rubberband shift.
+# Cast picked by audition (tools/AUDIO.md): widest intonation range per role, Whisper-checked.
 ROLES = {
-    "af_bella":   dict(speaker="af_heart", speed=1.12, pitch=1.0, formant=1.0),    # Byte (female)
-    "am_adam":    dict(speaker="am_puck", speed=1.12, pitch=1.0, formant=1.0),     # Byte (male)
-    "bf_emma":    dict(speaker="bf_emma", speed=1.03, pitch=1.0, formant=1.0),     # Dr. Reyes
-    "af_sky":     dict(speaker="af_nova", speed=1.12, pitch=1.2, formant=1.1),     # Maya, 11
-    "am_michael": dict(speaker="am_michael", speed=1.02, pitch=1.0, formant=1.0),  # Wei Lin, her dad
-    "bm_george":  dict(speaker="bm_fable", speed=1.0, pitch=1.0, formant=1.0),     # narrator
+    "af_bella":   dict(speaker="af_sarah", speed=1.12, pitch=1.10, formant=1.04),    # Byte (female): bright puppy
+    "am_adam":    dict(speaker="am_fenrir", speed=1.12, pitch=1.08, formant=1.03),   # Byte (male): young, upbeat
+    "bf_emma":    dict(speaker="af_kore", speed=1.03, pitch=1.0, formant=1.0),       # Dr. Reyes
+    "af_sky":     dict(speaker="af_jessica", speed=1.12, pitch=1.22, formant=1.10),  # Maya, 11: child pitch/timbre
+    "am_michael": dict(speaker="am_liam", speed=1.02, pitch=1.0, formant=1.0),       # Wei Lin, her dad
+    "bm_george":  dict(speaker="bm_fable", speed=1.05, pitch=1.0, formant=1.0),      # narrator: storyteller
 }
 
 # Rewrites applied ONLY to the text fed to the TTS model; AUDIO keys keep the exact text.
@@ -162,7 +163,9 @@ class Synth:
                         tokens=os.path.join(MODEL_DIR, "tokens.txt"),
                         data_dir=os.path.join(MODEL_DIR, "espeak-ng-data"),
                         lexicon=lex if has_lex else "",
-                        lang=("en-gb" if acc == "gb" else "en-us") if has_lex else "",
+                        # espeak-ng fallback voice for words not in the lexicon ("en" is British;
+                        # sherpa-onnx 1.13.8 returns no audio for "en-gb").
+                        lang=("en" if acc == "gb" else "en-us") if has_lex else "",
                     ),
                     num_threads=int(os.environ.get("TTS_THREADS") or os.cpu_count() or 2),
                 ),

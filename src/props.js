@@ -21,16 +21,13 @@ const PROPS_ART={
   star:()=>`<svg viewBox="0 0 40 40"><g class="pa-body"><path d="M20 2 l5 12 l13 1 l-10 8 l3 13 l-11 -7 l-11 7 l3 -13 l-10 -8 l13 -1z" fill="#ffe8a3"/></g></svg>`,
   moon:()=>`<svg viewBox="0 0 80 80"><g class="pa-body"><circle cx="40" cy="40" r="38" fill="#fff8dc" opacity=".25"/><circle cx="40" cy="40" r="22" fill="#fff8dc"/><circle cx="33" cy="34" r="4" fill="#efe4b8"/><circle cx="47" cy="46" r="3" fill="#efe4b8"/></g></svg>`
 };
-const CHATTER={
-  street:['Ugh, the tram was ninety seconds late. NINETY seconds!','I\u2019m voting on the river park plan tonight. Did you read it?','Rain at 3:10, my phone says. Better hurry.','I teach violin on Saturdays. Just because I love it.','Did you hear about that secret datacenter near Calder Bay?','My grandpa ran his first marathon last week. He\u2019s 92!','I\u2019m learning Mandarin. N\u01d0 h\u01ceo!'],
-  hospital:['My knee feels brand new. Dr. Reyes explained everything so clearly.','I\u2019m visiting my great-grandma. She\u2019s 104 and still dances on Sundays!','Have you tried the cafeteria dumplings? Ten out of ten.','I volunteer here on Tuesdays. I read stories to the kids.']};
 const PROPS={
   home:[{id:'clock',x:22,y:86,w:58,sfx:'ring',fx:'ring',burst:'notes'},{id:'tablet',x:42,y:87.5,w:78,sfx:'blip',fx:'screen'},{id:'mug',x:64,y:87,w:52,sfx:'clink',fx:'jiggle',burst:'steam'},{id:'plant',x:82,y:86.5,w:60,sfx:'rustle',fx:'wiggle',burst:'leaves'}],
   street:[{id:'tree',x:13,y:80,w:110,sfx:'rustle',fx:'wiggle',burst:'leaves'},{id:'lamp',x:93,y:80,w:44,sfx:'click',fx:'toggle'},{id:'robot',x:76,y:81,w:50,sfx:'beep',fx:'spin'},{id:'pigeon',x:34,y:83,w:44,sfx:'flap',fx:'flyaway'},
     {id:'person',x:52,y:82,w:58,talk:'street',look:{skin:'#c98e64',shirt:'#ff7a6b',hair:'#1b1410'}},{id:'person',x:63,y:80,w:52,talk:'street',look:{skin:'#f6d2bd',shirt:'#6c5ce7',hair:'#c9772d'}}],
   hospital:[{id:'plant',x:10,y:90,w:60,sfx:'rustle',fx:'wiggle',burst:'leaves'},{id:'robot',x:88,y:90,w:52,sfx:'beep',fx:'spin'},{id:'orb',x:50,y:58,w:110,sfx:'chime',fx:'glow',burst:'sparkles',say:'Good morning, Doctor! Heads up: elevator B is a little slow today.',who:'halo'},
     {id:'person',x:28,y:89,w:56,talk:'hospital',look:{skin:'#f1cfb6',shirt:'#16b3a6',hair:'#e8e8e8'}},{id:'person',x:72,y:88,w:54,talk:'hospital',look:{skin:'#7a4a2c',shirt:'#f5b82e',hair:'#1b1410'}}],
-  night:[{id:'moon',x:78,y:20,w:80,sfx:'chime',fx:'glow',burst:'sparkles'},{id:'star',x:20,y:10,w:30,sfx:'chime',fx:'shoot'},{id:'star',x:46,y:16,w:22,sfx:'chime',fx:'shoot'}],
+  night:[{id:'star',x:20,y:10,w:30,sfx:'chime',fx:'shoot'},{id:'star',x:46,y:16,w:22,sfx:'chime',fx:'shoot'}],
   table:[]
 };
 function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${p.talk?'Talk to a passer-by':'Play with the '+p.id}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
@@ -42,7 +39,7 @@ function wireProps(){$$('.prop').forEach(b=>b.onclick=e=>{e.stopPropagation();MU
   if(p.talk||p.say){const lines=p.say?[p.say]:CHATTER[p.talk];b._n=((b._n??Math.floor(Math.random()*lines.length))+1)%lines.length;const line=lines[b._n];
     $$('.pbubble').forEach(x=>x.remove());const r0=b.getBoundingClientRect();const d=document.createElement('div');d.className='pbubble';d.textContent=line;document.body.appendChild(d);
     d.style.left=Math.max(8,Math.min(innerWidth-d.offsetWidth-8,r0.left+r0.width/2-d.offsetWidth/2))+'px';d.style.top=Math.max(8,r0.top-d.offsetHeight-8)+'px';
-    MUSIC.babble(line,p.who||'person');b.classList.remove('fx-hop');void b.offsetWidth;b.classList.add('fx-hop');setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},4200);
+    if(p.say)playVoice('bf_emma',line);else playVoice(CHATTER_VOICES[b._n%CHATTER_VOICES.length],line);b.classList.remove('fx-hop');void b.offsetWidth;b.classList.add('fx-hop');setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},4200);
     S.chats=(S.chats||0)+1;if(!p.fx)return}
   b.classList.remove('fx-'+p.fx);void b.offsetWidth;b.classList.add('fx-'+p.fx);if(p.fx==='toggle')b.classList.toggle('off');
   MUSIC.sfx(p.sfx);const r=b.getBoundingClientRect();if(p.burst)burst(r.left+r.width/2,r.top+r.height*.3,p.burst,6);
