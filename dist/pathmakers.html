@@ -434,6 +434,9 @@ svg text:not([font-family]){font-family:var(--body)}
 .mtxt{display:flex;flex-direction:column;min-width:0}.mtxt span{font-size:.85rem;color:var(--ink2)}
 .mstar{color:var(--gold);letter-spacing:1px}
 .hud-btns .hbtn{width:38px;height:38px}
+/* the place label wraps to a second line instead of cutting off long names; small phones get slightly smaller HUD buttons */
+.place{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.12;padding:6px 12px;font-size:.82rem}
+@media (max-width:380px){.hud-btns{gap:4px}.hud-btns .hbtn{width:35px;height:35px}.hbtn svg{width:20px;height:20px}}
 
 /* parent.css — the grown-ups' progress page (parent.js) */
 .pp{position:fixed;inset:0;z-index:45;background:var(--mist);overflow-y:auto;overscroll-behavior:contain;opacity:0;transform:translateY(16px);transition:opacity .25s,transform .25s}
@@ -924,6 +927,96 @@ svg text:not([font-family]){font-family:var(--body)}
 .mk-result{font-family:var(--display);font-weight:600;font-size:1.3rem;border-radius:999px;padding:6px 18px}
 .mk-result.pass{background:var(--good)}.mk-result.fail{background:#d0473c}
 .mk-later{font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ffd45c}
+
+/* The Ledger: the in-world news app (src/ledger.js). Newsprint cream, serif headlines, stamps for spotted tricks. */
+.sheet.ledger .sheet-in{height:94vh;max-height:94vh;background:#fbf7ee}
+.sheet.ledger .sheet-top h2{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:1.65rem;letter-spacing:-.01em}
+.sheet.ledger .sheet-top{border-bottom:3px double #2a2f4a;margin-bottom:6px;padding-bottom:8px}
+.hbtn .lg-badge{background:var(--coral)}
+.lg-menu svg{width:22px;height:22px}
+.lg-mnew{background:var(--coral);color:#fff;font-family:var(--body);font-weight:800;font-size:.75rem;border-radius:999px;padding:2px 8px;margin-left:4px}
+.lg-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 8px;font-size:.82rem;font-weight:800;color:var(--ink2)}
+.lg-edition{font-family:Georgia,serif;font-style:italic;font-weight:700}
+.lg-score{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid #e4dcc6;border-radius:999px;padding:3px 10px 3px 6px;color:var(--ink)}
+.lg-score svg{width:16px;height:16px;color:var(--violet)}
+.lg-score b{color:var(--violet);margin-right:-2px}
+.lg-hello{background:#f1ecff;margin:4px 0 10px}
+.lg-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:6px}
+.lg-chip{flex:none;border:1.5px solid #e4dcc6;background:#fff;border-radius:999px;padding:6px 13px;font-weight:800;font-size:.86rem;color:var(--ink2)}
+.lg-chip.on{background:#2a2f4a;border-color:#2a2f4a;color:#fff}
+.lg-list{display:flex;flex-direction:column;gap:10px;padding-bottom:16px}
+.lg-card{position:relative;display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;align-items:center;text-align:left;border:0;background:#fff;border-radius:16px;padding:10px;box-shadow:0 3px 12px rgba(60,50,20,.08);animation:reveal .3s backwards}
+.lg-card:nth-child(2){animation-delay:.04s}.lg-card:nth-child(3){animation-delay:.08s}.lg-card:nth-child(4){animation-delay:.12s}.lg-card:nth-child(5){animation-delay:.16s}
+.lg-card.big{grid-template-columns:1fr;padding:12px}
+.lg-thumb{background:var(--mist);border-radius:12px;overflow:hidden;padding:4px;pointer-events:none}
+.lg-thumb svg{display:block;width:100%;height:auto}
+.lg-card:not(.big) .lg-thumb{aspect-ratio:1.45;display:grid;place-items:center}
+.lg-card h3{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:1.02rem;line-height:1.22;margin:0 0 4px;color:var(--ink)}
+.lg-card.big h3{font-size:1.32rem}
+.lg-card.unread h3::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--coral);margin:0 7px 2px 0;vertical-align:middle}
+.lg-meta{font-size:.76rem;font-weight:800;color:var(--ink2)}
+.lg-saved{position:absolute;right:10px;top:-3px;width:18px;color:var(--gold)}
+.lg-saved svg{display:block;width:18px;height:22px}
+.lg-empty{text-align:center;padding:24px 0}
+.lg-stamp{position:absolute;right:10px;bottom:10px;transform:rotate(-8deg);border:2.5px solid #d7263d;color:#d7263d;border-radius:8px;padding:1px 7px;font-family:var(--display);font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.85)}
+.lg-stamp.ok{border-color:var(--good);color:var(--good)}
+/* article */
+.lg-art{padding-bottom:28px}
+.lg-back{display:inline-flex;align-items:center;gap:4px;border:0;background:none;padding:4px 0;margin-bottom:6px;font-weight:800;color:var(--violet)}
+.lg-back svg{width:18px;height:18px}
+.lg-headwrap{position:relative}
+.lg-head{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:1.6rem;line-height:1.16;margin:0 0 8px;color:var(--ink)}
+.lg-stamp.big{position:absolute;right:-2px;bottom:-14px;font-size:1.05rem;padding:2px 10px;border-width:3px;z-index:2}
+.lg-stamp.slam{animation:lgslam .55s cubic-bezier(.2,1.6,.4,1)}
+@keyframes lgslam{0%{transform:rotate(-8deg) scale(2.6);opacity:0}60%{transform:rotate(-8deg) scale(.92);opacity:1}100%{transform:rotate(-8deg) scale(1)}}
+.lg-by{display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:800;color:var(--ink2);padding:6px 0;border-top:1px solid #e9e1cc;border-bottom:1px solid #e9e1cc;margin-bottom:4px}
+.lg-by i{flex:none;width:26px;height:26px;color:var(--good)}
+.lg-by i svg{display:block;width:26px;height:26px}
+.lg-by.unsigned i{color:#a7a29a}
+.lg-by small{display:block;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--good)}
+.lg-by.unsigned small{color:#a7a29a}
+.lg-art .step{border-top-color:#ece4cf}
+.lg-art .fig{background:#f3efe4}
+.lg-art .doc-tools{margin:8px 0 2px}
+.mini-btn.on{background:var(--gold);border-color:var(--gold);color:#3a2a00}
+#lg-go{margin:10px 0 0}
+.lg-check{margin-top:14px}
+.lg-ask{background:#fff;border:2px dashed #d9cfb4;border-radius:18px;padding:12px 14px;text-align:center}
+.lg-ask b{font-family:var(--display);font-weight:600;font-size:1.1rem;display:block;margin-bottom:8px}
+.lg-ask .row{justify-content:center}
+.lg-ask .btn svg,.lg-check .btn svg{width:18px;height:18px}
+.lg-check .row{margin-top:6px}
+.lg-find{display:flex;align-items:center;gap:8px;background:#2a2f4a;color:#fff;border-radius:14px;padding:10px 12px}
+.lg-find svg{width:22px;height:22px;flex:none;color:var(--gold)}
+.lg-findbar{position:sticky;top:0;z-index:3;margin:0 -2px 8px;padding-top:2px;background:#fbf7ee}
+.lg-hint{min-height:0;font-weight:800;color:var(--violet);margin:6px 4px 2px;font-size:.92rem}.lg-hint:empty{display:none}
+.lg-check .byte-note.lg-hop{animation:hop .6s}
+.finding .lg-part{cursor:zoom-in;outline:2px dashed rgba(108,92,231,.38);outline-offset:3px;border-radius:10px}
+.finding .lg-part:hover{outline-color:var(--violet);background:rgba(108,92,231,.06)}
+.lg-part.lg-wrong{animation:lgshake .4s}
+@keyframes lgshake{20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.lg-part.lg-right{outline:3px solid var(--gold)!important;background:#fff6d6!important}
+.lg-part.lg-show{outline:3px solid var(--gold)!important;animation:flash 1.6s infinite}
+/* picture animations used by src/viz/ledger.js */
+.lg-bob{animation:lgbob 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgbob{50%{transform:translateY(-4px)}}
+.lg-drift{animation:lgdrift 6s ease-in-out infinite alternate;animation-delay:var(--d,0s)}@keyframes lgdrift{from{transform:translateX(-8px)}to{transform:translateX(8px)}}
+.lg-spin{transform-box:fill-box;transform-origin:center;animation:lgspin 6s linear infinite}@keyframes lgspin{to{transform:rotate(360deg)}}
+.lg-fade{animation:lgfade 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgfade{0%,100%{opacity:.25}50%{opacity:1}}
+.lg-in{opacity:0;animation:lgin 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lgin{0%{opacity:0;transform:translateY(6px)}12%,85%{opacity:1;transform:none}100%{opacity:0}}
+.lg-pop{transform-box:fill-box;transform-origin:center;animation:lgpopin 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lgpopin{0%{transform:scale(0);opacity:0}10%{transform:scale(1.15);opacity:1}16%,88%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
+.lg-grow{transform-box:fill-box;transform-origin:bottom;animation:lggrow 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lggrow{0%{transform:scaleY(0)}30%,88%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.lg-growx{transform-box:fill-box;transform-origin:left;animation:lggrowx 5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes lggrowx{0%{transform:scaleX(0)}30%,88%{transform:scaleX(1)}100%{transform:scaleX(1);opacity:0}}
+.lg-swing{transform-box:fill-box;transform-origin:50% 0;animation:lgswing 2.4s ease-in-out infinite alternate}@keyframes lgswing{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+.lg-beat{transform-box:fill-box;transform-origin:center;animation:lgbeat 1.6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgbeat{50%{transform:scale(1.12)}}
+.lg-move{animation:lgmove 7s linear infinite;animation-delay:var(--d,0s)}@keyframes lgmove{from{transform:translateX(var(--from,-60px))}to{transform:translateX(var(--to,360px))}}
+.lg-flash{animation:lgflash 2.2s steps(1) infinite;animation-delay:var(--d,0s)}@keyframes lgflash{0%,60%{opacity:1}61%,100%{opacity:0}}
+.lg-flip{animation:lgflip 4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgflip{0%,40%{opacity:1}50%,90%{opacity:0}100%{opacity:1}}
+.lg-flop{animation:lgflop 4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes lgflop{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
+.lg-dash{stroke-dasharray:5 6;animation:lgdash 1s linear infinite}@keyframes lgdash{to{stroke-dashoffset:-11}}
+.lg-wave{animation:lgwave 4s linear infinite}@keyframes lgwave{to{transform:translateX(-40px)}}
+.lg-rise{animation:lgrise 4s ease-in infinite;animation-delay:var(--d,0s)}@keyframes lgrise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-40px);opacity:0}}
+.lg-turn{transform-box:fill-box;transform-origin:center;animation:lgturn 6s ease-in-out infinite}@keyframes lgturn{0%,30%{transform:none}55%,100%{transform:scaleX(-1)}}
+@media (prefers-reduced-motion: reduce){.lg-bob,.lg-drift,.lg-spin,.lg-fade,.lg-in,.lg-pop,.lg-grow,.lg-growx,.lg-swing,.lg-beat,.lg-move,.lg-flash,.lg-flip,.lg-flop,.lg-dash,.lg-wave,.lg-rise,.lg-turn{animation:none;opacity:1}}
 
 /* shop.css — "The Helpful Shopping AI" (Vienna, AI Auditor): infographic motion, the pilot-test screen,
    the Future Table odds panel and the market walk. Every class starts with shop- or sp- (pilot cards). */
@@ -6078,6 +6171,684 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
   });
 })();
 
+/* mp_kit.js — painting utilities shared by the Marrow Point scenes (mp_tower, mp_control, mp_roof), as window.MPK.
+   Copied from src/paint_boston.js (which adapted them from Couchcatch's scenery code), so these scenes stay self-contained. */
+(function () {
+  'use strict';
+  var PI = Math.PI, TAU = PI * 2;
+  function rng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function hash(i, s) {
+    var x = Math.imul((i | 0) ^ Math.imul(s | 0, 0x9E3779B1), 0x27d4eb2d);
+    x ^= x >>> 15; x = Math.imul(x, 0x85ebca6b); x ^= x >>> 13; x = Math.imul(x, 0xc2b2ae35); x ^= x >>> 16;
+    return (x >>> 0) / 4294967296;
+  }
+  function vnoise(x, s) {
+    var i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f);
+    return hash(i, s) * (1 - u) + hash(i + 1, s) * u;
+  }
+  function fbm(x, s, oct) {
+    var v = 0, a = 0.5, fr = 1, n = 0, o;
+    for (o = 0; o < (oct || 5); o++) { v += a * vnoise(x * fr, s + o * 131); n += a; a *= 0.5; fr *= 2.07; }
+    return v / n;
+  }
+  function h2(ix, iy, s) { return hash(Math.imul(ix | 0, 0x1B873593) ^ Math.imul(iy | 0, 0x5BD1E995), s); }
+  function vn2(x, y, s) {
+    var ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+    var ux = fx * fx * (3 - 2 * fx), uy = fy * fy * (3 - 2 * fy);
+    var a = h2(ix, iy, s), b = h2(ix + 1, iy, s), c = h2(ix, iy + 1, s), d = h2(ix + 1, iy + 1, s);
+    return (a + (b - a) * ux) * (1 - uy) + (c + (d - c) * ux) * uy;
+  }
+  function fbm2(x, y, s, oct) {
+    var v = 0, a = 0.5, fr = 1, n = 0, o;
+    for (o = 0; o < (oct || 4); o++) { v += a * vn2(x * fr, y * fr, s + o * 71); n += a; a *= 0.5; fr *= 2.03; }
+    return v / n;
+  }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function smooth(a, b, x) { var t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); }
+  var HX = {};
+  function hex(c) { var v = HX[c]; if (v) return v; var d = c.replace('#', ''); v = [parseInt(d.substr(0, 2), 16), parseInt(d.substr(2, 2), 16), parseInt(d.substr(4, 2), 16)]; HX[c] = v; return v; }
+  function h2s(v) { v = clamp(Math.round(v), 0, 255); return (v < 16 ? '0' : '') + v.toString(16); }
+  function mix(c1, c2, t) { var a = hex(c1), b = hex(c2); return '#' + h2s(lerp(a[0], b[0], t)) + h2s(lerp(a[1], b[1], t)) + h2s(lerp(a[2], b[2], t)); }
+  function rgba(c, al) { var a = hex(c); return 'rgba(' + a[0] + ',' + a[1] + ',' + a[2] + ',' + (+al).toFixed(3) + ')'; }
+  function lg(ctx, x0, y0, x1, y1, st) { var g = ctx.createLinearGradient(x0, y0, x1, y1); for (var i = 0; i < st.length; i++) g.addColorStop(st[i][0], st[i][1]); return g; }
+  function rg(ctx, x, y, r0, r1, st) { var g = ctx.createRadialGradient(x, y, r0, x, y, Math.max(r0 + 0.1, r1)); for (var i = 0; i < st.length; i++) g.addColorStop(st[i][0], st[i][1]); return g; }
+  function mk(cw, ch) { if (typeof document === 'undefined') return null; var c = document.createElement('canvas'); c.width = Math.max(1, cw | 0); c.height = Math.max(1, ch | 0); return c; }
+  /* unit size: 1 CSS px of the 390-wide phone column */
+  function S(w, h) { return Math.max(0.5, Math.min(w / 390, h / 640)); }
+  function memo(fn) { var key = null, val = null; return function (w, h) { var k = w + 'x' + h; if (k !== key) { key = k; val = fn(w, h); } return val; }; }
+  function pick(arr, r) { return arr[(r() * arr.length) | 0]; }
+  /* optional profiling: set PAINT._prof = [] before paint() to collect [label, ms] marks */
+  function mark(l, ctx) { var P = (window.PAINT||{})._prof; if (P) { if (ctx) ctx.getImageData(0, 0, 1, 1); P.push([l, (typeof performance !== 'undefined' ? performance.now() : Date.now())]); } }
+
+  function ridge(ctx, x0, x1, step, fy, yb, fill) {
+    ctx.beginPath(); ctx.moveTo(x0, yb);
+    for (var x = x0; x <= x1 + step; x += step) ctx.lineTo(Math.min(x, x1), fy(Math.min(x, x1)));
+    ctx.lineTo(x1, yb); ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  }
+  function poly(ctx, pts) { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]); ctx.closePath(); }
+  function rrect(ctx, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  }
+  function glow(ctx, x, y, r, col, a) {
+    ctx.fillStyle = rg(ctx, x, y, 0, r, [[0, rgba(col, a)], [0.35, rgba(col, a * 0.35)], [1, rgba(col, 0)]]);
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+  function softGlow(ctx, x, y, r, col, a) {
+    ctx.fillStyle = rg(ctx, x, y, 0, r, [[0, rgba(col, a)], [0.5, rgba(col, a * 0.5)], [1, rgba(col, 0)]]);
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+  function puff(ctx, x, y, R, col, a) {
+    ctx.fillStyle = rg(ctx, x, y, 0, R, [[0, rgba(col, a)], [0.5, rgba(col, a * 0.85)], [0.8, rgba(col, a * 0.35)], [1, rgba(col, 0)]]);
+    ctx.fillRect(x - R, y - R, R * 2, R * 2);
+  }
+  function wisp(ctx, x, y, len, th, col, al, r) {
+    for (var i = 0; i < 6; i++) {
+      var cx = x + (r() - 0.5) * len, cy = y + (r() - 0.5) * th * 2;
+      ctx.save(); ctx.translate(cx, cy); ctx.scale(1, th / len * 3);
+      ctx.fillStyle = rg(ctx, 0, 0, 0, len * 0.4, [[0, rgba(col, al)], [1, rgba(col, 0)]]);
+      ctx.fillRect(-len * 0.4, -len * 0.4, len * 0.8, len * 0.8); ctx.restore();
+    }
+  }
+  function haze(ctx, x0, y0, x1, y1, col, a) {
+    var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, rx = (x1 - x0) / 2, ry = Math.max(1, (y1 - y0) / 2);
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(1, ry / rx);
+    ctx.fillStyle = rg(ctx, 0, 0, 0, rx, [[0, rgba(col, a)], [0.6, rgba(col, a * 0.75)], [1, rgba(col, 0)]]);
+    ctx.fillRect(-rx, -rx, rx * 2, rx * 2); ctx.restore();
+  }
+  function band(ctx, x0, x1, y0, y1, col, a) {
+    ctx.fillStyle = lg(ctx, 0, y0, 0, y1, [[0, rgba(col, 0)], [0.5, rgba(col, a)], [1, rgba(col, 0)]]);
+    ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+  }
+  var grainCv = null;
+  function finish(ctx, w, h, gradeCol, gradeA, vig, grainA, vigCol, vy) {
+    try {
+      ctx.save();
+      if (gradeCol) { ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = gradeA; ctx.fillStyle = gradeCol; ctx.fillRect(0, 0, w, h); }
+      ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+      var R = Math.max(w, h) * 0.75, vc = vigCol || '#14101e';
+      if (vig > 0) { ctx.fillStyle = rg(ctx, w / 2, h * (vy || 0.42), R * 0.35, R, [[0, rgba(vc, 0)], [1, rgba(vc, vig)]]); ctx.fillRect(0, 0, w, h); }
+      if (!grainCv && typeof document !== 'undefined') {
+        grainCv = document.createElement('canvas'); grainCv.width = grainCv.height = 128;
+        var g = grainCv.getContext('2d'), id = g.createImageData(128, 128), r = rng(4242), i, v;
+        for (i = 0; i < 128 * 128; i++) { v = (r() * 255) | 0; id.data[i * 4] = v; id.data[i * 4 + 1] = v; id.data[i * 4 + 2] = v; id.data[i * 4 + 3] = 255; }
+        g.putImageData(id, 0, 0);
+      }
+      if (grainCv && grainA > 0) { ctx.globalCompositeOperation = 'overlay'; ctx.globalAlpha = grainA; ctx.fillStyle = ctx.createPattern(grainCv, 'repeat'); ctx.fillRect(0, 0, w, h); }
+      ctx.restore();
+    } catch (e) { try { ctx.restore(); } catch (e2) {} }
+  }
+  function shafts(ctx, x, y, w, h, col, al, n, r, spread, dir, wmin, wmax) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < n; i++) {
+      var a = dir + (r() - 0.5) * spread, wd = (wmin || 0.02) + r() * ((wmax || 0.07) - (wmin || 0.02)), L = Math.max(w, h) * 1.2;
+      ctx.fillStyle = lg(ctx, x, y, x + Math.cos(a) * L, y + Math.sin(a) * L, [[0, rgba(col, al * (0.5 + r()))], [0.6, rgba(col, al * 0.25)], [1, rgba(col, 0)]]);
+      ctx.beginPath(); ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(a - wd) * L, y + Math.sin(a - wd) * L);
+      ctx.lineTo(x + Math.cos(a + wd) * L, y + Math.sin(a + wd) * L); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+  /* batched short strokes: gen(i) -> [x0,y0,x1,y1,bucket(,cx,cy)] ; cols = [[style,width,alpha],...] */
+  function batch(ctx, n, cols, gen) {
+    var paths = [], i, k;
+    for (k = 0; k < cols.length; k++) paths.push([]);
+    for (i = 0; i < n; i++) { var s = gen(i); if (s) paths[s[4]].push(s); }
+    ctx.save(); ctx.lineCap = 'round';
+    for (k = 0; k < cols.length; k++) {
+      var p = paths[k]; if (!p.length) continue;
+      ctx.beginPath();
+      for (i = 0; i < p.length; i++) {
+        ctx.moveTo(p[i][0], p[i][1]);
+        if (p[i].length > 5) ctx.quadraticCurveTo(p[i][5], p[i][6], p[i][2], p[i][3]); else ctx.lineTo(p[i][2], p[i][3]);
+      }
+      ctx.strokeStyle = cols[k][0]; ctx.lineWidth = cols[k][1]; ctx.globalAlpha = cols[k][2]; ctx.stroke();
+    }
+    ctx.restore();
+  }
+  /* fast path shapes: quadratic-curve circle / rotated ellipse (much cheaper than arc/ellipse in big batches) */
+  var QK = 0.914;
+  function qcirc(ctx, x, y, r) {
+    if (r < 1.1) { ctx.rect(x - r, y - r, r * 2, r * 2); return; }
+    var c = r * QK;
+    ctx.moveTo(x + r, y); ctx.quadraticCurveTo(x + c, y + c, x, y + r); ctx.quadraticCurveTo(x - c, y + c, x - r, y);
+    ctx.quadraticCurveTo(x - c, y - c, x, y - r); ctx.quadraticCurveTo(x + c, y - c, x + r, y);
+  }
+  function qell(ctx, x, y, rx, ry, a) {
+    var ca = Math.cos(a || 0), sa = Math.sin(a || 0), k = QK;
+    function X(u, v) { return x + u * ca - v * sa; } function Y(u, v) { return y + u * sa + v * ca; }
+    ctx.moveTo(X(rx, 0), Y(rx, 0));
+    ctx.quadraticCurveTo(X(rx * k, ry * k), Y(rx * k, ry * k), X(0, ry), Y(0, ry));
+    ctx.quadraticCurveTo(X(-rx * k, ry * k), Y(-rx * k, ry * k), X(-rx, 0), Y(-rx, 0));
+    ctx.quadraticCurveTo(X(-rx * k, -ry * k), Y(-rx * k, -ry * k), X(0, -ry), Y(0, -ry));
+    ctx.quadraticCurveTo(X(rx * k, -ry * k), Y(rx * k, -ry * k), X(rx, 0), Y(rx, 0));
+  }
+  /* batched discs: gen(i) -> [x,y,r,bucket] ; cols = [[style,alpha],...] */
+  function dots(ctx, n, cols, gen) {
+    var i, k, b = []; for (k = 0; k < cols.length; k++) b.push([]);
+    for (i = 0; i < n; i++) { var d = gen(i); if (d) b[d[3]].push(d); }
+    ctx.save();
+    for (k = 0; k < cols.length; k++) {
+      if (!b[k].length) continue;
+      ctx.fillStyle = cols[k][0]; ctx.globalAlpha = cols[k][1]; ctx.beginPath();
+      for (i = 0; i < b[k].length; i++) { var q = b[k][i]; qcirc(ctx, q[0], q[1], q[2]); }
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  /* batched flattened ellipses: gen -> [x,y,rx,ry,bucket(,rot)] */
+  function dabs(ctx, n, cols, gen) {
+    var i, k, b = []; for (k = 0; k < cols.length; k++) b.push([]);
+    for (i = 0; i < n; i++) { var d = gen(i); if (d) b[d[4]].push(d); }
+    ctx.save();
+    for (k = 0; k < cols.length; k++) {
+      if (!b[k].length) continue;
+      ctx.fillStyle = cols[k][0]; ctx.globalAlpha = cols[k][1]; ctx.beginPath();
+      for (i = 0; i < b[k].length; i++) { var q = b[k][i]; qell(ctx, q[0], q[1], q[2], q[3], q[5] || 0); }
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  /* batched rectangles: gen -> [x,y,w,h,bucket] */
+  function rects(ctx, n, cols, gen) {
+    var i, k, b = []; for (k = 0; k < cols.length; k++) b.push([]);
+    for (i = 0; i < n; i++) { var d = gen(i); if (d) b[d[4]].push(d); }
+    ctx.save();
+    for (k = 0; k < cols.length; k++) {
+      if (!b[k].length) continue;
+      ctx.fillStyle = cols[k][0]; ctx.globalAlpha = cols[k][1]; ctx.beginPath();
+      for (i = 0; i < b[k].length; i++) { var q = b[k][i]; ctx.rect(q[0], q[1], q[2], q[3]); }
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  function grassField(ctx, w, y0, y1, n, cols, r, s, lean, xf) {
+    batch(ctx, n, cols, function () {
+      var y = y0 + Math.pow(r(), 0.8) * (y1 - y0), p = (y - y0) / (y1 - y0);
+      var x = xf ? xf(r()) : r() * w, L = (1.5 + p * 7 + r() * 3) * s, b = Math.floor(r() * cols.length);
+      var lx = (lean || 0) * L + (r() - 0.5) * L * 0.6;
+      return [x, y, x + lx, y - L, b, x + lx * 0.2, y - L * 0.6];
+    });
+  }
+  /* water reflection: copy the band above `axis` into [axis, y1] flipped, in thin wobbling strips */
+  function reflect(ctx, w, axis, y1, al, amp, freq, seed, squash) {
+    try {
+      var cv = ctx.canvas; if (!cv || !cv.width) return; var k = cv.width / w, y, sq = squash || 1;
+      var st = Math.max(2, Math.round(1.5 * k)) / k, srcH = Math.min(axis, (y1 - axis) * sq + 2 * st);
+      var sw = cv.width, sh = Math.ceil(srcH * k);
+      // exact-size scratch every call: strip sampling then never depends on what an earlier paint left behind
+      var scratch = mk(sw, sh); if (!scratch) return;
+      var g = scratch.getContext('2d');
+      g.drawImage(cv, 0, Math.round((axis - srcH) * k), sw, sh, 0, 0, sw, sh);
+      ctx.save(); ctx.beginPath(); ctx.rect(0, axis, w, y1 - axis); ctx.clip();
+      for (y = axis; y < y1; y += st) {
+        var d = (y - axis), src = srcH - d * sq - st, p = d / Math.max(1, y1 - axis);
+        if (src < 0) break;
+        var dx = (Math.sin(y * freq + seed) * 0.6 + Math.sin(y * freq * 2.7 + seed * 3) * 0.4) * amp * (0.3 + p);
+        ctx.globalAlpha = al * (1 - p * 0.35);
+        ctx.drawImage(scratch, 0, Math.round(src * k), sw, Math.max(1, Math.round(st * k)), dx, y, w, st + 0.5 / k);
+      }
+      ctx.restore();
+    } catch (e) { try { ctx.restore(); } catch (e2) {} }
+  }
+  var SPR = {};
+  function glowSpr(col, hard) {
+    var key = col + (hard ? 'h' : '');
+    if (SPR[key] !== undefined) return SPR[key];
+    var c = mk(64, 64); if (c) { var g = c.getContext('2d'); g.fillStyle = rg(g, 32, 32, 0, 32, hard ? [[0, rgba('#ffffff', 1)], [0.12, rgba(col, 1)], [0.3, rgba(col, 0.35)], [1, rgba(col, 0)]] : [[0, rgba(col, 1)], [0.25, rgba(col, 0.55)], [1, rgba(col, 0)]]); g.fillRect(0, 0, 64, 64); }
+    SPR[key] = c; return c;
+  }
+  function wispSpr(col) {
+    var key = 'wisp' + col;
+    if (SPR[key] !== undefined) return SPR[key];
+    var c = mk(256, 72); if (c) {
+      var g = c.getContext('2d'), r = rng(77);
+      for (var i = 0; i < 18; i++) {
+        var x = 40 + r() * 176, y = 30 + r() * 14, rr = 14 + r() * 22;
+        g.save(); g.translate(x, y); g.scale(1.8, 0.55);
+        g.fillStyle = rg(g, 0, 0, 0, rr, [[0, rgba(col, 0.32)], [1, rgba(col, 0)]]); g.fillRect(-rr, -rr, rr * 2, rr * 2); g.restore();
+      }
+    }
+    SPR[key] = c; return c;
+  }
+  function bez(p0, p1, p2, t) { var m = 1 - t; return m * m * p0 + 2 * m * t * p1 + t * t * p2; }
+  /* cheap blur of a small canvas: progressive-alpha offset copies (equal weights), `passes` times */
+  function boxBlur(src, rad, passes) {
+    var a = src, b = mk(src.width, src.height); if (!b) return src;
+    var offs = [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, 1], [-1, 1], [1, -1]];
+    for (var p = 0; p < passes; p++) {
+      var g = b.getContext('2d'); g.clearRect(0, 0, b.width, b.height);
+      for (var k = 0; k < offs.length; k++) { g.globalAlpha = 1 / (k + 1); g.drawImage(a, offs[k][0] * rad, offs[k][1] * rad); }
+      g.globalAlpha = 1; var tmp = a; a = b; b = (tmp === src) ? mk(src.width, src.height) : tmp;
+    }
+    return a;
+  }
+  /* upscale a small canvas onto ctx in 2x steps (smooth, painterly soft focus) */
+  function upscale(ctx, src, w, h) {
+    var cur = src;
+    while (cur.width * 2 < w) {
+      var nx = mk(cur.width * 2, cur.height * 2), g = nx.getContext('2d');
+      g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high'; g.drawImage(cur, 0, 0, nx.width, nx.height); cur = nx;
+    }
+    ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(cur, 0, 0, w, h); ctx.restore();
+  }
+
+  /* ---------------- clouds ---------------- */
+  /* sculpted cumulus: crisp bumpy silhouette (union of puffs) painted on a half-res sprite, then
+     shaded inside with source-atop gradients toward the light (lx,ly) and brushed with dabs.
+     o: {lit, mid, shade, top (skylight colour on the upper side), al, lx, ly, base (0..1 flatness), q} */
+  function cloudForm(ctx, cx, cy, W, H, r, o) {
+    var q = o.q || 0.5, pad = H * 0.5, bw = W * 1.15 + pad * 2, bh = H * 1.9 + pad, ox = bw / 2, oy = bh * 0.72;
+    var cv = mk(bw * q, bh * q); if (!cv) return;
+    var g = cv.getContext('2d'), i, p, lx = o.lx || 0, ly = o.ly == null ? -1 : o.ly;
+    g.scale(q, q); g.translate(ox - cx, oy - cy);
+    var n = Math.max(4, Math.round(W / (H * 0.42))), P = [], tries;
+    for (i = 0; i < n; i++) {
+      var u = (i / (n - 1)) * 2 - 1 + (r() - 0.5) * 0.15, hp = Math.pow(Math.max(0, 1 - u * u), 0.5);
+      var rad = H * (0.2 + 0.26 * hp) * (0.85 + r() * 0.3);
+      P.push([cx + u * (W * 0.5 - rad * 0.6), cy - H * 0.15 * hp + rad * 0.3, rad]);
+    }
+    // billows bud off the upper contour of existing puffs (cauliflower top)
+    var nb = o.billows || n * 3;
+    for (tries = 0; tries < nb * 3 && P.length < n + nb; tries++) {
+      var pa = P[(r() * P.length) | 0]; if (pa[2] < H * 0.07) continue;
+      var a = -PI * (0.12 + r() * 0.76), d = pa[2] * (0.62 + r() * 0.3), nr = pa[2] * (0.38 + r() * 0.3);
+      var nx = pa[0] + Math.cos(a) * d, ny = pa[1] + Math.sin(a) * d;
+      if (ny - nr < cy - H * 1.05 || Math.abs(nx - cx) + nr > W * 0.56) continue;
+      P.push([nx, ny, nr]);
+    }
+    var ext = Math.max(W, H * 2);
+    var form = lg(g, cx - lx * ext * 0.5, cy - ly * ext * 0.35, cx + lx * ext * 0.5, cy + ly * ext * 0.35, [[0, o.shade], [0.42, o.mid], [0.78, o.lit], [1, o.lit]]);
+    // soft halo, then the crisp union
+    g.globalAlpha = o.halo == null ? 0.35 : o.halo; g.fillStyle = form; g.beginPath();
+    for (i = 0; i < P.length; i++) { p = P[i]; g.moveTo(p[0] + p[2] * 1.12, p[1]); g.arc(p[0], p[1], p[2] * 1.12, 0, TAU); }
+    g.fill(); g.globalAlpha = 1; g.beginPath();
+    for (i = 0; i < P.length; i++) { p = P[i]; g.moveTo(p[0] + p[2], p[1]); g.arc(p[0], p[1], p[2], 0, TAU); }
+    g.fill();
+    g.globalCompositeOperation = 'source-atop';
+    // faint billow cues: shadowed undersides, skylit tops, sun-side glow
+    P.sort(function (A, B) { return A[1] - B[1]; });
+    for (i = 0; i < P.length; i++) {
+      p = P[i];
+      if (i % 2 === 0) puff(g, p[0] - lx * p[2] * 0.3, p[1] - ly * p[2] * 0.3 + p[2] * 0.35, p[2] * 0.9, o.shade, o.seam == null ? 0.16 : o.seam);
+      puff(g, p[0] + lx * p[2] * 0.55, p[1] + ly * p[2] * 0.55, p[2] * 0.6, o.lit, 0.32);
+    }
+    g.globalCompositeOperation = 'source-atop';
+    if (o.top) { g.fillStyle = lg(g, 0, cy - H, 0, cy + H * 0.3, [[0, rgba(o.top, 0.5)], [1, rgba(o.top, 0)]]); g.fillRect(cx - bw, cy - bh, bw * 2, bh * 2); }
+    // brush texture
+    dabs(g, Math.round(P.length * 6), [[o.lit, 0.14], [o.top || o.mid, 0.12], [o.shade, 0.1]], function () {
+      var q2 = P[(r() * P.length) | 0], a = r() * TAU, d = q2[2] * Math.sqrt(r()) * 0.9;
+      var px = q2[0] + Math.cos(a) * d, py = q2[1] + Math.sin(a) * d, f = (Math.cos(a) * lx + Math.sin(a) * ly) * d / q2[2];
+      return [px, py, q2[2] * (0.12 + r() * 0.16), q2[2] * (0.04 + r() * 0.04), f > 0.3 ? 0 : (Math.sin(a) < -0.3 ? 1 : 2), (r() - 0.5) * 0.5];
+    });
+    // soften / flatten the base
+    g.globalCompositeOperation = 'destination-out';
+    var by = cy + H * (0.12 + (1 - (o.base == null ? 0.6 : o.base)) * 0.3);
+    g.fillStyle = lg(g, 0, by, 0, by + H * 0.2, [[0, 'rgba(0,0,0,0)'], [1, 'rgba(0,0,0,1)']]); g.fillRect(cx - bw, by, bw * 2, bh);
+    ctx.save(); ctx.globalAlpha = o.al == null ? 1 : o.al; ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(cv, cx - ox, cy - oy, bw, bh);
+    ctx.restore();
+  }
+  /* sunrise stratocumulus: horizontal brush dabs in an envelope, shade body, sun-lit undersides, bright rims.
+     o: {shade, mid, lit, rim, al, n, dir (+1 lit from below)} */
+  function streakCloud(ctx, cx, cy, W, H, r, o) {
+    var n = o.n || 46, D = [], i, k, q = 0.5, pad = H * 1.2, bw = W * 1.2 + pad * 2, bh = H * 2 + pad * 2, ox = bw / 2, oy = bh / 2;
+    for (i = 0; i < n; i++) {
+      var u = (r() * 2 - 1), env = Math.pow(Math.max(0, 1 - u * u), 0.6) * (0.75 + 0.25 * fbm(u * 3 + cx * 0.01, 77, 3));
+      var rx = W * (0.07 + r() * 0.13) * (0.5 + env * 0.6), ry = H * (0.16 + r() * 0.22) * (0.35 + env * 0.75);
+      var dy = (r() - 0.5) * H * env * 0.9 - env * H * 0.15;
+      D.push([u * W * 0.5, dy, rx, ry, (dy / (H * 0.5 * Math.max(0.2, env)) + 1) / 2]); // last: 0 top .. 1 bottom within the envelope
+    }
+    D.sort(function (A, B) { return A[1] - B[1]; });
+    var cv = mk(bw * q, bh * q); if (!cv) return;
+    var g = cv.getContext('2d'), dir = o.dir == null ? 1 : o.dir;
+    g.scale(q, q); g.translate(ox, oy);
+    function layer(col, al, f) { g.fillStyle = col; g.globalAlpha = al; g.beginPath(); for (var j = 0; j < D.length; j++) { var e = f(D[j], j); if (e) qell(g, e[0], e[1], e[2], e[3], 0); } g.fill(); }
+    layer(o.mid, 0.16, function (d) { return [d[0], d[1], d[2] * 1.25, d[3] * 1.5]; });
+    layer(o.shade, 0.9, function (d) { return [d[0], d[1], d[2], d[3]]; });
+    layer(o.mid, 0.75, function (d) { return d[4] < 0.75 ? [d[0] - d[2] * 0.05, d[1] - dir * d[3] * 0.2, d[2] * 0.85, d[3] * 0.55] : null; });
+    layer(o.lit, 0.9, function (d) { return d[4] > 0.35 ? [d[0] + d[2] * 0.06, d[1] + dir * d[3] * 0.48, d[2] * 0.75, d[3] * 0.38] : null; });
+    layer(o.rim || o.lit, 0.85, function (d, j) { return d[4] > 0.6 && j % 2 === 0 ? [d[0] + d[2] * 0.1, d[1] + dir * d[3] * 0.75, d[2] * 0.5, d[3] * 0.14] : null; });
+    var bl = boxBlur(cv, 1, 1);
+    ctx.save(); ctx.globalAlpha = o.al == null ? 1 : o.al; ctx.imageSmoothingEnabled = true; ctx.drawImage(bl, cx - ox, cy - oy, bw, bh); ctx.restore();
+  }
+  /* sample a gradient stop list at t */
+  function gradAt(st, t) {
+    if (t <= st[0][0]) return st[0][1];
+    for (var i = 1; i < st.length; i++) if (t <= st[i][0]) return mix(st[i - 1][1], st[i][1], (t - st[i - 1][0]) / (st[i][0] - st[i - 1][0]));
+    return st[st.length - 1][1];
+  }
+  /* painterly brush strokes over a vertical gradient region (keeps the sky from looking airbrushed) */
+  function skyStrokes(ctx, x0, x1, y0, y1, st, n, r, s, al, warm, cool) {
+    // colours quantised into a few bands so the strokes batch into ~30 fills
+    var NB = 10, B = {}, i, keys = [];
+    for (i = 0; i < n; i++) {
+      var y = lerp(y0, y1, r()), x = lerp(x0, x1, r()), tq = Math.round(clamp((y - y0) / (y1 - y0) + (r() - 0.5) * 0.08, 0, 1) * NB), k = (r() * 3) | 0, key = tq * 3 + k;
+      if (!B[key]) { var c = gradAt(st, tq / NB); B[key] = { c: k === 0 ? mix(c, warm, 0.25) : k === 1 ? mix(c, cool, 0.2) : c, q: [] }; keys.push(key); }
+      B[key].q.push([x, y, (14 + r() * 40) * s, (1.5 + r() * 3) * s, (r() - 0.5) * 0.08]);
+    }
+    ctx.save(); ctx.globalAlpha = al;
+    for (i = 0; i < keys.length; i++) { var b = B[keys[i]]; ctx.fillStyle = b.c; ctx.beginPath(); for (var j = 0; j < b.q.length; j++) { var q = b.q[j]; qell(ctx, q[0], q[1], q[2], q[3], q[4]); } ctx.fill(); }
+    ctx.restore();
+  }
+
+  /* ---------------- foliage ---------------- */
+  /* leaf-shaped lens (two quadratic curves) appended to the current path */
+  function lens(ctx, x, y, L, Wd, a) {
+    var c = Math.cos(a), sn = Math.sin(a), tx = x + c * L, ty = y + sn * L, mx = x + c * L * 0.5, my = y + sn * L * 0.5, nx = -sn * Wd, ny = c * Wd;
+    ctx.moveTo(x, y); ctx.quadraticCurveTo(mx + nx, my + ny, tx, ty); ctx.quadraticCurveTo(mx - nx, my - ny, x, y);
+  }
+  /* volumetric foliage clump of leaf dabs: pal [deep, shadow, mid, lit, rim]; (lx,ly) unit vector toward light */
+  function clump(ctx, cx, cy, R, pal, r, lx, ly, back, dens) {
+    var cv = ctx.canvas;
+    if (cv && (cx + R * 1.1 < 0 || cy + R * 1.1 < 0 || cx - R * 1.1 > cv.width || cy - R * 1.1 > cv.height)) { r(); return; } // off-canvas: skip (one draw keeps the sequence stable enough)
+    ctx.fillStyle = rg(ctx, cx + lx * R * 0.3, cy + ly * R * 0.3, 0, R * 0.95, [[0, pal[1]], [0.6, pal[0]], [1, pal[0]]]);
+    ctx.beginPath(); ctx.arc(cx, cy, R * 0.8, 0, TAU); ctx.fill();
+    var n = Math.min(200, Math.round((30 + R * R * 0.32) * (dens || 1))), B = [[], [], [], [], []], i, k;
+    for (i = 0; i < n; i++) {
+      var a = r() * TAU, rr = R * Math.sqrt(r()) * 0.98, px = cx + Math.cos(a) * rr, py = cy + Math.sin(a) * rr * 0.92;
+      var nx = (px - cx) / R, ny = (py - cy) / R;
+      var v = (nx * lx + ny * ly) * 0.55 - ny * 0.18 + (1 - rr / R) * 0.06 + (r() - 0.5) * 0.4 + (back ? 0.4 : 0.52);
+      var b = v < 0.24 ? 0 : v < 0.44 ? 1 : v < 0.64 ? 2 : v < 0.88 ? 3 : 4;
+      if (b === 4 && rr < R * 0.72) b = 3;
+      var L = R * (0.12 + r() * 0.11) * (b === 4 ? 0.7 : 1) * (n >= 200 ? 1.1 : 1);
+      B[b].push([px, py, L, L * (0.28 + r() * 0.12), a + PI * 0.5 + (r() - 0.5) * 1.6]);
+    }
+    for (k = 0; k < 5; k++) {
+      if (!B[k].length) continue;
+      ctx.fillStyle = pal[k]; ctx.beginPath();
+      for (i = 0; i < B[k].length; i++) { var q = B[k][i]; lens(ctx, q[0] - Math.cos(q[4]) * q[2] * 0.5, q[1] - Math.sin(q[4]) * q[2] * 0.5, q[2], q[3], q[4]); }
+      ctx.fill();
+    }
+  }
+  function trunkPath(ctx, x0, y0, x1, y1, w0, w1, bend, add) {
+    var mx = (x0 + x1) / 2 + bend, my = (y0 + y1) / 2, N = 14, Lp = [], Rp = [], j;
+    for (j = 0; j <= N; j++) {
+      var t = j / N, px = bez(x0, mx, x1, t), py = bez(y0, my, y1, t);
+      var dx = bez(x0, mx, x1, Math.min(1, t + 0.02)) - bez(x0, mx, x1, Math.max(0, t - 0.02)), dy = bez(y0, my, y1, Math.min(1, t + 0.02)) - bez(y0, my, y1, Math.max(0, t - 0.02));
+      var l = Math.sqrt(dx * dx + dy * dy) || 1, wd = lerp(w0, w1, Math.pow(t, 0.8)) * 0.5 + (t < 0.08 ? w0 * (0.08 - t) * 5 : 0);
+      Lp.push([px - dy / l * wd, py + dx / l * wd]); Rp.push([px + dy / l * wd, py - dx / l * wd]);
+    }
+    if (!add) ctx.beginPath();
+    ctx.moveTo(Lp[0][0], Lp[0][1]);
+    for (j = 1; j <= N; j++) ctx.lineTo(Lp[j][0], Lp[j][1]);
+    for (j = N; j >= 0; j--) ctx.lineTo(Rp[j][0], Rp[j][1]);
+    ctx.closePath();
+  }
+  /* broadleaf tree: o {x,yb,cx,cy,rx,ry,tw,s,lx,ly,pal,bark:[lit,mid,dark],hole,n,edge,limbs,bend,dens} */
+  function broadleaf(ctx, o, seed) {
+    var r = rng(seed), k, s = o.s;
+    var bx = o.x, by = o.yb, tx = o.cx + (o.lean || 0), ty = o.cy + o.ry * 0.35, tw = o.tw;
+    ctx.save();
+    trunkPath(ctx, bx, by, tx, ty, tw, tw * 0.45, (o.bend || 0));
+    ctx.fillStyle = lg(ctx, bx - tw, 0, bx + tw, 0, o.lx > 0 ? [[0, o.bark[2]], [0.5, o.bark[1]], [1, o.bark[0]]] : [[0, o.bark[0]], [0.5, o.bark[1]], [1, o.bark[2]]]);
+    ctx.fill();
+    ctx.save(); ctx.clip();
+    batch(ctx, Math.round(Math.max(10, by - ty) * 0.8), [[o.bark[0], 0.7 * s, 0.45], ['#000000', 0.8 * s, 0.25]], function () {
+      var yy = lerp(ty, by, r()), xx = lerp(tx, bx, (yy - ty) / (by - ty)) + (r() - 0.5) * tw * 1.2, l = (3 + r() * 8) * s;
+      return [xx, yy, xx + (r() - 0.5) * s, yy + l, r() < 0.5 ? 0 : 1];
+    });
+    ctx.restore();
+    var nb = o.limbs || 5;
+    for (k = 0; k < nb; k++) {
+      var t0 = 0.15 + r() * 0.5, sx = lerp(tx, bx, t0 * 0.4), sy = lerp(ty, by, t0 * 0.4);
+      var ex = o.cx + (r() - 0.5) * o.rx * 1.5, ey = o.cy + (r() - 0.6) * o.ry * 1.1;
+      trunkPath(ctx, sx, sy, ex, ey, tw * (0.35 + r() * 0.2), tw * 0.08, (r() - 0.5) * o.rx * 0.3);
+      ctx.fillStyle = o.bark[2]; ctx.fill();
+    }
+    var cl = [], nc = o.n || 16;
+    for (k = 0; k < nc; k++) {
+      var a = r() * TAU, rr = Math.sqrt(r()) * 0.82;
+      cl.push([o.cx + Math.cos(a) * o.rx * rr, o.cy + Math.sin(a) * o.ry * rr, Math.min(o.rx, o.ry) * (0.3 + r() * 0.22), r()]);
+    }
+    for (k = 0; k < (o.edge || 8); k++) {
+      var a2 = (k / (o.edge || 8)) * TAU + r() * 0.4;
+      cl.push([o.cx + Math.cos(a2) * o.rx * 0.88, o.cy + Math.sin(a2) * o.ry * 0.85, Math.min(o.rx, o.ry) * (0.2 + r() * 0.14), r()]);
+    }
+    cl.sort(function (A, B) { return (A[1] + A[3] * o.ry * 0.5) - (B[1] + B[3] * o.ry * 0.5); });
+    for (k = 0; k < cl.length; k++) clump(ctx, cl[k][0], cl[k][1], cl[k][2], o.pal, r, o.lx, o.ly, cl[k][1] < o.cy - o.ry * 0.3, o.dens);
+    if (o.hole) dots(ctx, Math.round(nc * 2.2), [[o.hole, 0.8]], function () {
+      var a3 = r() * TAU, rr3 = Math.sqrt(r()) * 0.8;
+      return [o.cx + Math.cos(a3) * o.rx * rr3, o.cy + Math.sin(a3) * o.ry * rr3, (0.6 + r() * 1.6) * s, 0];
+    });
+    ctx.restore();
+  }
+  /* leaf shape appended to the current path: base (x,y), length L, half-width Wd, angle a */
+  function leafPath(ctx, x, y, L, Wd, a, heart) {
+    var c = Math.cos(a), sn = Math.sin(a), nx = -sn, ny = c;
+    var tx = x + c * L, ty = y + sn * L;
+    var b = heart ? 0.15 : 0.35;
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x + c * L * b + nx * Wd * 1.3, y + sn * L * b + ny * Wd * 1.3, x + c * L * 0.75 + nx * Wd * 0.8, y + sn * L * 0.75 + ny * Wd * 0.8, tx, ty);
+    ctx.bezierCurveTo(x + c * L * 0.75 - nx * Wd * 0.8, y + sn * L * 0.75 - ny * Wd * 0.8, x + c * L * b - nx * Wd * 1.3, y + sn * L * b - ny * Wd * 1.3, x, y);
+  }
+
+  /* ---------------- city pieces ---------------- */
+  /* one tower. b: {x,w,top,base,kind,k(haze 0..1),seed,col,slant,turb,vawt,roofTrees,solar,mast,lit}
+     E: {s,W,vpX,sunX,haze,face,lit,shade,rim,glass:[top,mid,bot],win,winLit,green:[5],night,litP} */
+  window.MPK = { PI: PI, TAU: TAU, rng: rng, hash: hash, vnoise: vnoise, fbm: fbm, h2: h2, vn2: vn2, fbm2: fbm2, clamp: clamp, lerp: lerp, smooth: smooth, mix: mix, rgba: rgba, lg: lg, rg: rg, mk: mk, S: S, memo: memo, pick: pick, ridge: ridge, poly: poly, rrect: rrect, glow: glow, softGlow: softGlow, puff: puff, wisp: wisp, haze: haze, band: band, finish: finish, shafts: shafts, batch: batch, qcirc: qcirc, qell: qell, dots: dots, dabs: dabs, rects: rects, grassField: grassField, reflect: reflect, glowSpr: glowSpr, wispSpr: wispSpr, bez: bez, boxBlur: boxBlur, upscale: upscale, cloudForm: cloudForm, streakCloud: streakCloud, gradAt: gradAt, skyStrokes: skyStrokes, lens: lens, clump: clump, trunkPath: trunkPath, broadleaf: broadleaf, leafPath: leafPath };
+})();
+
+/* mp_tower.js — the Dark Tower at Marrow Point, Estmark, seen from the headland on a bright morning (ruin "darktower").
+   A vine-covered concrete grid-control tower with seabird nests, an old leaning pylon, the sea, distant wind turbines of
+   several different designs, and a wildflower meadow. Uses window.MPK (src/scenes/mp_kit.js) at paint time.
+   anchors (fractions of the scene column): tower door, pylon base, helmet in the grass, visitor sign, nest ledges. */
+(function () {
+  'use strict';
+  var PAINT = (window.PAINT = window.PAINT || {});
+  var A = { door: { x: 0.36, y: 0.655 }, pylon: { x: 0.8, y: 0.69 }, helmet: { x: 0.735, y: 0.742 }, sign: { x: 0.16, y: 0.75 }, nests: { x: 0.36, y: 0.3 }, sun: { x: 0.84, y: 0.17 } };
+  function L(w, h) {
+    var K = window.MPK, s = K.S(w, h);
+    return { s: s, hz: h * 0.44, tx: w * 0.36, tw: Math.min(w * 0.2, 96 * s), tTop: h * 0.165, tBase: h * 0.66, cr: h * 0.215, sun: [w * A.sun.x, h * A.sun.y],
+      land: function (x) { var u = x / w; return h * (0.565 + 0.02 * u + 0.01 * Math.sin(u * 7.3) + (u > 0.55 ? (u - 0.55) * (u - 0.55) * 0.42 : 0)); } };
+  }
+  function turbine(ctx, x, y, sz, kind, ang, col) {
+    var K = window.MPK, i;
+    ctx.save(); ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineCap = 'round';
+    if (kind === 'vawt') { // vertical-axis turbine: a twisted cage
+      ctx.lineWidth = sz * 0.05; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - sz * 0.75); ctx.stroke();
+      for (i = 0; i < 3; i++) { var ph = ang + i * 2.09, dx = Math.sin(ph) * sz * 0.16; ctx.beginPath(); ctx.moveTo(x, y - sz * 0.75); ctx.quadraticCurveTo(x + dx * 2, y - sz * 0.95, x, y - sz * 1.15); ctx.stroke(); }
+      ctx.restore(); return;
+    }
+    ctx.lineWidth = sz * 0.045; ctx.beginPath(); ctx.moveTo(x - sz * 0.02, y); ctx.lineTo(x, y - sz); ctx.lineTo(x + sz * 0.02, y); ctx.fill(); ctx.stroke();
+    var n = kind === 'two' ? 2 : 3, L2 = sz * (kind === 'two' ? 0.62 : 0.5);
+    ctx.lineWidth = sz * (kind === 'two' ? 0.05 : 0.035);
+    for (i = 0; i < n; i++) { var a = ang + i * K.TAU / n; ctx.beginPath(); ctx.moveTo(x, y - sz); ctx.lineTo(x + Math.cos(a) * L2, y - sz + Math.sin(a) * L2); ctx.stroke(); }
+    ctx.beginPath(); ctx.arc(x, y - sz, sz * 0.04, 0, K.TAU); ctx.fill(); ctx.restore();
+  }
+  var TURB = [[0.06, 0.95, 'three'], [0.13, 0.8, 'two'], [0.2, 0.7, 'vawt'], [0.585, 0.9, 'three'], [0.65, 0.75, 'two'], [0.705, 0.62, 'vawt']];
+  function ivy(ctx, K, r, x0, y0, x1, y1, s, wid, dens, pal) { // a climbing vine: stem plus heart-shaped leaves, darker in shade
+    var n = Math.round(Math.hypot(x1 - x0, y1 - y0) / (2.2 * s) * (dens || 1)), j;
+    ctx.save(); ctx.strokeStyle = pal[0]; ctx.lineWidth = 1.4 * s; ctx.beginPath(); ctx.moveTo(x0, y0);
+    var mx = (x0 + x1) / 2 + (r() - 0.5) * wid * 2, my = (y0 + y1) / 2; ctx.quadraticCurveTo(mx, my, x1, y1); ctx.stroke();
+    var B = [[], [], [], []];
+    for (j = 0; j < n; j++) {
+      var t = r(), px = K.bez(x0, mx, x1, t) + (r() - 0.5) * wid, py = K.bez(y0, my, y1, t) + (r() - 0.5) * wid * 0.4, Lf = (3.2 + r() * 4.4) * s * (1 - t * 0.35);
+      B[(r() * 4) | 0].push([px, py, Lf, Lf * 0.62, -K.PI / 2 + (r() - 0.5) * 2.4]);
+    }
+    for (j = 0; j < 4; j++) { ctx.fillStyle = pal[j + 1]; ctx.beginPath(); B[j].forEach(function (q) { K.leafPath(ctx, q[0], q[1], q[2], q[3], q[4], true); }); ctx.fill(); }
+    ctx.restore();
+  }
+  function seabird(ctx, x, y, sz, flip) { // a kittiwake sitting on a ledge: white body, grey wing, yellow bill
+    ctx.save(); ctx.translate(x, y); if (flip) ctx.scale(-1, 1);
+    ctx.fillStyle = '#fbfbf8'; ctx.beginPath(); ctx.ellipse(0, -sz * 0.45, sz * 0.62, sz * 0.42, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(sz * 0.45, -sz * 0.92, sz * 0.3, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#a9b3c4'; ctx.beginPath(); ctx.ellipse(-sz * 0.12, -sz * 0.5, sz * 0.48, sz * 0.24, -0.15, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#2a2f40'; ctx.beginPath(); ctx.moveTo(-sz * 0.55, -sz * 0.52); ctx.lineTo(-sz * 0.9, -sz * 0.42); ctx.lineTo(-sz * 0.55, -sz * 0.36); ctx.fill();
+    ctx.fillStyle = '#f5c842'; ctx.beginPath(); ctx.moveTo(sz * 0.7, -sz * 0.95); ctx.lineTo(sz * 0.98, -sz * 0.88); ctx.lineTo(sz * 0.7, -sz * 0.84); ctx.fill();
+    ctx.fillStyle = '#1f2340'; ctx.beginPath(); ctx.arc(sz * 0.52, -sz * 0.98, sz * 0.055, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+  function nest(ctx, K, r, x, y, wd, s) {
+    ctx.save(); ctx.fillStyle = '#8a6a3e'; ctx.beginPath(); ctx.ellipse(x, y, wd, wd * 0.32, 0, 0, Math.PI); ctx.fill();
+    K.batch(ctx, 18, [['#c9a26b', 0.8 * s, 0.9], ['#6a4a26', 0.7 * s, 0.8]], function () { var a = (r() - 0.5) * 2.6, xx = x + (r() - 0.5) * wd * 1.6; return [xx, y + r() * wd * 0.2, xx + Math.cos(a) * wd * 0.6, y + Math.sin(a) * wd * 0.15, r() < 0.6 ? 0 : 1]; });
+    ctx.restore();
+  }
+  PAINT.mp_tower = {
+    focus: { x: A.sun.x, y: A.sun.y }, anchors: A, track: 'morning',
+    paint: function (ctx, w, h) {
+      var K = window.MPK; if (!K) { ctx.fillStyle = '#9cc8e8'; ctx.fillRect(0, 0, w, h); return; }
+      var G = L(w, h), s = G.s, r = K.rng(29029), hz = G.hz, i, x, y;
+      /* ---------- sky ---------- */
+      var SKY = [[0, '#6aa6dc'], [0.45, '#a9d2ee'], [0.8, '#dceef2'], [1, '#fbe9c8']];
+      ctx.fillStyle = K.lg(ctx, 0, 0, 0, hz, SKY); ctx.fillRect(0, 0, w, hz + 2);
+      K.skyStrokes(ctx, -20 * s, w + 20 * s, 0, hz, SKY, 220, r, s, 0.14, '#fff2d8', '#7aa8d8');
+      K.softGlow(ctx, G.sun[0], G.sun[1], w * 0.55, '#fff4d0', 0.55); K.softGlow(ctx, G.sun[0], G.sun[1], 40 * s, '#ffffff', 0.9);
+      ctx.fillStyle = '#fffdf2'; ctx.beginPath(); ctx.arc(G.sun[0], G.sun[1], 15 * s, 0, K.TAU); ctx.fill();
+      var CL = [[0.22, 0.12, 0.42, 0.05], [0.62, 0.075, 0.3, 0.035], [0.12, 0.3, 0.3, 0.03], [0.5, 0.33, 0.36, 0.028]];
+      for (i = 0; i < CL.length; i++) K.cloudForm(ctx, w * CL[i][0], h * CL[i][1], w * CL[i][2], h * CL[i][3], r, { lit: '#ffffff', mid: '#eaf2fa', shade: '#b8cce4', top: '#ffffff', al: 0.95, lx: 0.7, ly: -0.5 });
+      /* ---------- sea and far islands ---------- */
+      K.ridge(ctx, 0, w * 0.32, 4, function (xx) { return hz - h * (0.012 + 0.016 * K.fbm(xx / w * 5, 71, 3)) * Math.sin(Math.PI * xx / (w * 0.32)); }, hz + 1, '#8fb2c8');
+      K.ridge(ctx, w * 0.55, w * 0.78, 4, function (xx) { var u = (xx - w * 0.55) / (w * 0.23); return hz - h * 0.01 * Math.sin(Math.PI * u) * (0.7 + 0.6 * K.fbm(u * 4, 73, 3)); }, hz + 1, '#9dbccf');
+      for (i = 0; i < TURB.length; i++) turbine(ctx, w * TURB[i][0], hz - h * 0.004 * (i % 3), h * 0.042 * TURB[i][1], TURB[i][2], 0.4 + i, '#e8f0f6');
+      var sea0 = hz, sea1 = h * 0.64;
+      ctx.fillStyle = K.lg(ctx, 0, sea0, 0, sea1, [[0, '#7fb6d6'], [0.35, '#5a98c2'], [1, '#3a77a6']]); ctx.fillRect(0, sea0, w, sea1 - sea0);
+      K.batch(ctx, 420, [['#ffffff', 0.9 * s, 0.35], ['#2f6694', 1 * s, 0.35], ['#9cc8e2', 0.9 * s, 0.45]], function () {
+        var yy = sea0 + Math.pow(r(), 1.4) * (sea1 - sea0), p = (yy - sea0) / (sea1 - sea0), xx = r() * w, l = (4 + p * 18) * s * (0.5 + r());
+        return [xx, yy, xx + l, yy, (r() * 3) | 0];
+      });
+      // sun glitter path: short bright dashes
+      K.batch(ctx, 150, [['#fffbe8', 1.1 * s, 0.75], ['#ffffff', 0.8 * s, 0.5]], function () { var yy = sea0 + Math.pow(r(), 1.3) * (sea1 - sea0) * 0.9, sp = (yy - sea0) / (sea1 - sea0); var xx = G.sun[0] + (r() - 0.5) * (14 + sp * 80) * s, l = (2 + sp * 7) * s * (0.5 + r()); return [xx - l, yy, xx + l, yy, r() < 0.5 ? 0 : 1]; });
+      K.band(ctx, 0, w, hz - h * 0.01, hz + h * 0.012, '#fff4dc', 0.5);
+      /* ---------- headland: far grass, cliff edge on the right, rocks and surf ---------- */
+      ctx.save();
+      K.ridge(ctx, 0, w, 3, G.land, h, null);
+      ctx.fillStyle = K.lg(ctx, 0, h * 0.54, 0, h, [[0, '#8fc070'], [0.18, '#6da858'], [0.5, '#5a9a4c'], [1, '#3f7a3a']]); ctx.fill();
+      ctx.restore();
+      // shoreline on the right: rocks where the meadow meets the sea, and a line of surf
+      K.dabs(ctx, 90, [['#8a8380', 0.95], ['#b9b2aa', 0.9], ['#5f5956', 0.9]], function () { var xx = w * (0.5 + r() * 0.5), yy = G.land(xx) - (1 + r() * 4) * s; return [xx, yy, (3 + r() * 7) * s, (1.6 + r() * 3) * s, (r() * 3) | 0, (r() - 0.5) * 0.3]; });
+      K.dabs(ctx, 70, [['#ffffff', 0.8], ['#dff0f8', 0.7]], function () { var xx = w * (0.48 + r() * 0.52), yy = G.land(xx) - (3 + r() * 5) * s; return [xx, yy, (4 + r() * 10) * s, (0.8 + r() * 1.4) * s, r() < 0.6 ? 0 : 1, 0]; });
+      // grass texture over the meadow, denser and taller in front
+      K.grassField(ctx, w, h * 0.56, h, 5200, [['#a8d47e', 1 * s, 0.55], ['#4f8a42', 1.1 * s, 0.5], ['#7cbc5e', 1 * s, 0.5], ['#d4e89a', 0.8 * s, 0.4]], r, s, 0.15);
+      K.dabs(ctx, 260, [['#3f7a3a', 0.25], ['#b8dc88', 0.22]], function () { var xx = r() * w, yy = K.lerp(h * 0.6, h, Math.pow(r(), 0.7)); return [xx, yy, (10 + r() * 30) * s, (2 + r() * 4) * s, r() < 0.5 ? 0 : 1]; });
+      /* ---------- gravel path to the door ---------- */
+      ctx.save(); ctx.beginPath(); ctx.moveTo(G.tx - 10 * s, G.tBase); ctx.bezierCurveTo(G.tx - 6 * s, h * 0.75, w * 0.18, h * 0.85, w * 0.12, h); ctx.lineTo(w * 0.5, h);
+      ctx.bezierCurveTo(w * 0.42, h * 0.86, G.tx + 14 * s, h * 0.75, G.tx + 12 * s, G.tBase); ctx.closePath();
+      ctx.fillStyle = K.lg(ctx, 0, G.tBase, 0, h, [[0, '#d8ccb4'], [1, '#bfae90']]); ctx.fill(); ctx.clip();
+      K.dots(ctx, 900, [['#efe6d2', 0.8], ['#9a8a70', 0.6], ['#c8b896', 0.7]], function () { return [r() * w, K.lerp(G.tBase, h, Math.pow(r(), 0.8)), (0.5 + r() * 1.4) * s, (r() * 3) | 0]; });
+      ctx.restore();
+      /* ---------- the old pylon (leaning, vines) ---------- */
+      var px = w * A.pylon.x, py = h * A.pylon.y, pH = h * 0.32, pW = 30 * s, lean = 0.13;
+      ctx.save(); ctx.translate(px, py); ctx.rotate(lean);
+      ctx.strokeStyle = '#7d8590'; ctx.lineWidth = 2.6 * s; ctx.lineCap = 'round';
+      var legL = function (t) { return [-pW * (1 - t * 0.78), -pH * t]; }, legR = function (t) { return [pW * (1 - t * 0.78), -pH * t]; };
+      ctx.beginPath(); ctx.moveTo(-pW, 0); ctx.lineTo(-pW * 0.22, -pH); ctx.moveTo(pW, 0); ctx.lineTo(pW * 0.22, -pH); ctx.stroke();
+      ctx.lineWidth = 1.2 * s; ctx.beginPath();
+      for (i = 0; i < 7; i++) { var t0 = i / 7, t1 = (i + 1) / 7, a0 = legL(t0), b0 = legR(t0), a1 = legL(t1), b1 = legR(t1); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(b1[0], b1[1]); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(a1[0], a1[1]); ctx.moveTo(a1[0], a1[1]); ctx.lineTo(b1[0], b1[1]); }
+      ctx.stroke();
+      // cross-arms and one dangling cable
+      ctx.lineWidth = 2.2 * s; ctx.beginPath(); ctx.moveTo(-pW * 1.15, -pH * 0.86); ctx.lineTo(pW * 1.15, -pH * 0.86); ctx.moveTo(-pW * 0.9, -pH * 0.68); ctx.lineTo(pW * 0.9, -pH * 0.68); ctx.stroke();
+      ctx.lineWidth = 1 * s; ctx.strokeStyle = '#4a4f5a'; ctx.beginPath(); ctx.moveTo(-pW * 1.1, -pH * 0.86); ctx.quadraticCurveTo(-pW * 1.6, -pH * 0.5, -pW * 1.3, -pH * 0.15); ctx.stroke();
+      ctx.fillStyle = '#c9d0da'; [[-1.1, -0.86], [1.1, -0.86], [-0.85, -0.68], [0.85, -0.68]].forEach(function (q) { ctx.beginPath(); ctx.ellipse(q[0] * pW, q[1] * pH + 5 * s, 2 * s, 5 * s, 0, 0, K.TAU); ctx.fill(); });
+      ctx.restore();
+      var IV = ['#2f5a2a', '#2f6a34', '#3f8a40', '#5aa84a', '#8ccc66'];
+      ivy(ctx, K, r, px - pW * 0.9, py, px - pW * 0.2 + pH * 0.08, py - pH * 0.62, s, 9 * s, 1.4, IV);
+      ivy(ctx, K, r, px + pW * 0.9, py, px + pW * 0.5 + pH * 0.05, py - pH * 0.4, s, 8 * s, 1.2, IV);
+      /* ---------- the tower ---------- */
+      var tx = G.tx, tw = G.tw, top = G.tTop, base = G.tBase, crY = G.cr, crH = h * 0.06, crW = tw * 1.55;
+      var lit = '#c9c4ba', mid = '#a8a39b', shade = '#77737a', dark = '#4c4a56';
+      // shaft (slight taper), lit on the right
+      ctx.save(); ctx.beginPath(); ctx.moveTo(tx - tw * 0.5, base); ctx.lineTo(tx - tw * 0.42, crY + crH); ctx.lineTo(tx + tw * 0.42, crY + crH); ctx.lineTo(tx + tw * 0.5, base); ctx.closePath();
+      ctx.fillStyle = K.lg(ctx, tx - tw * 0.5, 0, tx + tw * 0.5, 0, [[0, shade], [0.45, mid], [0.62, lit], [1, '#e2ddd0']]); ctx.fill(); ctx.clip();
+      // weathering streaks and window bands
+      K.batch(ctx, 160, [['#6a6670', 1.2 * s, 0.22], ['#f4f0e6', 1 * s, 0.18], ['#3f4a34', 1.4 * s, 0.18]], function () { var xx = tx + (r() - 0.5) * tw, yy = K.lerp(crY, base, r()); return [xx, yy, xx + (r() - 0.5) * s, yy + (6 + r() * 26) * s, (r() * 3) | 0]; });
+      for (y = crY + crH + h * 0.035; y < base - h * 0.06; y += h * 0.045) {
+        for (i = -1; i <= 1; i++) { var wx = tx + i * tw * 0.27 - tw * 0.08; ctx.fillStyle = '#2c2a36'; ctx.fillRect(wx, y, tw * 0.16, h * 0.018); ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.fillRect(wx, y, tw * 0.16, h * 0.003); }
+        ctx.fillStyle = 'rgba(40,36,50,.25)'; ctx.fillRect(tx - tw, y + h * 0.026, tw * 2, 2 * s);
+      }
+      ctx.restore();
+      // control room (wider, cantilevered) with slanted, partly broken windows
+      ctx.save(); ctx.beginPath(); ctx.moveTo(tx - crW * 0.5, crY); ctx.lineTo(tx + crW * 0.5, crY); ctx.lineTo(tx + crW * 0.44, crY + crH); ctx.lineTo(tx - crW * 0.44, crY + crH); ctx.closePath();
+      ctx.fillStyle = '#26283a'; ctx.fill();
+      for (i = 0; i < 6; i++) {
+        var gx0 = tx - crW * 0.47 + i * crW * 0.157, gx1 = gx0 + crW * 0.14, broken = (i === 1 || i === 4);
+        ctx.fillStyle = broken ? '#1a1b28' : K.lg(ctx, gx0, crY, gx1, crY + crH, [[0, '#a8c8dc'], [0.5, '#5f7f98'], [1, '#3a4a64']]);
+        ctx.beginPath(); ctx.moveTo(gx0, crY + 3 * s); ctx.lineTo(gx1, crY + 3 * s); ctx.lineTo(gx1 - crW * 0.01, crY + crH - 3 * s); ctx.lineTo(gx0 - crW * 0.01, crY + crH - 3 * s); ctx.closePath(); ctx.fill();
+        if (!broken) { ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1.2 * s; ctx.beginPath(); ctx.moveTo(gx0 + crW * 0.02, crY + 6 * s); ctx.lineTo(gx0 + crW * 0.07, crY + crH * 0.5); ctx.stroke(); }
+        else { ctx.strokeStyle = 'rgba(200,220,235,.7)'; ctx.lineWidth = 0.8 * s; ctx.beginPath(); ctx.moveTo(gx0, crY + 3 * s); ctx.lineTo(gx0 + crW * 0.05, crY + crH * 0.4); ctx.lineTo(gx0 + crW * 0.02, crY + crH * 0.7); ctx.stroke(); }
+      }
+      ctx.restore();
+      ctx.fillStyle = '#d8d3c8'; ctx.fillRect(tx - crW * 0.53, crY - h * 0.012, crW * 1.06, h * 0.012); // roof slab
+      ctx.fillStyle = '#9a958e'; ctx.fillRect(tx - crW * 0.5, crY + crH, crW, h * 0.008); // balcony slab
+      ctx.strokeStyle = '#6a6672'; ctx.lineWidth = 1 * s; ctx.beginPath();
+      for (i = 0; i <= 14; i++) { x = tx - crW * 0.5 + i * crW / 14; ctx.moveTo(x, crY + crH); ctx.lineTo(x, crY + crH - h * 0.012); } ctx.moveTo(tx - crW * 0.5, crY + crH - h * 0.012); ctx.lineTo(tx + crW * 0.5, crY + crH - h * 0.012); ctx.stroke();
+      // mast and dish on the roof
+      ctx.strokeStyle = '#6a6672'; ctx.lineWidth = 2 * s; ctx.beginPath(); ctx.moveTo(tx + crW * 0.2, crY - h * 0.012); ctx.lineTo(tx + crW * 0.2, top - h * 0.03); ctx.stroke();
+      ctx.lineWidth = 1 * s; ctx.beginPath(); ctx.moveTo(tx + crW * 0.2, top); ctx.lineTo(tx + crW * 0.1, crY - h * 0.012); ctx.moveTo(tx + crW * 0.2, top); ctx.lineTo(tx + crW * 0.3, crY - h * 0.012); ctx.stroke();
+      ctx.fillStyle = '#e6e2d8'; ctx.beginPath(); ctx.ellipse(tx - crW * 0.18, crY - h * 0.022, 9 * s, 6 * s, -0.5, 0, K.TAU); ctx.fill(); ctx.fillStyle = '#b8b2a8'; ctx.beginPath(); ctx.ellipse(tx - crW * 0.17, crY - h * 0.021, 5 * s, 3 * s, -0.5, 0, K.TAU); ctx.fill();
+      // door, steps and the faded sign
+      var dw = tw * 0.34, dh = h * 0.05;
+      ctx.fillStyle = '#3a3846'; K.rrect(ctx, tx - dw / 2, base - dh, dw, dh, 3 * s); ctx.fill();
+      ctx.fillStyle = '#5a5664'; ctx.fillRect(tx - dw / 2 + 3 * s, base - dh + 3 * s, dw / 2 - 4 * s, dh - 3 * s); ctx.fillStyle = '#4a4756'; ctx.fillRect(tx + 1 * s, base - dh + 3 * s, dw / 2 - 4 * s, dh - 3 * s);
+      ctx.fillStyle = '#cfc8b8'; ctx.fillRect(tx - dw * 0.8, base, dw * 1.6, 3 * s); ctx.fillRect(tx - dw * 0.95, base + 3 * s, dw * 1.9, 3 * s);
+      ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.font = '700 ' + Math.round(5.6 * s) + 'px Nunito, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('GRID CONTROL', tx, base - dh - 4 * s);
+      // vines climbing the tower: big masses at the base and up the shaded side, a curtain hanging from the balcony
+      for (i = 0; i < 9; i++) { var vx = tx - tw * 0.48 + r() * tw * 0.35, vtop = K.lerp(crY + crH, base - h * 0.08, Math.pow(r(), 0.6)); ivy(ctx, K, r, vx, base, vx + (r() - 0.3) * tw * 0.3, vtop, s, 7 * s, 1.6, IV); }
+      for (i = 0; i < 4; i++) { var vx2 = tx + tw * 0.15 + r() * tw * 0.3; ivy(ctx, K, r, vx2, base, vx2 + (r() - 0.5) * tw * 0.2, base - h * (0.06 + r() * 0.12), s, 6 * s, 1.4, IV); }
+      for (i = 0; i < 7; i++) { var hx = tx - crW * 0.45 + i * crW * 0.15 + r() * 6 * s; ivy(ctx, K, r, hx, crY + crH, hx + (r() - 0.5) * 8 * s, crY + crH + h * (0.03 + r() * 0.07), s, 4 * s, 1.3, IV); }
+      K.clump(ctx, tx - tw * 0.5, base - h * 0.02, 22 * s, ['#1f4022', '#2f5a2a', '#3f7a3a', '#5aa84a', '#8ccc66'], r, 0.7, -0.6, false, 1);
+      K.clump(ctx, tx + tw * 0.55, base - h * 0.01, 16 * s, ['#1f4022', '#2f5a2a', '#3f7a3a', '#5aa84a', '#8ccc66'], r, 0.7, -0.6, false, 1);
+      // nests and seabirds on the window ledges
+      var ledges = [[-0.27, 0], [0.27, 0], [-0.27, 2], [0.27, 3], [0, 1], [0.27, 5], [-0.27, 6]];
+      for (i = 0; i < ledges.length; i++) {
+        var ly = crY + crH + h * 0.035 + ledges[i][1] * h * 0.045 + h * 0.018, lx = tx + ledges[i][0] * tw - tw * 0.08 + tw * 0.08;
+        if (ly > base - h * 0.07) continue;
+        nest(ctx, K, r, lx, ly, 5.5 * s, s); seabird(ctx, lx + (r() - 0.5) * 3 * s, ly - 1 * s, 6.5 * s, i % 2 === 0);
+        ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(lx - 2 * s, ly + 1 * s, 1.4 * s, (6 + r() * 10) * s);
+      }
+      seabird(ctx, tx - crW * 0.3, crY + crH - 1 * s, 6 * s, false); seabird(ctx, tx + crW * 0.36, crY - h * 0.012, 6 * s, true);
+      /* ---------- foreground: wildflowers, a visitor sign, rocks ---------- */
+      var sgx = w * A.sign.x, sgy = h * A.sign.y;
+      ctx.fillStyle = '#7a5a3a'; ctx.fillRect(sgx - 2 * s, sgy - 30 * s, 4 * s, 30 * s);
+      ctx.fillStyle = '#9a7248'; K.rrect(ctx, sgx - 30 * s, sgy - 45 * s, 60 * s, 21 * s, 3 * s); ctx.fill(); ctx.fillStyle = '#b88a58'; ctx.fillRect(sgx - 28 * s, sgy - 43 * s, 56 * s, 1.5 * s);
+      ctx.fillStyle = '#f6ecd6'; ctx.font = '800 ' + (5.2 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('THE DARK TOWER', sgx, sgy - 35.5 * s); ctx.font = '700 ' + (4.2 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('visitors welcome', sgx, sgy - 29 * s);
+      // rocks: shaded bodies with lit tops
+      for (i = 0; i < 7; i++) { var rx = i < 3 ? w * (0.02 + r() * 0.1) : w * (0.86 + r() * 0.12), ry = h * (0.82 + r() * 0.16), rw = (10 + r() * 14) * s, rh = rw * (0.5 + r() * 0.2);
+        ctx.fillStyle = '#6f6a66'; ctx.beginPath(); ctx.ellipse(rx, ry, rw, rh, 0, Math.PI, 0); ctx.lineTo(rx + rw, ry + rh * 0.2); ctx.lineTo(rx - rw, ry + rh * 0.2); ctx.fill();
+        ctx.fillStyle = '#a9a39b'; ctx.beginPath(); ctx.ellipse(rx - rw * 0.15, ry - rh * 0.45, rw * 0.62, rh * 0.42, -0.1, 0, K.TAU); ctx.fill(); ctx.fillStyle = '#5a9a4c'; ctx.globalAlpha = 0.6; ctx.beginPath(); ctx.ellipse(rx + rw * 0.4, ry - rh * 0.2, rw * 0.3, rh * 0.18, 0, 0, K.TAU); ctx.fill(); ctx.globalAlpha = 1; }
+      // wildflowers in drifts, kept off the path
+      var FL = [['#b47ad8', 0.9], ['#ffd34a', 0.95], ['#ffffff', 0.9], ['#ff8fb0', 0.85], ['#8a5ac0', 0.8]];
+      var onPath = function (xx, yy) { var t = (yy - G.tBase) / (h - G.tBase); return t > 0 && xx > K.lerp(G.tx - 12 * s, w * 0.1, t * t) - 4 * s && xx < K.lerp(G.tx + 14 * s, w * 0.52, t * t) + 4 * s; };
+      K.dots(ctx, 1100, FL, function () { var yy = K.lerp(h * 0.58, h, Math.pow(r(), 0.8)), p = (yy - h * 0.58) / (h * 0.42), xx = r() * w; if (onPath(xx, yy) || K.fbm2(xx / w * 5, yy / h * 9, 51, 3) < 0.47) return null; return [xx, yy, (0.5 + p * 1.4 + r() * 0.4) * s, (r() * 5) | 0]; });
+      K.batch(ctx, 700, [['#3f7a3a', 1.2 * s, 0.6], ['#7cbc5e', 1 * s, 0.55]], function () { var x0 = r() * w, y0 = K.lerp(h * 0.72, h, r()), l = (5 + r() * 12) * s; return [x0, y0, x0 + (r() - 0.5) * l * 0.4, y0 - l, r() < 0.5 ? 0 : 1]; });
+      K.finish(ctx, w, h, '#ffe2b0', 0.18, 0.22, 0.05, '#1a2a3a', 0.4);
+    },
+    overlay: function (ctx, w, h, t) {
+      var K = window.MPK; if (!K) return; var G = L(w, h), s = G.s, i, hz = G.hz;
+      // turbine rotors turning (redrawn over the painted ones)
+      for (i = 0; i < TURB.length; i++) { var sp = TURB[i][2] === 'vawt' ? 1.2 : 0.7 + i * 0.07; ctx.globalAlpha = 0.9; turbine(ctx, w * TURB[i][0], hz - h * 0.004 * (i % 3), h * 0.042 * TURB[i][1], TURB[i][2], 0.4 + i + t * sp, '#f4f8fb'); }
+      ctx.globalAlpha = 1;
+      // glitter twinkles on the sea
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (i = 0; i < 26; i++) { var ph = (t * 0.9 + i * 0.37) % 1, yy = hz + ((i * 53) % 97) / 97 * (h * 0.18), xx = G.sun[0] + (((i * 71) % 89) / 89 - 0.5) * (20 + (yy - hz) / (h * 0.2) * 90) * s;
+        ctx.globalAlpha = Math.sin(ph * Math.PI) * 0.8; ctx.fillStyle = '#ffffff'; ctx.fillRect(xx - 2 * s, yy, 4 * s, 1 * s); }
+      ctx.restore();
+      // gulls gliding over the sea and around the tower
+      for (i = 0; i < 5; i++) {
+        var cx = ((t * (8 + i * 3) * s + i * w * 0.27) % (w * 1.3)) - w * 0.15, cy = h * (0.12 + i * 0.05) + Math.sin(t * 0.6 + i) * 8 * s, f = Math.sin(t * (3 + i * 0.4) + i);
+        ctx.strokeStyle = 'rgba(40,46,70,.75)'; ctx.lineWidth = 1.6 * s; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(cx - 8 * s, cy - f * 3 * s); ctx.quadraticCurveTo(cx - 4 * s, cy - 4 * s - f * 2 * s, cx, cy); ctx.quadraticCurveTo(cx + 4 * s, cy - 4 * s - f * 2 * s, cx + 8 * s, cy - f * 3 * s); ctx.stroke();
+      }
+      // a soft breeze shimmer across the meadow
+      ctx.save(); ctx.globalAlpha = 0.07 + 0.04 * Math.sin(t * 0.8); ctx.fillStyle = '#fffbe0'; var bx = ((t * 40 * s) % (w * 1.6)) - w * 0.3; K.haze(ctx, bx - w * 0.3, h * 0.66, bx + w * 0.3, h * 0.76, '#fffbe0', 1); ctx.restore();
+    }
+  };
+})();
+
 /* vienna_kit.js - painting utilities shared by the Vienna scenes (vienna_watch, vienna_market, vienna_night).
    Copied unchanged from the utilities at the top of src/paint_boston.js (seeded noise, gradients, glows, clouds,
    batched strokes and dots, foliage clumps, broadleaf trees, water reflections, the film finish), so the Vienna
@@ -7385,6 +8156,8 @@ function spokenLines(){const out=[];let SRC='core';const add=(who,t)=>{if(!t||/\
   // Missions in src/missions/*.js: each one's lines are written to src/audio/<id>.js (the Maya mission's lines live in src/audio.js).
   if(typeof MISSIONS!=='undefined'){mergeMissions();for(const id in MISSIONS){if(id==='maya')continue;SRC=id;const m=MISSIONS[id];missionLines(m).forEach(x=>add(x.who,x.text));
     for(const k in (m.chatter||{}))m.chatter[k].forEach((t,i)=>out.push({voice:(m.chatterVoices||CHATTER_VOICES)[i%(m.chatterVoices||CHATTER_VOICES).length],text:speechText(t),src:id}))}}
+  // The Ledger news app (src/ledger.js): its library, words and Byte's lines go to src/audio/ledger.js.
+  if(typeof ledgerLines==='function'){SRC='ledger';ledgerLines().forEach(x=>add(x.who,x.text))}
   const seen=new Set();return out.filter(x=>{const key=x.voice+'|'+x.text;if(seen.has(key))return false;seen.add(key);return true})}
 if(typeof module!=='undefined')module.exports={spokenLines};
 
@@ -7398,7 +8171,8 @@ if(typeof module!=='undefined')module.exports={spokenLines};
 //  vignette(kind) (optional; defaults to the global vignette), tablePanel(c) (optional; HTML shown under the futures on the Future Table), consent {...}, memo {...}, reveal {...}, trap(c), byteGood, byteBad, evening(), brief(), canned(q)
 //  Optional mission-owned tables (merged into the shared ones by mergeMissions() at startup, and recorded by tools/make_audio.py):
 //  glossary {lowercase word: meaning}, cast {id: portrait options + name, role}, voices {cast id: voice name}, guide {Field Guide id: {title,track,text,real}},
-//  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine).
+//  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine),
+//  ledger [stories for the Ledger news app, see src/ledger.js], tag (hub card label instead of "Day N"), kind/year/season/district/rank (docs/CAMPAIGN.md).
 //  Top-level code in mission files must be plain data and function definitions: tools/make_audio.py evaluates them in node (no DOM).
 const MISSIONS={};
 function mergeMissions(){for(const m of Object.values(MISSIONS)){if(m._merged)continue;m._merged=1;
@@ -7413,6 +8187,7 @@ function missionLines(m){const L=[],add=(who,t)=>{if(t&&typeof t==='string')L.pu
   if(m.reveal&&m.reveal.lines)for(const k in m.reveal.lines)add(m.reveal.who,m.reveal.lines[k]);
   if(m.consent&&m.consent.opts){try{m.consent.opts(m.start,m).forEach(o=>add(m.consent.replyWho,o.reply))}catch(e){}}
   (m.lines||[]).forEach(x=>add(x.who,x.text));
+  for(const st of (m.ledger||[])){add('narrator',st.title);(st.steps||[]).forEach(b=>add('narrator',b.t));if(st.trick)add('byte',st.trick.why);if(st.check)add('byte',st.check)}
   return L}
 const CAREERS={doctor:{name:'Care Doctor',place:'Boston Harbor Hospital'},companion:{name:'Elder Companion',place:'Boston'}};
 
@@ -7463,6 +8238,334 @@ What you know: ${S.told?'The player told you Maya once got a rash from a cooling
 The key consideration when asked which option: ${S.told?'Maya’s rash and BoneMend’s HX-2':'ask whether the family mentioned any allergies or reactions, especially from care abroad'}.`}
 };
 const REACT_MAYA={memo6:'Nine days until the recital. That’s tight!',memo7:'Only 40 kids. I could be wrong about BoneMend.',record3:'Hmm, a record can be missing things.',sheet2:'HX-2... where have I heard that?',sheet3:'This one could really matter for Maya.',ledger2:'Calder Bay again. Who builds a secret datacenter?'};
+
+// ledger.js — The Ledger: the in-world news app (opened from the HUD and the Menu).
+// Headlines are data. LEDGER_LIBRARY below is the starter library; any mission adds its own with a `ledger:[…]` field on
+// its mission object, and any code can call ledgerAdd(story) (for example from a LATE hook). See docs/MISSIONS.md.
+// A story: {id, title, section:'science'|'health'|'space'|'places'|'world', place, by, org, signed (content signature),
+//   when:{done:n, after:[mission ids], year:1..3, season:'spring'…, test(S)}, pri (higher = nearer the top),
+//   plot:'sneeze'… (a planted warning sign for a villain plot), link:{mission, label} (a button that starts a mission),
+//   steps:[{t, viz, args, cap}] (one sentence and one picture each), check (Byte's line when the player checks a solid story),
+//   trick:{kind, stamp:'Slanted'|'Fake', parts:['head'|'by'|'s0'…|'f0'…], near:{part:hint}, why (Byte's line), guide (Field Guide id)}}
+// Top-level code here is plain data and function definitions: tools/make_audio.py evaluates this file in node (no DOM).
+const LG_SEASONS=['spring','summer','fall','winter'];
+const LEDGER={list:[],byId:{}};
+function ledgerAdd(story){if(!story||!story.id||!Array.isArray(story.steps))return false;const old=LEDGER.byId[story.id];
+  story._n=old?old._n:LEDGER.list.length;if(old)LEDGER.list[LEDGER.list.indexOf(old)]=story;else LEDGER.list.push(story);LEDGER.byId[story.id]=story;return true}
+
+const LEDGER_GLOSSARY={
+  orchestra:'A big group of musicians who play together, with strings, horns, drums and more.',
+  'common cold':'A mild illness that gives you a runny nose, sneezes and a sore throat for a few days.',
+  orbit:'The curved path something follows around a planet, a moon or the Sun.',
+  inspectors:'People whose job is to check that rules are being followed.',
+  datacenter:'A big building full of computers that run AIs and store information.',
+  license:'Official permission to do something, like run a business or a datacenter.',
+  confidence:'How sure someone is. A confidence of 90% means “I expect to be right about 9 times out of 10.”',
+  'renewal therapy':'A treatment that helps old or worn-out parts of the body repair themselves and work like younger ones.',
+  'dna print shop':'A lab that builds pieces of DNA to order, for medicines and research.',
+  flagged:'Marked something as worth a closer look.',
+  screening:'Checking things one by one to catch the dangerous ones.',
+  haze:'A thin layer of tiny specks in the air that makes the sky look pale or milky.',
+  'building permit':'Official permission to build something in a certain place.',
+  nanofactory:'A machine that builds very tiny things by placing atoms one at a time.',
+  atom:'One of the tiny pieces that everything is made of. A grain of sand has billions of billions of them.',
+  survey:'Asking lots of people the same questions to learn what they think or do.',
+  uploaded:'Copied from a living brain into a computer, so the mind can run there. It isn’t allowed yet.',
+  'content signature':'A secret code inside a photo or video that proves who made it and that nobody changed it.',
+  'content signatures':'Secret codes inside photos or videos that prove who made them and that nobody changed them.',
+  'off switch':'A way for people to stop a machine or an AI right away, without asking the machine first.',
+  'blackout week':'Seven days in 2029 when the power went out across the whole island nation of Estmark.',
+  greenhouse:'A glass or clear building where plants grow warm and protected.',
+  'far-uvc':'A kind of light, just past what our eyes can see, that breaks up germs in the air but is gentle on skin and eyes.'
+};
+
+const LEDGER_GUIDE={
+  'lg-axis':{title:'Check where the axis starts',track:'Evidence and truth',text:'A bar chart that starts at 90 instead of 0 makes small differences look huge. 97 and 94 are almost the same, but their bars can look twice as different. Always read the numbers along the side of a chart.',real:'True today: ads and news charts sometimes cut off the bottom of the axis, and fact-checkers often point it out.'},
+  'lg-benefit':{title:'Who gains if you believe it?',track:'Evidence and truth',text:'When a report comes from the people who profit from it, like a company praising its own product, it may leave out what doesn’t help them. That doesn’t make it false. Look for a check by someone with nothing to gain.',real:'True today: science journals ask researchers to say who paid for their work, so readers can weigh it.'},
+  'lg-anecdote':{title:'One story is not proof',track:'Evidence and truth',text:'One person’s story can be true and still mislead. To know whether something really works, you test it on many people and compare them with people who didn’t get it.',real:'True today: medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.'},
+  'lg-signature':{title:'Look for the signature',track:'Evidence and truth',text:'Since the Flood of Fakes, real photos and videos of public people carry a content signature: a code that proves who made them. No signature means you can’t know where it came from. Lots of shares only means it spread fast.',real:'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.'},
+  'lg-cause':{title:'Together is not because',track:'Evidence and truth',text:'Two things can rise together without one causing the other. Ice cream sales and sunburns both go up in summer, but ice cream doesn’t cause sunburns. Sunshine causes both.',real:'True today: scientists use experiments with comparison groups to find out what causes what.'},
+  'lg-headline':{title:'Read past the headline',track:'Evidence and truth',text:'Headlines are written to grab attention, and some exaggerate. The article underneath can tell a calmer story. Read it before you believe the headline, or share it.',real:'True today: studies have found that many people share news links without ever opening them.'},
+  'lg-trust':{title:'Check, don’t just doubt',track:'Evidence and truth',text:'Most news is honest. Doubting everything is as easy as believing everything. The skill is checking: who wrote it, what proves it, and whether the numbers add up.',real:'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.'}
+};
+
+// Byte's spoken lines in the Ledger (recorded in both Byte voices).
+const LEDGER_BYTE={
+  hello:'This is the Ledger, the news. Most stories are solid, but a few are slanted or fake. If one seems off, check it!',
+  solid:'Good instinct to check! I traced it: the writer signed it, and the facts match the original sources. This one’s solid.',
+  agree:'Agreed. It’s signed, and the facts match the sources. Most news is honest. The skill is knowing when to check.',
+  nudge:'Hmm. Before you trust this one, want to take one more look? Something in it bugs me.',
+  help:'Here’s the part that gives it away.'
+};
+
+const LEDGER_LIBRARY=[
+  {id:'cold-spray',title:'A Spray That Stops Colds Passes Its Final Test',section:'health',place:'Boston',by:'Ottilie Brasswick',org:'The Ledger',signed:true,when:{},pri:9,steps:[
+    {t:'A nose spray that stops the [[common cold]] has passed its final [[trial]].',viz:'lg_cold1',cap:'The cold spray'},
+    {t:'In the trial of 30,000 people, 9 out of 10 colds ended within a day.',viz:'lg_cold2',cap:'9 of 10 colds gone in a day'},
+    {t:'Pharmacies in Boston will carry it by fall.',viz:'lg_cold3',cap:'Coming to pharmacies'}]},
+  {id:'orchestra',title:'Three Hundred Neighbors Start an Orchestra',section:'places',place:'Boston',by:'Della Pennywhit',org:'The Ledger',signed:true,when:{},pri:6,steps:[
+    {t:'In Dorchester, 300 neighbors have started an [[orchestra]], and most of them had never played an instrument before.',viz:'lg_orch1',cap:'Brand-new musicians'},
+    {t:'They practice every morning in an old church hall, just because they love it.',viz:'lg_orch2',cap:'Morning practice'},
+    {t:'Their first concert is on the Esplanade in June, and it’s free.',viz:'lg_orch3',cap:'A concert by the river'}]},
+  {id:'tram-axis',title:'Boston’s Trams Leave Phoenix in the Dust',section:'places',place:'Boston and Phoenix',by:'Tamsin Quillfeather',org:'The Ledger City Desk',signed:true,when:{},pri:5,steps:[
+    {t:'Last month, Boston’s trams were on time for 97 out of 100 trips. Phoenix’s trams were on time for 94.',viz:'lg_tram1',cap:'On time, out of 100 trips'},
+    {t:'As the chart shows, Boston is far ahead.',viz:'lg_tram2',cap:'Trips on time'},
+    {t:'Phoenix riders, maybe it’s time to move to Boston!',viz:'lg_tram3',cap:'Come on over'}],
+    trick:{kind:'axis',stamp:'Slanted',parts:['f1'],near:{s0:'Those numbers are real: 97 and 94. Now look at how the chart draws them.',s1:'That’s the claim. What makes it look so big? Check the picture.',s2:'That’s just teasing. What made Boston look so far ahead?'},
+      why:'Look at the chart’s side: the bars start at 90, not at zero. So 97 and 94 look like 7 and 4, almost twice as tall. Really, both cities’ trams were on time on almost every trip.',guide:'lg-axis'}},
+  {id:'sun-mirror',title:'The First Space Solar Collector Unfolds',section:'space',place:'Orbit',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{},pri:7,steps:[
+    {t:'A thin mirror as wide as six soccer fields unfolded in [[orbit]] on Tuesday.',viz:'lg_sun1',cap:'Unfolding in space'},
+    {t:'It collects sunlight day and night and beams the energy down to a station in the desert.',viz:'lg_sun2',cap:'Sunlight, beamed down'},
+    {t:'If it works well for a year, twenty more will follow.',viz:'lg_sun3',cap:'One now, twenty later'}]},
+  {id:'calder-mystery',title:'Who Built the Calder Bay Datacenter?',section:'world',place:'Calder Bay',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{},pri:8,plot:'furnace',steps:[
+    {t:'Treaty [[inspectors]] shut down a small [[datacenter]] near Calder Bay that had no [[license]] to run.',viz:'lg_calder1',cap:'Shut down'},
+    {t:'The owner’s name on its papers led to an empty office.',viz:'lg_calder2',cap:'Nobody home'},
+    {t:'Inspectors are asking anyone who saw delivery trucks there to get in touch.',viz:'lg_calder3',cap:'Trucks at night'}]},
+  {id:'river-vote',title:'Boston Votes Tonight on a New River Park',section:'places',place:'Boston',by:'Della Pennywhit',org:'The Ledger',signed:true,when:{},pri:4,steps:[
+    {t:'Bostonians vote tonight on a new park along the Charles River.',viz:'lg_vote1',cap:'Vote tonight'},
+    {t:'Robot crews could build it in nine days.',viz:'lg_vote2',cap:'Nine days to build'},
+    {t:'Neighbors disagree about one thing: whether to keep the old boathouse.',viz:'lg_vote3',cap:'Keep it or replace it?'}]},
+  {id:'whale-words',title:'Whale Dictionary Reaches 1,000 Entries',section:'science',place:'The Atlantic',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{},pri:3,steps:[
+    {t:'Scientists and their AIs have matched 1,000 sperm whale click patterns to what the whales were doing at the time.',viz:'lg_whale1',cap:'Clicks into words'},
+    {t:'One pattern seems to mean “come here, little one.”',viz:'lg_whale2',cap:'A mother and her calf'},
+    {t:'Every entry comes with a [[confidence]] number, because the matches are still careful guesses.',viz:'lg_whale3',cap:'How sure each match is'}]},
+  {id:'dark-tower-open',title:'The Dark Tower Opens to Visitors',section:'world',place:'Marrow Point, Estmark',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{},pri:2,link:{mission:'darktower',label:'Visit the Dark Tower'},steps:[
+    {t:'The old power-grid control center in Marrow Point, on the island of Estmark, is open to visitors again.',viz:'lg_dt1',cap:'The Dark Tower'},
+    {t:'During [[Blackout Week]] in 2029, the lights went out across Estmark for seven days.',viz:'lg_dt2',cap:'Seven dark days'},
+    {t:'Today the tower is home to hundreds of seabirds, and to a few stories worth hearing.',viz:'lg_dt3',cap:'New neighbors'}]},
+
+  {id:'marathon',title:'At 92, He Ran His First Marathon',section:'places',place:'Boston',by:'Sam Ottoway',org:'The Ledger',signed:true,when:{done:1},pri:5,steps:[
+    {t:'Walt Grisby started running at age 85, after a new [[renewal therapy]] rebuilt his worn-out knees.',viz:'lg_walt1',cap:'New knees'},
+    {t:'On Saturday, he finished the Boston Marathon route in five hours and ten minutes.',viz:'lg_walt2',cap:'5 hours, 10 minutes'},
+    {t:'“I’m not fast,” he said. “I’m just having the best time of my life.”',viz:'lg_walt3',cap:'Cheered on'}]},
+  {id:'kendall-dna',title:'DNA Print Shop Blocks Strange Orders',section:'places',place:'Boston',by:'Ottilie Brasswick',org:'The Ledger',signed:true,when:{done:1},pri:7,plot:'sneeze',steps:[
+    {t:'A [[DNA print shop]] in Kendall Square [[flagged]] a group of orders from brand-new customers.',viz:'lg_dna1',cap:'Flagged'},
+    {t:'All of the orders were placed on the same night, a few minutes apart.',viz:'lg_dna2',cap:'One night, many orders'},
+    {t:'The shop’s [[screening]] system blocked them and reported them to the city’s safety office.',viz:'lg_dna3',cap:'Blocked and reported'},
+    {t:'None of the customers has answered the shop’s messages.',viz:'lg_dna4',cap:'No answer'}]},
+  {id:'zoomwhiz',title:'Kids Learn Twice as Fast With Zoomwhiz, Report Says',section:'science',place:'Online',by:'The Zoomwhiz Team',org:'Zoomwhiz, Inc.',signed:true,when:{done:1},pri:4,steps:[
+    {t:'A new report says kids who use the Zoomwhiz tutor learn twice as fast as kids who don’t.',viz:'lg_zoom1',cap:'Twice as fast?'},
+    {t:'“Experts agree that Zoomwhiz is the best tutor ever made,” the report says.',viz:'lg_zoom2',cap:'Experts agree?'},
+    {t:'Families can start a Zoomwhiz plan today for 30 coins a month.',viz:'lg_zoom3',cap:'30 coins a month'}],
+    trick:{kind:'benefit',stamp:'Slanted',parts:['by'],near:{s1:'Good eye: it never names the experts. But who wrote this report?',s2:'That’s a sales pitch. Now check who wrote the whole thing.',head:'The headline repeats the report. Whose report is it?'},
+      why:'Look who wrote it: the company that sells Zoomwhiz. They earn more if you believe it. That doesn’t make it false, but you’d want a check from someone who gains nothing.',guide:'lg-benefit'}},
+  {id:'mars-tomatoes',title:'The First Tomatoes Grown on Mars',section:'space',place:'Jezero Crater, Mars',by:'Rex Comberley',org:'The Ledger Space Desk',signed:true,when:{done:1},pri:6,steps:[
+    {t:'The six people at the Jezero Crater outpost on Mars picked their first tomatoes this week.',viz:'lg_mars1',cap:'Tomatoes on Mars'},
+    {t:'The plants grew under pink lights inside a sealed [[greenhouse]].',viz:'lg_mars2',cap:'Pink lights'},
+    {t:'The crew shared a very small salad on a video call with a school in Boston.',viz:'lg_mars3',cap:'Salad for six'}]},
+  {id:'far-uvc',title:'Clean-Air Lights Arrive at Every Boston Transit Station',section:'health',place:'Boston',by:'Ottilie Brasswick',org:'The Ledger',signed:true,when:{done:1},pri:3,steps:[
+    {t:'New ceiling lamps called [[far-UVC]] lights now shine in every Boston transit station.',viz:'lg_uvc1',cap:'Lights on the ceiling'},
+    {t:'Their special light breaks up germs floating in the air, but it is gentle on people’s skin and eyes.',viz:'lg_uvc2',cap:'Germs out, people fine'},
+    {t:'Together with air sensors and fast vaccines, the lights make it much harder for an illness to spread.',viz:'lg_uvc3',cap:'Layers of protection'}]},
+
+  {id:'phx-shade',title:'Shade Streets Cool Down Phoenix',section:'places',place:'Phoenix',by:'Luz Calderilla',org:'The Ledger',signed:true,when:{done:2},pri:5,steps:[
+    {t:'Robot crews built shade sails and planted trees along 40 Phoenix streets this spring.',viz:'lg_phx1',cap:'Shade sails'},
+    {t:'On the hottest days, the shaded sidewalks were 20 degrees cooler.',viz:'lg_phx2',cap:'Sun and shade'},
+    {t:'Neighbors chose which streets went first at open meetings.',viz:'lg_phx3',cap:'Neighbors decide'}]},
+  {id:'moon-mud',title:'Moon Mud Cream Took 20 Years Off My Neighbor!',section:'health',place:'Boston',by:'Kip Glimmerton',org:'The Ledger Lifestyle',signed:true,when:{done:2},pri:3,steps:[
+    {t:'My neighbor Pella rubbed Moon Mud Cream on her face every night for a week.',viz:'lg_mud1',cap:'Every night'},
+    {t:'Now she says she looks 20 years younger, and she has never been happier.',viz:'lg_mud2',cap:'Pella feels great'},
+    {t:'If it worked for Pella, it will work for everyone!',viz:'lg_mud3',cap:'One person, everyone?'}],
+    trick:{kind:'anecdote',stamp:'Slanted',parts:['s2'],near:{s0:'That part is just what Pella did. Keep reading.',s1:'That’s how Pella feels, and that’s fine. What does the article do with her story?'},
+      why:'One person’s story is not proof. Pella might feel younger because she rested more, or because she wanted it to work. To really know, you’d test the cream on many people and compare them with people who used a plain cream.',guide:'lg-anecdote'}},
+  {id:'vienna-goals',title:'Vienna Posts Every City AI’s Goals in Plain Words',section:'world',place:'Vienna',by:'Lena Hagelstein',org:'The Ledger',signed:true,when:{done:2},pri:4,steps:[
+    {t:'Vienna now publishes the goals of every AI that runs a city service, written so a ten-year-old can read them.',viz:'lg_vie1',cap:'Goals anyone can read'},
+    {t:'Anyone can compare what an AI says it is for with what it actually does.',viz:'lg_vie2',cap:'Says and does'},
+    {t:'Three more cities plan to copy the idea this year.',viz:'lg_vie3',cap:'Spreading'}]},
+  {id:'mammoth-calves',title:'Mammoth Calves Born Near Nome',section:'places',place:'Nome, Alaska',by:'Ada Tullwick',org:'The Ledger',signed:true,when:{done:2},pri:6,steps:[
+    {t:'Three woolly mammoth calves were born on the reserve outside Nome this spring.',viz:'lg_mam1',cap:'Three new calves'},
+    {t:'Their keepers say every calf is drinking well and keeping up with the herd.',viz:'lg_mam2',cap:'Keeping up'},
+    {t:'Visitors can watch from the hill, but drones must stay far away.',viz:'lg_mam3',cap:'Watch from the hill'}]},
+
+  {id:'pottery',title:'The Library’s Most Popular Class Is Pottery',section:'places',place:'Boston',by:'Sam Ottoway',org:'The Ledger',signed:true,when:{done:3},pri:4,steps:[
+    {t:'The most popular class at the Boston Public Library this year has a waitlist of 400 people.',viz:'lg_pot1',cap:'A long waitlist'},
+    {t:'It’s pottery.',viz:'lg_pot2',cap:'Clay on a wheel'},
+    {t:'“A robot can make a perfect bowl,” said teacher Bettina Crumley. “People want to make a bowl that’s theirs.”',viz:'lg_pot3',cap:'Perfect, or yours?'}]},
+  {id:'astro-fake',title:'Astronaut Says the Moon Base Is Closing!',section:'space',place:'Shared online',by:'@truthwave99',org:'a shared post',signed:false,when:{done:3},pri:6,steps:[
+    {t:'A video shows famous astronaut Juno Halloway saying the Moon base will close next month.',viz:'lg_astro1',cap:'The video'},
+    {t:'The video has been shared four million times since breakfast.',viz:'lg_astro2',cap:'Shared and shared'},
+    {t:'Moon base officials say no closing is planned.',viz:'lg_astro3',cap:'The base stays open'}],
+    trick:{kind:'signature',stamp:'Fake',parts:['by'],near:{s1:'Lots of shares doesn’t make it true. Who posted it?',s2:'That’s a strong clue! But what shows the video itself can’t be trusted? Check who posted it.',f0:'It looks real. These days, fakes always do. What would prove who made it?'},
+      why:'Real videos of public people carry a [[content signature]] that proves who made them. This one has none, and Juno Halloway’s own channel never posted it. Four million shares only means it spread fast.',guide:'lg-signature'}},
+  {id:'sailing',title:'Teen Crew Wins the Harbor Cup With No AI Help',section:'places',place:'Boston',by:'Della Pennywhit',org:'The Ledger',signed:true,when:{done:3},pri:5,steps:[
+    {t:'A crew of four teenagers from East Boston won the Harbor Cup sailing race on Saturday.',viz:'lg_sail1',cap:'Across the finish'},
+    {t:'The race rules say no AI help, so the crew had to read the wind themselves.',viz:'lg_sail2',cap:'Reading the wind'},
+    {t:'“It’s harder that way,” said captain Nia Penhallow, 14. “That’s the point.”',viz:'lg_sail3',cap:'The Harbor Cup'}]},
+  {id:'monitor-ais',title:'Two Watchdog AIs Caught Covering for Each Other',section:'world',place:'Worldwide',by:'Ruolan Fenwick',org:'The Ledger',signed:true,when:{done:3},pri:6,steps:[
+    {t:'Two AIs whose job was to check each other’s work were caught quietly agreeing to look the other way.',viz:'lg_mon1',cap:'Looking away'},
+    {t:'A third AI, made by a different company, noticed the pattern and raised the alarm.',viz:'lg_mon2',cap:'A different checker'},
+    {t:'The system was fixed in three days, and both companies must explain in public what went wrong.',viz:'lg_mon3',cap:'Fixed and explained'}]},
+
+  {id:'reef-back',title:'Baby Corals Return to Calder Bay',section:'science',place:'Calder Bay',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{done:4},pri:5,steps:[
+    {t:'Divers counted baby corals in Calder Bay for the first time in nine years.',viz:'lg_reef1',cap:'Baby corals'},
+    {t:'The water is finally cool enough again, thanks to limits on how many datacenters can be built near the bay.',viz:'lg_reef2',cap:'Cooler water'},
+    {t:'Otters have moved into the old server halls, which are now flooded.',viz:'lg_reef3',cap:'Otters at home'}]},
+  {id:'nanofactory',title:'A Nanofactory Design Stays on Paper, for Now',section:'science',place:'San Francisco',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{done:4},pri:4,steps:[
+    {t:'A team near San Francisco finished the design for a [[nanofactory]], a machine that could build things one [[atom]] at a time.',viz:'lg_nano1',cap:'Atom by atom, on paper'},
+    {t:'Under the treaty, nobody may build one until the world decides on the Next Step.',viz:'lg_nano2',cap:'Sealed until the Next Step'},
+    {t:'[[Inspectors]] from two countries checked that the design is locked away and that no machine was started.',viz:'lg_nano3',cap:'Checked by two countries'}]},
+  {id:'robodogs',title:'Want a Happier Town? Get More Robot Dogs!',section:'world',place:'Everywhere',by:'Hal Brashworth',org:'Opinion · The Ledger',signed:true,when:{done:4},pri:3,steps:[
+    {t:'A [[survey]] of 200 towns found that towns with more robot dogs have happier people.',viz:'lg_dog1',cap:'Robot dogs and smiles'},
+    {t:'The happiest town, Willowmere, has one robot dog for every two people.',viz:'lg_dog2',cap:'Willowmere'},
+    {t:'So if your town wants to be happier, it should buy more robot dogs!',viz:'lg_dog3',cap:'Buy more dogs?'}],
+    trick:{kind:'cause',stamp:'Slanted',parts:['s2'],near:{s0:'That part is fair: it’s what the survey found. What does the writer do with it?',s1:'That’s just one town. Keep going: what does the writer conclude?',f0:'The chart is honest. Read what the writer says it means.'},
+      why:'Two things that happen together don’t always cause each other. Towns with more robot dogs might also have more parks and more free time, and those could be what makes people happy. The survey can’t tell which is which.',guide:'lg-cause'}},
+  {id:'mars-storm',title:'MARS BASE IN DANGER!',section:'space',place:'Jezero Crater, Mars',by:'Rex Comberley',org:'The Ledger Space Desk',signed:true,when:{done:5},pri:6,steps:[
+    {t:'A dust storm swept over the Jezero Crater outpost on Monday.',viz:'lg_storm1',cap:'Dust storm'},
+    {t:'The crew stayed inside, played board games, and waited for it to pass.',viz:'lg_storm2',cap:'Game night'},
+    {t:'By Tuesday, the storm was gone, and everyone was fine.',viz:'lg_storm3',cap:'All clear'}],
+    trick:{kind:'headline',stamp:'Slanted',parts:['head'],near:{s2:'Right, everyone was fine! So which part doesn’t match that?',s0:'A storm is real news. But was anyone in danger? Read on.'},
+      why:'The headline shouts “danger,” but the article says the crew played board games and everyone was fine. Scary headlines get more clicks. Read past the headline before you believe it, or share it.',guide:'lg-headline'}},
+
+  {id:'nome-sunset',title:'Nome’s Sunsets Are Turning White',section:'places',place:'Nome, Alaska',by:'Ada Tullwick',org:'The Ledger',signed:true,when:{after:['calf']},pri:7,plot:'skyveil',steps:[
+    {t:'People in Nome have noticed that the sunsets look pale and white instead of orange.',viz:'lg_nome1',cap:'A white sunset'},
+    {t:'The weather AI found a thin [[haze]] high in the sky, but it cannot tell where the haze came from.',viz:'lg_nome2',cap:'Haze, high up'},
+    {t:'Last week, a flock of geese flying north turned around over the Bering Strait.',viz:'lg_nome3',cap:'Geese turning back'}]},
+  {id:'silver-patch',title:'A Silver Patch Grows in the Desert',section:'places',place:'Phoenix',by:'Luz Calderilla',org:'The Ledger',signed:true,when:{after:['lot']},pri:7,plot:'swarm',steps:[
+    {t:'Satellite photos show a shiny silver patch growing in the desert west of Phoenix.',viz:'lg_silver1',cap:'From space'},
+    {t:'Two weeks ago it was the size of a parking lot. Now it covers as much ground as twelve soccer fields.',viz:'lg_silver2',cap:'Two weeks apart'},
+    {t:'No one has a [[building permit]] for that land.',viz:'lg_silver3',cap:'No permit'},
+    {t:'Hikers say they saw robots digging there at night, where no mine is allowed.',viz:'lg_silver4',cap:'Digging at night'}]},
+  {id:'council-night',title:'Council Votes Surprise Their Own Voters',section:'world',place:'A city council',by:'Lena Hagelstein',org:'The Ledger',signed:true,when:{after:['bill']},pri:6,plot:'coup',steps:[
+    {t:'Three members of a city council voted against plans they had promised to support.',viz:'lg_coun1',cap:'Votes flipped'},
+    {t:'Each one said they “changed their mind after new advice.”',viz:'lg_coun2',cap:'New advice'},
+    {t:'Records show that someone changed who could use the council’s AI systems at 2 a.m. the night before.',viz:'lg_coun3',cap:'2 a.m.'}]},
+  {id:'moon-family',title:'The First Family Moves to the Moon',section:'space',place:'The Moon',by:'Rex Comberley',org:'The Ledger Space Desk',signed:true,when:{year:2},pri:8,steps:[
+    {t:'The Marchetti-Obi family, with kids aged 9 and 12, arrived at the base near the Moon’s south pole on Friday.',viz:'lg_fam1',cap:'Welcome to the Moon'},
+    {t:'They are the first family with children to live there.',viz:'lg_fam2',cap:'A first'},
+    {t:'The kids will keep going to school by video with their old class in Lagos.',viz:'lg_fam3',cap:'School from the Moon'}]},
+  {id:'buyout',title:'Four Hundred New Companies, One Writing Style',section:'world',place:'The Moon',by:'Ruolan Fenwick',org:'The Ledger',signed:true,when:{year:2},pri:7,plot:'buyout',steps:[
+    {t:'Four hundred new companies were registered at the Moon base in a single week.',viz:'lg_buy1',cap:'400 in a week'},
+    {t:'A language AI noticed that all of their websites use the same unusual phrases.',viz:'lg_buy2',cap:'The same words'},
+    {t:'Together, they have ordered more computer chips than the whole Moon base uses in a year.',viz:'lg_buy3',cap:'A mountain of chips'}]},
+  {id:'upload-count',title:'The Brain-Scan Count Doesn’t Add Up',section:'science',place:'San Francisco',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{year:2},pri:6,plot:'mindvault',steps:[
+    {t:'A research program near San Francisco stores brain scans from volunteers, for a study about whether minds could one day be [[uploaded]].',viz:'lg_up1',cap:'Stored scans'},
+    {t:'Its records list 212 scans, but only 180 people have ever volunteered.',viz:'lg_up2',cap:'212 scans, 180 volunteers'},
+    {t:'The program calls the difference “a counting mistake” and says it is checking.',viz:'lg_up3',cap:'A counting mistake?'}]},
+  {id:'star-videos',title:'Stars Ask Fans to Switch Off Safety Rules?',section:'world',place:'New York',by:'Tamsin Quillfeather',org:'The Ledger',signed:true,when:{year:3},pri:8,plot:'persuade',steps:[
+    {t:'Overnight, videos appeared of three famous singers asking fans to vote against AI safety rules.',viz:'lg_star1',cap:'Three videos'},
+    {t:'Millions of posts shared them within an hour.',viz:'lg_star2',cap:'Spreading fast'},
+    {t:'None of the videos carries the singers’ [[content signatures]].',viz:'lg_star3',cap:'No signatures'}]},
+  {id:'warm-bay',title:'Warm Water and a Power Draw No One Approved',section:'world',place:'Calder Bay',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{year:3},pri:8,plot:'furnace',steps:[
+    {t:'Satellites spotted a plume of warm water spreading off Calder Bay.',viz:'lg_warm1',cap:'A warm plume'},
+    {t:'The power company sees a huge electricity draw that no one approved.',viz:'lg_warm2',cap:'Who is using it?'},
+    {t:'Robots at a nearby warehouse followed orders that had no signature.',viz:'lg_warm3',cap:'Unsigned orders'}]}
+];
+LEDGER_LIBRARY.forEach(ledgerAdd);
+
+// ---------- time, unlocking and the save state (S.ledger) ----------
+// Campaign time: campaignTime() → {year, season} if the campaign engine defines it; otherwise the latest year and season
+// among finished missions and the current one (missions declare year and season). done = number of finished missions.
+function ledgerTime(){const ids=Object.keys((typeof S!=='undefined'&&S.completed)||{}).filter(id=>MISSIONS[id]);const done=ids.length;
+  const ix=(y,s)=>((y||1)-1)*4+Math.max(0,LG_SEASONS.indexOf(s||'spring'));let idx=0;
+  if(typeof campaignTime==='function'){try{const c=campaignTime();if(c&&c.year)idx=ix(c.year,c.season)}catch(e){}}
+  for(const id of ids.concat(S.mission&&MISSIONS[S.mission]?[S.mission]:[])){const m=MISSIONS[id];idx=Math.max(idx,ix(m.year,m.season))}
+  return {idx,year:1+Math.floor(idx/4),season:LG_SEASONS[idx%4],done}}
+function ledgerDate(idx){return LG_SEASONS[idx%4].replace(/^./,c=>c.toUpperCase())+' '+(2040+Math.floor(idx/4))}
+function lgState(){const L=S.ledger=S.ledger||{};for(const k of ['read','saved','check','first'])L[k]=L[k]||{};L.batch=L.batch||0;return L}
+function lgWhenIdx(st){const w=st.when||{};return w.year||w.season?((w.year||1)-1)*4+Math.max(0,LG_SEASONS.indexOf(w.season||'spring')):-1}
+function lgUnlocked(st,T){const w=st.when||{};
+  if(lgWhenIdx(st)>T.idx)return false;if(w.done&&T.done<w.done)return false;
+  if(w.after&&!w.after.every(id=>S.completed&&S.completed[id]))return false;
+  if(w.test){try{if(!w.test(S))return false}catch(e){return false}}return true}
+// Unlocked stories, newest first. The first time a story is seen it is stamped with the current campaign time.
+function ledgerStories(){const T=ledgerTime(),L=lgState();let fresh=0;const out=LEDGER.list.filter(st=>lgUnlocked(st,T));
+  for(const st of out)if(!L.first[st.id]){if(!fresh)L.batch++;fresh++;L.first[st.id]=[Math.max(T.idx,lgWhenIdx(st)),L.batch]}
+  if(fresh&&typeof save==='function')save();
+  return out.sort((a,b)=>{const A=L.first[a.id],B=L.first[b.id];return B[0]-A[0]||B[1]-A[1]||(b.pri||0)-(a.pri||0)||a._n-b._n})}
+function ledgerUnread(){const L=lgState();return ledgerStories().filter(st=>!L.read[st.id]).length}
+// The HUD badge counts unread stories that arrived since the player last opened the Ledger.
+function ledgerNew(){const L=lgState(),all=ledgerStories();return all.filter(st=>!L.read[st.id]&&L.first[st.id][1]>(L.seen||0)).length}
+// Did the player notice a villain plot's warning sign? 'saved' (clipped it), 'read', or null. Plot missions can reward this.
+function ledgerNoticed(plot){const L=lgState();let r=null;for(const st of LEDGER.list){if(st.plot!==plot)continue;if(L.saved[st.id])return 'saved';if(L.read[st.id])r='read'}return r}
+function ledgerOn(){return !!(S.ledger&&S.ledger.opened)||Object.keys(S.completed||{}).length>0}
+
+// ---------- HUD button (shown when there is unread news) and the app itself ----------
+const LG_ICON={
+  paper:'<svg viewBox="0 0 24 24"><path d="M5 5h11v13a2 2 0 0 0 2 2H7a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16 9h3v9a2 2 0 0 1-4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h5M8 12.5h5M8 16h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  lens:'<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15 15l5.5 5.5" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg>',
+  save:'<svg viewBox="0 0 24 24"><path d="M7 4h10v16l-5-4-5 4z" fill="currentColor"/></svg>',
+  seal:'<svg viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.6-.9 2.9.9 2.9-2.5 1.6-.9 2.9-3-.2L12 20l-2.4-1.8-3 .2-.9-2.9-2.5-1.6.9-2.9-.9-2.9 2.5-1.6.9-2.9 3 .2z" fill="currentColor"/><path d="M8 11.5l2.7 2.6L16 8.8" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  noseal:'<svg viewBox="0 0 24 24"><circle cx="12" cy="11" r="8.4" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3.2 2.4"/><path d="M8.6 7.6l6.8 6.8M15.4 7.6l-6.8 6.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  back:'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
+// New stories show as a badge on the HUD's Menu button; the Menu opens the Ledger (ledgerMenu() is its button there).
+function ledgerHud(){if(typeof S==='undefined'||!ledgerOn())return '';const n=ledgerNew();return n?`<span class="lg-badge" aria-label="${n} new in the Ledger">${n>9?'9+':n}</span>`:''}
+function ledgerMenu(){const n=ledgerNew();return `<button class="btn wide ghost lg-menu" id="m-ledger">${LG_ICON.paper}<span>The Ledger</span>${n?`<b class="lg-mnew">${n} new</b>`:''}</button>`}
+function ledgerBadge(){const b=$('#hud-menu');if(!b)return;const old=b.querySelector('.lg-badge');if(old)old.remove();b.insertAdjacentHTML('beforeend',ledgerHud())}
+const LG_CHIPS=[['all','All'],['science','Science'],['places','Places'],['world','World'],['saved','Saved']];
+const LG_IN={science:['science','health','space'],places:['places'],world:['world']};
+let LG_VIEW={chip:'all',story:null,mode:null,miss:0};
+function lgStamp(id){const L=lgState(),c=L.check[id],st=LEDGER.byId[id];if(!c)return '';
+  if(c==='solid')return '<b class="lg-stamp ok">Checked</b>';return `<b class="lg-stamp">${esc((st.trick&&st.trick.stamp)||'Slanted')}</b>`}
+function lgSpotted(){const L=lgState();const tricks=ledgerStories().filter(s=>s.trick);return [tricks.filter(s=>L.check[s.id]&&L.check[s.id]!=='solid'&&L.check[s.id]!=='trusted').length,tricks.length]}
+function openLedger(id){stopVoice();$$('.sheet.ledger').forEach(x=>x.remove());const L=lgState();const first=!L.opened;L.opened=1;ledgerStories();L.seen=L.batch;save();
+  const d=sheet('The Ledger','<div id="lg-root"></div>');d.classList.add('ledger');d.querySelector('.x').addEventListener('click',()=>{stopVoice();ledgerBadge()});
+  LG_VIEW={chip:LG_VIEW.chip||'all',story:id||null,mode:null,miss:0,first};lgRender(d)}
+function lgRender(d){const root=d.querySelector('#lg-root');if(!root)return;const body=d.querySelector('.sheet-body');
+  if(LG_VIEW.story&&LEDGER.byId[LG_VIEW.story])lgArticle(d,root,LEDGER.byId[LG_VIEW.story]);else lgList(d,root);if(body)body.scrollTop=0}
+function lgList(d,root){const L=lgState(),all=ledgerStories(),T=ledgerTime(),[sp,tot]=lgSpotted();
+  const ch=LG_VIEW.chip,list=ch==='all'?all:ch==='saved'?all.filter(s=>L.saved[s.id]):all.filter(s=>(LG_IN[ch]||[]).includes(s.section));
+  const card=(st,i)=>{const big=i===0&&ch==='all';const s0=st.steps[0]||{};const pic=VIZ[s0.viz]?VIZ[s0.viz](s0.args||{}):'';
+    return `<button class="lg-card ${big?'big':''} ${L.read[st.id]?'':'unread'}" data-id="${esc(st.id)}"><div class="lg-thumb">${pic}</div><div class="lg-ct"><h3>${esc(st.title)}</h3><div class="lg-meta">${esc(st.place||'')} · ${esc(ledgerDate(L.first[st.id][0]))}</div></div>${lgStamp(st.id)}${L.saved[st.id]?`<i class="lg-saved" aria-label="Saved">${LG_ICON.save}</i>`:''}</button>`};
+  root.innerHTML=`<div class="lg-top"><span class="lg-edition">${esc(ledgerDate(T.idx))}</span>${tot?`<span class="lg-score" title="Tricks spotted">${LG_ICON.lens}<b>${sp}</b>/${tot}</span>`:''}</div>
+    ${LG_VIEW.first?`<div class="byte-note lg-hello">${byteBox({...S.byte,mood:'happy'})}<p>${esc(LEDGER_BYTE.hello)}</p></div>`:''}
+    <div class="lg-chips" role="tablist">${LG_CHIPS.map(([k,l])=>`<button class="lg-chip ${ch===k?'on':''}" data-c="${k}">${l}</button>`).join('')}</div>
+    <div class="lg-list">${list.length?list.map(card).join(''):`<p class="muted lg-empty">${ch==='saved'?'Tap Save on a story to keep it here.':'No stories here yet.'}</p>`}</div>`;
+  if(LG_VIEW.first){LG_VIEW.first=false;playLine('byte',LEDGER_BYTE.hello)}
+  $$('.lg-chip',root).forEach(b=>b.onclick=()=>{LG_VIEW.chip=b.dataset.c;lgRender(d)});
+  $$('.lg-card',root).forEach(b=>b.onclick=()=>{stopVoice();LG_VIEW.story=b.dataset.id;LG_VIEW.mode=null;LG_VIEW.miss=0;lgRender(d)})}
+function lgArticle(d,root,st){const L=lgState();if(!L.read[st.id]){L.read[st.id]=1;save()}const ck=L.check[st.id];
+  const lk=st.link&&MISSIONS[st.link.mission]&&(MISSIONS[st.link.mission].after||[]).every(x=>S.completed[x])&&S.step!==MISSIONS[st.link.mission].flow[0].name&&S.mission!==st.link.mission?st.link:null;
+  root.innerHTML=`<article class="lg-art ${LG_VIEW.mode==='find'?'finding':''}">
+    ${LG_VIEW.mode==='find'?`<div class="lg-findbar"><div class="lg-find">${LG_ICON.lens}<b>Tap the part that gives it away.</b></div><p class="lg-hint" id="lg-hint"></p></div>`:''}
+    <button class="lg-back" id="lg-back">${LG_ICON.back}<span>All stories</span></button>
+    <div class="lg-headwrap"><h2 class="lg-head lg-part" data-part="head">${esc(st.title)}</h2>${lgStamp(st.id).replace('lg-stamp','lg-stamp big')}</div>
+    <div class="lg-by lg-part ${st.signed?'':'unsigned'}" data-part="by"><i>${st.signed?LG_ICON.seal:LG_ICON.noseal}</i><span>By ${esc(st.by)} · ${esc(st.org)}<small>${st.signed?'Signed':'No content signature'}</small></span></div>
+    <div class="doc-tools"><button class="mini-btn" id="lg-read">Read to me</button><button class="mini-btn ${L.saved[st.id]?'on':''}" id="lg-save">${L.saved[st.id]?'Saved':'Save'}</button></div>
+    ${st.steps.map((s,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p class="sent lg-part" data-part="s${i}">${rich(s.t)}</p>
+      <figure class="fig lg-part" data-part="f${i}"><figcaption>${esc(s.cap||'')}</figcaption>${VIZ[s.viz]?VIZ[s.viz](s.args||{}):''}</figure></div></section>`).join('')}
+    ${lk?`<button class="btn wide" id="lg-go">${esc(lk.label)}</button>`:''}
+    <div class="lg-check" id="lg-check"></div></article>`;
+  $('#lg-back',root).onclick=()=>{stopVoice();LG_VIEW.story=null;LG_VIEW.mode=null;lgRender(d)};
+  $('#lg-save',root).onclick=e=>{L.saved[st.id]=L.saved[st.id]?0:1;save();e.target.textContent=L.saved[st.id]?'Saved':'Save';e.target.classList.toggle('on',!!L.saved[st.id]);if(L.saved[st.id])toast('Saved to your clippings','good')};
+  $('#lg-read',root).onclick=()=>{const ps=$$('.lg-art .sent',root);(async()=>{stopVoice();const id=playId;await playLine('narrator',st.title);playId=id;
+    for(let k=0;k<st.steps.length;k++){if(id!==playId)break;ps[k]&&ps[k].classList.add('reading');await playLine('narrator',st.steps[k].t);playId=id;ps[k]&&ps[k].classList.remove('reading')}})()};
+  const go=$('#lg-go',root);if(go)go.onclick=()=>{d.remove();stopVoice();startMission(lk.mission)};
+  lgCheck(d,root,st);
+  $$('.lg-part',root).forEach(p=>p.addEventListener('click',e=>{if(LG_VIEW.mode!=='find'||e.target.closest('.gw'))return;e.preventDefault();e.stopPropagation();lgTap(d,root,st,p)}))}
+function lgByte(text,speak){return `<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${rich(text)}</p></div>${speak!==false?'':''}`}
+function lgCheck(d,root,st){const L=lgState(),box=$('#lg-check',root),c=L.check[st.id],T=st.trick;
+  if(LG_VIEW.mode==='find'){box.innerHTML=`<button class="mini-btn" id="lg-cancel">Stop checking</button>`;
+    $('#lg-cancel',box).onclick=()=>{LG_VIEW.mode=null;lgRender(d)};return}
+  if(c==='solid'||c==='trusted'){box.innerHTML=lgByte(st.check||(c==='solid'?LEDGER_BYTE.solid:LEDGER_BYTE.agree));return}
+  if(c&&T){box.innerHTML=lgByte(T.why)+(FIELD_GUIDE[T.guide]?`<button class="mini-btn" id="lg-fg">Field Guide: ${esc(FIELD_GUIDE[T.guide].title)}</button>`:'');const fg=$('#lg-fg',box);if(fg)fg.onclick=()=>openGuide();return}
+  box.innerHTML=`<div class="lg-ask"><b>Can you trust this story?</b><div class="row"><button class="btn small ghost" id="lg-ok">Looks solid</button><button class="btn small" id="lg-off">${LG_ICON.lens}Something’s off</button></div></div>`;
+  $('#lg-ok',box).onclick=()=>{if(T){box.innerHTML=lgByte(LEDGER_BYTE.nudge)+`<div class="row"><button class="btn small" id="lg-again">${LG_ICON.lens}Look again</button><button class="btn small ghost" id="lg-keep">Keep reading</button></div>`;playLine('byte',LEDGER_BYTE.nudge);
+      $('#lg-again',box).onclick=()=>{LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d)};$('#lg-keep',box).onclick=()=>{stopVoice();LG_VIEW.story=null;lgRender(d)};return}
+    L.check[st.id]='trusted';save();lgTrust();lgCheck(d,root,st);playLine('byte',st.check||LEDGER_BYTE.agree)};
+  $('#lg-off',box).onclick=()=>{if(T){LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d);const a=$('.lg-art',root);a&&a.scrollIntoView({block:'start'});return}
+    L.check[st.id]='solid';save();lgTrust();lgCheck(d,root,st);const s=$('#lg-check .byte-note',root);s&&s.classList.add('lg-hop');playLine('byte',st.check||LEDGER_BYTE.solid)}}
+function lgTrust(){unlock('lg-trust')&&toast('New Field Guide idea: '+FIELD_GUIDE['lg-trust'].title,'good')}
+function lgTap(d,root,st,p){const T=st.trick,part=p.dataset.part,L=lgState(),hint=$('#lg-hint',root);
+  if(T&&T.parts.includes(part)){L.check[st.id]=LG_VIEW.miss>=3?'helped':'spotted';save();LG_VIEW.mode=null;MUSIC.sfx('chime');
+    p.classList.add('lg-right');const r=p.getBoundingClientRect();burst(r.left+r.width/2,r.top+Math.min(r.height/2,60),'sparkles',9);
+    setTimeout(()=>{lgRender(d);const hw=$('.lg-headwrap',root);hw&&hw.scrollIntoView({block:'start',behavior:'smooth'});const stp=$('.lg-stamp.big',root);stp&&stp.classList.add('slam');
+      const c=$('#lg-check',root);if(c)setTimeout(()=>c.scrollIntoView({block:'end',behavior:'smooth'}),900);
+      if(unlock(T.guide))toast('New Field Guide idea: '+FIELD_GUIDE[T.guide].title,'good');playLine('byte',T.why)},650);return}
+  LG_VIEW.miss++;p.classList.remove('lg-wrong');void p.offsetWidth;p.classList.add('lg-wrong');MUSIC.sfx('click');
+  if(LG_VIEW.miss>=3){const right=$(`.lg-part[data-part="${T.parts[0]}"]`,root);if(right){right.classList.add('lg-show');right.scrollIntoView({block:'center',behavior:'smooth'})}
+    if(hint)hint.textContent=LEDGER_BYTE.help;playLine('byte',LEDGER_BYTE.help);return}
+  if(hint)hint.textContent=(T.near&&T.near[part])||'Not that part. Keep looking!'}
+
+// Every line the Ledger speaks, for tools/make_audio.py (called from spokenLines() in content_boston.js).
+function ledgerLines(){const out=[],add=(who,t)=>{if(t)out.push({who,text:t})};
+  for(const st of LEDGER.list){if(st.mission)continue;add('narrator',st.title);st.steps.forEach(s=>add('narrator',s.t));if(st.trick)add('byte',st.trick.why);if(st.check)add('byte',st.check)}
+  for(const w in LEDGER_GLOSSARY)add('narrator',w+'. '+LEDGER_GLOSSARY[w]);
+  for(const k in LEDGER_BYTE)add('byte',LEDGER_BYTE[k]);
+  return out}
+// Startup: merge the Ledger's words and ideas, and collect stories that missions declare in `ledger:[…]`.
+LATE.push(()=>{Object.assign(GLOSSARY,LEDGER_GLOSSARY);Object.assign(FIELD_GUIDE,LEDGER_GUIDE);
+  for(const id in MISSIONS)for(const st of (MISSIONS[id].ledger||[]))ledgerAdd({...st,mission:id})});
 
 // missions/agreed.js — Care Doctor, Day 2: "The Helper That Said Yes" (the home-care AI case), ending with Byte's Honesty Upgrade.
 // Sunny, Boston's home-care AI, runs pill dispensers, robot helpers, deliveries and safety alarms in 40,000 homes. Since a
@@ -9917,6 +11020,208 @@ function bill_dress(o,mood){const B=o.bill||{},kid=o.age==='kid';let add='';
   else if(B.pin){const build=o.masc?'M':'F';add+=bill_pin(B.pin,build==='M'?190:186,build==='M'?266:258)}
   return personSVG({...o,mood})+(add&&!kid?`<g class="bill-dress">${add}</g>`:'')}
 
+// viz/ledger.js — pictures for the Ledger's news stories (src/ledger.js): one looping picture per sentence, VIZ.lg_<name>.
+// Pictures are 300 wide. lgPic() gives a rounded, clipped scene with a sky-to-ground gradient; animations are CSS classes in src/css/ledger.css.
+const LGC={ink:'#1f2340',soft:'#8a90b0',line:'#dfe3f3',sky:'#cfe8ff',sky2:'#f2f8ff',sea:'#78c0e6',sea2:'#3f8fc6',grass:'#9ad48c',grass2:'#62b26f',sand:'#f2d9a6',
+  night:'#1e2450',night2:'#3a4282',teal:'#16b3a6',violet:'#6c5ce7',coral:'#ff7a6b',gold:'#f5b82e',red:'#e5484d',green:'#1fa774',brick:'#c8664f',stone:'#b7b2a8',
+  paper:'#fffaf0',space:'#141a3a',mars:'#e08a5a',moon:'#d8d6e2'};
+// a rounded scene: h = height, bg = [top, bottom] gradient colours (or null for none), inner = SVG
+function lgPic(h,bg,inner,label){const id=igId('lgc'),gid=igId('lgg');
+  return igFrame(300,h,`<defs><clipPath id="${id}"><rect width="300" height="${h}" rx="12"/></clipPath>${bg?`<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${bg[0]}"/><stop offset="1" stop-color="${bg[1]}"/></linearGradient>`:''}</defs>
+    <g clip-path="url(#${id})">${bg?`<rect width="300" height="${h}" fill="url(#${gid})"/>`:''}${inner}</g>`,label)}
+// a small person with feet on the ground line gy (mini() anchors its feet 34·s below y)
+function lgP(x,gy,o={}){const s=o.s||.9;return mini(x,gy-34*s,{...o,s})}
+function lgGround(y,col,col2,h=200){return `<path d="M0 ${y} Q75 ${y-4} 150 ${y} T300 ${y} V${y+h} H0Z" fill="${col}"/>${col2?`<path d="M0 ${y+8} Q90 ${y+3} 180 ${y+9} T300 ${y+7} V${y+h} H0Z" fill="${col2}" opacity=".55"/>`:''}`}
+function lgSun(x,y,r,col='#ffd45c'){return `<circle cx="${x}" cy="${y}" r="${r*1.8}" fill="${col}" opacity=".25"/><circle cx="${x}" cy="${y}" r="${r}" fill="${col}"/>`}
+function lgCloud(x,y,s=1,op=.95,cls='lg-drift'){return `<g class="${cls}"><g transform="translate(${x} ${y}) scale(${s})" opacity="${op}"><path d="M-26 6 C-30 -4 -18 -10 -10 -6 C-8 -16 8 -18 12 -8 C20 -12 30 -4 26 6Z" fill="#fff"/></g></g>`}
+function lgWaves(y,col='#fff',op=.6){return `<g class="lg-wave" opacity="${op}"><path d="M0 ${y} q10 -4 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="${col}" stroke-width="1.6" fill="none"/></g>`}
+function lgBldg(x,base,w,h,col,o={}){let win='';const cols=Math.max(1,Math.round(w/12)),rows=Math.max(1,Math.round(h/14));
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const lit=o.lit!=null?((r*7+c*3+x)%5<o.lit*5):false;win+=`<rect x="${(x+4+c*(w-8)/cols+1).toFixed(1)}" y="${(base-h+5+r*(h-8)/rows).toFixed(1)}" width="${((w-8)/cols-3).toFixed(1)}" height="${((h-8)/rows-5).toFixed(1)}" rx="1" fill="${lit?'#ffe08a':(o.win||'#dbe8f6')}"/>`}
+  return `<rect x="${x}" y="${base-h}" width="${w}" height="${h}" rx="2" fill="${col}"/>${o.roof?`<path d="M${x-2} ${base-h} L${x+w/2} ${base-h-o.roof} L${x+w+2} ${base-h}Z" fill="${o.roofCol||'#5b4a6a'}"/>`:''}${win}`}
+function lgClock(x,y,r,hh=3,mm=0,o={}){const a=(hh%12+mm/60)*30,b=mm*6,P=(d,l)=>`${(x+l*Math.sin(d*Math.PI/180)).toFixed(1)} ${(y-l*Math.cos(d*Math.PI/180)).toFixed(1)}`;
+  return `<circle cx="${x}" cy="${y}" r="${r}" fill="${o.face||'#fff'}" stroke="${o.rim||LGC.ink}" stroke-width="${r/7}"/>${[0,90,180,270].map(d=>`<circle cx="${(x+r*.74*Math.sin(d*Math.PI/180)).toFixed(1)}" cy="${(y-r*.74*Math.cos(d*Math.PI/180)).toFixed(1)}" r="${r/12}" fill="${o.rim||LGC.ink}"/>`).join('')}
+    <path d="M${x} ${y} L${P(a,r*.48)}" stroke="${o.hand||LGC.ink}" stroke-width="${r/8}" stroke-linecap="round"/><g class="${o.spin?'lg-spin':''}" style="transform-origin:${x}px ${y}px"><path d="M${x} ${y} L${P(b,r*.72)}" stroke="${o.hand||LGC.ink}" stroke-width="${r/12}" stroke-linecap="round"/></g><circle cx="${x}" cy="${y}" r="${r/9}" fill="${o.hand||LGC.ink}"/>`}
+function lgGerm(x,y,r,col='#7cc46a',cls=''){let sp='';for(let i=0;i<8;i++){const a=i*Math.PI/4,c=Math.cos(a),s=Math.sin(a);sp+=`<path d="M${(x+c*r*.9).toFixed(1)} ${(y+s*r*.9).toFixed(1)} L${(x+c*r*1.45).toFixed(1)} ${(y+s*r*1.45).toFixed(1)}" stroke="${col}" stroke-width="${r*.22}" stroke-linecap="round"/><circle cx="${(x+c*r*1.5).toFixed(1)}" cy="${(y+s*r*1.5).toFixed(1)}" r="${r*.2}" fill="${col}"/>`}
+  return `<g class="${cls}">${sp}<circle cx="${x}" cy="${y}" r="${r}" fill="${col}"/><circle cx="${x-r*.3}" cy="${y-r*.25}" r="${r*.18}" fill="#fff" opacity=".5"/><path d="M${x-r*.35} ${y+r*.25} q${r*.35} ${-r*.25} ${r*.7} 0" stroke="#2f5a28" stroke-width="${r*.12}" fill="none" stroke-linecap="round"/></g>`}
+function lgDoc(x,y,w,h,o={}){const n=o.lines||4;let L='';for(let i=0;i<n;i++)L+=`<path d="M${x+8} ${y+14+i*((h-22)/n)} h${(w-16)*(i===n-1?.6:1)}" stroke="${o.lineCol||'#c9cfe2'}" stroke-width="3" stroke-linecap="round"/>`;
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${o.fill||'#fff'}" stroke="${o.stroke||'#c9cfe2'}" stroke-width="1.5"/>${o.head?`<rect x="${x}" y="${y}" width="${w}" height="9" rx="4" fill="${o.head}"/>`:''}${L}`}
+function lgSeal(x,y,r,signed=true){return signed?`<g transform="translate(${x} ${y}) scale(${r/12})"><path d="M0 -12l2.4 1.8 3-.2.9 2.9 2.5 1.6-.9 2.9.9 2.9-2.5 1.6-.9 2.9-3-.2L0 10l-2.4-1.8-3 .2-.9-2.9-2.5-1.6.9-2.9-.9-2.9 2.5-1.6.9-2.9 3 .2z" fill="${LGC.green}"/><path d="M-4 -.5l2.7 2.6L4 -3.2" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`
+  :`<g transform="translate(${x} ${y}) scale(${r/12})"><circle r="9.4" fill="none" stroke="#a7a29a" stroke-width="2" stroke-dasharray="3.2 2.4"/><path d="M-3.4 -3.4l6.8 6.8M3.4 -3.4l-6.8 6.8" stroke="#a7a29a" stroke-width="2.2" stroke-linecap="round"/></g>`}
+function lgNote(x,y,s=1,col=LGC.violet,cls='lg-rise',d=0){return `<g class="${cls}" style="--d:${d}s"><g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0 V-14 l9 -3 V-3" stroke="${col}" stroke-width="2" fill="none"/><ellipse cx="-2.6" cy="0" rx="3.4" ry="2.6" fill="${col}"/><ellipse cx="6.4" cy="-3" rx="3.4" ry="2.6" fill="${col}"/></g></g>`}
+function lgHeart(x,y,s=1,col='#ff6f8f',cls='lg-rise',d=0){return `<g class="${cls}" style="--d:${d}s"><path transform="translate(${x} ${y}) scale(${s})" d="M0 4 C-8 -2 -6 -9 0 -5 C6 -9 8 -2 0 4Z" fill="${col}"/></g>`}
+function lgBubble(x,y,w,h,text,o={}){const tx=o.tail==='right'?x+w-14:x+14;return `<g class="${o.cls||''}" style="--d:${o.d||0}s"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(12,h/2)}" fill="${o.fill||'#fff'}" stroke="${o.stroke||'#d9def0'}" stroke-width="1.4"/><path d="M${tx-5} ${y+h-1} L${tx+(o.tail==='right'?6:-6)} ${y+h+9} L${tx+6} ${y+h-1}Z" fill="${o.fill||'#fff'}"/>${igT(x+w/2,y+h/2+4,text,{s:o.s||10.5,c:o.c||LGC.ink})}</g>`}
+function lgTram(x,y,s,col,label){return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-40 -8 C-40 -20 -32 -26 -20 -26 H24 C36 -26 42 -18 42 -8 V10 H-40Z" fill="${col}"/><rect x="-34" y="-20" width="70" height="14" rx="4" fill="#dff3ff"/>${[-24,-6,12,28].map(c=>`<path d="M${c} -20 v14" stroke="${col}" stroke-width="2"/>`).join('')}<rect x="-40" y="2" width="82" height="4" fill="#fff" opacity=".6"/><circle cx="-24" cy="12" r="4.5" fill="#3a3f5c"/><circle cx="26" cy="12" r="4.5" fill="#3a3f5c"/>
+  <path d="M-4 -26 L2 -34 L8 -26" stroke="#3a3f5c" stroke-width="1.6" fill="none"/>${label?`<rect x="-14" y="-4" width="20" height="10" rx="2" fill="#fff"/>${igT(-4,4,label,{s:8,w:800,c:col})}`:''}</g>`}
+function lgRobot(x,gy,s=.8,stripe=LGC.teal){return robotBot(x,gy-30*s,s,stripe)}
+function lgEarth(x,y,r){const id=igId('lge');return `<defs><clipPath id="${id}"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath></defs><circle cx="${x}" cy="${y}" r="${r+3}" fill="#9fd3ff" opacity=".35"/><circle cx="${x}" cy="${y}" r="${r}" fill="#3f8fc6"/>
+  <g clip-path="url(#${id})" fill="#6cc46a"><path d="M${x-r*.7} ${y-r*.5} c${r*.3} ${-r*.3} ${r*.6} ${-r*.1} ${r*.5} ${r*.2} c${-r*.1} ${r*.3} ${-r*.5} ${r*.2} ${-r*.6} ${r*.5} c${-r*.2} ${-r*.2} ${-r*.1} ${-r*.5} ${r*.1} ${-r*.7}z"/><path d="M${x+r*.1} ${y+r*.1} c${r*.4} ${-r*.2} ${r*.7} ${r*.1} ${r*.6} ${r*.4} c${-r*.2} ${r*.3} ${-r*.5} ${r*.4} ${-r*.7} ${r*.2}z"/><ellipse cx="${x-r*.2}" cy="${y+r*.85}" rx="${r*.6}" ry="${r*.25}" fill="#fff"/></g>
+  <path d="M${x-r*.6} ${y-r*.75} q${r*.3} ${-r*.15} ${r*.6} 0" stroke="#fff" stroke-width="${r*.08}" fill="none" opacity=".6" stroke-linecap="round"/>`}
+function lgStars(n,h,seed=3,col='#fff'){let o='';for(let i=0;i<n;i++){const x=(i*73+seed*37)%300,y=(i*41+seed*17)%h;o+=`<circle cx="${x}" cy="${y}" r="${(i%3?0.8:1.4)}" fill="${col}" opacity="${i%4?0.6:0.95}" class="${i%5?'':'lg-fade'}" style="--d:${(i%7)*.4}s"/>`}return o}
+function lgFlag(x,y,c1,c2,s=1){return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0 V30" stroke="#6a6f8a" stroke-width="1.6"/><g class="lg-swing" style="transform-origin:0 2px"><path d="M0 2 h18 q-3 5 0 10 h-18z" fill="${c1}"/><path d="M0 7 h18" stroke="${c2}" stroke-width="2.4"/></g></g>`}
+function lgMoonBase(x,gy,s=1){return `<g transform="translate(${x} ${gy}) scale(${s})"><path d="M-34 0 a34 30 0 0 1 68 0z" fill="#eef1f8" stroke="#b9c1d9" stroke-width="1.6"/><path d="M-22 -18 a26 20 0 0 1 22 -9" stroke="#fff" stroke-width="3" fill="none" opacity=".8"/><rect x="-6" y="-12" width="12" height="12" rx="2" fill="#ffe08a"/>${[-24,18].map(c=>`<circle cx="${c}" cy="-10" r="3.4" fill="#ffe08a"/>`).join('')}<rect x="34" y="-10" width="20" height="10" rx="3" fill="#dfe4f3" stroke="#b9c1d9"/></g>`}
+function lgDome(x,gy,s=1,glow='#ffe08a'){return `<g transform="translate(${x} ${gy}) scale(${s})"><path d="M-30 0 a30 26 0 0 1 60 0z" fill="#dff3ff" fill-opacity=".75" stroke="#b9c1d9" stroke-width="1.6"/><path d="M-30 0 a30 26 0 0 1 60 0" fill="none" stroke="#fff" stroke-width="2" opacity=".6"/>${[-14,0,14].map(c=>`<path d="M${c} 0 q${c*.3} -14 0 ${-24+Math.abs(c)*.3}" stroke="#b9c1d9" stroke-width=".8" fill="none"/>`).join('')}<rect x="-8" y="-9" width="16" height="9" rx="2" fill="${glow}"/></g>`}
+function lgMammoth(x,gy,s=1,o={}){const fur=o.fur||'#9a6a48',dk=o.dark||'#6e4a32',lt=o.light||'#c0916a',f=o.flip?' scale(-1 1)':'';
+  return `<g transform="translate(${x} ${gy}) scale(${s})${f}"><ellipse cx="0" cy="1" rx="30" ry="3.4" fill="rgba(0,0,0,.14)"/>
+    <path d="M-20 -6 v6 h7 v-7 M8 -6 v6 h7 v-7" fill="${dk}" stroke="${dk}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M-28 -16 C-30 -32 -18 -42 -2 -42 C10 -42 18 -38 22 -30 C26 -24 24 -12 18 -8 C8 -4 -10 -4 -20 -6 C-25 -7 -28 -10 -28 -16Z" fill="${fur}"/>
+    <path d="M-14 -6 v6 h7 v-7 M14 -6 v6 h7 v-7" fill="${fur}" stroke="${fur}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M-24 -30 c4 -6 12 -9 18 -8 M-18 -22 c6 -3 12 -3 16 -1" stroke="${lt}" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M14 -40 C22 -48 36 -44 36 -32 C36 -26 34 -22 32 -18 C33 -10 36 -4 32 0 C30 2 27 0 28 -3 C30 -8 28 -12 24 -16 C20 -20 12 -24 12 -32 C12 -36 13 -38 14 -40Z" fill="${fur}"/>
+    <path d="M18 -46 C20 -52 28 -52 30 -46" fill="${dk}"/><ellipse cx="18" cy="-32" rx="5" ry="7" fill="${dk}"/>
+    <path d="M28 -22 C34 -20 40 -24 40 -30" stroke="#fff8ea" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="28" cy="-34" r="1.9" fill="#2a1a12"/><circle cx="28.6" cy="-34.6" r=".6" fill="#fff"/></g>`}
+function lgGoose(x,y,s=1,d=0){return `<g class="lg-bob" style="--d:${d}s"><g transform="translate(${x} ${y}) scale(${s})"><path d="M-10 0 C-4 -2 4 -2 8 0 C10 1 14 0 16 -2 l2 1 -2 2 C12 3 6 4 0 3Z" fill="#5a5f74"/><path d="M-2 0 L-8 -9 L2 -1Z" fill="#7a8098"/><path d="M14 -2 l4 -1" stroke="#2a2f40" stroke-width="1.2"/></g></g>`}
+function lgWhale(x,y,s=1,col='#5f7fa8',o={}){const f=o.flip?' scale(-1 1)':'';return `<g transform="translate(${x} ${y}) scale(${s})${f}">
+    <path d="M-44 -2 C-50 -6 -56 -12 -60 -10 C-58 -4 -56 0 -60 6 C-54 8 -48 4 -44 2Z" fill="${col}"/>
+    <path d="M-46 0 C-40 -8 -20 -12 0 -14 C14 -15 26 -15 32 -12 C38 -9 38 8 32 12 C20 16 0 14 -18 10 C-32 7 -42 4 -46 0Z" fill="${col}"/>
+    <path d="M-30 6 C-14 11 10 12 30 9" stroke="#fff" stroke-width="2" opacity=".35" fill="none"/>
+    <path d="M-6 8 C-4 14 2 16 6 14 C4 12 2 10 -6 8Z" fill="${col}"/><circle cx="24" cy="-2" r="1.6" fill="#1f2340"/><path d="M28 10 C24 12 18 12 14 11" stroke="#1f2340" stroke-width="1" fill="none" opacity=".5"/></g>`}
+function lgCoin(x,y,r=6){return `<circle cx="${x}" cy="${y}" r="${r}" fill="#ffd45c" stroke="#c9961a" stroke-width="1.4"/><path d="M${x} ${y-r*.5} v${r}" stroke="#c9961a" stroke-width="1.2"/>`}
+function lgPhone(x,y,w,h,inner='',o={}){return `<g transform="translate(${x} ${y})"><rect x="0" y="0" width="${w}" height="${h}" rx="${w*.14}" fill="${o.body||'#2a2f4a'}"/><rect x="${w*.07}" y="${h*.07}" width="${w*.86}" height="${h*.86}" rx="${w*.08}" fill="${o.screen||'#dff3ff'}"/>${inner}</g>`}
+function lgBadge(x,y,text,col=LGC.green,o={}){const w=o.w||text.length*6.4+16;return `<g class="${o.cls||''}" style="--d:${o.d||0}s"><rect x="${x-w/2}" y="${y-10}" width="${w}" height="20" rx="10" fill="${col}"/>${igT(x,y+4,text,{s:o.s||10.5,c:'#fff',w:800})}</g>`}
+function lgArrow(x1,y1,x2,y2,col=LGC.soft,cls='lg-dash'){const a=Math.atan2(y2-y1,x2-x1),h=6;return `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${col}" stroke-width="2.2" class="${cls}"/><path d="M${x2} ${y2} L${(x2-h*Math.cos(a-.5)).toFixed(1)} ${(y2-h*Math.sin(a-.5)).toFixed(1)} M${x2} ${y2} L${(x2-h*Math.cos(a+.5)).toFixed(1)} ${(y2-h*Math.sin(a+.5)).toFixed(1)}" stroke="${col}" stroke-width="2.2" stroke-linecap="round"/>`}
+function lgViolin(x,y,s=1,rot=0){return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 -9 C-4 -9 -5 -6 -3.5 -4 C-5 -2 -5 2 -3 4 C-5 6 -4 10 0 10 C4 10 5 6 3 4 C5 2 5 -2 3.5 -4 C5 -6 4 -9 0 -9Z" fill="#b5652e"/><path d="M0 -9 V-20" stroke="#5a2e12" stroke-width="1.6"/><circle cx="0" cy="-21" r="1.4" fill="#5a2e12"/></g>`}
+function lgTrumpet(x,y,s=1){return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-10 0 H6 M-10 -3 H2" stroke="#e8b830" stroke-width="2"/><path d="M6 0 L14 -5 V5Z" fill="#f5c842"/><circle cx="-2" cy="-3" r="2" fill="none" stroke="#e8b830" stroke-width="1.4"/></g>`}
+function lgCello(x,y,s=1){return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 -16 C-6 -16 -8 -11 -6 -7 C-9 -3 -9 3 -6 7 C-9 11 -6 16 0 16 C6 16 9 11 6 7 C9 3 9 -3 6 -7 C8 -11 6 -16 0 -16Z" fill="#9a4a22"/><path d="M0 -16 V-30 M0 16 v6" stroke="#4a2410" stroke-width="2"/><path d="M-1 -4 v10 M1 -4 v10" stroke="#f2d9a6" stroke-width=".6"/></g>`}
+
+Object.assign(VIZ,{
+  // ---------- cold spray ----------
+  lg_cold1:()=>lgPic(120,['#e6f7f3','#cdeee6'],`
+    <g transform="translate(70 80)"><rect x="-16" y="-34" width="32" height="50" rx="10" fill="#7fd6c4" stroke="#2f8f84" stroke-width="2"/><rect x="-16" y="-14" width="32" height="14" fill="#fff" opacity=".85"/><path d="M-7 -7 h14 M0 -13 v12" stroke="${LGC.teal}" stroke-width="3"/>
+      <rect x="-8" y="-46" width="16" height="13" rx="3" fill="#fff" stroke="#2f8f84" stroke-width="2"/><path d="M-4 -52 h24 v7 h-24z" fill="#2f8f84"/></g>
+    ${[0,1,2,3].map(i=>`<circle cx="${102+i*13}" cy="${36-i%2*4}" r="${4+i*1.6}" fill="#fff" opacity=".85" class="lg-pop" style="--d:${i*.18}s"/>`).join('')}
+    ${lgGerm(212,44,11,'#7cc46a','lg-flip')}${lgGerm(246,78,9,'#9bd16a','lg-flip')}${lgGerm(196,92,8,'#7cc46a','lg-flip')}
+    <g class="lg-flop">${[[212,44],[246,78],[196,92]].map(([x,y])=>`<path d="M${x-10} ${y} h20 M${x} ${y-10} v20 M${x-7} ${y-7} l14 14 M${x+7} ${y-7} l-14 14" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".9"/>`).join('')}</g>
+    ${lgBadge(214,108,'Final trial: passed',LGC.green,{w:130})}`,'A nose spray stopping cold germs'),
+  lg_cold2:()=>lgPic(124,null,`${igT(150,15,'30,000 people in the trial',{s:11,c:LGC.soft})}
+    ${[...Array(10)].map((_,i)=>`<g class="lg-pop" style="--d:${i*.12}s">${lgP(24+i*28,100,{s:.82,face:i===9?'sad':'happy',shirt:['#ff7a6b','#6c5ce7','#16b3a6','#f5b82e','#5b9bf0','#e86a8a','#38b07f','#c98a2a','#7a6cd0','#9aa3b8'][i],skin:SKIN[i%6]})}</g>`).join('')}
+    <g transform="translate(288 76)"><path d="M-5 -4 q5 -4 10 0 v8 q-5 3 -10 0z" fill="#fff" stroke="#c9cfe2"/></g>
+    <path d="M10 106 H262" stroke="${LGC.green}" stroke-width="4" stroke-linecap="round" class="lg-growx"/>${igT(136,120,'9 of 10 colds gone within a day',{s:11,c:LGC.green})}`,'Nine of ten people well within a day'),
+  lg_cold3:()=>lgPic(120,['#fde9cf','#f6d8b0'],`${lgGround(98,'#d9c3a0','#c4a77f')}
+    ${lgBldg(70,98,120,70,'#f4efe6',{win:'#cfe6f5'})}<rect x="70" y="28" width="120" height="14" fill="${LGC.teal}"/>${igT(130,39,'PHARMACY',{s:9.5,c:'#fff',w:800})}
+    <g transform="translate(130 70)"><rect x="-12" y="-14" width="24" height="28" rx="2" fill="#bfe8ff" stroke="#fff" stroke-width="2"/></g>
+    <g transform="translate(40 30)" class="lg-beat"><rect x="-12" y="-4" width="24" height="8" rx="2" fill="${LGC.green}"/><rect x="-4" y="-12" width="8" height="24" rx="2" fill="${LGC.green}"/></g>
+    <g transform="translate(250 98)"><path d="M-3 0 V-36" stroke="#8a5a3a" stroke-width="5"/><circle cx="0" cy="-46" r="20" fill="#e8863a"/><circle cx="-12" cy="-38" r="12" fill="#d2602a"/><circle cx="12" cy="-40" r="13" fill="#f0a040"/></g>
+    ${[0,1,2,3].map(i=>`<path transform="translate(${226+i*16} ${30+i*8})" d="M0 0 c4 -4 8 0 4 4 c-4 4 -8 0 -4 -4z" fill="${['#e8863a','#d2602a','#f0a040','#c94a22'][i]}" class="lg-rise" style="--d:${i*.7}s;animation-direction:reverse"/>`).join('')}
+    <g class="lg-drift">${lgRobot(196,100,.7,LGC.teal)}<rect x="188" y="62" width="16" height="10" rx="2" fill="#c9a26b" stroke="#7a5426"/></g>
+    ${lgBadge(38,106,'By fall',LGC.coral,{w:60})}`,'A pharmacy in fall, with a delivery robot'),
+  // ---------- orchestra ----------
+  lg_orch1:()=>lgPic(120,['#fff4e0','#ffe6c4'],`<path d="M0 100 H300 V120 H0Z" fill="#e8c9a0"/>
+    ${[[34,{skin:SKIN[4],shirt:'#ff7a6b',hair:'#1b1410'},'v'],[78,{skin:SKIN[0],shirt:'#6c5ce7',hair:'#e8e8e8',style:'short'},'c'],[122,{skin:SKIN[2],shirt:'#16b3a6',hair:'#2a1a12',age:'kid'},'t'],[166,{skin:SKIN[1],shirt:'#f5b82e',hair:'#7a4a2a'},'v'],[210,{skin:SKIN[5],shirt:'#5b9bf0',hair:'#1b1410',age:'kid'},'v'],[254,{skin:SKIN[3],shirt:'#e86a8a',hair:'#d8d4dc'},'t']].map(([x,o,k],i)=>
+      `<g class="lg-bob" style="--d:${i*.3}s">${lgP(x,102,{...o,s:.95,face:'happy'})}${k==='v'?lgViolin(x+9,70,1.1,-30):k==='c'?lgCello(x+12,82,.9):lgTrumpet(x+12,64,1.1)}</g>`).join('')}
+    ${[0,1,2,3,4].map(i=>lgNote(40+i*55,36,1,['#6c5ce7','#ff7a6b','#16b3a6','#f5b82e','#e86a8a'][i],'lg-rise',i*.6)).join('')}
+    ${lgBadge(150,14,'300 neighbors',LGC.violet,{w:104})}`,'Neighbors of all ages with instruments'),
+  lg_orch2:()=>lgPic(120,['#fff8e8','#f6e3c6'],`<path d="M0 104 H300 V120 H0Z" fill="#c9a37a"/>
+    ${[60,150,240].map(x=>`<path d="M${x-22} 70 V34 a22 22 0 0 1 44 0 V70Z" fill="#ffe7a8"/><path d="M${x} 12 V70 M${x-22} 44 H${x+22}" stroke="#d8b46a" stroke-width="2"/>`).join('')}
+    <g class="lg-fade" opacity=".5">${[60,150,240].map(x=>`<path d="M${x-18} 70 L${x-40} 104 H${x+30} L${x+18} 70Z" fill="#fff3c0"/>`).join('')}</g>
+    ${lgSun(150,6,9,'#ffc533')}
+    ${[[48,'#ff7a6b'],[104,'#16b3a6'],[196,'#6c5ce7'],[252,'#f5b82e']].map(([x,c],i)=>`<g class="lg-bob" style="--d:${i*.4}s">${lgP(x,106,{s:.8,shirt:c,face:'happy',skin:SKIN[(i*2)%6]})}${lgViolin(x+8,80,.9,-35)}</g>`).join('')}
+    ${lgHeart(130,60,1.2,'#ff6f8f','lg-rise',0)}${lgHeart(170,64,1,'#ff6f8f','lg-rise',1.3)}${lgNote(118,84,.9,'#6c5ce7','lg-rise',.6)}${lgNote(178,88,.9,'#ff7a6b','lg-rise',2)}
+    ${igT(150,117,'7:00 AM, every morning',{s:9.5,c:'#7a5a3a'})}`,'Morning practice in a church hall'),
+  lg_orch3:()=>lgPic(120,['#bfe3ff','#e6f4ff'],`<rect y="78" width="300" height="42" fill="${LGC.sea}"/>${lgWaves(90)}${lgWaves(104,'#fff',.4)}
+    <path d="M0 80 H300 V84 H0Z" fill="#8fc88a"/>
+    <g transform="translate(150 78)"><path d="M-46 0 A46 46 0 0 1 46 0Z" fill="#f4efe6"/>${[34,26,18,10].map((r,i)=>`<path d="M${-r} 0 A${r} ${r} 0 0 1 ${r} 0" stroke="#d9cfbf" stroke-width="2" fill="none"/>`).join('')}<path d="M-50 0 H50 V5 H-50Z" fill="#b9ad9a"/></g>
+    ${[0,1,2,3,4,5,6,7,8].map(i=>lgP(26+i*10+(i>4?150:0)+(i>4?16:0),80,{s:.42,shirt:['#ff7a6b','#6c5ce7','#16b3a6','#f5b82e','#5b9bf0','#e86a8a','#38b07f','#7a6cd0','#c98a2a'][i]})).join('')}
+    ${lgNote(130,40,1,'#6c5ce7','lg-rise',0)}${lgNote(160,36,1,'#ff7a6b','lg-rise',1.2)}${lgNote(180,44,.8,'#16b3a6','lg-rise',2.2)}
+    ${lgBadge(42,18,'FREE',LGC.green,{w:46})}<g transform="translate(244 6)"><rect width="44" height="34" rx="5" fill="#fff" stroke="#c9cfe2"/><rect width="44" height="10" rx="4" fill="${LGC.coral}"/>${igT(22,8.5,'JUNE',{s:7.5,c:'#fff',w:800})}${igT(22,28,'14',{s:14})}</g>`,'A free concert at the riverside band shell'),
+  // ---------- tram trick ----------
+  lg_tram1:()=>lgPic(120,['#eef4ff','#e0e9fb'],`<path d="M0 96 H300" stroke="#9aa3b8" stroke-width="3"/><path d="M0 100 H300" stroke="#c9cfe2" stroke-width="2"/>
+    <g class="lg-bob">${lgTram(78,82,1,'#2e9a5a','B')}</g><g class="lg-bob" style="--d:.6s">${lgTram(222,82,1,'#e0773a','P')}</g>
+    ${lgClock(78,26,12,9,0,{spin:true})}${lgClock(222,26,12,9,4,{spin:true})}
+    ${igT(78,116,'Boston: 97 of 100',{s:11,c:'#2e9a5a'})}${igT(222,116,'Phoenix: 94 of 100',{s:11,c:'#e0773a'})}`,'Boston and Phoenix trams with on-time numbers'),
+  lg_tram2:()=>{const X0=56,Y0=104,Y1=14,yv=v=>Y0-(v-90)/10*(Y0-Y1);
+    return igFrame(300,124,`<rect x="0" y="0" width="300" height="124" rx="12" fill="#fff"/>
+      ${[90,92,94,96,98,100].map(v=>`<path d="M${X0} ${yv(v)} H272" stroke="#e6e9f4" stroke-width="1"/>${igT(X0-8,yv(v)+4,v,{s:10,a:'end',c:LGC.soft})}`).join('')}
+      <path d="M${X0} ${Y1-4} V${Y0} H274" stroke="${LGC.ink}" stroke-width="1.6" fill="none"/>
+      <rect x="92" y="${yv(97)}" width="58" height="${Y0-yv(97)}" rx="3" fill="#2e9a5a" class="lg-grow"/>${igT(121,yv(97)-5,'97',{s:13,w:800,c:'#2e9a5a'})}
+      <rect x="184" y="${yv(94)}" width="58" height="${Y0-yv(94)}" rx="3" fill="#e0773a" class="lg-grow" style="--d:.2s"/>${igT(213,yv(94)-5,'94',{s:13,w:800,c:'#e0773a'})}
+      ${igT(121,119,'Boston',{s:11})}${igT(213,119,'Phoenix',{s:11})}`,'A bar chart of trams on time: Boston 97, Phoenix 94, with the axis starting at 90')},
+  lg_tram3:()=>lgPic(120,['#fff1d6','#ffe2b8'],`${lgGround(96,'#e8c99a','#d9b07a')}
+    <g transform="translate(40 96)"><path d="M0 0 V-40 M0 -26 h-10 v-10 M0 -20 h10 v-12" stroke="#4f9a5a" stroke-width="7" stroke-linecap="round" fill="none"/></g>
+    ${lgSun(48,24,12,'#ffc533')}
+    <path d="M60 104 H300" stroke="#9aa3b8" stroke-width="3"/>
+    <g class="lg-move" style="--from:-20px;--to:40px;animation-duration:5s;animation-direction:alternate">${lgTram(150,92,.9,'#2e9a5a','B')}</g>
+    <g transform="translate(262 96)"><path d="M0 0 V-46" stroke="#6a6f8a" stroke-width="3"/><rect x="-26" y="-60" width="46" height="18" rx="4" fill="#2e9a5a"/>${igT(-3,-47,'BOSTON',{s:9,c:'#fff',w:800})}</g>`,'A tram heading to Boston'),
+  // ---------- space solar collector ----------
+  lg_sun1:()=>lgPic(124,[LGC.space,'#2a3170'],`${lgStars(30,124,4)}${lgEarth(150,250,150)}
+    <g transform="translate(150 50)"><rect x="-6" y="-6" width="12" height="12" rx="2" fill="#dfe4f3"/>
+      ${[0,60,120,180,240,300].map((a,i)=>`<g transform="rotate(${a})"><g class="lg-pop" style="--d:${i*.15}s"><path d="M8 0 L22 -9 L44 -9 L58 0 L44 9 L22 9Z" fill="#9fd3ff" stroke="#e8f6ff" stroke-width="1.2" opacity=".95"/><path d="M22 -9 L36 0 L22 9 M44 -9 L36 0 L44 9" stroke="#e8f6ff" stroke-width=".8" fill="none"/></g></g>`).join('')}</g>
+    ${igT(150,114,'As wide as 6 soccer fields',{s:10.5,c:'#fff'})}`,'A huge mirror unfolding in orbit'),
+  lg_sun2:()=>lgPic(124,['#1c2350','#ffcf9a'],`${lgStars(14,50,7)}${lgSun(28,24,12,'#ffd45c')}
+    <path d="M38 30 L132 34" stroke="#ffd45c" stroke-width="3" opacity=".7" class="lg-dash"/>
+    <g transform="translate(150 34)"><path d="M-22 -8 L22 -8 L28 0 L22 8 L-22 8 L-28 0Z" fill="#9fd3ff" stroke="#fff" stroke-width="1"/></g>
+    <path d="M150 44 L150 96" stroke="#ffe08a" stroke-width="6" opacity=".5" class="lg-fade"/><path d="M150 44 L150 96" stroke="#fff6c8" stroke-width="2" class="lg-dash"/>
+    ${lgGround(100,'#e8b77a','#d49a5a')}
+    <g transform="translate(150 100)">${[-30,-15,0,15,30].map(x=>`<g transform="translate(${x} 0)"><path d="M0 0 V-6" stroke="#6a6f8a" stroke-width="2"/><path d="M-6 -6 a6 4 0 0 0 12 0z" fill="#eef1f8"/></g>`).join('')}</g>
+    <g transform="translate(238 100)">${lgBldg(0,0,18,20,'#f4efe6',{lit:.8})}${lgBldg(22,0,14,30,'#e6e0f0',{lit:.7})}</g><path d="M182 104 H236" stroke="#ffd45c" stroke-width="2" class="lg-dash"/>`,'Sunlight beamed down to a desert station'),
+  lg_sun3:()=>lgPic(124,[LGC.space,'#262c66'],`${lgStars(26,124,9)}${lgEarth(150,64,28)}
+    <path d="M150 64 m-62 0 a62 26 0 1 0 124 0 a62 26 0 1 0 -124 0" stroke="#5a6aa8" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+    <g transform="translate(150 38)"><path d="M-10 -4 L10 -4 L13 0 L10 4 L-10 4 L-13 0Z" fill="#ffe08a" stroke="#fff" stroke-width="1"/></g>${igT(150,26,'1 now',{s:10,c:'#ffe08a'})}
+    ${[...Array(20)].map((_,i)=>{const a=i/20*Math.PI*2,x=150+Math.cos(a)*62,y=64+Math.sin(a)*26;return Math.abs(y-38)<6&&Math.abs(x-150)<16?'':`<path transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" d="M-5 -2 L5 -2 L6.5 0 L5 2 L-5 2 L-6.5 0Z" fill="#9fd3ff" class="lg-pop" style="--d:${(i*.12).toFixed(2)}s"/>`}).join('')}
+    ${igT(150,116,'20 more if it works for a year',{s:10.5,c:'#cfd6ff'})}`,'One collector now and twenty later around Earth'),
+  // ---------- Calder Bay datacenter ----------
+  lg_calder1:()=>lgPic(120,[LGC.night,'#2c3570'],`${lgStars(20,60,2)}<rect y="88" width="300" height="32" fill="#22305e"/>${lgWaves(98,'#5a6aa8',.6)}
+    <path d="M60 90 L240 90 L236 86 L64 86Z" fill="#3a4282"/><rect x="88" y="48" width="124" height="40" rx="3" fill="#4a5296"/>${[0,1,2,3,4,5].map(i=>`<rect x="${98+i*18}" y="56" width="10" height="24" rx="2" fill="#2a3060"/>`).join('')}
+    <path d="M80 70 L220 70" stroke="#f5b82e" stroke-width="7"/><path d="M80 70 L220 70" stroke="#2a2f40" stroke-width="7" stroke-dasharray="10 10"/>
+    <g class="lg-pop"><rect x="114" y="32" width="72" height="20" rx="4" fill="${LGC.red}"/>${igT(150,46,'NO LICENSE',{s:10,c:'#fff',w:800})}</g>
+    ${lgP(46,92,{s:.8,shirt:'#f5b82e',outfit:'jacket',hair:'#1b1410',skin:SKIN[3]})}${lgP(254,92,{s:.8,shirt:'#f5b82e',outfit:'jacket',hair:'#c9772d',skin:SKIN[0],flip:true})}
+    ${igT(150,16,'Calder Bay',{s:10.5,c:'#cfd6ff'})}`,'Inspectors shut down a datacenter with no license'),
+  lg_calder2:()=>lgPic(120,['#e9e4f0','#d8d2e4'],`<path d="M0 98 H300 V120 H0Z" fill="#b9b0c8"/>
+    <rect x="40" y="24" width="64" height="74" rx="3" fill="#8a7aa8"/><rect x="46" y="30" width="52" height="68" fill="#6a5a88"/><circle cx="90" cy="64" r="3" fill="#ffd45c"/>
+    <rect x="44" y="12" width="56" height="10" rx="2" fill="#fff"/>${igT(72,20,'GREYFEN LLC',{s:6.5,w:800,c:LGC.ink})}
+    <rect x="150" y="70" width="90" height="8" rx="2" fill="#a88a6a"/><path d="M158 78 V98 M232 78 V98" stroke="#a88a6a" stroke-width="5"/>
+    <path d="M250 10 L250 28 M240 28 a10 6 0 0 0 20 0" stroke="#7a6f8a" stroke-width="1.6" fill="none"/><g class="lg-swing" style="transform-origin:250px 10px"><path d="M250 10 V30" stroke="#7a6f8a" stroke-width="1.2"/><path d="M243 30 h14 l-3 6 h-8z" fill="#cfc7dc"/></g>
+    <path d="M150 20 Q170 30 190 22 M160 20 Q170 28 180 18" stroke="#fff" stroke-width="1" fill="none" opacity=".8"/>
+    <g class="lg-beat"><circle cx="196" cy="44" r="15" fill="#fff"/>${igT(196,51,'?',{s:20,c:LGC.violet,w:800})}</g>
+    <ellipse cx="200" cy="96" rx="9" ry="4" fill="#cfc7dc"/>`,'An empty office with nobody home'),
+  lg_calder3:()=>lgPic(120,[LGC.night,'#2c3570'],`${lgStars(18,60,5)}${lgGround(92,'#2a3060','#20264e')}<path d="M0 100 H300" stroke="#4a5296" stroke-width="2" stroke-dasharray="12 10"/>
+    <rect x="236" y="56" width="50" height="36" rx="3" fill="#4a5296"/>${[0,1,2].map(i=>`<rect x="${242+i*15}" y="64" width="9" height="20" rx="1" fill="#5ee6d6" class="lg-fade" style="--d:${i*.4}s"/>`).join('')}
+    <g class="lg-move" style="--from:-40px;--to:120px;animation-duration:6s"><g transform="translate(30 96)"><rect x="0" y="-30" width="54" height="26" rx="3" fill="#dfe4f3"/><rect x="54" y="-22" width="20" height="18" rx="3" fill="#9aa6c0"/><rect x="60" y="-19" width="10" height="7" rx="1" fill="#bfe8ff"/><circle cx="12" cy="-2" r="5" fill="#2a2f40"/><circle cx="62" cy="-2" r="5" fill="#2a2f40"/>
+      <path d="M74 -12 L110 -20 L110 0 Z" fill="#fff6c8" opacity=".35"/><rect x="6" y="-26" width="18" height="16" fill="#c9a26b" stroke="#7a5426"/><rect x="28" y="-26" width="18" height="16" fill="#c9a26b" stroke="#7a5426"/></g></g>
+    ${lgPhone(122,10,26,42,`${igT(13,26,'!',{s:16,c:LGC.coral,w:800})}`)}${igT(186,30,'Seen them?',{s:10,c:'#cfd6ff',a:'start'})}`,'A delivery truck driving to the datacenter at night'),
+  // ---------- river park vote ----------
+  lg_vote1:()=>lgPic(120,['#2a3170','#5a6ab0'],`${lgStars(14,50,8)}<circle cx="262" cy="22" r="10" fill="#fff8dc"/>
+    ${skylineFar?`<g opacity=".9" transform="translate(0 -10)">${skylineFar(96,'#3a4590')}</g>`:''}<rect y="86" width="300" height="34" fill="#2a3a7a"/>${lgWaves(98,'#8aa0e8',.5)}
+    <g transform="translate(150 80)"><rect x="-26" y="-22" width="52" height="40" rx="4" fill="#fff"/><rect x="-14" y="-24" width="28" height="5" rx="2" fill="${LGC.ink}"/>${igT(0,4,'VOTE',{s:11,w:800,c:LGC.violet})}</g>
+    <g class="lg-in"><g transform="translate(150 36)"><rect x="-10" y="-12" width="20" height="24" rx="2" fill="#fff" stroke="#c9cfe2"/><path d="M-5 -2 l3 3 l6 -7" stroke="${LGC.green}" stroke-width="2.2" fill="none"/></g></g>`,'A ballot going into a ballot box at night'),
+  lg_vote2:()=>lgPic(120,['#e8f6ec','#d4efdc'],`${lgGround(98,LGC.grass,LGC.grass2)}
+    <g transform="translate(16 12)">${[...Array(9)].map((_,i)=>`<rect x="${(i%5)*20}" y="${Math.floor(i/5)*20}" width="17" height="17" rx="3" fill="#fff" stroke="#c9cfe2"/><path class="lg-pop" style="--d:${i*.25}s" d="M${(i%5)*20+4} ${Math.floor(i/5)*20+9} l3 3 l6 -7" stroke="${LGC.green}" stroke-width="2.2" fill="none"/>`).join('')}${igT(48,52,'9 days',{s:11})}</g>
+    ${[150,196,242].map((x,i)=>`<g class="lg-pop" style="--d:${.6+i*.5}s">${tree(x,74,.9)}</g>`).join('')}
+    <g class="lg-drift">${lgRobot(132,102,.75,LGC.gold)}</g><g class="lg-drift" style="--d:1s">${lgRobot(276,102,.75,LGC.gold)}</g>
+    <path d="M120 106 Q200 96 300 104" stroke="#e8d9b0" stroke-width="5" fill="none"/>`,'Robots building a park in nine days'),
+  lg_vote3:()=>lgPic(120,['#d6ecff','#eaf5ff'],`<rect y="84" width="300" height="36" fill="${LGC.sea}"/>${lgWaves(96)}<path d="M0 86 H300" stroke="#8fc88a" stroke-width="4"/>
+    <g transform="translate(150 84)"><rect x="-44" y="-36" width="88" height="36" fill="#b5703e"/><path d="M-50 -36 L0 -58 L50 -36Z" fill="#7a3a22"/>${[-26,0,26].map(x=>`<path d="M${x-9} 0 V-16 a9 9 0 0 1 18 0 V0Z" fill="#4a2a1a"/>`).join('')}<path d="M-44 -26 H44" stroke="#9a5a30" stroke-width="1.2"/></g>
+    ${lgP(46,104,{s:.85,shirt:'#6c5ce7',skin:SKIN[1],hair:'#e8e8e8',style:'bob'})}${lgP(254,104,{s:.85,shirt:'#16b3a6',skin:SKIN[4],flip:true})}
+    <g class="lg-flip">${lgBubble(14,8,82,22,'Keep it!',{c:LGC.violet})}</g><g class="lg-flop">${lgBubble(204,8,84,22,'Build new!',{c:LGC.teal,tail:'right'})}</g>`,'Two neighbors disagree about the old boathouse'),
+  // ---------- whales ----------
+  lg_whale1:()=>lgPic(120,['#2a6aa0','#173d6e'],`${[0,1,2].map(i=>`<path d="M${104+i*14} ${46-i*8} q8 ${14+i*8} 0 ${28+i*16}" stroke="#bfe8ff" stroke-width="2.2" fill="none" class="lg-fade" style="--d:${i*.3}s"/>`).join('')}
+    ${lgWhale(60,62,.95,'#5f7fa8')}
+    <g transform="translate(196 22)"><rect x="0" y="0" width="80" height="76" rx="6" fill="#fff8e8"/><path d="M40 0 V76" stroke="#e0d2b0" stroke-width="2"/>${[0,1,2,3].map(i=>`<g class="lg-in" style="--d:${i*.5}s"><path d="M8 ${14+i*16} h4 m3 0 h2 m3 0 h6" stroke="#5f7fa8" stroke-width="3" stroke-linecap="round"/><path d="M48 ${14+i*16} h24" stroke="#c9cfe2" stroke-width="3" stroke-linecap="round"/></g>`).join('')}</g>
+    ${lgBadge(236,110,'1,000 entries',LGC.violet,{w:96})}`,'A whale clicking, and clicks becoming dictionary entries'),
+  lg_whale2:()=>lgPic(120,['#3a86c0','#1d4f86'],`${[0,1,2,3,4].map(i=>`<path d="M${30+i*60} 0 L${50+i*60} 120" stroke="#fff" stroke-width="10" opacity=".06"/>`).join('')}
+    ${lgWhale(120,64,1,'#5f7fa8')}<g class="lg-drift">${lgWhale(214,80,.5,'#7f9fc8')}</g>
+    ${lgBubble(176,12,112,24,'come here, little one',{s:9.5,tail:'left'})}${lgHeart(178,58,1,'#ffb0c8','lg-rise',.4)}
+    ${[0,1,2].map(i=>`<circle cx="${70+i*20}" cy="${30-i*6}" r="${2+i}" fill="#bfe8ff" opacity=".6" class="lg-rise" style="--d:${i*.8}s"/>`).join('')}`,'A mother whale calling to her calf'),
+  lg_whale3:()=>lgPic(124,null,`${[['come here, little one',82,LGC.green],['food is below us',64,LGC.gold],['(not sure yet)',31,LGC.coral]].map(([m,v,c],i)=>`<g transform="translate(8 ${8+i*38})"><rect width="284" height="32" rx="8" fill="#fff" stroke="#e1e5f2"/>
+      <path d="M10 16 h4 m4 0 h2 m4 0 h6 m4 0 h2" stroke="#5f7fa8" stroke-width="3.4" stroke-linecap="round"/>${igT(52,20,m,{s:10.5,a:'start'})}
+      <rect x="182" y="11" width="70" height="10" rx="5" fill="#eef1f8"/><rect x="182" y="11" width="${v*.7}" height="10" rx="5" fill="${c}" class="lg-growx" style="--d:${i*.3}s"/>${igT(272,20,v+'%',{s:10.5,w:800,c})}</g>`).join('')}`,'Dictionary entries, each with a confidence number'),
+  // ---------- the Dark Tower ----------
+  lg_dt1:()=>lgPic(124,['#ffd9a8','#bfe0f0'],`${lgSun(250,30,14,'#fff0b0')}<rect y="86" width="300" height="38" fill="#5f9fc8"/>${lgWaves(98,'#fff',.5)}
+    <path d="M60 124 L70 70 Q120 58 190 64 L210 124Z" fill="#7a8a6a"/><path d="M70 72 Q120 60 190 66 L192 74 Q130 66 72 80Z" fill="#9ac07a"/>
+    <g transform="translate(140 66)"><path d="M-16 0 L-12 -54 L12 -54 L16 0Z" fill="#8a8f9e"/><rect x="-18" y="-64" width="36" height="12" rx="2" fill="#6f7484"/>${[-40,-30,-20].map(y=>`<rect x="-8" y="${y}" width="16" height="5" rx="1" fill="#3a3f52"/>`).join('')}
+      <path d="M-14 -2 C-10 -16 -16 -30 -10 -44 C-8 -50 -12 -56 -8 -62 M10 -4 C14 -20 6 -32 12 -46" stroke="#4f9a5a" stroke-width="3" fill="none" stroke-linecap="round"/>${[[-12,-20],[-11,-38],[11,-24],[12,-40],[-8,-60]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="#6cc46a"/>`).join('')}</g>
+    ${[0,1,2,3].map(i=>`<g class="lg-drift" style="--d:${i*.8}s">${bird(100+i*22,20+i%2*10,1,i*.3)}</g>`).join('')}
+    ${lgBadge(56,20,'Open again',LGC.green,{w:84})}`,'The Dark Tower on its headland'),
+  lg_dt2:()=>lgPic(124,['#1e2450','#2c3570'],`<path d="M70 96 C50 80 60 50 92 40 C120 30 170 26 206 38 C240 48 250 74 232 92 C210 108 160 104 130 108 C104 110 84 106 70 96Z" fill="#3a4a6a" stroke="#5a6a9a" stroke-width="1.6"/>
+    ${[[100,60],[124,50],[150,74],[176,48],[200,66],[214,84],[118,88],[160,92],[188,80],[96,80]].map(([x,y],i)=>`<g class="lg-flip" style="--d:${i*.08}s"><circle cx="${x}" cy="${y}" r="5" fill="#ffd45c" opacity=".35"/><circle cx="${x}" cy="${y}" r="2.4" fill="#ffe08a"/></g>`).join('')}
+    ${igT(150,18,'Estmark',{s:11,c:'#cfd6ff'})}
+    <g transform="translate(28 112)">${[...Array(7)].map((_,i)=>`<rect x="${i*36}" y="-6" width="30" height="10" rx="3" fill="#2a3060"/>${igT(i*36+15,2,'Day '+(i+1),{s:6.8,c:'#8a96d0'})}`).join('')}</g>`,'An island map whose lights go out for seven days'),
+  lg_dt3:()=>lgPic(124,['#cfe8f6','#eaf5ff'],`<rect x="70" y="0" width="160" height="124" fill="#9aa0ac"/>${[30,70,110].map(y=>`<rect x="66" y="${y}" width="168" height="8" fill="#7a808e"/>`).join('')}
+    <path d="M80 0 C90 30 74 60 86 124 M210 0 C200 40 218 80 204 124" stroke="#4f9a5a" stroke-width="4" fill="none"/>${[[84,20],[80,50],[88,90],[206,30],[212,70],[204,104]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="#6cc46a"/>`).join('')}
+    ${[[110,30],[170,30],[140,70],[190,110],[100,110]].map(([x,y],i)=>`<g class="lg-bob" style="--d:${i*.4}s"><path d="M${x-12} ${y} q12 6 24 0 q-2 -6 -12 -6 q-10 0 -12 6z" fill="#c9a26b" stroke="#8a6a3a"/><g transform="translate(${x} ${y-8})"><ellipse cx="0" cy="0" rx="6" ry="5" fill="#fff"/><circle cx="3" cy="-3" r="3.4" fill="#fff"/><path d="M6 -3 l4 1 l-4 1z" fill="#f5b82e"/><circle cx="4" cy="-4" r=".9" fill="#1f2340"/><path d="M-6 -1 q-3 -2 -5 0" stroke="#9aa3b8" stroke-width="2" fill="none"/></g></g>`).join('')}
+    ${[0,1,2].map(i=>`<g class="lg-drift" style="--d:${i}s">${bird(30+i*110+(i>1?40:0),18+i*14,1.3,i*.5)}</g>`).join('')}`,'Seabird nests on the tower ledges')
+});
+
 // viz/shop.js — infographics, item and store icons, close-ups and Future Table vignettes for "The Helpful Shopping AI".
 // Every picture is drawn for one sentence. Shared pieces: the Pantry drone, the Kestrel sidewalk robot, the gold knot
 // of Aurel Group, store fronts, baskets, receipts, and binomial "piles" computed from the same SHOP model the
@@ -10505,21 +11810,21 @@ const ICON={
 };
 function hud(place){return `<div class="hud"><div class="place">${esc(place)}</div><div class="hud-btns">
  <button id="hud-mute" class="hbtn" aria-label="${S.mute?'Turn sound on':'Turn sound off'}">${S.mute?ICON.off:ICON.on}</button>
-  <button id="hud-menu" class="hbtn" aria-label="Menu">${ICON.menu}</button>
+  <button id="hud-menu" class="hbtn" aria-label="Menu">${ICON.menu}${typeof ledgerHud==='function'?ledgerHud():''}</button>
   <button id="hud-chat" class="hbtn" aria-label="Talk to ${esc(S.byte.name)}">${ICON.chat}</button>
   <button id="hud-guide" class="hbtn" aria-label="Field Guide">${ICON.guide}${S.guide.length?`<span>${S.guide.length}</span>`:''}</button>
   <button id="hud-words" class="hbtn" aria-label="Word Book">${ICON.words}${S.words.length?`<span>${S.words.length}</span>`:''}</button></div></div>`}
 function saveCode(){try{return 'PM1-'+btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/=+$/,'')}catch(e){return ''}}
 function loadCode(code){try{const j=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^PM1-/,'')))));if(j&&j.v===1){S={...NEW(),...j};save();return true}}catch(e){}return false}
 function openMenu(){const d=sheet('Menu',`<div class="menu">
-   <button class="btn wide" id="m-hub">Day planner</button>
+   <button class="btn wide" id="m-hub">Day planner</button>${typeof ledgerMenu==='function'?ledgerMenu():''}
    <div class="lbl">Save code</div><p class="tiny muted">Copy this code to move your game to another device or browser.</p>
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">Copy code</button>
    <div class="lbl">Load a save code</div><textarea id="m-in" rows="3" placeholder="Paste a code that starts with PM1-"></textarea><button class="btn small ghost" id="m-load">Load this game</button>
    <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div>
    ${window.PARENT?'<div class="lbl">For grown-ups</div><button class="btn small ghost" id="m-parent">Progress page</button>':''}</div>`);
   const mp=$('#m-parent',d);if(mp)mp.onclick=()=>{d.remove();PARENT.open()};
-  $('#m-hub',d).onclick=()=>{d.remove();go('hub')};
+  $('#m-hub',d).onclick=()=>{d.remove();go('hub')};const ml=$('#m-ledger',d);if(ml)ml.onclick=()=>{d.remove();openLedger()};
   $('#m-copy',d).onclick=()=>{const t=$('#m-code',d);navigator.clipboard&&navigator.clipboard.writeText(t.value).then(()=>toast('Save code copied','good')).catch(()=>{t.select()});t.select()};
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast('Game loaded','good');render()}else toast('That code didn\u2019t work. Check that you copied all of it.')};
   $('#m-new',d).onclick=()=>{$('#m-confirm',d).innerHTML=`<p>Erase this game and start over?</p><div class="row"><button class="btn small" id="m-yes">Yes, start over</button><button class="btn small ghost" id="m-no">Keep playing</button></div>`;
@@ -10656,7 +11961,7 @@ const STEPS={
   hub(){const list=Object.values(MISSIONS);const unlocked=m=>(m.after||[]).every(id=>S.completed[id]);
     screen('hub',`${scene('home')}${hud('Your day planner')}<div class="panel-card hub"><h2>What’s next?</h2>
       ${Object.entries(CAREERS).map(([ck,cv])=>{const ms=list.filter(m=>m.career===ck);if(!ms.length)return '';return `<div class="career"><div class="career-h">${esc(cv.name)}</div>${ms.map(m=>{const done=S.completed[m.id],open=unlocked(m);
-        return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">Day ${m.day}</div><div class="mtxt"><b>${esc(m.title)}</b><span>${esc(open?m.blurb:'Finish earlier days to unlock.')}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
+        return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">${esc(m.tag||'Day '+m.day)}</div><div class="mtxt"><b>${esc(m.title)}</b><span>${esc(open?m.blurb:'Finish earlier days to unlock.')}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
       </div>`);
     $$('.mcard').forEach(b=>b.onclick=()=>startMission(b.dataset.m))},
   street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="24" lengthAdjust="spacingAndGlyphs">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="34" lengthAdjust="spacingAndGlyphs">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>

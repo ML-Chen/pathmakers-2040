@@ -168,5 +168,7 @@ function spokenLines(){const out=[];let SRC='core';const add=(who,t)=>{if(!t||/\
   // Missions in src/missions/*.js: each one's lines are written to src/audio/<id>.js (the Maya mission's lines live in src/audio.js).
   if(typeof MISSIONS!=='undefined'){mergeMissions();for(const id in MISSIONS){if(id==='maya')continue;SRC=id;const m=MISSIONS[id];missionLines(m).forEach(x=>add(x.who,x.text));
     for(const k in (m.chatter||{}))m.chatter[k].forEach((t,i)=>out.push({voice:(m.chatterVoices||CHATTER_VOICES)[i%(m.chatterVoices||CHATTER_VOICES).length],text:speechText(t),src:id}))}}
+  // The Ledger news app (src/ledger.js): its library, words and Byte's lines go to src/audio/ledger.js.
+  if(typeof ledgerLines==='function'){SRC='ledger';ledgerLines().forEach(x=>add(x.who,x.text))}
   const seen=new Set();return out.filter(x=>{const key=x.voice+'|'+x.text;if(seen.has(key))return false;seen.add(key);return true})}
 if(typeof module!=='undefined')module.exports={spokenLines};
