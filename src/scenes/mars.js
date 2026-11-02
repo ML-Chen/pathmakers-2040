@@ -165,7 +165,7 @@
       var D = L.sun.dusk;
       // the blue sunset: fine dust scatters blue light forward, so the sky glows blue right around the Sun
       ctx.save(); ctx.translate(D[0], D[1]); ctx.scale(1.5, 1);
-      ctx.fillStyle = rg(ctx, 0, 0, 0, 120 * s, [[0, 'rgba(220,240,255,1)'], [0.16, 'rgba(150,200,245,0.85)'], [0.5, 'rgba(90,140,210,0.4)'], [1, 'rgba(90,140,210,0)']]); ctx.fillRect(-120 * s, -120 * s, 240 * s, 240 * s); ctx.restore(); glow(ctx, D[0], D[1], 30 * s, '#e8f6ff', 0.6);
+      ctx.fillStyle = rg(ctx, 0, 0, 0, 120 * s, [[0, 'rgba(220,240,255,1)'], [0.16, 'rgba(150,200,245,0.85)'], [0.5, 'rgba(90,140,210,0.4)'], [1, 'rgba(90,140,210,0)']]); ctx.fillRect(-120 * s, -120 * s, 240 * s, 240 * s); ctx.restore(); glow(ctx, D[0], D[1], 50 * s, '#e8f6ff', 0.8);
       ctx.fillStyle = '#f4faff'; ctx.beginPath(); qcirc(ctx, D[0], D[1], 5 * s); ctx.fill();
       // Earth: the bright blue-white evening star above the sunset
       var ex = D[0] - 40 * s, ey = D[1] - 74 * s; glow(ctx, ex, ey, 10 * s, '#bfe0ff', 0.8); ctx.fillStyle = '#eaf6ff'; ctx.beginPath(); qcirc(ctx, ex, ey, 1.8 * s); ctx.fill();
