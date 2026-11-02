@@ -37,4 +37,5 @@ Still on branches, not merged yet (agents were working when the session ended; m
 - `art/phoenix-scenes`: painted phx_lot, phx_studio, phx_dusk (the Flood Lot currently falls back to the hospital).
 - `content/darktower`: the Dark Tower ruin day (correlated failure, off switches).
 Open items: Chinese translations don't exist yet (src/i18n.js is the engine only; no src/i18n/zh files); sneeze.js still needs the plain-writing pass; the courtroom career must restart; the owner must add the Android signing secrets before going public.
+Owner feedback still to act on (Nov 2, late): the Nome mammoths look goofy (mother and calf need a full redraw with real woolly-mammoth anatomy: high domed head, shoulder hump, sloping back, long curved tusks, small ears, shaggy layered coat; the calf cute but believable), and the calf_observe icon buttons are cryptic (label them or use clearer pictures); the DC bill's Section 3 options still don't read as good policy and need another pass; Grand Rounds and other screens need the plain-writing pass where text is still punchy.
 
