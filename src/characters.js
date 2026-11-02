@@ -389,7 +389,8 @@ function personSVG(o){o=o||{};
     ${gl}${earring}
     ${outlinePass}<path d="${HS.cap}" fill="${hg}"/>${clumps}${shine}${extraFront}<g opacity=".42">${brows}</g>${fx}
   </g></g></g>`}
-function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${(o&&o.name)||''}">${personSVG(o||{})}</svg>`}
+// A cast entry may draw itself instead of using personSVG (animals, robots, holograms): art(mood) returns SVG content in the same 30 0 240 360 box.
+function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${(o&&o.name)||''}">${o&&typeof o.art==='function'?o.art(o.mood||'smile'):personSVG(o||{})}</svg>`}
 
 // ---------- Maya, full body and posed (Future Table cards, reveal) ----------
 // posedGirl(kind,o) -> SVG <g>. Feet on (0,0); about 70 units tall (ahoge tip ~y=-71, hair top ~-68); body about ±10 wide

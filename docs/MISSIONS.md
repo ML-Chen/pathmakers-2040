@@ -68,7 +68,8 @@ Read the header of `src/paint_boston.js`: seeded painting utilities, a static `p
 ```sh
 python3 src/build.py dist/pathmakers.html
 node tests/flow_test.js dist/pathmakers.html                    # every mission plays end to end, no errors
-node tools/mission_shots.js dist/pathmakers.html /tmp/shots <id> # phone-size screenshots of every step of one mission
+node tools/mission_shots.js dist/pathmakers.html /tmp/shots <id> # phone-size screenshots of every step, with contact sheets
+node tools/mission_deep_shots.js dist/pathmakers.html /tmp/deep <id> # full-page documents, every Future Table option, all vignettes, every consent reply
 ```
 
 Look at every screenshot (contact sheets help), fix what looks wrong, and repeat until nothing is left to improve.
