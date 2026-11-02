@@ -684,6 +684,35 @@ function ch_parted(sp,G,o){const v=sp.vol||0,rc=sp.recede||0,part=o.part||sp.par
 
 function ch_moreHair(st,G,o){const C=ch_clump,R=ch_n;
   if(CH_PARTED[st])return ch_parted(CH_PARTED[st],G,o);
+  // high-top fade: a tall block of coily hair that tapers a little toward a rounded top, with a bumpy coil edge,
+  // curl clusters, a soft highlight on the upper left, a crisp line-up at the forehead and faded sides
+  if(st==='hightop'){
+    const ctrl=[[100,88],[100.4,66],[101.8,44],[103.4,28],[106,17],[112,9.6],[122,5],[136,3],[150,2.6],[164,3],[178,5],[188,9.6],[194,17],[196.6,28],[198.2,44],[199.6,66],[200,88]];
+    const edge=ch_even(ch_crPts(ctrl,10),38),hl=[[200,86],[197,82],[193,72],[150,68],[107,72],[103,82],[100,86]];
+    // coil bumps: small on the sides, fuller over the top
+    const r0=ch_rand(5);let sc=`M${ch_P(edge[0])}`;
+    for(let i=1;i<edge.length;i++){const a=edge[i-1],b=edge[i],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,top=Math.min(a[1],b[1])<30,k=(top?3.4:2.2)*(.7+.6*r0());
+      sc+=`Q${R((a[0]+b[0])/2+dy/l*k)} ${R((a[1]+b[1])/2-dx/l*k)} ${ch_P(b)}`}
+    const cap=`${sc}L${ch_P(hl[0])}L${ch_P(hl[1])}L${ch_P(hl[2])}C${ch_P([170,68])} ${ch_P([130,68])} ${ch_P(hl[4])}L${ch_P(hl[5])}L${ch_P(hl[6])}Z`,back=`${sc}Z`;
+    const tex=(H,hg,id)=>{const lit=ch_mix(H.base,'#f0e8ff',.42),lit2=ch_mix(H.base,'#ffffff',.62),mid=ch_mix(H.base,'#c8c0e8',.2),L={...H,hi:lit,sh:mid};let t='';
+      t+=`<radialGradient id="${id}hth" gradientUnits="userSpaceOnUse" cx="126" cy="24" r="44"><stop offset="0" stop-color="${lit}" stop-opacity=".55"/><stop offset=".55" stop-color="${lit}" stop-opacity=".16"/><stop offset="1" stop-color="${lit}" stop-opacity="0"/></radialGradient>`;
+      t+=`<linearGradient id="${id}htd" gradientUnits="userSpaceOnUse" x1="110" y1="10" x2="196" y2="90"><stop offset=".45" stop-color="${H.dk}" stop-opacity="0"/><stop offset="1" stop-color="${H.dk}" stop-opacity=".38"/></linearGradient><rect x="96" y="0" width="108" height="92" fill="url(#${id}htd)"/>`;
+      // layered curl rows give the block depth instead of flat bands
+      for(const [y,op] of [[24,.5],[42,.55],[60,.6]]){let d='';for(let x=104;x<197;x+=7){const yy=y+Math.sin(x*.7)*1.6;d+=`M${R(x)} ${R(yy+2)} q1.6 -4.2 4.4 -1.8 q1.8 2 -.6 3.6`}t+=`<path d="${d}" stroke="${H.dk}" stroke-width="1.5" fill="none" opacity="${op}" stroke-linecap="round"/>`}
+      t+=`<rect x="96" y="0" width="108" height="92" fill="url(#${id}hth)"/>`;
+      t+=ch_coils(150,44,54,46,230,4,L,23,{w:1.6,litOp:.8});
+      // curls along the edge, lit on the left and over the top
+      let ec='',ed='';edge.forEach((p,i)=>{if(i%2||i<2||i>edge.length-3)return;const lt=p[0]<160&&p[1]<60,c=ch_pl(ch_coilPts(p[0]+(150-p[0])*.06,p[1]+5,3.6,i*1.3));if(lt)ec+=c;else ed+=c});
+      t+=`<path d="${ec}" stroke="${lit2}" stroke-width="1.5" fill="none" opacity=".75" stroke-linecap="round"/><path d="${ed}" stroke="${H.hi}" stroke-width="1.4" fill="none" opacity=".45" stroke-linecap="round"/>`;
+      // rim light down the upper-left edge
+      t+=`<path d="${ch_rib(ch_crPts([[103.6,60],[104.4,30],[110,14],[128,6.5]],10),ch_swell(3.2,.4))}" fill="${lit2}" opacity=".35" transform="translate(3 2)"/>`;
+      return t};
+    const xFront=(H,hg,id)=>{const sideD='M99 86 C96 96 95 108 97 120 L103 120 C102 108 102 96 104 82Z',g=`${id}fd`;
+      let t=`<linearGradient id="${g}" x1="0" y1="80" x2="0" y2="124" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${H.base}" stop-opacity=".95"/><stop offset=".55" stop-color="${H.base}" stop-opacity=".45"/><stop offset="1" stop-color="${H.base}" stop-opacity="0"/></linearGradient>`;
+      for(const d of [sideD,ch_mx(sideD,150)])t+=`<path d="${d}" fill="url(#${g})"/>`;
+      const r=ch_rand(4);let dots='';for(let i=0;i<40;i++){const y=88+r()*26,x=97+r()*5.6;dots+=`M${R(x)} ${R(y)}l.3 1M${R(300-x)} ${R(y)}l.3 1`}
+      return t+`<path d="${dots}" stroke="${H.dk}" stroke-width="1" opacity=".5" stroke-linecap="round"/>`};
+    return {back,cap,clumps:[],tex,xFront,noRim:1,hatW:58,hatTop:6,big:1}}
   // close coily crop (TWA), a fade with a crisp line-up, and a high-top fade
   if(st==='twa'||st==='fade'||st==='hightop'){const ht=st==='hightop',tw=st==='twa';let outer,hl;
     if(tw){outer=[];for(let i=0;i<=28;i++){const a=(168+204*i/28)*Math.PI/180;outer.push([150+Math.cos(a)*58,99+Math.sin(a)*65])}
