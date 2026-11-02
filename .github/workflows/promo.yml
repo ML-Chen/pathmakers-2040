@@ -5,7 +5,7 @@ name: RedNote promo video
 on:
   workflow_dispatch:
     inputs:
-      speaker: {description: 'Kokoro Mandarin narrator (zf_xiaoxiao, zf_xiaobei, zf_xiaoni, zf_xiaoyi, zm_yunjian, zm_yunxi, zm_yunxia, zm_yunyang)', default: 'zf_xiaoxiao'}
+      speaker: {description: 'Narrator. With the ELEVENLABS_API_KEY secret: an ElevenLabs voice name (Sarah, Jessica, Laura, Matilda, Lily, Brian, Eric, Daniel) or voice id. Without it: a Kokoro voice (zf_xiaoxiao, zm_yunjian, ...). Empty = default.', default: ''}
       speed: {description: 'Speaking speed', default: '1.0'}
   push:
     branches: [main]
@@ -43,8 +43,9 @@ jobs:
           mkdir -p ../tts-models && cd ../tts-models
           curl -sSLO https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-multi-lang-v1_0.tar.bz2
           tar xjf kokoro-multi-lang-v1_0.tar.bz2 && rm kokoro-multi-lang-v1_0.tar.bz2
-      - name: Mandarin narration
-        run: python3 promo/rednote/vo.py vo "${{ github.event.inputs.speaker || 'zf_xiaoxiao' }}" "${{ github.event.inputs.speed || '1.0' }}"
+      - name: Mandarin narration (ElevenLabs when the secret is set, otherwise Kokoro)
+        env: {ELEVENLABS_API_KEY: '${{ secrets.ELEVENLABS_API_KEY }}'}
+        run: set -o pipefail; python3 promo/rednote/vo.py vo "${{ github.event.inputs.speaker }}" "${{ github.event.inputs.speed || '1.0' }}" | tee vo.log
       - name: Build the game and render the video
         run: |
           python3 src/build.py dist/pathmakers.html
@@ -65,7 +66,7 @@ jobs:
         run: |
           cd vo && zip -q ../narrator-audition.zip audition_*.wav && cd ..
           files=(video/rednote.mp4 video/cover.png video/contact.jpg narrator-audition.zip)
-          NOTES="RedNote concept video from ${GITHUB_SHA::7}, $(date -u '+%b %d %H:%M UTC'). Narrator: ${{ github.event.inputs.speaker || 'zf_xiaoxiao' }}. narrator-audition.zip has the first lines in every Mandarin voice; rerun this workflow with another speaker to switch."
+          NOTES="RedNote concept video from ${GITHUB_SHA::7}, $(date -u '+%b %d %H:%M UTC'). $(grep '^engine' vo.log). narrator-audition.zip has the first line in several voices; rerun this workflow with another speaker to switch."
           if gh release view promo-latest >/dev/null 2>&1; then
             for a in $(gh release view promo-latest --json assets -q '.assets[].name'); do gh release delete-asset promo-latest "$a" -y; done
             gh release upload promo-latest "${files[@]}" --clobber

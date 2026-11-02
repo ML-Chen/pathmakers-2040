@@ -1,14 +1,41 @@
 #!/usr/bin/env python3
 """Mandarin narration for the RedNote video: python3 promo/rednote/vo.py OUT_DIR [speaker] [speed]
-Reads the lines from promo/rednote/shots.js, voices each with Kokoro (promo/tools/zh_tts.py), trims silence, levels
-loudness, and writes OUT_DIR/<shot id>.wav plus OUT_DIR/durations.json. Also writes OUT_DIR/audition_<speaker>.wav,
-the first two lines in every Mandarin voice, so the family can pick a narrator by ear."""
-import json, os, subprocess, sys
+Reads the lines from promo/rednote/shots.js, voices each line, trims silence, levels loudness, and writes
+OUT_DIR/<shot id>.wav plus OUT_DIR/durations.json. Also writes OUT_DIR/audition_<voice>.wav (the first line in several
+voices) so the family can pick a narrator by ear.
+Engine: ElevenLabs (eleven_multilingual_v2) when ELEVENLABS_API_KEY is set; then [speaker] is an ElevenLabs voice name
+from tools/make_audio.py's list or a voice id (default Sarah). Otherwise Kokoro (promo/tools/zh_tts.py), where
+[speaker] is a Kokoro Mandarin voice (default zf_xiaoxiao)."""
+import json, os, subprocess, sys, time, urllib.request, urllib.error
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'tools'))
-import zh_tts
+EL_KEY = os.environ.get('ELEVENLABS_API_KEY', '').strip()
+if not EL_KEY:
+    import zh_tts
+EL = {'Sarah': 'EXAVITQu4vr4xnSDxMaL', 'Laura': 'FGY2WhTYpPnrIDTdsKH5', 'Jessica': 'cgSgspJ2msm6clMCkdW9', 'Matilda': 'XrExE9yKIg1WjnnlVkGX',
+      'Aria': '9BWtsMINqrJLrRacOk9x', 'Lily': 'pFZP5JQG7iQjIQuC4Bku', 'Charlotte': 'XB0fDUnXU5powFXDhCwa', 'Brian': 'nPczCjzI2devNBz1zQrb',
+      'Eric': 'cjVigY5qzO86Huf0OWal', 'Chris': 'iP95p4xoKVk53GoZ742B', 'Liam': 'TX3LPaxmHKxFdv7VOQHJ', 'Daniel': 'onwK4e9ZLuTAKqWW03F9'}
 
-out = sys.argv[1]; speaker = sys.argv[2] if len(sys.argv) > 2 else 'zf_xiaoxiao'; speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
+def eleven(voice, text, speed, dst):
+    vid = EL.get(voice, voice)
+    body = json.dumps({'text': text, 'model_id': os.environ.get('ELEVENLABS_MODEL', 'eleven_multilingual_v2'),
+                       'voice_settings': {'stability': 0.5, 'similarity_boost': 0.8, 'style': 0.25, 'use_speaker_boost': True, 'speed': speed}}).encode()
+    req = urllib.request.Request(f'https://api.elevenlabs.io/v1/text-to-speech/{vid}?output_format=mp3_44100_128', data=body, method='POST',
+                                 headers={'xi-api-key': EL_KEY, 'content-type': 'application/json', 'accept': 'audio/mpeg'})
+    for attempt in range(6):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r: mp3 = r.read()
+            break
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503) and attempt < 5: time.sleep(3 * (attempt + 1)); continue
+            raise RuntimeError(f'ElevenLabs HTTP {e.code}: {e.read()[:300]!r}')
+    tmp = dst + '.mp3'; open(tmp, 'wb').write(mp3)
+    subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-i', tmp, dst], check=True); os.remove(tmp)
+
+def synth(voice, text, speed, dst):
+    return eleven(voice, text, speed, dst) if EL_KEY else zh_tts.synth(voice, text, speed, dst)
+
+out = sys.argv[1]; speaker = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else ('Sarah' if EL_KEY else 'zf_xiaoxiao'); speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 os.makedirs(out, exist_ok=True)
 shots = json.loads(subprocess.run(['node', '-e', "process.stdout.write(JSON.stringify(require(process.argv[1]).map(s=>({id:s.id,vo:s.vo}))))",
                                    os.path.join(HERE, 'shots.js')], capture_output=True, text=True, check=True).stdout)
@@ -24,12 +51,14 @@ def clean(raw, dst):
 dur = {}
 for s in shots:
     raw = os.path.join(out, s['id'] + '.raw.wav')
-    zh_tts.synth(speaker, s['vo'], speed, raw)
+    synth(speaker, s['vo'], speed, raw)
     dur[s['id']] = clean(raw, os.path.join(out, s['id'] + '.wav')); os.remove(raw)
     print(f"{s['id']}: {dur[s['id']]:.2f}s  {s['vo']}", flush=True)
 json.dump(dur, open(os.path.join(out, 'durations.json'), 'w'), ensure_ascii=False, indent=1)
 
-text = shots[0]['vo'] + shots[1]['vo']
-for sp in [n for n in zh_tts.NAMES if n[:3] in ('zf_', 'zm_')]:
-    raw = os.path.join(out, 'a.raw.wav'); zh_tts.synth(sp, text, speed, raw); clean(raw, os.path.join(out, f'audition_{sp}.wav')); os.remove(raw)
+text = shots[0]['vo']
+voices = ['Sarah', 'Jessica', 'Laura', 'Matilda', 'Lily', 'Brian', 'Eric', 'Daniel'] if EL_KEY else [n for n in zh_tts.NAMES if n[:3] in ('zf_', 'zm_')]
+for sp in voices:
+    raw = os.path.join(out, 'a.raw.wav'); synth(sp, text, speed, raw); clean(raw, os.path.join(out, f'audition_{sp}.wav')); os.remove(raw)
+print('engine', 'ElevenLabs' if EL_KEY else 'Kokoro', 'voice', speaker)
 print('total narration', round(sum(dur.values()), 1), 's')
