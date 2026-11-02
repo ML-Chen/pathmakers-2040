@@ -5,6 +5,7 @@ A phone-first browser game for an 8-year-old (strong reader, about 7th-grade lev
 ## Build and check
 - `python3 src/build.py dist/pathmakers.html` inlines every module into one self-contained page.
 - `node tools/shots.js dist/pathmakers.html /tmp/pm-shots` plays through every screen at 390x844 and saves screenshots plus errors.txt. Look at them after every change.
+- `node tools/parent_shots.js dist/pathmakers.html /tmp/pm-parent` screenshots the progress page empty, after one real mission, and with a longer sample history.
 - `python3 tools/make_audio.py` records any new spoken line (see tools/AUDIO.md).
 
 ## Module map (src/)
@@ -19,6 +20,7 @@ A phone-first browser game for an 8-year-old (strong reader, about 7th-grade lev
 | infog.js | Byte's animated infographics (VIZ kinds used by documents) |
 | audio.js | Prerecorded voice clips keyed by "voice|text" (generated) |
 | game.js | State, saving, screens and the mission flow |
+| parent.js, parent.css | Grown-ups' progress page (Menu → For grown-ups) and the records it reads: S.history, wordLog, ideaLog, chatLog, chatOff |
 
 ## Rules the family asked for
 - Realistic superintelligence-era 2040 (AI 2040: Plan A world). The AI is excellent; humans add goals, consent, local knowledge, judgment, accountability.
