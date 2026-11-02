@@ -1,0 +1,53 @@
+/* agreed_viz_docs.css — animations for src/viz/agreed_viz_docs.js (Rosa record, Byte memo, rewards lesson). Prefix agd-. */
+.agd-a{transform-box:fill-box;transform-origin:center;animation-timing-function:ease-out;animation-iteration-count:infinite}
+@keyframes agd-a0{0%,0%{opacity:0;transform:translateY(5px) scale(.5)}4%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a5{0%,5%{opacity:0;transform:translateY(5px) scale(.5)}9%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a10{0%,10%{opacity:0;transform:translateY(5px) scale(.5)}14%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a15{0%,15%{opacity:0;transform:translateY(5px) scale(.5)}19%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a20{0%,20%{opacity:0;transform:translateY(5px) scale(.5)}24%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a25{0%,25%{opacity:0;transform:translateY(5px) scale(.5)}29%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a30{0%,30%{opacity:0;transform:translateY(5px) scale(.5)}34%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a35{0%,35%{opacity:0;transform:translateY(5px) scale(.5)}39%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a40{0%,40%{opacity:0;transform:translateY(5px) scale(.5)}44%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a45{0%,45%{opacity:0;transform:translateY(5px) scale(.5)}49%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a50{0%,50%{opacity:0;transform:translateY(5px) scale(.5)}54%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a55{0%,55%{opacity:0;transform:translateY(5px) scale(.5)}59%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a60{0%,60%{opacity:0;transform:translateY(5px) scale(.5)}64%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a65{0%,65%{opacity:0;transform:translateY(5px) scale(.5)}69%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a70{0%,70%{opacity:0;transform:translateY(5px) scale(.5)}74%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a75{0%,75%{opacity:0;transform:translateY(5px) scale(.5)}79%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a80{0%,80%{opacity:0;transform:translateY(5px) scale(.5)}84%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a85{0%,85%{opacity:0;transform:translateY(5px) scale(.5)}89%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes agd-a90{0%,90%{opacity:0;transform:translateY(5px) scale(.5)}94%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+
+.agd-ndl{animation:agd-wob 3s ease-in-out infinite}@keyframes agd-wob{0%,100%{transform:rotate(calc(var(--a) - 2deg))}50%{transform:rotate(calc(var(--a) + 3deg))}}
+.agd-ndlgo{animation:agd-ndlgo var(--t,6s) ease-in-out infinite}@keyframes agd-ndlgo{0%,30%{transform:rotate(var(--a0))}55%,86%{transform:rotate(var(--a1))}100%{transform:rotate(var(--a0))}}
+.agd-pilldrop{transform-box:fill-box;transform-origin:center;animation:agd-pilldrop 6s ease-in infinite}@keyframes agd-pilldrop{0%{transform:translateY(-30px) rotate(-30deg);opacity:0}8%{opacity:1}28%{transform:none;opacity:1}36%,100%{transform:scale(.2);opacity:0}}
+.agd-glow{animation:agd-glow 6s ease-in-out infinite}@keyframes agd-glow{0%,40%{opacity:0}55%,82%{opacity:1}96%,100%{opacity:0}}
+.agd-redglow{animation:agd-redglow 6s ease-in-out infinite}@keyframes agd-redglow{0%,28%{opacity:1}45%,90%{opacity:0}100%{opacity:1}}
+.agd-pulse{transform-box:fill-box;transform-origin:center;animation:agd-pulse 2.4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes agd-pulse{0%,100%{transform:none;opacity:.9}50%{transform:scale(1.18);opacity:.45}}
+.agd-beat{transform-box:fill-box;transform-origin:center;animation:agd-beat 1.3s ease-in-out infinite}@keyframes agd-beat{0%,100%{transform:none}15%{transform:scale(1.12)}30%{transform:scale(.97)}45%{transform:scale(1.08)}}
+.agd-spin{animation:agd-spin 9s linear infinite}.agd-spinc{transform-box:fill-box;transform-origin:center;animation:agd-spin 2.6s linear infinite}@keyframes agd-spin{to{transform:rotate(360deg)}}
+.agd-bob{animation:agd-bob 3s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes agd-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.agd-rock{transform-box:fill-box;transform-origin:50% 100%;animation:agd-rock 3.4s ease-in-out infinite}@keyframes agd-rock{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) translateY(-1px)}}
+.agd-twk{transform-box:fill-box;transform-origin:center;animation:agd-twk 1.6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes agd-twk{0%,100%{transform:scale(.7) rotate(0);opacity:.55}50%{transform:scale(1.1) rotate(25deg);opacity:1}}
+.agd-up{animation:agd-up 6s ease-in-out infinite}@keyframes agd-up{0%,22%{transform:translate(0,22px)}34%{transform:translate(0,0)}46%,80%{transform:translate(62px,0)}92%{transform:translate(0,0)}100%{transform:translate(0,22px)}}
+.agd-sway{transform-box:fill-box;transform-origin:50% 100%;animation:agd-sway 6s ease-in-out infinite}@keyframes agd-sway{0%,46%{transform:none}52%{transform:rotate(-4deg)}60%{transform:rotate(3.5deg)}68%{transform:rotate(-3deg)}76%{transform:rotate(2deg)}82%,100%{transform:none}}
+.agd-dz{animation:agd-dz 6s ease-in-out infinite}@keyframes agd-dz{0%,40%{opacity:0}48%,80%{opacity:1}88%,100%{opacity:0}}
+.agd-calm{animation:agd-calm 6s ease-in-out infinite}@keyframes agd-calm{0%,40%{opacity:1}46%,82%{opacity:0}90%,100%{opacity:1}}
+.agd-flow{stroke-dasharray:5 6;animation:agd-flow 1s linear infinite}@keyframes agd-flow{to{stroke-dashoffset:-11}}
+.agd-walk{animation:agd-walk 7s linear infinite}@keyframes agd-walk{0%{transform:translateX(0);opacity:0}6%{opacity:1}84%{transform:translateX(150px);opacity:1}92%,100%{transform:translateX(160px);opacity:0}}
+.agd-step{animation:agd-step .55s ease-in-out infinite alternate}@keyframes agd-step{to{transform:translateY(-1.6px)}}
+.agd-wave{animation:agd-wave 4s linear infinite}@keyframes agd-wave{to{transform:translateX(-40px)}}
+.agd-sit{animation:agd-sit 2s ease-in-out infinite}@keyframes agd-sit{0%,12%{transform:translateY(-6px)}30%,80%{transform:none}100%{transform:translateY(-6px)}}
+.agd-treat{animation:agd-treat 2s ease-in infinite}@keyframes agd-treat{0%,28%{transform:translate(36px,-34px) rotate(-40deg);opacity:0}34%{opacity:1}56%{transform:none;opacity:1}66%,100%{transform:translateY(4px);opacity:0}}
+.agd-heart{transform-box:fill-box;transform-origin:center;animation:agd-heart 2s ease-out infinite}@keyframes agd-heart{0%,56%{transform:scale(.4);opacity:0}64%{transform:scale(1.1) translateY(-4px);opacity:1}92%{transform:translateY(-12px);opacity:0}100%{opacity:0}}
+.agd-wag{transform-box:fill-box;transform-origin:0% 100%;animation:agd-wag .5s ease-in-out infinite alternate}@keyframes agd-wag{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.agd-starfly{animation:agd-starfly 6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes agd-starfly{0%{transform:translate(var(--sx),var(--sy)) scale(.4);opacity:0}6%{opacity:1}22%{transform:none;opacity:1}30%,100%{transform:scale(.3);opacity:0}}
+.agd-bar{transform-box:fill-box;transform-origin:left;animation:agd-bar 6s ease-out infinite}@keyframes agd-bar{0%,18%{transform:scaleX(.12)}26%,46%{transform:scaleX(.4)}54%,76%{transform:scaleX(.7)}84%,94%{transform:scaleX(1)}100%{transform:scaleX(.12)}}
+.agd-happy{animation:agd-happy 2s ease-in-out infinite}@keyframes agd-happy{0%,14%{transform:none}22%{transform:translateY(-3px)}30%,100%{transform:none}}
+.agd-saya{animation:agd-saya 5s ease-in-out infinite}.agd-sayb{animation:agd-saya 5s ease-in-out infinite;animation-delay:-2.5s}@keyframes agd-saya{0%{opacity:0;transform:translateY(4px)}6%,40%{opacity:1;transform:none}48%,100%{opacity:0}}
+.agd-rain{animation:agd-rain 2.5s ease-in infinite;animation-delay:var(--d,0s)}@keyframes agd-rain{0%{transform:translate(var(--sx),var(--sy));opacity:0}10%{opacity:1}70%{transform:none;opacity:1}80%,100%{transform:translateY(4px);opacity:0}}
+.agd-jar{transform-box:fill-box;transform-origin:bottom;animation:agd-jar 10s ease-in-out infinite}@keyframes agd-jar{0%{transform:scaleY(.15)}90%{transform:scaleY(1)}100%{transform:scaleY(.15)}}
+.agd-kid circle,.agd-kid rect{fill:#d6dbec}
+.agd-kid.on circle,.agd-kid.on rect{fill:var(--c);animation:agd-fill 8s infinite;animation-delay:var(--d)}@keyframes agd-fill{0%,2%{fill:#d6dbec}7%,94%{fill:var(--c)}98%,100%{fill:#d6dbec}}
