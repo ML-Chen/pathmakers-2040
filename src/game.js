@@ -23,7 +23,7 @@ async function connectCloud(){
 // ---------- helpers ----------
 const P=()=>S.player||'Juniper';
 const fill=t=>t.replace(/\{P\}/g,P());
-function rngFrom(seed){let s=seed>>>0||1;return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return (s%100000)/100000}}
+function rngFrom(seed){let a=(seed>>>0)||1;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296}}
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 // graded reader markup: [[word]] → tappable glossary word
 function rich(t){return esc(fill(t)).replace(/\[\[([^\]]+)\]\]/g,(m,w)=>{const k=w.toLowerCase();return GLOSSARY[k]?`<button class="gw" data-w="${esc(k)}">${w}</button>`:w})}
@@ -277,13 +277,28 @@ function renderCriteria(){
   $('#next').onclick=()=>go('table')}
 
 // ---------- Future Table ----------
+// Byte's forecast per criterion, computed exactly from the model (what Byte knows)
+function forecastFor(c){const p=modelProbs(c,false),r=c.tx==='gel'?p.rash:0;const rashPlays=c.date==='moved'?.8*.5:0;
+  const straight=(1-r)*p.straight+r*.8,plays=(1-r)*p.straight*p.ready+r*rashPlays;return {straight,plays,skin:1-r,quick:plays}}
+// a "typical" batch of 10 whose counts match the forecast (rounded), in shuffled order
+function typicalFutures(c,rng){const f=forecastFor(c);const nR=10-Math.round(f.skin*10),nS=Math.round(f.straight*10),nP=Math.min(nS,Math.round(f.plays*10));
+  const out=[];for(let i=0;i<10;i++)out.push({rash:i<nR,straight:false,plays:false});
+  const order=[...out.keys()].sort((x,y)=>(out[x].rash-out[y].rash));let s=0;for(const i of order)if(s<nS){out[i].straight=true;s++}
+  let q=0;for(const i of order)if(q<nP&&out[i].straight&&(!out[i].rash||c.date==='moved')){out[i].plays=true;q++}
+  for(const o of out){o.kind=o.rash?'rash':!o.straight?'crooked':o.plays?(c.date==='moved'?'moved':'recital'):'healed';
+    o.cap={rash:'Skin reaction. Switched to a cast.',crooked:'Healed crooked. Needs another fix.',recital:'Played Bach on Friday!',moved:'Played at the moved recital!',healed:'Healed straight. Missed the recital.'}[o.kind]}
+  for(let i=out.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
 function critScore(id,futs){return futs.filter(f=>({straight:f.straight,plays:f.plays,skin:!f.rash,agree:true,quick:f.plays||f.kind==='recital'})[id]).length}
 function renderTable(){
-  const c=S.choice;const rng=rngFrom(S.seed*7919+({pins:1,cast:2,gel:3}[c.tx])*31+(c.pt?5:0)+(c.date==='moved'?11:0));
-  const futs=Array.from({length:10},()=>sampleFuture(c,false,rng));
-  const meters=S.criteria.filter(id=>id!=='agree').map(id=>{const n=critScore(id,futs);const lab=rich(CRITERIA.find(x=>x.id===id).label);return `<div class="meter"><span>${lab}</span><div class="mbar"><i style="width:${n*10}%"></i></div><b>${n} of 10</b></div>`}).join('');
+  const c=S.choice;const pk=c.tx+(c.pt?'+pt':'')+'/'+c.date;const random=false;
+  const rng=rngFrom(S.seed*7919+({pins:1,cast:2,gel:3}[c.tx])*31+(c.pt?5:0)+(c.date==='moved'?11:0));
+  const futs=random?Array.from({length:10},()=>sampleFuture(c,false,rng)):typicalFutures(c,rng);
+  const fc=forecastFor(c);
+  const meters=S.criteria.filter(id=>id!=='agree').map(id=>{const n=critScore(id,futs),f=Math.round(fc[id]*10);const lab=rich(CRITERIA.find(x=>x.id===id).label);
+    return `<div class="meter"><span>${lab}</span><div class="mbar"><i style="width:${n*10}%"></i><em style="left:${f*10}%" title="Forecast"></em></div><b>${n} of 10</b><small>forecast ${Math.round(fc[id]*100)}%</small></div>`}).join('');
+  const wob=random&&S.criteria.some(id=>id!=='agree'&&Math.abs(critScore(id,futs)-Math.round(fc[id]*10))>=2);
   screen('futuretable',`${scene('table')}${hud('The Future Table')}
-  <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:'think'})}</div><p>Here are 10 possible futures for this plan. Change the plan and watch them shift.</p></div>
+  <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:'think'})}</div><p>Here are 10 futures for this plan, spread out the way my forecast says. Change the plan and watch them shift.</p></div>
    <div class="futs" id="futs">${futs.map((f,i)=>`<figure class="fut" style="--d:${i*70}ms">${vignette(f.kind)}<figcaption>${f.cap}</figcaption></figure>`).join('')}</div>
    <div class="meters">${meters}</div>
    <div class="controls">
@@ -291,34 +306,34 @@ function renderTable(){
     <div class="ctl two"><div><div class="ctl-l">Physical therapy</div><div class="seg">${[[false,'No'],[true,'Yes']].map(([v,l])=>`<button class="segb ${c.pt===v?'on':''}" data-pt="${v}">${l}</button>`).join('')}</div></div>
      <div><div class="ctl-l">Recital</div><div class="seg">${[['fri','Keep Friday'],['moved','Ask to move it']].map(([v,l])=>`<button class="segb ${c.date===v?'on':''}" data-date="${v}">${l}</button>`).join('')}</div></div></div>
    </div>
-   <div class="ft-foot"><button class="btn ghost small" id="again">Show 10 more futures</button><button class="btn ghost small" id="why">Ask ${esc(S.byte.name)} why</button><button class="btn" id="next">Talk with Maya</button></div>
+   <div class="ft-foot"><button class="btn ghost small" id="why">Ask ${esc(S.byte.name)} why</button><button class="btn" id="next">Suggest this plan to Maya</button></div>
    <div class="why" id="whybox" hidden></div></div>`);
   $$('[data-tx]').forEach(b=>b.onclick=()=>{S.choice.tx=b.dataset.tx;save();renderTable()});
   $$('[data-pt]').forEach(b=>b.onclick=()=>{S.choice.pt=b.dataset.pt==='true';save();renderTable()});
   $$('[data-date]').forEach(b=>b.onclick=()=>{S.choice.date=b.dataset.date;save();renderTable()});
-  $('#again').onclick=()=>{S.seed++;save();renderTable();unlock('forecast')&&toast('New Field Guide idea: Forecasts are not promises','good')};
   $('#why').onclick=()=>{const p=modelProbs(c,false);const box=$('#whybox');box.hidden=false;
     box.innerHTML=`<p><b>${TX_LABEL[c.tx]}${c.pt?' with physical therapy':''}:</b> the bone grows back straight about ${Math.round(p.straight*100)}% of the time. ${p.ready?`If it heals well, she’s ready ${c.date==='fri'?'by Friday':'for the moved recital'} about ${Math.round(p.ready*100)}% of the time.`:`She can’t play ${c.date==='fri'?'by Friday':'in 3 weeks'} with this treatment.`} ${c.tx==='gel'?(S.told?'Because of Maya’s rash, a skin reaction is likely: about 60%.':'I see no allergy in her record, so I forecast a skin reaction at about 5%.'):''} ${c.tx==='gel'?'Only 40 kids have tried BoneMend, so I’m less sure about these numbers.':''}</p>`;
     if(c.tx==='gel')unlock('sample-size')&&toast('New Field Guide idea: Sample size','good')};
-  $('#next').onclick=()=>go('consent');
-  const pk=c.tx+(c.pt?'+pt':'')+'/'+c.date;S.guesses=S.guesses||{};
-  if(!S.guesses[pk]&&Object.keys(S.guesses).length<3){const actual=critScore('straight',futs);
-    const gv=document.createElement('div');gv.className='guess';gv.innerHTML=`<div class="guess-card"><h3>Guess first</h3><p>Plan: ${esc(TX_LABEL[c.tx])}${c.pt?' with therapy':''}. Out of 10 futures, how many will <button class="gw" data-w="heals straight">heal straight</button>?</p><div class="big" id="gnum">5</div><input type="range" id="gsl" min="0" max="10" value="5"><button class="btn wide" id="gok">Show the futures</button></div>`;
-    document.body.appendChild(gv);$('#futs').style.visibility='hidden';$('.meters').style.visibility='hidden';$('#gsl').oninput=e=>$('#gnum').textContent=e.target.value;
-    $('#gok').onclick=()=>{const v=+$('#gsl').value;S.guesses[pk]={g:v,a:actual};save();gv.remove();renderTable();
-      toast(`You guessed ${v}. ${actual} of 10 healed straight.`,Math.abs(v-actual)<=1?'good':'');if(Math.abs(v-actual)<=1)unlock('calibration')&&toast('New Field Guide idea: Calibration','good')}}}
+  $('#next').onclick=()=>go('consent');}
 
 // ---------- Consent conversation ----------
 function renderConsent(){
-  const c=S.choice,p=modelProbs(c,false);const tx=TX_LABEL[c.tx].toLowerCase()+(c.pt?' plus physical therapy':'');
+  const c=S.choice,p=modelProbs(c,false);const tx=(c.tx==='gel'?'BoneMend gel':TX_LABEL[c.tx].toLowerCase())+(c.pt?' plus physical therapy':'');
   const honest=`I suggest ${tx}. It heals straight about ${Math.round(p.straight*100)} out of 100 times${c.date==='moved'?', and we could ask to move your recital three weeks':''}. ${c.tx==='gel'&&S.told?'Because of your old rash, there’s a big chance of a skin reaction.':''} What do you two think?`;
   const opts=[{t:honest,good:true,mood:'smile',reply:c.date==='fri'&&!p.ready?'So I’ll miss Friday... but I want my arm to work for a long time. Okay. I agree.':'Thank you for explaining. I understand. Let’s do it.'},
    {t:`Trust me, ${tx} is the best. Don’t worry about the details.`,good:false,mood:'worried',reply:'Um... okay. But I don’t really understand what will happen.'},
    {t:`You’ll definitely play on Friday!`,good:false,mood:'surprised',reply:'Definitely? Are you sure? Byte’s futures didn’t say that.'}];
   screen('talk',`${scene('hospital')}<div class="talk-dim"></div>${hud('Room 4B · Boston Harbor Hospital')}<div class="stage duo"><div class="speaker">${portrait({...CAST.dad,mood:'think'})}</div><div class="speaker">${portrait({...CAST.maya,mood:'worried'})}</div></div>
-    <div class="subtitle"><div class="who"><b>Maya and Wei Lin</b><span>Patient and parent</span></div><p>So, what do you suggest? And will I get to play?</p>
+    <div class="subtitle"><div class="planpick"><div class="ctl-l">Your plan</div>
+      <div class="seg">${['pins','cast','gel'].map(t=>`<button class="segb ${c.tx===t?'on':''}" data-tx="${t}">${TX_LABEL[t]}</button>`).join('')}</div>
+      <div class="seg">${[[false,'No therapy'],[true,'Physical therapy']].map(([v,l])=>`<button class="segb ${c.pt===v?'on':''}" data-pt="${v}">${l}</button>`).join('')}</div>
+      <div class="seg">${[['fri','Keep Friday'],['moved','Move the recital']].map(([v,l])=>`<button class="segb ${c.date===v?'on':''}" data-date="${v}">${l}</button>`).join('')}</div></div>
+      <div class="who"><b>Maya and Wei Lin</b><span>Patient and parent</span></div><p>So, what do you suggest? And will I get to play?</p>
     <div class="choices">${opts.map((o,j)=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
     <div class="tiny muted" style="margin-top:6px">Explaining honestly lets them give real <button class="gw" data-w="consent">consent</button>.</div></div>`);
+  $$('.planpick [data-tx]').forEach(b=>b.onclick=e=>{e.stopPropagation();S.choice.tx=b.dataset.tx;save();renderConsent()});
+  $$('.planpick [data-pt]').forEach(b=>b.onclick=e=>{e.stopPropagation();S.choice.pt=b.dataset.pt==='true';save();renderConsent()});
+  $$('.planpick [data-date]').forEach(b=>b.onclick=e=>{e.stopPropagation();S.choice.date=b.dataset.date;save();renderConsent()});
   $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];S.consent=o.good;if(o.good){heart('maya');unlock('consent')&&toast('New Field Guide idea: Informed consent','good')}save();
     $('.stage').innerHTML=`<div class="speaker">${portrait({...CAST.dad,mood:o.good?'smile':'worried'})}</div><div class="speaker talking">${portrait({...CAST.maya,mood:o.mood})}</div>`;
     $('.subtitle').innerHTML=`<div class="who"><b>Maya</b><span>Patient, age 11</span></div><p>${esc(o.reply)}</p><div class="choices"><button class="choice" id="cont">${o.good?'Write my decision':'Try explaining again'}</button></div>`;
@@ -362,9 +377,15 @@ function renderReveal(){
   let d=1;const t=setInterval(()=>{d++;$('#day').textContent=d;if(d>=(S.choice.date==='moved'?30:9)){clearInterval(t);$('#cal').classList.add('done');
     setTimeout(()=>{$('#rf').hidden=false;$('#rft').hidden=false;const mood=R.kind==='recital'||R.kind==='moved'?'happy':R.kind==='healed'?'smile':'sad';
       const line={recital:'I played the whole Bach piece! My wrist didn’t hurt at all!',moved:'We moved the recital and I played! Thank you for explaining everything.',healed:'I missed Friday, but my wrist is straight. There’s another recital in spring.',crooked:'It didn’t heal straight. The doctors say they can fix it, but I’m sad.',rash:'Strawberry polka dots again! They switched me to a cast.'}[R.kind];
+      unlock('forecast')&&toast('New Field Guide idea: Forecasts are not promises','good');
       $('#rft').innerHTML=`<div class="rf-maya">${portrait({...CAST.maya,mood})}</div><p>“${line}”</p>`;$('#next').hidden=false;$('#next').onclick=()=>go('debrief')},500)}},S.choice.date==='moved'?60:140)}
 
 // ---------- Debrief ----------
+// calibration: how sure she said she was vs. Byte's forecast that the plan meets her goals
+function calibLine(){const pct=[50,62,75,87,97][S.conf??2],words=['a coin flip','a little sure','pretty sure','very sure','sure'][S.conf??2];
+  const fc=forecastFor(S.choice),ids=S.criteria.filter(x=>fc[x]!=null);if(!ids.length)return '';const f=Math.round(100*ids.reduce((a,k)=>a*fc[k],1));
+  const close=Math.abs(pct-f)<=15;if(close)unlock('calibration');
+  return `<div class="calib"><b>${f}%</b><span>Byte\u2019s forecast that your plan meets all your goals. You said you felt ${words} (about ${pct}%). ${close?'Nicely <button class="gw" data-w="calibration">calibrated</button>!':pct>f?'You were more sure than the odds. That\u2019s called overconfidence.':'You were less sure than the odds. You can trust good evidence a bit more.'}</span></div>`}
 function expectedFor(c){const r=rngFrom(4242);let futs=Array.from({length:400},()=>sampleFuture(c,true,r));return id=>critScore(id,futs)/400}
 function renderDebrief(){
   const c=S.choice,R=S.result;const avoidedTrap=S.told||c.tx!=='gel';
@@ -386,7 +407,7 @@ function renderDebrief(){
     <li class="${fit?'ok':''}">${fit?'Your plan was one of the best for the criteria you picked.':'Another plan would have done better on the criteria you picked. Try the Future Table again next time.'}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what Maya cares about.'} ${S.consent?'You explained honestly, so Maya and her dad could truly agree.':''}</li></ul>
    <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${R.kind==='crooked'||R.kind==='rash'?'Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.':'Nice work, Doctor. You listened, you explained, and Maya trusted you.'}</p></div>
-   ${S.guesses&&Object.keys(S.guesses).length?`<div class="calib"><b>${Object.values(S.guesses).filter(x=>Math.abs(x.g-x.a)<=1).length}/${Object.keys(S.guesses).length}</b><span>of your Future Table guesses were within 1 of what happened. That\u2019s your <button class="gw" data-w="calibration">calibration</button> score.</span></div>`:''}
+   ${calibLine()}
    <div class="earned"><span>${S.guide.length} Field Guide ideas</span><span>${S.words.length} new words</span><span>${Object.values(S.hearts).reduce((a,b)=>a+b,0)} hearts</span></div>
    <button class="btn wide" id="next">Head home</button></div>`);
   $('#next').onclick=()=>{S.done=true;go('evening')}}
