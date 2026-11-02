@@ -38,6 +38,7 @@ These notes record what the family asked for while playing builds, and the decis
 
 - Cute anime characters with natural proportions; references the family gave were Love and Deepspace and Ace Attorney character art. Avoid simple geometric people.
 - Common mistakes the family caught: floating heads on long necks, braids drawn as circles, violins drawn as ovals. Draw real shapes with Bezier curves.
+- **Every character looks like themselves.** The family rejected two characters who shared one face, one bun and one white blouse with only the colors changed. No two characters in a workday may share a silhouette: vary face shape, eyes, brows, nose, hairstyle, outfit, age, build and accessories, and give each person a signature detail from their job or personality (a captain's cap, a fire chief's uniform, a lapel pin).
 - Byte is a puppy first and a robot second: fluffy, expressive, petable.
 - Painted backgrounds should be at least as good as the family's Couchcatch game. The Boston river reflection at night set the bar.
 - No clutter: no explanatory subtitles, eyebrow text, disclaimers on the title screen, or instructions like "Pick a made-up name."
