@@ -161,23 +161,9 @@
   var MINE = { x: 96, z: 700, r: 58, steps: 5, d: 14 };  // the terraced ice-and-metal pit on the rim plateau
   // the far massifs [x, z, radius, height]
   var MASS = [[4600, 34000, 9500, 4400], [-2600, 29500, 6500, 2300], [-9500, 38000, 9000, 3000], [12500, 41000, 10000, 3800], [1500, 47000, 13000, 4200], [-17000, 45000, 11000, 2800], [8200, 26500, 3600, 1100], [-6000, 25500, 3000, 700]];
-  var PAD = [{ x: -120, z: 760, r: 200 }, { x: 40, z: 1000, r: 90 }]; // graded ground under the base and the landing pad
   function Hm(X, Z, fp) {
     var h = 12 * pt(X * 0.0009 + 11.3, Z * 0.0009 + 5.1) + 4 * pt(X * 0.0034 + 3.7, Z * 0.0034 + 9.2);
     if (fp < 40) h += 0.8 * pt(X * 0.008 + 1.1, Z * 0.008 + 7.3);
-    // small craters on the plateau (one per cell, seeded), only where they are big enough to see
-    if (Z < 9000 && Z > 420) {
-      var C = 140, ix = Math.floor(X / C), iz = Math.floor(Z / C), a, b;
-      for (a = -1; a <= 1; a++) for (b = -1; b <= 1; b++) {
-        var cx = ix + a, cz = iz + b, hh = h2(cx, cz, 917); if (hh > 0.42) continue;
-        var px = (cx + h2(cx, cz, 918)) * C, pz = (cz + h2(cx, cz, 919)) * C, R = C * (0.1 + 0.22 * Math.pow(h2(cx, cz, 920), 1.5));
-        if (R < fp * 1.5) continue;
-        var dd = ((X - px) * (X - px) + (Z - pz) * (Z - pz)) / (R * R);
-        if (dd < 2.2) { h += dd < 1 ? -R * 0.22 * (1 - dd) : 0; h += R * 0.05 * Math.exp(-(dd - 1) * (dd - 1) * 6); }
-      }
-    }
-    // the graded pads under the base are smoothed flat
-    for (var p = 0; p < PAD.length; p++) { var P = PAD[p], q = ((X - P.x) * (X - P.x) + (Z - P.z) * (Z - P.z)) / (P.r * P.r); if (q < 1) h *= 0.25 + 0.75 * smooth(0.3, 1, q); }
     // the terraced pit: benches stepping down, each riser a short steep wall
     var mx = X - MINE.x, mz = (Z - MINE.z) * 1.0, mr = Math.sqrt(mx * mx + mz * mz) / MINE.r;
     if (mr < 1.15) h -= 3 * smooth(1.15, 0.7, mr);   // the ground dips gently toward the pit (the pit itself is drawn in pit())
@@ -219,6 +205,8 @@
     L.rocks = [];
     for (i = 0; i < 22; i++) { var Z = 210 + Math.pow(r(), 1.6) * 900, X = (r() - 0.5) * Z * 0.9 * (w / h) * 2.4; L.rocks.push([X, Z, 0.6 + r() * 2.4 + (Z < 300 ? 1.5 : 0)]); }
     L.rocks.push([-118, 236, 6.5], [92, 262, 4.6], [-60, 330, 2.8]);
+    // small craters on the plateau [x, z, radius], kept clear of the base, the pit and the road
+    L.craters = [[-140, 560, 7], [150, 820, 11], [-30, 1050, 16], [200, 540, 5], [55, 430, 3.5], [120, 1180, 20], [-240, 1150, 14], [-120, 390, 3]];
     // boulders strewn along the brink of the crater
     for (i = 0; i < 16; i++) { var bx = (r() - 0.5) * 700, bz = CR.z - Math.sqrt(CR.r * CR.r - (bx - CR.x) * (bx - CR.x)) - 30 - r() * 120; L.rocks.push([bx, bz, 2 + r() * 5]); }
     return L;
@@ -367,8 +355,8 @@
       // atmosphere: blue haze thickening toward the limb on the day side
       var limb = Math.pow(1 - pz, 2.2); R1 = lerp(R1, 110, limb * 0.6 * day); G1 = lerp(G1, 170, limb * 0.6 * day); B1 = lerp(B1, 255, limb * 0.75 * day);
       // night side: dark, with city lights clustered on the land
-      var city = land * (1 - ice) * smooth(0.58, 0.78, ft(LON * 0.9 + 1, LAT * 0.9 + 7, 3)) * (1 - cloud * 0.8) * (al < 62 ? 1 : 0);
-      var nr = 4 + city * 255, ng = 6 + city * 190, nb = 18 + city * 90;
+      var city = land * (1 - ice) * Math.pow(smooth(0.6, 0.86, ft(LON * 1.5 + 1, LAT * 1.5 + 7, 3)), 1.4) * (1 - cloud * 0.85) * (al < 60 ? 1 : 0) * (0.6 + 0.4 * smooth(0.5, 0.7, vt(LON * 0.3, LAT * 0.3)));
+      var nr = 3 + city * 240, ng = 5 + city * 170, nb = 16 + city * 70;
       P[o] = clamp(lerp(nr, R1, day), 0, 255); P[o + 1] = clamp(lerp(ng, G1, day), 0, 255); P[o + 2] = clamp(lerp(nb, B1, day), 0, 255); P[o + 3] = 255 * edge;
     }
     g.putImageData(id, 0, 0);
@@ -398,10 +386,10 @@
     var f2 = L.f / q, hz2 = L.hz / q, cx2 = L.cx / q, sunx2 = L.sun[0] / q;
     var ybuf = new Float32Array(W2), pc = new Float32Array(W2 * 3), pv = new Uint8Array(W2);
     for (var i = 0; i < W2; i++) ybuf[i] = H2;
-    var q0 = 1.0135, skip = new Uint8Array(W2), yr = new Float32Array(W2), MG = 72, NN = MG + W2, Hr = new Float32Array(NN), Hp = new Float32Array(W2), Lt = new Float32Array(NN);
+    var q0 = 1.0135, HZ = new Float32Array(W2), skip = new Uint8Array(W2), yr = new Float32Array(W2), MG = 72, NN = MG + W2, Hr = new Float32Array(NN), Hp = new Float32Array(W2), Lt = new Float32Array(NN);
     var tanE = night ? -0.0042 : 0.045, dsx = -0.97, dsy = 0.045, dsz = 0.06, dl = Math.sqrt(dsx * dsx + dsy * dsy + dsz * dsz); dsx /= dl; dsy /= dl; dsz /= dl;
     var ex = night ? 0.3 : 0.35, ey = night ? 0.62 : 0.55, ez = night ? 0.55 : -0.75, el = Math.sqrt(ex * ex + ey * ey + ez * ez); ex /= el; ey /= el; ez /= el;
-    var Zn = (CAM - 16) * f2 / (H2 - hz2) * 0.96, Zf = 23500, ratio = 1.009, Z = Zn, Zp = 0, dXp = 0, first = true;
+    var Zn = (CAM - 16) * f2 / (H2 - hz2) * 0.96, Zf = 23500, ratio = 1.007, Z = Zn, Zp = 0, dXp = 0, first = true;
     L.sky = new Float32Array(W2);
     var LA = (L.lamps || []).filter(function (A) { return night || A[8]; }), LZ = 0; LA.forEach(function (A) { LZ = Math.max(LZ, A[1] + A[3]); });
     while (Z < Zf) {
@@ -422,19 +410,20 @@
         if (pv[i]) maxDy = Math.max(maxDy, Math.min(40, dyr));
         var hx = (Hr[MG + Math.min(W2 - 1, i + 1)] - Hr[MG + i - 1]) / (2 * dX);
         var hzz = first ? 0 : (H - Hp[i] - hx * ((i + 0.5 - cx2) * (dX - dXp))) / (Z - Zp);
+        if (pv[i]) hzz = HZ[i] = HZ[i] * 0.6 + hzz * 0.4; else HZ[i] = hzz; // rows are close together near us: smooth the slope estimate
         var nl = Math.sqrt(hx * hx + hzz * hzz + 1), nd = (-hx * dsx + dsy - hzz * dsz) / nl, ne = (-hx * ex + ey - hzz * ez) / nl;
         var X = X0 + i * dX, alb = 0.8 + 0.34 * vt(X * 0.00021 + 3.3, Z * 0.00021 + 8.1) + 0.08 * vt(X * 0.004, Z * 0.004);
         var v;
         if (!night) {
-          v = alb * Lt[MG + i] * (Math.max(0, nd) * 2.5 + 0.2 * smooth(-0.03, 0.05, nd)) + Math.max(0, ne) * 0.14 * alb;
+          v = alb * Lt[MG + i] * (Math.max(0, nd) * 2.5 + 0.2 * smooth(-0.03, 0.05, nd)) + Math.max(0, ne) * alb * (H < -60 ? 0.06 : 0.14);
           // sunlit dust and glare near the Sun soften the far hills
           var gl = Math.exp(-Math.pow((i - sunx2) / (W2 * 0.45), 2)) * smooth(3000, 30000, Z); v = v + (0.32 - v) * gl * 0.16;
         } else {
-          v = alb * (Math.max(0, ne) * 0.5 + 0.03);
+          v = alb * (Math.max(0, ne) * (H < -60 ? 0.12 : 0.36) + 0.02);
           var pk = Lt[MG + i] * smooth(0.2, 0.6, nd + 0.3); if (pk > 0.01) v = Math.max(v, 0.55 + pk * 0.45);
         }
         // posterize into soft flat bands
-        var u = clamp(v, 0, 1) * 7, kk = Math.floor(u), fr = u - kk; v = (kk + smooth(0.22, 0.78, fr)) / 7;
+        var NQ = Z < 3000 ? 12 : 7, u = clamp(v, 0, 1) * NQ, kk = Math.floor(u), fr = u - kk; v = (kk + smooth(0.22, 0.78, fr)) / NQ;
         var li = Math.round(clamp(v, 0, 1) * 255) * 3, R = LUT[li], G = LUT[li + 1], B = LUT[li + 2];
         if (night && pk > 0.01) { R = lerp(R, 255, pk * 0.55); G = lerp(G, 226, pk * 0.5); B = lerp(B, 186, pk * 0.4); }
         // work lamps: warm pools of light on the ground (the pit's floodlights, the base's yard lights)
@@ -555,7 +544,9 @@
 
   /* ============================== the base ============================== */
   // a long shadow on the ground, running right (and a little toward us), fading with length
+  var NIGHT = false;
   function longShadow(ctx, x, y, len, th, a) {
+    if (NIGHT) { len = Math.min(len, th * 4); a *= 0.7; } // no Sun at night: only a soft contact shadow
     ctx.save(); ctx.fillStyle = lg(ctx, x, 0, x + len, 0, [[0, 'rgba(3,4,8,' + a + ')'], [0.7, 'rgba(3,4,8,' + (a * 0.75).toFixed(3) + ')'], [1, 'rgba(3,4,8,0)']]);
     ctx.beginPath(); ctx.moveTo(x, y - th * 0.5); ctx.lineTo(x + len, y + len * 0.04 - th * 0.2); ctx.lineTo(x + len, y + len * 0.04 + th * 0.5); ctx.lineTo(x, y + th * 0.5); ctx.closePath(); ctx.fill(); ctx.restore();
   }
@@ -718,6 +709,20 @@
       ctx.fillStyle = '#2a2a30'; ctx.fillRect(lx - 1.2 * k, ly - hh - 0.8 * k, 2.4 * k, 1 * k); ctx.fillStyle = '#fff2d0'; ctx.fillRect(lx - 1 * k, ly - hh + 0.1 * k, 2 * k, 0.3 * k); L.pitLamps.push([lx, ly - hh]); });
     ctx.save(); ctx.globalCompositeOperation = 'lighter'; L.pitLamps.forEach(function (p) { glow(ctx, p[0], p[1], 8 * s, '#fff0d0', 0.7); }); ctx.restore();
   }
+  // a small crater on the plateau, drawn crisp: the Sun-side inner wall in black shadow, the far inner wall lit, a bright rim
+  function crater(ctx, L, X, Z, R0, night) {
+    var s = L.s, k = L.k(Z), c = L.P(X, Hm(X, Z, 1), Z), x = c[0], y = c[1], rx = R0 * k, ry = rx * CAM / Z * 0.95;
+    if (rx < 1.5 * s) return;
+    ctx.save();
+    ctx.fillStyle = night ? '#1a2034' : '#5a5650'; ctx.beginPath(); qell(ctx, x, y, rx, ry, 0); ctx.fill();
+    ctx.beginPath(); qell(ctx, x, y, rx, ry, 0); ctx.clip();
+    ctx.fillStyle = night ? '#4a5470' : '#cfc8ba'; ctx.beginPath(); qell(ctx, x + rx * 0.55, y + ry * 0.12, rx * 0.75, ry * 0.95, 0); ctx.fill();
+    ctx.fillStyle = night ? 'rgba(4,6,14,0.6)' : 'rgba(10,10,14,0.8)'; ctx.beginPath(); qell(ctx, x - rx * 0.38, y - ry * 0.05, rx * 0.9, ry * 1.05, 0); ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = night ? 'rgba(140,150,190,0.45)' : 'rgba(250,246,236,0.85)'; ctx.lineWidth = Math.max(0.6 * s, rx * 0.06); ctx.beginPath(); ctx.ellipse(x, y, rx * 1.04, ry * 1.12, 0, PI * 0.75, PI * 1.6); ctx.stroke();
+    ctx.strokeStyle = night ? 'rgba(0,0,0,0.35)' : 'rgba(10,10,14,0.5)'; ctx.lineWidth = Math.max(0.6 * s, rx * 0.05); ctx.beginPath(); ctx.ellipse(x, y, rx * 1.05, ry * 1.15, 0, PI * 1.7, PI * 2.4); ctx.stroke();
+    if (!night) longShadow(ctx, x + rx, y + ry * 0.3, Math.min(L.w * 0.3, rx * 2.5), ry * 0.5, 0.45);
+  }
   function roadTracks(ctx, L, night) {
     var s = L.s, T = L.track.map(function (q2) { return L.P(q2[0], Hm(q2[0], q2[1], 1), q2[1]); });
     L.trackPx = T;
@@ -766,6 +771,7 @@
   }
   function foreground(ctx, w, h, L, night) {
     groundDetail(ctx, w, h, L, night);
+    L.craters.forEach(function (c) { crater(ctx, L, c[0], c[1], c[2], night); });
     roadTracks(ctx, L, night);
     pit(ctx, L, night);
     var R = L.rocks.slice().sort(function (A, B) { return B[1] - A[1]; });
@@ -774,7 +780,7 @@
   function paintMoon(variant) {
     return function (ctx, w, h) {
       try {
-        var night = variant === 'night', P = PAL[variant], L = moonLM(w, h), T0 = Date.now(), TM = PAINT._moonT = [];
+        var night = NIGHT = variant === 'night', P = PAL[variant], L = moonLM(w, h), T0 = Date.now(), TM = PAINT._moonT = [];
         sky(ctx, w, h, L, night); TM.push('sky ' + (Date.now() - T0));
         if (!night) sunDisk(ctx, w, h, L);
         earth(ctx, w, h, L, night);

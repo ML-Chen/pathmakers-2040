@@ -1,6 +1,6 @@
 /* scenes/shenzhen.js - the robot factory zone of Shenzhen's Special Economic Zone in 2040, at golden hour (uses window.CHINA_KIT).
-   PAINT.shenzhen. We stand on the factory's test-yard terrace, high above the zone, looking south-west across it toward
-   Shenzhen Bay as the Sun goes down over the water. An industrial Special Economic Zone, after the AI 2040 reference art
+   PAINT.shenzhen. We stand on the factory's test-yard terrace, high above the zone, looking across it toward Shenzhen
+   Bay in golden-hour light, with the Sun low over the water. An industrial Special Economic Zone, after the AI 2040 reference art
    (docs/DESIGN_NOTES.md, "Three kinds of places"), beside the real city: the skyline of Shenzhen stands in the golden haze
    across the bay (the tall tapering Ping An Finance Center, the white ribbed "Spring Bamboo" tower by the water and many
    more), with the green hills that were left alone behind it and the long bay bridge running out over the water. In the
