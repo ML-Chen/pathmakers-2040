@@ -1,76 +1,10 @@
 // hired_screens.js — custom screens for the "Getting Hired" journey (hired.js): explore, open house, Portfolio Book,
-// interview (with an optional rehearsal with Byte), and the first day. Journey state lives in S.hj, which startMission()
+// interview (with an optional rehearsal with Byte), and the first day. Journey state lives in S.m_hired, which startMission()
 // does not wipe, so the first day can check what the player remembers from the open house.
 
-document.head.insertAdjacentHTML('beforeend',`<style>
-.hj-card{background:#fff;border-radius:24px;padding:16px;box-shadow:0 16px 44px rgba(20,25,60,.22);animation:reveal .3s}
-.hj-ditl .ditl-frame{border-radius:18px;overflow:hidden;background:var(--mist);aspect-ratio:320/200}
-.hj-ditl .ditl-frame svg{display:block;width:100%;height:100%}
-.hj-ditl .ditl-frame>*{animation:reveal .45s ease-out}
-.ditl-cap{font-size:1.08rem;line-height:1.45;margin:12px 2px 6px;min-height:3em;font-weight:700}
-.ditl-cap b{color:var(--violet);font-family:var(--display);font-weight:600}
-.ditl-bar{display:flex;gap:6px;margin:4px 0 2px}
-.ditl-bar i{flex:1;height:6px;border-radius:99px;background:var(--line);overflow:hidden;position:relative}
-.ditl-bar i.done::after,.ditl-bar i.on::after{content:'';position:absolute;inset:0;background:var(--violet);border-radius:99px}
-.ditl-bar i.on::after{animation:hjfill var(--dur,6s) linear forwards;transform-origin:left}
-@keyframes hjfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.hj-row{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap}
-.hj-qs{display:flex;flex-direction:column;gap:8px;margin-top:6px}
-.hj-q{text-align:left;border:2px solid var(--line);background:var(--mist);border-radius:14px;padding:11px 14px;font-weight:800;line-height:1.3;color:var(--ink)}
-.hj-q.asked{background:#fff;color:var(--ink2);border-style:dashed}
-.hj-q.asked::before{content:'✓ ';color:var(--good)}
-.hj-ans{min-height:84px}
-.hj-ans p{animation:reveal .35s ease-out}
-.oh-wrap{display:flex;flex-direction:column;min-height:calc(100vh - 80px);min-height:calc(100dvh - 80px)}
-.oh-people{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto}
-.oh-card{position:relative;border:0;background:rgba(255,255,255,.95);border-radius:20px;padding:6px 6px 8px;box-shadow:0 10px 26px rgba(20,25,60,.2);display:flex;flex-direction:column;align-items:center;min-width:0;animation:reveal .35s backwards}
-.oh-card:nth-child(2){animation-delay:.08s}.oh-card:nth-child(3){animation-delay:.16s}
-.oh-card .portrait{width:100%;height:128px;display:block}
-.oh-card b{font-family:var(--display);font-weight:600;font-size:1rem;color:var(--violet);margin-top:2px}
-.oh-card small{font-size:.72rem;color:var(--ink2);line-height:1.2;text-align:center}
-.oh-card .oh-st{position:absolute;top:6px;right:6px;display:flex;gap:3px}
-.oh-st span{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.78rem;background:var(--mist)}
-.oh-st span.on{background:#e4f7ee}
-.oh-card.new::after{content:'';position:absolute;top:8px;left:8px;width:12px;height:12px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 3px #fff;animation:hjpulse 1.6s ease-in-out infinite}
-@keyframes hjpulse{50%{transform:scale(1.35)}}
-.oh-foot{margin-top:10px}
-.oh-foot .hj-card{display:flex;align-items:center;gap:12px;padding:12px 14px}
-.oh-foot .byteart{width:54px;flex:none}
-.oh-foot p{margin:0;font-weight:700;flex:1}
-.hj-glasses{position:fixed;z-index:3;width:54px;height:34px;border:0;background:none;padding:0;filter:drop-shadow(0 3px 4px rgba(0,0,0,.25));animation:hjwiggle 2.4s ease-in-out infinite}
-@keyframes hjwiggle{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}95%{transform:rotate(-6deg)}}
-.pbook{position:relative;background:#fffaf0;border-radius:8px 22px 22px 8px;padding:18px 18px 16px 26px;box-shadow:inset 10px 0 0 #6c5ce7,inset 13px 0 0 #8f86ff,0 16px 40px rgba(20,25,60,.25);animation:reveal .35s}
-.pbook h3{font-size:1.25rem;margin:0}
-.pbook .pb-plan{color:var(--ink2);font-weight:800;font-size:.9rem;margin:2px 0 8px}
-.pbook blockquote{margin:8px 0;padding:10px 12px;background:#fff;border-left:4px solid var(--violet);border-radius:0 12px 12px 0;font-size:.98rem;font-weight:700}
-.pbook dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0 0;font-size:.92rem}
-.pbook dt{font-weight:800;color:var(--ink2)} .pbook dd{margin:0;font-weight:700}
-.pbook .pb-stars{color:var(--gold);letter-spacing:2px}
-.pbook+.pbook{margin-top:14px}
-.pb-stamp{position:absolute;right:14px;top:12px;border:3px solid var(--good);color:var(--good);border-radius:10px;padding:2px 10px;font-family:var(--display);font-weight:700;transform:rotate(-10deg);animation:hjstamp .45s cubic-bezier(.2,1.6,.4,1)}
-@keyframes hjstamp{from{transform:rotate(-10deg) scale(2.2);opacity:0}}
-.hj-free{display:flex;gap:6px;align-items:flex-end;margin-top:4px}
-.hj-free textarea{min-height:64px;font-size:.98rem}
-.badge-card{margin:8px auto 4px;max-width:300px;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 18px 44px rgba(20,25,60,.3);animation:hjflip .7s cubic-bezier(.2,1.3,.4,1)}
-@keyframes hjflip{from{transform:perspective(600px) rotateY(80deg) scale(.8);opacity:0}}
-.badge-top{background:linear-gradient(135deg,#16b3a6,#5b9bf0);color:#fff;font-family:var(--display);font-weight:600;padding:10px 16px;display:flex;align-items:center;gap:8px}
-.badge-top svg{width:22px;height:22px}
-.badge-body{display:flex;gap:12px;align-items:center;padding:14px 16px}
-.badge-body .byteart{width:84px;flex:none}
-.badge-body b{display:block;font-family:var(--display);font-weight:600;font-size:1.5rem;line-height:1.1}
-.badge-body span{display:block;color:var(--ink2);font-weight:800}
-.badge-rank{display:inline-block;margin-top:6px;background:var(--gold);color:var(--ink);border-radius:999px;padding:3px 12px;font-weight:800;font-size:.85rem}
-.badge-bars{height:22px;margin:0 16px 14px;background:repeating-linear-gradient(90deg,#1f2340 0 2px,transparent 2px 5px,#1f2340 5px 6px,transparent 6px 9px);opacity:.55;border-radius:3px}
-.hj-center{text-align:center}
-.hj-confetti{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
-.hj-confetti i{position:absolute;top:-20px;width:9px;height:14px;border-radius:2px;animation:hjfall 2.6s cubic-bezier(.3,.6,.5,1) forwards}
-@keyframes hjfall{to{transform:translateY(105vh) rotate(720deg)}}
-@media (prefers-reduced-motion:reduce){.hj-confetti{display:none}.ditl-bar i.on::after{animation:none}.hj-glasses{animation:none}}
-</style>`);
-
 const HJ_OH=()=>window.PAINT&&PAINT.openhouse?'openhouse':'hospital';
-function hj(){if(!S.hj)S.hj={};const H=S.hj;H.asked=H.asked||[];H.met=H.met||{};H.favor=H.favor||{};return H}
-function hjConfetti(){const d=document.createElement('div');d.className='hj-confetti';const cols=['#6c5ce7','#16b3a6','#f5b82e','#ff7a6b','#5b9bf0'];
+function hiredState(){if(!S.m_hired)S.m_hired={};const H=S.m_hired;H.asked=H.asked||[];H.met=H.met||{};H.favor=H.favor||{};return H}
+function hjConfetti(){const d=document.createElement('div');d.className='hired-confetti';const cols=['#6c5ce7','#16b3a6','#f5b82e','#ff7a6b','#5b9bf0'];
   d.innerHTML=Array.from({length:42},(_,i)=>`<i style="left:${(i*37)%100}%;background:${cols[i%5]};animation-delay:${(i%9)*.09}s"></i>`).join('');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
 
 // ---------- 1. Explore: a day in the life, then questions to Byte ----------
@@ -82,49 +16,51 @@ const HJ_QS=[
   {q:'Do doctors still need to know science?',a:'Yes! You don’t have to memorize everything, because I can look it up in a blink. But you need to understand enough to ask good questions and notice when something doesn’t make sense.'},
   {q:'How do I get hired?',a:'Meet the people who work there, show your work in a Portfolio Book, and do well in an interview with Dr. Reyes. The open house is today!'}
 ];
-function hiredExplore(keep){if(!keep){S.hj={asked:[],met:{},favor:{}};save()}let i=0,timer=0;const DUR=6000;
+function hiredExplore(keep){if(!keep){S.m_hired={asked:[],met:{},favor:{}};save()}let i=0,timer=0;const DUR=6000;
   const panel=()=>{const has=typeof DITL_PANELS!=='undefined'&&DITL_PANELS[i];return has?DITL_PANELS[i]():`<svg viewBox="0 0 320 200"><rect width="320" height="200" fill="#eef1fb"/></svg>`};
-  screen('explore',`${scene('hospital')}${hud('A day as a Care Doctor')}<div class="hj-card hj-ditl"><div class="ditl-frame" id="dframe"></div>
-    <p class="ditl-cap" id="dcap"></p><div class="ditl-bar" id="dbar">${DITL_CAPS.map(()=>'<i></i>').join('')}</div>
-    <div class="hj-row"><button class="mini-btn" id="dskip">Skip</button><button class="btn small" id="dnext">Next</button></div></div>`);
+  screen('explore',`${scene('hospital')}${hud('A day as a Care Doctor')}<div class="hired-card hired-ditl"><div class="hired-ditl-frame" id="dframe"></div>
+    <p class="hired-ditl-cap" id="dcap"></p><div class="hired-ditl-bar" id="dbar">${DITL_CAPS.map(()=>'<i></i>').join('')}</div>
+    <div class="hired-row"><button class="mini-btn" id="dskip">Skip</button><button class="btn small" id="dnext">Next</button></div></div>`);
   const show=()=>{clearTimeout(timer);if(!$('#dframe'))return;if(i>=DITL_CAPS.length)return askPart();
     $('#dframe').innerHTML=panel();const cap=DITL_CAPS[i];const m=cap.match(/^([\d:]+ [AP]M)\. (.*)$/);$('#dcap').innerHTML=m?`<b>${m[1]}</b> ${esc(m[2])}`:esc(cap);
     $$('#dbar i').forEach((x,k)=>{x.className=k<i?'done':k===i?'on':'';x.style.setProperty('--dur',DUR+'ms')});
     playLine('byte',cap);timer=setTimeout(()=>{i++;show()},DUR)};
   $('#dnext').onclick=()=>{i++;show()};$('#dskip').onclick=()=>{i=DITL_CAPS.length;show()};show();
-  function askPart(){stopVoice();const H=hj();
-    $('.hj-ditl').outerHTML=`<div class="hj-card"><h2>Ask ${esc(S.byte.name)}</h2>
-      <div class="hj-qs">${HJ_QS.map((x,k)=>`<button class="hj-q ${H.asked.includes(k)?'asked':''}" data-q="${k}">${esc(x.q)}</button>`).join('')}</div>
-      <div class="byte-note hj-ans" id="ans">${byteBox({...S.byte,mood:'happy'})}<p>Ask me anything about the job!</p></div>
-      <div class="hj-row"><button class="mini-btn" id="own">Ask my own question</button><button class="mini-btn" id="again">Watch again</button></div>
+  function askPart(){stopVoice();const H=hiredState();
+    $('.hired-ditl').outerHTML=`<div class="hired-card"><h2>Ask ${esc(S.byte.name)}</h2>
+      <div class="hired-qs">${HJ_QS.map((x,k)=>`<button class="hired-q ${H.asked.includes(k)?'asked':''}" data-q="${k}">${esc(x.q)}</button>`).join('')}</div>
+      <div class="byte-note hired-ans" id="ans">${byteBox({...S.byte,mood:'happy'})}<p>Ask me anything about the job!</p></div>
+      <div class="hired-row"><button class="mini-btn" id="own">Ask my own question</button><button class="mini-btn" id="again">Watch again</button></div>
       <button class="btn wide" id="go" ${H.asked.length>=2?'':'disabled'}>Go to the open house</button></div>`;
-    $$('.hj-q').forEach(b=>b.onclick=()=>{const k=+b.dataset.q;b.classList.add('asked');if(!H.asked.includes(k))H.asked.push(k);save();
+    $$('.hired-q').forEach(b=>b.onclick=()=>{const k=+b.dataset.q;b.classList.add('asked');if(!H.asked.includes(k))H.asked.push(k);save();
       $('#ans').innerHTML=`${byteBox({...S.byte,mood:'happy'})}<p>${rich(HJ_QS[k].a)}</p>`;playLine('byte',HJ_QS[k].a);
       if(H.asked.length>=2)$('#go').disabled=false;if(H.asked.length>=3&&unlock('good-questions'))toast('New Field Guide idea: Asking good questions','good')});
     $('#own').onclick=openChat;$('#again').onclick=()=>hiredExplore(true);$('#go').onclick=()=>nextStep()}}
 
 // ---------- 2. Meet people at the open house ----------
-const HJ_PEOPLE=['bea','kofi','ruth'];
-function hiredOpenHouse(){const H=hj();const all=HJ_PEOPLE.every(k=>H.met[k]);
-  const st=k=>`<div class="oh-st">${H.met[k]?'<span class="on" title="Met">✓</span>':''}${S.notes[{bea:'bea-cat',kofi:'kofi-planets',ruth:'ruth-song'}[k]]?'<span class="on" title="In your notebook">✎</span>':''}${H.favor[k]?'<span class="on" title="Helped">♥</span>':''}</div>`;
+const HJ_PEOPLE=['gabi','kofi','ruth'];
+const HJ_AGAIN={gabi:()=>'Thanks again for stopping by! I’ll tell Bandage you said hi.',kofi:()=>'Jupiter says beep. That means thank you.',
+  ruth:H=>H.favor.ruth?'My glasses! I can read the menu again. Thank you, dear.':'Have you seen my glasses anywhere? They have red frames.'};
+function hiredOpenHouse(){const H=hiredState();const all=HJ_PEOPLE.every(k=>H.met[k]);
+  const st=k=>`<div class="hired-oh-st">${H.met[k]?'<span class="on" title="Met">✓</span>':''}${S.notes[{gabi:'gabi-cat',kofi:'kofi-planets',ruth:'ruth-song'}[k]]?'<span class="on" title="In your notebook">✎</span>':''}${H.favor[k]?'<span class="on" title="Helped">♥</span>':''}</div>`;
   const line=all?(hiredFavors().length?'Everyone’s talking about how helpful you were. Let’s find Dr. Reyes!':'You met everyone! Let’s find Dr. Reyes.'):H.lost&&!H.favor.ruth?'Ruth’s glasses have red frames. Can you spot them?':'Say hi to everyone. Try to remember one thing about each person.';
-  screen('openhouse',`${scene(HJ_OH())}${hud('Open House · Boston Harbor Hospital')}<div class="oh-wrap">
-    <div class="oh-people">${HJ_PEOPLE.map(k=>{const c=CAST[k];return `<button class="oh-card ${H.met[k]?'':'new'}" data-p="${k}" aria-label="Talk to ${esc(c.name)}">${st(k)}<svg class="portrait" viewBox="62 20 176 176" preserveAspectRatio="xMidYMid slice">${personSVG({...c,mood:H.favor[k]?'happy':'smile'})}</svg><b>${esc(c.name.split(' ')[0])}</b><small>${esc(c.role.replace(/, age \d+/,''))}</small></button>`}).join('')}</div>
-    <div class="oh-foot"><div class="hj-card">${byteBox({...S.byte,mood:all?'happy':'neutral'})}<p>${esc(line)}</p></div>
+  screen('openhouse',`${scene(HJ_OH())}${hud('Open House · Boston Harbor Hospital')}<div class="hired-oh-wrap">
+    <div class="hired-oh-people">${HJ_PEOPLE.map(k=>{const c=CAST[k];return `<button class="hired-oh-card ${H.met[k]?'':'new'}" data-p="${k}" aria-label="Talk to ${esc(c.name)}">${st(k)}<svg class="portrait" viewBox="62 20 176 176" preserveAspectRatio="xMidYMid slice">${personSVG({...c,mood:H.favor[k]?'happy':'smile'})}</svg><b>${esc(c.name.split(' ')[0])}</b><small>${esc(c.role.replace(/, age \d+/,''))}</small></button>`}).join('')}</div>
+    <div class="hired-oh-foot"><div class="hired-card">${byteBox({...S.byte,mood:all?'happy':'neutral'})}<p>${esc(line)}</p></div>
     ${all?'<button class="btn wide" id="go">Find Dr. Reyes</button>':''}</div></div>
-    ${H.lost&&!H.favor.ruth?`<button class="hj-glasses" id="glasses" style="left:${HJ_GLASSES[0]}%;top:${HJ_GLASSES[1]}%" aria-label="Red reading glasses"><svg viewBox="0 0 54 30"><circle cx="13" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><circle cx="41" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><path d="M23 14 q4 -4 8 0" stroke="#e5484d" stroke-width="3" fill="none"/><path d="M3 12 L0 6 M51 12 L54 6" stroke="#e5484d" stroke-width="3" stroke-linecap="round"/><path d="M8 11 l4 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>`:''}`);
-  $$('.oh-card').forEach(b=>b.onclick=()=>{const k=b.dataset.p;
-    if(H.met[k]){const again={bea:'Thanks again for stopping by! Say hi to Bandage for me. I mean, I’ll say hi for you.',kofi:'Jupiter says beep. That means thank you.',ruth:H.favor.ruth?'My glasses! I can read the menu again. Thank you, dear.':'Have you seen my glasses anywhere? Red frames.'}[k];
+    ${H.lost&&!H.favor.ruth?`<button class="hired-glasses" id="glasses" style="left:${HJ_GLASSES[0]}%;top:${HJ_GLASSES[1]}%" aria-label="Red reading glasses"><svg viewBox="0 0 54 30"><circle cx="13" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><circle cx="41" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><path d="M23 14 q4 -4 8 0" stroke="#e5484d" stroke-width="3" fill="none"/><path d="M3 12 L0 6 M51 12 L54 6" stroke="#e5484d" stroke-width="3" stroke-linecap="round"/><path d="M8 11 l4 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>`:''}`);
+  $$('.hired-oh-card').forEach(b=>b.onclick=()=>{const k=b.dataset.p;
+    if(H.met[k]){const again=HJ_AGAIN[k](H);
       byteNote(CAST[k].name.split(' ')[0]+': “'+again+'”');playLine(k,again);return}
     talk(k,HJ_OH(),'Open House · Boston Harbor Hospital',()=>{H.met[k]=1;if(k==='ruth')H.lost=true;save();render()})});
   const g=$('#glasses');if(g)g.onclick=()=>{H.favor.ruth=true;heart('ruth');save();g.remove();toast('You found Ruth’s glasses!','good');setTimeout(render,700)};
   const go=$('#go');if(go)go.onclick=()=>{if(hiredFavors().length&&unlock('referrals'))toast('New Field Guide idea: Trust and referrals','good');nextStep()};
-  function byteNote(t){const p=$('.oh-foot p');if(p)p.textContent=t}}
+  function byteNote(t){const p=$('.hired-oh-foot p');if(p)p.textContent=t}}
 const HJ_GLASSES=[70,34];
 
 // ---------- 3. Portfolio Book: save the practice case ----------
-function hjPage(){const H=hj();return H.page||null}
-function hjSnapshot(){const H=hj();const r=S.result||{};
+function hjPage(){const H=hiredState();return H.page||null}
+function hjSnapshot(){const H=hiredState();const r=S.result||{};
   H.page={choice:{...S.choice},plan:M().planName?M().planName(S.choice):'',memo:S.memo||'',conf:S.conf??2,kind:r.kind||'',cap:r.cap||'',stars:S.lastStars||0,told:!!S.told,t:Date.now()};
   S.history=S.history||[];
   // the grown-ups' page (parent.js) records each debrief in S.history; without it, add the same kind of record here
@@ -134,17 +70,17 @@ function hjSnapshot(){const H=hj();const r=S.result||{};
 const HJ_SURE=['A coin flip','A little sure','Pretty sure','Very sure','Sure'];
 function pageTitle(x){return x.mission==='hired'?'Ari’s ankle · practice case':x.mission==='maya'?'Maya’s wrist':(MISSIONS[x.mission]&&MISSIONS[x.mission].title)||x.title||'A decision'}
 function pageHTML(x,stamp){const sure=x.conf!=null?(typeof x.conf==='number'&&x.conf>4?HJ_SURE[[50,62,75,87,97].indexOf(x.conf)]||x.conf+'%':HJ_SURE[x.conf]):'';
-  return `<article class="pbook">${stamp?'<div class="pb-stamp">Saved</div>':''}<h3>${esc(pageTitle(x))}</h3><div class="pb-plan">${esc(x.plan||'')}</div>
-    ${x.memo?`<blockquote>${esc(x.memo)}</blockquote>`:''}<dl>${sure?`<dt>How sure</dt><dd>${esc(sure)}</dd>`:''}${x.out||x.cap?`<dt>What happened</dt><dd>${esc(x.out||x.cap)}</dd>`:''}<dt>Decision</dt><dd class="pb-stars">${'★'.repeat(x.stars||0)}${'☆'.repeat(3-(x.stars||0))}</dd></dl></article>`}
+  return `<article class="hired-pbook">${stamp?'<div class="hired-pb-stamp">Saved</div>':''}<h3>${esc(pageTitle(x))}</h3><div class="hired-pb-plan">${esc(x.plan||'')}</div>
+    ${x.memo?`<blockquote>${esc(x.memo)}</blockquote>`:''}<dl>${sure?`<dt>How sure</dt><dd>${esc(sure)}</dd>`:''}${x.out||x.cap?`<dt>What happened</dt><dd>${esc(x.out||x.cap)}</dd>`:''}<dt>Decision</dt><dd class="hired-pb-stars">${'★'.repeat(x.stars||0)}${'☆'.repeat(3-(x.stars||0))}</dd></dl></article>`}
 function hiredPortfolio(){const pg=hjPage()&&hjPage().memo===S.memo?hjPage():null;const page=pg||{plan:M().planName(S.choice),memo:S.memo,conf:S.conf??2,cap:(S.result||{}).cap||'',stars:S.lastStars||0,mission:'hired'};
-  screen('debrief',`${scene('night')}<div class="talk-dim"></div>${hud('Home · Boston · 8:30 PM')}<div class="hj-card"><h2>Portfolio Book</h2>
+  screen('debrief',`${scene('night')}<div class="talk-dim"></div>${hud('Home · Boston · 8:30 PM')}<div class="hired-card"><h2>Portfolio Book</h2>
     <div id="pbslot">${pageHTML({...page,mission:'hired'},!!pg)}</div>
     <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${pg?'Saved! Tomorrow, Dr. Reyes will want to hear about it.':'This is real work you did. Want to save it?'}</p></div>
     ${pg?'<button class="btn wide" id="next">Get ready for the interview</button>':'<button class="btn wide" id="save">Save to my Portfolio Book</button>'}</div>`);
   const sv=$('#save');if(sv)sv.onclick=()=>{hjSnapshot();toast('Saved to your Portfolio Book','good');hiredPortfolio()};
   const nx=$('#next');if(nx)nx.onclick=()=>nextStep()}
 function openPortfolio(){const H=(S.history||[]).filter(x=>x.memo&&x.memo.trim()).slice().sort((a,b)=>a.t-b.t);
-  const pages=H.length?H:(S.hj&&S.hj.page?[{...S.hj.page,mission:'hired'}]:[]);
+  const pages=H.length?H:(S.m_hired&&S.m_hired.page?[{...S.m_hired.page,mission:'hired'}]:[]);
   sheet('Portfolio Book',pages.length?pages.map(x=>pageHTML(x)).join(''):'<p class="muted">Your signed decisions will be saved here.</p>')}
 
 // ---------- a small conversation stage (talk() look) with async steps, for the interview and the first day ----------
@@ -164,19 +100,20 @@ function hjStage(sceneKey,place){screen('talk',`${scene(sceneKey)}<div class="ta
       choices.innerHTML=opts.map((o,j)=>`<button class="choice" data-j="${j}">${esc(fill(o))}</button>`).join('')+(free?`<button class="choice ghost" id="hjown">Say it my way</button>`:'');
       $$('.choice[data-j]',choices).forEach(b=>b.onclick=e=>{e.stopPropagation();res({j:+b.dataset.j,text:fill(opts[+b.dataset.j])})});
       const own=$('#hjown',choices);if(own)own.onclick=e=>{e.stopPropagation();
-        choices.innerHTML=`<div class="hj-free"><textarea id="hjtxt" rows="3" maxlength="400" placeholder="Type your answer"></textarea>${micButton('hjtxt')}</div><div class="hj-row"><button class="mini-btn" id="hjback">Back</button><button class="btn small" id="hjsend">Answer</button></div>`;
+        choices.innerHTML=`<div class="hired-free"><textarea id="hjtxt" rows="3" maxlength="400" placeholder="Type your answer"></textarea>${micButton('hjtxt')}</div><div class="hired-row"><button class="mini-btn" id="hjback">Back</button><button class="btn small" id="hjsend">Answer</button></div>`;
         wireMics();const ta=$('#hjtxt');ta.focus();$('#hjback').onclick=ev=>{ev.stopPropagation();res(null)};
         $('#hjsend').onclick=ev=>{ev.stopPropagation();const t=ta.value.trim();if(t.length<8){toast('Write a little more first.');return}res({j:-1,text:t})}}})},
     alive};
 }
 
+const HJ_LINES={ivAsk:'Today’s your [[interview]] with Dr. Reyes! Want to [[rehearse]] with me first?',ivReady:'You’re ready! Remember: real stories, honest answers, and one good question.',hiredBest:'That was a wonderful interview: real stories, honest answers, and a great question. Welcome to Boston Harbor Hospital. You’re hired!',hiredOk:'I can tell you care about people, and that matters most. You’re hired! Keep telling real stories, like the ones in your Portfolio Book.',ruthThanks:'Thank you again for finding my glasses, dear. I can read the sheet music now!',rule:'At Harbor we have one [[house rule]]: ask early, ask anyone. If you’re stuck, or something feels off, say so, even to me.',ping:'Ping! Halo says your first patient is in Room 4B tomorrow at nine. Um... where is Room 4B?',wander:'That could take a while... Remember the house rule? Let’s ask Gabi.',room:'Third floor, past the fish tank. Thanks for asking! That’s exactly what the house rule is for.'};
 // ---------- 4. The interview, with an optional rehearsal ----------
 function hjStory(){const p=hjPage();if(!p||!p.choice||!p.choice.prot)return {good:'At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.',kind:''};
   const c=p.choice,play=c.sat==='play'&&c.prot!=='boot';const what=c.prot==='boot'?'a walking boot':c.prot==='brace'?'a brace':'tape';
   const why=p.told?'because his grandma told me he hides pain':play?'because Saturday mattered a lot to him':'because the playoffs mattered more than a friendly game';
   const out={saturday:'He played, and his ankle was fine.',reroll:'He rolled it again, so next time I’d ask more about his pain.',cheer:'He cheered from the bench and was ready for the playoffs.',boot:'He healed in the boot and was ready for the playoffs.'}[p.kind]||'';
   return {good:`At the open house I helped Ari, a goalkeeper with a sprained ankle. I chose ${what}${c.prot==='boot'?'':play?' and playing on Saturday':' and sitting out on Saturday'}, ${why}. ${out}`.trim(),kind:p.kind}}
-function hjQuestions(){const S1=hjStory(),bad=S1.kind==='reroll',told=(hjPage()||{}).told;
+function hjQuestions(ctx){const S1=ctx?ctx.story:hjStory(),bad=ctx?ctx.bad:S1.kind==='reroll',told=ctx?ctx.told:(hjPage()||{}).told;
   return [
     {q:'Tell me about a hard choice you made.',rq:'Dr. Reyes might ask: “Tell me about a hard choice you made.”',
      opts:[S1.good,'I make hard choices all the time, and I’m really good at them.',bad?'I helped a boy with a sprained ankle, and everything went perfectly.':'I helped a boy with his ankle, and it went great because I’m a natural.'],good:[1,0,0],
@@ -202,56 +139,66 @@ async function hjGradeFree(Q,text){const bragging=/best at everything|great at e
   const sm=await getSample().catch(()=>null);
   if(sm&&!(window.PARENT&&PARENT.chatOn&&!PARENT.chatOn())){try{const r=await sm.json(`You are Dr. Imani Reyes, Chief of Care at Boston Harbor Hospital in a kids' game set in 2040, interviewing a young player for a Care Doctor job. You asked: "${Q.q}". The player answered: """${text.slice(0,400)}""". A strong answer: ${Q.check}. Judge generously by meaning. Return JSON {"good":bool,"reply":"1 or 2 short, kind sentences as Dr. Reyes reacting to the answer; if it is not strong, gently say what would make it stronger (a specific example, honesty). No markdown."}`,{modelTier:'quick',cache:false});
       if(r&&typeof r==='object'){good=!!r.good;reply=r.reply||null}}catch(e){}}
-  return {good,reply:reply||(good?'Thank you. That’s a thoughtful answer.':'Can you tell me a bit more? A specific example helps me understand.'),tip:good?'Nice! That answer was clear and real.':'Try adding a real example, with what you did and why.'}}
-function hiredInterview(){const H=hj();if(H.hired)return hjHiredCard();
+  return {good,reply:reply||HJ_FREE.reply[good?0:1],tip:HJ_FREE.tip[good?0:1]}}
+const HJ_FREE={reply:['Thank you. That’s a thoughtful answer.','Can you tell me a bit more? A specific example helps me understand.'],tip:['Nice! That answer was clear and real.','Try adding a real example, with what you did and why.']};
+function hiredInterview(){const H=hiredState();if(H.hired)return hjHiredCard();
   const C=hjStage('home','Home · Boston · 8:00 AM');
-  (async()=>{await C.say('byte','happy','Today’s your [[interview]] with Dr. Reyes! Want to [[rehearse]] with me first?');
+  (async()=>{await C.say('byte','happy',HJ_LINES.ivAsk);
     const r=await C.choose(['Yes, let’s practice!','I’m ready. Let’s go!']);if(!r)return;
     if(r.j===0){H.rehearsed=true;save();
       for(const Q of hjQuestions()){await C.say('byte','think',Q.rq);let a=null;while(!a){a=await C.choose(Q.opts,Q.check);if(a===null&&!C.alive())return}
         let tip;if(a.j<0){tip=(await hjGradeFree(Q,a.text)).tip}else tip=Q.tip[a.j];await C.say('byte',a.j>=0&&Q.good[a.j]?'happy':'think',tip);await C.tap()}
-      await C.say('byte','happy','You’re ready! Remember: real stories, honest answers, and one good question.');await C.tap()}
+      await C.say('byte','happy',HJ_LINES.ivReady);await C.tap()}
     hjRealInterview()})()}
-function hjRealInterview(){const H=hj();const C=hjStage('hospital','Dr. Reyes’s office · Boston Harbor Hospital');
+function hjRealInterview(){const H=hiredState();const C=hjStage('hospital','Dr. Reyes’s office · Boston Harbor Hospital');
   (async()=>{await C.say('imani','smile',`Thanks for coming in, {P}. I read your [[portfolio]]. Let’s talk.`);await C.tap();let score=0;
     for(const Q of hjQuestions()){await C.say('imani','neutral',Q.q);let a=null;while(!a){a=await C.choose(Q.opts,Q.check);if(a===null&&!C.alive())return}
       let good,reply;if(a.j<0){const g=await hjGradeFree(Q,a.text);good=g.good;reply=g.reply}else{good=!!Q.good[a.j];reply=Q.reply[a.j]}
       if(good)score++;await C.say('imani',good?'happy':'think',reply);await C.tap()}
     H.ivScore=score;H.hired=true;heart('imani');save();
-    await C.say('imani','happy',score>=3?'That was a wonderful interview: real stories, honest answers, and a great question. Welcome to Boston Harbor Hospital. You’re hired!':'I can tell you care about people, and that matters most. You’re hired! Keep telling real stories, like the ones in your Portfolio Book.');
+    await C.say('imani','happy',score>=3?HJ_LINES.hiredBest:HJ_LINES.hiredOk);
     hjConfetti();if(unlock('specific-stories'))toast('New Field Guide idea: Show your work','good');await C.tap();hjHiredCard()})()}
-function hjBadge(){return `<div class="badge-card"><div class="badge-top"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4 7.2 17l.9-5.4L4.2 7.7l5.4-.8z" fill="#fff"/></svg>Boston Harbor Hospital</div>
-  <div class="badge-body">${byteBox({...S.byte,mood:'happy'})}<div><b>${esc(P())}</b><span>Care Doctor</span><div class="badge-rank">Trainee</div></div></div><div class="badge-bars"></div></div>`}
-function hjHiredCard(){const H=hj();const sc=H.ivScore??0;
-  screen('debrief',`${scene('hospital')}<div class="talk-dim"></div>${hud('Hired!')}<div class="hj-card hj-center"><h2>You’re hired!</h2>${hjBadge()}
+function hjBadge(){return `<div class="hired-badge-card"><div class="hired-badge-top"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4 7.2 17l.9-5.4L4.2 7.7l5.4-.8z" fill="#fff"/></svg>Boston Harbor Hospital</div>
+  <div class="hired-badge-body">${byteBox({...S.byte,mood:'happy'})}<div><b>${esc(P())}</b><span>Care Doctor</span><div class="hired-badge-rank">Trainee</div></div></div><div class="hired-badge-bars"></div></div>`}
+function hjHiredCard(){const H=hiredState();const sc=H.ivScore??0;
+  screen('debrief',`${scene('hospital')}<div class="talk-dim"></div>${hud('Hired!')}<div class="hired-card hired-center"><h2>You’re hired!</h2>${hjBadge()}
     <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${sc>=3?'You nailed it! ':''}Your first day is tomorrow. You’ll meet the team.</p></div>
     <button class="btn wide" id="next">Start my first day</button></div>`);
   $('#next').onclick=()=>nextStep()}
 
 // ---------- 5. First day: meet the team, remember them, learn the house rule ----------
 const HJ_REMEMBER={
-  bea:{ask:'Welcome back! We met at the open house. Do you remember my cat’s name?',opts:['Bandage','Whiskers','Stethoscope'],right:'Bandage! You remembered. Welcome to the kids’ floor.',wrong:'It’s Bandage, because he sleeps on the first-aid box! Welcome to the team.'},
+  gabi:{ask:'Welcome back! We met at the open house. Do you remember my cat’s name?',opts:['Bandage','Whiskers','Stethoscope'],right:'Bandage! You remembered. Welcome to the kids’ floor.',wrong:'It’s Bandage, because he sleeps on the first-aid box! Welcome to the team.'},
   kofi:{ask:'Hey, it’s you! Quick quiz: what do I name my robots after?',opts:['Planets','Dinosaurs','Ice cream flavors'],right:'Planets! Jupiter says hi. Beep boop.',wrong:'Planets! That big one is Jupiter, remember? Welcome aboard.'},
   ruth:{ask:'Hello again, dear. What song do I play on the piano on Fridays?',opts:['Fly Me to the Moon','Happy Birthday','Twinkle, Twinkle, Little Star'],right:'Yes! Come and listen this Friday.',wrong:'It’s “Fly Me to the Moon.” Come and listen this Friday!'}};
-function hiredFirstDay(){const H=hj();if(H.badge)return hjFirstDayEnd();
+function hiredFirstDay(){const H=hiredState();if(H.badge)return hjFirstDayEnd();
   const C=hjStage('hospital','Kids’ floor · Boston Harbor Hospital · 8:30 AM');
   (async()=>{await C.say('imani','happy','Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.');await C.tap();let remembered=0;
-    for(const k of HJ_PEOPLE){const R=HJ_REMEMBER[k];if(k==='ruth'&&H.favor.ruth){await C.say('ruth','happy','Thank you again for finding my glasses, dear. I can read the sheet music now!');await C.tap()}
+    for(const k of HJ_PEOPLE){const R=HJ_REMEMBER[k];if(k==='ruth'&&H.favor.ruth){await C.say('ruth','happy',HJ_LINES.ruthThanks);await C.tap()}
       await C.say(k,'smile',R.ask);const rot=(HJ_PEOPLE.indexOf(k)+1)%3;const order=[0,1,2].map(i=>(i+rot)%3);
       const a=await C.choose(order.map(i=>R.opts[i]));if(!a)return;const ok=order[a.j]===0;if(ok){remembered++;heart(k)}
       await C.say(k,ok?'happy':'smile',ok?R.right:R.wrong);await C.tap()}
     H.remembered=remembered;save();
-    await C.say('imani','smile','At Harbor we have one [[house rule]]: ask early, ask anyone. If you’re stuck, or something feels off, say so, even to me.');await C.tap();
-    await C.say('byte','alert','Ping! Halo says your first patient is in Room 4B tomorrow at nine. Um... where is Room 4B?');
-    const w=await C.choose(['Ask Bea where Room 4B is','Wander around until I find it']);if(!w)return;
-    if(w.j===1){await C.say('byte','think','That could take a while... Remember the house rule? Let’s ask Bea.');await C.tap()}else heart('bea');
-    await C.say('bea','happy','Third floor, past the fish tank. Thanks for asking! That’s exactly what the house rule is for.');await C.tap();
+    await C.say('imani','smile',HJ_LINES.rule);await C.tap();
+    await C.say('byte','alert',HJ_LINES.ping);
+    const w=await C.choose(['Ask Gabi where Room 4B is','Wander around until I find it']);if(!w)return;
+    if(w.j===1){await C.say('byte','think',HJ_LINES.wander);await C.tap()}else heart('gabi');
+    await C.say('gabi','happy',HJ_LINES.room);await C.tap();
     H.badge=true;save();hjFirstDayEnd()})()}
-function hjFirstDayEnd(){const H=hj();
+function hjFirstDayEnd(){const H=hiredState();
   screen('evening',`${scene('night')}${hud('Home · Boston · 9:00 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'happy'},'big perk')}</div>
    <div class="caption-card dark"><p><b>${esc(S.byte.name)}:</b> “You remembered ${H.remembered??0} of 3 teammates, and you learned the house rule. Tomorrow is your first shift with a real patient. Get some sleep, Doctor!”</p>
    <div class="row"><button class="btn small ghost" id="pb">Portfolio Book</button><button class="btn small" id="go">Start Day 1</button></div></div></div>`);
   $('#pb').onclick=openPortfolio;
   $('#go').onclick=()=>{S.completed.hired={stars:Math.max(S.lastStars||0,(S.completed.hired||{}).stars||0)};save();if(MISSIONS.maya)startMission('maya');else go('hub')}}
 
+// every fixed line spoken with playLine on these screens, so tools/make_audio.py can record them (lines with {P} stay unrecorded)
+function hiredLines(){const L=[],add=(who,t)=>{if(t)L.push({who,text:t})};
+  DITL_CAPS.forEach(t=>add('byte',t));HJ_QS.forEach(x=>add('byte',x.a));
+  add('gabi',HJ_AGAIN.gabi());add('kofi',HJ_AGAIN.kofi());add('ruth',HJ_AGAIN.ruth({favor:{ruth:1}}));add('ruth',HJ_AGAIN.ruth({favor:{}}));
+  for(const bad of [false,true])for(const told of [false,true])hjQuestions({story:{good:''},bad,told}).forEach(Q=>{add('imani',Q.q);add('byte',Q.rq);Q.reply.forEach(t=>add('imani',t));Q.tip.forEach(t=>add('byte',t))});
+  HJ_FREE.reply.forEach(t=>add('imani',t));HJ_FREE.tip.forEach(t=>add('byte',t));
+  for(const k in HJ_REMEMBER){const R=HJ_REMEMBER[k];add(k,R.ask);add(k,R.right);add(k,R.wrong)}
+  const who={ivAsk:'byte',ivReady:'byte',hiredBest:'imani',hiredOk:'imani',ruthThanks:'ruth',rule:'imani',ping:'byte',wander:'byte',room:'gabi'};for(const k in HJ_LINES)add(who[k],HJ_LINES[k]);
+  const seen=new Set();return L.filter(x=>{const key=x.who+'|'+x.text;if(seen.has(key))return false;seen.add(key);return true})}
 MISSIONS.hired.custom={'h-explore':hiredExplore,'h-openhouse':hiredOpenHouse,'h-portfolio':hiredPortfolio,'h-interview':hiredInterview,'h-firstday':hiredFirstDay};
