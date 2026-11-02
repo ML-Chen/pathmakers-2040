@@ -341,7 +341,7 @@
     var ext = Math.max(W, H * 2);
     var form = lg(g, cx - lx * ext * 0.5, cy - ly * ext * 0.35, cx + lx * ext * 0.5, cy + ly * ext * 0.35, [[0, o.shade], [0.42, o.mid], [0.78, o.lit], [1, o.lit]]);
     // soft halo, then the crisp union
-    g.globalAlpha = 0.35; g.fillStyle = form; g.beginPath();
+    g.globalAlpha = o.halo == null ? 0.35 : o.halo; g.fillStyle = form; g.beginPath();
     for (i = 0; i < P.length; i++) { p = P[i]; g.moveTo(p[0] + p[2] * 1.12, p[1]); g.arc(p[0], p[1], p[2] * 1.12, 0, TAU); }
     g.fill(); g.globalAlpha = 1; g.beginPath();
     for (i = 0; i < P.length; i++) { p = P[i]; g.moveTo(p[0] + p[2], p[1]); g.arc(p[0], p[1], p[2], 0, TAU); }
@@ -398,16 +398,18 @@
   }
   /* volumetric foliage clump of leaf dabs: pal [deep, shadow, mid, lit, rim]; (lx,ly) unit vector toward light */
   function clump(ctx, cx, cy, R, pal, r, lx, ly, back, dens) {
+    var cv = ctx.canvas;
+    if (cv && (cx + R * 1.1 < 0 || cy + R * 1.1 < 0 || cx - R * 1.1 > cv.width || cy - R * 1.1 > cv.height)) { r(); return; } // off-canvas: skip (one draw keeps the sequence stable enough)
     ctx.fillStyle = rg(ctx, cx + lx * R * 0.3, cy + ly * R * 0.3, 0, R * 0.95, [[0, pal[1]], [0.6, pal[0]], [1, pal[0]]]);
     ctx.beginPath(); ctx.arc(cx, cy, R * 0.8, 0, TAU); ctx.fill();
-    var n = Math.min(260, Math.round((30 + R * R * 0.32) * (dens || 1))), B = [[], [], [], [], []], i, k;
+    var n = Math.min(200, Math.round((30 + R * R * 0.32) * (dens || 1))), B = [[], [], [], [], []], i, k;
     for (i = 0; i < n; i++) {
       var a = r() * TAU, rr = R * Math.sqrt(r()) * 0.98, px = cx + Math.cos(a) * rr, py = cy + Math.sin(a) * rr * 0.92;
       var nx = (px - cx) / R, ny = (py - cy) / R;
       var v = (nx * lx + ny * ly) * 0.55 - ny * 0.18 + (1 - rr / R) * 0.06 + (r() - 0.5) * 0.4 + (back ? 0.4 : 0.52);
       var b = v < 0.24 ? 0 : v < 0.44 ? 1 : v < 0.64 ? 2 : v < 0.88 ? 3 : 4;
       if (b === 4 && rr < R * 0.72) b = 3;
-      var L = R * (0.11 + r() * 0.1) * (b === 4 ? 0.7 : 1);
+      var L = R * (0.12 + r() * 0.11) * (b === 4 ? 0.7 : 1) * (n >= 200 ? 1.1 : 1);
       B[b].push([px, py, L, L * (0.28 + r() * 0.12), a + PI * 0.5 + (r() - 0.5) * 1.6]);
     }
     for (k = 0; k < 5; k++) {
@@ -551,14 +553,14 @@
         for (j = 0; j < n3; j++) {
           var gx = f0 + r() * fw, edge = Math.min(gx - f0, f1 - gx) / fw;
           if (edge > 0.12 && amt < 0.5 && r() < 0.6) continue;
-          var gr = (0.7 + r() * (edge < 0.12 ? 1.6 : 0.9)) * s, gy = rowY - r() * gr * (edge < 0.12 ? 2.2 : 1.2);
+          var gr = (0.55 + r() * (edge < 0.12 ? 1.3 : 0.7)) * s, gy = rowY - r() * gr * (edge < 0.12 ? 2.2 : 1.2);
           var lv2 = (gx - cx) / (w * 0.5) * sunSide * 0.5 + (r() - 0.5) * 0.9 - (gy - rowY) / gr * 0.15;
           GP[lv2 < -0.35 ? 0 : lv2 < 0.05 ? 1 : lv2 < 0.4 ? 2 : 3].push([gx, gy, gr]); nb2++;
         }
         // balcony slab line under the plants
         ctx.fillStyle = T(E.lit, 0.1); ctx.globalAlpha = 0.5; ctx.fillRect(f0, rowY, fw, Math.max(0.6, 0.5 * s)); ctx.globalAlpha = 1;
       }
-      for (j = 0; j < 4; j++) { ctx.fillStyle = T(G[j]); ctx.beginPath(); GP[j].forEach(function (Q) { ctx.moveTo(Q[0] + Q[2], Q[1]); ctx.arc(Q[0], Q[1], Q[2], 0, TAU); }); ctx.fill(); }
+      for (j = 0; j < 4; j++) { ctx.fillStyle = mix(G[j], E.haze, k * 0.6); ctx.beginPath(); GP[j].forEach(function (Q) { qcirc(ctx, Q[0], Q[1], Q[2]); }); ctx.fill(); }
     }
     if (b.vgarden) {
       // a living green stripe down one face
@@ -779,18 +781,20 @@
         for (i = 0; i < 8; i++) wisp(ctx, w * (0.05 + r() * 0.9), h * (0.06 + r() * 0.16), w * (0.3 + r() * 0.3), h * 0.007, i % 2 ? '#ffd8c0' : '#f7b8c8', 0.22, r);
         mark('glowwisp', ctx);
         // cumulus lit from below-right by the low sun
-        var cl = [[0.22, 0.165, 0.62, 0.085, 0.95], [0.84, 0.1, 0.5, 0.07, 0.9], [0.55, 0.245, 0.34, 0.04, 0.85], [0.08, 0.285, 0.3, 0.035, 0.8], [0.94, 0.255, 0.3, 0.04, 0.8], [0.5, 0.075, 0.3, 0.035, 0.7]];
+        var cl = [[0.36, 0.17, 0.62, 0.075, 1], [0.86, 0.105, 0.44, 0.06, 0.95], [0.08, 0.27, 0.3, 0.035, 0.9], [0.93, 0.255, 0.26, 0.03, 0.85]];
         for (i = 0; i < cl.length; i++) {
           var ccx = w * cl[i][0], ccy = h * cl[i][1], vx = sx - ccx, vy = (sy - ccy) * 1.6, vl = Math.sqrt(vx * vx + vy * vy) || 1;
-          cloudForm(ctx, ccx, ccy, w * cl[i][2], h * cl[i][3], r, { lit: '#ffd9a6', mid: '#e3a2b6', shade: '#8a7cb8', top: '#a99ed8', rim: '#fff1d2', al: cl[i][4], lx: vx / vl, ly: vy / vl, base: 0.5 });
+          cloudForm(ctx, ccx, ccy, w * cl[i][2], h * cl[i][3], r, { lit: '#ffdcaa', mid: '#d792ae', shade: '#6e62a6', top: '#9a8fd0', al: cl[i][4], lx: vx / vl, ly: vy / vl, base: 0.55, halo: 0.15, seam: 0.22 });
         }
+        // long gold-lit stratus streaks just above the skyline
+        for (i = 0; i < 3; i++) cloudForm(ctx, w * (0.2 + i * 0.32), h * (0.225 + i * 0.012), w * 0.5, h * 0.016, r, { lit: '#ffe6b8', mid: '#f0a8a8', shade: '#9a7cb0', al: 0.8, lx: 0.2, ly: 0.98, base: 0.8, halo: 0.2, billows: 6 });
         // low glowing haze bands near the horizon
         for (i = 0; i < 4; i++) wisp(ctx, w * (0.1 + r() * 0.8), hz - h * (0.02 + r() * 0.05), w * 0.4, h * 0.006, '#ffe0b8', 0.25, r);
         mark('sky', ctx);
         /* ---------- city across the Charles ---------- */
         var E = { s: s, W: w, vpX: w * 0.5, sunX: sx, haze: '#f2c2b4', face: '#8d86b6', pale: '#c9bfd8', lit: '#f6b991', shade: '#6c679a', rim: '#ffdcae', rimA: 0.75,
           glass: ['#a9a4d8', '#d3abc6', '#f4c2a8'], win: '#5c5a8a', winLit: '#ffd690', litP: 0.05, mull: '#4a4878', sheen: '#fff0e0',
-          green: ['#3c4a52', '#4f6450', '#6f8a58', '#a8b86a', '#ffd690'] };
+          green: ['#26323a', '#34463e', '#4a6040', '#7a8a4c', '#ffd690'] };
         // far layer: hazy towers
         var far = rng(40111);
         for (x = -w * 0.02; x < w * 1.02;) {
@@ -1255,8 +1259,8 @@
       });
       rects(ctx, Math.ceil(Hc / bh), [[P.mortar, 0.22]], function (k) { return [x, top + k * bh - 0.3 * s, W, 0.5 * s, 0]; });
     } else {
-      dabs(ctx, Math.round(W * Hc / (14 * s * s)), [[P.tones[0], 0.25], [P.tones[1], 0.25], [P.tones[2], 0.2]], function () {
-        return [x + r() * W, top + r() * Hc, (2 + r() * 5) * s, (0.6 + r() * 1.2) * s, (r() * 3) | 0];
+      dabs(ctx, Math.round(W * Hc / (34 * s * s)), [[P.tones[0], 0.25], [P.tones[1], 0.25], [P.tones[2], 0.2]], function () {
+        return [x + r() * W, top + r() * Hc, (3 + r() * 6) * s, (0.8 + r() * 1.4) * s, (r() * 3) | 0];
       });
       // rusticated ashlar joints on the garden level
       rects(ctx, 12, [['rgba(40,20,10,0.35)', 1]], function (k) { var yy2 = B - gH + k * gH / 4; return yy2 < B ? [x, yy2, W, 0.7 * s, 0] : null; });
@@ -1458,7 +1462,7 @@
         ctx.fillStyle = '#d6d0c4'; ctx.fillRect(0, rd1, w, L.verge - rd1);
         ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fillRect(0, rd1, w, 0.8 * s);
         ctx.fillStyle = lg(ctx, 0, L.verge, 0, L.mall, [[0, '#5d8e3e'], [1, '#4a7a34']]); ctx.fillRect(0, L.verge, w, L.mall - L.verge);
-        grassField(ctx, w, L.verge, L.mall, 2200, [['#9ccc5c', 0.7 * s, 0.6], ['#2f5a26', 0.8 * s, 0.55], ['#cfe08a', 0.6 * s, 0.5]], r, s * 0.7, -0.1);
+        grassField(ctx, w, L.verge, L.mall, 1500, [['#9ccc5c', 0.7 * s, 0.6], ['#2f5a26', 0.8 * s, 0.55], ['#cfe08a', 0.6 * s, 0.5]], r, s * 0.7, -0.1);
         dots(ctx, 80, [['#ffffff', 0.9], ['#ffd35a', 0.9], ['#ff8aa8', 0.8]], function () { return [r() * w, lerp(L.verge + h * 0.01, L.mall, r()), (0.8 + r() * 0.8) * s, (r() * 3) | 0]; });
         // promenade: warm crushed-stone path with perspective joints
         var m0 = L.mall;
@@ -1487,9 +1491,9 @@
         for (var lc = 0; lc < 4; lc++) { ctx.fillStyle = LC[lc]; ctx.globalAlpha = 0.85; ctx.beginPath(); for (i = 0; i < 18; i++) { var lxx = r() * w, lyy = lerp(m0 + h * 0.02, h, Math.pow(r(), 0.7)), ls = (2.5 + r() * 3) * s * (0.6 + (lyy - m0) / (h - m0)); lens(ctx, lxx, lyy, ls * 2, ls * 0.6, r() * TAU); } ctx.fill(); }
         ctx.restore();
         // dappled shade from the canopy above + bright sun flecks
-        for (i = 0; i < 26; i++) { var px = r() * w, py = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(px, py); ctx.scale(1, 0.35); glow(ctx, 0, 0, (20 + r() * 50) * s, '#3a3020', 0.22); ctx.restore(); }
+        for (i = 0; i < 16; i++) { var px = r() * w, py = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(px, py); ctx.scale(1, 0.35); glow(ctx, 0, 0, (26 + r() * 50) * s, '#3a3020', 0.24); ctx.restore(); }
         ctx.save(); ctx.globalCompositeOperation = 'lighter';
-        for (i = 0; i < 40; i++) { var fx2 = r() * w, fy2 = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(fx2, fy2); ctx.scale(1, 0.4); glow(ctx, 0, 0, (4 + r() * 10) * s, '#ffe6a8', 0.25); ctx.restore(); }
+        for (i = 0; i < 26; i++) { var fx2 = r() * w, fy2 = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(fx2, fy2); ctx.scale(1, 0.4); glow(ctx, 0, 0, (4 + r() * 10) * s, '#ffe6a8', 0.28); ctx.restore(); }
         ctx.restore();
         // flower beds in the bottom corners
         [[-w * 0.05, w * 0.22], [w * 0.78, w * 1.05]].forEach(function (Bd) {
@@ -1789,7 +1793,7 @@
         [[0.15, 0.705, 0.14, 0.47, 0.17, 0.085, 60401], [0.86, 0.71, 0.86, 0.485, 0.16, 0.08, 60402]].forEach(function (T) {
           var px = w * T[0], py = h * T[1], pr = 30 * s;
           ctx.fillStyle = 'rgba(60,70,70,0.22)'; ctx.beginPath(); ctx.ellipse(px, py + 2 * s, pr * 1.25, pr * 0.28, 0, 0, TAU); ctx.fill();
-          broadleaf(ctx, { x: px, yb: py - pr * 0.6, cx: w * T[2], cy: h * T[3], rx: w * T[4], ry: h * T[5], tw: 8 * s, s: s, lx: -0.6, ly: -0.8, pal: tpal, bark: ['#c8b49a', '#8a7660', '#4a3a2c'], n: 30, edge: 16, limbs: 5, bend: 0, dens: 0.6 }, T[6]);
+          broadleaf(ctx, { x: px, yb: py - pr * 0.6, cx: w * T[2], cy: h * T[3], rx: w * T[4], ry: h * T[5], tw: 8 * s, s: s, lx: -0.6, ly: -0.8, pal: tpal, bark: ['#c8b49a', '#8a7660', '#4a3a2c'], n: 24, edge: 14, limbs: 5, bend: 0, dens: 0.5 }, T[6]);
           ctx.fillStyle = lg(ctx, px - pr, 0, px + pr, 0, [[0, '#d8dee0'], [0.35, '#ffffff'], [1, '#b8c2c6']]);
           ctx.beginPath(); ctx.moveTo(px - pr, py - pr * 0.75); ctx.lineTo(px + pr, py - pr * 0.75); ctx.lineTo(px + pr * 0.85, py); ctx.quadraticCurveTo(px, py + pr * 0.12, px - pr * 0.85, py); ctx.closePath(); ctx.fill();
           ctx.fillStyle = '#16b3a6'; ctx.fillRect(px - pr, py - pr * 0.62, pr * 2, 2 * s);

@@ -340,11 +340,11 @@ function renderConsent(){
     $('#cont').onclick=()=>o.good?go('memo'):renderConsent()})}
 
 // ---------- Decision memo, confidence, signature ----------
-function memoChecks(t){t=t.toLowerCase();return [
-  {ok:/pin|surg|cast|gel|bonemend|therap/.test(t),l:'Names the treatment'},
-  {ok:/because|so that|since|reason/.test(t),l:'Gives a reason'},
-  {ok:/\d|percent|%|likely|chance|sure|out of/.test(t),l:'Says how sure, with odds'},
-  {ok:/maya|she |her |recital|violin|family|dad/.test(t),l:'Includes what Maya cares about'}]}
+function memoChecks(t,ai){const s=' '+t.toLowerCase().replace(/[’']/g,"'")+' ';const A=ai||{};return [
+  {k:'treatment',ok:A.treatment??/pin|surg|cast|gel|bonemend|therap/.test(s),l:'Names the treatment'},
+  {k:'reason',ok:A.reason??/because|since|so that| so she| so her| so it|that's why|that is why|which is why|this is why|the reason|reason is|in order to| to avoid| to keep| to help| to make sure|balances|helps|means|otherwise| due to|thanks to|given that|as she|as her/.test(s),l:'Gives a reason'},
+  {k:'odds',ok:A.odds??/\d|percent|%|out of|likely|unlikely|probably|pretty sure|very sure|not sure|i'm sure|i am sure|most of the time|chance (is|of|it)|odds/.test(s),l:'Says how sure, with odds'},
+  {k:'maya',ok:A.maya??/maya|she |her |recital|violin|family|dad/.test(s),l:'Includes what Maya cares about'}]}
 function renderMemo(){
   const starters=['I recommend ','because ','The chance it heals straight is about ','Maya cares about ','We will check by '];
   screen('memo',`${scene('workbench')}${hud('Workbench · Decision')}<div class="panel-card">
@@ -356,13 +356,14 @@ function renderMemo(){
    <div class="row"><button class="btn ghost small" id="rev">Ask ${esc(S.byte.name)} to review</button></div>
    <div class="conf"><div class="ctl-l">How sure are you that this plan will go well?</div><input type="range" id="conf" min="0" max="4" step="1" value="${S.conf}"><div class="conf-l"><span>Coin flip</span><span>Pretty sure</span><span>Sure</span></div></div>
    <button class="btn wide" id="sign">Sign as Dr. ${esc(P())}</button></div>`);
-  wireMics();const ta=$('#memo');const upd=()=>{S.memo=ta.value;save();$('#checks').innerHTML=memoChecks(ta.value).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('')};upd();ta.oninput=upd;
+  wireMics();const ta=$('#memo');const upd=()=>{S.memo=ta.value;S.memoAI=null;save();$('#checks').innerHTML=memoChecks(ta.value).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('')};upd();ta.oninput=upd;
   $$('[data-s]').forEach(b=>b.onclick=()=>{ta.value=(ta.value&&!/\s$/.test(ta.value)?ta.value+' ':ta.value)+b.dataset.s;ta.focus();upd()});
   $('#conf').oninput=e=>{S.conf=+e.target.value;save()};
-  $('#rev').onclick=async()=>{const box=$('#review p');const ch=memoChecks(ta.value);const miss=ch.filter(c=>!c.ok).map(c=>c.l.toLowerCase());
+  $('#rev').onclick=async()=>{const box=$('#review p');const miss=memoChecks(ta.value).filter(c=>!c.ok).map(c=>c.l.toLowerCase());
     box.textContent='Reading...';const sm=await getSample();let out=null;
-    if(sm&&ta.value.trim().length>15){try{const r=await sm(`${byteContext()}\n\nThe player wrote this decision memo for Maya's treatment:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan on the Future Table: ${TX_LABEL[S.choice.tx]}${S.choice.pt?' with physical therapy':''}, recital ${S.choice.date==='fri'?'kept on Friday':'moved 3 weeks later'}.\nReview it like a kind editor in 2 or 3 short sentences: say one thing that is strong, then the single most useful improvement (a missing reason, missing odds, an overclaim, or something Maya cares about). Point out any factual mistake about the odds. Don't rewrite it for them.`,{modelTier:'quick',cache:false,onText:({text})=>{box.textContent=text}});out=r.text}catch(e){}}
-    box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what Maya cares about.')};
+    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo for Maya's treatment:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${TX_LABEL[S.choice.tx]}${S.choice.pt?' with physical therapy':''}, recital ${S.choice.date==='fri'?'kept on Friday':'moved 3 weeks later'}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names a treatment),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (mentions what Maya or her family care about),"feedback":"2 or 3 short kind sentences for a young player: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
+        if(r&&typeof r==='object'){S.memoAI=r;save();$('#checks').innerHTML=memoChecks(ta.value,r).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('');out=r.feedback}}catch(e){}}
+    box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what Maya cares about.');MUSIC.babble(box.textContent,'byte')};
   $('#sign').onclick=()=>{if(ta.value.trim().length<20){toast('Write at least a sentence or two first.');return}
     const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">Dr. ${esc(P())}</div><p>Signed. You are accountable for this decision.</p></div>`;document.body.appendChild(sig);
     setTimeout(()=>{sig.remove();go('reveal')},1700)}}
@@ -393,7 +394,7 @@ function renderDebrief(){
   const plans=[];for(const tx of['pins','cast','gel'])for(const pt of[false,true])for(const date of['fri','moved'])plans.push({tx,pt,date});
   const crit=S.criteria.filter(x=>x!=='agree');const score=p=>{const e=expectedFor(p);return crit.reduce((a,id)=>a+e(id),0)};
   const mine=score(c),best=Math.max(...plans.map(score));const fit=mine>=best-.25;
-  const memoOk=memoChecks(S.memo).filter(x=>x.ok).length>=3;
+  const memoOk=memoChecks(S.memo,S.memoAI).filter(x=>x.ok).length>=3;
   const stars=[avoidedTrap,fit,memoOk&&S.consent].filter(Boolean).length;
   const likely=(()=>{const e=expectedFor(c);const p=R.kind==='rash'?e('skin'):R.straight?e('straight'):1-e('straight');return 1-p})();
   const luck=['recital','moved','healed'].includes(R.kind)?(likely>.5?'Lucky':'As expected'):(likely<.3?'Unlucky':'As expected');
