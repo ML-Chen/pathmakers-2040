@@ -41,11 +41,15 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     {name:'markup',k:'custom',music:'table'},{name:'debrief',k:'debrief'},{name:'evening',k:'evening'}],
 
   cast:{
-    hollis:{name:'Rep. Adaeze Hollis',role:'Your boss · River-town district',skin:SKIN[4],hair:'#2a2230',hairStyle:'bun',shirt:'#f3ece2',eye:'#5a3a26',accessory:'earring',bill:{jacket:'#26346a',pin:1}},
-    gunderson:{name:'Rep. Walt Gunderson',role:'Undecided · Farm district',skin:SKIN[0],hair:'#b9b4b0',hairStyle:'short',shirt:'#7aa3c9',eye:'#4a6a8a',bill:{jacket:'#b98a52',barn:1,pin:1}},
-    ibarra:{name:'Rep. Luz Ibarra',role:'Undecided · Port district',skin:SKIN[2],hair:'#22161a',hairStyle:'long',shirt:'#fbf6ee',eye:'#4a2a1a',bill:{jacket:'#1f8a84',pin:1}},
-    sethi:{name:'Rep. Arjun Sethi',role:'Undecided · Robot makers’ district',skin:SKIN[2],hair:'#16121a',hairStyle:'short',shirt:'#e9eef6',eye:'#3a2618',glasses:true,frame:'#2a2a3a',bill:{jacket:'#3b4256',pin:1}},
-    brandt:{name:'Chief Nora Brandt',role:'Witness · Halden Creek Fire Department',skin:SKIN[1],hair:'#8a5a34',hairStyle:'bun',shirt:'#f4f2ec',eye:'#4a6a3a',bill:{jacket:'#1d2440',chief:1}},
+    // Every silhouette differs: Hollis (short natural hair, glasses, navy blazer, House member pin), Gunderson (bald with a
+    // full gray beard, older, a barn-brown vest over a work shirt, wheat pin), Ibarra (high ponytail, teal blazer, a port
+    // crane pin), Sethi (short hair, short beard, glasses, charcoal sweater, a tiny robot pin), Brandt (silver bob, older,
+    // fire chief's dress uniform with a gold badge and collar bugles).
+    hollis:{name:'Rep. Adaeze Hollis',role:'Your boss · River-town district',skin:SKIN[4],hair:'#2a2230',hairStyle:'afro',outfit:'blazer',shirt:'#26346a',under:'#f3ece2',eye:'#5a3a26',glasses:true,frame:'#b8862e',accessory:'earring',bill:{pin:'house'}},
+    gunderson:{name:'Rep. Walt Gunderson',role:'Undecided · Farm district',skin:SKIN[0],hair:'#c8c2bc',hairStyle:'bald',beard:'full',age:'elder',outfit:'vest',shirt:'#8a6a44',under:'#7aa3c9',eye:'#4a6a8a',masc:true,bill:{pin:'wheat'}},
+    ibarra:{name:'Rep. Luz Ibarra',role:'Undecided · Port district',skin:SKIN[2],hair:'#22161a',hairStyle:'ponytail',outfit:'blazer',shirt:'#1f8a84',under:'#fbf6ee',eye:'#4a2a1a',accessory:'necklace',bill:{pin:'crane'}},
+    sethi:{name:'Rep. Arjun Sethi',role:'Undecided · Robot makers’ district',skin:SKIN[3],hair:'#16121a',hairStyle:'short',beard:'short',outfit:'sweater',shirt:'#5f7d95',eye:'#3a2618',glasses:true,frame:'#2a2a3a',masc:true,bill:{pin:'robot'}},
+    brandt:{name:'Chief Nora Brandt',role:'Witness · Halden Creek Fire Department',skin:SKIN[1],hair:'#c4b4aa',hairStyle:'bob',age:'elder',outfit:'suit',shirt:'#1d2440',under:'#f4f6fa',tie:'#14161e',eye:'#4a6a3a',bill:{pin:'chief'}},
     clerk:{name:'The clerk',role:'Calls the roll',voiceOnly:1},chair:{name:'The chair',role:'Runs the markup',voiceOnly:1}
   },
   voices:{hollis:'af_heart',gunderson:'am_onyx',ibarra:'af_nova',sethi:'am_echo',brandt:'af_river',clerk:'am_eric',chair:'af_kore'},
