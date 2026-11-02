@@ -44,7 +44,7 @@ module.exports = function uiChecks() {
       const A = boxes[i], B = boxes[j]; if (A.el.contains(B.el) || B.el.contains(A.el)) continue;
       const w = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left), h = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
       if (w > 4 && h > Math.min(A.r.height, B.r.height) * .4 && A.t !== B.t) out.push('overlap "' + A.t + '" / "' + B.t + '"') }
-    for (const b of document.querySelectorAll('button,.choice,[data-part],a[href]')) { if (!vis(b) || b.disabled) continue; const r = b.getBoundingClientRect();
+    for (const b of document.querySelectorAll('button,.choice,[data-part],a[href]')) { if (!vis(b) || b.disabled) continue; if (b.classList.contains('prop') && document.querySelector('.speaker,.subtitle')) continue;  // scene props sit behind a talk portrait on purpose const r = b.getBoundingClientRect();
       if (r.width < 8 || r.height < 8 || r.bottom < 0 || r.top > H || r.right < 0 || r.left > W) continue;
       const x = Math.min(W - 1, Math.max(0, r.left + r.width / 2)), y = Math.min(H - 1, Math.max(0, r.top + r.height / 2)); const hit = document.elementFromPoint(x, y);
       if (hit && !b.contains(hit) && !hit.contains(b) && getComputedStyle(hit).pointerEvents !== 'none' && clear(hit)) out.push('covered "' + (name(b) || b.className || b.tagName) + '" under ' + (hit.className && hit.className.baseVal === undefined ? hit.className : hit.tagName).toString().slice(0, 30)) }

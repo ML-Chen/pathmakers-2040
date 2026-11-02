@@ -11,6 +11,11 @@ Read these first: docs/SPEC.md (the full design spec), docs/DESIGN_NOTES.md (dec
 - `node tools/parent_shots.js dist/pathmakers.html /tmp/pm-parent` screenshots the progress page empty, after one real mission, and with a longer sample history.
 - `python3 tools/make_audio.py` records any new spoken line (see tools/AUDIO.md).
 
+## Before you merge or report work (the owner should never be the one catching these)
+- `VIZ_AUDIT_WARN=1 node tools/viz_audit.js dist/pathmakers.html OUT`: every infographic, checked for pieces jumping to the corner, overlapping and cut-off labels.
+- `node tools/deep_all.js dist/pathmakers.html OUT` (or `mission_deep_shots.js … <id>`; set PM_VW/PM_VH for a wide window, PM_LANG=zh for Chinese): every screen, with OUT/issues.txt listing sideways scroll, off-screen, overlapping and faint text, and buttons you can see but can't tap. Then open the screenshots and look at them.
+- `node tools/text_dump.js dist/pathmakers.html OUT <id>`: every line the player reads, in order. Read all of it for a mission you touched. Each sentence must make sense on its own to a 12-year-old: full natural sentences, no compressed "X; Y" pairs, no slogans, no unexplained catchphrases, no teaser cliffhangers.
+
 ## Module map (src/)
 | File | What it does |
 |---|---|
