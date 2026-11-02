@@ -51,8 +51,8 @@ function wireMics(){$$('.mic').forEach(b=>b.onclick=()=>{const el=document.getEl
   try{const r=new SR();r.lang='en-US';r.interimResults=true;const base=el.value&&!/\s$/.test(el.value)?el.value+' ':el.value;b.classList.add('on');
     r.onresult=e=>{let t='';for(const x of e.results)t+=x[0].transcript;el.value=base+t;el.dispatchEvent(new Event('input'))};
     r.onerror=()=>{b.classList.remove('on');b.remove();toast('The microphone isn\u2019t available here. You can type instead.')};r.onend=()=>b.classList.remove('on');r.start()}catch(e){b.remove()}})}
-function learnWord(k){if(!S.words.includes(k)){S.words.push(k);save();bumpHud('words')}}
-function unlock(id){if(!S.guide.includes(id)){S.guide.push(id);save();bumpHud('guide');return true}return false}
+function learnWord(k){window.PARENT&&PARENT.noteWord(k);if(!S.words.includes(k)){S.words.push(k);save();bumpHud('words')}}
+function unlock(id){window.PARENT&&PARENT.noteIdea(id);if(!S.guide.includes(id)){S.guide.push(id);save();bumpHud('guide');return true}return false}
 function heart(who,n=1){S.hearts[who]=(S.hearts[who]||0)+n;save()}
 function bumpHud(id){const b=$('#hud-'+id);if(b){const n=id==='words'?S.words.length:S.guide.length;let sp=b.querySelector('span');if(!sp){sp=document.createElement('span');b.appendChild(sp)}sp.textContent=n;b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}}
 
@@ -89,7 +89,9 @@ function openMenu(){const d=sheet('Menu',`<div class="menu">
    <div class="lbl">Save code</div><p class="tiny muted">Copy this code to move your game to another device or browser.</p>
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">Copy code</button>
    <div class="lbl">Load a save code</div><textarea id="m-in" rows="3" placeholder="Paste a code that starts with PM1-"></textarea><button class="btn small ghost" id="m-load">Load this game</button>
-   <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div></div>`);
+   <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div>
+   ${window.PARENT?'<div class="lbl">For grown-ups</div><button class="btn small ghost" id="m-parent">Progress page</button>':''}</div>`);
+  const mp=$('#m-parent',d);if(mp)mp.onclick=()=>{d.remove();PARENT.open()};
   $('#m-hub',d).onclick=()=>{d.remove();go('hub')};
   $('#m-copy',d).onclick=()=>{const t=$('#m-code',d);navigator.clipboard&&navigator.clipboard.writeText(t.value).then(()=>toast('Save code copied','good')).catch(()=>{t.select()});t.select()};
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast('Game loaded','good');render()}else toast('That code didn\u2019t work. Check that you copied all of it.')};
@@ -124,10 +126,10 @@ function cannedReply(q){q=q.toLowerCase();if(M().canned){const r=M().canned(q);i
 function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="chatlog" id="chatlog"></div><form class="chatform" id="chatform"><input id="chatin" autocomplete="off" placeholder="Ask ${esc(S.byte.name)} anything" maxlength="300">${micButton('chatin')}<button class="btn small" type="submit">Send</button></form>`);
   d.classList.add('chat');wireMics();const told0=S.told;d.querySelector('.x').addEventListener('click',()=>{if(S.step==='workbench'&&S.told!==told0)setTimeout(renderWorkbench,260)});const log=$('#chatlog');
   const draw=()=>{log.innerHTML=`<div class="msg b"><div class="mini-byte">${byteBox(S.byte)}</div><p>Hi ${esc(P())}! Ask me anything.</p></div>`+CHAT.map(m=>`<div class="msg ${m.role==='user'?'u':'b'}">${m.role==='user'?'':`<div class="mini-byte">${byteBox(S.byte)}</div>`}<p>${esc(m.content)}</p></div>`).join('');log.scrollTop=log.scrollHeight};draw();
-  $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();
+  $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();window.PARENT&&PARENT.noteChat(q);
     if(/rash|allerg|patch|itch/i.test(q)&&!S.told){S.told=true;save()}
     const placeholder={role:'assistant',content:'Thinking...'};CHAT.push(placeholder);draw();
-    const sm=await getSample();let answer=null;
+    const sm=window.PARENT&&!PARENT.chatOn()?null:await getSample();let answer=null;
     if(sm){try{const turns=[{role:'user',content:byteContext()+'\n\nThe player says: '+CHAT[0].content}];
         const hist=CHAT.slice(0,-1);const msgs=[{role:'user',content:byteContext()+'\n\nConversation so far follows. Reply as '+S.byte.name+' to the last player message.'}].concat(hist.map(m=>({role:m.role,content:m.content})));
         // keep alternation: merge leading user turns
@@ -138,7 +140,7 @@ function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="cha
 
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
 let CURSCENE=null;const BG={cv:null,cache:{},key:null,raf:0,t0:performance.now()};
-function scene(k){CURSCENE=k;return window.PAINT&&PAINT[k]?'':SCENES[k]()}
+function scene(k){if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
 function bgSize(){const cv=BG.cv,r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);return [Math.max(1,Math.round(r.width*dpr)),Math.max(1,Math.round(r.height*dpr))]}
 function applyScene(){const k=CURSCENE;if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
   if(!BG.cv){BG.cv=document.createElement('canvas');BG.cv.className='scene bgcanvas';document.body.prepend(BG.cv);addEventListener('resize',()=>{BG.cache={};drawBg(true)})}
@@ -155,7 +157,8 @@ if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
 function screen(cls,html){stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
-  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);MUSIC.play(TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||'work')}
+  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
+  MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 function go(step){S.step=step;save();render()}
 function render(){if(STEPS[S.step])return STEPS[S.step]();if(S.mission&&MISSIONS[S.mission]&&M().flow.some(f=>f.name===S.step))return runFlow();STEPS.title()}
@@ -229,7 +232,7 @@ const STEPS={
         return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">Day ${m.day}</div><div class="mtxt"><b>${esc(m.title)}</b><span>${esc(open?m.blurb:'Finish earlier days to unlock.')}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
       </div>`);
     $$('.mcard').forEach(b=>b.onclick=()=>startMission(b.dataset.m))},
-  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
+  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="24" lengthAdjust="spacingAndGlyphs">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="34" lengthAdjust="spacingAndGlyphs">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.</p><div class="row"><button class="btn small ghost" id="clue">Look at the crate</button><button class="btn small" id="on">Go to the hospital</button></div></div>`);
     $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast('The strangers hurry away. You noted the crate.','good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()}
@@ -392,6 +395,7 @@ function renderDebrief(){
   const truth=M().outcomes(c,M().truth());const pk=truth.filter(o=>o.kind===R.kind).reduce((a,o)=>a+o.p,0);const good=crit.every(id=>(R.flags[id]??1)>0);
   const luck=good?(pk<.4?'Lucky':'As expected'):(pk<.3?'Unlucky':'As expected');
   if(S.consent)heart(M().consent.left);
+  window.PARENT&&PARENT.record({stars,luck,good,checks:memoChecks(S.memo,S.memoAI)});
   screen('debrief',`${scene(M().debriefScene||'hospital')}<div class="talk-dim"></div>${hud('Debrief')}<div class="panel-card debrief">
    <h2>How you did</h2>
    <div class="scores"><div class="score"><div class="stars">${[0,1,2].map(i=>`<span class="${i<stars?'on':''}">★</span>`).join('')}</div><b>Decision</b><span>How wise your choice was, given what you knew</span></div>
@@ -407,10 +411,10 @@ function renderDebrief(){
   $('#next').onclick=()=>{S.completed[S.mission]={stars:Math.max(stars,(S.completed[S.mission]||{}).stars||0)};save();nextStep()}}
 
 function renderEvening(){const lines=M().evening();
-  screen('evening',`${scene('night')}${hud('Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
+  screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
    <div class="caption-card dark">${lines.map(l=>`<p>${l}</p>`).join('')}
    <div class="row"><button class="btn small ghost" id="guide">Open Field Guide</button><button class="btn small" id="plan">Plan tomorrow</button></div></div></div>`);
   $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};save();go('hub')}}
 
 // ---------- boot ----------
-(function boot(){const l=loadLocal();if(l&&l.v===1)RESUME=l;render();connectCloud()})();
+(function boot(){mergeMissions();LATE.forEach(f=>{try{f()}catch(e){console.warn(e)}});const l=loadLocal();if(l&&l.v===1)RESUME=l;render();connectCloud()})();

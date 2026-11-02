@@ -3,38 +3,104 @@
 const IG={ink:'#1f2340',soft:'#8a90b0',line:'#dfe3f3',teal:'#16b3a6',violet:'#6c5ce7',coral:'#ff7a6b',gold:'#f5b82e',red:'#e5484d',green:'#1fa774',bone:'#fff3dc',boneS:'#e8d3a8',skin:'#f6cfb4',skinS:'#e7ae8e',cast:'#fff7e0',blue:'#5b9bf0'};
 function igFrame(w,h,inner,label){return `<svg class="ig" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label||''}">${inner}</svg>`}
 function igT(x,y,t,o={}){return `<text x="${x}" y="${y}" font-size="${o.s||11}" font-weight="${o.w||700}" fill="${o.c||IG.ink}" text-anchor="${o.a||'middle'}" font-family="Nunito, sans-serif">${t}</text>`}
-// a forearm with two bones; opts: crack (bool), cast, pins, gel, splint, crooked
-function igArm(x,y,o={}){
-  const radius=o.crooked?`<path d="M0 0 L58 -2 L64 4 L120 18" stroke="${IG.boneS}" stroke-width="15" stroke-linecap="round" fill="none"/><path d="M0 0 L58 -2 L64 4 L120 18" stroke="${IG.bone}" stroke-width="11" stroke-linecap="round" fill="none"/>`
-    :`<path d="M0 0 H120" stroke="${IG.boneS}" stroke-width="15" stroke-linecap="round"/><path d="M0 0 H120" stroke="${IG.bone}" stroke-width="11" stroke-linecap="round" class="${o.glow?'ig-glowbone':''}"/>`;
-  return `<g transform="translate(${x} ${y})">
-   <rect x="-18" y="-24" width="160" height="60" rx="30" fill="${IG.skin}"/><rect x="-18" y="14" width="160" height="22" rx="11" fill="${IG.skinS}" opacity=".5"/>
-   <circle cx="150" cy="6" r="24" fill="${IG.skin}"/><path d="M160 -14 q12 4 10 18 M166 -4 q10 6 6 18" stroke="${IG.skinS}" stroke-width="5" fill="none" stroke-linecap="round"/>
-   <path d="M0 18 H120" stroke="${IG.boneS}" stroke-width="13" stroke-linecap="round"/><path d="M0 18 H120" stroke="${IG.bone}" stroke-width="9" stroke-linecap="round"/>
-   ${radius}
-   ${o.crack?`<path d="M62 -9 l-5 6 l6 3 l-5 7" stroke="${IG.red}" stroke-width="2.6" fill="none" class="ig-blink"/>`:''}
-   ${o.pins?`<g class="ig-pop">${[44,60,76].map(px=>`<rect x="${px-1.5}" y="-12" width="3" height="24" rx="1.5" fill="#9aa6c0"/><circle cx="${px}" cy="-13" r="3" fill="#c7cfe0"/>`).join('')}</g>`:''}
-   ${o.gel?`<ellipse cx="61" cy="0" rx="9" ry="8" fill="${IG.violet}" opacity=".55" class="ig-gel"/>`:''}
-   ${o.cast?`<rect x="-6" y="-30" width="136" height="72" rx="30" fill="${IG.cast}" stroke="#e9d9a8" stroke-width="3" opacity=".93" class="ig-pop"/><path d="M20 -18 q6 10 0 20 M96 -18 q6 10 0 20" stroke="#ffb3c7" stroke-width="3" fill="none"/>`:''}
-   ${o.splint?`<g class="ig-pop"><rect x="-2" y="-30" width="130" height="10" rx="5" fill="#cfd6ea"/><rect x="-2" y="30" width="130" height="10" rx="5" fill="#cfd6ea"/>${[16,62,108].map(sx=>`<rect x="${sx}" y="-30" width="10" height="70" rx="4" fill="#b8c2de" opacity=".7"/>`).join('')}<circle cx="64" cy="-25" r="5" fill="#7ff7e4" class="ig-blink"/></g>`:''}
-  </g>`}
+let IGN=0;const igId=p=>p+(++IGN);
+const IGK={line:'#c98a6a',nail:'#fbe3d6',crack:'#7a4a2a'};
+// A long bone lying along x from 0 to L (centre line y=0). rA/rB = knob radius at each end, w = half the shaft width.
+// The ends flare out of the shaft with smooth curves and finish in two rounded condyles, like a textbook bone.
+function igBonePath(L,rA,rB,w){const f=v=>+v.toFixed(2);
+  return `M${f(rA)} ${f(-rA)} C${f(rA*2.1)} ${f(-rA)} ${f(rA*2.3)} ${f(-w)} ${f(rA*3.4)} ${f(-w)} L${f(L-rB*3.4)} ${f(-w)} C${f(L-rB*2.3)} ${f(-w)} ${f(L-rB*2.1)} ${f(-rB)} ${f(L-rB)} ${f(-rB)}`+
+   ` C${f(L-rB*.15)} ${f(-rB)} ${f(L)} ${f(-rB*.62)} ${f(L)} ${f(-rB*.24)} Q${f(L-rB*.32)} 0 ${f(L)} ${f(rB*.24)} C${f(L)} ${f(rB*.62)} ${f(L-rB*.15)} ${f(rB)} ${f(L-rB)} ${f(rB)}`+
+   ` C${f(L-rB*2.1)} ${f(rB)} ${f(L-rB*2.3)} ${f(w)} ${f(L-rB*3.4)} ${f(w)} L${f(rA*3.4)} ${f(w)} C${f(rA*2.3)} ${f(w)} ${f(rA*2.1)} ${f(rA)} ${f(rA)} ${f(rA)}`+
+   ` C${f(rA*.15)} ${f(rA)} 0 ${f(rA*.62)} 0 ${f(rA*.24)} Q${f(rA*.32)} 0 0 ${f(-rA*.24)} C0 ${f(-rA*.62)} ${f(rA*.15)} ${f(-rA)} ${f(rA)} ${f(-rA)}Z`}
+function igBone(L,rA,rB,w,o={}){return `<path d="${igBonePath(L,rA,rB,w)}" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="${o.sw||1.5}" stroke-linejoin="round" class="${o.cls||''}"/>`+
+  `<path d="M${rA*3.1} ${w*.42} H${L-rB*3.1}" stroke="${IG.boneS}" stroke-width="${w*.34}" stroke-linecap="round" opacity=".45"/>`+
+  `<path d="M${rA*3.1} ${-w*.4} H${L-rB*3.1}" stroke="#fff" stroke-width="${w*.3}" stroke-linecap="round" opacity=".85"/>`}
+// a jagged fracture line across a bone at x=bx, as a list of points from top to bottom
+const igFrac=(bx,w)=>[[bx+1,-w-8],[bx+1,-w],[bx-3,-w*.35],[bx+3,w*.15],[bx-2,w*.65],[bx+.5,w],[bx+.5,w+8]];
+// clip a shape to the left (side<0) or right (side>0) of a fracture line
+function igSplit(id,pts,side){const far=side<0?-400:400,p=pts.map(q=>q.join(' ')).join(' L');
+  return `<clipPath id="${id}"><path d="M${far} ${pts[0][1]} L${p} L${far} ${pts[pts.length-1][1]}Z"/></clipPath>`}
+// Maya's left forearm seen from the side, thumb up: skin silhouette with elbow, wrist, thumb and fingers drawn with
+// Bezier curves, and the two forearm bones inside it (radius on the thumb side, ulna below it).
+// opts: crack, cast, pins, gel, splint, crooked, glow. The drawing spans about x -20..188, y -30..40 around (x,y).
+function igArm(x,y,o={}){const fade=igId('igf'),cut=igId('igc'),cl=igId('igl'),cr=igId('igr');
+  const R={x:-6,y:-3,L:140},U={x:-16,y:19,L:142,a:-2.6};
+  const frac=igFrac(66,5.2);
+  const radius=o.crooked
+    ?`<defs>${igSplit(cl,frac,-1)}${igSplit(cr,frac,1)}</defs>
+      <g clip-path="url(#${cl})">${igBone(R.L,5.4,9.4,5.2)}</g>
+      <g transform="rotate(10 66 0) translate(1 2)"><g clip-path="url(#${cr})">${igBone(R.L,5.4,9.4,5.2)}</g></g>
+      <path d="M56 -2 C56 -7 60 -9 65 -8.5 C70 -8 74 -6 75.5 -1 C77 4 75 9 70 10 C65 11 59 8.5 57 5 C56 3 56 0 56 -2Z" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="1.4"/>
+      <path d="M62 -3 C64 -5 67 -4 69 -5 M63 4 C65 6 68 5 70 6" stroke="${IG.boneS}" stroke-width="1" fill="none" stroke-linecap="round"/>`
+    :igBone(R.L,5.4,9.4,5.2,{cls:o.glow?'ig-glowbone':''});
+  const skin=`M-20 -20 C-12 -28 4 -31 24 -30 C48 -29 76 -21 102 -16 C114 -14 124 -13 132 -13
+    C142 -13 152 -14 162 -12 C170 -11 178 -9 183 -6 C187 -3 187 2 183 4 C181 6 178 6 176 6
+    C176 9 172 10 168 9 C167 12 163 13 159 12 C155 15 150 18 142 20 C136 22 130 22 124 22 C100 24 64 33 30 37 C10 39 -6 38 -20 34 C-25 22 -26 -8 -20 -20Z`;
+  const thumb=`M137 -11 C143 -18 152 -22 161 -22 C167 -22 170 -19 168 -16 C166 -13 160 -13 155 -12 C149 -11 144 -8 141 -5`;
+  const parts=[
+   // forearm + hand, outlined like the anime cast
+   `<path d="${skin}" fill="${IG.skin}" stroke="${IGK.line}" stroke-width="1.6" stroke-linejoin="round"/>`,
+   `<path d="M-14 30 C8 34 40 31 72 25 C96 20 114 18 128 19" stroke="${IG.skinS}" stroke-width="7" fill="none" stroke-linecap="round" opacity=".55"/>`,
+   // finger creases, knuckles, fingernail
+   `<path d="M160 -3 C166 -2 172 0 176 1 M156 3 C161 4 165 6 168 6" stroke="${IGK.line}" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".75"/>`,
+   `<path d="M178 -8 C181 -8 184 -6 184.5 -4" stroke="${IGK.line}" stroke-width="1" fill="none" opacity=".7"/>`,
+   `<g clip-path="url(#${cut})">`,
+   // hand bones, faint, so the x-ray reads as a whole arm
+   `<g opacity=".6">${[[-6,-.5],[-.5,1],[4.5,2.5]].map(([dy,ang])=>`<g transform="translate(140 ${dy}) rotate(${ang})">${igBone(19,2.4,2.2,1.4,{sw:.8})}<g transform="translate(20.5 .4) rotate(${ang*1.5})">${igBone(14,2,1.7,1.1,{sw:.7})}</g></g>`).join('')}
+     ${[[134.5,-4.5],[135.5,2.5],[134,9.5]].map(([cx,cy])=>`<circle cx="${cx}" cy="${cy}" r="3.2" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width=".9"/>`).join('')}</g>`,
+   `<g transform="translate(${U.x} ${U.y}) rotate(${U.a})">${igBone(U.L,7.6,5,4.4)}<path d="M-1 -3 C-3 -11 3 -15 10 -12" stroke="${IG.boneS}" stroke-width="5.4" fill="none" stroke-linecap="round"/><path d="M-1 -3 C-3 -11 3 -15 10 -12" stroke="${IG.bone}" stroke-width="3.2" fill="none" stroke-linecap="round"/></g>`,
+   `<g transform="translate(${R.x} ${R.y})">${radius}
+     ${o.crack?`<g class="ig-blink" stroke="${IG.red}" stroke-width="2" stroke-linecap="round"><path d="M60 -12 l-3 -5 M66 -13 v-6 M72 -12 l3 -5 M60 11 l-3 5 M72 11 l3 5"/></g><path d="${frac.slice(1,-1).map((q,i)=>(i?'L':'M')+q[0]+' '+q[1]).join(' ')}" stroke="${IG.red}" stroke-width="3.4" fill="none" stroke-linejoin="round" opacity=".55" class="ig-blink"/><path d="${frac.slice(1,-1).map((q,i)=>(i?'L':'M')+q[0]+' '+q[1]).join(' ')}" stroke="${IGK.crack}" stroke-width="1.3" fill="none" stroke-linejoin="round"/>`:''}
+     ${o.gel?`<path d="M54 -1 C54 -11 78 -11 78 -1 C78 9 54 9 54 -1Z" fill="${IG.violet}" opacity=".5" class="ig-gel"/>`:''}
+     ${o.pins?`<g class="ig-pop"><path d="M40 -8.6 C40 -10.6 41 -11.6 43 -11.6 H89 C91 -11.6 92 -10.6 92 -8.6 V-6.6 H40Z" fill="#aeb8d0" stroke="#7c87a6" stroke-width="1"/>${[46,58,74,86].map(px=>`<path d="M${px} -12 V5" stroke="#7c87a6" stroke-width="2.2" stroke-linecap="round"/><circle cx="${px}" cy="-12" r="2.6" fill="#d5dcec" stroke="#7c87a6" stroke-width="1"/><path d="M${px-1.4} -12 h2.8" stroke="#7c87a6" stroke-width=".9"/>`).join('')}</g>`:''}
+   </g></g>`,
+   o.cast?`<g class="ig-pop"><path d="M-6 -33 C20 -35 58 -27 92 -21 C112 -17 132 -18 156 -18 L161 -16 C163 -6 163 4 160 12 C148 14 138 27 124 27 C96 29 60 39 26 42 C12 43 0 42 -6 40 C-11 20 -11 -14 -6 -33Z" fill="${IG.cast}" stroke="#d9c58e" stroke-width="2" opacity=".95"/>
+      ${[8,30,52,74,96,118,140].map(cx=>`<path d="M${cx} ${-33+cx*.11} C${cx+7} ${-12} ${cx+7} ${14} ${cx-1} ${40-cx*.11}" stroke="#e6d6a6" stroke-width="1.6" fill="none"/>`).join('')}
+      <path d="M-6 -33 C-11 -14 -11 20 -6 40" stroke="#efe3bd" stroke-width="5" fill="none"/>
+      <path d="M30 -4 c-3 -5 -10 -2 -6 4 l6 6 l6 -6 c4 -6 -3 -9 -6 -4z" fill="#ffb3c7"/><path d="M84 6 l2.4 5 l5.4 .6 l-4 3.6 l1.2 5.4 l-5 -2.8 l-5 2.8 l1.2 -5.4 l-4 -3.6 l5.4 -.6z" fill="#b9b2f5"/></g>`:'',
+   o.splint?`<g class="ig-pop"><path d="M-2 -33 C24 -35 60 -27 94 -21 C114 -17 134 -18 150 -18 L150 -11 C134 -11 114 -11 94 -14 C60 -20 24 -27 -2 -26Z" fill="#cfd6ea" stroke="#9aa6c6" stroke-width="1.4"/>
+      <path d="M-2 41 C24 41 60 34 94 27 C114 24 134 25 150 25 L150 19 C134 18 114 18 94 21 C60 27 24 34 -2 35Z" fill="#cfd6ea" stroke="#9aa6c6" stroke-width="1.4"/>
+      ${[[14,-34,41],[64,-27,33],[118,-19,26]].map(([sx,t,b])=>`<path d="M${sx} ${t} C${sx+6} ${t+10} ${sx+6} ${b-10} ${sx} ${b}" stroke="#8f9bbd" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9"/>`).join('')}
+      <rect x="54" y="-34" width="20" height="9" rx="4.5" fill="#2a3060"/><circle cx="64" cy="-29.5" r="2.6" fill="#7ff7e4" class="ig-blink"/></g>`:'',
+   // thumb last, so it sits on top of a cast or splint
+   `<path d="${thumb}" fill="${IG.skin}" stroke="${IGK.line}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M162 -21 C165 -21 167 -19.5 166.6 -17.5" stroke="${IGK.line}" stroke-width="1" fill="none" opacity=".7"/>`];
+  return `<g transform="translate(${x} ${y})"><defs><linearGradient id="${fade}" gradientUnits="userSpaceOnUse" x1="-26" x2="-2"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <mask id="${fade}m" maskUnits="userSpaceOnUse" x="-40" y="-60" width="260" height="120"><rect x="-40" y="-60" width="260" height="120" fill="url(#${fade})"/></mask>
+    <clipPath id="${cut}"><path d="${skin}"/></clipPath></defs><g mask="url(#${fade}m)">${parts.join('')}</g></g>`}
+// A close-up of one bone across the frame, broken in the middle, for the healing lesson and the gel picture.
+// gap = how far apart the two pieces sit. Returns the two pieces; the caller draws what fills the gap.
+function igBrokenBone(gap,o={}){const L=220,cx=110,w=10,f=igFrac(cx,w),l=igId('igbl'),r=igId('igbr');
+  const bone=igBone(L,13,13,w,{sw:2});
+  return `<defs>${igSplit(l,f,-1)}${igSplit(r,f,1)}</defs><g transform="translate(${-gap/2} 0)"><g clip-path="url(#${l})">${bone}</g></g><g transform="translate(${gap/2} ${o.drop||0})"><g clip-path="url(#${r})">${bone}</g></g>
+   ${o.edges===false?'':`<path d="M${f.slice(1,-1).map(q=>(q[0]-gap/2)+' '+q[1]).join(' L')}" stroke="${IG.boneS}" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M${f.slice(1,-1).map(q=>(q[0]+gap/2)+' '+(q[1]+(o.drop||0))).join(' L')}" stroke="${IG.boneS}" stroke-width="2" fill="none" stroke-linejoin="round"/>`}`}
+// a lumpy spindle that wraps the break (blood clot, soft callus, hard callus)
+const igLump=(rx,ry)=>`M${110-rx} 1 C${110-rx} ${-ry*.7} ${110-rx*.55} ${-ry} ${110-rx*.2} ${-ry*.92} C${110} ${-ry*1.08} ${110+rx*.35} ${-ry*.9} ${110+rx*.6} ${-ry*.95} C${110+rx*.95} ${-ry*.8} ${110+rx} ${-ry*.3} ${110+rx} 1 C${110+rx} ${ry*.6} ${110+rx*.6} ${ry} ${110+rx*.2} ${ry*.95} C${110-rx*.15} ${ry*1.05} ${110-rx*.5} ${ry*.9} ${110-rx*.7} ${ry*.85} C${110-rx*.95} ${ry*.7} ${110-rx} ${ry*.4} ${110-rx} 1Z`;
 // 100 tiny kids, `n` colored. loop-fills in a wave.
 function igKids(n,col,o={}){const W=o.w||300;let s='';const cell=W/20;
   for(let i=0;i<100;i++){const r=Math.floor(i/20),c=i%20,x=c*cell+cell/2,y=r*cell*1.25+cell*.75;const on=i<n;
     s+=`<g class="ig-kid ${on?'on':''}" style="--d:${(i*0.022).toFixed(2)}s;--c:${col}"><circle cx="${x}" cy="${y-cell*.18}" r="${cell*.2}"/><rect x="${x-cell*.22}" y="${y+cell*.02}" width="${cell*.44}" height="${cell*.34}" rx="${cell*.15}"/></g>`}
   return s}
 const VIZ={
-  healStage:({s})=>igFrame(300,110,`<g transform="translate(40 52)"><path d="M0 0 H96" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M0 0 H96" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/><path d="M124 ${s>=4?0:4} H220" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M124 ${s>=4?0:4} H220" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/>
-     ${s===1?`<ellipse cx="110" cy="2" rx="26" ry="20" fill="${IG.red}" opacity=".55" class="ig-pulse"/>`:''}
-     ${s===2?`<ellipse cx="110" cy="2" rx="28" ry="18" fill="#c9b8ff" class="ig-pulse"/>${[0,1,2,3,4].map(i=>`<circle cx="${92+i*9}" cy="${-6+(i%2)*10}" r="3" fill="#fff" class="ig-cell" style="--d:${i*.25}s"/>`).join('')}`:''}
-     ${s===3?`<ellipse cx="110" cy="2" rx="26" ry="16" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="3"/><ellipse cx="110" cy="2" rx="26" ry="16" fill="#c9b8ff" class="ig-fadeout"/>`:''}
-     ${s===4?`<ellipse cx="110" cy="0" rx="22" ry="13" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="3"/><rect x="-14" y="-28" width="248" height="56" rx="26" fill="${IG.cast}" stroke="#e9d9a8" stroke-width="3" opacity=".7" class="ig-pop"/>`:''}</g>
-     ${[1,2,3,4].map(i=>`<circle cx="${120+i*14}" cy="100" r="4" fill="${i<=s?IG.violet:IG.line}"/>`).join('')}`,'Bone healing stage '+s),
+  healStage:({s})=>{const T=[0,[6,3],[6,1],[4,0],[0,0]][s]||[0,0];
+    const cells=(col,n,sp)=>[...Array(n)].map((_,i)=>`<circle cx="${110-sp+(i%4)*(sp*2/3)}" cy="${-8+Math.floor(i/4)*14+(i%2)*3}" r="2.8" fill="${col}" class="ig-cell" style="--d:${i*.22}s"/>`).join('');
+    const fibres=`<path d="M86 -8 C96 -12 104 -2 114 -6 C122 -9 128 -4 134 -6 M86 2 C96 -2 104 8 114 4 C122 1 128 6 134 4 M88 10 C98 6 104 14 114 10 C122 8 128 12 132 10" stroke="#9d86f0" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+    const trab=[[96,-6],[104,4],[112,-8],[120,6],[126,-2],[100,8],[116,-1]].map(([a,b],i)=>`<ellipse cx="${a}" cy="${b}" rx="${2.4+(i%2)}" ry="1.6" fill="${IG.boneS}" opacity=".6" transform="rotate(${(i*37)%60-30} ${a} ${b})"/>`).join('');
+    const under=s===1?`<path d="${igLump(30,24)}" fill="${IG.red}" opacity=".55" class="ig-pulse"/>`:'';
+    const layer=
+      s===1?`<path d="${igLump(24,18)}" fill="${IG.red}" opacity=".22"/>${cells(IG.red,8,22)}`:
+      s===2?`<path d="${igLump(32,20)}" fill="#c9b8ff" opacity=".85" stroke="#a796f2" stroke-width="1.5" class="ig-pulse"/>${fibres}${cells('#fff',8,22)}`:
+      s===3?`<path d="${igLump(30,17)}" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="2"/>${trab}<path d="${igLump(30,17)}" fill="#c9b8ff" class="ig-fadeout"/>`:
+      s===4?`<path d="${igLump(20,13)}" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="2"/>${trab}`:'';
+    const cast=s===4?`<g class="ig-pop"><path d="M46 -26 C80 -28 140 -28 174 -26 C179 -14 179 14 174 26 C140 28 80 28 46 26 C41 14 41 -14 46 -26Z" fill="${IG.cast}" fill-opacity=".6" stroke="#d9c58e" stroke-width="2.2"/>
+      ${[66,88,110,132,154].map(c=>`<path d="M${c-5} -27 C${c+3} -10 ${c+3} 10 ${c-5} 27" stroke="#d9c58e" stroke-width="1.5" fill="none" opacity=".7"/>`).join('')}
+      <path d="M46 -26 C41 -14 41 14 46 26 M174 -26 C179 -14 179 14 174 26" stroke="#efe3bd" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M46 -26 C41 -14 41 14 46 26 M174 -26 C179 -14 179 14 174 26" stroke="#d9c58e" stroke-width="1.4" fill="none"/></g>`:'';
+    return igFrame(300,110,`<g transform="translate(40 50)">${under}${s===4?igBone(220,13,13,10,{sw:2}):igBrokenBone(T[0],{drop:T[1]})}${layer}${cast}</g>
+     ${[1,2,3,4].map(i=>`<circle cx="${120+i*14}" cy="102" r="4" fill="${i<=s?IG.violet:IG.line}"/>`).join('')}`,'Bone healing stage '+s)},
   arm:()=>igFrame(300,110,`${igArm(70,46,{crack:true,glow:false})}${igT(130,104,'The radius (thumb-side bone) has one crack',{s:11,c:IG.soft})}`,'A forearm with a cracked radius bone'),
-  straightVsCrooked:()=>igFrame(300,150,`<g transform="translate(4 0) scale(.84)">${igArm(14,48,{})}</g>${igT(90,100,'Heals straight',{c:IG.green,s:12})}<path d="M76 108 l6 6 l12 -14" stroke="${IG.green}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-     <g transform="translate(160 0) scale(.84)">${igArm(14,48,{crooked:true})}</g>${igT(232,100,'Heals crooked',{c:IG.red,s:12})}<path d="M220 108 l12 12 M232 108 l-12 12" stroke="${IG.red}" stroke-width="3.4" stroke-linecap="round"/>
+  straightVsCrooked:()=>igFrame(300,150,`<g transform="translate(20 50) scale(.68)">${igArm(0,0,{})}</g>${igT(84,100,'Heals straight',{c:IG.green,s:12})}<path d="M76 114 l6 6 l12 -14" stroke="${IG.green}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+     <g transform="translate(168 50) scale(.68)">${igArm(0,0,{crooked:true})}</g>${igT(232,100,'Heals crooked',{c:IG.red,s:12})}<path d="M226 110 l12 12 M238 110 l-12 12" stroke="${IG.red}" stroke-width="3.4" stroke-linecap="round"/>
      ${igT(150,140,'Straight = the bone grows back in its normal shape',{s:10.5,c:IG.soft})}`,'A straight healed bone and a crooked one'),
-  threeOptions:()=>igFrame(300,130,[['pins','Surgery + pins',{pins:true}],['cast','Cast',{cast:true}],['gel','BoneMend gel',{gel:true,splint:true}]].map(([k,l,o],i)=>`<g transform="translate(${i*100} 0)"><g class="ig-rise" style="--d:${i*.25}s"><rect x="6" y="6" width="88" height="96" rx="14" fill="#f4f6fd" stroke="${IG.line}"/><g transform="translate(12 30) scale(.5)">${igArm(14,40,o)}</g>${igT(50,118,l,{s:10.5})}</g></g>`).join(''),'Three treatment options'),
+  threeOptions:()=>igFrame(300,130,[['pins','Surgery + pins',{pins:true}],['cast','Cast',{cast:true}],['gel','BoneMend gel',{gel:true,splint:true}]].map(([k,l,o],i)=>`<g transform="translate(${i*100} 0)"><g class="ig-rise" style="--d:${i*.25}s"><rect x="6" y="6" width="88" height="96" rx="14" fill="#f4f6fd" stroke="${IG.line}"/><g transform="translate(16 52) scale(.4)">${igArm(0,0,o)}</g>${igT(50,118,l,{s:10.5})}</g></g>`).join(''),'Three treatment options'),
   kids:({n,col,label,sub})=>igFrame(300,118,`${igKids(n,col||IG.teal)}${igT(150,112,label,{s:11.5})}`,label),
   kidsCompare:({a,b,label})=>igFrame(300,118,`<g class="ig-kidswap">${igKids(b,IG.teal)}</g>${igT(150,112,label,{s:11.5})}`,label),
   timeline:()=>{const X=d=>20+d*(260/45);return igFrame(300,150,`
@@ -62,15 +128,15 @@ const VIZ={
      <path d="M86 50 H214" stroke="${IG.soft}" stroke-width="2" stroke-dasharray="5 6"/><g class="ig-fly"><rect x="0" y="-10" width="18" height="22" rx="3" fill="#fff" stroke="${IG.soft}"/><path d="M4 -3 h10 M4 2 h10" stroke="${IG.soft}" stroke-width="1.5"/></g><g class="ig-x"><path d="M140 40 l20 20 M160 40 l-20 20" stroke="${IG.red}" stroke-width="4" stroke-linecap="round"/></g>`,'A record that does not transfer between countries'),
   askFamily:()=>igFrame(300,110,`<g transform="translate(90 92)">${mini(0,0,{skin:'#f1cfb6',shirt:'#5b7bd5',hair:'#25202e',s:2})}</g><g transform="translate(130 96)">${mini(0,0,{skin:'#f8dcc8',shirt:IG.coral,hair:'#2a2030',s:1.5})}</g>
      <g class="ig-rise"><rect x="160" y="18" width="128" height="44" rx="16" fill="${IG.violet}"/><path d="M170 58 l-12 14 l22 -10z" fill="${IG.violet}"/>${igT(224,38,'Any care in',{s:11,c:'#fff'})}${igT(224,53,'other countries?',{s:11,c:'#fff'})}</g>`,'Ask the family a question'),
-  boneGel:()=>igFrame(300,110,`<g transform="translate(40 52)"><path d="M0 0 H94" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M0 0 H94" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/><path d="M126 0 H220" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M126 0 H220" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/>
-     <rect x="94" y="-10" width="32" height="20" fill="${IG.violet}" opacity=".35" class="ig-fillgap"/>${[0,1,2,3,4,5].map(i=>`<circle cx="${98+(i%3)*12}" cy="${-5+Math.floor(i/3)*10}" r="3" fill="${IG.bone}" class="ig-cell" style="--d:${i*.3}s"/>`).join('')}</g>
-     <g class="ig-drop"><path d="M150 4 q-8 12 0 16 q8 -4 0 -16z" fill="${IG.violet}"/></g>${igT(150,100,'Gel fills the gap; bone cells rebuild it',{s:10.5,c:IG.soft})}`,'Gel helping bone cells fill a gap'),
+  boneGel:()=>igFrame(300,110,`<g transform="translate(40 48)">${igBrokenBone(24,{})}
+     <path d="M96 -12 C104 -15 116 -15 124 -12 C127 -4 127 4 124 12 C116 15 104 15 96 12 C93 4 93 -4 96 -12Z" fill="${IG.violet}" opacity=".38" class="ig-fillgap"/>${[0,1,2,3,4,5].map(i=>`<circle cx="${102+(i%3)*8}" cy="${-5+Math.floor(i/3)*10}" r="3" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width=".8" class="ig-cell" style="--d:${i*.3}s"/>`).join('')}</g>
+     <g class="ig-drop"><path d="M150 2 C146 9 143 13 143 17 C143 21 146 23 150 23 C154 23 157 21 157 17 C157 13 154 9 150 2Z" fill="${IG.violet}"/><path d="M147 15 q0 4 3 5" stroke="#fff" stroke-width="1.4" fill="none" opacity=".7" stroke-linecap="round"/></g>${igT(150,100,'Gel fills the gap; bone cells rebuild it',{s:10.5,c:IG.soft})}`,'Gel helping bone cells fill a gap'),
   splint:()=>igFrame(300,110,`${igArm(70,46,{splint:true})}${igT(130,104,'The smart splint checks the arm stays still',{s:10.5,c:IG.soft})}`,'A smart splint on the arm'),
   ingredientMatch:()=>igFrame(300,130,`<g transform="translate(64 56)"><rect x="-30" y="-24" width="60" height="44" rx="10" fill="#e4f6ff" stroke="#9fd3f0" stroke-width="2"/><circle cx="0" cy="-2" r="10" fill="#9fd3f0" opacity=".6"/>${igT(0,40,'Cooling patch',{s:10.5})}</g>
      <g transform="translate(236 56)"><rect x="-14" y="-30" width="28" height="48" rx="8" fill="${IG.violet}" opacity=".85"/><rect x="-8" y="-38" width="16" height="10" rx="3" fill="#b9b2f5"/>${igT(0,40,'BoneMend gel',{s:10.5})}</g>
      <g class="ig-match"><rect x="122" y="40" width="56" height="26" rx="13" fill="${IG.gold}"/>${igT(150,58,'HX-2',{s:13,c:IG.ink,w:800})}<path d="M96 52 H120 M180 52 H206" stroke="${IG.gold}" stroke-width="3" stroke-dasharray="4 4"/></g>
      ${igT(150,120,'Same ingredient in both',{s:11,c:IG.soft})}`,'The same HX-2 ingredient in a cooling patch and in BoneMend'),
-  switchToCast:()=>igFrame(300,110,`<g transform="translate(14 40) scale(.62)">${igArm(14,40,{gel:true,splint:true})}</g><path d="M130 54 h36" stroke="${IG.soft}" stroke-width="3" class="ig-dash"/><path d="M162 46 l10 8 l-10 8" fill="none" stroke="${IG.soft}" stroke-width="3"/><g transform="translate(176 40) scale(.62)">${igArm(14,40,{cast:true})}</g>${igT(150,104,'Rash? Stop the gel, use a cast',{s:10.5,c:IG.soft})}`,'Switching from gel to a cast'),
+  switchToCast:()=>igFrame(300,110,`<g transform="translate(18 50) scale(.52)">${igArm(0,0,{gel:true,splint:true})}</g><path d="M130 54 h36" stroke="${IG.soft}" stroke-width="3" class="ig-dash"/><path d="M162 46 l10 8 l-10 8" fill="none" stroke="${IG.soft}" stroke-width="3"/><g transform="translate(190 50) scale(.52)">${igArm(0,0,{cast:true})}</g>${igT(150,104,'Rash? Stop the gel, use a cast',{s:10.5,c:IG.soft})}`,'Switching from gel to a cast'),
   floodwall:()=>igFrame(300,110,`<rect x="0" y="62" width="300" height="48" fill="#9fd3f0"/><path class="ig-wave" d="M0 70 q15 -6 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="#fff" stroke-width="2" fill="none"/><rect x="150" y="36" width="150" height="40" fill="#cfd6ea"/>${[0,1,2,3,4].map(i=>`<rect x="${152+i*30}" y="36" width="26" height="40" fill="#dfe4f3" stroke="#b9c1d9"/>`).join('')}<g class="ig-robot">${robotBot(130,36,.9,IG.gold)}</g>${igT(225,28,'Done 3 weeks early',{s:11,c:IG.green})}`,'Robots finished a flood wall'),
   network:()=>{const pts=[[150,58],[90,40],[60,80],[120,96],[200,30],[240,70],[210,100],[40,40],[260,40],[170,88],[100,72]];return igFrame(300,118,`${pts.slice(1).map(p=>`<path d="M150 58 L${p[0]} ${p[1]}" stroke="${IG.teal}" stroke-width="1.6" opacity=".5" class="ig-dash"/>`).join('')}${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="${i?7:12}" fill="${i?'#fff':IG.teal}" stroke="${IG.teal}" stroke-width="2.4" class="${i?'ig-pulse':''}" style="--d:${i*.15}s"/>`).join('')}${igT(150,63,'H',{s:12,c:'#fff',w:800})}${igT(150,114,'Halo runs 11 hospitals',{s:11,c:IG.soft})}`,'One AI connected to eleven hospitals')},
   erWait:()=>igFrame(300,110,`<g transform="translate(70 55)"><circle r="38" fill="#fff" stroke="${IG.teal}" stroke-width="5"/>${[0,1,2,3,4,5,6,7,8,9,10,11].map(k=>`<circle cx="${30*Math.sin(k*Math.PI/6)}" cy="${-30*Math.cos(k*Math.PI/6)}" r="${k%3?1.4:2.6}" fill="${IG.soft}"/>`).join('')}<path d="M0 0 L0 -24 A24 24 0 0 1 ${24*Math.sin(Math.PI*4/30)} ${-24*Math.cos(Math.PI*4/30)} Z" fill="${IG.teal}" opacity=".35" class="ig-pulse"/><g class="ig-hand"><path d="M0 0 V-26" stroke="${IG.ink}" stroke-width="3" stroke-linecap="round"/></g><circle r="3.5" fill="${IG.ink}"/></g>

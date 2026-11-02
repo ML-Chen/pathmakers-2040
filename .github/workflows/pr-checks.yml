@@ -1,0 +1,79 @@
+name: PR checks
+# Runs on every pull request: builds the single-file game, plays every mission's flow, and takes
+# phone-size (390x844) screenshots of every mission with a labeled contact sheet per mission.
+on:
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+env:
+  PLAYWRIGHT_VERSION: 1.63.0
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Cache the Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium
+
+      - name: Build the single-file game
+        id: build
+        run: python3 src/build.py dist/pathmakers.html
+      - name: Play every mission's flow
+        run: node tests/flow_test.js dist/pathmakers.html
+      - name: Screenshot every mission at 390x844
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: node tools/mission_shots.js dist/pathmakers.html shots
+
+      - name: Summarize the screenshots
+        if: ${{ !cancelled() }}
+        run: |
+          {
+            echo "### Screenshots"
+            if [ -f shots/manifest.json ]; then
+              node -e 'for(const g of require("./shots/manifest.json"))console.log(`- **${g.title}**: ${g.shots.length} screens`)'
+              echo
+              echo "Download the **contact-sheets** artifact for one labeled sheet per mission, or **screenshots** for every full-size screen (open index.html)."
+            else
+              echo "No screenshots were taken."
+            fi
+            if [ -s shots/errors.txt ]; then echo; echo "### Errors"; echo '```'; cat shots/errors.txt; echo '```'; fi
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload contact sheets
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: contact-sheets
+          path: shots/sheets/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Upload all screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: shots/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Upload the built page
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: pathmakers-page
+          path: dist/pathmakers.html
+          if-no-files-found: ignore
+          retention-days: 14
