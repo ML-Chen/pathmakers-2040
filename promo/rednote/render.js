@@ -1,5 +1,5 @@
 // Renders the RedNote concept video: node promo/rednote/render.js dist/pathmakers.html OUT [vo_dir]
-// Each shot in shots.js is played live in the game at 405x720 CSS px (9:16) with deviceScaleFactor 8/3, so frames are
+// Each shot in shots.js is played live in the game at 405x540 CSS px (3:4) with deviceScaleFactor 8/3, so frames are
 // 1080x1920. The page runs in slow motion (PROMO_SLOW, default 0.25) while full-size screenshots are taken, and the
 // frames are assembled at page time with ffmpeg at 30 fps, so motion is smooth.
 // With vo_dir (made by vo.py: <id>.wav and durations.json) each shot lasts as long as its line plus a pause, and the
@@ -12,7 +12,7 @@ for (const d of ['frames', 'segs', 'stills', 'clean']) fs.mkdirSync(path.join(ou
 const ff = (...a) => execFileSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...a]);
 const VO = voDir && fs.existsSync(path.join(voDir, 'durations.json')) ? JSON.parse(fs.readFileSync(path.join(voDir, 'durations.json'))) : null;
 const LEAD = 0.35, PAUSE = 0.55;
-const W = 405, H = 720, OH = 1920;                               // 9:16 portrait, 1080x1920, full screen on phones
+const W = 405, H = 540, OH = 1440;                               // 3:4 portrait, 1080x1440 (RedNote feed)
 // a slow camera move on every shot (the captions stay still): push in, pull out, drift left or right, rise
 const CAMS = [{o: '50% 40%', a: 'scale(1.0)', b: 'scale(1.13)'}, {o: '50% 50%', a: 'scale(1.16) translateX(-3%)', b: 'scale(1.04) translateX(2%)'},
   {o: '30% 60%', a: 'scale(1.06)', b: 'scale(1.18) translateY(-2%)'}, {o: '70% 40%', a: 'scale(1.15) translateX(3%)', b: 'scale(1.03) translateX(-2%)'},
