@@ -370,6 +370,32 @@
     ctx.drawImage(cv, cx - ox, cy - oy, bw, bh);
     ctx.restore();
   }
+  /* sunrise stratocumulus: horizontal brush dabs in an envelope, shade body, sun-lit undersides, bright rims.
+     o: {shade, mid, lit, rim, al, n, dir (+1 lit from below)} */
+  function streakCloud(ctx, cx, cy, W, H, r, o) {
+    var n = o.n || 46, D = [], i, k;
+    for (i = 0; i < n; i++) {
+      var u = (r() * 2 - 1), env = Math.pow(Math.max(0, 1 - u * u), 0.6) * (0.75 + 0.25 * fbm(u * 3 + cx * 0.01, 77, 3));
+      var rx = W * (0.07 + r() * 0.13) * (0.5 + env * 0.6), ry = H * (0.16 + r() * 0.22) * (0.35 + env * 0.75);
+      D.push([cx + u * W * 0.5, cy + (r() - 0.5) * H * env * 0.9 - env * H * 0.15, rx, ry]);
+    }
+    D.sort(function (A, B) { return A[1] - B[1]; });
+    var dir = o.dir == null ? 1 : o.dir;
+    ctx.save(); ctx.globalAlpha = o.al == null ? 1 : o.al;
+    var cols = [o.shade, o.mid, o.lit, o.rim || o.lit];
+    for (k = 0; k < 4; k++) {
+      ctx.fillStyle = cols[k]; ctx.beginPath();
+      for (i = 0; i < D.length; i++) {
+        var q = D[i];
+        if (k === 0) qell(ctx, q[0], q[1], q[2], q[3], 0);
+        else if (k === 1) qell(ctx, q[0] - q[2] * 0.05, q[1] - dir * q[3] * 0.18, q[2] * 0.85, q[3] * 0.6, 0);
+        else if (k === 2) qell(ctx, q[0] + q[2] * 0.08, q[1] + dir * q[3] * 0.5, q[2] * 0.78, q[3] * 0.42, 0);
+        else if (i % 2 === 0) qell(ctx, q[0] + q[2] * 0.12, q[1] + dir * q[3] * 0.78, q[2] * 0.55, q[3] * 0.16, 0);
+      }
+      ctx.fill();
+    }
+    ctx.restore();
+  }
   /* sample a gradient stop list at t */
   function gradAt(st, t) {
     if (t <= st[0][0]) return st[0][1];
