@@ -1,0 +1,31 @@
+/* i18n.css — Chinese mode (html.pm-zh) and pinyin over characters (html.pm-py), set by I18N.sync() in src/i18n.js.
+   English never matches these selectors, so it renders exactly as before. Chinese uses the device's own CJK fonts
+   (no CJK font is embedded): Latin letters and digits keep the game's fonts, and each Chinese character falls back
+   to the first CJK font the device has. */
+:root{--i18n-cjk:'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Source Han Sans SC','Microsoft YaHei',sans-serif}
+html.pm-zh{--display:'Fredoka','PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Source Han Sans SC','Microsoft YaHei',sans-serif;
+  --body:'Nunito','PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Source Han Sans SC','Microsoft YaHei',sans-serif}
+/* Line breaking: no ，。！？ or closing quote at the start of a line; long Latin words may wrap rather than overflow. */
+html.pm-zh body{line-break:strict;word-break:normal;overflow-wrap:break-word}
+html.pm-zh svg text{font-family:'Nunito','PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Source Han Sans SC','Microsoft YaHei',sans-serif}
+/* Letter spacing and capitals are for English labels; Chinese reads better without the extra spacing. */
+html.pm-zh :is(.doc-from,.cal span,.fg-track,.realcard span,.upd-badge,.ctl-l){letter-spacing:.02em}
+html.pm-zh .doc-ledger h2{font-family:Georgia,'Songti SC','STSong','Noto Serif CJK SC','Source Han Serif SC','SimSun',serif}
+html.pm-zh .sigline{font-family:'Caveat','Kaiti SC','STKaiti','KaiTi','Noto Serif CJK SC',cursive;letter-spacing:.04em}
+/* Chinese text is denser than English at the same size; a little more leading keeps long paragraphs easy to read. */
+html.pm-zh :is(.sent,.step-body p,.fg p,.gpop p,.subtitle p,.caption-card p,.byte-note p,.why p,.qwhy){line-height:1.62}
+
+/* The language pills in the corner of the setup card; the Chinese label always uses a Simplified Chinese font. */
+.i18n-pills{position:absolute;top:16px;right:16px;display:flex;gap:6px;z-index:2}
+.i18n-pill{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;font-size:.82rem;font-weight:800;color:var(--violet);font-family:'Nunito',var(--i18n-cjk);line-height:1.45}
+.i18n-pill.on{background:var(--violet);border-color:var(--violet);color:#fff}
+.i18n-seg [data-lang="zh"]{font-family:'Nunito',var(--i18n-cjk)}
+
+/* Pinyin: one ruby per character. Punctuation is kept with its character (.i18n-nb) so it never starts a line. */
+html.pm-py ruby.i18n-r{ruby-position:over;ruby-align:center}
+html.pm-py ruby.i18n-r rt{font-family:'Nunito',sans-serif;font-size:.5em;font-weight:700;line-height:1;letter-spacing:0;text-transform:none;opacity:.8;-webkit-user-select:none;user-select:none}
+html.pm-py .i18n-nb{white-space:nowrap}
+html.pm-py :is(p,li,.choice,.sent,.qopt,.critb,.why,.toast,.bubble,.pbubble,.fut figcaption,.caption-card,.subtitle .who span,.lbl){line-height:2.1}
+html.pm-py :is(h1,h2,h3){line-height:1.6}
+html.pm-py .place{line-height:1.9;padding-block:3px}
+html.pm-py .fut figcaption{min-height:4.2em}

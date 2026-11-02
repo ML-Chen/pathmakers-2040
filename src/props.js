@@ -32,20 +32,20 @@ const PROPS={
   night:[{id:'star',x:20,y:10,w:30,sfx:'chime',fx:'shoot'},{id:'star',x:46,y:16,w:22,sfx:'chime',fx:'shoot'}],
   table:[]
 };
-function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${p.talk?'Talk to a passer-by':'Play with the '+p.id}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
+function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${p.talk?T('Talk to a passer-by'):T('Play with the {0}',T(p.id))}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
 function burst(x,y,kind,n=7){const sym={hearts:'♥',notes:'♪',leaves:'❦',steam:'☁',sparkles:'✦'}[kind]||'✦';const col={hearts:'#ff6f8f',notes:'#6c5ce7',leaves:'#38b07f',steam:'#ffffff',sparkles:'#ffe08a'}[kind];
   for(let i=0;i<n;i++){const d=document.createElement('div');d.className='burst';d.textContent=sym;d.style.left=x+'px';d.style.top=y+'px';d.style.color=col;
     d.style.setProperty('--dx',((Math.random()-.5)*120).toFixed(0)+'px');d.style.setProperty('--dy',(-50-Math.random()*90).toFixed(0)+'px');d.style.setProperty('--r',((Math.random()-.5)*80).toFixed(0)+'deg');d.style.fontSize=(14+Math.random()*12)+'px';d.style.animationDelay=(i*.04)+'s';
     document.body.appendChild(d);setTimeout(()=>d.remove(),1500)}}
 function wireProps(){$$('.prop').forEach(b=>b.onclick=e=>{e.stopPropagation();MUSIC.unlock();const p=PROPS[b.dataset.s][b.dataset.i];
   if(p.talk||p.say){const lines=p.say?[p.say]:CHATTER[p.talk];b._n=((b._n??Math.floor(Math.random()*lines.length))+1)%lines.length;const line=lines[b._n];
-    $$('.pbubble').forEach(x=>x.remove());const r0=b.getBoundingClientRect();const d=document.createElement('div');d.className='pbubble';d.textContent=line;document.body.appendChild(d);
+    $$('.pbubble').forEach(x=>x.remove());const r0=b.getBoundingClientRect();const d=document.createElement('div');d.className='pbubble';d.textContent=T(line);document.body.appendChild(d);
     d.style.left=Math.max(8,Math.min(innerWidth-d.offsetWidth-8,r0.left+r0.width/2-d.offsetWidth/2))+'px';d.style.top=Math.max(8,r0.top-d.offsetHeight-8)+'px';
-    if(p.say)playVoice('bf_emma',line);else playVoice(CHATTER_VOICES[b._n%CHATTER_VOICES.length],line);b.classList.remove('fx-hop');void b.offsetWidth;b.classList.add('fx-hop');setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},4200);
+    if(p.say)playVoice('bf_emma',line,p.who);else playVoice(CHATTER_VOICES[b._n%CHATTER_VOICES.length],line);b.classList.remove('fx-hop');void b.offsetWidth;b.classList.add('fx-hop');setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},4200);
     S.chats=(S.chats||0)+1;if(!p.fx)return}
   b.classList.remove('fx-'+p.fx);void b.offsetWidth;b.classList.add('fx-'+p.fx);if(p.fx==='toggle')b.classList.toggle('off');
   MUSIC.sfx(p.sfx);const r=b.getBoundingClientRect();if(p.burst)burst(r.left+r.width/2,r.top+r.height*.3,p.burst,6);
-  S.taps=(S.taps||0)+1;if(S.taps===12)toast(`${esc(S.byte.name)}: “You found the fun stuff!”`,'good')})}
+  S.taps=(S.taps||0)+1;if(S.taps===12)toast(T('{0}: “You found the fun stuff!”',esc(S.byte.name)),'good')})}
 // pet Byte anywhere he appears (stage, title, companion, notes)
 document.addEventListener('click',e=>{const b=e.target.closest('.byteart');if(!b||e.target.closest('.sheet,.choice,#hud-chat'))return;
   if(b.closest('#comp')){e.stopPropagation();e.preventDefault()}
