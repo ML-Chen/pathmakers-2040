@@ -260,6 +260,9 @@ textarea{resize:vertical;line-height:1.5}
 .real-fut{animation:holo .7s cubic-bezier(.2,1.2,.4,1)}
 .rf-card{width:min(300px,80vw);margin:0 auto;border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px #5ee6d6,0 0 40px rgba(94,230,214,.45)}
 .rf-card svg{display:block;width:100%}
+.real-fut h2{display:inline-block;margin:14px auto 0;max-width:min(320px,86vw);background:rgba(12,16,44,.82);border:1px solid rgba(94,230,214,.4);border-radius:16px;padding:9px 16px;font-size:1.15rem;line-height:1.3;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+/* SVG labels (vignettes, infographics, charts) always use the game's fonts */
+svg text:not([font-family]){font-family:var(--body)}
 .rf-talk{display:flex;align-items:center;gap:10px;background:#fff;color:var(--ink);border-radius:18px;padding:10px 14px;text-align:left;animation:reveal .4s}
 .rf-maya{width:76px;height:96px;flex:none}
 
