@@ -3,7 +3,7 @@
 usage: zh_tts.py speaker speed out.wav "text"   (or --list)"""
 import os, sys, wave
 import numpy as np
-MODEL_DIR = '/home/claude/tts-models/kokoro-multi-lang-v1_0'
+MODEL_DIR = os.environ.get('TTS_MODEL_DIR') or os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'tts-models', 'kokoro-multi-lang-v1_0')
 
 def speaker_names(model_path):
     size = os.path.getsize(model_path)
