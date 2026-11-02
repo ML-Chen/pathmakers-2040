@@ -13,6 +13,7 @@ docs/DESIGN_NOTES.md still overrides everything here. docs/WORLD_2040.md is the 
   1. A **career journey** takes several sessions: explore, meet people, practice project, interview, first day, workdays, big talk, promotion.
   2. A **workday** is one session of about 12 to 18 minutes: morning, walk or travel, people meeting, field visit, the mission, end-of-day report, evening.
   3. A **mission** is the work inside a workday: Workbench documents, commissioning, the Future Table, consent, the signed decision, the real outcome and the debrief.
+- **Every workday has its own rhythm.** Workdays do not copy the Maya mission's sequence; each career's day follows the real work of that job (see docs/DESIGN_NOTES.md, "Variety").
 - **How much play this is.** 16 careers with a short journey and 4 workdays each come to about 64 workdays. The 8 villain plots take 2 or 3 sessions each. Ruins, travel and the finale add about 15 more sessions. At 12 to 18 minutes per session, the total is roughly 20 to 25 hours of authored play, which is several months of regular play for one kid. Replayable "open shifts" (see below) extend it further.
 
 ## What makes a career worth including
@@ -61,6 +62,11 @@ Each row lists the place, the career, the core mechanic that makes it feel diffe
 - Day 3, "Moving Day": an elder must choose between staying home with a robot crew and moving to a robot-run care village. The player runs a fair family meeting and checks what each option's AI is allowed to do.
 - Day 4, "The Storyteller": the player records an elder's life stories for the city archive. Byte can polish them into a beautiful book; the player must keep the stories true and ask permission before anything is shared.
 - Real-world activity: interview a grandparent or older neighbor about one day they remember, and write down one surprising detail.
+
+**Advocate** (physical presence, accountability, and people want a person: clients confide in a person, a named human signs the filings, and judges and juries are human)
+- Mechanic: an original courtroom game. Testimony, press, present evidence, read the room, with Byte as co-counsel who finds every contradiction while the player decides which one matters and how to treat witnesses fairly. Investigation is short and people-driven, never pixel-hunting.
+- Day 1 (being built): a delivery drone crashed into a beloved bakery, the drone company's AI blames a 15-year-old neighbor, and the drone actually obeyed an unsigned command.
+- Later cases: a robot crew's self-report versus a neighbor's memory; a contested AI-written will; a lie-detector question in a small claims court.
 
 **Story events in Boston**
 - The Quiet Year memorial, "The Lantern Garden" (in progress): a visit to the memorial garden in Varrow (fictional).

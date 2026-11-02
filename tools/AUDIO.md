@@ -45,7 +45,7 @@ reads it, so you can recast a voice there without changing the game.
 | `af_bella`   | Byte (female)    | `af_sarah`     | 1.12  | 1.10 / 1.04     |
 | `am_adam`    | Byte (male)      | `am_fenrir`    | 1.12  | 1.08 / 1.03     |
 | `bf_emma`    | Dr. Reyes        | `af_kore`      | 1.03  | none            |
-| `af_sky`     | Maya, 11         | `af_jessica`   | 1.12  | 1.22 / 1.10     |
+| `af_sky`     | Maya, 11         | `af_heart`     | 1.10  | 1.20 / 1.14 (chosen by ear; af_jessica sounded affected) |
 | `am_michael` | Wei Lin, her dad | `am_liam`      | 1.02  | none            |
 | `bm_george`  | Narrator         | `bm_fable`     | 1.05  | none            |
 | `af_sarah`   | Passer-by        | `af_aoede`     | 1.02  | none (the `af_sarah` speaker is Byte's voice) |
