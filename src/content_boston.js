@@ -31,24 +31,24 @@ const CAST={
 // Conversations: lines {who, mood, text, choices?, clue?}. choices: [{t, mood?, good?, reply?}]
 const TALKS={
   morning:[
-    {who:'byte',mood:'happy',text:'Good morning, Doctor! Today is your first shift as a Care Doctor at Boston Harbor Hospital.'},
-    {who:'byte',mood:'neutral',text:'Overnight I read 4,000 new medical papers and summarized the 3 that matter for your patients. Halo, the hospital’s [[operations]] AI, already scheduled your day.'},
-    {who:'byte',mood:'happy',text:'Halo runs almost everything there: robots, supplies, and scans. But some decisions belong to people. That’s your job.',choices:[{t:'What decisions are mine?',reply:'Talking with patients, understanding what they care about, getting their [[consent]], and signing off. When you sign, you’re [[accountable]].'},{t:'Let’s go!',reply:'Grab your coat. The tram leaves in 2 minutes.'}]}
+    {who:'byte',mood:'happy',text:'Good morning, Doctor! Today’s the big day: your first shift at Boston Harbor Hospital!'},
+    {who:'byte',mood:'neutral',text:'The tram leaves at 8:05, it’s sunny, and your badge is already in your bag. You have one patient this morning: a girl with a broken wrist.'},
+    {who:'byte',mood:'happy',text:'I can look things up, run the numbers, and show you what might happen. But helping a family decide? That’s you.',choices:[{t:'What’s my job today?',reply:'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign. Signing means you’re [[accountable]].'},{t:'Let’s go!',reply:'Woof! Grab your coat!'}]}
   ],
   imani:[
-    {who:'imani',mood:'neutral',text:'You’re the new Care Doctor. Good. I have a patient for you.'},
-    {who:'imani',mood:'stern',text:'Maya Lin, age 11. She fell off a scooter and has a [[fracture]] of the [[radius]]. Halo diagnosed it in under a second.'},
-    {who:'imani',mood:'think',text:'Halo offers three treatments. All three are reasonable. Which one is right depends on what Maya and her family care about. Halo can’t decide that for them, and neither can I.',choices:[{t:'What does Maya care about?',reply:'She plays violin. Her [[recital]] is Friday, nine days from now. Ask her yourself.',mood:'smile'},{t:'Which treatment would you pick?',reply:'Surgery with [[pins]]. It’s the safest bet for the bone. But I’m not the patient. Go talk to them.',mood:'stern'}]}
+    {who:'imani',mood:'smile',text:'You must be our new Care Doctor. Welcome. I’m Dr. Reyes.'},
+    {who:'imani',mood:'neutral',text:'Your patient is Maya Lin, age 11. She fell off her scooter yesterday and broke her wrist: a clean [[fracture]] of the [[radius]].'},
+    {who:'imani',mood:'think',text:'There are three good treatments. The right one depends on what Maya and her family care about, and you only learn that by talking to them.',choices:[{t:'What does Maya care about?',reply:'Ask her. I’ll give you a hint, though: she came in holding a violin case with her good arm.',mood:'smile'},{t:'Which treatment would you pick?',reply:'For my own kid? Probably surgery with [[pins]]. But I’m not Maya. Go meet her.',mood:'stern'}]}
   ],
   maya:[
     {who:'maya',mood:'worried',text:'Hi. Is my arm going to be okay?'},
-    {who:'maya',mood:'sad',text:'My recital is Friday. I’ve practiced the Bach piece for four months.',choices:[{t:'Your arm will heal. Let’s figure out the best way together.',good:true,reply:'Okay. Can I still play on Friday?',mood:'worried'},{t:'Don’t worry about the recital right now.',reply:'But it’s really important to me...',mood:'sad'}]},
-    {who:'dad',mood:'worried',text:'We just want her arm to heal straight. She’s going to play for many years.'},
-    {who:'dad',mood:'think',text:'Oh, one thing. Last summer she got a bad [[rash]] from a cooling patch for a sunburn. We were visiting family in Taipei, so it’s probably not in her Boston [[record]].',clue:'rash'},
-    {who:'maya',mood:'smile',text:'It was super itchy. It looked like strawberry polka dots.',choices:[{t:'Thank you for telling me. That could matter.',good:true,reply:'Really? Okay!',mood:'smile'},{t:'That was a long time ago.',reply:'Okay...',mood:'neutral'}]}
+    {who:'maya',mood:'sad',text:'My [[recital]] is Friday. I’ve practiced the Bach piece for four months.',choices:[{t:'Your arm is going to heal. Let’s figure out the best plan together.',good:true,reply:'Okay. Can I still play on Friday?',mood:'worried'},{t:'Don’t worry about the recital right now.',reply:'But it’s really important to me...',mood:'sad'}]},
+    {who:'dad',mood:'worried',text:'We just want her arm to heal right. She wants to play for the rest of her life.'},
+    {who:'dad',mood:'think',text:'Oh, one thing. Last summer she got a bad [[rash]] from one of those cooling patches for sunburn. We were visiting family in Taipei, so it’s probably not in her records here.',clue:'rash'},
+    {who:'maya',mood:'smile',text:'It was super itchy. It looked like strawberry polka dots.',choices:[{t:'Thanks for telling me. That might really matter.',good:true,reply:'Really? Okay!',mood:'smile'},{t:'That was a long time ago.',reply:'Okay...',mood:'neutral'}]}
   ],
   consent:[
-    {who:'dad',mood:'think',text:'So, Doctor, what do you suggest?'},
+    {who:'dad',mood:'think',text:'So, Doctor, what do you think we should do?'},
     {who:'maya',mood:'worried',text:'And will I get to play?'}
   ]
 };
@@ -58,14 +58,14 @@ const DOCS=[
   {id:'memo',title:'Byte’s memo: Maya’s options',from:'Byte',kind:'memo',steps:[
     {t:'Maya’s [[radius]] has a clean [[fracture]]: one crack straight across the bone.',viz:'arm',cap:'Maya’s left forearm'},
     {t:'A bone [[heals straight]] when it grows back in its normal shape. If it heals crooked, doctors may have to fix it again.',viz:'straightVsCrooked',cap:'Straight or crooked'},
-    {t:'Halo offers three [[options]], and all three are safe and [[approved]].',viz:'threeOptions',cap:'The three options'},
+    {t:'There are three [[options]], and all three are safe and [[approved]].',viz:'threeOptions',cap:'The three options'},
     {t:'[[Surgery]] with [[pins]]: about 95 out of 100 kids heal straight.',viz:'kids',args:{n:95,label:'95 of 100 kids heal straight with pins'},cap:'Surgery with pins'},
     {t:'A [[cast]]: about 80 out of 100 heal straight, or 88 with [[physical therapy]].',viz:'kidsCompare',args:{a:80,b:88,label:'80 of 100 with a cast · 88 with therapy'},cap:'Cast, then cast plus therapy'},
-    {t:'BoneMend [[hydrogel]], a new treatment Halo designed last year: about 90 out of 100 heal straight.',viz:'kids',args:{n:90,col:'#6c5ce7',label:'About 90 of 100 with BoneMend'},cap:'BoneMend gel'},
+    {t:'BoneMend [[hydrogel]], a newer treatment that came out last year: about 90 out of 100 heal straight.',viz:'kids',args:{n:90,col:'#6c5ce7',label:'About 90 of 100 with BoneMend'},cap:'BoneMend gel'},
     {t:'Back to violin: about 6 weeks after pins, 3 weeks with a cast, and 8 days with BoneMend. Her [[recital]] is in 9 days.',viz:'timeline',cap:'How long until she can play'},
     {t:'BoneMend has been tested on only 40 kids, so its numbers are more [[uncertain]] than the others.',viz:'sampleSize',cap:'Why the small study matters'},
     {t:'On this chart, the black line on each bar is the [[error bar]]: the real number is probably somewhere along it.',viz:'bars',cap:'Heals straight, out of 100 kids'},
-    {t:'My [[forecast]] for a skin reaction to BoneMend is low, about 5 in 100, because I found no [[allergy]] in her [[record]].',viz:'rashForecast',args:{n:5,label:'My forecast: 5 of 100 get a skin reaction'},cap:'Skin reaction forecast'}
+    {t:'My [[forecast]] for a skin reaction to BoneMend is low, about 5 in 100, because I found no [[allergy]] in her [[record]].',viz:'rashForecast',args:{n:5,label:'My forecast: 5 of 100 get a skin reaction'},cap:'Skin reaction forecast',alt:{t:'Updated: Maya once got a [[rash]] from an HX-2 cooling patch, so my [[forecast]] for a skin reaction to BoneMend is now about 60 in 100, not 5. For Maya, I would avoid BoneMend.',args:{n:60,label:'New forecast for Maya: 60 of 100'},cap:'Updated forecast'}}
   ]},
   {id:'record',title:'Maya Lin: health record',from:'Boston Harbor Hospital',kind:'record',steps:[
     {t:'Patient: Maya Lin, age 11.',viz:'idcard',cap:'Patient card'},
@@ -74,7 +74,7 @@ const DOCS=[
     {t:'Records from clinics outside the United States are not always [[synced]] with this hospital.',viz:'sync',cap:'Records between countries'},
     {t:'Ask the family about any care received in other countries.',viz:'askFamily',cap:'A good question to ask'}
   ]},
-  {id:'sheet',title:'BoneMend hydrogel: fact sheet',from:'Halo',kind:'sheet',steps:[
+  {id:'sheet',title:'BoneMend hydrogel: fact sheet',from:'Boston Harbor Hospital',kind:'sheet',steps:[
     {t:'BoneMend is a [[hydrogel]] that helps bone cells rebuild the broken spot quickly.',viz:'boneGel',cap:'How BoneMend works'},
     {t:'A smart [[splint]] keeps the arm steady while it heals.',viz:'splint',cap:'The smart splint'},
     {t:'Its main [[ingredient]] is HX-2 cooling gel, the same material used in many sunburn cooling patches.',viz:'ingredientMatch',cap:'One shared ingredient'},
@@ -83,8 +83,8 @@ const DOCS=[
   ]},
   {id:'ledger',title:'The Ledger: Boston',from:'News',kind:'ledger',steps:[
     {t:'Robot crews finished the new Charles River flood wall three weeks early.',viz:'floodwall',cap:'Charles River flood wall'},
-    {t:'Halo now runs the [[operations]] of eleven hospitals across New England.',viz:'network',cap:'Halo’s hospitals'},
-    {t:'Treaty inspectors shut down a small, unlicensed datacenter near the fictional town of Calder Bay last night. Nobody knows who built it.',viz:'datacenter',cap:'A mystery datacenter'}
+    {t:'The average wait in Boston emergency rooms last month was four minutes.',viz:'erWait',cap:'Emergency room waits'},
+    {t:'Treaty inspectors shut down a small, unlicensed datacenter near the town of Calder Bay last night. Nobody knows who built it.',viz:'datacenter',cap:'A mystery datacenter'}
   ]}
 ];
 const LESSONS={bones:{title:'How a broken bone heals',steps:[
@@ -132,9 +132,11 @@ const FIELD_GUIDE={
 };
 
 // Voices for prerecorded speech (Kokoro speaker ids); narrator reads documents and glossary.
+const BYTE_VOICES={female:'af_bella',male:'am_adam'};
 const VOICES={byte:'af_bella',imani:'bf_emma',maya:'af_sky',dad:'am_michael',narrator:'bm_george'};
 const REVEAL_LINES={recital:'I played the whole Bach piece! My wrist didn\u2019t hurt at all!',moved:'We moved the recital and I played! Thank you for explaining everything.',healed:'I missed Friday, but my wrist is straight. There\u2019s another recital in spring.',crooked:'It didn\u2019t heal straight. The doctors say they can fix it, but I\u2019m sad.',rash:'Strawberry polka dots again! They switched me to a cast.'};
 const EXTRA_LINES=[
+  {who:'byte',text:'Hi! I\u2019m your AI partner. Let\u2019s do great work together!'},
   {who:'byte',text:'Thanks! I updated my forecast: if Maya is sensitive to HX-2, BoneMend has about a 60% chance of a skin reaction.'},
   {who:'byte',text:'Here are 10 possible futures for this plan. Change the plan and watch them shift.'},
   {who:'byte',text:'Deciding what good means first keeps a flashy option from fooling you.'},
@@ -145,13 +147,13 @@ const EXTRA_LINES=[
   {who:'maya',text:'So, what do you suggest? And will I get to play?'},
   {who:'byte',text:'Something strange happened tonight. Someone tried to install an upgrade on me from a maker I\u2019ve never heard of. I blocked it.'},
   {who:'byte',text:'Sometimes a good plan gets unlucky. That\u2019s why we judge decisions by what we knew, not only by how they turned out.'},
-  {who:'byte',text:'Nice work, Doctor. Halo handled the robots; you handled the people.'}
+  {who:'byte',text:'Nice work, Doctor. You listened, you explained, and Maya trusted you.'}
 ];
 // Every line the game speaks with a recorded voice: [{voice, text}] with [[ ]] markup removed.
 function speechText(t){return String(t).replace(/\[\[|\]\]/g,'').replace(/\s+/g,' ').trim()}
-function spokenLines(){const out=[];const add=(who,t)=>{if(!t||/\{P\}/.test(t))return;out.push({voice:VOICES[who]||VOICES.narrator,text:speechText(t)})};
+function spokenLines(){const out=[];const add=(who,t)=>{if(!t||/\{P\}/.test(t))return;const vs=who==='byte'?Object.values(BYTE_VOICES):[VOICES[who]||VOICES.narrator];for(const v of vs)out.push({voice:v,text:speechText(t)})};
   for(const k in TALKS)for(const L of TALKS[k]){add(L.who,L.text);(L.choices||[]).forEach(c=>c.reply&&add(L.who,c.reply))}
-  for(const d of DOCS){add('narrator',d.title);d.steps.forEach(b=>add('narrator',b.t))}
+  for(const d of DOCS){add('narrator',d.title);d.steps.forEach(b=>{add('narrator',b.t);if(b.alt)add('narrator',b.alt.t)})}
   for(const w in GLOSSARY)add('narrator',w+'. '+GLOSSARY[w]);
   for(const k in REVEAL_LINES)add('maya',REVEAL_LINES[k]);
   EXTRA_LINES.forEach(x=>add(x.who,x.text));

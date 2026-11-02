@@ -165,12 +165,10 @@ textarea{resize:vertical;line-height:1.5}
 @keyframes drop{from{transform:translate(-50%,-30px);opacity:0}}
 
 /* walking scene */
-.walk .walker{position:fixed;bottom:13%;left:30%;width:40px;height:80px;z-index:1;animation:stroll 7s linear infinite}
-.walk .walker svg{overflow:visible}
-.walker{display:grid}
-.walk-byte{position:fixed;bottom:12%;left:12%;width:92px;z-index:1;animation:stroll 7s linear infinite}
-@keyframes stroll{0%{transform:translateX(-40vw)}100%{transform:translateX(70vw)}}
-.pipjory{position:fixed;right:4%;bottom:22%;width:150px;z-index:1;transition:transform 1.4s ease-in,opacity 1.4s}
+.walk-byte{position:absolute;left:8%;top:calc(80% - 84px);width:84px;animation:stroll 9s ease-in-out infinite alternate}
+@keyframes stroll{0%{transform:translateX(0)}100%{transform:translateX(120px)}}
+.pipjory{position:absolute;right:2%;top:calc(81% - 104px);width:150px;pointer-events:auto;transition:transform 1.4s ease-in,opacity 1.4s}
+.pipjory svg{overflow:visible;display:block}
 .pipjory.flee{transform:translateX(70vw);opacity:0}
 .caption-card{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:488px;margin:0 auto;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 16px 40px rgba(10,14,40,.35);z-index:2}
 .caption-card.dark{background:rgba(26,30,70,.92);color:#fff;backdrop-filter:blur(6px)}
@@ -376,3 +374,32 @@ textarea{resize:vertical;line-height:1.5}
 .bubble{position:fixed;right:max(84px,calc(50% - 176px));bottom:calc(70px + env(safe-area-inset-bottom,0px));max-width:min(240px,62vw);background:var(--ink);color:#fff;border-radius:16px 16px 4px 16px;padding:10px 12px;font-weight:800;font-size:.92rem;z-index:21;animation:drop .35s cubic-bezier(.2,1.4,.4,1)}
 .bubble.out{opacity:0;transition:.4s}
 .bench{padding-bottom:70px}
+/* tappable props, anchored to the scene column */
+.props{position:fixed!important;top:0;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);z-index:1;pointer-events:none}
+.screen>.props{position:fixed}
+.prop{position:absolute;transform:translate(-50%,-100%);border:0;background:none;padding:0;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.prop svg{display:block;width:100%;height:auto;overflow:visible}
+.prop .pa-body,.prop .pa-leaves{transform-box:fill-box;transform-origin:50% 100%}
+.fx-jiggle .pa-body{animation:jig .5s}@keyframes jig{20%{transform:rotate(-12deg)}40%{transform:rotate(10deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(3deg)}}
+.fx-ring .pa-body{animation:ringshake .8s}@keyframes ringshake{0%,100%{transform:none}10%,30%,50%,70%{transform:translateX(-4px) rotate(-6deg)}20%,40%,60%,80%{transform:translateX(4px) rotate(6deg)}}
+.prop .pa-hand{transform-box:fill-box;transform-origin:50% 100%}.fx-ring .pa-hand{animation:spin .8s}
+.fx-wiggle .pa-leaves{animation:wig .9s}@keyframes wig{25%{transform:rotate(-8deg) scaleY(1.06)}55%{transform:rotate(7deg)}80%{transform:rotate(-3deg)}}
+.fx-spin .pa-body{animation:spin .7s cubic-bezier(.3,1.4,.5,1)}.fx-spin .pa-light{animation:igblink .2s 4}
+.fx-screen .pa-line{animation:pline 1.2s}@keyframes pline{0%{opacity:0}50%{opacity:0}100%{opacity:1}}.fx-screen .pa-bar{animation:pbar 1.2s}@keyframes pbar{10%,60%{opacity:1}100%{opacity:0}}
+.prop.off .pa-glow{opacity:0}.prop .pa-glow{transition:opacity .2s}.fx-toggle .pa-body{animation:jig .3s}
+.fx-flyaway .pa-body{animation:flyaway 2.4s ease-in-out}.fx-flyaway .pa-wing{transform-box:fill-box;transform-origin:center;animation:flap .12s 12 alternate}
+@keyframes flyaway{0%{transform:none}40%{transform:translate(120px,-160px) rotate(-10deg);opacity:0}60%{transform:translate(-120px,-160px);opacity:0}100%{transform:none;opacity:1}}
+.fx-glow .pa-body{animation:igpulse .8s 2}.fx-shoot .pa-body{animation:shoot 1.4s ease-in}@keyframes shoot{0%{transform:none}50%{transform:translate(160px,90px) scale(.4);opacity:0}51%{transform:none;opacity:0}100%{opacity:1}}
+.prop .pa-steam{animation:steam 2.4s ease-in-out infinite}.fx-jiggle .pa-steam{animation:steam .6s 3}
+.burst{position:fixed;z-index:80;pointer-events:none;font-weight:800;text-shadow:0 2px 6px rgba(0,0,0,.2);animation:burst 1.3s ease-out forwards}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--r)) scale(1.1);opacity:0}}
+.byteart{cursor:pointer}.byteart.petted{animation:pet .6s}.byteart.petted .byte-tail{animation-duration:.12s}
+@keyframes pet{30%{transform:scale(1.08,.92)}60%{transform:scale(.96,1.05)}}
+.pipjory{cursor:pointer}
+.pbubble{position:fixed;z-index:85;max-width:min(250px,70vw);background:#fff;color:var(--ink);border-radius:16px;padding:9px 12px;font-weight:800;font-size:.9rem;box-shadow:0 10px 24px rgba(20,25,60,.25);animation:drop .3s cubic-bezier(.2,1.4,.4,1)}
+.pbubble.out{opacity:0;transition:.3s}
+.fx-hop{animation:prophop .45s}@keyframes prophop{40%{transform:translate(-50%,-112%)}}
+.prop .psvg{overflow:visible}
+.step.updated .fig{box-shadow:0 0 0 2px var(--gold) inset}
+.upd-badge{display:inline-block;background:var(--gold);color:var(--ink);font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 10px;margin-bottom:2px}
+.step.flash{animation:flash 1.6s}@keyframes flash{0%,100%{background:transparent}30%{background:#fff6d6}}

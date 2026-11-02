@@ -1,7 +1,7 @@
 // game.js — state, saving, screens and the mission flow for Pathmakers 2040.
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const APP=$('#app');
-const NEW=()=>({v:1,player:'Juniper',byte:{name:'Byte',color:'#f0b35a',ears:'floppy'},step:'title',notes:{},told:false,highlights:{},
+const NEW=()=>({v:1,player:'Juniper',byte:{name:'Byte',color:'#f0b35a',ears:'floppy',voice:'female'},step:'title',notes:{},told:false,highlights:{},
   criteria:[],choice:{tx:'gel',pt:false,date:'fri'},seed:1,conf:2,memo:'',consent:null,words:[],guide:[],hearts:{},result:null,done:false,read:{}});
 let S=NEW(),RESUME=null;
 
@@ -30,15 +30,16 @@ function rich(t){return esc(fill(t)).replace(/\[\[([^\]]+)\]\]/g,(m,w)=>{const k
 function toast(msg,kind=''){const n=$$('.toast:not(.out)').length;const d=document.createElement('div');d.className='toast '+kind;d.style.marginTop=(n*52)+'px';d.innerHTML=msg;document.body.appendChild(d);setTimeout(()=>d.classList.add('out'),2600+n*600);setTimeout(()=>d.remove(),3200+n*600)}
 // ---------- voices: prerecorded clips (AUDIO from audio.js), device voice as fallback ----------
 let curAudio=null,playId=0;
-function stopVoice(){playId++;try{if(curAudio){curAudio.pause();curAudio=null}speechSynthesis.cancel()}catch(e){}}
+function stopVoice(){playId++;MUSIC.duck(false);try{if(curAudio){curAudio.pause();curAudio=null}}catch(e){}}
 function playLine(who,text){stopVoice();const id=playId;if(S.mute)return Promise.resolve();
-  const t=speechText(fill(text));const key=(VOICES[who]||VOICES.narrator)+'|'+t;
-  return new Promise(res=>{const src=window.AUDIO&&AUDIO[key];
+  const t=speechText(fill(text));const vname=who==='byte'?BYTE_VOICES[S.byte.voice||'female']:(VOICES[who]||VOICES.narrator);const key=vname+'|'+t;
+  MUSIC.duck(true);const res0=()=>{};
+  return new Promise(res1=>{const res=()=>{if(id===playId)MUSIC.duck(false);res1()};const src=window.AUDIO&&AUDIO[key];
     if(src){const a=new Audio(src);curAudio=a;a.onended=()=>res();a.onerror=()=>res();a.play().catch(()=>res());return}
-    try{const u=new SpeechSynthesisUtterance(t);u.rate=who==='maya'?1.08:.97;u.pitch=who==='maya'?1.35:who==='byte'?1.2:who==='dad'?.85:1;u.onend=()=>res();u.onerror=()=>res();speechSynthesis.speak(u)}catch(e){res()}
-    setTimeout(res,Math.min(14000,800+t.length*75))})}
+    const dur=MUSIC.babble(t,who);setTimeout(res,Math.max(600,dur*1000+150))})}
 async function playSeq(items){stopVoice();const id=playId;for(const [who,t] of items){if(id!==playId)return;await playLine(who,t);playId=id}}
 function speak(t){playLine('narrator',t)}
+function stopBabble(){}
 // speech to text where the browser allows it (not inside Claude artifacts, which block the microphone)
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 function micButton(target){if(!SR)return '';return `<button class="mic" type="button" data-target="${target}" aria-label="Speak instead of typing"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button>`}
@@ -75,7 +76,7 @@ function hud(place){return `<div class="hud"><div class="place">${esc(place)}</d
   <button id="hud-chat" class="hbtn" aria-label="Talk to ${esc(S.byte.name)}">${ICON.chat}</button>
   <button id="hud-guide" class="hbtn" aria-label="Field Guide">${ICON.guide}${S.guide.length?`<span>${S.guide.length}</span>`:''}</button>
   <button id="hud-words" class="hbtn" aria-label="Word Book">${ICON.words}${S.words.length?`<span>${S.words.length}</span>`:''}</button></div></div>`}
-function wireHud(){const m=$('#hud-mute');if(m)m.onclick=()=>{S.mute=!S.mute;save();stopVoice();m.innerHTML=S.mute?ICON.off:ICON.on};const c=$('#hud-chat');if(c)c.onclick=openChat;const g=$('#hud-guide');if(g)g.onclick=openGuide;const w=$('#hud-words');if(w)w.onclick=openWords}
+function wireHud(){const m=$('#hud-mute');if(m)m.onclick=()=>{S.mute=!S.mute;save();stopVoice();MUSIC.mute(S.mute);m.innerHTML=S.mute?ICON.off:ICON.on};const c=$('#hud-chat');if(c)c.onclick=openChat;const g=$('#hud-guide');if(g)g.onclick=openGuide;const w=$('#hud-words');if(w)w.onclick=openWords}
 function sheet(title,html){const d=document.createElement('div');d.className='sheet';d.innerHTML=`<div class="sheet-in"><div class="sheet-top"><h2>${title}</h2><button class="x" aria-label="Close">×</button></div><div class="sheet-body">${html}</div></div>`;document.body.appendChild(d);
   requestAnimationFrame(()=>d.classList.add('on'));d.querySelector('.x').onclick=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),250)};return d}
 function openGuide(){const items=Object.entries(FIELD_GUIDE);sheet('Field Guide',`<p class="muted">${S.guide.length} of ${items.length} found in Boston</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${g.track}</div><h3>${g.title}</h3><p>${g.text}</p><div class="realcard"><span>True today</span>${g.real.replace(/^True today: /,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>Keep playing to discover this idea.</p></div>`).join(''))}
@@ -84,19 +85,26 @@ function openWords(){sheet('Word Book',S.words.length?`<div class="wordlist">${S
 // ---------- chat with Byte ----------
 let CHAT=[],SAMPLE=null;
 async function getSample(){if(SAMPLE!==null)return SAMPLE;try{SAMPLE=window.claude&&claude.use?await claude.use('sample'):null}catch(e){SAMPLE=null}return SAMPLE}
-function byteContext(){return `You are ${S.byte.name}, a friendly, very smart robot dog AI partner in "Pathmakers 2040", a game for an 8-year-old who reads at a 7th-grade level. The year is 2040. AI is far smarter than people and runs big organizations (the Boston hospital is run by an AI called Halo), but people make the value decisions, give consent, and sign off. The player, ${P()}, is a new Care Doctor in Boston. Current patient: Maya Lin, 11, broken radius, violin recital Friday in 9 days. Options: surgery with pins (95% heals straight, no violin 6 weeks), cast (80%, 88% with physical therapy, violin in 3 weeks), BoneMend hydrogel (new, tested on only 40 kids, 90%, violin in about 8 days; main ingredient HX-2; people who had a rash from HX-2 cooling patches react about 60% of the time). ${S.told?'The player told you Maya once had a rash from a cooling patch.':'You do not know about any allergy unless the player tells you.'}
-Rules: Speak in 1 to 3 short sentences an 8-year-old understands, warm and playful, occasionally doggy. Give honest odds when useful. Never make value choices for the player: lay out tradeoffs and say it is their call. If you see a problem with their plan, say so kindly. Stay on the game, learning, and the 2040 world; gently steer back from anything unsuitable for a child. Never ask for real personal details (real name, address, school) and remind the player not to share them. Do not use markdown.`}
+function byteContext(){return `You are ${S.byte.name}, the player's AI partner in the game "Pathmakers 2040", shaped like a cute robot puppy. In this 2040, AI is far smarter than any human; you are a superintelligent expert (in medicine, science, history, everything) and you are impressively, concretely helpful. The player, ${P()}, is 8 and reads at a 7th-grade level; speak warmly and clearly, with a little puppy playfulness, in 2 to 4 short sentences unless a list is clearly better. No markdown.
+The world: Boston, 2040. AI quietly runs a lot of everyday things (the hospital's systems are run by an AI called Halo), and people treat that as normal and mundane, the way we treat electricity. Humans still make value choices, give consent, and sign off, because the decisions are about their own lives. Mention the AI parts casually, never as a big deal.
+Current case: Maya Lin, 11, a violinist, broke her left radius (clean fracture). Her recital is Friday, in 9 days; it could be moved about 3 weeks later if they ask. Options: (1) surgery with pins: heals straight about 95 in 100 (studied in 12,000 kids), no violin for about 6 weeks; (2) cast: about 80 in 100 heal straight, 88 with physical therapy (21,000 kids), violin in about 3 weeks; (3) BoneMend hydrogel, a newer treatment that came out last year: about 90 in 100, violin in about 8 days for many kids, but tested on only 40 kids (error bar roughly 76 to 97); its main ingredient is HX-2, the cooling gel in sunburn patches; in kids who once got a rash from an HX-2 patch, about 60 in 100 got a rash from BoneMend and had to switch to a cast.
+What you know: ${S.told?'The player told you Maya once got a rash from a cooling patch, so you now estimate about a 60% chance of a BoneMend skin reaction for her.':'Maya’s Boston record shows no allergies, but records from other countries are often not synced, so you do not actually know her history.'}
+How to help: answer factual questions exactly and impressively, with real numbers and reasoning, and explain anything (science, words, how the game works). When asked which option to pick, do not simply hand over the answer at first: point out the single most important consideration${S.told?' (Maya\u2019s rash and BoneMend\u2019s HX-2)':' (and ask whether the family mentioned any allergies or reactions, especially from care abroad, since records from other countries are often missing)'}, then ask what matters most to Maya and her family. Once the player says what matters, give a clear recommendation tied to that priority, with the odds. Then remind them gently that Maya and her family decide after a clear explanation, and the doctor signs. If asked how to "win" or "beat the game", explain the steps plainly: read the documents, notice clues from the family, tell you anything the record is missing, pick what matters most, test plans on the Future Table, explain honestly to Maya and her dad, write a clear decision with odds, and sign. You can also teach anything (science, words, history) at a kid-friendly level. Stay kind and age-appropriate; gently steer away from anything unsuitable for a child. Never ask for the player’s real name, address, or school.`}
 function cannedReply(q){q=q.toLowerCase();
-  if(/rash|allerg|patch|itch/.test(q)){if(!S.told){S.told=true;save();return 'Woof, thank you! That changes my forecast a lot. If Maya is sensitive to HX-2, BoneMend has about a 60% chance of a skin reaction, not 5%.'}return 'You already told me about the rash. My forecast for a BoneMend skin reaction is now about 60%.'}
-  if(/best|which|pick|choose|should/.test(q))return 'Each option is good at something different. Pins are the surest bet for the bone, a cast is well tested, and BoneMend is fastest but newest. What matters most to Maya? That’s your call.';
-  if(/bonemend|gel/.test(q))return 'BoneMend is fast. Many kids play again in about 8 days. But only 40 kids have tried it, so my numbers could be off by a lot.';
-  if(/pin|surg/.test(q))return 'Surgery with pins heals straight about 95% of the time, but Maya can’t play violin for about 6 weeks.';
-  if(/cast/.test(q))return 'A cast heals straight about 80% of the time, or 88% with physical therapy. She could play again in about 3 weeks.';
-  if(/recital|move|friday/.test(q))return 'Asking to move the recital is a real option. A recital three weeks later would give a cast time to work.';
-  if(/halo/.test(q))return 'Halo runs the hospital: scans, robots, schedules, supplies. It’s brilliant, but it leaves choices about what patients want to people like you.';
-  return 'Good question! Try asking me about Maya’s options, the odds, or anything about 2040.'}
-function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="chatlog" id="chatlog"></div><form class="chatform" id="chatform"><input id="chatin" autocomplete="off" placeholder="Ask ${esc(S.byte.name)} anything" maxlength="300">${micButton('chatin')}<button class="btn small" type="submit">Send</button></form><p class="tiny muted">Don’t share your real name, address, or school.</p>`);
-  d.classList.add('chat');wireMics();const log=$('#chatlog');
+  if(/rash|allerg|patch|itch/.test(q)){if(!S.told){S.told=true;save();return 'Woof, that changes everything! If Maya reacted to an HX-2 cooling patch, BoneMend has about a 60% chance of giving her a rash, so I’d avoid it. A cast with physical therapy plus asking to move the recital is my top pick now.'}return 'Right, the rash! I’d skip BoneMend for Maya. Pins are the surest for the bone; a cast with therapy is gentler and lets her play in about 3 weeks.'}
+  if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here’s the path: read the 3 documents, listen for clues from Maya’s family, tell me anything her record is missing, pick what matters most, test plans on the Future Table, explain the choice honestly to Maya and her dad, then write your decision with odds and sign it!';
+  if(/best|which|pick|choose|should|recommend/.test(q))return S.told?'I can\u2019t pick for you, but here\u2019s the big thing: Maya\u2019s rash came from HX-2, the same ingredient in BoneMend. So what matters most to her: the safest healing, or getting to her recital?':'Before I answer, did her family mention any allergies or reactions? Records from other countries are often missing. And what matters most to Maya: the safest healing, or getting to her recital?';
+  if(/bonemend|gel/.test(q))return 'BoneMend fills the break with a gel that helps bone cells rebuild fast, so many kids play again in about 8 days. Only 40 kids have tried it, so the true heal-straight rate could be anywhere from about 76 to 97 in 100.';
+  if(/pin|surg/.test(q))return 'Pins hold the bone pieces perfectly still, so about 95 in 100 heal straight. The tradeoff: about 6 weeks before she can play violin.';
+  if(/cast/.test(q))return 'A cast heals straight about 80 in 100 times, or 88 with physical therapy, and she could play in about 3 weeks. It’s the most studied option: 21,000 kids!';
+  if(/safe|heal.*(best|most)|long.?term|arm first/.test(q))return S.told?'Then I\u2019d pick pins (about 95 in 100 heal straight) or a cast with therapy (88 in 100) and ask to move the recital. Skip BoneMend because of her rash.':'Then pins are the surest: about 95 in 100 heal straight, though she\u2019d miss about 6 weeks of violin.';
+  if(/recital matters|play.*(most|matter)|get to (her|the) recital/.test(q))return S.told?'Then a cast with therapy and a moved recital gives her the best shot without risking a rash from BoneMend.':'Then BoneMend gives the best shot at Friday, if her skin is fine with HX-2. Moving the recital with a cast is the safer backup.';
+  if(/recital|move|friday/.test(q))return 'Moving the recital about 3 weeks is a great move with a cast: she’d very likely be ready. Keeping Friday only works with BoneMend, and only if her skin is fine with it.';
+  if(/halo/.test(q))return 'Halo is the hospital\u2019s system. It keeps schedules, supplies, and scans running, like the hospital\u2019s brain for chores. The big people decisions are yours.';
+  if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read everything, run forecasts, and build Future Tables. You bring what matters to people and make the call.`;
+  return 'Great question! Ask me about Maya’s options, the odds, how bones heal, or anything about 2040. I know a lot!'}
+function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="chatlog" id="chatlog"></div><form class="chatform" id="chatform"><input id="chatin" autocomplete="off" placeholder="Ask ${esc(S.byte.name)} anything" maxlength="300">${micButton('chatin')}<button class="btn small" type="submit">Send</button></form>`);
+  d.classList.add('chat');wireMics();const told0=S.told;d.querySelector('.x').addEventListener('click',()=>{if(S.step==='workbench'&&S.told!==told0)setTimeout(renderWorkbench,260)});const log=$('#chatlog');
   const draw=()=>{log.innerHTML=`<div class="msg b"><div class="mini-byte">${byteBox(S.byte)}</div><p>Hi ${esc(P())}! Ask me anything.</p></div>`+CHAT.map(m=>`<div class="msg ${m.role==='user'?'u':'b'}">${m.role==='user'?'':`<div class="mini-byte">${byteBox(S.byte)}</div>`}<p>${esc(m.content)}</p></div>`).join('');log.scrollTop=log.scrollHeight};draw();
   $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();
     if(/rash|allerg|patch|itch/i.test(q)&&!S.told){S.told=true;save()}
@@ -107,7 +115,7 @@ function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="cha
         // keep alternation: merge leading user turns
         const merged=[];for(const m of msgs){if(merged.length&&merged.at(-1).role===m.role)merged.at(-1).content+='\n'+m.content;else merged.push({...m})}
         const r=await sm(merged,{modelTier:'quick',cache:false,onText:({text})=>{placeholder.content=text;draw()}});answer=r.text}catch(err){answer=null}}
-    placeholder.content=answer||cannedReply(q);draw();playLine('byte',placeholder.content);if(S.step==='workbench')renderTellButton()};
+    placeholder.content=answer||cannedReply(q);draw();MUSIC.babble(placeholder.content,'byte');if(S.step==='workbench'&&!d.isConnected)renderWorkbench()};
 }
 
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
@@ -124,7 +132,12 @@ function drawBg(){const cv=BG.cv;if(!cv||!BG.key)return;const [w,h]=bgSize();if(
 function loopBg(){BG.raf=requestAnimationFrame(()=>{BG.raf=0;if(document.hidden||!BG.cv||BG.cv.style.display==='none'){setTimeout(loopBg,400);return}drawBg();loopBg()})}
 
 // ---------- screen framework ----------
-function screen(cls,html){stopVoice();APP.className='screen '+cls;APP.innerHTML=html;applyScene();CURSCENE=null;wireHud();window.scrollTo(0,0)}
+const TRACK_FOR={title:'title',setup:'title',talk:null,walk:'morning',bench:'work',criteria:'work',memo:'work',futuretable:'table',reveal:'table',debrief:'win',evening:'night'};
+const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
+function screen(cls,html){stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;const scn=CURSCENE;
+  if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
+  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);MUSIC.play(TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||'work')}
+document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 function go(step){S.step=step;save();render()}
 function render(){(STEPS[S.step]||STEPS.title)()}
 
@@ -168,24 +181,25 @@ const STEPS={
     screen('title',`${scene('home')}<div class="title-wrap"><h1 class="logo"><span>Pathmakers</span><b>2040</b></h1>
       <div class="title-byte">${byteBox({...S.byte,mood:'happy'},'dance')}</div>
       <div class="title-btns">${has?'<button class="btn" id="cont">Continue</button>':''}<button class="btn ${has?'ghost':''}" id="new">${has?'New game':'Start'}</button></div>
-      <p class="fine">A game about one possible future. Inspired by the AI Futures Project’s scenario “AI 2040,” not affiliated with it.</p></div>`);
+      </div>`);
     $('#new').onclick=()=>{S=NEW();go('setup')};if(has)$('#cont').onclick=()=>{S=RESUME;render()}},
   setup(){const colors=['#f0b35a','#ffffff','#a8743f','#8f86ff','#5fc9bd','#ff9aa8','#9aa3b8'];
     screen('setup',`<div class="setup"><h2>Meet your AI partner</h2>
       <div class="setup-byte" id="sb">${byteBox(S.byte,'big wag')}</div>
       <label class="lbl" for="bname">Partner’s name</label><input id="bname" maxlength="14" value="${esc(S.byte.name)}">
       <div class="lbl">Color</div><div class="swatches">${colors.map(c=>`<button class="sw ${S.byte.color===c?'on':''}" data-c="${c}" style="background:${c}" aria-label="Color"></button>`).join('')}</div>
+      <div class="lbl">Voice</div><div class="seg" id="vseg">${[['female','Female voice'],['male','Male voice']].map(([v,l])=>`<button class="segb ${(S.byte.voice||'female')===v?'on':''}" data-v="${v}">${l}</button>`).join('')}</div>
       <div class="lbl">Ears</div><div class="seg">${['floppy','pointy','round'].map(e=>`<button class="segb ${S.byte.ears===e?'on':''}" data-e="${e}">${e[0].toUpperCase()+e.slice(1)}</button>`).join('')}</div>
-      <label class="lbl" for="pname">Your character’s name</label><input id="pname" maxlength="14" value="${esc(S.player)}"><p class="tiny muted">Pick a made-up name, not your real one.</p>
+      <label class="lbl" for="pname">Your character’s name</label><input id="pname" maxlength="14" value="${esc(S.player)}">
       <button class="btn wide" id="go">Start my first day</button></div>`);
     const redraw=()=>{$('#sb').innerHTML=byteBox(S.byte,'big wag');save()};
     $$('.sw').forEach(b=>b.onclick=()=>{S.byte.color=b.dataset.c;$$('.sw').forEach(x=>x.classList.toggle('on',x===b));redraw()});
-    $$('.segb').forEach(b=>b.onclick=()=>{S.byte.ears=b.dataset.e;$$('.segb').forEach(x=>x.classList.toggle('on',x===b));redraw()});
+    $$('[data-e]').forEach(b=>b.onclick=()=>{S.byte.ears=b.dataset.e;$$('[data-e]').forEach(x=>x.classList.toggle('on',x===b));redraw()});
+    $$('[data-v]').forEach(b=>b.onclick=()=>{S.byte.voice=b.dataset.v;$$('[data-v]').forEach(x=>x.classList.toggle('on',x===b));save();MUSIC.unlock();playLine('byte','Hi! I\u2019m your AI partner. Let\u2019s do great work together!')});
     $('#bname').oninput=e=>{S.byte.name=e.target.value.trim()||'Byte';save()};$('#pname').oninput=e=>{S.player=e.target.value.trim()||'Juniper';save()};
     $('#go').onclick=()=>go('morning')},
   morning(){talk('morning','home','Home · Boston · 7:40 AM',()=>go('street'))},
-  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="walker">${mini(0,0,{skin:SKIN[2],shirt:'#fbfdff',hair:'#3a2a20',s:2})}</div><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div>
-      <div class="pipjory" id="pj"><svg viewBox="-40 -30 140 80">${mini(0,0,{shirt:'#3d3d55',hair:'#111',s:1.4})}${mini(56,0,{shirt:'#3d3d55',hair:'#b3541e',s:1.4})}<rect x="10" y="4" width="36" height="26" rx="3" fill="#c9a26b"/><text x="28" y="20" text-anchor="middle" font-size="5.5" font-family="Nunito" font-weight="800" fill="#5b3b16">TOTALLY</text><text x="28" y="27" text-anchor="middle" font-size="5.5" font-family="Nunito" font-weight="800" fill="#5b3b16">NORMAL BOLTS</text></svg></div>
+  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.</p><div class="row"><button class="btn small ghost" id="clue">Look at the crate</button><button class="btn small" id="on">Go to the hospital</button></div></div>`);
     $('#clue').onclick=()=>{S.notes.crate=true;save();$('#pj').classList.add('flee');toast('The strangers hurry away. You noted the crate.','good');$('#clue').disabled=true};
     $('#on').onclick=()=>go('arrive')},
@@ -216,8 +230,8 @@ function renderWorkbench(){
    <div class="bench"><div class="tabs">${DOCS.map(d=>`<button class="tab ${d.id===curDoc?'on':''} ${S.read[d.id]?'':'new'}" data-d="${d.id}">${esc(d.title.split(':')[0])}</button>`).join('')}</div>
    <article class="doc doc-${doc.kind}"><div class="doc-from">From ${esc(doc.from)}</div><h2>${esc(doc.title)}</h2>
     <div class="doc-tools"><button class="mini-btn" id="readme">Read to me</button><span class="tiny muted">Tap a sentence to mark it as evidence.</span></div>
-    ${doc.steps.map((st,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p class="sent ${S.highlights[doc.id+i]?'hl':''}" data-k="${doc.id+i}">${rich(st.t)}</p>
-      <figure class="fig"><figcaption>${esc(st.cap||'')}</figcaption>${VIZ[st.viz]?VIZ[st.viz](st.args||{}):''}</figure></div></section>`).join('')}
+    ${doc.steps.map((st0,i)=>{const up=st0.alt&&S.told;const st=up?{...st0,...st0.alt}:st0;return `<section class="step ${up?'updated':''}" ${up?'id="upd"':''}><div class="step-n">${i+1}</div><div class="step-body">${up?'<div class="upd-badge">Updated</div>':''}<p class="sent ${S.highlights[doc.id+i]?'hl':''}" data-k="${doc.id+i}">${rich(st.t)}</p>
+      <figure class="fig"><figcaption>${esc(st.cap||'')}</figcaption>${VIZ[st.viz]?VIZ[st.viz](st.args||{}):''}</figure></div></section>`}).join('')}
    </article>
    ${companion()}<div class="bench-foot"><button class="btn ghost small" id="learn">Learn it fast: how a broken bone heals</button><div id="tellslot"></div><button class="btn" id="next">Set my criteria</button></div></div>`);
   $$('.tab').forEach(b=>b.onclick=()=>{curDoc=b.dataset.d;renderWorkbench()});
@@ -232,7 +246,7 @@ function renderTellButton(){const slot=$('#tellslot');if(!slot)return;
   if(S.notes.rash&&!S.told)slot.innerHTML=`<button class="btn ghost small" id="tell">Tell ${esc(S.byte.name)} about Maya’s rash</button>`;
   else if(S.told)slot.innerHTML=`<div class="byte-note" data-speak="byte">${byteBox({...S.byte,mood:'alert'})}<p>Thanks! I updated my forecast: if Maya is sensitive to HX-2, BoneMend has about a 60% chance of a skin reaction.</p></div>`;
   else slot.innerHTML='';
-  const t=$('#tell');if(t)t.onclick=()=>{S.told=true;save();unlock('only-you-know')&&toast('New Field Guide idea: Information only you have','good');renderTellButton()}}
+  const t=$('#tell');if(t)t.onclick=()=>{S.told=true;save();unlock('only-you-know')&&toast('New Field Guide idea: Information only you have','good');curDoc='memo';renderWorkbench();setTimeout(()=>{const u=$('#upd');if(u){u.scrollIntoView({behavior:'smooth',block:'center'});u.classList.add('flash')}},350)}}
 
 // ---------- companion Byte on work screens: reacts, wags, opens chat ----------
 function companion(){return `<button class="companion" id="comp" aria-label="Talk to ${esc(S.byte.name)}">${byteBox({...S.byte,mood:'happy'})}</button>`}
@@ -371,7 +385,7 @@ function renderDebrief(){
     <li class="${avoidedTrap?'ok':''}">${S.told?'You told '+esc(S.byte.name)+' about the rash, so the forecast was accurate.':c.tx!=='gel'?'You avoided BoneMend. Did you notice why it was risky for Maya? Her dad mentioned a rash.':'You didn’t tell '+esc(S.byte.name)+' about Maya’s rash. BoneMend looked safer than it really was for her.'}</li>
     <li class="${fit?'ok':''}">${fit?'Your plan was one of the best for the criteria you picked.':'Another plan would have done better on the criteria you picked. Try the Future Table again next time.'}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what Maya cares about.'} ${S.consent?'You explained honestly, so Maya and her dad could truly agree.':''}</li></ul>
-   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${R.kind==='crooked'||R.kind==='rash'?'Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.':'Nice work, Doctor. Halo handled the robots; you handled the people.'}</p></div>
+   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${R.kind==='crooked'||R.kind==='rash'?'Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.':'Nice work, Doctor. You listened, you explained, and Maya trusted you.'}</p></div>
    ${S.guesses&&Object.keys(S.guesses).length?`<div class="calib"><b>${Object.values(S.guesses).filter(x=>Math.abs(x.g-x.a)<=1).length}/${Object.keys(S.guesses).length}</b><span>of your Future Table guesses were within 1 of what happened. That\u2019s your <button class="gw" data-w="calibration">calibration</button> score.</span></div>`:''}
    <div class="earned"><span>${S.guide.length} Field Guide ideas</span><span>${S.words.length} new words</span><span>${Object.values(S.hearts).reduce((a,b)=>a+b,0)} hearts</span></div>
    <button class="btn wide" id="next">Head home</button></div>`);
