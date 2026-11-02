@@ -29,3 +29,12 @@ Ideas not yet claimed (from docs/SPEC.md): Nome Ranger; Phoenix Robot Crew Lead;
 
 
 Open finishing touches after the Nov 2 merge: Advocate courtroom (`content/boston-advocate` never pushed its court engine; restart it), the Dark Tower mission (`darktower`, only its scenes exist), agreed's permissions panel layout, bill's tooltips over controls, shop's meter labels and repetitive futures.
+
+## Hand-off, Nov 2 2026 ~08:45 UTC (coordinating session)
+Merged into main tonight: every content and engine branch, the Android app (`.github/workflows/android.yml`, release "Android (latest)"), the playtest workflow (flow + resume tests, screenshots, playthrough video, release "Playtest (latest)"), voice recording in CI (`voices.yml`, ElevenLabs when the `ELEVENLABS_API_KEY` secret exists, otherwise Kokoro), the writing pass (`writing/plain-voice`), the Quiet Year doubling exhibit, the DC bill's remote-orders redesign, autosave resume, and many playtest fixes (see git log).
+Still on branches, not merged yet (agents were working when the session ended; merge one at a time, build, run tests/flow_test.js and tests/resume_test.js):
+- `art/quietyear-viz`: redrawn Quiet Year story pictures (src/viz/quietyear.js, src/css/quietyear.css).
+- `art/phoenix-scenes`: painted phx_lot, phx_studio, phx_dusk (the Flood Lot currently falls back to the hospital).
+- `content/darktower`: the Dark Tower ruin day (correlated failure, off switches).
+Open items: Chinese translations don't exist yet (src/i18n.js is the engine only; no src/i18n/zh files); sneeze.js still needs the plain-writing pass; the courtroom career must restart; the owner must add the Android signing secrets before going public.
+
