@@ -71,3 +71,25 @@
 .sh-plan b{font-size:.93rem;line-height:1.3;color:#2a2f55}.sh-plan span{font-size:.8rem;line-height:1.35;color:#5a5f7a}
 .sh-plan.on{border-color:var(--violet);background:#f3f0ff;box-shadow:0 0 0 3px rgba(108,92,231,.15)}
 .sh-decide .byte-note p{font-size:.84rem}
+
+/* ---------- Beijing: the fine-print desk ---------- */
+.bj-desk{padding:14px}
+.bj-doc{background:#fffaf0;border:1.5px solid #e4d6b8;border-radius:16px;padding:10px 10px 8px;box-shadow:inset 0 0 0 4px #fff;
+  background-image:repeating-linear-gradient(0deg,rgba(200,180,140,.12) 0 1px,transparent 1px 24px)}
+.bj-dochead{display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:baseline;border-bottom:2px solid #c8302e;padding-bottom:6px;margin-bottom:6px}
+.bj-dochead b{font-family:var(--display);font-size:1.15rem;color:#2a2f55}.bj-dochead span{color:#c8302e;font-weight:800;letter-spacing:.15em}
+.bj-dochead i{grid-column:1/3;font-style:normal;font-size:.72rem;color:#7a705a;font-weight:700}
+.bj-lines{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px;font-size:.84rem;color:#7a705a;font-weight:800}
+.bj-line{position:relative;text-align:left;width:100%;border:0;background:transparent;border-radius:8px;padding:5px 6px;font:inherit;font-weight:600;color:#2a2f55;line-height:1.35;font-size:.86rem}
+.bj-line:hover{background:#f6eedc}
+.bj-line.ok{background:#eef8f2;color:#4a6a5a}.bj-line.flag{background:#fff0d8;box-shadow:inset 3px 0 0 #e89a2a}
+.bj-line em{display:inline-block;margin-left:6px;font-style:normal;font-size:.66rem;font-weight:800;border-radius:99px;padding:1px 7px;vertical-align:1px}
+.bj-line.ok em{background:#cfeedd;color:#2a7a5a}.bj-line.flag em{background:#f5b82e;color:#4a3410}
+.bj-found{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:.76rem;font-weight:800;color:#7a705a}
+.bj-found i{width:12px;height:12px;border-radius:50%;border:2px solid #e8b830}.bj-found i.on{background:#e8b830}
+.bj-han{display:flex;gap:8px;align-items:center;background:#f2f7f6;border-radius:16px;padding:8px 10px;margin:10px 0 0;animation:reveal .35s}
+.bj-han .sh-face{width:44px;height:52px}.bj-han p{margin:0;font-size:.86rem;line-height:1.38;font-weight:600;color:#2a3a40}
+.bj-quote{background:#fffaf0;border-left:4px solid #c8302e;border-radius:10px;padding:8px 10px;margin-bottom:8px}
+.bj-quote b{font-size:.72rem;color:#7a705a}.bj-quote p{margin:2px 0 0;font-size:.92rem;line-height:1.35;font-weight:700;color:#2a2f55}
+.bj-lines{list-style:none;padding-left:0;counter-reset:bjl}
+.bj-line::before{counter-increment:bjl;content:counter(bjl) '. ';font-weight:800;color:#a89a7a}
