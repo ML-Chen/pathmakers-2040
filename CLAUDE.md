@@ -1,6 +1,8 @@
 # Pathmakers 2040 — notes for working on this repo
 
-A phone-first browser game for kids who are strong readers (about 7th-grade level) set in a hopeful 2040 where superintelligent AI runs big institutions. The player does real careers with Byte, a robot-puppy AI partner. The full design spec is the "Pathmakers 2040 — Game Spec" Claude Doc.
+A phone-first browser game for kids who are strong readers (text is written at about a 7th-grade level), set in a hopeful 2040 where superintelligent AI runs big institutions. The player does real careers with Byte, a robot-puppy AI partner.
+
+Read these first: docs/SPEC.md (the full design spec), docs/DESIGN_NOTES.md (decisions and feedback since the spec, which override it), docs/MISSIONS.md (how to add missions, scenes and infographics in parallel) and docs/WORKBOARD.md (who is building what right now; claim your work there before starting).
 
 ## Build and check
 - `python3 src/build.py dist/pathmakers.html` inlines every module into one self-contained page.
