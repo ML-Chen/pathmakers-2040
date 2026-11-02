@@ -6,7 +6,8 @@ Read these first: docs/SPEC.md (the full design spec), docs/DESIGN_NOTES.md (dec
 
 ## Build and check
 - `python3 src/build.py dist/pathmakers.html` inlines every module into one self-contained page.
-- `node tools/shots.js dist/pathmakers.html /tmp/pm-shots` plays through every screen at 390x844 and saves screenshots plus errors.txt. Look at them after every change.
+- `node tools/shots.js dist/pathmakers.html /tmp/pm-shots` plays through every screen of the Maya mission at 390x844 and saves screenshots plus errors.txt. Look at them after every change. `tools/mission_shots.js` and `tools/mission_deep_shots.js` cover every mission (see docs/MISSIONS.md).
+- `node tools/paint_preview.js OUT [scene]`, `node tools/char_preview.js OUT` and `node tools/viz_preview.js OUT` render the core painted scenes, the cast and the core infographics. They read only the core files, not `src/scenes/`, `src/missions/` or `src/viz/`.
 - `node tools/parent_shots.js dist/pathmakers.html /tmp/pm-parent` screenshots the progress page empty, after one real mission, and with a longer sample history.
 - `python3 tools/make_audio.py` records any new spoken line (see tools/AUDIO.md).
 
@@ -21,7 +22,9 @@ Read these first: docs/SPEC.md (the full design spec), docs/DESIGN_NOTES.md (dec
 | content_boston.js | Glossary, cast, conversations, documents (one picture per sentence), Future Table model, Field Guide |
 | infog.js | Byte's animated infographics (VIZ kinds used by documents) |
 | audio.js | Prerecorded voice clips keyed by "voice|text" (generated) |
-| game.js | State, saving, screens and the mission flow |
+| game.js | State, saving (browser storage, plus the viewer's private artifact database and `PM1-` save codes), chat with Byte (the artifact `sample` capability, with scripted replies as a fallback), screens and the mission flow |
+| props.js | Tappable props and passers-by for each scene key |
+| music.js, music_tracks.js | Pre-rendered music tracks per scene, synthesized sound effects and Byte's babble |
 | parent.js, parent.css | Grown-ups' progress page (Menu → For grown-ups) and the records it reads: S.history, wordLog, ideaLog, chatLog, chatOff |
 
 ## Rules the family asked for
