@@ -111,7 +111,7 @@ function jStage(sceneKey,place,extra){screen('talk',`${scene(sceneKey)}<div clas
       line.classList.remove('fadein');void line.offsetWidth;line.classList.add('fadein');choices.innerHTML='';hint.hidden=false;onTap=()=>{onTap=null;hint.hidden=true;res()}})},
     tap(){return new Promise(res=>{if(!alive())return;hint.hidden=false;onTap=()=>{onTap=null;hint.hidden=true;stopVoice();res()}})},
     choose(opts,free){return new Promise(res=>{if(!alive())return;onTap=null;hint.hidden=true;
-      choices.innerHTML=opts.map((o,j)=>`<button class="choice" data-j="${j}">${esc(fill(o))}</button>`).join('')+(free?`<button class="choice ghost" id="cjown">Say it my way</button>`:'');
+      choices.innerHTML=mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(fill(o))}</button>`).join('')+(free?`<button class="choice ghost" id="cjown">Say it my way</button>`:'');
       $$('.choice[data-j]',choices).forEach(b=>b.onclick=e=>{e.stopPropagation();res({j:+b.dataset.j,text:fill(opts[+b.dataset.j])})});
       const own=$('#cjown',choices);if(own)own.onclick=e=>{e.stopPropagation();
         choices.innerHTML=`<div class="cj-free"><textarea id="cjtxt" rows="3" maxlength="400" placeholder="Type your answer"></textarea>${micButton('cjtxt')}</div><div class="cj-row"><button class="mini-btn" id="cjback">Back</button><button class="btn small" id="cjsend">Answer</button></div>`;

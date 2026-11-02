@@ -211,7 +211,7 @@ function talk(key,sceneKey,place,next){
   function afterLine(L,isReply){
     if(L.clue&&!S.notes[L.clue]&&!isReply){choices.innerHTML=`<button class="choice clue">${T('Write this in my notebook')}</button><button class="choice ghost">${T('Keep listening')}</button>`;
       choices.firstChild.onclick=e=>{e.stopPropagation();S.notes[L.clue]=true;save();toast(T('Added to your notebook'),'good');advance()};choices.lastChild.onclick=e=>{e.stopPropagation();advance()};return}
-    if(L.choices&&!isReply){choices.innerHTML=L.choices.map((c,j)=>`<button class="choice" data-j="${j}">${esc(fill(T(c.t)))}</button>`).join('');
+    if(L.choices&&!isReply){choices.innerHTML=mixIdx(L.choices).map(([c,j])=>`<button class="choice" data-j="${j}">${esc(fill(T(c.t)))}</button>`).join('');
       $$('.choice',choices).forEach(b=>b.onclick=e=>{e.stopPropagation();const c=L.choices[b.dataset.j];if(c.good)heart(L.who);if(c.on)c.on();show(L,c.reply,c.mood);L._replied=true});return}
     if(hook('afterLine',false,L,{key,isReply,choices,advance}))return;
     hint.hidden=false}
@@ -311,7 +311,7 @@ function openLesson(id){const L=LESSONS[id];let qi=0,right=0;
    <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${T('Got it? Try 3 quick questions.')}</p></div><div id="quiz"></div></div>`);
   playLine('byte','Here is how a broken bone heals.'.replace('how a broken bone heals',L.title.toLowerCase()));
   const q=()=>{const box=$('#quiz',d);if(qi>=L.quiz.length){box.innerHTML=`<div class="calib"><b>${right}/3</b><span>${T(right===3?'Perfect! You learned it fast.':'Nice work. You can read the steps again anytime.')}</span></div>`;S.lessons=S.lessons||{};S.lessons[id]=right;save();return}
-    const Q=L.quiz[qi];box.innerHTML=`<h3>${esc(T(Q.q))}</h3><div class="quiz">${Q.opts.map((o,j)=>`<button class="qopt" data-j="${j}">${esc(T(o))}</button>`).join('')}</div>`;
+    const Q=L.quiz[qi];box.innerHTML=`<h3>${esc(T(Q.q))}</h3><div class="quiz">${mixIdx(Q.opts).map(([o,j])=>`<button class="qopt" data-j="${j}">${esc(T(o))}</button>`).join('')}</div>`;
     $$('.qopt',box).forEach(b=>b.onclick=()=>{const j=+b.dataset.j;if(j===Q.a){b.classList.add('right');if(!b.dataset.miss)right++;box.insertAdjacentHTML('beforeend',`<p class="qwhy">${esc(T(Q.why))}</p><button class="btn small" id="qn">${T('Next')}</button>`);$$('.qopt',box).forEach(x=>x.disabled=true);$('#qn',box).onclick=()=>{qi++;q()}}else{b.classList.add('wrong');b.disabled=true;$$('.qopt',box).forEach(x=>x.dataset.miss=1)}})};q()}
 
 // ---------- Criteria: set the bar before looking ----------
@@ -358,7 +358,7 @@ function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M())
   screen('talk',`${scene(K.scene||'hospital')}<div class="talk-dim"></div>${hud(K.place||M().place)}<div class="stage duo"><div class="speaker">${portrait({...CAST[K.left],mood:'think'})}</div><div class="speaker">${portrait({...CAST[K.right],mood:'worried'})}</div></div>
     <div class="subtitle"><div class="planpick"><div class="ctl-l">${T('Your plan')}</div>${controlsHTML(c)}</div>
       <div class="who"><b>${esc(T(K.title))}</b><span>${esc(T(K.role))}</span></div><p>${esc(T(K.prompt))}</p>
-    <div class="choices">${opts.map((o,j)=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
+    <div class="choices">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
     <div class="tiny muted" style="margin-top:6px">${K.note?esc(T(K.note)):T('Explaining honestly lets them give real <button class="gw" data-w="consent">consent</button>.')}</div></div>`);
   wireControls($('.planpick'),renderConsent);
   $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];S.consent=o.good;if(o.good){heart(K.heart);const g=K.guide||'consent';unlock(g)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[g].title)),'good')}save();
