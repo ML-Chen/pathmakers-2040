@@ -1,7 +1,9 @@
 // hired.js — "Getting Hired": the Care Doctor career journey that leads into Day 1 (spec: Core loop → Career journey, steps 1 to 5).
 // Explore a day in the life, meet people at the hospital open house, do a practice case (Ari's ankle) that is saved to the
-// Portfolio Book, interview with Dr. Reyes (optional rehearsal with Byte), and the first day with the team. The custom
-// screens live in hired_screens.js; the practice case reuses the engine's generic mission screens.
+// Portfolio Book, interview with Dr. Reyes (optional rehearsal with Byte), and the first day with the team.
+// This file is only content: the screens are the generic career-journey screens in src/career.js (step kinds explore, meet,
+// portfolio, interview, firstday), and the practice case uses the engine's generic mission screens. The career's big talk
+// and promotion are MISSIONS.grandrounds (src/missions/grandrounds.js). The day-in-the-life panels are in src/viz/hired_viz.js.
 
 const HIRED_GLOSSARY={
   'open house':'A day when a place invites everyone in to look around and meet the people who work there.',
@@ -52,7 +54,7 @@ const HIRED_TALKS={
       {t:'Can you get me a job here?',mood:'think',reply:'Ha! Let’s start with hello. I’m Gabi, and it’s nice to meet you.'}]},
     {who:'gabi',mood:'happy',text:'My cat is named Bandage, because he sleeps on the first-aid box.',clue:'gabi-cat'},
     {who:'gabi',mood:'worried',text:'Oh no. I promised the kids’ floor this box of teddy bears, and the elevator robot is busy.',choices:[
-      hiredFavor('gabi',{t:'I can carry it for you!',mood:'happy',reply:'You’re a star. The kids are going to love them.'}),
+      {t:'I can carry it for you!',good:true,on(){jFavor('gabi')},mood:'happy',reply:'You’re a star. The kids are going to love them.'},
       {t:'Maybe a robot can take it later.',mood:'sad',reply:'Maybe. They were hoping for them today, though.'}]}
   ],
   kofi:[
@@ -61,7 +63,7 @@ const HIRED_TALKS={
       {t:'Are robots smarter than you?',mood:'happy',reply:'At carrying boxes in the dark? Totally. At knowing which boxes matter? That’s my job.'}]},
     {who:'kofi',mood:'happy',text:'I name every robot after a planet. That big one is Jupiter.',clue:'kofi-planets'},
     {who:'kofi',mood:'worried',text:'Uh oh. Jupiter keeps beeping at that wet-floor sign. It thinks the sign is a person! Could you move the sign while I fix its settings?',choices:[
-      hiredFavor('kofi',{t:'Sure, I’ll move it!',mood:'happy',reply:'Thanks! Look, Jupiter is rolling again.'}),
+      {t:'Sure, I’ll move it!',good:true,on(){jFavor('kofi')},mood:'happy',reply:'Thanks! Look, Jupiter is rolling again.'},
       {t:'Can’t the robot figure it out?',mood:'neutral',reply:'Not today, apparently. I’ll do it myself.'}]}
   ],
   ruth:[
@@ -93,12 +95,13 @@ const HIRED_TALKS={
   ]
 };
 
-function hiredReferral(){const f=hiredFavors();const n=f.length;
+// Dr. Reyes has heard about the favors the player did at the open house (a referral)
+const HIRED_FAVOR_NEWS={gabi:'Gabi says you carried the teddy bears',kofi:'Kofi says you helped Jupiter get unstuck',ruth:'Ruth says you found her glasses'};
+function hiredReferral(F){F=F||(typeof S!=='undefined'&&S.m_hired&&S.m_hired.favor)||{};const f=['gabi','kofi','ruth'].filter(k=>F[k]).map(k=>HIRED_FAVOR_NEWS[k]);const n=f.length;
   if(n)return `${n>1?f.slice(0,-1).join(', ')+(n>2?',':'')+' and '+f.at(-1):f[0]}. People here notice kindness.`;
   return 'I hear you met some of the team. Helping people, even in small ways, is how they come to trust you.'}
-function hiredFavors(){const F=(S.m_hired||{}).favor||{};return [F.gabi&&'Gabi says you carried the teddy bears',F.kofi&&'Kofi says you helped Jupiter get unstuck',F.ruth&&'Ruth says you found her glasses'].filter(Boolean)}
-// a favor choice records itself when the engine's talk screen reads .good on tap
-function hiredFavor(who,c){return Object.defineProperty(c,'good',{enumerable:true,get(){S.m_hired=S.m_hired||{};S.m_hired.favor=S.m_hired.favor||{};S.m_hired.favor[who]=true;save();return true}})}
+// every version of the referral line, so each can be recorded
+function hiredLines(){const L=[];for(let b=0;b<8;b++)L.push({who:'imani',text:hiredReferral({gabi:b&1,kofi:b&2,ruth:b&4})});return L}
 
 const HIRED_DOCS=[
   {id:'amemo',title:'Byte’s memo: Ari’s ankle',from:'Byte',kind:'memo',steps:[
@@ -120,12 +123,15 @@ const HIRED_REVEAL={saturday:'I made three saves on Saturday! My ankle feels tot
   cheer:'I cheered so loud on Saturday. And now I’m ready for the playoffs!',boot:'That boot was so boring. But my ankle is strong again!'};
 
 MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:'Start',blurb:'Explore the job, meet the team, practice, and interview with Dr. Reyes.',after:[],
+  kind:'journey',district:'boston',year:1,season:'spring',caseTitle:'Ari’s ankle · practice case',
   place:'Boston Harbor Hospital',debriefScene:'hospital',
-  flow:[{name:'h-home',k:'talk',talk:'home',scene:'home',place:'Home · Boston · 8:00 AM'},{name:'h-explore',k:'custom'},{name:'h-openhouse',k:'custom'},
+  stages:[{key:'explore',at:'h-home'},{key:'meet',at:'h-openhouse'},{key:'practice',at:'h-reyes'},{key:'interview',at:'h-interview'},{key:'firstday',at:'h-firstday'}],
+  flow:[{name:'h-home',k:'talk',talk:'home',scene:'home',place:'Home · Boston · 8:00 AM'},{name:'h-explore',k:'explore'},{name:'h-openhouse',k:'meet'},
     {name:'h-reyes',k:'talk',talk:'reyes',scene:'hospital',place:'Open House · Boston Harbor Hospital'},
     {name:'h-ari',k:'talk',talk:'ari',scene:'hospital',place:'First-aid tent · Open House',toast:'Practice case on your Workbench'},
     {name:'h-bench',k:'bench'},{name:'h-criteria',k:'criteria'},{name:'h-table',k:'table'},{name:'h-consent',k:'consent'},{name:'h-memo',k:'memo'},{name:'h-reveal',k:'reveal'},{name:'h-debrief',k:'debrief'},
-    {name:'h-portfolio',k:'custom'},{name:'h-interview',k:'custom'},{name:'h-firstday',k:'custom'}],
+    {name:'h-portfolio',k:'portfolio'},{name:'h-interview',k:'interview'},{name:'h-firstday',k:'firstday'}],
+  get journey(){return HIRED_JOURNEY},
   glossary:HIRED_GLOSSARY,cast:HIRED_CAST,guide:HIRED_GUIDE,voices:{gabi:'af_sarah',kofi:'am_liam',ruth:'elder_woman',ari:'kid_boy',abena:'elder_woman'},
   get lines(){return hiredLines()},
   talks:HIRED_TALKS,docs:HIRED_DOCS,
@@ -191,3 +197,79 @@ function hiredCanned(q){
   if(/portfolio/.test(q))return 'Your Portfolio Book holds your signed decisions: what you chose, why, how sure you were, and what happened. Employers in 2040 love seeing real work.';
   if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read everything, run forecasts, and build Future Tables. You bring what matters to people and make the call.`;
   return null}
+
+// ---------- the journey screens' content (src/career.js reads it) ----------
+// Every spoken line is a {who, text} object, so missionLines() finds it for recording.
+function hiredStory(){const p=(typeof S!=='undefined'&&S.m_hired&&S.m_hired.page)||null;
+  if(!p||!p.choice||!p.choice.prot)return {story:'At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.',bad:false,told:false};
+  const c=p.choice,play=c.sat==='play'&&c.prot!=='boot';const what=c.prot==='boot'?'a walking boot':c.prot==='brace'?'a brace':'tape';
+  const why=p.told?'because his grandma told me he hides pain':play?'because Saturday mattered a lot to him':'because the playoffs mattered more than a friendly game';
+  const out={saturday:'He played, and his ankle was fine.',reroll:'He rolled it again, so next time I’d ask more about his pain.',cheer:'He cheered from the bench and was ready for the playoffs.',boot:'He healed in the boot and was ready for the playoffs.'}[p.kind]||'';
+  return {story:`At the open house I helped Ari, a goalkeeper with a sprained ankle. I chose ${what}${c.prot==='boot'?'':play?' and playing on Saturday':' and sitting out on Saturday'}, ${why}. ${out}`.trim(),bad:p.kind==='reroll',told:!!p.told}}
+const HJ_GLASSES_SVG='<svg viewBox="0 0 54 30"><circle cx="13" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><circle cx="41" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><path d="M23 14 q4 -4 8 0" stroke="#e5484d" stroke-width="3" fill="none"/><path d="M3 12 L0 6 M51 12 L54 6" stroke="#e5484d" stroke-width="3" stroke-linecap="round"/><path d="M8 11 l4 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+const B_=t=>({who:'byte',text:t}),I_=t=>({who:'imani',text:t});
+const HIRED_JOURNEY={
+  explore:{place:'A day as a Care Doctor',scene:'hospital',need:2,guide:'good-questions',go:'Go to the open house',
+    panel:i=>typeof DITL_PANELS!=='undefined'&&DITL_PANELS[i]?DITL_PANELS[i]():'<svg viewBox="0 0 320 200"><rect width="320" height="200" fill="#eef1fb"/></svg>',
+    caps:[B_('7:50 AM. I tell you what Halo did overnight.'),B_('9:00 AM. You listen to a family and learn what matters to them.'),B_('11:00 AM. We test plans on the Future Table.'),
+      B_('2:00 PM. You explain the choice, the family decides, and you sign.'),B_('5:00 PM. A follow-up call. Your patient is doing great!')],
+    qs:[{q:'What does Halo do, and what do I do?',a:B_('Halo runs the hospital’s chores: scans, schedules, and medicine deliveries. I read the research and write forecasts. You talk with patients, find out what matters to them, and sign the decision.')},
+      {q:'Why do people still want a human doctor?',a:B_('Because it’s their body and their life. People want someone who listens, explains the odds honestly, and is responsible for the choice. In 2040, the law says a person must sign.')},
+      {q:'What’s the hardest part of the job?',a:B_('Hard choices. Sometimes every option has a downside, and the family is scared. A good Care Doctor stays calm, kind, and honest.')},
+      {q:'Do doctors still need to know science?',a:B_('Yes! You don’t have to memorize everything, because I can look it up in a blink. But you need to understand enough to ask good questions and notice when something doesn’t make sense.')},
+      {q:'How do I get hired?',a:B_('Meet the people who work there, show your work in a Portfolio Book, and do well in an interview with Dr. Reyes. The open house is today!')}]},
+  meet:{place:'Open House · Boston Harbor Hospital',scene:['openhouse','hospital'],people:['gabi','kofi','ruth'],guide:'referrals',go:'Find Dr. Reyes',
+    notes:{gabi:'gabi-cat',kofi:'kofi-planets',ruth:'ruth-song'},
+    hint:'Say hi to everyone. Try to remember one thing about each person.',done:'You met everyone! Let’s find Dr. Reyes.',doneHelpful:'Everyone’s talking about how helpful you were. Let’s find Dr. Reyes!',
+    again:{gabi:{who:'gabi',text:'Thanks again for stopping by! I’ll tell Bandage you said hi.'},kofi:{who:'kofi',text:'Jupiter says beep. That means thank you.'},ruth:{who:'ruth',text:'Have you seen my glasses anywhere? They have red frames.'}},
+    thanks:{ruth:{who:'ruth',text:'My glasses! I can read the menu again. Thank you, dear.'}},
+    find:{who:'ruth',at:[70,34],label:'Red reading glasses',art:HJ_GLASSES_SVG,toast:'You found Ruth’s glasses!',hint:'Ruth’s glasses have red frames. Can you spot them?'}},
+  portfolio:{scene:'night',place:'Home · Boston · 8:30 PM',ask:'This is real work you did. Want to save it?',saved:'Saved! Tomorrow, Dr. Reyes will want to hear about it.',go:'Get ready for the interview'},
+  interview:{boss:'imani',home:{scene:'home',place:'Home · Boston · 8:00 AM'},office:{scene:'hospital',place:'Dr. Reyes’s office · Boston Harbor Hospital'},
+    context:hiredStory,guide:'specific-stories',badge:{org:'Boston Harbor Hospital',title:'Care Doctor'},after:'Your first day is tomorrow. You’ll meet the team.',go:'Start my first day',
+    judge:'You are Dr. Imani Reyes, Chief of Care at Boston Harbor Hospital in a kids’ game set in 2040, interviewing a young player for a Care Doctor job.',
+    ask:B_('Today’s your [[interview]] with Dr. Reyes! Want to [[rehearse]] with me first?'),ready:B_('You’re ready! Remember: real stories, honest answers, and one good question.'),
+    intro:I_('Thanks for coming in, {P}. I read your [[portfolio]]. Let’s talk.'),
+    best:I_('That was a wonderful interview: real stories, honest answers, and a great question. Welcome to Boston Harbor Hospital. You’re hired!'),
+    ok:I_('I can tell you care about people, and that matters most. You’re hired! Keep telling real stories, like the ones in your Portfolio Book.'),
+    free:{reply:[I_('Thank you. That’s a thoughtful answer.'),I_('Can you tell me a bit more? A specific example helps me understand.')],tip:[B_('Nice! That answer was clear and real.'),B_('Try adding a real example, with what you did and why.')]},
+    questions:[
+      {q:I_('Tell me about a hard choice you made.'),rq:B_('Dr. Reyes might ask: “Tell me about a hard choice you made.”'),
+       check:'a specific real story with what they chose and why, told honestly',heur:/\d|because|so that|ari|grandma|ankle|i chose|i picked|i decided|i helped/,
+       opts:[{t:x=>x.story,good:true,reply:[{if:'bad',who:'imani',text:'That’s a real story: what you chose, why, and what happened. And thank you for being honest that it didn’t go well. That takes courage.'},I_('That’s a real story: what you chose, why, and what happened.')],
+           tip:B_('Great answer! You said what you chose, why, and what happened. Say it just like that.')},
+         {t:'I make hard choices all the time, and I’m really good at them.',reply:I_('Hmm. Can you give me a real example? A story tells me more than “I’m good at it.”'),tip:B_('Try a real example instead, like Ari’s ankle. Details make a story believable.')},
+         {t:x=>x.bad?'I helped a boy with a sprained ankle, and everything went perfectly.':'I helped a boy with his ankle, and it went great because I’m a natural.',
+           reply:[{if:'bad',who:'imani',text:'Your Portfolio Book says his ankle rolled again. I’d rather hear the honest version. Mistakes are how we learn.'},I_('It did go well! But tell me why you chose it. Reasons matter more than luck.')],
+           tip:[{if:'bad',who:'byte',text:'Hmm, that’s not quite what happened. Honest stories, even about mistakes, impress people more.'},B_('Add your reason! Say why you chose it, not only that it worked.')]}]},
+      {q:I_('What would you do if your AI and a patient disagreed?'),rq:B_('She might ask: “What would you do if your AI and a patient disagreed?”'),
+       check:'listens to both the AI and the patient, explains tradeoffs, and lets the patient decide',heur:/listen|ask|both|explain|why|tradeoff|decide/,
+       opts:[{t:'I’d ask each of them why. The AI might know facts the patient doesn’t, and the patient might know something the AI doesn’t. Then I’d explain the tradeoffs, and the patient decides.',good:true,
+           reply:[{if:'told',who:'imani',text:'Exactly. Like Ari’s grandma knowing he hides pain. Both kinds of knowing matter.'},I_('Exactly. Both kinds of knowing matter.')],
+           tip:[{if:'told',who:'byte',text:'Perfect. You could even add an example, like Ari’s grandma telling you he hides pain!'},B_('Perfect. If you have an example, add it!')]},
+         {t:'I’d do whatever the AI says. It knows more than anyone.',reply:I_('Our AIs are brilliant, but they only know what they’re told. And it’s the patient’s body.'),tip:B_('Careful! I know a lot, but I don’t know everything people know. Say how you’d listen to both.')},
+         {t:'I’d do whatever the patient wants, even if it’s dangerous.',reply:I_('Listening matters, but so do the facts. Your job is to help them see both.'),tip:B_('Patients decide, but they need the facts first. Say how you’d explain the tradeoffs.')}]},
+      {q:I_('What’s something you still need to learn?'),rq:B_('And maybe: “What’s something you still need to learn?”'),
+       check:'honestly names one real thing they are still learning',heur:/learn|practic|better|still|not good|hard for me|working on|need to/,
+       opts:[{t:'I’m still learning to explain odds so kids understand them. I practiced with Ari, and I want to get better.',good:true,reply:I_('That’s honest and specific. It’s a great thing to work on, and we’ll help you.'),tip:B_('Honest and specific. That’s what managers love to hear!')},
+         {t:'Nothing. I’m already great at everything.',reply:I_('Everyone has something to learn, even me. Knowing yours is a strength.'),tip:B_('Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.')},
+         {t:'Um, I don’t know.',reply:I_('That’s okay. Think about it, though. Knowing what you don’t know is a strength.'),tip:B_('It’s okay to pause and think. Try naming one real thing, like explaining odds.')}]},
+      {q:I_('Do you have a question for me?'),rq:B_('At the end she’ll ask: “Do you have a question for me?”'),
+       opts:[{t:'What’s the hardest part of your job?',good:true,reply:I_('Telling a family that every choice has a downside. It never gets easy, but it gets clearer.'),tip:B_('Great question! It shows you really want to understand the job.')},
+         {t:'What does a great new doctor do in the first month?',good:true,reply:I_('Asks lots of questions. The best new doctors ask for help early.'),tip:B_('Great question! It shows you want to do well.')},
+         {t:'No, I’m good.',reply:I_('Okay! Next time, try asking one. It shows you’re curious.'),tip:B_('Try asking one! A good question shows you’re curious.')}]}]},
+  firstday:{scene:'hospital',place:'Kids’ floor · Boston Harbor Hospital · 8:30 AM',go:'Open my world map',
+    intro:I_('Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.'),
+    thanks:{ruth:{who:'ruth',text:'Thank you again for finding my glasses, dear. I can read the sheet music now!'}},
+    team:[{ask:{who:'gabi',text:'Welcome back! We met at the open house. Do you remember my cat’s name?'},opts:['Bandage','Whiskers','Stethoscope'],
+        right:{who:'gabi',text:'Bandage! You remembered. Welcome to the kids’ floor.'},wrong:{who:'gabi',text:'It’s Bandage, because he sleeps on the first-aid box! Welcome to the team.'}},
+      {ask:{who:'kofi',text:'Hey, it’s you! Quick quiz: what do I name my robots after?'},opts:['Planets','Dinosaurs','Ice cream flavors'],
+        right:{who:'kofi',text:'Planets! Jupiter says hi. Beep boop.'},wrong:{who:'kofi',text:'Planets! That big one is Jupiter, remember? Welcome aboard.'}},
+      {ask:{who:'ruth',text:'Hello again, dear. What song do I play on the piano on Fridays?'},opts:['Fly Me to the Moon','Happy Birthday','Twinkle, Twinkle, Little Star'],
+        right:{who:'ruth',text:'Yes! Come and listen this Friday.'},wrong:{who:'ruth',text:'It’s “Fly Me to the Moon.” Come and listen this Friday!'}}],
+    rule:I_('At Harbor we have one [[house rule]]: ask early, ask anyone. If you’re stuck, or something feels off, say so, even to me.'),
+    test:{prompt:B_('Ping! Halo says your first patient is in Room 4B tomorrow at nine. Um... where is Room 4B?'),
+      opts:[{t:'Ask Gabi where Room 4B is',heart:'gabi'},{t:'Wander around until I find it',then:B_('That could take a while... Remember the house rule? Let’s ask Gabi.')}],
+      after:{who:'gabi',text:'Third floor, past the fish tank. Thanks for asking! That’s exactly what the house rule is for.'}},
+    end:{scene:'night',place:'Home · Boston · 9:00 PM',text:H=>`You remembered ${H.remembered??0} of 3 teammates, and you learned the house rule. Tomorrow is your first shift with a real patient. Get some sleep, Doctor!`}}
+};
