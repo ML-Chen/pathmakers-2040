@@ -25,15 +25,15 @@
   var LINE = '#4a3e38';
   function ink(ctx, s, a, wd) { ctx.strokeStyle = rgba(LINE, a == null ? 0.5 : a); ctx.lineWidth = (wd || 0.7) * s; ctx.lineJoin = 'round'; ctx.stroke(); }
 
-  var ANCH = { wall: { x: 0.3, y: 0.528 }, valve: { x: 0.64, y: 0.512 }, drain: { x: 0.84, y: 0.742 }, saguaro: { x: 0.14, y: 0.47 }, bus: { x: 0.13, y: 0.69 },
-    curb: { x: 0.6, y: 0.738 }, cracks: { x: 0.42, y: 0.615 }, mountain: { x: 0.62, y: 0.36 }, canal: { x: 0.72, y: 0.466 }, path: { x: 0.5, y: 0.48 } };
+  var ANCH = { wall: { x: 0.3, y: 0.528 }, valve: { x: 0.64, y: 0.512 }, drain: { x: 0.84, y: 0.742 }, saguaro: { x: 0.14, y: 0.535 }, bus: { x: 0.13, y: 0.69 },
+    curb: { x: 0.6, y: 0.738 }, cracks: { x: 0.42, y: 0.615 }, mountain: { x: 0.62, y: 0.36 }, canal: { x: 0.72, y: 0.47 }, path: { x: 0.5, y: 0.44 } };
   var SKY = [[0, '#9cc4dc'], [0.45, '#cfe0dc'], [0.8, '#f2e6c8'], [1, '#f8e2bc']];
 
   var LM = null;
   function layout(w, h) {
     var key = w + 'x' + h; if (LM && LM.key === key) return LM;
     var s = S(w, h), L = { key: key, s: s, w: w, h: h };
-    L.hz = h * 0.405; L.bank = h * 0.455; L.water = [h * 0.458, h * 0.478]; L.path = [h * 0.483, h * 0.5];
+    L.hz = h * 0.405; L.bank = h * 0.446; L.water = [h * 0.458, h * 0.478]; L.path = [h * 0.483, h * 0.5];
     L.wallTop = h * 0.503; L.wallBase = h * 0.537; L.gap = [w * 0.585, w * 0.7];
     L.walk = h * 0.7; L.curb = h * 0.736; L.gutter = h * 0.748;
     L.vx = w * 0.5; L.vy = L.hz;
@@ -66,7 +66,9 @@
     [[0.08, 0.13, 3], [0.34, 0.11, -2], [0.37, 0.095, 2], [0.71, 0.12, 2], [0.93, 0.1, -3]].forEach(function (p, j) { X.fanPalm(ctx, w * p[0], L.bank - 2 * s, h * p[1], s, 6230 + j, { lean: p[2] * s, far: true, crown: h * p[1] * 0.14 }); });
     haze(ctx, -w * 0.2, L.hz - h * 0.03, w * 1.2, L.bank, '#f2e6d0', 0.3);
     // the far bank and the canal: concrete lining, blue-green water, reflections and ripples
-    ctx.fillStyle = '#cfc6b4'; ctx.fillRect(0, L.bank - 1 * s, w, L.water[0] - L.bank + 1 * s);
+    // the far bank's path, where people walk and push carts along the canal
+    ctx.fillStyle = lg(ctx, 0, L.bank - 1 * s, 0, L.water[0], [[0, '#e4d6bc'], [1, '#cfc2a6']]); ctx.fillRect(0, L.bank - 1 * s, w, L.water[0] - L.bank + 1 * s);
+    ctx.fillStyle = 'rgba(90,70,50,0.35)'; ctx.fillRect(0, L.water[0] - 1 * s, w, 1 * s);
     ctx.fillStyle = lg(ctx, 0, L.water[0], 0, L.water[1], [[0, '#6a9a9a'], [1, '#4a7e86']]); ctx.fillRect(0, L.water[0], w, L.water[1] - L.water[0]);
     dabs(ctx, 60, [['#8ab8b4', 0.6], ['#3e6a72', 0.5]], function (j) { return [r() * w, lerp(L.water[0] + 1 * s, L.water[1] - 1 * s, r()), (4 + r() * 10) * s, 0.5 * s, j % 2, 0]; });
     ctx.fillStyle = '#d8d0c0'; ctx.fillRect(0, L.water[1], w, L.path[0] - L.water[1]);

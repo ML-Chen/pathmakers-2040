@@ -51,7 +51,7 @@ Owner feedback still to act on (Nov 2, late): the Nome mammoths look goofy (moth
 - The "TOTALLY NORMAL" crate gag (Pip and Jory) has no payoff yet. Either pay it off early (each sighting goes in the notebook; after the third, Byte links the crates to the secret Calder Bay datacenter; the Sneeze Recipe ends with the two of them caught comically, revealing they were hired couriers for the Unbound) or cut it.
 
 ## Visual QA to-dos (branch `qa/visual`, Nov 2): found at 390x844, 360x640, 520x780 and desktop windows, not fixed there
-- [ ] Paint `dance_hall` (Bea's wedding) and `eastie_pier` (agreed's Harborwalk walk); until then `SCENE_STANDIN` in game.js borrows `night` and `harbor`. Lot's `phx_lot`, `phx_studio` and `phx_dusk` still fall back to the hospital corridor.
+- [x] Painted on `paint/missing`: `dance_hall` (night) and `dance_hall_day` (Bea's interview), `eastie_pier`, the Flood Lot's `phx_lot`, `phx_studio` and `phx_dusk`, the Moon's `moon_dome` and Mars's `mars_hab` (indoor talks no longer happen bareheaded on the open surface), and the place views `bay`, `nyc` and `calderbay`. `SCENE_STANDIN` is empty.
 - [ ] Workbench: the floating Byte companion (bottom right) covers the lower-right corner of document pictures while you scroll (labels like "Drains slowly", "In the shade: 30°F"); give the bench a right gutter or move Byte when a picture passes under it.
 - [ ] Workbench infographics: many in-picture labels are very small on a phone, roughly 7-8px (shop, lot, calf and bill memos); raise the smallest `igT` sizes.
 - [ ] Future Table: each future's caption is 4-7 words per line at 390px, so the two rows of cards take about half the screen; shorter vignette captions would leave room for the meters and controls.
