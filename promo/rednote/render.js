@@ -109,8 +109,8 @@ const CSS = `
     const vo = segs.map(({s}) => path.join(voDir, s.id + '.wav')).filter(f => fs.existsSync(f));
     segs.forEach(({s}) => aIn.push('-i', path.join(voDir, s.id + '.wav')));
     const delays = segs.map(({at}, i) => `[${i + 2}:a]adelay=${Math.round((at + LEAD) * 1000)}|${Math.round((at + LEAD) * 1000)},aresample=44100[n${i}]`);
-    af = `${delays.join(';')};${segs.map((_, i) => `[n${i}]`).join('')}amix=inputs=${segs.length}:normalize=0,volume=1.6,asplit=2[vo][sc];` +
-      `[1:a]aresample=44100,volume=0.55,afade=t=in:d=0.6,afade=t=out:st=${(vlen - 2).toFixed(2)}:d=2[mu];[mu][sc]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[duck];[duck][vo]amix=inputs=2:normalize=0[a]`;
+    af = `${delays.join(';')};${segs.map((_, i) => `[n${i}]`).join('')}amix=inputs=${segs.length}:normalize=0,volume=1.6,aformat=channel_layouts=stereo,asplit=2[vo][sc];` +
+      `[1:a]aresample=44100,aformat=channel_layouts=stereo,volume=0.55,afade=t=in:d=0.6,afade=t=out:st=${(vlen - 2).toFixed(2)}:d=2[mu];[mu][sc]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[duck];[duck][vo]amix=inputs=2:normalize=0[a]`;
   } else af = `[1:a]aresample=44100,volume=0.6,afade=t=in:d=0.6,afade=t=out:st=${(vlen - 2).toFixed(2)}:d=2[a]`;
   ff(...aIn, '-filter_complex', af, '-map', '0:v', '-map', '[a]', '-t', vlen.toFixed(3), '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', final);
   // contact sheet of the stills
