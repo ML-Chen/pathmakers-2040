@@ -441,6 +441,13 @@ svg text:not([font-family]){font-family:var(--body)}
 .place{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.12;padding:0 12px;border:6px solid transparent;border-left:0;border-right:0;border-radius:18px;font-size:.82rem}
 /* (vertical space is a transparent border, not padding, so a clamped third line never peeks out below) */
 @media (max-width:380px){.hud-btns{gap:4px}.hud-btns .hbtn{width:35px;height:35px}.hbtn svg{width:20px;height:20px}}
+/* Talk screens fit the window: the portrait shrinks to leave room for the line and its choices, so nothing scrolls. */
+#app.talk{display:flex;flex-direction:column;height:100vh;height:100dvh;min-height:0}
+#app.talk>.hud{flex:none}
+#app.talk>.stage{flex:1 1 0;min-height:96px;height:auto;max-height:min(52vh,430px);margin-top:auto}
+#app.talk>.stage.duo{max-height:min(36vh,300px)}
+#app.talk>.subtitle{flex:none;max-height:74vh;max-height:74dvh;overflow-y:auto;overscroll-behavior:contain}
+#app.talk .speaker .byteart.big{width:auto;height:100%;max-width:100%;margin:0 auto}
 
 /* parent.css — the grown-ups' progress page (parent.js) */
 .pp{position:fixed;inset:0;z-index:45;background:var(--mist);overflow-y:auto;overscroll-behavior:contain;opacity:0;transform:translateY(16px);transition:opacity .25s,transform .25s}
@@ -15773,7 +15780,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     const gap={exempt:'Skipping farm robots leaves a [[loophole]]: about 35 in 100 that a fake order fools farm robots within a year.',phase:'Older robots stay unsigned for up to 3 years: about 10 in 100 that a fake order fools some of them in the first year.',all:'Every robot is covered within a year: only about 3 in 100 that something slips through. But about 2 in 3 farm robots would stop until they get a chip.'}[c.cmd];
     return `<b>${esc(this.planName(c))}:</b> I forecast it passes about ${p} times in 100. Rep. Gunderson ${bill_pct(v.gunderson)}%, Rep. Ibarra ${bill_pct(v.ibarra)}%, Rep. Sethi ${bill_pct(v.sethi)}%. ${rich(gap)} ${k?'':'I don’t know what Rep. Gunderson really wants, so I’m least sure about him.'}`},
   whyGuide(c){return c.report==='split'?'safety-reports':'signed-commands'},
-  vignette(kind){return typeof bill_vig==='function'?bill_vig(kind):''},
+  vignette(kind){return typeof bill_vig==='function'?bill_vig(String(kind).replace(/^(law|fail)\d+$/,'$1')):''},
   tablePanel(c){return typeof bill_whipBoard==='function'?bill_whipBoard(c):''},
 
   consent:{scene:'dc_office',place:'Rep. Hollis’s office · Cannon Building',left:'hollis',right:'gunderson',title:'Rep. Walt Gunderson',role:'Undecided · Farm district',
@@ -16677,7 +16684,7 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
     return [{kind:c.prot==='boot'?'boot':'cheer',p:1-r,cap:c.prot==='boot'?'Healed in the boot. Ready for the playoffs!':'Cheered on Saturday. Ready for the playoffs!',flags:{heal:1,plays:0,comfy}},
       {kind:'reroll',p:r,cap:'Rolled it again at home. Misses the playoffs.',flags:{heal:0,plays:0,comfy}}]},
   truth(){return true},knows(){return !!S.told},
-  vignette(kind){return window.HIRED_VIG&&HIRED_VIG[kind]?HIRED_VIG[kind]():vignette(kind)},
+  vignette(kind){return typeof HIRED_VIG!=='undefined'&&HIRED_VIG[kind]?HIRED_VIG[kind]():vignette(kind)},
   why(c){const o=this.outcomes(c,this.knows());const re=Math.round(100*o.filter(x=>x.kind==='reroll').reduce((a,x)=>a+x.p,0));
     const boot=c.prot==='boot'&&c.sat==='play'?'Nobody can play soccer in a walking boot, so this plan means sitting out. ':'';
     const play=c.sat==='play'&&c.prot!=='boot';
@@ -16766,26 +16773,26 @@ const HIRED_JOURNEY={
        check:'a specific real story with what they chose and why, told honestly',heur:/\d|because|so that|ari|grandma|ankle|i chose|i picked|i decided|i helped/,
        opts:[{t:x=>x.story,good:true,reply:[{if:'bad',who:'imani',text:'That’s a real story: what you chose, why, and what happened. And thank you for being honest that it didn’t go well. That takes courage.'},I_('That’s a real story: what you chose, why, and what happened.')],
            tip:B_('Great answer! You said what you chose, why, and what happened. Say it just like that.')},
-         {t:'I make hard choices all the time, and I’m really good at them.',reply:I_('Hmm. Can you give me a real example? A story tells me more than “I’m good at it.”'),tip:B_('Try a real example instead, like Ari’s ankle. Details make a story believable.')},
-         {t:x=>x.bad?'I helped a boy with a sprained ankle, and everything went perfectly.':'I helped a boy with his ankle, and it went great because I’m a natural.',
+         {t:'I make hard choices all the time. At school I pick the hardest projects, and my friends always ask me for advice.',reply:I_('Hmm. Can you give me a real example? A story tells me more than “I’m good at it.”'),tip:B_('Try a real example instead, like Ari’s ankle. Details make a story believable.')},
+         {t:x=>x.bad?'I helped a goalkeeper named Ari with a sprained ankle at the open house, and everything went perfectly from start to finish.':'I helped a goalkeeper named Ari with a sprained ankle at the open house. It went great, and everyone said I’m a natural.',
            reply:[{if:'bad',who:'imani',text:'Your Portfolio Book says his ankle rolled again. I’d rather hear the honest version. Mistakes are how we learn.'},I_('It did go well! But tell me why you chose it. Reasons matter more than luck.')],
            tip:[{if:'bad',who:'byte',text:'Hmm, that’s not quite what happened. Honest stories, even about mistakes, impress people more.'},B_('Add your reason! Say why you chose it, not only that it worked.')]}]},
       {q:I_('What would you do if your AI and a patient disagreed?'),rq:B_('She might ask: “What would you do if your AI and a patient disagreed?”'),
        check:'listens to both the AI and the patient, explains tradeoffs, and lets the patient decide',heur:/listen|ask|both|explain|why|tradeoff|decide/,
-       opts:[{t:'I’d ask each of them why. The AI might know facts the patient doesn’t, and the patient might know something the AI doesn’t. Then I’d explain the tradeoffs, and the patient decides.',good:true,
+       opts:[{t:'I’d ask each of them why. Each one may know something the other doesn’t. Then I’d explain the tradeoffs, and the patient decides.',good:true,
            reply:[{if:'told',who:'imani',text:'Exactly. Like Ari’s grandma knowing he hides pain. Both kinds of knowing matter.'},I_('Exactly. Both kinds of knowing matter.')],
            tip:[{if:'told',who:'byte',text:'Perfect. You could even add an example, like Ari’s grandma telling you he hides pain!'},B_('Perfect. If you have an example, add it!')]},
-         {t:'I’d do whatever the AI says. It knows more than anyone.',reply:I_('Our AIs are brilliant, but they only know what they’re told. And it’s the patient’s body.'),tip:B_('Careful! I know a lot, but I don’t know everything people know. Say how you’d listen to both.')},
-         {t:'I’d do whatever the patient wants, even if it’s dangerous.',reply:I_('Listening matters, but so do the facts. Your job is to help them see both.'),tip:B_('Patients decide, but they need the facts first. Say how you’d explain the tradeoffs.')}]},
+         {t:'The AI has read every medical study ever written, so I’d gently help the patient understand why the AI’s plan is the right one.',reply:I_('Our AIs are brilliant, but they only know what they’re told. And it’s the patient’s body.'),tip:B_('Careful! I know a lot, but I don’t know everything people know. Say how you’d listen to both.')},
+         {t:'It’s the patient’s body, so I’d do exactly what they want right away, even if the AI warns that it could be dangerous.',reply:I_('Listening matters, but so do the facts. Your job is to help them see both.'),tip:B_('Patients decide, but they need the facts first. Say how you’d explain the tradeoffs.')}]},
       {q:I_('What’s something you still need to learn?'),rq:B_('And maybe: “What’s something you still need to learn?”'),
        check:'honestly names one real thing they are still learning',heur:/learn|practic|better|still|not good|hard for me|working on|need to/,
-       opts:[{t:'I’m still learning to explain odds so kids understand them. I practiced with Ari, and I want to get better.',good:true,reply:I_('That’s honest and specific. It’s a great thing to work on, and we’ll help you.'),tip:B_('Honest and specific. That’s what managers love to hear!')},
-         {t:'Nothing. I’m already great at everything.',reply:I_('Everyone has something to learn, even me. Knowing yours is a strength.'),tip:B_('Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.')},
-         {t:'Um, I don’t know.',reply:I_('That’s okay. Think about it, though. Knowing what you don’t know is a strength.'),tip:B_('It’s okay to pause and think. Try naming one real thing, like explaining odds.')}]},
+       opts:[{t:'Explaining odds so kids understand them. I practiced with Ari, and I want to get better at it.',good:true,reply:I_('That’s honest and specific. It’s a great thing to work on, and we’ll help you.'),tip:B_('Honest and specific. That’s what managers love to hear!')},
+         {t:'I’m already good at most things, so mostly I’d just learn the hospital’s computer system and where everything is.',reply:I_('Everyone has something to learn, even me. Knowing yours is a strength.'),tip:B_('Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.')},
+         {t:'I’m not sure yet. I’d let my AI figure out what I need to learn, and then I’d do whatever lessons it gives me.',reply:I_('Your AI can help you study, but you know best what feels hard for you. Knowing that is a strength.'),tip:B_('I can help you study, but you know best what’s hard for you. Try naming one real thing, like explaining odds.')}]},
       {q:I_('Do you have a question for me?'),rq:B_('At the end she’ll ask: “Do you have a question for me?”'),
        opts:[{t:'What’s the hardest part of your job?',good:true,reply:I_('Telling a family that every choice has a downside. It never gets easy, but it gets clearer.'),tip:B_('Great question! It shows you really want to understand the job.')},
          {t:'What does a great new doctor do in the first month?',good:true,reply:I_('Asks lots of questions. The best new doctors ask for help early.'),tip:B_('Great question! It shows you want to do well.')},
-         {t:'No, I’m good.',reply:I_('Okay! Next time, try asking one. It shows you’re curious.'),tip:B_('Try asking one! A good question shows you’re curious.')}]}]},
+         {t:'No, I think I’m all set. I read the hospital’s website, and my AI already told me everything about the job.',reply:I_('Okay! Next time, try asking one. It shows you’re curious.'),tip:B_('Try asking one! A good question shows you’re curious.')}]}]},
   firstday:{scene:'hospital',place:'Kids’ floor · Boston Harbor Hospital · 8:30 AM',go:'Open my world map',
     intro:I_('Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.'),
     thanks:{ruth:{who:'ruth',text:'Thank you again for finding my glasses, dear. I can read the sheet music now!'}},
@@ -23540,7 +23547,7 @@ addEventListener('resize',()=>{if(S&&S.step==='hub'&&$('#wmpins'))requestAnimati
 // ---------- starting a mission from the map: journeys resume at the furthest stage ----------
 function cardLabel(m){const me=missionMeta(m);return m.dayLabel||(me.kind==='workday'&&m.day?'Day '+m.day:KIND_NAME[me.kind]||'Day '+m.day)}
 function journeyResume(m){if(!m.stages||isDone(m.id))return null;const i=camp().jp[m.id]||0;return i>0&&m.stages[i]?m.stages[i].at:null}
-function playMission(m){if(!m)return;startMission(m.id,journeyResume(m)||undefined)}
+function playMission(m){if(!m)return;if(resumeMission(m.id))return;startMission(m.id,journeyResume(m)||undefined)}
 
 // ---------- a place's planner ----------
 function placeScene(key){const P=PLACES[key];const k=(P.scenes||[]).find(x=>window.PAINT&&PAINT[x]);if(k)return k;
@@ -24075,7 +24082,16 @@ function screen(cls,html){I18N.sync();stopVoice();APP.className='screen '+cls;co
   if(typeof campaignScreen==='function')campaignScreen(cls);applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
   MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
-function go(step){S.step=step;save();render()}
+// Autosave keeps the exact step of every unfinished mission (S.at) and, when the player switches to another mission,
+// that mission's working state (S.paused), so coming back resumes where they left off instead of restarting a stage.
+function go(step){S.step=step;const m=S.mission&&MISSIONS[S.mission];
+  if(m&&m.flow&&m.flow.some(f=>f.name===step)){S.at=S.at||{};if(step===m.flow[m.flow.length-1].name){delete S.at[m.id];if(S.paused)delete S.paused[m.id]}else S.at[m.id]=step}
+  save();render()}
+function resumeAt(id){const st=S.at&&S.at[id],m=MISSIONS[id];return st&&m&&m.flow.some(f=>f.name===st)&&st!==m.flow[0].name?st:null}
+function resumeMission(id){const st=resumeAt(id);if(!st)return false;
+  if(S.mission!==id){parkMission();const P=S.paused&&S.paused[id];Object.assign(S,MISSION_FIELDS(),P||{});S.mission=id;if(!P)S.choice={...M().start};curDoc=((M().docs||[])[0]||{}).id}
+  go(st);return true}
+function parkMission(){const cur=S.mission;if(!cur||!resumeAt(cur))return;const keep={choice:S.choice,daysLeft:S.daysLeft};for(const k in MISSION_FIELDS())keep[k]=S[k];S.paused={...(S.paused||{}),[cur]:JSON.parse(JSON.stringify(keep))}}
 function render(){if(STEPS[S.step])return STEPS[S.step]();if(S.mission&&MISSIONS[S.mission]&&M().flow.some(f=>f.name===S.step))return runFlow();STEPS.title()}
 
 // ---------- conversations (face to face) ----------
@@ -24116,7 +24132,7 @@ function talk(key,sceneKey,place,next){
 // ---------- steps: title, setup, hub, and each mission's flow ----------
 // a new game starts with the earliest unlocked mission (the career journey when it exists)
 function firstMission(){return Object.values(MISSIONS).filter(m=>!(m.after||[]).length).sort((a,b)=>a.day-b.day)[0].id}
-function startMission(id,at){Object.assign(S,MISSION_FIELDS());S.mission=id;hook('start',id);S.choice={...M().start};S.daysLeft=null;curDoc=((M().docs||[])[0]||{}).id;go(at||M().flow[0].name)}
+function startMission(id,at){if(S.mission!==id)parkMission();if(S.at)delete S.at[id];if(S.paused)delete S.paused[id];Object.assign(S,MISSION_FIELDS());S.mission=id;hook('start',id);S.choice={...M().start};S.daysLeft=null;curDoc=((M().docs||[])[0]||{}).id;go(at||M().flow[0].name)}
 function nextStep(){const f=M().flow;const i=f.findIndex(x=>x.name===S.step);if(i<0||i>=f.length-1){S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};go('hub');return}go(f[i+1].name)}
 function runFlow(){const f=M().flow.find(x=>x.name===S.step);if(!f)return STEPS.hub();
   if(f.k==='talk')return talk(f.talk,f.scene,f.place,()=>{if(f.toast)toast(T(f.toast));nextStep()});
@@ -24150,7 +24166,7 @@ const STEPS={
       ${Object.entries(CAREERS).map(([ck,cv])=>{const ms=list.filter(m=>m.career===ck).sort((a,b)=>a.day-b.day);if(!ms.length)return '';return `<div class="career"><div class="career-h">${esc(T(cv.name))}</div>${ms.map(m=>{const done=S.completed[m.id],open=unlocked(m);
         return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">${esc(m.dayLabel?T(m.dayLabel):m.tag?T(m.tag):T('Day {0}',m.day))}</div><div class="mtxt"><b>${esc(T(m.title))}</b><span>${esc(T(open?m.blurb:'Finish earlier days to unlock.'))}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
       </div>`);
-    $$('.mcard').forEach(b=>b.onclick=()=>startMission(b.dataset.m))},
+    $$('.mcard').forEach(b=>b.onclick=()=>{if(!resumeMission(b.dataset.m))startMission(b.dataset.m)})},
   street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(24)}>${T('TOTALLY')}</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(34)}>${T('NORMAL BOLTS')}</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>${T('Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.')}</p><div class="row"><button class="btn small ghost" id="clue">${T('Look at the crate')}</button><button class="btn small" id="on">${T('Go to the hospital')}</button></div></div>`);
     $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast(T('The strangers hurry away. You noted the crate.'),'good');$('#clue').disabled=true};
@@ -24208,11 +24224,11 @@ function openLesson(id){const L=LESSONS[id];let qi=0,right=0;
 // ---------- Criteria: set the bar before looking ----------
 function renderCriteria(){
   screen('criteria',`${scene('workbench')}${hud(T('Workbench · {0}',T(M().place)))}<div class="panel-card"><h2>${T('What would make this a good decision?')}</h2>
-   <p>${T('Pick 2 or 3 things that matter most, before you look at any futures.')}</p>
+   <p>${T('Pick the 1, 2 or 3 things that matter most, before you look at any futures.')}</p>
    ${M().criteriaHint?`<p class="tiny muted">${T(M().criteriaHint)}</p>`:''}
    <div class="crit">${M().criteria.map(c=>`<button class="critb ${S.criteria.includes(c.id)?'on':''}" data-c="${c.id}">${T(c.label).replace(/\[\[|\]\]/g,'')}</button>`).join('')}</div>
    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(T(M().criteriaNote||'Deciding what \u201cgood\u201d means first keeps a flashy option from fooling you.'))}</p></div>
-   <button class="btn wide" id="next" ${S.criteria.length>=2?'':'disabled'}>${T('Open the Future Table')}</button></div>`);
+   <button class="btn wide" id="next" ${S.criteria.length>=1?'':'disabled'}>${T('Open the Future Table')}</button></div>`);
   $$('.critb').forEach(b=>b.onclick=()=>{const id=b.dataset.c;if(S.criteria.includes(id))S.criteria=S.criteria.filter(x=>x!==id);else if(S.criteria.length<3)S.criteria.push(id);else{toast(T('Pick at most 3.'));return}save();renderCriteria()});
   $('#next').onclick=()=>nextStep()}
 
@@ -24326,7 +24342,7 @@ function renderDebrief(){
     <li class="${fit?'ok':''}">${starIcon('decision',fit)}${T(fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.')}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${starIcon('heart',memoOk&&S.consent)}${T(memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.')} ${T(S.consent?'You explained honestly, so they could truly agree.':'')}</li>
     ${(M().debriefLines?M().debriefLines(c):[]).map(x=>`<li class="${x.ok?'ok':''}">${esc(T(x.text))}</li>`).join('')}</ul>
-   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(T(M().byteGood)):T('Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.')}</p></div>
+   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(T(M().byteGood)):fit?T('Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'):T('This plan was never likely to meet every goal you picked. That’s fine if a goal didn’t really matter to you. Next time, pick only the goals you care about, so the Future Table can find the plan that fits them.')}</p></div>
    ${calibLine()}
    <div class="earned"><span>${T('{0} Field Guide ideas',S.guide.length)}</span><span>${T('{0} new words',S.words.length)}</span><span>${T('{0} hearts',Object.values(S.hearts).reduce((a,b)=>a+b,0))}</span></div>
    <button class="btn wide" id="next">${T(M().flow.some(f=>f.k==='evening'||f.home)?'Head home':'Finish the day')}</button></div>`);

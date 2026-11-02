@@ -105,7 +105,7 @@ addEventListener('resize',()=>{if(S&&S.step==='hub'&&$('#wmpins'))requestAnimati
 // ---------- starting a mission from the map: journeys resume at the furthest stage ----------
 function cardLabel(m){const me=missionMeta(m);return m.dayLabel||(me.kind==='workday'&&m.day?'Day '+m.day:KIND_NAME[me.kind]||'Day '+m.day)}
 function journeyResume(m){if(!m.stages||isDone(m.id))return null;const i=camp().jp[m.id]||0;return i>0&&m.stages[i]?m.stages[i].at:null}
-function playMission(m){if(!m)return;startMission(m.id,journeyResume(m)||undefined)}
+function playMission(m){if(!m)return;if(resumeMission(m.id))return;startMission(m.id,journeyResume(m)||undefined)}
 
 // ---------- a place's planner ----------
 function placeScene(key){const P=PLACES[key];const k=(P.scenes||[]).find(x=>window.PAINT&&PAINT[x]);if(k)return k;

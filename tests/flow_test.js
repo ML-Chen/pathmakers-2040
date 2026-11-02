@@ -19,6 +19,8 @@ const {chromium}=require('playwright');const path=require('path');
        render();await new Promise(r=>setTimeout(r,f.k==='reveal'?80:30));
        if(f.k!=='evening'&&/\bhub\b/.test(APP.className)&&!/hub/.test(f.name))bad.push(`step "${f.name}" (${f.k}) rendered the day planner`);
        if(!APP.innerHTML.trim())bad.push(`step "${f.name}" (${f.k}) rendered nothing`);
+       // every Future Table picture must actually draw something (a missing vignette leaves an empty frame)
+       if(f.k==='table'){const empty=[...document.querySelectorAll('.fut svg.vig')].filter(v=>!v.querySelector('g[clip-path] *')).length;if(empty)bad.push(`step "${f.name}": ${empty} Future Table pictures are blank`)}
        if(f.k==='evening'){const b=document.querySelector('#plan');if(b)b.click();else bad.push('evening has no "Plan tomorrow" button');break}
        nextStep()}
      const last=flow[flow.length-1].name;if(seen[seen.length-1]!==last)bad.push(`stopped at "${seen[seen.length-1]}", never reached "${last}"`);

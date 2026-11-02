@@ -219,7 +219,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     const gap={exempt:'Skipping farm robots leaves a [[loophole]]: about 35 in 100 that a fake order fools farm robots within a year.',phase:'Older robots stay unsigned for up to 3 years: about 10 in 100 that a fake order fools some of them in the first year.',all:'Every robot is covered within a year: only about 3 in 100 that something slips through. But about 2 in 3 farm robots would stop until they get a chip.'}[c.cmd];
     return `<b>${esc(this.planName(c))}:</b> I forecast it passes about ${p} times in 100. Rep. Gunderson ${bill_pct(v.gunderson)}%, Rep. Ibarra ${bill_pct(v.ibarra)}%, Rep. Sethi ${bill_pct(v.sethi)}%. ${rich(gap)} ${k?'':'I don’t know what Rep. Gunderson really wants, so I’m least sure about him.'}`},
   whyGuide(c){return c.report==='split'?'safety-reports':'signed-commands'},
-  vignette(kind){return typeof bill_vig==='function'?bill_vig(kind):''},
+  vignette(kind){return typeof bill_vig==='function'?bill_vig(String(kind).replace(/^(law|fail)\d+$/,'$1')):''},
   tablePanel(c){return typeof bill_whipBoard==='function'?bill_whipBoard(c):''},
 
   consent:{scene:'dc_office',place:'Rep. Hollis’s office · Cannon Building',left:'hollis',right:'gunderson',title:'Rep. Walt Gunderson',role:'Undecided · Farm district',

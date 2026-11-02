@@ -434,3 +434,10 @@ svg text:not([font-family]){font-family:var(--body)}
 .place{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.12;padding:0 12px;border:6px solid transparent;border-left:0;border-right:0;border-radius:18px;font-size:.82rem}
 /* (vertical space is a transparent border, not padding, so a clamped third line never peeks out below) */
 @media (max-width:380px){.hud-btns{gap:4px}.hud-btns .hbtn{width:35px;height:35px}.hbtn svg{width:20px;height:20px}}
+/* Talk screens fit the window: the portrait shrinks to leave room for the line and its choices, so nothing scrolls. */
+#app.talk{display:flex;flex-direction:column;height:100vh;height:100dvh;min-height:0}
+#app.talk>.hud{flex:none}
+#app.talk>.stage{flex:1 1 0;min-height:96px;height:auto;max-height:min(52vh,430px);margin-top:auto}
+#app.talk>.stage.duo{max-height:min(36vh,300px)}
+#app.talk>.subtitle{flex:none;max-height:74vh;max-height:74dvh;overflow-y:auto;overscroll-behavior:contain}
+#app.talk .speaker .byteart.big{width:auto;height:100%;max-width:100%;margin:0 auto}

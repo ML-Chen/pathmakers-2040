@@ -1,0 +1,74 @@
+name: Playtest
+# On every push to main: play every mission, check autosave resume, screenshot every screen, and record a canonical
+# playthrough video. Results go to the "Playtest (latest)" release (playthrough.mp4 and one contact sheet per
+# mission, viewable from a phone) and to this run's artifacts.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: playtest
+  cancel-in-progress: true
+env:
+  PLAYWRIGHT_VERSION: 1.63.0
+jobs:
+  playtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Cache the Playwright browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install Playwright, Chromium and ffmpeg
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium
+          sudo apt-get install -y -qq ffmpeg >/dev/null
+      - name: Build the single-file game
+        id: build
+        run: python3 src/build.py dist/pathmakers.html
+      - name: Play every mission's flow
+        run: node tests/flow_test.js dist/pathmakers.html
+      - name: Autosave resumes where the player left off
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: node tests/resume_test.js dist/pathmakers.html
+      - name: Screenshot every mission at 390x844
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: node tools/mission_shots.js dist/pathmakers.html shots
+      - name: Record the playthrough video
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: node tools/playthrough_video.js dist/pathmakers.html video
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playtest
+          path: |
+            shots/
+            video/*.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Publish the "Playtest (latest)" release
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          files=()
+          [ -f video/playthrough.mp4 ] && files+=(video/playthrough.mp4)
+          for f in shots/sheets/*.png; do [ -f "$f" ] && files+=("$f"); done
+          [ ${#files[@]} -eq 0 ] && exit 0
+          NOTES="Automated playtest of ${GITHUB_SHA::7}, $(date -u '+%b %d %H:%M UTC'). playthrough.mp4 plays every mission start to finish; each PNG is one mission's contact sheet."
+          if gh release view playtest-latest >/dev/null 2>&1; then
+            for a in $(gh release view playtest-latest --json assets -q '.assets[].name'); do gh release delete-asset playtest-latest "$a" -y; done
+            gh release upload playtest-latest "${files[@]}" --clobber
+            gh release edit playtest-latest --notes "$NOTES"
+          else
+            gh release create playtest-latest "${files[@]}" --title "Playtest (latest)" --notes "$NOTES" --target "$GITHUB_SHA" --prerelease
+          fi

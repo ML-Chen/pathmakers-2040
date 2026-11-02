@@ -184,7 +184,16 @@ function screen(cls,html){I18N.sync();stopVoice();APP.className='screen '+cls;co
   if(typeof campaignScreen==='function')campaignScreen(cls);applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
   MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
-function go(step){S.step=step;save();render()}
+// Autosave keeps the exact step of every unfinished mission (S.at) and, when the player switches to another mission,
+// that mission's working state (S.paused), so coming back resumes where they left off instead of restarting a stage.
+function go(step){S.step=step;const m=S.mission&&MISSIONS[S.mission];
+  if(m&&m.flow&&m.flow.some(f=>f.name===step)){S.at=S.at||{};if(step===m.flow[m.flow.length-1].name){delete S.at[m.id];if(S.paused)delete S.paused[m.id]}else S.at[m.id]=step}
+  save();render()}
+function resumeAt(id){const st=S.at&&S.at[id],m=MISSIONS[id];return st&&m&&m.flow.some(f=>f.name===st)&&st!==m.flow[0].name?st:null}
+function resumeMission(id){const st=resumeAt(id);if(!st)return false;
+  if(S.mission!==id){parkMission();const P=S.paused&&S.paused[id];Object.assign(S,MISSION_FIELDS(),P||{});S.mission=id;if(!P)S.choice={...M().start};curDoc=((M().docs||[])[0]||{}).id}
+  go(st);return true}
+function parkMission(){const cur=S.mission;if(!cur||!resumeAt(cur))return;const keep={choice:S.choice,daysLeft:S.daysLeft};for(const k in MISSION_FIELDS())keep[k]=S[k];S.paused={...(S.paused||{}),[cur]:JSON.parse(JSON.stringify(keep))}}
 function render(){if(STEPS[S.step])return STEPS[S.step]();if(S.mission&&MISSIONS[S.mission]&&M().flow.some(f=>f.name===S.step))return runFlow();STEPS.title()}
 
 // ---------- conversations (face to face) ----------
@@ -225,7 +234,7 @@ function talk(key,sceneKey,place,next){
 // ---------- steps: title, setup, hub, and each mission's flow ----------
 // a new game starts with the earliest unlocked mission (the career journey when it exists)
 function firstMission(){return Object.values(MISSIONS).filter(m=>!(m.after||[]).length).sort((a,b)=>a.day-b.day)[0].id}
-function startMission(id,at){Object.assign(S,MISSION_FIELDS());S.mission=id;hook('start',id);S.choice={...M().start};S.daysLeft=null;curDoc=((M().docs||[])[0]||{}).id;go(at||M().flow[0].name)}
+function startMission(id,at){if(S.mission!==id)parkMission();if(S.at)delete S.at[id];if(S.paused)delete S.paused[id];Object.assign(S,MISSION_FIELDS());S.mission=id;hook('start',id);S.choice={...M().start};S.daysLeft=null;curDoc=((M().docs||[])[0]||{}).id;go(at||M().flow[0].name)}
 function nextStep(){const f=M().flow;const i=f.findIndex(x=>x.name===S.step);if(i<0||i>=f.length-1){S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};go('hub');return}go(f[i+1].name)}
 function runFlow(){const f=M().flow.find(x=>x.name===S.step);if(!f)return STEPS.hub();
   if(f.k==='talk')return talk(f.talk,f.scene,f.place,()=>{if(f.toast)toast(T(f.toast));nextStep()});
@@ -259,7 +268,7 @@ const STEPS={
       ${Object.entries(CAREERS).map(([ck,cv])=>{const ms=list.filter(m=>m.career===ck).sort((a,b)=>a.day-b.day);if(!ms.length)return '';return `<div class="career"><div class="career-h">${esc(T(cv.name))}</div>${ms.map(m=>{const done=S.completed[m.id],open=unlocked(m);
         return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">${esc(m.dayLabel?T(m.dayLabel):m.tag?T(m.tag):T('Day {0}',m.day))}</div><div class="mtxt"><b>${esc(T(m.title))}</b><span>${esc(T(open?m.blurb:'Finish earlier days to unlock.'))}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
       </div>`);
-    $$('.mcard').forEach(b=>b.onclick=()=>startMission(b.dataset.m))},
+    $$('.mcard').forEach(b=>b.onclick=()=>{if(!resumeMission(b.dataset.m))startMission(b.dataset.m)})},
   street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(24)}>${T('TOTALLY')}</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(34)}>${T('NORMAL BOLTS')}</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>${T('Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.')}</p><div class="row"><button class="btn small ghost" id="clue">${T('Look at the crate')}</button><button class="btn small" id="on">${T('Go to the hospital')}</button></div></div>`);
     $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast(T('The strangers hurry away. You noted the crate.'),'good');$('#clue').disabled=true};
@@ -317,11 +326,11 @@ function openLesson(id){const L=LESSONS[id];let qi=0,right=0;
 // ---------- Criteria: set the bar before looking ----------
 function renderCriteria(){
   screen('criteria',`${scene('workbench')}${hud(T('Workbench · {0}',T(M().place)))}<div class="panel-card"><h2>${T('What would make this a good decision?')}</h2>
-   <p>${T('Pick 2 or 3 things that matter most, before you look at any futures.')}</p>
+   <p>${T('Pick the 1, 2 or 3 things that matter most, before you look at any futures.')}</p>
    ${M().criteriaHint?`<p class="tiny muted">${T(M().criteriaHint)}</p>`:''}
    <div class="crit">${M().criteria.map(c=>`<button class="critb ${S.criteria.includes(c.id)?'on':''}" data-c="${c.id}">${T(c.label).replace(/\[\[|\]\]/g,'')}</button>`).join('')}</div>
    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(T(M().criteriaNote||'Deciding what \u201cgood\u201d means first keeps a flashy option from fooling you.'))}</p></div>
-   <button class="btn wide" id="next" ${S.criteria.length>=2?'':'disabled'}>${T('Open the Future Table')}</button></div>`);
+   <button class="btn wide" id="next" ${S.criteria.length>=1?'':'disabled'}>${T('Open the Future Table')}</button></div>`);
   $$('.critb').forEach(b=>b.onclick=()=>{const id=b.dataset.c;if(S.criteria.includes(id))S.criteria=S.criteria.filter(x=>x!==id);else if(S.criteria.length<3)S.criteria.push(id);else{toast(T('Pick at most 3.'));return}save();renderCriteria()});
   $('#next').onclick=()=>nextStep()}
 
@@ -435,7 +444,7 @@ function renderDebrief(){
     <li class="${fit?'ok':''}">${starIcon('decision',fit)}${T(fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.')}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${starIcon('heart',memoOk&&S.consent)}${T(memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.')} ${T(S.consent?'You explained honestly, so they could truly agree.':'')}</li>
     ${(M().debriefLines?M().debriefLines(c):[]).map(x=>`<li class="${x.ok?'ok':''}">${esc(T(x.text))}</li>`).join('')}</ul>
-   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(T(M().byteGood)):T('Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.')}</p></div>
+   <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(T(M().byteGood)):fit?T('Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'):T('This plan was never likely to meet every goal you picked. That’s fine if a goal didn’t really matter to you. Next time, pick only the goals you care about, so the Future Table can find the plan that fits them.')}</p></div>
    ${calibLine()}
    <div class="earned"><span>${T('{0} Field Guide ideas',S.guide.length)}</span><span>${T('{0} new words',S.words.length)}</span><span>${T('{0} hearts',Object.values(S.hearts).reduce((a,b)=>a+b,0))}</span></div>
    <button class="btn wide" id="next">${T(M().flow.some(f=>f.k==='evening'||f.home)?'Head home':'Finish the day')}</button></div>`);
