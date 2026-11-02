@@ -85,14 +85,14 @@ function hud(place){return `<div class="hud"><div class="place">${esc(place)}</d
 function saveCode(){try{return 'PM1-'+btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/=+$/,'')}catch(e){return ''}}
 function loadCode(code){try{const j=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^PM1-/,'')))));const g=migrateSave(j);if(g){S={...NEW(),...g};save();return true}}catch(e){}return false}
 function openMenu(){const d=sheet('Menu',`<div class="menu">
-   <button class="btn wide" id="m-hub">World map</button>${typeof openPortfolio==='function'?'<button class="btn wide ghost" id="m-port">Portfolio Book</button>':''}${typeof ledgerMenu==='function'?ledgerMenu():''}
+   <button class="btn wide" id="m-hub">World map</button>${typeof openPortfolio==='function'?'<button class="btn wide ghost" id="m-port">Portfolio Book</button>':''}${typeof ledgerMenu==='function'?ledgerMenu():''}${typeof byteClosetButton==='function'?byteClosetButton():''}
    <div class="lbl">Save code</div><p class="tiny muted">Copy this code to move your game to another device or browser.</p>
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">Copy code</button>
    <div class="lbl">Load a save code</div><textarea id="m-in" rows="3" placeholder="Paste a code that starts with PM1-"></textarea><button class="btn small ghost" id="m-load">Load this game</button>
    <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div>
    ${window.PARENT?'<div class="lbl">For grown-ups</div><button class="btn small ghost" id="m-parent">Progress page</button>':''}</div>`);
   const mp=$('#m-parent',d);if(mp)mp.onclick=()=>{d.remove();PARENT.open()};
-  $('#m-hub',d).onclick=()=>{d.remove();go('hub')};const mpb=$('#m-port',d);if(mpb)mpb.onclick=()=>{d.remove();openPortfolio()};const ml=$('#m-ledger',d);if(ml)ml.onclick=()=>{d.remove();openLedger()};
+  $('#m-hub',d).onclick=()=>{d.remove();go('hub')};const mpb=$('#m-port',d);if(mpb)mpb.onclick=()=>{d.remove();openPortfolio()};const ml=$('#m-ledger',d);if(ml)ml.onclick=()=>{d.remove();openLedger()};const mc=$('#m-closet',d);if(mc)mc.onclick=()=>{d.remove();openCloset()};
   $('#m-copy',d).onclick=()=>{const t=$('#m-code',d);navigator.clipboard&&navigator.clipboard.writeText(t.value).then(()=>toast('Save code copied','good')).catch(()=>{t.select()});t.select()};
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast('Game loaded','good');render()}else toast('That code didn\u2019t work. Check that you copied all of it.')};
   $('#m-new',d).onclick=()=>{$('#m-confirm',d).innerHTML=`<p>Erase this game and start over?</p><div class="row"><button class="btn small" id="m-yes">Yes, start over</button><button class="btn small ghost" id="m-no">Keep playing</button></div>`;
@@ -219,12 +219,12 @@ const STEPS={
       <label class="lbl" for="bname">Partner’s name</label><input id="bname" maxlength="14" value="${esc(S.byte.name)}">
       <div class="lbl">Color</div><div class="swatches">${colors.map(c=>`<button class="sw ${S.byte.color===c?'on':''}" data-c="${c}" style="background:${c}" aria-label="Color"></button>`).join('')}</div>
       <div class="lbl">Voice</div><div class="seg" id="vseg">${[['female','Female voice'],['male','Male voice']].map(([v,l])=>`<button class="segb ${(S.byte.voice||'female')===v?'on':''}" data-v="${v}">${l}</button>`).join('')}</div>
-      <div class="lbl">Ears</div><div class="seg">${['floppy','pointy','round'].map(e=>`<button class="segb ${S.byte.ears===e?'on':''}" data-e="${e}">${e[0].toUpperCase()+e.slice(1)}</button>`).join('')}</div>
+      ${byteLookRows()}
       <label class="lbl" for="pname">Your character’s name</label><input id="pname" maxlength="14" value="${esc(S.player)}">
       <button class="btn wide" id="go">Start my first day</button></div>`);
     const redraw=()=>{$('#sb').innerHTML=byteBox(S.byte,'big wag');save()};
     $$('.sw').forEach(b=>b.onclick=()=>{S.byte.color=b.dataset.c;$$('.sw').forEach(x=>x.classList.toggle('on',x===b));redraw()});
-    $$('[data-e]').forEach(b=>b.onclick=()=>{S.byte.ears=b.dataset.e;$$('[data-e]').forEach(x=>x.classList.toggle('on',x===b));redraw()});
+    wireByteLook(document,redraw);
     $$('[data-v]').forEach(b=>b.onclick=()=>{S.byte.voice=b.dataset.v;$$('[data-v]').forEach(x=>x.classList.toggle('on',x===b));save();MUSIC.unlock();playLine('byte','Hi! I’m your AI partner. Let’s do great work together!')});
     $('#bname').oninput=e=>{S.byte.name=e.target.value.trim()||'Byte';save()};$('#pname').oninput=e=>{S.player=e.target.value.trim()||'Juniper';save()};
     $('#go').onclick=()=>startMission(firstMission())},
