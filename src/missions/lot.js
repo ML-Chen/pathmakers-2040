@@ -210,9 +210,12 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
   consent:{scene:'phx_lot',place:'The flood lot · Arcadia · 5:30 PM',left:'okafor',right:'dev',title:'Mrs. Okafor and Dev',role:'Neighbors',replyWho:'okafor',heart:'okafor',
     prompt:'So what are you going to build here? And will my street flood again?',
     opts(c,M){const f=typeof lotForecast==='function'&&typeof S!=='undefined'?lotForecast(c):{dry:.9},d=lotSpec(c.design);
-      return [{t:`I suggest the ${d.name}${c.depth==='deep'?' with a 7-foot '+(d.kind==='garden'?'basin':'bowl'):''}${c.shade==='none'?'':c.shade==='sails'?' and shade sails':' with trees and shade sails'}. In a big storm, the street should stay dry about ${in10(f.dry)} times in 10, not every time. What do you two think?`,good:true,mood:'smile',reply:LOT_REPLY[0]},
-        {t:'Trust me, this design is perfect for the lot. I’ve checked everything, so you two don’t need to worry about the details.',good:false,mood:'stern',reply:LOT_REPLY[1]},
-        {t:'Your street will never flood again, Mrs. Okafor. I promise you that, and Dev gets a great place to skate.',good:false,mood:'surprised',reply:LOT_REPLY[2]}]}},
+      const dry=in10(f.dry),flood=dry>=9?'In almost every big storm, your street should stay dry. I can’t promise every single one, because the weather gets the last word.':dry>=7?'In most big storms your street should stay dry, but the very biggest ones could still reach it.':'I’ll be honest with you: in some big storms, the street will still flood.';
+      const seat=!d.okafor?'There isn’t a shady seat for you in this one, Mrs. Okafor.':c.shade==='none'?'There’s a bench for you, Mrs. Okafor, but no shade yet, so it will be hot in the afternoon.':'There’s shade and a bench with a back for you, Mrs. Okafor.';
+      const skate=d.dev===true||(d.dev==='deep'&&c.depth==='deep')?' And Dev, you get something you can really skate.':d.dev==='deep'?' Dev, the bowl is only four feet deep, so it may feel tame.':'';
+      return [{t:`I’d like to build the ${d.name} here. ${flood} ${seat}${skate} What do you two think?`,good:true,mood:'smile',reply:LOT_REPLY[0]},
+        {t:'Trust me, this design is perfect for the lot. I’ve checked everything with Byte, and the details are pretty technical, so you two don’t need to worry about them.',good:false,mood:'stern',reply:LOT_REPLY[1]},
+        {t:'Your street will never flood again, Mrs. Okafor. I promise you that. And Dev, you get a great place to skate, so everybody wins.',good:false,mood:'surprised',reply:LOT_REPLY[2]}]}},
   memo:{starters:['I recommend ','because ','In a big storm, the street stays dry about ','Mrs. Okafor and Dev ','Overnight, the crew may ','We will check by '],
     placeholder:'I recommend the Bowl Park with shade sails because…',plan:/bowl|garden|split|plaza|lawn|basin|park|tank|design/,planLabel:'Names the design',
     careLabel:'Includes what the neighbors care about',care:/okafor|grace|dev\b|neighbor|skat|shade|street|homes|walker|ditch/,signAs:'Architect ',topic:'the flood lot design'},

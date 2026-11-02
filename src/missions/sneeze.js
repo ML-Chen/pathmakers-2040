@@ -217,10 +217,10 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
         :c.block==='watch'?'Watching. All right. You are honest about it, and I would rather know. Call me the minute that changes, at any hour.'
         :'That I can live with. You block those, I keep my lights on, and I will call you the second anything looks like that again.';
       return [
-        {t:`Here is the whole plan: we ${what}. I think we catch every piece about ${ev} times out of 100${c.share==='no'?'':', and we are telling the other shops what to look for'}. ${c.block==='all'?'That costs you about nine days of honest work, and I am sorry about that.':'Your signed orders keep running.'} Does that work for you?`,good:true,mood:'smile',reply},
-        {t:'I cannot explain it. You just have to trust me and stop everything.',good:false,mood:'worried',
+        {t:`${c.block==='all'?'I am sorry, Tomás. We are pausing every order in the harbor, yours too, for about nine days. That is nine days of honest work, and I will not pretend otherwise.':c.block==='watch'?'Your week goes on as normal, Tomás. For now we are only watching, and nothing of yours is stopped.':'Your week mostly goes on as normal, Tomás. We are blocking only the orders we found, and your signed orders keep running.'} ${ev>=90?'I am fairly sure that catches every piece.':ev>=60?'I think it probably catches every piece, but not for certain.':'I will be honest: there is a real chance a piece gets past us.'}${c.share==='no'?'':' We are also telling the other shops what to look for.'} Does that work for you?`,good:true,mood:'smile',reply},
+        {t:'I cannot explain all of it right now, Tomás. It is complicated, and some of it is secret, so you will just have to trust me and stop everything until we are done.',good:false,mood:'worried',
          reply:'Trust you? I have forty people here. If you cannot tell me why, I will be calling my lawyer, not the council.'},
-        {t:'Don’t worry, this will not cost you anything at all.',good:false,mood:'surprised',
+        {t:'Don’t worry, Tomás, this will not cost you anything at all. Your shop will be back to normal before you notice, and nobody here will lose any work.',good:false,mood:'surprised',
          reply:'That is not true and you know it. If you will shade that, what else are you shading?'}]}},
 
   memo:{starters:['I am blocking ','because ','The chance we catch every piece is about ','Honest labs ','We will know who sent them by '],

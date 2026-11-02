@@ -37,7 +37,7 @@ const TALKS={
   ],
   imani:[
     {who:'imani',mood:'smile',text:'You must be our new Care Doctor. Welcome. I’m Dr. Reyes.'},
-    {who:'imani',mood:'neutral',text:'Your patient is Maya Lin, age 11. She fell off her scooter yesterday and broke her wrist: a clean [[fracture]] of the [[radius]].'},
+    {who:'imani',mood:'neutral',text:'Your patient is Maya Lin, age 11. She fell off her scooter yesterday and broke her wrist: a clean [[fracture]] of the [[radius]], and the two pieces slipped a little out of line.'},
     {who:'imani',mood:'think',text:'There are three good treatments. The right one depends on what Maya and her family care about, and you only learn that by talking to them.',choices:[{t:'What does Maya care about?',reply:'Ask her. I’ll give you a hint, though: she came in holding a violin case with her good arm.',mood:'smile'},{t:'Which treatment would you pick?',reply:'For my own kid? Probably surgery with [[pins]]. But I’m not Maya. Go meet her.',mood:'stern'}]}
   ],
   maya:[
@@ -56,7 +56,7 @@ const TALKS={
 // Workbench documents: every sentence is a step with its own animated picture (VIZ kinds in infog.js).
 const DOCS=[
   {id:'memo',title:'Byte’s memo: Maya’s options',from:'Byte',kind:'memo',steps:[
-    {t:'Maya’s [[radius]] has a clean [[fracture]]: one crack straight across the bone.',viz:'arm',cap:'Maya’s left forearm'},
+    {t:'Maya’s [[radius]] has a clean [[fracture]]: one crack straight across the bone, with the two pieces a little out of line.',viz:'arm',cap:'Maya’s left forearm'},
     {t:'A bone [[heals straight]] when it grows back in its normal shape. If it heals crooked, doctors may have to fix it again.',viz:'straightVsCrooked',cap:'Straight or crooked'},
     {t:'There are three [[options]], and all three are safe and [[approved]].',viz:'threeOptions',cap:'The three options'},
     {t:'[[Surgery]] with [[pins]]: about 95 out of 100 kids heal straight.',viz:'kids',args:{n:95,label:'95 of 100 kids heal straight with pins'},cap:'Surgery with pins'},

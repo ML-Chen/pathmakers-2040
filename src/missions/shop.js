@@ -248,12 +248,19 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
 
   consent:{scene:'vienna_market',place:'Naschmarkt · Vienna',left:'vie_emine',right:'vie_jonas',title:'Emine and Jonas',role:'Stall owner and Pantry dad',
     prompt:'So what happens now? Will my stall get a fair chance? And will Lotte’s inhaler still come?',replyWho:'vie_jonas',heart:'vie_jonas',
-    note:'When people hear the real odds, they can trust your decision.',guide:'vie-remedies',
-    opts(c,M){const st=shopStats(c.n,c.shop),act={disclose:'Pantry must show every family the payment and the cheaper choice',fix:'Korbwerk must send a fixed update for approval within 10 days, and we retest every month',pause:'we pause Pantry in Austria for about two weeks while it gets fixed'}[c.act];
-      return [{t:`We’ll run ${c.n} mystery orders as ${SHOP.shopLabel[c.shop]}. If Pantry is steering, we catch it ${shopTimes(st.catch)}. A fair Pantry gets a false alarm ${shopTimes(st.fa)}. If we find steering, ${act}. What do you think?`,good:true,mood:'smile',
+    guide:'vie-remedies',
+    opts(c,M){const st=shopStats(c.n,c.shop),p=st.catch;
+      const inhaler=c.act==='pause'?'Jonas, if we find Pantry cheating, we’d stop it here for about two weeks while it’s fixed, so Lotte’s inhaler would come from the pharmacy for a while. We’d tell you first.'
+        :'Jonas, Lotte’s inhaler keeps coming. Nothing in this plan stops Pantry’s deliveries.';
+      const stall={fix:'Emine, if Pantry is sending families to Kestrel on purpose, its maker has to fix that within ten days, and we keep checking every month, so your stall gets a fair chance again.',
+        disclose:'Emine, if Pantry is sending families to Kestrel on purpose, it will have to tell every family about the money and show them the cheaper choice. Careful shoppers will notice. Busy families might not read it, so I can’t promise your customers come back.',
+        pause:'Emine, that pause and the fix after it would give your stall a fair chance again.'}[c.act];
+      const who={careful:'the way careful bargain hunters shop',mix:'the way ordinary families shop',auto:'the way busy families like yours shop, Jonas'}[c.shop],when=st.days<=1?'tomorrow':st.days<=4?'in a few days':'in about two weeks';
+      const sure=p>=.95?'we’d almost certainly catch it':p>=.7?'we’d probably catch it':p>=.4?'we might catch it, but it could slip past us':'honestly, this test would probably miss it';
+      return [{t:`${inhaler} ${stall} First we’ll quietly place test orders ${who}. If Pantry is cheating, ${sure}, and we’ll know ${when}. Does that sound fair to you both?`,good:true,mood:'smile',
           reply:c.act==='pause'?'Two weeks without Pantry will be hard. I’ll bike to the pharmacy for Lotte’s inhaler. But if Pantry is cheating us, I understand.':'Thank you for telling us the real odds. That sounds fair to me.'},
-        {t:'Trust me, the Watchtower has done hundreds of audits like this one. We know what we’re doing, so you two don’t need to worry about the details.',good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
-        {t:'Don’t worry, we’ll definitely catch Pantry if it’s cheating. Our tests are very good, and your stall will be busy again soon, Emine!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
+        {t:'Trust me, the Watchtower has done hundreds of audits like this one, and we’ll sort out Pantry, the stall and the deliveries. We know what we’re doing, so you two don’t need to worry about the details.',good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
+        {t:'Don’t worry, we’ll definitely catch Pantry if it’s cheating. Our tests are very good, Lotte’s inhaler will be fine, and your stall will be busy again soon, Emine!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
   memo:{starters:['I order ','because ','If Pantry is steering, we catch it about ','A false alarm happens about ','This matters to families like '],
     placeholder:'I order 200 mystery orders from autopilot families because…',
     plan:/order|test|audit|fix|disclos|pause|shopper|autopilot|bargain|mix/,planLabel:'Names the test and what happens next',planWhat:'an audit plan or a remedy',

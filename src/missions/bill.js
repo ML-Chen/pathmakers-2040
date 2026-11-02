@@ -85,7 +85,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     'may':'In a law, “may” means is allowed to, but does not have to.',
     'hopper':'A wooden box beside the clerk’s desk in the House, where members drop new bills.',
     'introduce':'To formally hand in a new bill so Congress can consider it.',
-    'veto':'When the President refuses to sign a bill, so it does not become law unless Congress overrides the veto.',
+    'veto':'When the President rejects a bill and sends it back to Congress, so it does not become law unless Congress overrides the veto.',
     'override':'To overrule a veto. It takes two thirds of the House and two thirds of the Senate.',
     'roll call':'A vote where each member’s name is called out and their vote is written down.',
     'loophole':'A gap in a rule that lets someone get around it.',
@@ -232,12 +232,14 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
   consent:{scene:'dc_office',place:'Rep. Hollis’s office · Cannon Building',left:'hollis',right:'gunderson',title:'Rep. Walt Gunderson',role:'Undecided · Farm district',
     prompt:'Your boss says you wrote the final draft. So tell me straight: what does it do for my farmers, and will it pass?',replyWho:'gunderson',heart:'gunderson',
     opts(c,M){const told=typeof S!=='undefined'&&!!S.told,p=bill_pct(bill_pass(c,told));
-      const cmd={all:'blocks unsigned internet orders to open doors and gates within 90 days, and makes every robot check every internet order within a year, so about 2 in 3 farm robots couldn’t take app orders until they get a chip',phase:'blocks unsigned internet orders to open doors and gates within 90 days. New robots check every internet order right away, older robots get 3 years, and farms and families go first in line for chips. Your farmers keep running their robots from their phones at harvest, and only a gate or a door needs a signed order until the chip arrives',exempt:'blocks unsigned internet orders to open doors and gates within 90 days, and checks nothing else, so your farmers can keep running their robots from their phones at harvest. It is a little less safe than checking everything, because a faker can string harmless-looking orders together'}[c.cmd];
-      const rep={public:'Accident reports go public in 24 hours',split:'Accident reports go to the regulator in 24 hours and the public in 7 days',private:'Accident reports go to the regulator only'}[c.report];
-      return [{t:`It ${cmd}. ${rep}. I forecast it passes about ${p} times in 100.${told?' And your goat story stays yours, unless you choose to tell it.':''}`,good:true,mood:'smile',reply:c.cmd==='all'?'An honest answer, even if I don’t love the deadline. I’ll think hard about it.':'That’s a straight answer. I can work with that.'},
-        {t:'Trust me, your farmers will love it. Don’t worry about the details.',good:false,mood:'stern',reply:'I don’t vote for what I don’t understand. Try again.'},
-        told?{t:'Vote yes, or people might hear about your goats.',good:false,mood:'stern',reply:'I told you that in trust. That’s not how we do things here.'}
-          :{t:'It will definitely pass. Every forecast says so.',good:false,mood:'surprised',reply:'Definitely? Nothing in Congress is definite.'}]}},
+      const farm={all:'Straight answer: it’s hard on your farmers. Within a year every robot has to check every order from a phone, and most farm robots won’t have the new chip by then, so they’d only take orders in person until it comes.',
+        phase:'For your farmers, their robots keep taking orders from their phones at harvest. What changes soon is that a gate or a door needs a signed order. Older robots get three years for the new chip, and farms go first in line.',
+        exempt:'For your farmers, almost nothing changes. Their phones keep running their robots, and only an order from far away to open a gate or a door has to be signed. It’s a little less safe than checking everything.'}[c.cmd];
+      const pass=p>=70?'As for passing, I think it probably will, but it isn’t a sure thing.':p>=45?'As for passing, honestly, it’s close to a coin flip.':'As for passing, right now I think it probably falls short.';
+      return [{t:`${farm} ${pass}${told?' And your goat story stays yours, unless you choose to tell it.':''} What would you want changed?`,good:true,mood:'smile',reply:c.cmd==='all'?'An honest answer, even if I don’t love the deadline. I’ll think hard about it.':'That’s a straight answer. I can work with that.'},
+        {t:'Trust me, your farmers will love it. I’ve read every word, and the details get complicated, so you don’t need to worry about them. It’s a good bill for your district.',good:false,mood:'stern',reply:'I don’t vote for what I don’t understand. Try again.'},
+        told?{t:'You should vote yes. It would be a shame if folks back home heard about your goats at the county fair, wouldn’t it?',good:false,mood:'stern',reply:'I told you that in trust. That’s not how we do things here.'}
+          :{t:'It will definitely pass. Every forecast I’ve seen says so, and your farmers will be fine with whatever the final version says.',good:false,mood:'surprised',reply:'Definitely? Nothing in Congress is definite.'}]}},
   memo:{starters:['I recommend ','because ','I forecast it passes about ','Rep. Gunderson needs ','Workers get '],placeholder:'I recommend phasing in checks on remote orders, with farms first in line, because…',
     plan:/sign|phase|farm|report|pause|crew|exempt|skip|regulator|public|robot|bill|section/,planLabel:'Names what the bill does',careLabel:'Includes what the members need',
     care:/gunderson|ibarra|sethi|farm|worker|maker|startup|compan|district|member|famil/,signAs:'Aide ',topic:'the Robot Safety Act'},
