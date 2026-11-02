@@ -12,6 +12,12 @@ These notes record what the family asked for while playing builds, and the decis
 
 - **Separate fact from forecast (Nov 2).** Kids may not know which 2040 things are real today. Wherever a story leans on invented tech or creatures (collar translators, de-extinct mammoths), say plainly somewhere in play what is true today and what is a guess about 2040.
 
+- **Three kinds of places (AI 2040 reference art, Nov 2).** The AI Futures Project's own pictures of the scenario show the world split three ways. Paint places to match:
+  - **Industrial Special Economic Zones:** a gigantic strip mine, like a man-made Grand Canyon, beside a city-sized robot factory with almost no people; solar fields to the horizon, rail lines, domes and a tall tower; pale desert light. (Phoenix's Build Yard, Shenzhen's factory zone, the Moon's mining rim.)
+  - **Arcologies:** tall skyscraper-and-mall complexes with trees growing on wide terraces, set in lush nature by water, trains slipping through tunnels in the green. (New towns near Shanghai, the Bay Area's Discovery Base.)
+  - **Historic and nature preserves:** about 99% of the world. Places like Boston, Paris, Yosemite, New York and Beijing's hutongs look almost exactly as they did in 2025 (an ordinary leafy street with porches and mailboxes), just with more tourists, and the AI and robots stay mostly out of sight.
+  The style of that reference art is flat, graphic and slightly retro (warm cream skies, limited palettes, fine linework), which suits our painted scenes. Never copy the reference images into the repo; describe them.
+
 ## Reading and documents
 
 - Documents follow the graded-reader style of the family's Eigenbook project: every sentence gets its own animated picture or looping diagram, not one picture per document.
