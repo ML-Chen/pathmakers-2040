@@ -10,6 +10,8 @@ These notes record what the family asked for while playing builds, and the decis
 - **AI acts, it doesn't just advise.** In 2040, AIs are autonomous actors that run cyber-physical systems: robot crews, drone fleets, pill dispensers, power grids, purchasing, traffic, labs. Cases should reflect that, with real stakes (thousands of homes, a city's power, a whole herd), and the human questions should be about oversight: what an AI is allowed to do, who it answers to, how to check it, when to pause or roll it back, and who signs. A flattering advice app was judged too low-stakes and not superintelligence-aware enough.
 - **Real places, fictional disasters.** Boston, New York, DC, Beijing, Shanghai and other real places appear as themselves, with the real US government. Every catastrophe, villain lair and villain plot is in a made-up place (Calder Bay, Marrow Point). No real living people.
 
+- **Separate fact from forecast (Nov 2).** Kids may not know which 2040 things are real today. Wherever a story leans on invented tech or creatures (collar translators, de-extinct mammoths), say plainly somewhere in play what is true today and what is a guess about 2040.
+
 ## Reading and documents
 
 - Documents follow the graded-reader style of the family's Eigenbook project: every sentence gets its own animated picture or looping diagram, not one picture per document.
