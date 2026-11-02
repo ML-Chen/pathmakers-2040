@@ -16,7 +16,7 @@ env:
 jobs:
   playtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,6 +43,18 @@ jobs:
       - name: Screenshot every mission at 390x844
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: node tools/mission_shots.js dist/pathmakers.html shots
+      - name: Check every infographic for layout bugs
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: VIZ_AUDIT_WARN=1 node tools/viz_audit.js dist/pathmakers.html shots/viz
+      - name: Every screen of every mission, phone, wide window and Chinese, with layout checks
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          node tools/deep_all.js dist/pathmakers.html deep/phone 4 || true
+          PM_VW=1280 PM_VH=800 node tools/deep_all.js dist/pathmakers.html deep/wide 4 || true
+          PM_LANG=zh node tools/deep_all.js dist/pathmakers.html deep/zh 4 || true
+          for v in phone wide zh; do mkdir -p shots/sheets/$v; cp deep/$v/sheets/*.jpg shots/sheets/$v/ 2>/dev/null; cp deep/$v/issues.txt shots/issues-$v.txt 2>/dev/null; done
+          echo "## Layout issues" >> $GITHUB_STEP_SUMMARY; for v in phone wide zh; do echo "- $v: $(grep -c . shots/issues-$v.txt 2>/dev/null || echo 0)" >> $GITHUB_STEP_SUMMARY; done
+          echo "- infographics: $(head -1 shots/viz/viz_report.txt)" >> $GITHUB_STEP_SUMMARY
       - name: Record the playthrough video
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: node tools/playthrough_video.js dist/pathmakers.html video
@@ -62,7 +74,8 @@ jobs:
         run: |
           files=()
           [ -f video/playthrough.mp4 ] && files+=(video/playthrough.mp4)
-          for f in shots/sheets/*.png; do [ -f "$f" ] && files+=("$f"); done
+          for f in shots/sheets/*.png shots/viz/viz_*.png shots/issues-*.txt shots/viz/viz_report.txt; do [ -f "$f" ] && files+=("$f"); done
+          (cd shots/sheets && zip -qr ../../deep-sheets.zip phone wide zh 2>/dev/null) && files+=(deep-sheets.zip)
           [ ${#files[@]} -eq 0 ] && exit 0
           NOTES="Automated playtest of ${GITHUB_SHA::7}, $(date -u '+%b %d %H:%M UTC'). playthrough.mp4 plays every mission start to finish; each PNG is one mission's contact sheet."
           if gh release view playtest-latest >/dev/null 2>&1; then
