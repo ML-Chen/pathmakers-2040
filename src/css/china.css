@@ -93,3 +93,30 @@
 .bj-quote b{font-size:.72rem;color:#7a705a}.bj-quote p{margin:2px 0 0;font-size:.92rem;line-height:1.35;font-weight:700;color:#2a2f55}
 .bj-lines{list-style:none;padding-left:0;counter-reset:bjl}
 .bj-line::before{counter-increment:bjl;content:counter(bjl) '. ';font-weight:800;color:#a89a7a}
+
+/* ---------- Shenzhen: the stop drill and the rule card ---------- */
+.sz-drill h2,.sz-card h2{margin:0 0 8px}
+.sz-yard{position:relative;background:linear-gradient(#f6efe0,#e8e0d0);border-radius:16px;padding:6px 6px 0;overflow:hidden}
+.sz-yardsvg{display:block;width:100%;height:auto}
+.sz-yard.running .sz-bob{animation:szbob .9s ease-in-out infinite;animation-delay:var(--d)}
+.sz-yard.running .sz-arm{animation:szarm 1.8s ease-in-out infinite;animation-delay:var(--d);transform-box:fill-box;transform-origin:0 100%}
+.sz-yard.running .sz-bot{animation:szroll 3.6s ease-in-out infinite alternate;animation-delay:var(--d)}
+.sz-yard.stopped .sz-led{fill:#e0302a}.sz-yard.stopped .sz-eye{fill:#ff9a8a}
+@keyframes szbob{50%{transform:translateY(-2px)}}@keyframes szarm{50%{transform:rotate(-24deg)}}@keyframes szroll{to{transform:translateX(6px)}}
+.sz-ting,.sz-wave{opacity:0}
+.sz-yard.ting .sz-ting{animation:szting 1.2s ease-out both}.sz-yard.wave .sz-wave{animation:szwave 1.2s ease-out both;transform-box:fill-box;transform-origin:center}
+@keyframes szting{0%{opacity:0;transform:scale(.6)}30%{opacity:1;transform:scale(1.1)}100%{opacity:0}}
+@keyframes szwave{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(2.2)}}
+.sz-clock{position:absolute;right:8px;top:6px;background:#1e2a3a;color:#fff;border-radius:10px;padding:4px 8px;text-align:right}
+.sz-clock b{display:block;font-family:var(--display);font-size:1rem;color:#7ff7e4}.sz-clock span{font-size:.62rem;font-weight:700;color:#c8d4e4}
+.sz-tests{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.sz-test{position:relative;border:2px solid var(--line);background:#fff;border-radius:14px;padding:8px 6px;display:flex;flex-direction:column;gap:2px;text-align:left}
+.sz-test b{font-size:.8rem;line-height:1.2;color:#2a2f55}.sz-test span{font-size:.68rem;color:#6a6f8a;font-weight:700}
+.sz-test i{font-style:normal;font-size:.66rem;font-weight:800;color:#1a9a8a}
+.sz-test.done{border-color:#7fd8c8;background:#effbf8}.sz-test.on{box-shadow:0 0 0 3px rgba(108,92,231,.2);border-color:var(--violet)}
+.sz-test[data-k="button"] b::before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;background:#e0302a;margin-right:5px;vertical-align:1px}
+.sz-drill .byte-note p,.sz-card .byte-note p{font-size:.85rem}
+.sz-cardhead{display:flex;justify-content:space-between;align-items:baseline;background:#1e2a3a;color:#fff;border-radius:14px;padding:9px 12px;margin-bottom:8px}
+.sz-cardhead b{font-family:var(--display);font-size:1.1rem;color:#f0b020}.sz-cardhead span{font-size:.72rem;color:#c8d4e4;font-weight:700}
+.sz-rule{margin:6px 0 8px}.sz-q{font-weight:800;font-size:.9rem;color:#2a2f55;margin-bottom:4px}
+.sz-opts{display:flex;flex-wrap:wrap;gap:6px}.sz-opt{font-size:.82rem}
