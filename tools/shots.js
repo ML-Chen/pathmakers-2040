@@ -1,0 +1,37 @@
+// Screenshots of every screen at phone size: node tools/shots.js dist/pathmakers.html /tmp/pm-shots
+const {chromium}=require('playwright');const fs=require('fs'),path=require('path');
+const [html,out]=[process.argv[2],process.argv[3]||'/tmp/pm-shots'];fs.mkdirSync(out,{recursive:true});
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+ const errs=[];p.on('pageerror',e=>errs.push('pageerror: '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
+ await p.route(/fonts\.(googleapis|gstatic)\.com/,r=>r.fulfill({status:200,body:''}));
+ await p.addInitScript(()=>{window.__noaudio=1;try{localStorage.clear()}catch(e){}});
+ await p.goto('file://'+path.resolve(html));let n=0;const shot=async(name,w=500)=>{await p.waitForTimeout(w);await p.screenshot({path:path.join(out,String(++n).padStart(2,'0')+'-'+name+'.png')})};
+ const E=(f,a)=>p.evaluate(f,a);
+ await E(()=>{S.mute=true});
+ await shot('title',800);
+ await p.click('#new');await shot('setup');
+ await p.click('.sw:nth-child(2)');await p.click('.segb:nth-child(2)');await shot('setup-custom',300);
+ await p.click('#go');await shot('morning',1200);
+ await p.click('#sub');await p.waitForTimeout(300);await p.click('#sub');await shot('morning-2',1400);
+ await E(()=>go('street'));await shot('street',1200);
+ await E(()=>go('arrive'));await shot('imani',1400);
+ await E(()=>go('maya'));await shot('maya',1400);
+ for(let i=0;i<4;i++){await p.click('#sub').catch(()=>{});await p.waitForTimeout(700);const c=await p.$('.choice');if(c){await c.click();await p.waitForTimeout(600)}}
+ await shot('maya-clue',800);
+ await E(()=>{S.notes.rash=true;go('workbench')});await shot('workbench-memo',1200);
+ await p.click('.gw');await shot('glossary',400);await p.mouse.click(5,5);
+ await E(()=>{curDoc='sheet';renderWorkbench()});await p.click('.step:nth-of-type(4) .sent');await shot('workbench-sheet',500);
+ await E(()=>{S.read={memo:1,record:1,sheet:1};S.told=true;curDoc='record';renderWorkbench()});await shot('workbench-record-told',500);
+ await E(()=>go('criteria'));await p.click('.critb:nth-child(1)');await p.click('.critb:nth-child(2)');await p.click('.critb:nth-child(3)');await shot('criteria',400);
+ await E(()=>go('table'));await shot('table',1400);
+ await p.click('#why');await p.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await shot('table-why',500);
+ await E(()=>{S.choice={tx:'cast',pt:true,date:'moved'};go('table')});await shot('table-cast',1400);
+ await E(()=>go('consent'));await shot('consent',900);
+ await p.click('.choice');await shot('consent-reply',800);
+ await E(()=>{S.memo='I recommend a cast with physical therapy because Maya had a rash from HX-2. It heals straight about 88 out of 100 times, and we can move her recital.';go('memo')});await shot('memo',600);
+ await E(()=>go('reveal'));await shot('reveal-start',600);await shot('reveal-end',5200);
+ await E(()=>go('debrief'));await shot('debrief',1200);
+ await E(()=>go('evening'));await shot('evening',1200);
+ await E(()=>openGuide());await shot('guide',700);
+ await E(()=>{document.querySelector('.sheet .x').click();});await p.waitForTimeout(300);await E(()=>openChat());await shot('chat',700);
+ fs.writeFileSync(path.join(out,'errors.txt'),errs.join('\n'));console.log(n+' shots; errors: '+(errs.join('\n')||'none'));await b.close()})();

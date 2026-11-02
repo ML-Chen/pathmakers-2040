@@ -1,0 +1,253 @@
+#!/usr/bin/env python3
+"""Prerecord every spoken line of the game and write src/audio.js.
+
+Usage (from anywhere):  python3 tools/make_audio.py [--force]
+
+  * Gets the line list from src/art.js + src/content_boston.js (spokenLines()) via node.
+  * Synthesizes, with Kokoro (sherpa-onnx), only the lines missing from the on-disk cache.
+  * Encodes each clip as Ogg Opus (mono, 24 kHz, ~24 kbps) and writes src/audio.js:
+        const AUDIO={"<voice>|<text>":"data:audio/ogg;base64,...", ...};
+    containing exactly the current lines (stale entries are dropped).
+
+Environment:
+  TTS_MODEL_DIR  Kokoro model folder (default: ../tts-models/kokoro-en-v0_19 next to the repo)
+  TTS_CACHE_DIR  clip cache folder   (default: ../tts-cache next to the repo)
+  TTS_THREADS    onnxruntime threads (default: number of CPUs)
+
+Needs: node, ffmpeg with libopus (or `pip install imageio-ffmpeg`), numpy and
+sherpa-onnx 1.13.x (`pip install sherpa-onnx==1.13.8`). sherpa-onnx 2.x dropped the
+espeak-ng front end for Kokoro and produces no audio for this model.
+See tools/AUDIO.md.
+"""
+import argparse
+import base64
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PARENT = os.path.dirname(REPO)
+MODEL_DIR = os.environ.get("TTS_MODEL_DIR") or os.path.join(PARENT, "tts-models", "kokoro-en-v0_19")
+CACHE_DIR = os.environ.get("TTS_CACHE_DIR") or os.path.join(PARENT, "tts-cache")
+OUT_JS = os.path.join(REPO, "src", "audio.js")
+
+BITRATE = "24k"
+# Speaking speed per voice (Kokoro speaker names are also the keys used by the game).
+SPEED = {
+    "af_bella": 1.0,     # Byte, playful robot dog
+    "bf_emma": 1.0,      # Dr. Imani, the doctor
+    "af_sky": 1.05,      # Maya, 11-year-old girl
+    "am_michael": 1.0,   # Maya's dad
+    "bm_george": 0.95,   # narrator: documents and glossary definitions
+}
+# Speaker order of kokoro-en-v0_19 (model.onnx metadata "speaker_names"); used only if
+# the metadata cannot be read from the model file.
+FALLBACK_SPEAKERS = ["af", "af_bella", "af_nicole", "af_sarah", "af_sky", "am_adam",
+                     "am_michael", "bf_emma", "bf_isabella", "bm_george", "bm_lewis"]
+
+# Rewrites applied ONLY to the text fed to the TTS model; AUDIO keys keep the exact text.
+PRONOUNCE = [
+    (r"[\u2019\u2018]", "'"),
+    (r"[\u201c\u201d]", '"'),
+    (r"\u2026", "..."),
+    (r"\bBoneMend\b", "Bone Mend"),
+    (r"\bHX-2\b", "H X 2"),
+    (r"\b2040\b", "twenty forty"),
+    (r"\bdatacenter\b", "data center"),
+    (r"\btradeoff\b", "trade-off"),
+]
+# Bump when the audio post-processing below changes, so cached clips are rebuilt.
+PIPELINE_VERSION = 1
+
+NODE_CMD = ("const fs=require('fs'),vm=require('vm');const c={module:{exports:{}}};vm.createContext(c);"
+            "vm.runInContext(fs.readFileSync('src/art.js','utf8')+'\\n'+fs.readFileSync('src/content_boston.js','utf8')"
+            "+'\\n;this.L=spokenLines();',c);process.stdout.write(JSON.stringify(c.L))")
+
+
+def load_lines():
+    out = subprocess.run(["node", "-e", NODE_CMD], cwd=REPO, check=True, capture_output=True, text=True).stdout
+    seen, lines = set(), []
+    for item in json.loads(out):
+        key = item["voice"] + "|" + item["text"]
+        if key not in seen:
+            seen.add(key)
+            lines.append((item["voice"], item["text"]))
+    return lines
+
+
+def tts_text(text):
+    for pat, rep in PRONOUNCE:
+        text = re.sub(pat, rep, text)
+    return text
+
+
+def speaker_names(model_path):
+    """Read the comma-separated speaker_names entry from the ONNX metadata (stored at the file's end)."""
+    try:
+        size = os.path.getsize(model_path)
+        with open(model_path, "rb") as f:
+            f.seek(max(0, size - (1 << 20)))
+            tail = f.read()
+        key = b"speaker_names"
+        i = tail.rfind(b"\n" + bytes([len(key)]) + key)
+        j = i + 2 + len(key)
+        if i < 0 or tail[j] != 0x12:
+            return None
+        j += 1
+        n = shift = 0
+        while True:
+            b = tail[j]
+            j += 1
+            n |= (b & 0x7F) << shift
+            shift += 7
+            if b < 0x80:
+                break
+        return tail[j:j + n].decode("utf-8").split(",")
+    except (OSError, IndexError, UnicodeDecodeError):
+        return None
+
+
+def ffmpeg_exe():
+    exe = shutil.which("ffmpeg")
+    if exe:
+        return exe
+    try:
+        import imageio_ffmpeg
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except ImportError:
+        sys.exit("ffmpeg not found: install it (apt install ffmpeg) or pip install imageio-ffmpeg")
+
+
+class Synth:
+    def __init__(self):
+        import sherpa_onnx
+        for f in ("model.onnx", "voices.bin", "tokens.txt", "espeak-ng-data"):
+            if not os.path.exists(os.path.join(MODEL_DIR, f)):
+                sys.exit(f"Kokoro model file missing: {os.path.join(MODEL_DIR, f)} (set TTS_MODEL_DIR)")
+        names = speaker_names(os.path.join(MODEL_DIR, "model.onnx")) or FALLBACK_SPEAKERS
+        self.sid = {n: i for i, n in enumerate(names)}
+        missing = [v for v in SPEED if v not in self.sid]
+        if missing:
+            sys.exit(f"model has no speaker(s) {missing}; available: {names}")
+        cfg = sherpa_onnx.OfflineTtsConfig(
+            model=sherpa_onnx.OfflineTtsModelConfig(
+                kokoro=sherpa_onnx.OfflineTtsKokoroModelConfig(
+                    model=os.path.join(MODEL_DIR, "model.onnx"),
+                    voices=os.path.join(MODEL_DIR, "voices.bin"),
+                    tokens=os.path.join(MODEL_DIR, "tokens.txt"),
+                    data_dir=os.path.join(MODEL_DIR, "espeak-ng-data"),
+                ),
+                num_threads=int(os.environ.get("TTS_THREADS") or os.cpu_count() or 2),
+            ),
+            max_num_sentences=1,
+        )
+        self.tts = sherpa_onnx.OfflineTts(cfg)
+        if self.tts.num_speakers != len(names):
+            sys.exit(f"speaker list ({len(names)}) does not match model ({self.tts.num_speakers})")
+        self.ffmpeg = ffmpeg_exe()
+
+    def clip(self, voice, text):
+        """Return (ogg_bytes, seconds)."""
+        import numpy as np
+        audio = self.tts.generate(tts_text(text), sid=self.sid[voice], speed=SPEED[voice])
+        sr = audio.sample_rate
+        x = np.asarray(audio.samples, dtype=np.float32)
+        if x.size == 0:
+            raise RuntimeError("TTS returned no audio (sherpa-onnx 2.x? use sherpa-onnx==1.13.8)")
+        # Trim leading/trailing silence (10 ms frames below -45 dBFS), keep a little padding.
+        frame = sr // 100
+        n = x.size // frame
+        rms = np.sqrt(np.mean(x[: n * frame].reshape(n, frame) ** 2, axis=1) + 1e-12)
+        loud = np.nonzero(rms > 10 ** (-45 / 20))[0]
+        if loud.size:
+            start = max(0, loud[0] * frame - int(0.05 * sr))
+            end = min(x.size, (loud[-1] + 1) * frame + int(0.12 * sr))
+            x = x[start:end]
+        # Even out loudness between voices: speech RMS to about -20 dBFS, peak at most 0.95.
+        active = rms[rms > 10 ** (-40 / 20)]
+        level = float(np.sqrt(np.mean(active ** 2))) if active.size else float(np.sqrt(np.mean(x ** 2)))
+        gain = min(10 ** (-20 / 20) / max(level, 1e-6), 0.95 / max(float(np.abs(x).max()), 1e-6))
+        pcm = (np.clip(x * gain, -1, 1) * 32767).astype("<i2").tobytes()
+        ogg = subprocess.run(
+            [self.ffmpeg, "-hide_banner", "-loglevel", "error", "-f", "s16le", "-ar", str(sr), "-ac", "1",
+             "-i", "pipe:0", "-c:a", "libopus", "-b:a", BITRATE, "-application", "voip",
+             "-map_metadata", "-1", "-fflags", "+bitexact", "-flags:a", "+bitexact", "-f", "ogg", "pipe:1"],
+            input=pcm, capture_output=True, check=True).stdout
+        return ogg, x.size / sr
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--force", action="store_true", help="ignore the cache and re-synthesize every line")
+    args = ap.parse_args()
+
+    lines = load_lines()
+    unknown = sorted({v for v, _ in lines if v not in SPEED})
+    if unknown:
+        sys.exit(f"unknown voice(s) {unknown}: add them to SPEED in tools/make_audio.py")
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    model_id = os.path.basename(os.path.normpath(MODEL_DIR))
+
+    synth, made, failed, total_sec = None, 0, [], 0.0
+    entries = []
+    for idx, (voice, text) in enumerate(lines, 1):
+        h = hashlib.sha1(f"{voice}|{text}".encode("utf-8")).hexdigest()
+        ogg_path, meta_path = os.path.join(CACHE_DIR, h + ".ogg"), os.path.join(CACHE_DIR, h + ".json")
+        meta = {"voice": voice, "text": text, "tts_text": tts_text(text), "speed": SPEED[voice],
+                "model": model_id, "bitrate": BITRATE, "pipeline": PIPELINE_VERSION}
+        cached = None
+        if not args.force and os.path.exists(ogg_path) and os.path.exists(meta_path):
+            with open(meta_path, encoding="utf-8") as f:
+                old = json.load(f)
+            if {k: old.get(k) for k in meta} == meta:
+                with open(ogg_path, "rb") as f:
+                    cached = f.read()
+                total_sec += old.get("seconds", 0)
+        if cached is None:
+            if synth is None:
+                print(f"Loading Kokoro from {MODEL_DIR} ...", flush=True)
+                synth = Synth()
+            try:
+                cached, sec = synth.clip(voice, text)
+            except Exception as e:  # keep going; report at the end
+                print(f"  FAILED [{voice}] {text!r}: {e}", flush=True)
+                failed.append((voice, text))
+                continue
+            with open(ogg_path, "wb") as f:
+                f.write(cached)
+            with open(meta_path, "w", encoding="utf-8") as f:
+                json.dump(dict(meta, seconds=round(sec, 3)), f, ensure_ascii=False)
+            total_sec += sec
+            made += 1
+            print(f"  [{idx}/{len(lines)}] {voice} {sec:5.1f}s {len(cached) / 1024:5.1f} KB  {text[:60]}", flush=True)
+        entries.append((voice + "|" + text, cached))
+
+    body = ",\n".join(f"{json.dumps(k)}:\"data:audio/ogg;base64,{base64.b64encode(v).decode('ascii')}\""
+                      for k, v in entries)
+    js = ("// Generated by tools/make_audio.py; do not edit by hand (see tools/AUDIO.md).\n"
+          f"// {len(entries)} clips, Kokoro {model_id} (Apache-2.0) via sherpa-onnx, Ogg Opus {BITRATE} mono.\n"
+          "const AUDIO={\n" + body + "\n};\n"
+          # game.js checks window.AUDIO; a top-level const is not a window property, so expose it.
+          "if(typeof window!=='undefined')window.AUDIO=AUDIO;\n")
+    tmp = OUT_JS + ".tmp"
+    with open(tmp, "w", encoding="ascii") as f:
+        f.write(js)
+    os.replace(tmp, OUT_JS)
+
+    raw_kb = sum(len(v) for _, v in entries) / 1024
+    print(f"\nWrote {os.path.relpath(OUT_JS, REPO)}: {len(entries)} clips "
+          f"({made} new, {len(entries) - made} cached), {total_sec / 60:.1f} min audio, "
+          f"{raw_kb:.0f} KB opus, {len(js) / 1024:.0f} KB file.")
+    if failed:
+        print(f"{len(failed)} line(s) FAILED and are missing from audio.js:")
+        for v, t in failed:
+            print(f"  {v}|{t}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
