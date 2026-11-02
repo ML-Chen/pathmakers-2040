@@ -325,7 +325,7 @@
     quad(ctx, L, gab); ctx.fillStyle = lit ? '#8a8e96' : '#4a4e56'; ctx.fill(); ink(ctx, s, 0.45);
     // the tiled roof surface beyond the gable (it shows only because it sweeps up toward the ridge)
     quad(ctx, L, [[eX, eY + 0.16, za], [rX, rY, za], [rX, rY, zb], [eX, eY + 0.16, zb]]); ctx.fillStyle = lit ? '#6a7078' : '#454a52'; ctx.globalAlpha = 0.9; ctx.fill(); ctx.globalAlpha = 1;
-    var g0 = L.P(rX, rY, za), g1 = L.P(rX, rY, zb), ke = L.k(za); ctx.strokeStyle = C.tileDk; ctx.lineWidth = Math.max(1 * s, 0.14 * ke); ctx.beginPath(); ctx.moveTo(g0[0], g0[1]); ctx.lineTo(g1[0], g1[1]); ctx.stroke();
+    var g0 = L.P(rX, rY, za), g1 = L.P(rX, rY, zb), ke = L.k(za); ctx.strokeStyle = lit ? '#4a5058' : '#353a42'; ctx.lineWidth = Math.max(1 * s, 0.08 * ke); ctx.beginPath(); ctx.moveTo(g0[0], g0[1]); ctx.lineTo(g1[0], g1[1]); ctx.stroke();
     // the upturned ridge end
     ctx.fillStyle = C.tileDk; ctx.beginPath(); ctx.moveTo(g0[0], g0[1]); ctx.quadraticCurveTo(g0[0] - sg * 0.02 * ke, g0[1] - 0.16 * ke, g0[0] + sg * 0.09 * ke, g0[1] - 0.15 * ke); ctx.lineTo(g0[0] + sg * 0.05 * ke, g0[1] + 0.04 * ke); ctx.closePath(); ctx.fill();
     // the eave's shadow on the gate front
@@ -393,7 +393,9 @@
     var base = L.P(-1.85, 0, 8.4), bx = base[0], by = base[1], k = L.k(8.4), tw = 0.95 * k;
     // a ring of old bricks around the foot of the tree, heaped with fallen leaves
     var rg0 = L.P(-2.5, 0, 7.2), rg1 = L.P(-1.0, 0.35, 9.4);
-    ctx.fillStyle = '#6e6a64'; ctx.beginPath(); qell(ctx, bx, by + 2 * s, tw * 1.1, tw * 0.16, 0); ctx.fill();
+    // roots spreading into the paving, the shade of the trunk on the stones
+    ctx.fillStyle = 'rgba(40,40,60,0.28)'; ctx.beginPath(); qell(ctx, bx + tw * 0.6, by + 3 * s, tw * 1.3, tw * 0.12, 0.04); ctx.fill();
+    ctx.fillStyle = '#2e2420'; ctx.beginPath(); ctx.moveTo(bx - tw * 0.6, by); ctx.quadraticCurveTo(bx - tw * 0.9, by + tw * 0.05, bx - tw * 1.1, by + tw * 0.08); ctx.lineTo(bx - tw * 0.3, by + tw * 0.06); ctx.moveTo(bx + tw * 0.4, by); ctx.quadraticCurveTo(bx + tw * 0.8, by + tw * 0.04, bx + tw * 1.15, by + tw * 0.1); ctx.lineTo(bx + tw * 0.2, by + tw * 0.07); ctx.fill();
     // the trunk and limbs, drawn as tapering, slightly bent strokes in screen space
     var limbs = [], kp = function (x0, y0, x1, y1, w0, w1, bend) { limbs.push([x0, y0, x1, y1, w0, w1, bend]); };
     var tx = bx + tw * 0.2, ty = h * 0.26;
@@ -403,7 +405,7 @@
       var x1 = x + Math.cos(ang) * len, y1 = y + Math.sin(ang) * len; kp(x, y, x1, y1, wd, wd * 0.6, (r() - 0.5) * len * 0.25);
       if (depth <= 0 || wd < 1.2 * s) { tips.push([x1, y1, len]); return; }
       var n = depth > 2 ? 3 : 2; for (var q = 0; q < n; q++) { var na = ang + (q - (n - 1) / 2) * (0.55 + r() * 0.3) + (r() - 0.5) * 0.3; na = lerp(na, -PI / 2, 0.15); grow(x1, y1, na, len * (0.6 + r() * 0.2), wd * 0.62, depth - 1); }
-      if (r() < 0.6) tips.push([lerp(x, x1, 0.6), lerp(y, y1, 0.6), len * 0.5]);
+      if (r() < 0.85) tips.push([lerp(x, x1, 0.55), lerp(y, y1, 0.55), len * 0.6]);
     }
     grow(tx, ty, -PI * 0.5 - 0.15, h * 0.11, tw * 0.42, 3);
     grow(tx, ty + h * 0.03, -PI * 0.16, h * 0.09, tw * 0.3, 2);
@@ -414,9 +416,9 @@
     var LV = [[], [], [], [], [], []], MS = [];
     var nCl = 0; PAINT._bjTips = tips.length;
     tips.forEach(function (t) {
-      var R = clamp(t[2] * 0.85, 22 * s, 80 * s);
+      var R = clamp(t[2] * 0.95, 28 * s, 84 * s);
       for (var c = 0; c < 2; c++) {
-        var cx = t[0] + (r() - 0.5) * R * 0.9, cy = t[1] + (r() - 0.6) * R * 0.7, cr = R * (0.5 + r() * 0.4), n = Math.min(150, Math.round(cr * cr / (s * s) * 0.07));
+        var cx = t[0] + (r() - 0.5) * R * 0.9, cy = t[1] + (r() - 0.6) * R * 0.7, cr = R * (0.5 + r() * 0.4), n = Math.min(230, Math.round(cr * cr / (s * s) * 0.11));
         MS.push([cx, cy + cr * 0.1, cr * 0.62]);
         nCl++;
         for (var q = 0; q < n; q++) {
@@ -430,7 +432,9 @@
     });
     // limbs: behind the leaves, dark and furrowed
     ctx.save();
-    limbs.forEach(function (l, li) { K.trunkPath(ctx, l[0], l[1], l[2], l[3], l[4], l[5], l[6]); ctx.fillStyle = li === 0 ? lg(ctx, bx - tw, 0, bx + tw, 0, [[0, '#5a4636'], [0.45, '#3a2c24'], [1, '#22181a']]) : '#33261f'; ctx.fill(); });
+    ctx.lineCap = 'round';
+    limbs.forEach(function (l, li) { if (li === 0) { K.trunkPath(ctx, l[0], l[1], l[2], l[3], l[4], l[5], l[6]); ctx.fillStyle = lg(ctx, bx - tw, 0, bx + tw, 0, [[0, '#5a4636'], [0.45, '#3a2c24'], [1, '#22181a']]); ctx.fill(); return; }
+      ctx.strokeStyle = '#33261f'; ctx.lineWidth = (l[4] + l[5]) * 0.5; ctx.beginPath(); ctx.moveTo(l[0], l[1]); ctx.quadraticCurveTo((l[0] + l[2]) / 2 + l[6] * 0.3, (l[1] + l[3]) / 2, l[2], l[3]); ctx.stroke(); });
     // bark furrows on the trunk, and the sunlit edge
     K.trunkPath(ctx, limbs[0][0], limbs[0][1], limbs[0][2], limbs[0][3], limbs[0][4], limbs[0][5], limbs[0][6]); ctx.save(); ctx.clip();
     batch(ctx, 220, [['#1a1214', 1.2 * s, 0.5], ['#7a6250', 0.9 * s, 0.4]], function () { var yy = lerp(ty, by, r()), xx = lerp(tx, bx, (yy - ty) / (by - ty)) + (r() - 0.5) * tw * 1.1, l = (6 + r() * 18) * s; return [xx, yy, xx + (r() - 0.5) * 2 * s, yy + l, r() < 0.6 ? 0 : 1]; });
