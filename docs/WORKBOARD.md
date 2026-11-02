@@ -43,4 +43,5 @@ Owner feedback still to act on (Nov 2, late): the Nome mammoths look goofy (moth
 - Update README.md: current list of workdays and places, the world map, Kid/Teen/Grown-up, Android APK and Playtest releases, voices in CI (ElevenLabs/Kokoro), how to play on GitHub Pages once the repo is public.
 - The Quiet Year art, Phoenix scenes and Dark Tower agents stopped at the usage limit before pushing. Their partial work lived only in the old cloud container's worktrees, so expect to redo them.
 - Nome: Eli Johnson's head floats off his neck (the custom `nome:'eli'` outfit in src/viz/nome.js draws the collar/neck too low or the neck too short). Check every custom-outfit character for a visible gap between chin, neck and collar.
+- Nome cast appearance: Ruth Nauyaq and Eli Johnson (Iñupiaq, near Nome) are drawn fairly dark brown (#c48a62, #b97a52). Inuit/Iñupiat skin ranges roughly light to medium tan, often with weathered, wind- and sun-tanned cheeks; use lighter warm tones that differ from each other, and give their faces their own features (eye shape, cheekbones) instead of the default face.
 
