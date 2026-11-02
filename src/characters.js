@@ -269,26 +269,26 @@ function ch_outfit(o,G,sk,id,build){
   return s}
 
 // a real three-strand braid: interlocking tapered lobes with strand lines, shading and highlights; tie + tuft at the end
-function ch_braid(x0,y0,x1,y1,H,hg,tie,side){const n=8,step=(y1-y0)/n;let s='';
+function ch_braid(x0,y0,x1,y1,H,hg,tie,side,k){k=k||1;const n=8,step=(y1-y0)/n;let s='';
   const ax=t=>[x0+(x1-x0)*t+Math.sin(t*Math.PI)*side*5,y0+(y1-y0)*t];
   // dark core so gaps read as depth
-  s+=`<path d="${ch_rib(ch_bz([ax(0),ax(.5),ax(1)],10),t=>22-8*t)}" fill="${H.dk}" stroke="${H.line}" stroke-width="2.4"/>`;
+  s+=`<path d="${ch_rib(ch_bz([ax(0),ax(.5),ax(1)],10),t=>22-8*t)}" fill="${H.dk}" stroke="${H.line}" stroke-width="${2.4*k}"/>`;
   for(let i=0;i<n;i++){const t=(i+.5)/n,[cx,cy]=ax(t),w=10.5-3.6*t,o=i%2?1:-1,X=u=>cx+o*u;
     const P0=[X(-w*1.02),cy-step*.95],T=[X(w*.55),cy+step*.62],P2=[X(-w*1.08),cy+step*.12];
     const up=[P0,[X(-w*.1),cy-step*1.02],[X(w*.62),cy-step*.1],T],lo=[T,[X(w*.05),cy+step*.66],[X(-w*.8),cy+step*.5],P2];
     const P=p=>ch_n(p[0])+' '+ch_n(p[1]);
     const d=`M${P(P0)} C${P(up[1])} ${P(up[2])} ${P(T)} C${P(lo[1])} ${P(lo[2])} ${P(P2)} Q${P([X(-w*1.3),cy-step*.4])} ${P(P0)}Z`;
-    s+=`<path d="${d}" fill="${hg}" stroke="${H.line}" stroke-width="1.5" stroke-linejoin="round"/>`;
+    s+=`<path d="${d}" fill="${hg}" stroke="${H.line}" stroke-width="${1.5*k}" stroke-linejoin="round"/>`;
     s+=`<path d="${ch_rib(ch_sub(ch_bz(lo,10),.05,.95),ch_swell(3.4,.3),-1)}" fill="${H.sh}" opacity=".9"/>`;
     for(const k of [.32,.62]){const a=[X(-w*1.05),cy-step*(.95-k*1.05)],b=[X(-w*.1+w*k*.4),cy-step*(.62-k*.9)],c=[X(w*.48-w*k*.2),cy+step*(.5-k*.25)];
-      s+=`<path d="${ch_rib(ch_bz([a,b,c],8),ch_swell(.9,.1))}" fill="${H.line}" opacity=".45"/>`}
+      s+=`<path d="${ch_rib(ch_bz([a,b,c],8),ch_swell(.9*Math.min(k,2.4),.1))}" fill="${H.line}" opacity=".45"/>`}
     s+=`<path d="${ch_rib(ch_sub(ch_bz(up,10),.12,.6),ch_swell(2.2,.2))}" fill="${H.hi}" opacity=".8" transform="translate(0 2)"/>`}
   const [tx,ty]=ax(1);const tw=H.line,td=ch_mix(tie,'#2a0a10',.5);let tuft='';
   const tips=[[-9,26],[-4.5,32],[0,28],[4.5,33],[9,25]];
   for(const [dx,dy] of tips){tuft+=`<path d="${ch_clump([tx+dx*.45-3.4,ty+6],[tx+dx*.45+3.4,ty+6],[tx+dx,ty+dy],1.6,1.6).d}"/>`}
-  s+=`<g fill="${tw}" stroke="${tw}" stroke-width="2.6" stroke-linejoin="round">${tuft}</g><g fill="${hg}">${tuft}</g>`;
-  for(const [dx,dy] of tips.slice(1,4))s+=`<path d="M${ch_n(tx+dx*.3)} ${ch_n(ty+9)} L${ch_n(tx+dx*.8)} ${ch_n(ty+dy-6)}" stroke="${H.sh}" stroke-width="1" opacity=".8"/>`;
-  s+=`<rect x="${ch_n(tx-7)}" y="${ch_n(ty-1)}" width="14" height="8" rx="3.5" fill="${tie}" stroke="${td}" stroke-width="1.3"/><path d="M${ch_n(tx-5)} ${ch_n(ty+1.4)} h6" stroke="#fff" stroke-width="1.3" opacity=".6" stroke-linecap="round"/><circle cx="${ch_n(tx+side*7.5)}" cy="${ch_n(ty+3)}" r="4.4" fill="${tie}" stroke="${td}" stroke-width="1.3"/><circle cx="${ch_n(tx+side*7.5-1.4)}" cy="${ch_n(ty+1.6)}" r="1.3" fill="#fff" opacity=".85"/>`;
+  s+=`<g fill="${tw}" stroke="${tw}" stroke-width="${2.6*k}" stroke-linejoin="round">${tuft}</g><g fill="${hg}">${tuft}</g>`;
+  for(const [dx,dy] of tips.slice(1,4))s+=`<path d="M${ch_n(tx+dx*.3)} ${ch_n(ty+9)} L${ch_n(tx+dx*.8)} ${ch_n(ty+dy-6)}" stroke="${H.sh}" stroke-width="${k}" opacity=".8"/>`;
+  s+=`<rect x="${ch_n(tx-7)}" y="${ch_n(ty-1)}" width="14" height="8" rx="3.5" fill="${tie}" stroke="${td}" stroke-width="${1.3*k}"/><path d="M${ch_n(tx-5)} ${ch_n(ty+1.4)} h6" stroke="#fff" stroke-width="1.3" opacity=".6" stroke-linecap="round"/><circle cx="${ch_n(tx+side*7.5)}" cy="${ch_n(ty+3)}" r="4.4" fill="${tie}" stroke="${td}" stroke-width="${1.3*k}"/><circle cx="${ch_n(tx+side*7.5-1.4)}" cy="${ch_n(ty+1.6)}" r="1.3" fill="#fff" opacity=".85"/>`;
   return s}
 
 // ---------- a person (natural-proportion anime bust) ----------
