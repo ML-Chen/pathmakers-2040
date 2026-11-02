@@ -65,7 +65,7 @@ MISSIONS.duststorm.custom={
   ds_power(){const c=S.choice;
     const say=()=>{const need=dsNeed(c,S.told),worst=48-need-DS_LONG;
       return worst>=DS_FLOOR?'Even on the worst night in my range, this plan keeps the reserve. That’s a sturdy plan.':48-need>=DS_FLOOR?'This plan is safe if the storm clears by morning. If it lasts, the low end of the battery range runs too close.':'This plan only works if the storm comes late and leaves early. Most nights, we’d hit the reserve.'};
-    screen('criteria ds-powscr',`${scene('mars')}${hud('Control room · Tonight’s power')}<div class="panel-card ds-card"><h2>Tonight’s power</h2>
+    screen('criteria ds-powscr',`${scene('mars_hab')}${hud('Control room · Tonight’s power')}<div class="panel-card ds-card"><h2>Tonight’s power</h2>
       <div class="ds-rows"><div class="ds-row ds-locked"><span>Life support</span><b>26 kWh · always on</b></div>
         ${DS_ROWS.map(([k,l,opts])=>`<div class="ds-row"><span>${l}</span><div class="seg">${opts.map(([v,t])=>`<button class="segb ${c[k]===v?'on':''}" data-k="${k}" data-v="${esc(JSON.stringify(v))}">${t} <small>${DS_LOAD[k][v]}</small></button>`).join('')}</div></div>`).join('')}
         ${S.told?`<div class="ds-row ds-locked"><span>One cabin outlet</span><b>0.5 kWh · stays on</b></div>`:''}</div>

@@ -40,9 +40,9 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
   byteWear(step){return ['rim_morning','rim_ride','rim_evening'].includes(step)?['helmet']:[]},
   flow:[{name:'rim_morning',k:'talk',talk:'morning',scene:'moon',place:'Shackleton Rim Base · The Moon · 7:30 AM'},
     {name:'rim_ride',k:'custom'},
-    {name:'rim_haruto',k:'talk',talk:'haruto',scene:'moon',place:'Tea corner · Market Dome'},
+    {name:'rim_haruto',k:'talk',talk:'haruto',scene:'moon_dome',place:'Tea corner · Market Dome'},
     {name:'rim_ask',k:'custom',music:'work'},
-    {name:'rim_ada',k:'talk',talk:'ada',scene:'moon',place:'Your booth · Market Dome',toast:'New work on your Workbench'},
+    {name:'rim_ada',k:'talk',talk:'ada',scene:'moon_dome',place:'Your booth · Market Dome',toast:'New work on your Workbench'},
     {name:'rim_bench',k:'bench'},{name:'rim_popup',k:'custom',music:'morning'},{name:'rim_rules',k:'custom',music:'work'},
     {name:'rim_criteria',k:'criteria'},{name:'rim_table',k:'table'},{name:'rim_consent',k:'consent'},{name:'rim_memo',k:'memo'},
     {name:'rim_reveal',k:'reveal'},{name:'rim_debrief',k:'debrief'},{name:'rim_evening',k:'evening'}],
@@ -157,8 +157,8 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
     return `<b>${this.planName(c)}:</b> we earn back the 300 coins about ${e}% of the time. Customers trust our prices about ${t}%, and nothing goes to waste about ${w}%. ${rich(sell+' '+order+' '+short)}${tested}`},
   whyGuide(c){return c.short==='raise'?'rim-limits':'rim-test'},
   vignette(kind){return typeof rimVignette==='function'?rimVignette(kind):vignette('healed')},
-  debriefScene:'moon',eveningScene:'moon_night',eveningPlace:'Shackleton Rim Base · 10:20 PM',
-  consent:{scene:'moon',place:'Your booth · Market Dome',left:'ada',right:'haruto',title:'Haruto and Ada',role:'Your neighbor and a customer',prompt:'So, Founder, what will the shop sell? And what will Till do on its own?',replyWho:'haruto',heart:'haruto',
+  debriefScene:'moon_dome',eveningScene:'moon_night',eveningPlace:'Shackleton Rim Base · 10:20 PM',
+  consent:{scene:'moon_dome',place:'Your booth · Market Dome',left:'ada',right:'haruto',title:'Haruto and Ada',role:'Your neighbor and a customer',prompt:'So, Founder, what will the shop sell? And what will Till do on its own?',replyWho:'haruto',heart:'haruto',
     opts(c,M){const f=forecastFor(c),e=Math.round(10*f.earn),t=Math.round(10*f.trust);
       const sell={glass:'Moon-glass for the visitors',treats:'treats from Earth',soup:S.told?'hot soup, served at 2 AM for the ice crews':'hot soup at lunch',both:S.told?'hot soup at 2 AM for the crews, and Moon-glass in the day':'soup at lunch and Moon-glass'}[c.sell];
       const short={raise:'If supplies run short, Till may raise prices by itself.',ask:'If supplies run short, Till asks me before it changes a price.',steady:'If supplies run short, prices stay the same.'}[c.short];

@@ -91,7 +91,7 @@ MISSIONS.rimshop.custom={
       const rows=Math.ceil(dots.length/W),h=rows*cell+8;
       return `<div class="rim-many"><svg viewBox="0 0 ${W*cell} ${h}">${svg}</svg><div class="rim-legend">${['glass','treats','soup'].map(k=>`<span><i style="background:${RIM_COL[k]}"></i>${RIM_IDEA[k]} ${RIM_POLL[k][0]+RIM_POLL[k][1]}</span>`).join('')}</div><div class="rim-split"><span>Top rows: 220 people who live here</span><span>Bottom rows: 280 visitors</span></div></div>`};
     const Q=[{t:'Haruto’s friends all live here, but more than half of our customers are visitors.',ok:'good'},{t:'Five people answered quickly, so they didn’t think as carefully.',ok:'fast'},{t:'The big poll probably has a mistake, because it disagrees with the five.',ok:'wrong'}];
-    screen('criteria rim-askscr',`${scene('moon')}${hud('Market Dome · Asking around')}<div class="panel-card rim-card"><h2>Five or five hundred?</h2>
+    screen('criteria rim-askscr',`${scene('moon_dome')}${hud('Market Dome · Asking around')}<div class="panel-card rim-card"><h2>Five or five hundred?</h2>
       <div class="rim-asks"><button class="rim-askb ${A.five?'on':''}" id="a5"><b>5</b><span>Haruto’s tea friends</span></button><button class="rim-askb ${A.many?'on':''}" id="a500"><b>500</b><span>${esc(S.byte.name)}’s poll of the base</span></button></div>
       <div id="r5">${A.five?five():''}</div><div id="r500">${A.many?many():''}</div><div id="rq"></div></div>`);
     const say=t=>playLine('byte',t);
@@ -106,7 +106,7 @@ MISSIONS.rimshop.custom={
     ask()},
   rim_popup(){const st=rimState();let pick=st.test||null;const done=!!st.test;
     const card=k=>{const T=RIM_TESTS[k];return `<button class="rim-test ${pick===k?'on':''}" data-t="${k}" ${done?'disabled':''}><div class="rim-ticon">${rimTestIcon(k)}</div><b>${esc(T.name)}</b><span>${T.cost} coins · 3 days</span></button>`};
-    screen('criteria rim-popscr',`${scene('moon')}${hud('Your booth · Pop-up test')}<div class="panel-card rim-card"><h2>Test small first</h2>
+    screen('criteria rim-popscr',`${scene('moon_dome')}${hud('Your booth · Pop-up test')}<div class="panel-card rim-card"><h2>Test small first</h2>
       <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>Pick one idea to test for three days. Which one are you least sure about?</p></div>
       <div class="rim-tests">${['glass','treats','soup'].map(card).join('')}</div>
       <button class="btn wide" id="run" ${pick&&!done?'':'disabled'}>Open the pop-up</button><div id="rimres"></div></div>`);
@@ -123,7 +123,7 @@ MISSIONS.rimshop.custom={
         if(i>=13){clearInterval(tm);ov.classList.add('out');setTimeout(()=>ov.remove(),450);playLine('byte','Here’s what three days taught us.');show();$('#rimres').scrollIntoView({behavior:'smooth',block:'start'})}},230)};
     if(done)show()},
   rim_rules(){const st=rimState(),R=st.rules;const all=()=>RIM_RULES.every(r=>R[r.id]);
-    screen('criteria rim-rulescr',`${scene('moon')}${hud('Your booth · Till’s limits')}<div class="panel-card rim-card"><h2>Till’s limits</h2>
+    screen('criteria rim-rulescr',`${scene('moon_dome')}${hud('Your booth · Till’s limits')}<div class="panel-card rim-card"><h2>Till’s limits</h2>
       <div class="byte-note">${byteBox({...S.byte,mood:'neutral'})}<p>For each job, choose who does it.</p></div>
       <div class="rim-rules">${RIM_RULES.map(r=>`<div class="rim-rule"><p>${esc(r.t)}</p><div class="seg">${RIM_BINS.map(([v,l])=>`<button class="segb ${R[r.id]===v?'on':''}" data-r="${r.id}" data-v="${v}">${l}</button>`).join('')}</div></div>`).join('')}</div>
       <div id="rimnote"></div><button class="btn wide" id="next" ${all()?'':'disabled'}>Set my goals</button></div>`);
