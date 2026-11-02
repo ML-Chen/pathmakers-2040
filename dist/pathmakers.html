@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&family=Caveat:wght@600&display=swap">
 <style>
 /* Layout: one phone-width column over a full-bleed animated scene; conversations put a large animated character on stage with graded-reader subtitles below; work screens use floating cards. */
+[hidden]{display:none!important}
 :root{
   --ink:#1f2340; --ink2:#5d6385; --paper:#ffffff; --mist:#eef1fb; --line:#dfe3f3;
   --violet:#6c5ce7; --teal:#16b3a6; --coral:#ff7a6b; --gold:#f5b82e; --good:#1fa774; --warn:#e5484d;
@@ -31,6 +32,7 @@ p{margin:.35em 0}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
 /* buttons */
+[hidden]{display:none!important}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:16px;padding:14px 22px;background:var(--violet);color:#fff;font-family:var(--display);font-weight:600;font-size:1.08rem;
   box-shadow:0 5px 0 #4a3cbf,0 10px 22px rgba(60,40,160,.25);transition:transform .12s,box-shadow .12s}
 .btn:active{transform:translateY(4px);box-shadow:0 1px 0 #4a3cbf}
@@ -429,9 +431,116 @@ textarea{resize:vertical;line-height:1.5}
 .mstar{color:var(--gold);letter-spacing:1px}
 .hud-btns .hbtn{width:38px;height:38px}
 
+/* parent.css — the grown-ups' progress page (parent.js) */
+.pp{position:fixed;inset:0;z-index:45;background:var(--mist);overflow-y:auto;overscroll-behavior:contain;opacity:0;transform:translateY(16px);transition:opacity .25s,transform .25s}
+.pp.on{opacity:1;transform:none}
+.pp-in{max-width:520px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.pp-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) 0 10px;background:var(--mist)}
+.pp-top h2{margin:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pp-top .x{background:#fff;flex:none}
+.pp-card{background:#fff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 6px 20px rgba(30,35,80,.07)}
+.pp-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pp-h h3{margin:0;font-size:1.2rem}
+.pp-n{font-family:var(--display);font-weight:600;font-size:1.05rem;color:var(--violet);white-space:nowrap}
+.pp-gold{color:var(--gold)}
+.pp-sub{font-family:var(--display);font-weight:600;color:var(--ink2);margin:16px 0 6px}
+.pp-empty{color:var(--ink2);font-size:.92rem;margin:0}
+.pp-note{font-size:.88rem;color:var(--ink2);margin:8px 0 0;display:flex;align-items:center;gap:8px}
+
+/* Field Guide */
+.pp-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.pp-idea{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--mist);border-radius:14px;padding:9px 12px}
+.pp-idea div{display:flex;flex-direction:column;min-width:0}
+.pp-idea b{font-weight:800;line-height:1.25}
+.pp-idea span{font-size:.75rem;color:var(--ink2)}
+.pp-idea em{flex:none;font-style:normal;font-weight:800;font-size:.78rem;border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink2)}
+.pp-idea.yes em{background:#e0f6f3;color:#0b7a71}
+.pp-idea.again em{background:var(--violet);color:#fff}
+.pp-idea.no{background:#f6f7fb}.pp-idea.no b{color:var(--ink2)}
+
+/* Word Book */
+.pp-words{display:flex;flex-wrap:wrap;gap:6px}
+.pp-words span{background:var(--mist);border-radius:999px;padding:5px 12px;font-weight:800;font-size:.9rem}
+.pp-words span.rev{box-shadow:inset 0 0 0 2px var(--violet);color:var(--violet)}
+.pp-key{display:inline-block;width:14px;height:14px;border-radius:50%;flex:none}
+.pp-key.rev{box-shadow:inset 0 0 0 2px var(--violet)}
+
+/* Writing */
+.pp-meter{display:grid;grid-template-columns:minmax(0,1fr) 34% auto;align-items:center;gap:10px;padding:5px 0;font-size:.92rem}
+.pp-meter b{font-size:.85rem;color:var(--ink2);white-space:nowrap;min-width:3.6em;text-align:right}
+.pp-bar{height:10px;border-radius:999px;background:var(--mist);overflow:hidden}
+.pp-bar i{display:block;height:100%;border-radius:999px;background:var(--violet);min-width:2px;animation:grow .7s cubic-bezier(.2,.9,.3,1) backwards;transform-origin:left}
+
+/* Decisions: stars and luck per mission, side by side */
+.pp-tl{display:flex;gap:8px;align-items:stretch}
+.pp-rowlab{display:flex;flex-direction:column;justify-content:flex-start;font-size:.78rem;font-weight:800;color:var(--ink2);padding-top:2px}
+.pp-rowlab span:first-child{height:58px;display:flex;align-items:center}
+.pp-rowlab span:nth-child(2){height:30px;display:flex;align-items:center}
+.pp-rowlab span:nth-child(3){height:18px;display:flex;align-items:center}
+.pp-cols{flex:1;display:flex;gap:4px;min-width:0}
+.pp-col{flex:1 1 0;min-width:0;max-width:52px;border:0;background:none;border-radius:12px;padding:2px 0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.pp-col.sel{background:var(--mist)}
+.pp-stars{display:flex;flex-direction:column;align-items:center;gap:3px;height:52px;justify-content:flex-end;width:100%}
+.pp-stars i{width:min(26px,100%);height:14px;border-radius:4px;background:#e6e9f4}
+.pp-stars i.on{background:var(--gold)}
+.pp-col small{font-size:.7rem;font-weight:800;color:var(--ink2);white-space:nowrap}
+.pp-luck{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-style:normal;background:#e8ebf7;color:var(--ink2)}
+.pp-luck.lucky{background:#e4f7ee;color:var(--good)}
+.pp-luck.unlucky{background:#fde6e6;color:var(--warn)}
+.pp-luck.none{background:none}
+.pp-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:.8rem;font-weight:800;color:var(--ink2)}
+.pp-legend span{display:inline-flex;align-items:center;gap:6px}
+.pp-legend .pp-luck{width:18px;height:18px;font-size:.6rem}
+.pp-detail{margin-top:10px;background:var(--mist);border-radius:14px;padding:10px 12px;font-size:.88rem;display:flex;flex-direction:column;gap:2px;animation:reveal .25s}
+.pp-detail span{color:var(--ink2)}
+.pp-detail[hidden]{display:none}
+
+/* Calibration chart */
+.pp-cal{width:100%;height:auto;display:block;font-family:var(--body);font-size:11px;font-weight:700;fill:var(--ink2)}
+.pp-grid{stroke:#e6e9f4;stroke-width:1}
+.pp-diag{stroke:var(--ink2);stroke-width:1.5;stroke-dasharray:4 4;opacity:.6}
+.pp-ax{font-size:11.5px;font-weight:800}
+.pp-dot{fill:var(--violet);stroke:#fff;stroke-width:2}
+.pp-ring{fill:none;stroke:var(--teal);stroke-width:2.5}
+.pp-dl{fill:var(--ink);font-size:11.5px;font-weight:800}
+.pp-k{display:inline-block;width:12px;height:12px;border-radius:50%;flex:none}
+.pp-k.dot{background:var(--violet)}
+.pp-k.ring{box-shadow:inset 0 0 0 2.5px var(--teal)}
+.pp-k.diag{width:16px;height:0;border-radius:0;border-top:2px dashed var(--ink2);opacity:.7}
+
+/* Portfolio */
+.pp-memo{border-top:1.5px solid var(--line);padding:10px 0 4px}
+.pp-memo:first-of-type{border-top:0;padding-top:0}
+.pp-memo-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.pp-memo-h span{font-size:.8rem;color:var(--ink2);white-space:nowrap}
+.pp-plan{font-size:.85rem;color:var(--ink2)}
+.pp-memo blockquote{margin:8px 0 6px;padding:8px 12px;border-left:4px solid var(--violet);background:#f7f6ff;border-radius:0 12px 12px 0;font-size:.95rem}
+.pp-card .mini-btn{margin-top:8px}
+
+/* Talking with Byte */
+.pp-switch{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:800}
+.pp-tog{flex:none;width:56px;height:32px;border:0;border-radius:999px;background:#cfd4e6;position:relative;transition:background .2s;padding:0}
+.pp-tog i{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .2s}
+.pp-tog.on{background:var(--good)}
+.pp-tog.on i{transform:translateX(24px)}
+.pp-qs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.pp-qs li{display:flex;justify-content:space-between;gap:10px;background:var(--mist);border-radius:14px;padding:8px 12px}
+.pp-qs p{margin:0;font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.pp-qs span{flex:none;font-size:.75rem;color:var(--ink2)}
+
+/* grown-ups gate */
+.pp-gate .row{flex-wrap:nowrap}
+.pp-gate input{flex:1;min-width:0;font-size:1.2rem}
+.shake{animation:shake .35s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.pp,.pp-tog,.pp-tog i{transition:none}.pp-bar i,.shake,.pp-detail{animation:none}}
+
+
 </style>
 <main id="app" class="screen"></main>
 <script>
+// LATE: functions any module can push; game.js runs them once everything is defined (e.g. a scene file adding PROPS).
+const LATE=[];
 // Generated by tools/make_audio.py; do not edit by hand (see tools/AUDIO.md).
 // 125 clips, Kokoro kokoro-multi-lang-v1_0 (Apache-2.0) via sherpa-onnx, Ogg Opus 24k mono.
 // Voice key -> Kokoro speaker: af_bella=af_sarah, am_adam=am_fenrir, bf_emma=af_kore, af_sky=af_jessica, am_michael=am_liam, bm_george=bm_fable, af_sarah=af_aoede, af_nicole=af_alloy, bf_isabella=bf_isabella, bm_lewis=bm_lewis
@@ -563,6 +672,7 @@ const AUDIO={
 "bf_emma|Good morning, Doctor! Heads up: elevator B is a little slow today.":"data:audio/ogg;base64,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"
 };
 if(typeof window!=='undefined')window.AUDIO=AUDIO;
+
 
 // art.js — all vector art, drawn in code as SVG strings.
 // Palette lives in CSS custom properties; art uses literal fills from ART palette so scenes look identical everywhere.
@@ -1224,7 +1334,8 @@ function personSVG(o){o=o||{};
     ${gl}${earring}
     ${outlinePass}<path d="${HS.cap}" fill="${hg}"/>${clumps}${shine}${extraFront}<g opacity=".42">${brows}</g>${fx}
   </g></g></g>`}
-function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${(o&&o.name)||''}">${personSVG(o||{})}</svg>`}
+// A cast entry may draw itself instead of using personSVG (animals, robots, holograms): art(mood) returns SVG content in the same 30 0 240 360 box.
+function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${(o&&o.name)||''}">${o&&typeof o.art==='function'?o.art(o.mood||'smile'):personSVG(o||{})}</svg>`}
 
 // ---------- Maya, full body and posed (Future Table cards, reveal) ----------
 // posedGirl(kind,o) -> SVG <g>. Feet on (0,0); about 70 units tall (ahoge tip ~y=-71, hair top ~-68); body about ±10 wide
@@ -4056,17 +4167,21 @@ const EXTRA_LINES=[
 const CHATTER={
   street:['Ugh, the tram was ninety seconds late. NINETY seconds!','I\u2019m voting on the river park plan tonight. Did you read it?','Rain at 3:10, my phone says. Better hurry.','I teach violin on Saturdays. Just because I love it.','Did you hear about that secret datacenter near Calder Bay?','My grandpa ran his first marathon last week. He\u2019s 92!','I\u2019m learning Mandarin. N\u01d0 h\u01ceo!'],
   hospital:['My knee feels brand new. Dr. Reyes explained everything so clearly.','I\u2019m visiting my great-grandma. She\u2019s 104 and still dances on Sundays!','Have you tried the cafeteria dumplings? Ten out of ten.','I volunteer here on Tuesdays. I read stories to the kids.']};
+const CORE_CHATTER=JSON.parse(JSON.stringify(CHATTER));
 const CHATTER_VOICES=['af_sarah','bm_lewis','af_nicole','bf_isabella','am_michael'];
 // Every line the game speaks with a recorded voice: [{voice, text}] with [[ ]] markup removed.
 function speechText(t){return String(t).replace(/\[\[|\]\]/g,'').replace(/\s+/g,' ').trim()}
-function spokenLines(){const out=[];const add=(who,t)=>{if(!t||/\{P\}/.test(t))return;const vs=who==='byte'?Object.values(BYTE_VOICES):[VOICES[who]||VOICES.narrator];for(const v of vs)out.push({voice:v,text:speechText(t)})};
+function spokenLines(){const out=[];let SRC='core';const add=(who,t)=>{if(!t||/\{P\}/.test(t))return;const vs=who==='byte'?Object.values(BYTE_VOICES):[VOICES[who]||VOICES.narrator];for(const v of vs)out.push({voice:v,text:speechText(t),src:SRC})};
   for(const k in TALKS)for(const L of TALKS[k]){add(L.who,L.text);(L.choices||[]).forEach(c=>c.reply&&add(L.who,c.reply))}
   for(const d of DOCS){add('narrator',d.title);d.steps.forEach(b=>{add('narrator',b.t);if(b.alt)add('narrator',b.alt.t)})}
   for(const w in GLOSSARY)add('narrator',w+'. '+GLOSSARY[w]);
   for(const k in REVEAL_LINES)add('maya',REVEAL_LINES[k]);
   EXTRA_LINES.forEach(x=>add(x.who,x.text));
-  for(const k in CHATTER)CHATTER[k].forEach((t,i)=>out.push({voice:CHATTER_VOICES[i%CHATTER_VOICES.length],text:speechText(t)}));
-  out.push({voice:'bf_emma',text:speechText("Good morning, Doctor! Heads up: elevator B is a little slow today.")});
+  for(const k in CORE_CHATTER)CORE_CHATTER[k].forEach((t,i)=>out.push({voice:CHATTER_VOICES[i%CHATTER_VOICES.length],text:speechText(t),src:'core'}));
+  out.push({voice:"bf_emma",text:speechText("Good morning, Doctor! Heads up: elevator B is a little slow today."),src:"core"});
+  // Missions in src/missions/*.js: each one's lines are written to src/audio/<id>.js (the Maya mission's lines live in src/audio.js).
+  if(typeof MISSIONS!=='undefined'){mergeMissions();for(const id in MISSIONS){if(id==='maya')continue;SRC=id;const m=MISSIONS[id];missionLines(m).forEach(x=>add(x.who,x.text));
+    for(const k in (m.chatter||{}))m.chatter[k].forEach((t,i)=>out.push({voice:(m.chatterVoices||CHATTER_VOICES)[i%(m.chatterVoices||CHATTER_VOICES).length],text:speechText(t),src:id}))}}
   const seen=new Set();return out.filter(x=>{const key=x.voice+'|'+x.text;if(seen.has(key))return false;seen.add(key);return true})}
 if(typeof module!=='undefined')module.exports={spokenLines};
 
@@ -4078,7 +4193,24 @@ if(typeof module!=='undefined')module.exports={spokenLines};
 //  criteria [{id,label}], criteriaHint (html), criteriaNote, controls [{key,label,opts:[[value,label]]}], start (default choice)
 //  planName(c), outcomes(c, knows) -> [{kind,p,cap,flags:{criterionId:0|1}}], why(c) -> html, whyGuide(c) -> field guide id|null
 //  vignette(kind) (optional; defaults to the global vignette), consent {...}, memo {...}, reveal {...}, trap(c), byteGood, byteBad, evening(), brief(), canned(q)
+//  Optional mission-owned tables (merged into the shared ones by mergeMissions() at startup, and recorded by tools/make_audio.py):
+//  glossary {lowercase word: meaning}, cast {id: portrait options + name, role}, voices {cast id: voice name}, guide {Field Guide id: {title,track,text,real}},
+//  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine).
+//  Top-level code in mission files must be plain data and function definitions: tools/make_audio.py evaluates them in node (no DOM).
 const MISSIONS={};
+function mergeMissions(){for(const m of Object.values(MISSIONS)){if(m._merged)continue;m._merged=1;
+  Object.assign(GLOSSARY,m.glossary||{});Object.assign(CAST,m.cast||{});Object.assign(VOICES,m.voices||{});Object.assign(FIELD_GUIDE,m.guide||{});Object.assign(LESSONS,m.lessons||{});
+  for(const k in (m.chatter||{}))CHATTER[k]=(CHATTER[k]||[]).concat(m.chatter[k])}}
+// Every line a mission speaks with playLine, as [{who, text}] ('byte' lines are recorded in both Byte voices).
+function missionLines(m){const L=[],add=(who,t)=>{if(t&&typeof t==='string')L.push({who,text:t})};
+  for(const k in (m.talks||{}))for(const x of m.talks[k]){add(x.who,x.text);(x.choices||[]).forEach(c=>add(x.who,c.reply))}
+  for(const d of (m.docs||[])){add('narrator',d.title);d.steps.forEach(b=>{add('narrator',b.t);if(b.alt)add('narrator',b.alt.t)})}
+  for(const w in (m.glossary||{}))add('narrator',w+'. '+m.glossary[w]);
+  for(const id in (m.lessons||{})){const ls=m.lessons[id];add('byte','Here is '+ls.title.toLowerCase()+'.')}
+  if(m.reveal&&m.reveal.lines)for(const k in m.reveal.lines)add(m.reveal.who,m.reveal.lines[k]);
+  if(m.consent&&m.consent.opts){try{m.consent.opts(m.start,m).forEach(o=>add(m.consent.replyWho,o.reply))}catch(e){}}
+  (m.lines||[]).forEach(x=>add(x.who,x.text));
+  return L}
 const CAREERS={doctor:{name:'Care Doctor',place:'Boston Harbor Hospital'},companion:{name:'Elder Companion',place:'Boston'}};
 
 MISSIONS.maya={id:'maya',title:'The Violinist’s Wrist',career:'doctor',day:1,blurb:'An 11-year-old violinist broke her wrist nine days before her recital.',after:[],
@@ -4135,38 +4267,104 @@ const REACT_MAYA={memo6:'Nine days until the recital. That’s tight!',memo7:'On
 const IG={ink:'#1f2340',soft:'#8a90b0',line:'#dfe3f3',teal:'#16b3a6',violet:'#6c5ce7',coral:'#ff7a6b',gold:'#f5b82e',red:'#e5484d',green:'#1fa774',bone:'#fff3dc',boneS:'#e8d3a8',skin:'#f6cfb4',skinS:'#e7ae8e',cast:'#fff7e0',blue:'#5b9bf0'};
 function igFrame(w,h,inner,label){return `<svg class="ig" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label||''}">${inner}</svg>`}
 function igT(x,y,t,o={}){return `<text x="${x}" y="${y}" font-size="${o.s||11}" font-weight="${o.w||700}" fill="${o.c||IG.ink}" text-anchor="${o.a||'middle'}" font-family="Nunito, sans-serif">${t}</text>`}
-// a forearm with two bones; opts: crack (bool), cast, pins, gel, splint, crooked
-function igArm(x,y,o={}){
-  const radius=o.crooked?`<path d="M0 0 L58 -2 L64 4 L120 18" stroke="${IG.boneS}" stroke-width="15" stroke-linecap="round" fill="none"/><path d="M0 0 L58 -2 L64 4 L120 18" stroke="${IG.bone}" stroke-width="11" stroke-linecap="round" fill="none"/>`
-    :`<path d="M0 0 H120" stroke="${IG.boneS}" stroke-width="15" stroke-linecap="round"/><path d="M0 0 H120" stroke="${IG.bone}" stroke-width="11" stroke-linecap="round" class="${o.glow?'ig-glowbone':''}"/>`;
-  return `<g transform="translate(${x} ${y})">
-   <rect x="-18" y="-24" width="160" height="60" rx="30" fill="${IG.skin}"/><rect x="-18" y="14" width="160" height="22" rx="11" fill="${IG.skinS}" opacity=".5"/>
-   <circle cx="150" cy="6" r="24" fill="${IG.skin}"/><path d="M160 -14 q12 4 10 18 M166 -4 q10 6 6 18" stroke="${IG.skinS}" stroke-width="5" fill="none" stroke-linecap="round"/>
-   <path d="M0 18 H120" stroke="${IG.boneS}" stroke-width="13" stroke-linecap="round"/><path d="M0 18 H120" stroke="${IG.bone}" stroke-width="9" stroke-linecap="round"/>
-   ${radius}
-   ${o.crack?`<path d="M62 -9 l-5 6 l6 3 l-5 7" stroke="${IG.red}" stroke-width="2.6" fill="none" class="ig-blink"/>`:''}
-   ${o.pins?`<g class="ig-pop">${[44,60,76].map(px=>`<rect x="${px-1.5}" y="-12" width="3" height="24" rx="1.5" fill="#9aa6c0"/><circle cx="${px}" cy="-13" r="3" fill="#c7cfe0"/>`).join('')}</g>`:''}
-   ${o.gel?`<ellipse cx="61" cy="0" rx="9" ry="8" fill="${IG.violet}" opacity=".55" class="ig-gel"/>`:''}
-   ${o.cast?`<rect x="-6" y="-30" width="136" height="72" rx="30" fill="${IG.cast}" stroke="#e9d9a8" stroke-width="3" opacity=".93" class="ig-pop"/><path d="M20 -18 q6 10 0 20 M96 -18 q6 10 0 20" stroke="#ffb3c7" stroke-width="3" fill="none"/>`:''}
-   ${o.splint?`<g class="ig-pop"><rect x="-2" y="-30" width="130" height="10" rx="5" fill="#cfd6ea"/><rect x="-2" y="30" width="130" height="10" rx="5" fill="#cfd6ea"/>${[16,62,108].map(sx=>`<rect x="${sx}" y="-30" width="10" height="70" rx="4" fill="#b8c2de" opacity=".7"/>`).join('')}<circle cx="64" cy="-25" r="5" fill="#7ff7e4" class="ig-blink"/></g>`:''}
-  </g>`}
+let IGN=0;const igId=p=>p+(++IGN);
+const IGK={line:'#c98a6a',nail:'#fbe3d6',crack:'#7a4a2a'};
+// A long bone lying along x from 0 to L (centre line y=0). rA/rB = knob radius at each end, w = half the shaft width.
+// The ends flare out of the shaft with smooth curves and finish in two rounded condyles, like a textbook bone.
+function igBonePath(L,rA,rB,w){const f=v=>+v.toFixed(2);
+  return `M${f(rA)} ${f(-rA)} C${f(rA*2.1)} ${f(-rA)} ${f(rA*2.3)} ${f(-w)} ${f(rA*3.4)} ${f(-w)} L${f(L-rB*3.4)} ${f(-w)} C${f(L-rB*2.3)} ${f(-w)} ${f(L-rB*2.1)} ${f(-rB)} ${f(L-rB)} ${f(-rB)}`+
+   ` C${f(L-rB*.15)} ${f(-rB)} ${f(L)} ${f(-rB*.62)} ${f(L)} ${f(-rB*.24)} Q${f(L-rB*.32)} 0 ${f(L)} ${f(rB*.24)} C${f(L)} ${f(rB*.62)} ${f(L-rB*.15)} ${f(rB)} ${f(L-rB)} ${f(rB)}`+
+   ` C${f(L-rB*2.1)} ${f(rB)} ${f(L-rB*2.3)} ${f(w)} ${f(L-rB*3.4)} ${f(w)} L${f(rA*3.4)} ${f(w)} C${f(rA*2.3)} ${f(w)} ${f(rA*2.1)} ${f(rA)} ${f(rA)} ${f(rA)}`+
+   ` C${f(rA*.15)} ${f(rA)} 0 ${f(rA*.62)} 0 ${f(rA*.24)} Q${f(rA*.32)} 0 0 ${f(-rA*.24)} C0 ${f(-rA*.62)} ${f(rA*.15)} ${f(-rA)} ${f(rA)} ${f(-rA)}Z`}
+function igBone(L,rA,rB,w,o={}){return `<path d="${igBonePath(L,rA,rB,w)}" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="${o.sw||1.5}" stroke-linejoin="round" class="${o.cls||''}"/>`+
+  `<path d="M${rA*3.1} ${w*.42} H${L-rB*3.1}" stroke="${IG.boneS}" stroke-width="${w*.34}" stroke-linecap="round" opacity=".45"/>`+
+  `<path d="M${rA*3.1} ${-w*.4} H${L-rB*3.1}" stroke="#fff" stroke-width="${w*.3}" stroke-linecap="round" opacity=".85"/>`}
+// a jagged fracture line across a bone at x=bx, as a list of points from top to bottom
+const igFrac=(bx,w)=>[[bx+1,-w-8],[bx+1,-w],[bx-3,-w*.35],[bx+3,w*.15],[bx-2,w*.65],[bx+.5,w],[bx+.5,w+8]];
+// clip a shape to the left (side<0) or right (side>0) of a fracture line
+function igSplit(id,pts,side){const far=side<0?-400:400,p=pts.map(q=>q.join(' ')).join(' L');
+  return `<clipPath id="${id}"><path d="M${far} ${pts[0][1]} L${p} L${far} ${pts[pts.length-1][1]}Z"/></clipPath>`}
+// Maya's left forearm seen from the side, thumb up: skin silhouette with elbow, wrist, thumb and fingers drawn with
+// Bezier curves, and the two forearm bones inside it (radius on the thumb side, ulna below it).
+// opts: crack, cast, pins, gel, splint, crooked, glow. The drawing spans about x -20..188, y -30..40 around (x,y).
+function igArm(x,y,o={}){const fade=igId('igf'),cut=igId('igc'),cl=igId('igl'),cr=igId('igr');
+  const R={x:-6,y:-3,L:140},U={x:-16,y:19,L:142,a:-2.6};
+  const frac=igFrac(66,5.2);
+  const radius=o.crooked
+    ?`<defs>${igSplit(cl,frac,-1)}${igSplit(cr,frac,1)}</defs>
+      <g clip-path="url(#${cl})">${igBone(R.L,5.4,9.4,5.2)}</g>
+      <g transform="rotate(10 66 0) translate(1 2)"><g clip-path="url(#${cr})">${igBone(R.L,5.4,9.4,5.2)}</g></g>
+      <path d="M56 -2 C56 -7 60 -9 65 -8.5 C70 -8 74 -6 75.5 -1 C77 4 75 9 70 10 C65 11 59 8.5 57 5 C56 3 56 0 56 -2Z" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="1.4"/>
+      <path d="M62 -3 C64 -5 67 -4 69 -5 M63 4 C65 6 68 5 70 6" stroke="${IG.boneS}" stroke-width="1" fill="none" stroke-linecap="round"/>`
+    :igBone(R.L,5.4,9.4,5.2,{cls:o.glow?'ig-glowbone':''});
+  const skin=`M-20 -20 C-12 -28 4 -31 24 -30 C48 -29 76 -21 102 -16 C114 -14 124 -13 132 -13
+    C142 -13 152 -14 162 -12 C170 -11 178 -9 183 -6 C187 -3 187 2 183 4 C181 6 178 6 176 6
+    C176 9 172 10 168 9 C167 12 163 13 159 12 C155 15 150 18 142 20 C136 22 130 22 124 22 C100 24 64 33 30 37 C10 39 -6 38 -20 34 C-25 22 -26 -8 -20 -20Z`;
+  const thumb=`M137 -11 C143 -18 152 -22 161 -22 C167 -22 170 -19 168 -16 C166 -13 160 -13 155 -12 C149 -11 144 -8 141 -5`;
+  const parts=[
+   // forearm + hand, outlined like the anime cast
+   `<path d="${skin}" fill="${IG.skin}" stroke="${IGK.line}" stroke-width="1.6" stroke-linejoin="round"/>`,
+   `<path d="M-14 30 C8 34 40 31 72 25 C96 20 114 18 128 19" stroke="${IG.skinS}" stroke-width="7" fill="none" stroke-linecap="round" opacity=".55"/>`,
+   // finger creases, knuckles, fingernail
+   `<path d="M160 -3 C166 -2 172 0 176 1 M156 3 C161 4 165 6 168 6" stroke="${IGK.line}" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".75"/>`,
+   `<path d="M178 -8 C181 -8 184 -6 184.5 -4" stroke="${IGK.line}" stroke-width="1" fill="none" opacity=".7"/>`,
+   `<g clip-path="url(#${cut})">`,
+   // hand bones, faint, so the x-ray reads as a whole arm
+   `<g opacity=".6">${[[-6,-.5],[-.5,1],[4.5,2.5]].map(([dy,ang])=>`<g transform="translate(140 ${dy}) rotate(${ang})">${igBone(19,2.4,2.2,1.4,{sw:.8})}<g transform="translate(20.5 .4) rotate(${ang*1.5})">${igBone(14,2,1.7,1.1,{sw:.7})}</g></g>`).join('')}
+     ${[[134.5,-4.5],[135.5,2.5],[134,9.5]].map(([cx,cy])=>`<circle cx="${cx}" cy="${cy}" r="3.2" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width=".9"/>`).join('')}</g>`,
+   `<g transform="translate(${U.x} ${U.y}) rotate(${U.a})">${igBone(U.L,7.6,5,4.4)}<path d="M-1 -3 C-3 -11 3 -15 10 -12" stroke="${IG.boneS}" stroke-width="5.4" fill="none" stroke-linecap="round"/><path d="M-1 -3 C-3 -11 3 -15 10 -12" stroke="${IG.bone}" stroke-width="3.2" fill="none" stroke-linecap="round"/></g>`,
+   `<g transform="translate(${R.x} ${R.y})">${radius}
+     ${o.crack?`<g class="ig-blink" stroke="${IG.red}" stroke-width="2" stroke-linecap="round"><path d="M60 -12 l-3 -5 M66 -13 v-6 M72 -12 l3 -5 M60 11 l-3 5 M72 11 l3 5"/></g><path d="${frac.slice(1,-1).map((q,i)=>(i?'L':'M')+q[0]+' '+q[1]).join(' ')}" stroke="${IG.red}" stroke-width="3.4" fill="none" stroke-linejoin="round" opacity=".55" class="ig-blink"/><path d="${frac.slice(1,-1).map((q,i)=>(i?'L':'M')+q[0]+' '+q[1]).join(' ')}" stroke="${IGK.crack}" stroke-width="1.3" fill="none" stroke-linejoin="round"/>`:''}
+     ${o.gel?`<path d="M54 -1 C54 -11 78 -11 78 -1 C78 9 54 9 54 -1Z" fill="${IG.violet}" opacity=".5" class="ig-gel"/>`:''}
+     ${o.pins?`<g class="ig-pop"><path d="M40 -8.6 C40 -10.6 41 -11.6 43 -11.6 H89 C91 -11.6 92 -10.6 92 -8.6 V-6.6 H40Z" fill="#aeb8d0" stroke="#7c87a6" stroke-width="1"/>${[46,58,74,86].map(px=>`<path d="M${px} -12 V5" stroke="#7c87a6" stroke-width="2.2" stroke-linecap="round"/><circle cx="${px}" cy="-12" r="2.6" fill="#d5dcec" stroke="#7c87a6" stroke-width="1"/><path d="M${px-1.4} -12 h2.8" stroke="#7c87a6" stroke-width=".9"/>`).join('')}</g>`:''}
+   </g></g>`,
+   o.cast?`<g class="ig-pop"><path d="M-6 -33 C20 -35 58 -27 92 -21 C112 -17 132 -18 156 -18 L161 -16 C163 -6 163 4 160 12 C148 14 138 27 124 27 C96 29 60 39 26 42 C12 43 0 42 -6 40 C-11 20 -11 -14 -6 -33Z" fill="${IG.cast}" stroke="#d9c58e" stroke-width="2" opacity=".95"/>
+      ${[8,30,52,74,96,118,140].map(cx=>`<path d="M${cx} ${-33+cx*.11} C${cx+7} ${-12} ${cx+7} ${14} ${cx-1} ${40-cx*.11}" stroke="#e6d6a6" stroke-width="1.6" fill="none"/>`).join('')}
+      <path d="M-6 -33 C-11 -14 -11 20 -6 40" stroke="#efe3bd" stroke-width="5" fill="none"/>
+      <path d="M30 -4 c-3 -5 -10 -2 -6 4 l6 6 l6 -6 c4 -6 -3 -9 -6 -4z" fill="#ffb3c7"/><path d="M84 6 l2.4 5 l5.4 .6 l-4 3.6 l1.2 5.4 l-5 -2.8 l-5 2.8 l1.2 -5.4 l-4 -3.6 l5.4 -.6z" fill="#b9b2f5"/></g>`:'',
+   o.splint?`<g class="ig-pop"><path d="M-2 -33 C24 -35 60 -27 94 -21 C114 -17 134 -18 150 -18 L150 -11 C134 -11 114 -11 94 -14 C60 -20 24 -27 -2 -26Z" fill="#cfd6ea" stroke="#9aa6c6" stroke-width="1.4"/>
+      <path d="M-2 41 C24 41 60 34 94 27 C114 24 134 25 150 25 L150 19 C134 18 114 18 94 21 C60 27 24 34 -2 35Z" fill="#cfd6ea" stroke="#9aa6c6" stroke-width="1.4"/>
+      ${[[14,-34,41],[64,-27,33],[118,-19,26]].map(([sx,t,b])=>`<path d="M${sx} ${t} C${sx+6} ${t+10} ${sx+6} ${b-10} ${sx} ${b}" stroke="#8f9bbd" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9"/>`).join('')}
+      <rect x="54" y="-34" width="20" height="9" rx="4.5" fill="#2a3060"/><circle cx="64" cy="-29.5" r="2.6" fill="#7ff7e4" class="ig-blink"/></g>`:'',
+   // thumb last, so it sits on top of a cast or splint
+   `<path d="${thumb}" fill="${IG.skin}" stroke="${IGK.line}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M162 -21 C165 -21 167 -19.5 166.6 -17.5" stroke="${IGK.line}" stroke-width="1" fill="none" opacity=".7"/>`];
+  return `<g transform="translate(${x} ${y})"><defs><linearGradient id="${fade}" gradientUnits="userSpaceOnUse" x1="-26" x2="-2"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <mask id="${fade}m" maskUnits="userSpaceOnUse" x="-40" y="-60" width="260" height="120"><rect x="-40" y="-60" width="260" height="120" fill="url(#${fade})"/></mask>
+    <clipPath id="${cut}"><path d="${skin}"/></clipPath></defs><g mask="url(#${fade}m)">${parts.join('')}</g></g>`}
+// A close-up of one bone across the frame, broken in the middle, for the healing lesson and the gel picture.
+// gap = how far apart the two pieces sit. Returns the two pieces; the caller draws what fills the gap.
+function igBrokenBone(gap,o={}){const L=220,cx=110,w=10,f=igFrac(cx,w),l=igId('igbl'),r=igId('igbr');
+  const bone=igBone(L,13,13,w,{sw:2});
+  return `<defs>${igSplit(l,f,-1)}${igSplit(r,f,1)}</defs><g transform="translate(${-gap/2} 0)"><g clip-path="url(#${l})">${bone}</g></g><g transform="translate(${gap/2} ${o.drop||0})"><g clip-path="url(#${r})">${bone}</g></g>
+   ${o.edges===false?'':`<path d="M${f.slice(1,-1).map(q=>(q[0]-gap/2)+' '+q[1]).join(' L')}" stroke="${IG.boneS}" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M${f.slice(1,-1).map(q=>(q[0]+gap/2)+' '+(q[1]+(o.drop||0))).join(' L')}" stroke="${IG.boneS}" stroke-width="2" fill="none" stroke-linejoin="round"/>`}`}
+// a lumpy spindle that wraps the break (blood clot, soft callus, hard callus)
+const igLump=(rx,ry)=>`M${110-rx} 1 C${110-rx} ${-ry*.7} ${110-rx*.55} ${-ry} ${110-rx*.2} ${-ry*.92} C${110} ${-ry*1.08} ${110+rx*.35} ${-ry*.9} ${110+rx*.6} ${-ry*.95} C${110+rx*.95} ${-ry*.8} ${110+rx} ${-ry*.3} ${110+rx} 1 C${110+rx} ${ry*.6} ${110+rx*.6} ${ry} ${110+rx*.2} ${ry*.95} C${110-rx*.15} ${ry*1.05} ${110-rx*.5} ${ry*.9} ${110-rx*.7} ${ry*.85} C${110-rx*.95} ${ry*.7} ${110-rx} ${ry*.4} ${110-rx} 1Z`;
 // 100 tiny kids, `n` colored. loop-fills in a wave.
 function igKids(n,col,o={}){const W=o.w||300;let s='';const cell=W/20;
   for(let i=0;i<100;i++){const r=Math.floor(i/20),c=i%20,x=c*cell+cell/2,y=r*cell*1.25+cell*.75;const on=i<n;
     s+=`<g class="ig-kid ${on?'on':''}" style="--d:${(i*0.022).toFixed(2)}s;--c:${col}"><circle cx="${x}" cy="${y-cell*.18}" r="${cell*.2}"/><rect x="${x-cell*.22}" y="${y+cell*.02}" width="${cell*.44}" height="${cell*.34}" rx="${cell*.15}"/></g>`}
   return s}
 const VIZ={
-  healStage:({s})=>igFrame(300,110,`<g transform="translate(40 52)"><path d="M0 0 H96" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M0 0 H96" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/><path d="M124 ${s>=4?0:4} H220" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M124 ${s>=4?0:4} H220" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/>
-     ${s===1?`<ellipse cx="110" cy="2" rx="26" ry="20" fill="${IG.red}" opacity=".55" class="ig-pulse"/>`:''}
-     ${s===2?`<ellipse cx="110" cy="2" rx="28" ry="18" fill="#c9b8ff" class="ig-pulse"/>${[0,1,2,3,4].map(i=>`<circle cx="${92+i*9}" cy="${-6+(i%2)*10}" r="3" fill="#fff" class="ig-cell" style="--d:${i*.25}s"/>`).join('')}`:''}
-     ${s===3?`<ellipse cx="110" cy="2" rx="26" ry="16" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="3"/><ellipse cx="110" cy="2" rx="26" ry="16" fill="#c9b8ff" class="ig-fadeout"/>`:''}
-     ${s===4?`<ellipse cx="110" cy="0" rx="22" ry="13" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="3"/><rect x="-14" y="-28" width="248" height="56" rx="26" fill="${IG.cast}" stroke="#e9d9a8" stroke-width="3" opacity=".7" class="ig-pop"/>`:''}</g>
-     ${[1,2,3,4].map(i=>`<circle cx="${120+i*14}" cy="100" r="4" fill="${i<=s?IG.violet:IG.line}"/>`).join('')}`,'Bone healing stage '+s),
+  healStage:({s})=>{const T=[0,[6,3],[6,1],[4,0],[0,0]][s]||[0,0];
+    const cells=(col,n,sp)=>[...Array(n)].map((_,i)=>`<circle cx="${110-sp+(i%4)*(sp*2/3)}" cy="${-8+Math.floor(i/4)*14+(i%2)*3}" r="2.8" fill="${col}" class="ig-cell" style="--d:${i*.22}s"/>`).join('');
+    const fibres=`<path d="M86 -8 C96 -12 104 -2 114 -6 C122 -9 128 -4 134 -6 M86 2 C96 -2 104 8 114 4 C122 1 128 6 134 4 M88 10 C98 6 104 14 114 10 C122 8 128 12 132 10" stroke="#9d86f0" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+    const trab=[[96,-6],[104,4],[112,-8],[120,6],[126,-2],[100,8],[116,-1]].map(([a,b],i)=>`<ellipse cx="${a}" cy="${b}" rx="${2.4+(i%2)}" ry="1.6" fill="${IG.boneS}" opacity=".6" transform="rotate(${(i*37)%60-30} ${a} ${b})"/>`).join('');
+    const under=s===1?`<path d="${igLump(30,24)}" fill="${IG.red}" opacity=".55" class="ig-pulse"/>`:'';
+    const layer=
+      s===1?`<path d="${igLump(24,18)}" fill="${IG.red}" opacity=".22"/>${cells(IG.red,8,22)}`:
+      s===2?`<path d="${igLump(32,20)}" fill="#c9b8ff" opacity=".85" stroke="#a796f2" stroke-width="1.5" class="ig-pulse"/>${fibres}${cells('#fff',8,22)}`:
+      s===3?`<path d="${igLump(30,17)}" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="2"/>${trab}<path d="${igLump(30,17)}" fill="#c9b8ff" class="ig-fadeout"/>`:
+      s===4?`<path d="${igLump(20,13)}" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width="2"/>${trab}`:'';
+    const cast=s===4?`<g class="ig-pop"><path d="M46 -26 C80 -28 140 -28 174 -26 C179 -14 179 14 174 26 C140 28 80 28 46 26 C41 14 41 -14 46 -26Z" fill="${IG.cast}" fill-opacity=".6" stroke="#d9c58e" stroke-width="2.2"/>
+      ${[66,88,110,132,154].map(c=>`<path d="M${c-5} -27 C${c+3} -10 ${c+3} 10 ${c-5} 27" stroke="#d9c58e" stroke-width="1.5" fill="none" opacity=".7"/>`).join('')}
+      <path d="M46 -26 C41 -14 41 14 46 26 M174 -26 C179 -14 179 14 174 26" stroke="#efe3bd" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M46 -26 C41 -14 41 14 46 26 M174 -26 C179 -14 179 14 174 26" stroke="#d9c58e" stroke-width="1.4" fill="none"/></g>`:'';
+    return igFrame(300,110,`<g transform="translate(40 50)">${under}${s===4?igBone(220,13,13,10,{sw:2}):igBrokenBone(T[0],{drop:T[1]})}${layer}${cast}</g>
+     ${[1,2,3,4].map(i=>`<circle cx="${120+i*14}" cy="102" r="4" fill="${i<=s?IG.violet:IG.line}"/>`).join('')}`,'Bone healing stage '+s)},
   arm:()=>igFrame(300,110,`${igArm(70,46,{crack:true,glow:false})}${igT(130,104,'The radius (thumb-side bone) has one crack',{s:11,c:IG.soft})}`,'A forearm with a cracked radius bone'),
-  straightVsCrooked:()=>igFrame(300,150,`<g transform="translate(4 0) scale(.84)">${igArm(14,48,{})}</g>${igT(90,100,'Heals straight',{c:IG.green,s:12})}<path d="M76 108 l6 6 l12 -14" stroke="${IG.green}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-     <g transform="translate(160 0) scale(.84)">${igArm(14,48,{crooked:true})}</g>${igT(232,100,'Heals crooked',{c:IG.red,s:12})}<path d="M220 108 l12 12 M232 108 l-12 12" stroke="${IG.red}" stroke-width="3.4" stroke-linecap="round"/>
+  straightVsCrooked:()=>igFrame(300,150,`<g transform="translate(20 50) scale(.68)">${igArm(0,0,{})}</g>${igT(84,100,'Heals straight',{c:IG.green,s:12})}<path d="M76 114 l6 6 l12 -14" stroke="${IG.green}" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+     <g transform="translate(168 50) scale(.68)">${igArm(0,0,{crooked:true})}</g>${igT(232,100,'Heals crooked',{c:IG.red,s:12})}<path d="M226 110 l12 12 M238 110 l-12 12" stroke="${IG.red}" stroke-width="3.4" stroke-linecap="round"/>
      ${igT(150,140,'Straight = the bone grows back in its normal shape',{s:10.5,c:IG.soft})}`,'A straight healed bone and a crooked one'),
-  threeOptions:()=>igFrame(300,130,[['pins','Surgery + pins',{pins:true}],['cast','Cast',{cast:true}],['gel','BoneMend gel',{gel:true,splint:true}]].map(([k,l,o],i)=>`<g transform="translate(${i*100} 0)"><g class="ig-rise" style="--d:${i*.25}s"><rect x="6" y="6" width="88" height="96" rx="14" fill="#f4f6fd" stroke="${IG.line}"/><g transform="translate(12 30) scale(.5)">${igArm(14,40,o)}</g>${igT(50,118,l,{s:10.5})}</g></g>`).join(''),'Three treatment options'),
+  threeOptions:()=>igFrame(300,130,[['pins','Surgery + pins',{pins:true}],['cast','Cast',{cast:true}],['gel','BoneMend gel',{gel:true,splint:true}]].map(([k,l,o],i)=>`<g transform="translate(${i*100} 0)"><g class="ig-rise" style="--d:${i*.25}s"><rect x="6" y="6" width="88" height="96" rx="14" fill="#f4f6fd" stroke="${IG.line}"/><g transform="translate(16 52) scale(.4)">${igArm(0,0,o)}</g>${igT(50,118,l,{s:10.5})}</g></g>`).join(''),'Three treatment options'),
   kids:({n,col,label,sub})=>igFrame(300,118,`${igKids(n,col||IG.teal)}${igT(150,112,label,{s:11.5})}`,label),
   kidsCompare:({a,b,label})=>igFrame(300,118,`<g class="ig-kidswap">${igKids(b,IG.teal)}</g>${igT(150,112,label,{s:11.5})}`,label),
   timeline:()=>{const X=d=>20+d*(260/45);return igFrame(300,150,`
@@ -4194,15 +4392,15 @@ const VIZ={
      <path d="M86 50 H214" stroke="${IG.soft}" stroke-width="2" stroke-dasharray="5 6"/><g class="ig-fly"><rect x="0" y="-10" width="18" height="22" rx="3" fill="#fff" stroke="${IG.soft}"/><path d="M4 -3 h10 M4 2 h10" stroke="${IG.soft}" stroke-width="1.5"/></g><g class="ig-x"><path d="M140 40 l20 20 M160 40 l-20 20" stroke="${IG.red}" stroke-width="4" stroke-linecap="round"/></g>`,'A record that does not transfer between countries'),
   askFamily:()=>igFrame(300,110,`<g transform="translate(90 92)">${mini(0,0,{skin:'#f1cfb6',shirt:'#5b7bd5',hair:'#25202e',s:2})}</g><g transform="translate(130 96)">${mini(0,0,{skin:'#f8dcc8',shirt:IG.coral,hair:'#2a2030',s:1.5})}</g>
      <g class="ig-rise"><rect x="160" y="18" width="128" height="44" rx="16" fill="${IG.violet}"/><path d="M170 58 l-12 14 l22 -10z" fill="${IG.violet}"/>${igT(224,38,'Any care in',{s:11,c:'#fff'})}${igT(224,53,'other countries?',{s:11,c:'#fff'})}</g>`,'Ask the family a question'),
-  boneGel:()=>igFrame(300,110,`<g transform="translate(40 52)"><path d="M0 0 H94" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M0 0 H94" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/><path d="M126 0 H220" stroke="${IG.boneS}" stroke-width="26" stroke-linecap="round"/><path d="M126 0 H220" stroke="${IG.bone}" stroke-width="20" stroke-linecap="round"/>
-     <rect x="94" y="-10" width="32" height="20" fill="${IG.violet}" opacity=".35" class="ig-fillgap"/>${[0,1,2,3,4,5].map(i=>`<circle cx="${98+(i%3)*12}" cy="${-5+Math.floor(i/3)*10}" r="3" fill="${IG.bone}" class="ig-cell" style="--d:${i*.3}s"/>`).join('')}</g>
-     <g class="ig-drop"><path d="M150 4 q-8 12 0 16 q8 -4 0 -16z" fill="${IG.violet}"/></g>${igT(150,100,'Gel fills the gap; bone cells rebuild it',{s:10.5,c:IG.soft})}`,'Gel helping bone cells fill a gap'),
+  boneGel:()=>igFrame(300,110,`<g transform="translate(40 48)">${igBrokenBone(24,{})}
+     <path d="M96 -12 C104 -15 116 -15 124 -12 C127 -4 127 4 124 12 C116 15 104 15 96 12 C93 4 93 -4 96 -12Z" fill="${IG.violet}" opacity=".38" class="ig-fillgap"/>${[0,1,2,3,4,5].map(i=>`<circle cx="${102+(i%3)*8}" cy="${-5+Math.floor(i/3)*10}" r="3" fill="${IG.bone}" stroke="${IG.boneS}" stroke-width=".8" class="ig-cell" style="--d:${i*.3}s"/>`).join('')}</g>
+     <g class="ig-drop"><path d="M150 2 C146 9 143 13 143 17 C143 21 146 23 150 23 C154 23 157 21 157 17 C157 13 154 9 150 2Z" fill="${IG.violet}"/><path d="M147 15 q0 4 3 5" stroke="#fff" stroke-width="1.4" fill="none" opacity=".7" stroke-linecap="round"/></g>${igT(150,100,'Gel fills the gap; bone cells rebuild it',{s:10.5,c:IG.soft})}`,'Gel helping bone cells fill a gap'),
   splint:()=>igFrame(300,110,`${igArm(70,46,{splint:true})}${igT(130,104,'The smart splint checks the arm stays still',{s:10.5,c:IG.soft})}`,'A smart splint on the arm'),
   ingredientMatch:()=>igFrame(300,130,`<g transform="translate(64 56)"><rect x="-30" y="-24" width="60" height="44" rx="10" fill="#e4f6ff" stroke="#9fd3f0" stroke-width="2"/><circle cx="0" cy="-2" r="10" fill="#9fd3f0" opacity=".6"/>${igT(0,40,'Cooling patch',{s:10.5})}</g>
      <g transform="translate(236 56)"><rect x="-14" y="-30" width="28" height="48" rx="8" fill="${IG.violet}" opacity=".85"/><rect x="-8" y="-38" width="16" height="10" rx="3" fill="#b9b2f5"/>${igT(0,40,'BoneMend gel',{s:10.5})}</g>
      <g class="ig-match"><rect x="122" y="40" width="56" height="26" rx="13" fill="${IG.gold}"/>${igT(150,58,'HX-2',{s:13,c:IG.ink,w:800})}<path d="M96 52 H120 M180 52 H206" stroke="${IG.gold}" stroke-width="3" stroke-dasharray="4 4"/></g>
      ${igT(150,120,'Same ingredient in both',{s:11,c:IG.soft})}`,'The same HX-2 ingredient in a cooling patch and in BoneMend'),
-  switchToCast:()=>igFrame(300,110,`<g transform="translate(14 40) scale(.62)">${igArm(14,40,{gel:true,splint:true})}</g><path d="M130 54 h36" stroke="${IG.soft}" stroke-width="3" class="ig-dash"/><path d="M162 46 l10 8 l-10 8" fill="none" stroke="${IG.soft}" stroke-width="3"/><g transform="translate(176 40) scale(.62)">${igArm(14,40,{cast:true})}</g>${igT(150,104,'Rash? Stop the gel, use a cast',{s:10.5,c:IG.soft})}`,'Switching from gel to a cast'),
+  switchToCast:()=>igFrame(300,110,`<g transform="translate(18 50) scale(.52)">${igArm(0,0,{gel:true,splint:true})}</g><path d="M130 54 h36" stroke="${IG.soft}" stroke-width="3" class="ig-dash"/><path d="M162 46 l10 8 l-10 8" fill="none" stroke="${IG.soft}" stroke-width="3"/><g transform="translate(190 50) scale(.52)">${igArm(0,0,{cast:true})}</g>${igT(150,104,'Rash? Stop the gel, use a cast',{s:10.5,c:IG.soft})}`,'Switching from gel to a cast'),
   floodwall:()=>igFrame(300,110,`<rect x="0" y="62" width="300" height="48" fill="#9fd3f0"/><path class="ig-wave" d="M0 70 q15 -6 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="#fff" stroke-width="2" fill="none"/><rect x="150" y="36" width="150" height="40" fill="#cfd6ea"/>${[0,1,2,3,4].map(i=>`<rect x="${152+i*30}" y="36" width="26" height="40" fill="#dfe4f3" stroke="#b9c1d9"/>`).join('')}<g class="ig-robot">${robotBot(130,36,.9,IG.gold)}</g>${igT(225,28,'Done 3 weeks early',{s:11,c:IG.green})}`,'Robots finished a flood wall'),
   network:()=>{const pts=[[150,58],[90,40],[60,80],[120,96],[200,30],[240,70],[210,100],[40,40],[260,40],[170,88],[100,72]];return igFrame(300,118,`${pts.slice(1).map(p=>`<path d="M150 58 L${p[0]} ${p[1]}" stroke="${IG.teal}" stroke-width="1.6" opacity=".5" class="ig-dash"/>`).join('')}${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="${i?7:12}" fill="${i?'#fff':IG.teal}" stroke="${IG.teal}" stroke-width="2.4" class="${i?'ig-pulse':''}" style="--d:${i*.15}s"/>`).join('')}${igT(150,63,'H',{s:12,c:'#fff',w:800})}${igT(150,114,'Halo runs 11 hospitals',{s:11,c:IG.soft})}`,'One AI connected to eleven hospitals')},
   erWait:()=>igFrame(300,110,`<g transform="translate(70 55)"><circle r="38" fill="#fff" stroke="${IG.teal}" stroke-width="5"/>${[0,1,2,3,4,5,6,7,8,9,10,11].map(k=>`<circle cx="${30*Math.sin(k*Math.PI/6)}" cy="${-30*Math.cos(k*Math.PI/6)}" r="${k%3?1.4:2.6}" fill="${IG.soft}"/>`).join('')}<path d="M0 0 L0 -24 A24 24 0 0 1 ${24*Math.sin(Math.PI*4/30)} ${-24*Math.cos(Math.PI*4/30)} Z" fill="${IG.teal}" opacity=".35" class="ig-pulse"/><g class="ig-hand"><path d="M0 0 V-26" stroke="${IG.ink}" stroke-width="3" stroke-linecap="round"/></g><circle r="3.5" fill="${IG.ink}"/></g>
@@ -4321,6 +4519,125 @@ document.addEventListener('click',e=>{const b=e.target.closest('.byteart');if(!b
   MUSIC.unlock();MUSIC.sfx('arf');const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height*.35,'hearts',8);
   b.classList.remove('petted');void b.getBoundingClientRect();b.classList.add('petted');S.pets=(S.pets||0)+1;save()},true);
 
+// parent.js — the grown-ups' progress page (Menu → For grown-ups), and the small records it reads.
+// game.js calls the note*/record hooks; everything they store lives in the normal save (S):
+//   S.history  [{id,t,mission,title,day,plan,stars,luck,good,conf,fc,checks,memo}]  one entry per debrief
+//   S.wordLog  {word:[day,...]}   days a word was tapped (a second day counts as a review)
+//   S.ideaLog  {ideaId:[missionId,...]}   missions where a Field Guide idea came up
+//   S.chatLog  [{q,t,m}]   the player's last questions to Byte, newest first
+//   S.chatOff  true when a grown-up has turned free chat off (Byte then uses scripted lines only)
+window.PARENT=(()=>{
+  const CONF_PCT=[50,62,75,87,97];// same scale as the memo slider and calibLine() in game.js
+  const CHECKS=[['treatment','Names a clear plan'],['reason','Gives a reason'],['odds','Says how sure'],['maya','Says who it is for']];
+  const LUCK={'Lucky':['lucky','▲'],'As expected':['expected','●'],'Unlucky':['unlucky','▼']};
+  const MAXQ=20;let gateOk=false;
+  const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+  const fmtDate=t=>t?new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'';
+  const starStr=n=>'★'.repeat(n)+'☆'.repeat(3-n);
+
+  // ---------- hooks called from game.js ----------
+  function noteWord(k){const L=S.wordLog=S.wordLog||{};const d=L[k]=L[k]||[];const t=today();if(!d.includes(t)){d.push(t);if(d.length>6)d.splice(1,1);save()}}
+  function noteIdea(id){const L=S.ideaLog=S.ideaLog||{};const m=L[id]=L[id]||[];if(S.mission&&!m.includes(S.mission)){m.push(S.mission);save()}}
+  function noteChat(q){const L=S.chatLog=S.chatLog||[];L.unshift({q:String(q).slice(0,160),t:Date.now(),m:S.mission});L.length=Math.min(L.length,MAXQ);save()}
+  function chatOn(){return !S.chatOff}
+  // one entry per finished mission run; re-rendering the debrief updates the same entry
+  function record({stars,luck,good,checks}){if(!S.result)return;const m=M(),H=S.history=S.history||[];
+    const fc=forecastFor(S.choice),ids=S.criteria.filter(x=>fc[x]!=null);
+    const e={id:S.result._h||Date.now(),t:Date.now(),mission:S.mission,title:m.title,day:m.day,plan:m.planName?m.planName(S.choice):'',stars,luck,good,
+      conf:CONF_PCT[S.conf??2],fc:ids.length?Math.round(100*ids.reduce((a,k)=>a*fc[k],1)):null,
+      checks:Object.fromEntries(checks.map(c=>[c.k,!!c.ok])),memo:String(S.memo||'').slice(0,1200)};
+    const i=H.findIndex(x=>x.id===e.id);if(i>=0){e.t=H[i].t;H[i]=e}else H.push(e);S.result._h=e.id;save()}
+
+  // ---------- data for the page ----------
+  function decisions(){const H=(S.history||[]).slice().sort((a,b)=>a.t-b.t);
+    // older saves: missions finished before history existed show their best stars, with luck unknown
+    const seen=new Set(H.map(x=>x.mission));const old=Object.entries(S.completed||{}).filter(([id])=>!seen.has(id)&&MISSIONS[id]).map(([id,v])=>({mission:id,title:MISSIONS[id].title,day:MISSIONS[id].day,stars:v.stars||0,luck:null,t:0}));
+    return old.concat(H)}
+
+  // ---------- sections ----------
+  const card=(id,title,num,body)=>`<section class="pp-card" id="pp-${id}"><div class="pp-h"><h3>${title}</h3>${num!=null?`<b class="pp-n">${num}</b>`:''}</div>${body}</section>`;
+  const empty=t=>`<p class="pp-empty">${t}</p>`;
+
+  function ideasCard(){const all=Object.entries(FIELD_GUIDE),L=S.ideaLog||{};
+    const rows=all.map(([id,g])=>{const found=S.guide.includes(id),again=(L[id]||[]).length>1;
+      const [cls,lab]=!found?['no','Not yet']:again?['again','Used again']:['yes','Found'];
+      return `<li class="pp-idea ${cls}"><div><b>${esc(g.title)}</b><span>${esc(g.track)}</span></div><em>${lab}</em></li>`}).join('');
+    const les=Object.entries(S.lessons||{}).filter(([id])=>LESSONS[id]);
+    const lesHTML=les.length?`<div class="pp-sub">Learn It Fast</div><ul class="pp-list">${les.map(([id,r])=>`<li class="pp-idea yes"><div><b>${esc(LESSONS[id].title)}</b></div><em>${r} of 3</em></li>`).join('')}</ul>`:'';
+    return card('ideas','Field Guide',`${S.guide.length} of ${all.length}`,`<ul class="pp-list">${rows}</ul>${lesHTML}`)}
+
+  function wordsCard(){const W=S.words||[],L=S.wordLog||{};const rev=W.filter(k=>(L[k]||[]).length>1);
+    const body=W.length?`<div class="pp-words">${W.map(k=>`<span class="${(L[k]||[]).length>1?'rev':''}">${esc(k)}</span>`).join('')}</div>${rev.length?`<p class="pp-note"><i class="pp-key rev"></i>${rev.length} looked up again on a later day</p>`:''}`:empty('Words appear here after they are tapped in a document or conversation.');
+    return card('words','Word Book',W.length||null,body)}
+
+  function writingCard(){const H=(S.history||[]).filter(x=>x.checks);if(!H.length)return card('writing','Writing',null,empty('Appears after the first signed decision.'));
+    const rows=CHECKS.map(([k,lab])=>{const n=H.filter(x=>x.checks[k]).length;return `<div class="pp-meter"><span>${lab}</span><div class="pp-bar"><i style="width:${Math.round(100*n/H.length)}%"></i></div><b>${n} of ${H.length}</b></div>`}).join('');
+    return card('writing','Writing',null,rows)}
+
+  function decisionsCard(){const D=decisions();if(!D.length)return card('decisions','Decisions',null,empty('Appears after the first signed decision.'));
+    const avg=(D.reduce((a,x)=>a+x.stars,0)/D.length).toFixed(1);const shown=D.slice(-10);
+    const cols=shown.map((x,i)=>{const L=LUCK[x.luck];return `<button class="pp-col" data-i="${D.length-shown.length+i}" aria-label="Day ${x.day}: ${x.stars} stars, ${x.luck||'luck unknown'}">
+        <div class="pp-stars">${[2,1,0].map(s=>`<i class="${s<x.stars?'on':''}"></i>`).join('')}</div>
+        <div class="pp-luck ${L?L[0]:'none'}">${L?L[1]:'–'}</div><small>${x.day}</small></button>`}).join('');
+    const counts=Object.keys(LUCK).map(k=>[k,D.filter(x=>x.luck===k).length]);
+    return card('decisions','Decisions',`<span class="pp-gold">★</span> ${avg} avg`,`
+      <div class="pp-tl"><div class="pp-rowlab"><span>Stars</span><span>Luck</span><span>Day</span></div><div class="pp-cols">${cols}</div></div>
+      <div class="pp-legend">${counts.map(([k,n])=>`<span><i class="pp-luck ${LUCK[k][0]}">${LUCK[k][1]}</i>${k} ${n}</span>`).join('')}</div>
+      <div class="pp-detail" id="pp-detail" hidden></div>
+      <div class="pp-sub">Calibration</div>${calibChart()}`)}
+
+  // stated sureness (x) against how often plans went well (filled dot) and Byte's average forecast (ring)
+  function calibChart(){const H=(S.history||[]).filter(x=>x.conf!=null);if(!H.length)return empty('Appears after the first signed decision.');
+    const W=320,Ht=230,l=40,r=14,t=12,b=40,X=v=>l+(v-45)/(100-45)*(W-l-r),Y=v=>t+(1-v/100)*(Ht-t-b);
+    const groups=CONF_PCT.map(p=>{const g=H.filter(x=>x.conf===p);if(!g.length)return null;const ok=g.filter(x=>x.good).length;const f=g.filter(x=>x.fc!=null);
+      return {p,n:g.length,ok,rate:100*ok/g.length,fc:f.length?f.reduce((a,x)=>a+x.fc,0)/f.length:null}}).filter(Boolean);
+    const grid=[0,25,50,75,100].map(v=>`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" class="pp-grid"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${v}%</text>`).join('');
+    const xt=CONF_PCT.map(v=>`<text x="${X(v)}" y="${Ht-b+20}" text-anchor="middle">${v}%</text>`).join('');
+    const marks=groups.map(g=>{const rad=6+Math.min(6,2*Math.sqrt(g.n-1));const ly=g.rate>=85?Y(g.rate)+rad+13:Y(g.rate)-rad-5;
+      return `<g>${g.fc!=null?`<circle cx="${X(g.p)}" cy="${Y(g.fc)}" r="6" class="pp-ring"><title>${esc(S.byte.name)}'s forecast averaged ${Math.round(g.fc)}%</title></circle>`:''}
+        <circle cx="${X(g.p)}" cy="${Y(g.rate)}" r="${rad}" class="pp-dot"><title>Said ${g.p}%: went well ${g.ok} of ${g.n}</title></circle>
+        <text x="${X(g.p)}" y="${ly}" text-anchor="middle" class="pp-dl">${g.ok} of ${g.n}</text></g>`}).join('');
+    const svg=`<svg class="pp-cal" viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Calibration chart">${grid}
+      <line x1="${X(50)}" y1="${Y(50)}" x2="${X(100)}" y2="${Y(100)}" class="pp-diag"/>${xt}
+      <text x="${(l+W-r)/2}" y="${Ht-4}" text-anchor="middle" class="pp-ax">How sure, as said</text>${marks}</svg>`;
+    const sum=f=>H.reduce((a,x)=>a+f(x),0)/H.length;const fH=H.filter(x=>x.fc!=null);const said=Math.round(sum(x=>x.conf));
+    const odds=fH.length?Math.round(fH.reduce((a,x)=>a+x.fc,0)/fH.length):null;
+    const bn=esc(S.byte.name);const verdict=odds==null?'':Math.abs(said-odds)<=15?`Well calibrated: said ${said}% on average, and ${bn}'s forecasts averaged ${odds}%.`:said>odds?`More sure than the odds: said ${said}% on average, while ${bn}'s forecasts averaged ${odds}%.`:`Less sure than the odds: said ${said}% on average, while ${bn}'s forecasts averaged ${odds}%.`;
+    return `${svg}<div class="pp-legend"><span><i class="pp-k dot"></i>Went well</span><span><i class="pp-k ring"></i>${esc(S.byte.name)}'s forecast</span><span><i class="pp-k diag"></i>Perfectly calibrated</span></div>${verdict?`<p class="pp-note">${verdict}</p>`:''}`}
+
+  function portfolioCard(){const H=(S.history||[]).filter(x=>x.memo&&x.memo.trim()).slice().sort((a,b)=>b.t-a.t);
+    if(!H.length)return card('portfolio','Portfolio',null,empty('Signed decisions are saved here.'));
+    return card('portfolio','Portfolio',H.length,H.map((x,i)=>`<article class="pp-memo" ${i>=3?'hidden':''}><div class="pp-memo-h"><b>${esc(x.title)}</b><span>${fmtDate(x.t)}</span></div>
+      ${x.plan?`<div class="pp-plan">${esc(x.plan)} <span class="pp-gold">${starStr(x.stars)}</span></div>`:''}<blockquote>${esc(x.memo)}</blockquote></article>`).join('')+
+      (H.length>3?`<button class="mini-btn" id="pp-more">Show all ${H.length}</button>`:''))}
+
+  function chatCard(){const L=S.chatLog||[];
+    const qs=L.length?`<ul class="pp-qs">${L.map(x=>`<li><p>${esc(x.q)}</p><span>${fmtDate(x.t)}</span></li>`).join('')}</ul><button class="mini-btn" id="pp-clear">Clear questions</button>`:empty(`Questions to ${esc(S.byte.name)} appear here.`);
+    return card('chat',`Talking with ${esc(S.byte.name)}`,null,`<div class="pp-switch"><span id="pp-swl">Free chat</span><button class="pp-tog ${chatOn()?'on':''}" id="pp-tog" role="switch" aria-checked="${chatOn()}" aria-labelledby="pp-swl"><i></i></button></div>
+      <p class="pp-note" id="pp-swnote">${chatOn()?`${esc(S.byte.name)} answers anything, using AI.`:`${esc(S.byte.name)} answers with scripted lines only.`}</p><div class="pp-sub">Recent questions</div>${qs}`)}
+
+  // ---------- page and gate ----------
+  function page(){$$('.pp').forEach(x=>x.remove());const d=document.createElement('div');d.className='pp';d.setAttribute('role','dialog');d.setAttribute('aria-label','Progress');
+    d.innerHTML=`<div class="pp-in"><div class="pp-top"><h2>${esc(P())}’s progress</h2><button class="x" aria-label="Close">×</button></div>
+      ${ideasCard()}${wordsCard()}${writingCard()}${decisionsCard()}${portfolioCard()}${chatCard()}</div>`;
+    document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));
+    $('.x',d).onclick=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),250)};
+    const D=decisions();$$('.pp-col',d).forEach(b=>b.onclick=()=>{const x=D[+b.dataset.i],box=$('#pp-detail',d);$$('.pp-col',d).forEach(c=>c.classList.toggle('sel',c===b));box.hidden=false;
+      box.innerHTML=`<b>Day ${x.day} · ${esc(x.title)}</b>${x.plan?`<span>${esc(x.plan)}</span>`:''}<span><span class="pp-gold">${starStr(x.stars)}</span> · ${x.luck?esc(x.luck)+(x.good?' · went well':' · did not go well'):'luck not recorded'}${x.conf!=null?` · said ${x.conf}% sure`:''}${x.fc!=null?` · ${esc(S.byte.name)}'s forecast ${x.fc}%`:''}</span>`});
+    const more=$('#pp-more',d);if(more)more.onclick=()=>{$$('.pp-memo',d).forEach(a=>a.hidden=false);more.remove()};
+    wireChat(d)}
+  function wireChat(d){const tog=$('#pp-tog',d);tog.onclick=()=>{S.chatOff=!S.chatOff;save();tog.classList.toggle('on',chatOn());tog.setAttribute('aria-checked',chatOn());
+      $('#pp-swnote',d).textContent=chatOn()?`${esc(S.byte.name)} answers anything, using AI.`:`${esc(S.byte.name)} answers with scripted lines only.`};
+    const clr=$('#pp-clear',d);if(clr)clr.onclick=()=>{S.chatLog=[];save();$('#pp-chat',d).outerHTML=chatCard();wireChat(d)}}
+  // a light grown-ups gate: a two-digit multiplication question, asked once per visit
+  function open(skipGate){if(gateOk||skipGate){gateOk=true;page();return}
+    const a=12+Math.floor(Math.random()*8),b=13+Math.floor(Math.random()*7);
+    const d=sheet('For grown-ups',`<form class="pp-gate" id="pp-gate"><label class="lbl" for="pp-ans">What is ${a} × ${b}?</label><div class="row"><input id="pp-ans" inputmode="numeric" autocomplete="off" maxlength="4"><button class="btn small" type="submit">Open</button></div></form>`);
+    const inp=$('#pp-ans',d);setTimeout(()=>inp.focus(),300);
+    $('#pp-gate',d).onsubmit=e=>{e.preventDefault();if(+inp.value===a*b){gateOk=true;d.remove();page()}else{inp.value='';inp.focus();inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake')}}}
+  return {noteWord,noteIdea,noteChat,chatOn,record,open}
+})();
+
 // game.js — state, saving, screens and the mission flow for Pathmakers 2040.
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const APP=$('#app');
@@ -4374,8 +4691,8 @@ function wireMics(){$$('.mic').forEach(b=>b.onclick=()=>{const el=document.getEl
   try{const r=new SR();r.lang='en-US';r.interimResults=true;const base=el.value&&!/\s$/.test(el.value)?el.value+' ':el.value;b.classList.add('on');
     r.onresult=e=>{let t='';for(const x of e.results)t+=x[0].transcript;el.value=base+t;el.dispatchEvent(new Event('input'))};
     r.onerror=()=>{b.classList.remove('on');b.remove();toast('The microphone isn\u2019t available here. You can type instead.')};r.onend=()=>b.classList.remove('on');r.start()}catch(e){b.remove()}})}
-function learnWord(k){if(!S.words.includes(k)){S.words.push(k);save();bumpHud('words')}}
-function unlock(id){if(!S.guide.includes(id)){S.guide.push(id);save();bumpHud('guide');return true}return false}
+function learnWord(k){window.PARENT&&PARENT.noteWord(k);if(!S.words.includes(k)){S.words.push(k);save();bumpHud('words')}}
+function unlock(id){window.PARENT&&PARENT.noteIdea(id);if(!S.guide.includes(id)){S.guide.push(id);save();bumpHud('guide');return true}return false}
 function heart(who,n=1){S.hearts[who]=(S.hearts[who]||0)+n;save()}
 function bumpHud(id){const b=$('#hud-'+id);if(b){const n=id==='words'?S.words.length:S.guide.length;let sp=b.querySelector('span');if(!sp){sp=document.createElement('span');b.appendChild(sp)}sp.textContent=n;b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}}
 
@@ -4412,7 +4729,9 @@ function openMenu(){const d=sheet('Menu',`<div class="menu">
    <div class="lbl">Save code</div><p class="tiny muted">Copy this code to move your game to another device or browser.</p>
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">Copy code</button>
    <div class="lbl">Load a save code</div><textarea id="m-in" rows="3" placeholder="Paste a code that starts with PM1-"></textarea><button class="btn small ghost" id="m-load">Load this game</button>
-   <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div></div>`);
+   <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div>
+   ${window.PARENT?'<div class="lbl">For grown-ups</div><button class="btn small ghost" id="m-parent">Progress page</button>':''}</div>`);
+  const mp=$('#m-parent',d);if(mp)mp.onclick=()=>{d.remove();PARENT.open()};
   $('#m-hub',d).onclick=()=>{d.remove();go('hub')};
   $('#m-copy',d).onclick=()=>{const t=$('#m-code',d);navigator.clipboard&&navigator.clipboard.writeText(t.value).then(()=>toast('Save code copied','good')).catch(()=>{t.select()});t.select()};
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast('Game loaded','good');render()}else toast('That code didn\u2019t work. Check that you copied all of it.')};
@@ -4447,10 +4766,10 @@ function cannedReply(q){q=q.toLowerCase();if(M().canned){const r=M().canned(q);i
 function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="chatlog" id="chatlog"></div><form class="chatform" id="chatform"><input id="chatin" autocomplete="off" placeholder="Ask ${esc(S.byte.name)} anything" maxlength="300">${micButton('chatin')}<button class="btn small" type="submit">Send</button></form>`);
   d.classList.add('chat');wireMics();const told0=S.told;d.querySelector('.x').addEventListener('click',()=>{if(S.step==='workbench'&&S.told!==told0)setTimeout(renderWorkbench,260)});const log=$('#chatlog');
   const draw=()=>{log.innerHTML=`<div class="msg b"><div class="mini-byte">${byteBox(S.byte)}</div><p>Hi ${esc(P())}! Ask me anything.</p></div>`+CHAT.map(m=>`<div class="msg ${m.role==='user'?'u':'b'}">${m.role==='user'?'':`<div class="mini-byte">${byteBox(S.byte)}</div>`}<p>${esc(m.content)}</p></div>`).join('');log.scrollTop=log.scrollHeight};draw();
-  $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();
+  $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();window.PARENT&&PARENT.noteChat(q);
     if(/rash|allerg|patch|itch/i.test(q)&&!S.told){S.told=true;save()}
     const placeholder={role:'assistant',content:'Thinking...'};CHAT.push(placeholder);draw();
-    const sm=await getSample();let answer=null;
+    const sm=window.PARENT&&!PARENT.chatOn()?null:await getSample();let answer=null;
     if(sm){try{const turns=[{role:'user',content:byteContext()+'\n\nThe player says: '+CHAT[0].content}];
         const hist=CHAT.slice(0,-1);const msgs=[{role:'user',content:byteContext()+'\n\nConversation so far follows. Reply as '+S.byte.name+' to the last player message.'}].concat(hist.map(m=>({role:m.role,content:m.content})));
         // keep alternation: merge leading user turns
@@ -4461,7 +4780,7 @@ function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="cha
 
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
 let CURSCENE=null;const BG={cv:null,cache:{},key:null,raf:0,t0:performance.now()};
-function scene(k){CURSCENE=k;return window.PAINT&&PAINT[k]?'':SCENES[k]()}
+function scene(k){if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
 function bgSize(){const cv=BG.cv,r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);return [Math.max(1,Math.round(r.width*dpr)),Math.max(1,Math.round(r.height*dpr))]}
 function applyScene(){const k=CURSCENE;if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
   if(!BG.cv){BG.cv=document.createElement('canvas');BG.cv.className='scene bgcanvas';document.body.prepend(BG.cv);addEventListener('resize',()=>{BG.cache={};drawBg(true)})}
@@ -4478,7 +4797,8 @@ if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
 function screen(cls,html){stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
-  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);MUSIC.play(TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||'work')}
+  applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
+  MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 function go(step){S.step=step;save();render()}
 function render(){if(STEPS[S.step])return STEPS[S.step]();if(S.mission&&MISSIONS[S.mission]&&M().flow.some(f=>f.name===S.step))return runFlow();STEPS.title()}
@@ -4552,7 +4872,7 @@ const STEPS={
         return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">Day ${m.day}</div><div class="mtxt"><b>${esc(m.title)}</b><span>${esc(open?m.blurb:'Finish earlier days to unlock.')}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
       </div>`);
     $$('.mcard').forEach(b=>b.onclick=()=>startMission(b.dataset.m))},
-  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
+  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="24" lengthAdjust="spacingAndGlyphs">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="34" lengthAdjust="spacingAndGlyphs">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.</p><div class="row"><button class="btn small ghost" id="clue">Look at the crate</button><button class="btn small" id="on">Go to the hospital</button></div></div>`);
     $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast('The strangers hurry away. You noted the crate.','good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()}
@@ -4680,7 +5000,7 @@ function renderMemo(){
   $('#conf').oninput=e=>{S.conf=+e.target.value;save()};
   $('#rev').onclick=async()=>{const box=$('#review p');const miss=memoChecks(ta.value).filter(c=>!c.ok).map(c=>c.l.toLowerCase());
     box.textContent='Reading...';const sm=await getSample();let out=null;
-    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo about ${Mm.topic}:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${M().planName(S.choice)}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names a treatment),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (${Mm.careLabel.toLowerCase()}),"feedback":"2 or 3 short kind sentences for an 8-year-old: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
+    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo about ${Mm.topic}:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${M().planName(S.choice)}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names a treatment),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (${Mm.careLabel.toLowerCase()}),"feedback":"2 or 3 short kind sentences for a young player: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
         if(r&&typeof r==='object'){S.memoAI=r;save();$('#checks').innerHTML=memoChecks(ta.value,r).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('');out=r.feedback}}catch(e){}}
     box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what matters to the people involved.');MUSIC.babble(box.textContent,'byte')};
   $('#sign').onclick=()=>{if(ta.value.trim().length<20){toast('Write at least a sentence or two first.');return}
@@ -4715,6 +5035,7 @@ function renderDebrief(){
   const truth=M().outcomes(c,M().truth());const pk=truth.filter(o=>o.kind===R.kind).reduce((a,o)=>a+o.p,0);const good=crit.every(id=>(R.flags[id]??1)>0);
   const luck=good?(pk<.4?'Lucky':'As expected'):(pk<.3?'Unlucky':'As expected');
   if(S.consent)heart(M().consent.left);
+  window.PARENT&&PARENT.record({stars,luck,good,checks:memoChecks(S.memo,S.memoAI)});
   screen('debrief',`${scene(M().debriefScene||'hospital')}<div class="talk-dim"></div>${hud('Debrief')}<div class="panel-card debrief">
    <h2>How you did</h2>
    <div class="scores"><div class="score"><div class="stars">${[0,1,2].map(i=>`<span class="${i<stars?'on':''}">★</span>`).join('')}</div><b>Decision</b><span>How wise your choice was, given what you knew</span></div>
@@ -4730,12 +5051,12 @@ function renderDebrief(){
   $('#next').onclick=()=>{S.completed[S.mission]={stars:Math.max(stars,(S.completed[S.mission]||{}).stars||0)};save();nextStep()}}
 
 function renderEvening(){const lines=M().evening();
-  screen('evening',`${scene('night')}${hud('Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
+  screen('evening',`${scene(M().eveningScene||'night')}${hud(M().eveningPlace||'Home · Boston · 9:10 PM')}<div class="evening"><div class="eve-byte">${byteBox({...S.byte,mood:'alert'},'big perk')}</div>
    <div class="caption-card dark">${lines.map(l=>`<p>${l}</p>`).join('')}
    <div class="row"><button class="btn small ghost" id="guide">Open Field Guide</button><button class="btn small" id="plan">Plan tomorrow</button></div></div></div>`);
   $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};save();go('hub')}}
 
 // ---------- boot ----------
-(function boot(){const l=loadLocal();if(l&&l.v===1)RESUME=l;render();connectCloud()})();
+(function boot(){mergeMissions();LATE.forEach(f=>{try{f()}catch(e){console.warn(e)}});const l=loadLocal();if(l&&l.v===1)RESUME=l;render();connectCloud()})();
 
 </script>

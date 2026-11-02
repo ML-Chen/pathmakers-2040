@@ -6,7 +6,24 @@
 //  criteria [{id,label}], criteriaHint (html), criteriaNote, controls [{key,label,opts:[[value,label]]}], start (default choice)
 //  planName(c), outcomes(c, knows) -> [{kind,p,cap,flags:{criterionId:0|1}}], why(c) -> html, whyGuide(c) -> field guide id|null
 //  vignette(kind) (optional; defaults to the global vignette), consent {...}, memo {...}, reveal {...}, trap(c), byteGood, byteBad, evening(), brief(), canned(q)
+//  Optional mission-owned tables (merged into the shared ones by mergeMissions() at startup, and recorded by tools/make_audio.py):
+//  glossary {lowercase word: meaning}, cast {id: portrait options + name, role}, voices {cast id: voice name}, guide {Field Guide id: {title,track,text,real}},
+//  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine).
+//  Top-level code in mission files must be plain data and function definitions: tools/make_audio.py evaluates them in node (no DOM).
 const MISSIONS={};
+function mergeMissions(){for(const m of Object.values(MISSIONS)){if(m._merged)continue;m._merged=1;
+  Object.assign(GLOSSARY,m.glossary||{});Object.assign(CAST,m.cast||{});Object.assign(VOICES,m.voices||{});Object.assign(FIELD_GUIDE,m.guide||{});Object.assign(LESSONS,m.lessons||{});
+  for(const k in (m.chatter||{}))CHATTER[k]=(CHATTER[k]||[]).concat(m.chatter[k])}}
+// Every line a mission speaks with playLine, as [{who, text}] ('byte' lines are recorded in both Byte voices).
+function missionLines(m){const L=[],add=(who,t)=>{if(t&&typeof t==='string')L.push({who,text:t})};
+  for(const k in (m.talks||{}))for(const x of m.talks[k]){add(x.who,x.text);(x.choices||[]).forEach(c=>add(x.who,c.reply))}
+  for(const d of (m.docs||[])){add('narrator',d.title);d.steps.forEach(b=>{add('narrator',b.t);if(b.alt)add('narrator',b.alt.t)})}
+  for(const w in (m.glossary||{}))add('narrator',w+'. '+m.glossary[w]);
+  for(const id in (m.lessons||{})){const ls=m.lessons[id];add('byte','Here is '+ls.title.toLowerCase()+'.')}
+  if(m.reveal&&m.reveal.lines)for(const k in m.reveal.lines)add(m.reveal.who,m.reveal.lines[k]);
+  if(m.consent&&m.consent.opts){try{m.consent.opts(m.start,m).forEach(o=>add(m.consent.replyWho,o.reply))}catch(e){}}
+  (m.lines||[]).forEach(x=>add(x.who,x.text));
+  return L}
 const CAREERS={doctor:{name:'Care Doctor',place:'Boston Harbor Hospital'},companion:{name:'Elder Companion',place:'Boston'}};
 
 MISSIONS.maya={id:'maya',title:'The Violinist’s Wrist',career:'doctor',day:1,blurb:'An 11-year-old violinist broke her wrist nine days before her recital.',after:[],
