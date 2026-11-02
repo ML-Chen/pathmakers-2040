@@ -13,14 +13,16 @@ fs.mkdirSync(out,{recursive:true});for(const f of fs.readdirSync(out))if(/\.(png
  let n=0;const shot=async(name,w=500,full=false)=>{await p.waitForTimeout(w);const fn=String(++n).padStart(3,'0')+'-'+name;await p.screenshot({path:path.join(out,fn+'.png'),fullPage:full});
    try{for(const x of await p.evaluate('('+uiChecks.toString()+')()'))issues.push(fn+'  ·  '+x)}catch(e){issues.push(fn+'  ·  check failed: '+e.message.split('\n')[0])}};
  const E=(f,a)=>p.evaluate(f,a);
+ // tap the subtitle's bottom-right corner ("Tap to continue"), not a word that opens a definition; close any open definition first
+ const tapSub=async()=>{await E(()=>document.querySelectorAll('.gpop').forEach(x=>x.remove()));const r=await E(()=>{const e=document.querySelector('#sub');if(!e)return null;const b=e.getBoundingClientRect();return [b.right-14,b.bottom-10]});if(r)await p.mouse.click(r[0],r[1]).catch(()=>{})};
  const flow=await E(([id,lg])=>{S.mute=true;if(lg)S.lang=lg;if(!MISSIONS[id])return null;S.completed={};startMission(id);return M().flow.map(f=>({name:f.name,k:f.k}))},[id,LG]);
  if(!flow){console.error('no mission '+id);process.exit(2)}
  for(const f of flow){await E(n=>{window.__st=n;go(n)},f.name);
   if(f.k==='talk'){for(let i=0;i<40;i++){await p.waitForFunction(()=>document.querySelectorAll('#choices .choice').length||(document.querySelector('#hint')&&!document.querySelector('#hint').hidden)||S.step!==window.__st,null,{timeout:3500}).catch(()=>{});await shot(f.name+'-'+i,200);const st=await E(()=>({ch:document.querySelectorAll('#choices .choice').length,step:S.step}));if(st.step!==f.name)break;
       if(st.ch){await p.click('#choices .choice');await p.waitForFunction(()=>document.querySelectorAll('#choices .choice').length||(document.querySelector('#hint')&&!document.querySelector('#hint').hidden),null,{timeout:3500}).catch(()=>{});await shot(f.name+'-'+i+'-reply',200);if(await E(()=>document.querySelectorAll('#choices .choice').length))await p.click('#choices .choice').catch(()=>{})}
-      const before=await E(()=>document.querySelector('#line')&&document.querySelector('#line').textContent);await p.click('#sub').catch(()=>{});await p.waitForTimeout(150);
-      if(await E(()=>!document.querySelector('#hint')||!document.querySelector('#hint').hidden))await p.click('#sub').catch(()=>{});
-      await p.waitForTimeout(200);const now=await E(()=>({step:S.step,line:document.querySelector('#line')&&document.querySelector('#line').textContent}));if(now.step!==f.name)break;if(now.line===before)await p.click('#sub').catch(()=>{})}
+      const before=await E(()=>document.querySelector('#line')&&document.querySelector('#line').textContent);await tapSub();await p.waitForTimeout(150);
+      if(await E(()=>!document.querySelector('#hint')||!document.querySelector('#hint').hidden))await tapSub();
+      await p.waitForTimeout(200);const now=await E(()=>({step:S.step,line:document.querySelector('#line')&&document.querySelector('#line').textContent}));if(now.step!==f.name)break;if(now.line===before)await tapSub()}
     continue}
   if(f.k==='bench'){const docs=await E(()=>M().docs.map(d=>d.id));for(const d of docs){await E(d=>{curDoc=d;renderWorkbench()},d);await shot('bench-'+d,900,true)}
     if(await E(()=>!!M().tell)){await E(()=>{S.told=true;renderWorkbench()});await shot('bench-told',700,true)}

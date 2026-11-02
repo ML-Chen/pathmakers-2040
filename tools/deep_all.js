@@ -15,10 +15,11 @@ fs.mkdirSync(path.join(out, 'sheets'), {recursive: true});
     let log = ''; c.stdout.on('data', d => log += d); c.stderr.on('data', d => log += d);
     const t = setTimeout(() => c.kill('SIGKILL'), 20 * 60 * 1000);
     c.on('close', code => { clearTimeout(t); console.log(id + ': ' + (log.trim().split('\n').pop() || 'exit ' + code).slice(0, 160)); res() }) });
-  await Promise.all([...Array(JOBS)].map(async () => { while (queue.length) await run(queue.shift()) }));
+  if (!process.env.PM_SHEETS_ONLY) await Promise.all([...Array(JOBS)].map(async () => { while (queue.length) await run(queue.shift()) }));
   // contact sheets: 6 columns of labeled thumbnails per mission (full-page shots are cropped to the first screen)
   const sb = await chromium.launch(); const sp = await sb.newPage({viewport: {width: 1320, height: 800}});
   const issues = [], errors = [];
+  if (process.env.PM_SHEETS_ONLY) {}
   for (const id of ids) {
     const dir = path.join(out, id); if (!fs.existsSync(dir)) continue;
     const pngs = fs.readdirSync(dir).filter(f => f.endsWith('.png')).sort();
@@ -28,8 +29,9 @@ fs.mkdirSync(path.join(out, 'sheets'), {recursive: true});
     const bad = new Set(iss.map(x => x.split('  ·  ')[0]));
     for (let k = 0; k < pngs.length; k += 36) {
       const part = pngs.slice(k, k + 36);
-      await sp.setContent(`<body style="margin:0;background:#1b1f3a;font:12px sans-serif;color:#fff"><div style="display:grid;grid-template-columns:repeat(6,210px);gap:8px;padding:10px">${part.map(f => `<div><div style="height:380px;overflow:hidden;border-radius:8px;outline:${bad.has(f.replace('.png', '')) ? '3px solid #ff5a5a' : 'none'}"><img src="file://${path.join(dir, f)}" style="width:210px;display:block"></div><div style="padding:3px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.replace('.png', '')}</div></div>`).join('')}</div></body>`);
-      await sp.waitForTimeout(300);
+      const sheetHtml = path.join(out, 'sheets', '_sheet.html');
+      fs.writeFileSync(sheetHtml, `<body style="margin:0;background:#1b1f3a;font:12px sans-serif;color:#fff"><div style="display:grid;grid-template-columns:repeat(6,210px);gap:8px;padding:10px">${part.map(f => `<div><div style="height:380px;overflow:hidden;border-radius:8px;outline:${bad.has(f.replace('.png', '')) ? '3px solid #ff5a5a' : 'none'}"><img src="file://${path.resolve(dir, f)}" style="width:210px;display:block"></div><div style="padding:3px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.replace('.png', '')}</div></div>`).join('')}</div></body>`);
+      await sp.goto('file://' + path.resolve(sheetHtml)); await sp.waitForTimeout(500);
       await sp.screenshot({path: path.join(out, 'sheets', `${id}${pngs.length > 36 ? '-' + (k / 36 + 1) : ''}.jpg`), fullPage: true, type: 'jpeg', quality: 80});
     }
   }
