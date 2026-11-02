@@ -65,7 +65,7 @@ const agdA=(p,dur,extra)=>`class="agd-a" style="animation-name:agd-a${p};animati
 const agdCup=(x,y,s,k)=>typeof aghCup==='function'?aghCup(x,y,s,k):'';
 // a simple chart frame: coloured blood-pressure zones behind a line chart
 function agdZones(x0,y0,w,h){return `<rect x="${x0}" y="${y0}" width="${w}" height="${h*.34}" rx="6" fill="#ffe3e3"/><rect x="${x0}" y="${y0+h*.34}" width="${w}" height="${h*.26}" fill="#fff3d6"/><rect x="${x0}" y="${y0+h*.6}" width="${w}" height="${h*.4}" rx="6" fill="#e2f6ec"/>
-  ${igT(x0+w-4,y0+12,'very high',{s:9.5,a:'end',c:IG.red})}${igT(x0+w-4,y0+h*.34+12,'high',{s:9.5,a:'end',c:'#c98a12'})}${igT(x0+w-4,y0+h-6,'healthy',{s:9.5,a:'end',c:IG.green})}`}
+  ${igT(x0+6,y0+12,'very high',{s:9.5,a:'start',c:IG.red})}${igT(x0+6,y0+h*.34+12,'high',{s:9.5,a:'start',c:'#c98a12'})}${igT(x0+w-6,y0+h-6,'healthy',{s:9.5,a:'end',c:IG.green})}`}
 
 Object.assign(VIZ,{
   agRosaCard:()=>{const id='agdc'+(++AGD_N);const art=typeof agRosaArt==='function'?agRosaArt('smile'):'';
@@ -73,7 +73,7 @@ Object.assign(VIZ,{
      <clipPath id="${id}"><rect x="46" y="38" width="62" height="70" rx="10"/></clipPath><rect x="46" y="38" width="62" height="70" rx="10" fill="#dcebff"/>
      <g clip-path="url(#${id})"><path d="M46 96 q8 -4 16 0 t16 0 t16 0 t16 0 V110 H46z" fill="#9fd3f0" opacity=".7"/><svg x="38" y="36" width="78" height="80" viewBox="54 2 192 214" preserveAspectRatio="xMidYMin slice">${art}</svg></g>
      ${igT(122,60,'Rosa Morales',{s:15,a:'start',w:800})}${igT(122,77,'Age 68',{s:11,a:'start',c:IG.soft})}${igT(122,92,'Retired ferry captain',{s:11,a:'start',c:IG.soft})}${igT(122,106,'East Boston, top floor',{s:10,a:'start',c:IG.soft})}
-     <g transform="translate(244 52)"><g class="agd-spin"><circle r="11" fill="none" stroke="#b57a45" stroke-width="3.4"/>${[0,1,2,3,4,5,6,7].map(i=>`<path d="M0 -6 V-17" stroke="#b57a45" stroke-width="3" stroke-linecap="round" transform="rotate(${i*45})"/>`).join('')}<circle r="4.4" fill="#d9a066" stroke="#b57a45" stroke-width="1.6"/></g></g>`,'Patient card: Rosa Morales, 68, retired ferry captain')},
+     <g transform="translate(250 94) scale(.78)"><g class="agd-spin"><circle r="11" fill="none" stroke="#b57a45" stroke-width="3.4"/>${[0,1,2,3,4,5,6,7].map(i=>`<path d="M0 -6 V-17" stroke="#b57a45" stroke-width="3" stroke-linecap="round" transform="rotate(${i*45})"/>`).join('')}<circle r="4.4" fill="#d9a066" stroke="#b57a45" stroke-width="1.6"/></g></g>`,'Patient card: Rosa Morales, 68, retired ferry captain')},
   agGauge:({v=.82,pill}={})=>{
     if(!pill)return igFrame(300,124,`${agdDial(150,96,68,16,'agd-ndl',agdNeedle(v),{glow:v>.72?`<path d="${agdArc(150,96,68,.72,1)}" stroke="${IG.red}" stroke-width="26" fill="none" opacity=".25" class="ig-blink"/>`:''})}
        ${igT(64,118,'healthy',{s:11,c:IG.green})}${igT(236,118,'high',{s:11,c:IG.red})}`,'A blood pressure dial');
@@ -81,6 +81,14 @@ Object.assign(VIZ,{
     return igFrame(300,124,`${agdDial(150,96,68,16,'agd-ndlgo',`--a0:${a0}deg;--a1:${a1}deg;transform:rotate(${a1}deg)`,{glow:`<path d="${agdArc(150,96,68,0,.55)}" stroke="${IG.green}" stroke-width="28" fill="none" opacity=".22" class="agd-glow"/>`})}
        <g class="agd-pilldrop">${agdPill(150,66,1.15,0)}</g>
        ${igT(64,118,'healthy',{s:11,c:IG.green})}${igT(236,118,'high',{s:11,c:IG.red})}`,'A pill moves blood pressure from high back to healthy')},
+  agSilent:()=>igFrame(300,146,`<path d="M20 127 H120" stroke="${IG.line}" stroke-width="3" stroke-linecap="round"/><g class="agd-bob">${agdRosa(66,61.4,1.9,{face:'happy'})}</g>
+     <g class="agd-twk">${agdStar(34,28,4.6,IG.gold)}</g><g class="agd-twk" style="--d:.8s">${agdStar(100,22,3.8,IG.gold)}</g><g class="agd-twk" style="--d:.4s">${agdStar(104,44,3,'#ffb3c7')}</g>
+     <path d="M84 70 H148" stroke="${IG.soft}" stroke-width="2" stroke-dasharray="3 5" stroke-linecap="round"/><circle cx="80" cy="70" r="3" fill="${IG.soft}"/>
+     <circle cx="204" cy="70" r="54" fill="#fff" stroke="${IG.line}" stroke-width="4"/><circle cx="204" cy="70" r="47" fill="#fff0f2"/>
+     ${agdDial(204,50,17,6,'agd-ndl',agdNeedle(.84))}
+     <g class="agd-beat">${agdHeart(204,86,2.3,{face:'strain'})}</g>
+     <path d="M168 78 l-6 -3 M170 90 l-7 1 M240 78 l6 -3 M238 90 l7 1" stroke="#ff6b7d" stroke-width="2" stroke-linecap="round" class="ig-blink"/>
+     ${igT(66,142,'feels fine',{s:11,c:IG.green})}${igT(204,142,'inside',{s:11,c:IG.red})}`,'Rosa feels fine while her heart works hard inside'),
   agTrend:()=>{const M=['Jan','Feb','Mar','Apr','May'],X=i=>44+i*56,Y=[100,98,82,64,46],pts=M.map((m,i)=>X(i)+' '+Y[i]).join(' L');
     return igFrame(300,134,`${agdZones(24,14,262,100)}
       ${M.map((m,i)=>igT(X(i),128,m,{s:10.5,c:IG.soft})).join('')}
@@ -95,9 +103,9 @@ Object.assign(VIZ,{
        <g transform="translate(116 94)"><circle r="20" fill="#fff"/>${agdDial(0,7,13,5,'agd-ndl',agdNeedle(.93))}</g></g>
       ${igT(77,140,'last night',{s:10.5,c:IG.soft})}
       <rect x="154" y="6" width="138" height="118" rx="12" fill="#eaf6ff"/><rect x="164" y="70" width="8" height="44" rx="3" fill="#c9d1e6"/><rect x="276" y="84" width="8" height="30" rx="3" fill="#c9d1e6"/>
-      ${agdRosa(204,48,1.4,{face:'happy'})}<path d="M168 92 Q220 84 280 90 V106 H168Z" fill="#b9e0f7" stroke="#8fc4e6" stroke-width="1.4"/><rect x="168" y="104" width="112" height="6" rx="2" fill="#fff" stroke="#c9d1e6"/>
+      <rect x="172" y="58" width="34" height="18" rx="8" fill="#fff" stroke="#c9d1e6" stroke-width="1.4"/>${agdRosa(200,58,1.4,{face:'happy'})}<path d="M168 80 Q222 72 280 82 V108 H168Z" fill="#b9e0f7" stroke="#8fc4e6" stroke-width="1.4"/><path d="M176 86 Q222 80 272 88" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/><rect x="166" y="106" width="116" height="7" rx="2" fill="#fff" stroke="#c9d1e6"/>
       <g transform="translate(262 42)"><circle r="20" fill="#fff"/>${agdDial(0,7,13,5,'agd-ndl',agdNeedle(.6))}</g>${igT(223,140,'today',{s:10.5,c:IG.soft})}`,'Last night a pounding headache and very high blood pressure; today she is better')},
-  agDispenser:()=>{let g='';for(let i=0;i<90;i++){const c=i%15,r=Math.floor(i/15);g+=`<g ${agdA(Math.min(85,r*15),7)}><circle cx="${118+c*11.6}" cy="${18+r*14}" r="4.8" fill="${IG.green}"/><path d="M${115.6+c*11.6} ${18+r*14} l1.8 1.8 l3 -3.2" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`}
+  agDispenser:()=>{let g='';for(let i=0;i<90;i++){const c=i%15,r=Math.floor(i/15);g+=`<g ${agdA(r*5,7)}><circle cx="${118+c*11.6}" cy="${18+r*14}" r="4.8" fill="${IG.green}"/><path d="M${115.6+c*11.6} ${18+r*14} l1.8 1.8 l3 -3.2" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`}
     return igFrame(300,130,`<g class="agd-bob">${typeof aghDispenser==='function'?aghDispenser(56,62,2.6):''}</g>${g}<text x="200" y="124" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.ink}"><tspan font-size="17" fill="${IG.green}">90</tspan><tspan font-size="11" fill="${IG.soft}" dx="4">out of 90 days</tspan></text>`,'Her pill dispenser shows 90 out of 90 pills taken')},
   agUnknown:()=>igFrame(300,124,`<g opacity=".45">${agdZones(24,10,262,92)}<path d="M44 92 L100 90 L156 76 L212 60 L268 44" fill="none" stroke="${IG.ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
       <g class="agd-bob"><circle cx="150" cy="56" r="34" fill="#fff" stroke="${IG.violet}" stroke-width="3"/>${igT(150,74,'?',{s:50,w:900,c:IG.violet})}</g>
@@ -122,9 +130,10 @@ Object.assign(VIZ,{
       ${agdDial(236,84,46,11,'agd-ndlgo',`--a0:${(.45*180).toFixed(1)}deg;--a1:${(.86*180).toFixed(1)}deg;transform:rotate(${.86*180}deg)`)}`,'Very salty food and real licorice push blood pressure up'),
   agLicorice:()=>{const u='agdv'+(++AGD_N);
     return igFrame(300,140,`<clipPath id="${u}"><path d="M14 46 Q80 40 146 46 V94 Q80 100 14 94Z"/></clipPath>
-      <g class="agd-swell"><path d="M14 46 Q80 40 146 46 V94 Q80 100 14 94Z" fill="#ffd9d9" stroke="#e58a8a" stroke-width="3"/>
+      ${igT(80,20,'a blood vessel',{s:10,c:IG.soft})}<g class="agd-swell"><path d="M14 46 Q80 40 146 46 V94 Q80 100 14 94Z" fill="#ffd9d9" stroke="#e58a8a" stroke-width="3"/>
        <g clip-path="url(#${u})"><g class="agd-cells">${[0,1,2,3,4,5,6,7,8,9].map(i=>`<ellipse cx="${10+i*30}" cy="${58+(i%3)*12}" rx="7" ry="4.4" fill="#e5484d" opacity=".85"/>`).join('')}
-        ${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${24+i*34} ${54+(i%2)*20} q-3 5 0 7 q3 -2 0 -7z" fill="#5b9bf0"/>`).join('')}${[0,1,2,3,4,5].map(i=>`<rect x="${40+i*40}" y="${64+(i%2)*14}" width="3" height="3" fill="#fff" stroke="#b9c1da" stroke-width=".6"/>`).join('')}</g></g></g>
+        ${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${24+i*34} ${54+(i%2)*20} q-3 5 0 7 q3 -2 0 -7z" fill="#5b9bf0"/>`).join('')}${[0,1,2,3,4,5].map(i=>`<rect x="${40+i*40}" y="${64+(i%2)*14}" width="3" height="3" fill="#fff" stroke="#b9c1da" stroke-width=".6"/>`).join('')}</g></g>
+       <ellipse cx="146" cy="70" rx="7" ry="24" fill="#f7b5b5" stroke="#e58a8a" stroke-width="3"/><ellipse cx="146" cy="70" rx="3.6" ry="17" fill="#c84a4a" opacity=".6"/></g>
       <g class="agd-push">${[[30,32,-1],[80,28,-1],[130,32,-1],[30,108,1],[80,112,1],[130,108,1]].map(([x,y,d])=>`<path d="M${x} ${y} v${d*8} M${x-4} ${y+d*4} l4 ${d*4} l4 ${-d*4}" stroke="${IG.red}" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}</g>
       ${igT(80,132,'holds extra salt and water',{s:10,c:IG.soft})}
       ${agdDial(234,104,42,10,'agd-ndl',agdNeedle(.8))}
@@ -144,8 +153,8 @@ Object.assign(VIZ,{
   agOddsOne:({n=30}={})=>igFrame(300,154,`<rect x="81" y="2" width="138" height="150" rx="14" fill="#fff"/>
      <text x="150" y="27" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.green}"><tspan font-size="24">${n}</tspan><tspan font-size="11" fill="${IG.soft}" font-weight="700" dx="4">of 100 futures</tspan></text>
      ${agdGrid(103,33,9.4,n,IG.green,10.4)}${igT(150,146,'healthy numbers',{s:11,c:IG.green})}
-     <g class="agd-fog" opacity=".6">${[[44,70,34],[256,90,34]].map(([x,y,r])=>`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*.45}" fill="#e3e7f3"/>`).join('')}</g>`,`Healthy numbers in about ${n} of 100 futures`),
-  agSwitchOdds:()=>{const row=(y,n,lab,face)=>`${igT(14,y-14,lab,{s:11,a:'start',w:800})}${face}${[...Array(10)].map((_,i)=>`<g transform="translate(${46+i*23.4} ${y+8})">${agdCup(0,0,.7,'licorice')}${i<n?`<g class="agd-swap" style="--d:${(i*.12).toFixed(2)}s">${agdCup(0,0,.7,'fennel')}</g>`:''}</g>`).join('')}${igT(292,y+12,n+' of 10',{s:12,a:'end',w:900,c:IG.green})}`;
+`,`Healthy numbers in about ${n} of 100 futures`),
+  agSwitchOdds:()=>{const row=(y,n,lab,face)=>`${igT(14,y-14,lab,{s:11,a:'start',w:800})}${face}${[...Array(10)].map((_,i)=>`<g transform="translate(${44+i*20.5} ${y+8})">${agdCup(0,0,.7,'licorice')}${i<n?`<g class="agd-swap" style="--d:${(i*.12).toFixed(2)}s">${agdCup(0,0,.7,'fennel')}</g>`:''}</g>`).join('')}${igT(292,y+12,n+' of 10',{s:12,a:'end',w:900,c:IG.green})}`;
     return igFrame(300,132,`${row(30,8,'A doctor explains why',`<g transform="translate(22 38)">${agdCheck(0,0,8)}</g>`)}${row(96,4,'Sunny keeps offering the old tea',`${sunnyFace(22,104,9,{spin:false,glow:false})}`)}`,'With a doctor’s explanation 8 of 10 switch teas; if Sunny keeps offering the old tea, 4 of 10')},
   agApproved:()=>igFrame(300,126,`<rect x="22" y="10" width="140" height="106" rx="8" fill="#fff" stroke="${IG.line}" stroke-width="2"/>${igT(92,30,'Sunny update · February',{s:10.5,w:900})}
       ${igT(36,52,'Train on star ratings',{s:10,a:'start'})}<rect x="36" y="62" width="100" height="5" rx="2.5" fill="${IG.line}"/><rect x="36" y="74" width="80" height="5" rx="2.5" fill="${IG.line}"/>

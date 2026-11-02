@@ -1,6 +1,7 @@
-/* The App That Agreed: Test Sunny screen (.agt) and the Honesty Upgrade evening (.agu). */
+/* The Helper That Said Yes: Test Sunny (.agt), Sunny's permissions (.agp), the kitchen look-around (.agl), the ferry ride
+   and the Honesty Upgrade evening (.agu). Rosa's captain's cap (.ag-cap) rides on her head group. */
 .agt h2{margin-bottom:.2em}
-.agt-top{display:flex;align-items:center;gap:10px;margin:4px 0 10px}
+.agt-top{display:flex;align-items:center;gap:10px;margin:4px 0 10px;position:sticky;top:0;z-index:3;background:#fff;padding:6px 0}
 .agt-meter{flex:1;min-width:0}
 .agt-meter .ml{display:flex;justify-content:space-between;font-size:.82rem;font-weight:800;color:var(--ink2)}
 .agt-meter .ml b{color:var(--ink);font-family:var(--display);font-size:1.05rem}
@@ -24,6 +25,65 @@
 .agt-res.thinking .byteart{width:56px}
 .agt-delta{display:inline-block;margin-left:6px;font-size:.8rem;font-weight:800;border-radius:999px;padding:0 8px;background:#e7f7ef;color:var(--good)}
 .agt-delta.w{background:var(--mist);color:var(--ink2)}
+
+/* Sunny's permissions: who does what? */
+.agp h2{margin-bottom:6px}
+.agp-city{border-radius:14px;overflow:hidden;margin:0 -4px 8px}
+.agp-city svg{display:block;width:100%;height:auto}
+.agp-meters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.agp-m{border-radius:14px;padding:8px 10px;background:#ecf8f2;border:2px solid transparent;transition:background .3s,border-color .3s}
+.agp-m.bad{background:#fff0ef;border-color:#ffc9c4}
+.agp-m b{display:block;font-family:var(--display);font-size:1.35rem;line-height:1.1;color:var(--good)}
+.agp-m.bad b{color:var(--warn)}
+.agp-m span{display:block;font-size:.74rem;font-weight:700;color:var(--ink2);line-height:1.25}
+.agp-bar{height:6px;border-radius:999px;background:#fff;margin-top:5px;overflow:hidden}
+.agp-bar i{display:block;height:100%;background:var(--good);border-radius:999px;transition:width .4s}
+.agp-m.bad .agp-bar i{background:var(--warn)}
+.agp-legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.agp-chip{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;font-weight:800;color:var(--ink2);background:var(--mist);border-radius:999px;padding:3px 9px 3px 5px}
+.agp-chip.alone{background:#fff6d6}.agp-chip.check{background:#e9f3ff}.agp-chip.human{background:#e3f7f3}
+.agp-bi{flex:none}
+.agp-rows{display:flex;flex-direction:column;gap:6px}
+.agp-row{display:grid;grid-template-columns:34px 1fr;grid-template-areas:"ic l" "seg seg";gap:2px 8px;align-items:center;border-radius:14px;padding:7px 8px;background:#fff;border:2px solid var(--line);transition:border-color .25s,background .25s}
+.agp-row.check{border-color:#bcd6ff;background:#f6faff}
+.agp-row.human{border-color:#a9e6db;background:#f3fcfa}
+.agp-ic{grid-area:ic;width:32px;height:32px}
+.agp-ic svg{display:block}
+.agp-l{grid-area:l;min-width:0}
+.agp-l b{display:block;font-size:.9rem;line-height:1.2}
+.agp-l span{font-size:.74rem;font-weight:700;color:var(--ink2)}
+.agp-seg{grid-area:seg;margin-top:5px;gap:5px;flex-wrap:nowrap}
+.agp-seg .segb{padding:6px 4px;font-size:.8rem;border-radius:10px;background:#fff;color:var(--ink);border-color:var(--line)}
+.agp-seg .segb.on.alone{background:#ffc531;border-color:#ffc531;color:#3a2a00}
+.agp-seg .segb.on.check{background:#5b9bf0;border-color:#5b9bf0;color:#fff}
+.agp-seg .segb.on.human{background:var(--teal);border-color:var(--teal);color:#fff}
+.agp-foot{margin-top:10px;justify-content:space-between;align-items:center;gap:8px}
+.agp-foot .btn:not(.ghost){flex:1}
+
+/* the home visit in Rosa's kitchen: people show you things */
+.agl-card{max-height:64vh;overflow:auto;padding:12px 14px}
+.agl-who{display:flex;align-items:center;gap:10px}
+.agl-who b{display:block;font-family:var(--display);font-weight:600;color:var(--violet);font-size:1.05rem}
+.agl-who span{font-size:.78rem;color:var(--ink2)}
+.agl-face{width:44px;height:44px;border-radius:50%;background:#eaf2ff;flex:none;box-shadow:0 0 0 2px #fff,0 2px 6px rgba(20,25,60,.18)}
+.agl-line{font-size:1.04rem;line-height:1.45;margin:8px 0}
+.agl-zoom{background:var(--mist);border-radius:14px;padding:6px;margin-bottom:8px}
+.agl-zoom svg{display:block;width:100%;height:auto;max-height:140px}
+.agl-note{width:100%;margin-bottom:8px}
+.agl-stops{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
+.agl-stop{position:relative;display:flex;align-items:center;gap:8px;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:6px 8px;font-weight:800;font-size:.84rem;line-height:1.2;color:var(--ink)}
+.agl-stop .agl-face{width:30px;height:30px}
+.agl-stop.on{border-color:var(--violet);background:#f3f0ff}
+.agl-stop.seen:not(.on){background:var(--mist)}
+.agl-stop i{position:absolute;top:-6px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--good);color:#fff;font-style:normal;font-size:.7rem;display:flex;align-items:center;justify-content:center}
+.agl-stop:not(.seen):not(.on){animation:agl-glow 2s ease-in-out infinite}
+@keyframes agl-glow{0%,100%{box-shadow:0 0 0 0 rgba(108,92,231,0)}50%{box-shadow:0 0 0 3px rgba(108,92,231,.25)}}
+.agl-foot{justify-content:flex-end;margin-top:8px}
+
+/* the ferry ride */
+.ag-walkbyte{top:calc(78% - 84px)}
+
+/* evening: Byte tests itself and gets the Honesty Upgrade */
 .agu .caption-card{max-height:62vh;overflow:auto}
 .agu .eve-byte{transition:filter .6s}
 .agu .eve-byte.glow{filter:drop-shadow(0 0 18px #7ff7e4) drop-shadow(0 0 4px #fff)}
@@ -33,5 +93,3 @@
 .agu .plan{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.1);border-radius:16px;padding:10px;margin:8px 0}
 .agu .plan svg{width:96px;flex:none}
 .agu .sig{font-family:'Caveat','Segoe Script',cursive;font-size:1.9rem;color:#fff;border-bottom:2px solid rgba(255,255,255,.6);display:inline-block;padding:0 6px;clip-path:inset(0 100% 0 0);animation:sign 1.1s ease-out forwards}
-.agu .tap{font-size:.8rem;opacity:.7;margin-top:6px}
-.agt-top{position:sticky;top:0;z-index:3;background:#fff;padding:6px 0;margin-top:-2px}

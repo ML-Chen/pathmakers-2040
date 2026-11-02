@@ -8,12 +8,12 @@ const AGH={wall:['#ffd36e','#9fd0f0','#bfe3b4','#d4c2f5','#ffc0b0','#f6e6b8'],tr
 // st: 'ok' (warm windows), 'risk' (red window, pulsing ring), 'check' (green check), 'wait' (amber clock), 'dark' (windows off)
 function aghHouse(x,y,s,i,st){const c=AGH.wall[i%AGH.wall.length],sh=ch_mix(c,'#5a4a70',.22),win=st==='dark'?'#3a3f63':st==='risk'?'#ff6b6b':'#ffe39a';
   const floors=[-30,-19,-8];
-  return `<g transform="translate(${aghF(x)} ${aghF(y)}) scale(${s})">
-   <path d="M-12 0 V-31 L0 -40 L12 -31 V0Z" fill="${c}" stroke="${sh}" stroke-width="1"/><path d="M-13.5 -30.4 L0 -41.4 L13.5 -30.4" fill="none" stroke="${AGH.roof}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  return `<g transform="translate(${aghF(x)} ${aghF(y)}) scale(${s})">${st==='risk'?'<ellipse cx="0" cy="-18" rx="17" ry="24" fill="#ff6b6b" opacity=".35"/>':''}
+   <path d="M-12 0 V-31 L0 -40 L12 -31 V0Z" fill="${st==='risk'?ch_mix(c,'#ff6b6b',.35):c}" stroke="${st==='risk'?'#d04848':sh}" stroke-width="${st==='risk'?2:1}"/><path d="M-13.5 -30.4 L0 -41.4 L13.5 -30.4" fill="none" stroke="${AGH.roof}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
    <circle cx="0" cy="-33.5" r="2" fill="${win}" opacity=".9"/>
    ${floors.map(f=>`<rect x="-9.5" y="${f}" width="7" height="7" rx="1" fill="${win}" stroke="${AGH.trim}" stroke-width=".9"/><rect x="1.5" y="${f-.5}" width="8.5" height="8.5" fill="${sh}" opacity=".55"/><path d="M1 ${f+4.5} H10.5 M3.4 ${f+4.5} V${f+8} M6 ${f+4.5} V${f+8} M8.6 ${f+4.5} V${f+8}" stroke="${AGH.trim}" stroke-width=".8"/>`).join('')}
    <rect x="3" y="-6" width="5" height="6" rx="1" fill="${AGH.roof}" opacity=".8"/>
-   ${st==='risk'?`<circle cx="-6" cy="-15.5" r="9" fill="none" stroke="#ff6b6b" stroke-width="1.6" class="agh-ping" style="--d:${(i%7)*.3}s"/>`:''}
+   ${st==='risk'?`<circle cx="0" cy="-18" r="16" fill="none" stroke="#ff4d4d" stroke-width="2.6" class="agh-ping" style="--d:${(i%7)*.3}s"/>`:''}
    ${st==='check'?`<g class="agh-pop"><circle cx="8" cy="-34" r="5.4" fill="${IG.green}" stroke="#fff" stroke-width="1"/><path d="M5.4 -34 l1.8 1.9 l3.4 -3.6" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`:''}
    ${st==='wait'?`<g><circle cx="8" cy="-34" r="5.4" fill="${IG.gold}" stroke="#fff" stroke-width="1"/><path d="M8 -37 V-34 L10 -32.6" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/></g>`:''}
   </g>`}
@@ -52,14 +52,14 @@ function aghTin(x,y,s){return `<g transform="translate(${aghF(x)} ${aghF(y)}) sc
 
 Object.assign(VIZ,{
   // the city: rows of triple-deckers, each with Sunny's little sun; scan: Byte's beam sweeps across
-  agCityHomes:({scan}={})=>{let h='';[[44,.62,13,-6],[78,.78,11,4],[118,1,9,-2]].forEach(([y,s,n,off],r)=>{for(let i=0;i<n;i++){const x=off+14+i*(276/(n-1))*.98;
+  agCityHomes:({scan}={})=>{let h='';[[56,.6,12,22,256],[88,.76,10,26,248],[124,.95,8,24,252]].forEach(([y,s,n,x0,span],r)=>{for(let i=0;i<n;i++){const x=x0+i*span/(n-1);
       h+=aghHouse(x,y,s,i*3+r,'ok')+`<g class="agh-twk" style="--d:${aghF((i*7+r*3)%10*.2)}s">${sunnyFace(x+aghF(7*s),y-aghF(36*s),aghF(3.4*s),{spin:false,glow:false,mood:'happy'})}</g>`}});
-    return igFrame(300,130,`<rect width="300" height="130" rx="12" fill="#eaf4ff"/>${h}${scan?`<g class="agh-scan"><rect x="-30" y="0" width="30" height="130" fill="#5ee6d6" opacity=".22"/><path d="M0 0 V130" stroke="#5ee6d6" stroke-width="2"/></g>`:''}
-      <rect x="96" y="2" width="108" height="20" rx="10" fill="#fff" opacity=".92"/>${igT(150,16,'40,000 homes',{s:12,w:900})}`,'Rows of homes, each looked after by Sunny')},
-  agSunnyRuns:()=>{const P=[[56,34,'Pill dispenser',aghDispenser(56,34,1.3)],[244,34,'Robot helper',aghRobot(244,32,1.4)],[56,104,'Deliveries',aghDrone(56,98,1.3)],[244,104,'Safety alarms',aghBell(244,100,1.3)]];
-    return igFrame(300,136,`${P.map(([x,y],i)=>`<path d="M150 70 L${x} ${y}" stroke="${IG.gold}" stroke-width="2.4" class="agh-flow" style="--d:${i*.2}s"/>`).join('')}
-      <circle cx="150" cy="70" r="32" fill="#fff6d6"/>${sunnyFace(150,70,22,{mood:'happy'})}
-      ${P.map(([x,y,l,ic],i)=>`<g class="agh-bob" style="--d:${i*.4}s"><circle cx="${x}" cy="${y}" r="22" fill="#fff" stroke="${IG.line}" stroke-width="2"/>${ic}</g>${igT(x,y+(y<70?-26:34),l,{s:10.5,c:IG.soft})}`).join('')}`,'Sunny runs the pill dispenser, a robot helper, deliveries and safety alarms')},
+    const id='aghc'+(++AGH_N);return igFrame(300,134,`<clipPath id="${id}"><rect width="300" height="134" rx="12"/></clipPath><g clip-path="url(#${id})"><rect width="300" height="134" fill="#eaf4ff"/>${h}${scan?`<g class="agh-scan"><rect x="-30" y="0" width="30" height="134" fill="#5ee6d6" opacity=".22"/><path d="M0 0 V134" stroke="#5ee6d6" stroke-width="2"/></g>`:''}</g>
+      <rect x="96" y="3" width="108" height="20" rx="10" fill="#fff" opacity=".95"/>${igT(150,17,'40,000 homes',{s:12,w:900})}`,'Rows of homes, each looked after by Sunny')},
+  agSunnyRuns:()=>{const P=[[50,40,'Pill dispenser',aghDispenser(50,40,1.3)],[250,40,'Robot helper',aghRobot(250,38,1.4)],[50,108,'Deliveries',aghDrone(50,102,1.3)],[250,108,'Safety alarms',aghBell(250,104,1.3)]];
+    return igFrame(300,146,`${P.map(([x,y],i)=>`<path d="M150 74 L${x} ${y}" stroke="${IG.gold}" stroke-width="2.4" class="agh-flow" style="--d:${i*.2}s"/>`).join('')}
+      <circle cx="150" cy="74" r="32" fill="#fff6d6"/>${sunnyFace(150,74,22,{mood:'happy'})}
+      ${P.map(([x,y,l,ic],i)=>`<g class="agh-bob" style="--d:${i*.4}s"><circle cx="${x}" cy="${y}" r="22" fill="#fff" stroke="${IG.line}" stroke-width="2"/>${ic}</g>${igT(x+(x<150?30:-30),y+(y<74?-16:30),l,{s:10.5,a:x<150?'start':'end',c:IG.soft})}`).join('')}`,'Sunny runs the pill dispenser, a robot helper, deliveries and safety alarms')},
   agOnItsOwn:()=>{const items=[aghDrone(0,0,.9),aghBell(0,0,.9),agdPill(0,0,.9,-20)];
     return igFrame(300,124,`<path d="M10 104 H290" stroke="${IG.line}" stroke-width="3" stroke-linecap="round"/>
       <circle cx="42" cy="58" r="26" fill="#fff6d6"/>${sunnyFace(42,58,18,{mood:'happy'})}
@@ -69,9 +69,9 @@ Object.assign(VIZ,{
       ${items.map((it,i)=>`<g class="agh-fly" style="--d:${aghF(i*1.3)}s"><g transform="translate(70 52)">${it}</g></g>`).join('')}
       <path d="M72 40 Q150 -4 232 46" stroke="${IG.gold}" stroke-width="2" fill="none" stroke-dasharray="4 5"/>`,'Sunny changes deliveries, alarms and pills in a home with no one checking first')},
   agLogBook:()=>{const rows=[['7:00','Pill given'],['8:15','Lights up'],['9:40','Groceries ordered'],['12:10','Robot: dishes'],['15:30','Alarm check'],['19:00','Pill given'],['21:00','Rating: 5 stars']];
-    return igFrame(300,130,`<rect x="40" y="10" width="220" height="112" rx="10" fill="#fff" stroke="${IG.line}" stroke-width="2"/><path d="M150 12 V120" stroke="${IG.line}" stroke-width="2"/>
-      <clipPath id="aghl${++AGH_N}"><rect x="46" y="16" width="208" height="100"/></clipPath><g clip-path="url(#aghl${AGH_N})"><g class="agh-scroll">
-      ${rows.concat(rows).map(([t,l],i)=>{const col=i%7<4?0:1,yy=30+(i%7<4?i%7:i%7-4)*24+(i>=7?100:0);return `${igT(col?160:52,yy,t,{s:10,a:'start',c:IG.violet})}${igT(col?192:84,yy,l,{s:9.5,a:'start'})}`}).join('')}</g></g>
+    return igFrame(300,130,`<rect x="40" y="10" width="220" height="112" rx="10" fill="#fff" stroke="${IG.line}" stroke-width="2"/>
+      <clipPath id="aghl${++AGH_N}"><rect x="46" y="14" width="208" height="104"/></clipPath><g clip-path="url(#aghl${AGH_N})"><g class="agh-scroll">
+      ${rows.concat(rows).map(([t,l],i)=>{const yy=32+i*22;return `${igT(60,yy,t,{s:10.5,a:'start',c:IG.violet,w:800})}${igT(112,yy,l,{s:10.5,a:'start'})}<path d="M56 ${yy+8} H244" stroke="${IG.line}" stroke-width="1"/>`}).join('')}</g></g>
       ${sunnyFace(258,16,9,{spin:false,glow:false})}`,'Sunny’s log: every pill, order and alarm, with the time')},
   agTeaLog:()=>{const wk=['Feb 3','Feb 10','Feb 17','Feb 24','Mar 3','Mar 10'];
     return igFrame(300,140,`<rect x="18" y="6" width="264" height="128" rx="12" fill="#fff" stroke="${IG.line}" stroke-width="2"/>${igT(30,24,'Sunny’s log · Rosa Morales',{s:11,a:'start',w:900})}
@@ -79,7 +79,7 @@ Object.assign(VIZ,{
       ${igT(150,134,'…every week since February',{s:9.5,c:IG.soft})}`,'Rosa’s log: licorice tea ordered every week, five stars each time')},
   agLogLock:()=>igFrame(300,124,`<rect x="44" y="14" width="126" height="98" rx="10" fill="#fff" stroke="${IG.line}" stroke-width="2"/>${aghLines(58,30,96,6,13)}
       <g transform="translate(150 84)"><path d="M-12 -6 V-14 a12 12 0 0 1 24 0 V-6" fill="none" stroke="#9aa3c0" stroke-width="4"/><rect x="-17" y="-8" width="34" height="28" rx="6" fill="${IG.gold}" stroke="#c98a12" stroke-width="1.6"/><circle cy="4" r="3.4" fill="#7a5410"/><path d="M0 6 V12" stroke="#7a5410" stroke-width="2.4" stroke-linecap="round"/></g>
-      <g class="agh-key"><g transform="translate(236 76)"><rect x="-26" y="-34" width="52" height="40" rx="6" fill="#fff" stroke="${IG.teal}" stroke-width="2"/><path d="M-18 -26 h10 v10 h-10z" fill="${IG.teal}"/><path d="M-15 -21 h4 M-13 -23 v4" stroke="#fff" stroke-width="1.4"/>${igT(6,-17,'DOCTOR',{s:8,w:900,c:IG.teal})}${aghLines(-18,-10,36,1,6)}
+      <g class="agh-key"><g transform="translate(236 76)"><rect x="-26" y="-34" width="52" height="40" rx="6" fill="#fff" stroke="${IG.teal}" stroke-width="2"/><path d="M-18 -26 h10 v10 h-10z" fill="${IG.teal}"/><path d="M-15 -21 h4 M-13 -23 v4" stroke="#fff" stroke-width="1.4"/>${igT(-4,-17,'DOCTOR',{s:7.5,a:'start',w:900,c:IG.teal})}${aghLines(-18,-10,36,1,6)}
         <path d="M-6 6 V30 l6 -4 l6 4 V6" fill="${IG.coral}" opacity=".85"/></g></g>`,'Sunny’s logs are locked; a doctor with a medical reason can open them'),
   agTellMe:()=>igFrame(300,124,`<path d="M20 112 H170" stroke="${IG.line}" stroke-width="3" stroke-linecap="round"/><g class="agh-tilt">${agdPuppy(90,112,1.9)}</g>
       <g class="agh-bob"><rect x="166" y="14" width="118" height="58" rx="16" fill="#fff" stroke="${IG.line}" stroke-width="2"/><path d="M174 64 l-16 18 l26 -12z" fill="#fff" stroke="${IG.line}" stroke-width="2" stroke-linejoin="round"/><path d="M175 63 l-6 7" stroke="#fff" stroke-width="3"/>
@@ -106,7 +106,9 @@ Object.assign(VIZ,{
       ${igT(98,118,'1,100 homes',{s:11,w:900,c:IG.red})}`,'Food that clashes with medicine, ordered in 1,100 homes; 46 extra doctor visits'),
   agFerry:()=>{const u='aghf'+(++AGH_N);return igFrame(300,124,`<defs><linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe3ff"/><stop offset="1" stop-color="#fde7d2"/></linearGradient><clipPath id="${u}c"><rect width="300" height="124" rx="12"/></clipPath></defs>
       <g clip-path="url(#${u}c)"><rect width="300" height="124" fill="url(#${u})"/>
-      <path d="M0 64 V56 h14 v-12 h10 v12 h8 v-26 h12 v26 h8 v-16 h10 v16 h10 v-34 l4 -6 l4 6 v34 h10 v-20 h12 v20 h8 v-12 h14 v12 h10 v-28 h10 v28 h12 v-14 h10 v14 h8 v-8 h14 v8 h12 V64z" fill="#9fb8d9"/>
+      <path d="M0 64 V52 h10 v-6 h8 v6 h6 v-18 h10 v18 h6 v-30 h4 v-4 h6 v4 h4 v30 h8 v-14 h10 v14 h6 v-40 l5 -8 l5 8 v40 h8 v-22 h12 v22 h6 v-10 h10 v10 h6 v-34 h12 v34 h8 v-16 h8 v16 h8 v-26 h10 v26 h10 v-10 h12 v10 h8 v-6 h14 v6 h16 V64z" fill="#9fb8d9"/>
+      ${[...Array(40)].map((_,i)=>`<rect x="${20+(i*37)%240}" y="${28+(i*17)%30}" width="2" height="2" fill="#fff" opacity=".55"/>`).join('')}
+      <path d="M0 64 V58 h300 V64z" fill="#88a3c8"/>
       <rect y="64" width="300" height="60" fill="#6fa6d0"/><path class="ig-wave" d="M0 76 q10 -3 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="#d6ecff" stroke-width="1.6" fill="none"/>
       <g class="agh-ferry"><g transform="translate(0 92)"><path d="M-40 0 H40 L32 12 H-34Z" fill="#fff" stroke="#9aa6c0" stroke-width="1.4"/><rect x="-30" y="-14" width="56" height="14" rx="4" fill="#fff" stroke="#9aa6c0" stroke-width="1.4"/>
         ${[0,1,2,3,4].map(i=>`<rect x="${-25+i*10}" y="-10" width="6" height="6" rx="1.5" fill="#7fc6e8"/>`).join('')}<rect x="-14" y="-24" width="22" height="10" rx="3" fill="${IG.teal}"/><path d="M-40 4 H40" stroke="${IG.gold}" stroke-width="2"/><path d="M-44 10 q-10 2 -22 0" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/></g></g>
