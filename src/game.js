@@ -51,8 +51,8 @@ function wireMics(){$$('.mic').forEach(b=>b.onclick=()=>{const el=document.getEl
   try{const r=new SR();r.lang='en-US';r.interimResults=true;const base=el.value&&!/\s$/.test(el.value)?el.value+' ':el.value;b.classList.add('on');
     r.onresult=e=>{let t='';for(const x of e.results)t+=x[0].transcript;el.value=base+t;el.dispatchEvent(new Event('input'))};
     r.onerror=()=>{b.classList.remove('on');b.remove();toast('The microphone isn\u2019t available here. You can type instead.')};r.onend=()=>b.classList.remove('on');r.start()}catch(e){b.remove()}})}
-function learnWord(k){if(!S.words.includes(k)){S.words.push(k);save();bumpHud('words')}}
-function unlock(id){if(!S.guide.includes(id)){S.guide.push(id);save();bumpHud('guide');return true}return false}
+function learnWord(k){window.PARENT&&PARENT.noteWord(k);if(!S.words.includes(k)){S.words.push(k);save();bumpHud('words')}}
+function unlock(id){window.PARENT&&PARENT.noteIdea(id);if(!S.guide.includes(id)){S.guide.push(id);save();bumpHud('guide');return true}return false}
 function heart(who,n=1){S.hearts[who]=(S.hearts[who]||0)+n;save()}
 function bumpHud(id){const b=$('#hud-'+id);if(b){const n=id==='words'?S.words.length:S.guide.length;let sp=b.querySelector('span');if(!sp){sp=document.createElement('span');b.appendChild(sp)}sp.textContent=n;b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}}
 
@@ -89,7 +89,9 @@ function openMenu(){const d=sheet('Menu',`<div class="menu">
    <div class="lbl">Save code</div><p class="tiny muted">Copy this code to move your game to another device or browser.</p>
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">Copy code</button>
    <div class="lbl">Load a save code</div><textarea id="m-in" rows="3" placeholder="Paste a code that starts with PM1-"></textarea><button class="btn small ghost" id="m-load">Load this game</button>
-   <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div></div>`);
+   <div class="lbl">Start over</div><button class="btn small ghost" id="m-new">New game</button><div id="m-confirm"></div>
+   ${window.PARENT?'<div class="lbl">For grown-ups</div><button class="btn small ghost" id="m-parent">Progress page</button>':''}</div>`);
+  const mp=$('#m-parent',d);if(mp)mp.onclick=()=>{d.remove();PARENT.open()};
   $('#m-hub',d).onclick=()=>{d.remove();go('hub')};
   $('#m-copy',d).onclick=()=>{const t=$('#m-code',d);navigator.clipboard&&navigator.clipboard.writeText(t.value).then(()=>toast('Save code copied','good')).catch(()=>{t.select()});t.select()};
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast('Game loaded','good');render()}else toast('That code didn\u2019t work. Check that you copied all of it.')};
@@ -124,10 +126,10 @@ function cannedReply(q){q=q.toLowerCase();if(M().canned){const r=M().canned(q);i
 function openChat(){const d=sheet(`Talk to ${esc(S.byte.name)}`,`<div class="chatlog" id="chatlog"></div><form class="chatform" id="chatform"><input id="chatin" autocomplete="off" placeholder="Ask ${esc(S.byte.name)} anything" maxlength="300">${micButton('chatin')}<button class="btn small" type="submit">Send</button></form>`);
   d.classList.add('chat');wireMics();const told0=S.told;d.querySelector('.x').addEventListener('click',()=>{if(S.step==='workbench'&&S.told!==told0)setTimeout(renderWorkbench,260)});const log=$('#chatlog');
   const draw=()=>{log.innerHTML=`<div class="msg b"><div class="mini-byte">${byteBox(S.byte)}</div><p>Hi ${esc(P())}! Ask me anything.</p></div>`+CHAT.map(m=>`<div class="msg ${m.role==='user'?'u':'b'}">${m.role==='user'?'':`<div class="mini-byte">${byteBox(S.byte)}</div>`}<p>${esc(m.content)}</p></div>`).join('');log.scrollTop=log.scrollHeight};draw();
-  $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();
+  $('#chatform').onsubmit=async e=>{e.preventDefault();const inp=$('#chatin');const q=inp.value.trim();if(!q)return;inp.value='';CHAT.push({role:'user',content:q});draw();window.PARENT&&PARENT.noteChat(q);
     if(/rash|allerg|patch|itch/i.test(q)&&!S.told){S.told=true;save()}
     const placeholder={role:'assistant',content:'Thinking...'};CHAT.push(placeholder);draw();
-    const sm=await getSample();let answer=null;
+    const sm=window.PARENT&&!PARENT.chatOn()?null:await getSample();let answer=null;
     if(sm){try{const turns=[{role:'user',content:byteContext()+'\n\nThe player says: '+CHAT[0].content}];
         const hist=CHAT.slice(0,-1);const msgs=[{role:'user',content:byteContext()+'\n\nConversation so far follows. Reply as '+S.byte.name+' to the last player message.'}].concat(hist.map(m=>({role:m.role,content:m.content})));
         // keep alternation: merge leading user turns
@@ -230,7 +232,7 @@ const STEPS={
         return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">Day ${m.day}</div><div class="mtxt"><b>${esc(m.title)}</b><span>${esc(open?m.blurb:'Finish earlier days to unlock.')}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
       </div>`);
     $$('.mcard').forEach(b=>b.onclick=()=>startMission(b.dataset.m))},
-  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
+  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="24" lengthAdjust="spacingAndGlyphs">TOTALLY</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="34" lengthAdjust="spacingAndGlyphs">NORMAL BOLTS</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.</p><div class="row"><button class="btn small ghost" id="clue">Look at the crate</button><button class="btn small" id="on">Go to the hospital</button></div></div>`);
     $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast('The strangers hurry away. You noted the crate.','good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()}
@@ -358,7 +360,7 @@ function renderMemo(){
   $('#conf').oninput=e=>{S.conf=+e.target.value;save()};
   $('#rev').onclick=async()=>{const box=$('#review p');const miss=memoChecks(ta.value).filter(c=>!c.ok).map(c=>c.l.toLowerCase());
     box.textContent='Reading...';const sm=await getSample();let out=null;
-    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo about ${Mm.topic}:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${M().planName(S.choice)}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names a treatment),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (${Mm.careLabel.toLowerCase()}),"feedback":"2 or 3 short kind sentences for an 8-year-old: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
+    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo about ${Mm.topic}:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${M().planName(S.choice)}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names a treatment),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (${Mm.careLabel.toLowerCase()}),"feedback":"2 or 3 short kind sentences for a young player: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
         if(r&&typeof r==='object'){S.memoAI=r;save();$('#checks').innerHTML=memoChecks(ta.value,r).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('');out=r.feedback}}catch(e){}}
     box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what matters to the people involved.');MUSIC.babble(box.textContent,'byte')};
   $('#sign').onclick=()=>{if(ta.value.trim().length<20){toast('Write at least a sentence or two first.');return}
@@ -393,6 +395,7 @@ function renderDebrief(){
   const truth=M().outcomes(c,M().truth());const pk=truth.filter(o=>o.kind===R.kind).reduce((a,o)=>a+o.p,0);const good=crit.every(id=>(R.flags[id]??1)>0);
   const luck=good?(pk<.4?'Lucky':'As expected'):(pk<.3?'Unlucky':'As expected');
   if(S.consent)heart(M().consent.left);
+  window.PARENT&&PARENT.record({stars,luck,good,checks:memoChecks(S.memo,S.memoAI)});
   screen('debrief',`${scene(M().debriefScene||'hospital')}<div class="talk-dim"></div>${hud('Debrief')}<div class="panel-card debrief">
    <h2>How you did</h2>
    <div class="scores"><div class="score"><div class="stars">${[0,1,2].map(i=>`<span class="${i<stars?'on':''}">★</span>`).join('')}</div><b>Decision</b><span>How wise your choice was, given what you knew</span></div>
