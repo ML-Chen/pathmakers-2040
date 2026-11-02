@@ -185,7 +185,11 @@ function loopBg(){BG.raf=requestAnimationFrame(()=>{BG.raf=0;if(document.hidden|
 const TRACK_FOR={title:'title',setup:'title',talk:null,walk:'morning',bench:'work',criteria:'work',memo:'work',futuretable:'table',reveal:'table',debrief:'win',evening:'night'};
 if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
-function screen(cls,html){I18N.sync();stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;const scn=CURSCENE;
+// In Chinese mode, text drawn inside pictures (SVG labels) and picture captions is translated too, when a translation exists.
+function i18nSvg(root){if(typeof LANG!=='function'||LANG()==='en'||!root)return;const tab=I18N.tab[LANG()]||{};
+  root.querySelectorAll('svg text,svg tspan,figcaption,.fig-cap').forEach(e=>{if(e.children.length&&e.tagName!=='text')return;const t=e.textContent.trim();const v=tab[t];if(v!=null&&e.childNodes.length<=1)e.textContent=v;
+    else if(v!=null&&e.tagName==='text'&&!e.querySelector('tspan'))e.textContent=v})}
+function screen(cls,html){I18N.sync();stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;i18nSvg(APP);const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
   if(typeof campaignScreen==='function')campaignScreen(cls);applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
   MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
