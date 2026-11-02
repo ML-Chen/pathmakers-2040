@@ -5,7 +5,7 @@ A phone-first browser game for kids who are strong readers (text is written at a
 Read these first: docs/SPEC.md (the full design spec), docs/DESIGN_NOTES.md (decisions and feedback since the spec, which override it), docs/MISSIONS.md (how to add missions, scenes and infographics in parallel) and docs/WORKBOARD.md (who is building what right now; claim your work there before starting).
 
 ## Build and check
-- `python3 src/build.py dist/pathmakers.html` inlines every module into one self-contained page.
+- `python3 src/build.py dist/pathmakers.html` inlines every module into one self-contained page. Every mission now has recorded voices, so the full page is about 40 MB; the Claude artifact (16 MB limit) is built with `PM_VOICES=hired,grandrounds,quietyear python3 src/build.py OUT` and plays the other missions without voices.
 - `node tools/shots.js dist/pathmakers.html /tmp/pm-shots` plays through every screen of the Maya mission at 390x844 and saves screenshots plus errors.txt. Look at them after every change. `tools/mission_shots.js` and `tools/mission_deep_shots.js` cover every mission (see docs/MISSIONS.md).
 - `node tools/paint_preview.js OUT [scene]`, `node tools/char_preview.js OUT` and `node tools/viz_preview.js OUT` render the core painted scenes, the cast and the core infographics. They read only the core files, not `src/scenes/`, `src/missions/` or `src/viz/`.
 - `node tools/parent_shots.js dist/pathmakers.html /tmp/pm-parent` screenshots the progress page empty, after one real mission, and with a longer sample history.
