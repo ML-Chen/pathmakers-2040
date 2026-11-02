@@ -68,6 +68,12 @@ H+='<div class="row"><svg viewBox="-40 -30 140 80" width="280" height="160" styl
 H+='<div class="row" style="margin-top:8px">';
 for(const k of ['recital','healed','crooked','rash','waiting','moved'])H+=cell(vignette(k),k);
 H+='</div>';
+H+='<h2 id="s-posed">posedGirl(kind): 120x90 cards at 1x, then 2.5x</h2><div class="row">';
+const kinds=['violin','thumbsup','sad','itchy','waiting','stand'],bgs={violin:'#ffe7a8',thumbsup:'#cdeedd',sad:'#ffd3cc',itchy:'#ffd3cc',waiting:'#dfe4f3',stand:'#eee'};
+for(const k of kinds)H+=cell('<svg viewBox="0 0 120 90" width="120" height="90" style="border-radius:8px;background:'+bgs[k]+'"><g transform="translate(52 86) scale(1.08)">'+posedGirl(k)+'</g></svg>',k);
+H+='</div><div class="row">';
+for(const k of kinds)H+=cell('<svg viewBox="0 0 120 90" width="300" height="225" style="border-radius:14px;background:'+bgs[k]+'"><g transform="translate(52 86) scale(1.08)">'+posedGirl(k)+'</g></svg>',k+' 2.5x');
+H+='</div>';
 H+='<h2 id="s-zoom">Zoom</h2><div class="row">';
 for(const [w,m] of [['imani','smile'],['maya','smile'],['dad','smile']])H+=cell('<div class="pbox zoombox" style="width:500px;height:600px">'+portrait({...CAST[w],mood:m})+'</div>',w);
 H+='</div>';
@@ -78,7 +84,7 @@ R.innerHTML=H;
   fs.writeFileSync(path.join(out,'sheet.html'),page);
   await p.setContent(page);await p.waitForTimeout(300);
   await p.screenshot({path:path.join(out,'sheet.png'),fullPage:true});
-  for(const id of ['imani','maya','dad','extra','anim','byte','bytec','bytes','mini','zoom']){const h=await p.$('#s-'+id);if(!h)continue;
+  for(const id of ['imani','maya','dad','extra','anim','byte','bytec','bytes','mini','posed','zoom']){const h=await p.$('#s-'+id);if(!h)continue;
     const box=await p.evaluate(el=>{const r=el.getBoundingClientRect();let n=el.nextElementSibling,bottom=r.bottom;while(n&&n.tagName!=='H2'){bottom=Math.max(bottom,n.getBoundingClientRect().bottom);n=n.nextElementSibling}return{x:0,y:r.top+scrollY,width:1600,height:bottom-r.top+6}},h);
     await p.screenshot({path:path.join(out,id+'.png'),clip:box,fullPage:true})}
   const zb=await p.$$('.zoombox');for(let i=0;i<zb.length;i++){const b=await zb[i].boundingBox();await p.screenshot({path:path.join(out,'face'+i+'.png'),clip:{x:b.x+70,y:b.y,width:360,height:420},fullPage:true})}

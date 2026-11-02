@@ -391,6 +391,131 @@ function personSVG(o){o=o||{};
   </g></g></g>`}
 function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${(o&&o.name)||''}">${personSVG(o||{})}</svg>`}
 
+// ---------- Maya, full body and posed (Future Table cards, reveal) ----------
+// posedGirl(kind,o) -> SVG <g>. Feet on (0,0); about 70 units tall (ahoge tip ~y=-71, hair top ~-68); body about ±10 wide
+// (the violin pose reaches x≈+30 with the scroll and the bow tip; thumbsup raises a hand to y≈-63).
+// kind: 'violin'|'thumbsup'|'sad'|'itchy'|'waiting'|'stand'. o: {skin, hair, shirt, skirt, clip, cast (cast colour)}
+// The head is drawn in the portrait's coordinate space (same hair design as her portrait) scaled to 0.1 with heavier lines.
+function ch_violin(gid){ // local frame: tail end at the origin, strings along +x, ~28.5 long
+  const body='M0 0 C0 -3.2 1.6 -4.6 3.6 -4.6 C5.6 -4.6 6.6 -3.9 7.1 -3.2 C7.5 -2.6 7.8 -2.5 8.4 -2.5 C9 -2.5 9.3 -2.6 9.7 -3.1 C10.3 -3.8 11.2 -4 12.4 -4 C14.4 -4 15.7 -2.7 15.7 -1.2 L15.7 1.2 C15.7 2.7 14.4 4 12.4 4 C11.2 4 10.3 3.8 9.7 3.1 C9.3 2.6 9 2.5 8.4 2.5 C7.8 2.5 7.5 2.6 7.1 3.2 C6.6 3.9 5.6 4.6 3.6 4.6 C1.6 4.6 0 3.2 0 0Z';
+  return `<path d="${body}" fill="url(#${gid})" stroke="#4a1c0a" stroke-width=".5" stroke-linejoin="round"/>
+   <path d="${body}" fill="none" stroke="#7a3412" stroke-width=".22" opacity=".7" transform="translate(.8 0) scale(.9 .84) translate(0 0)"/>
+   <ellipse cx="3.4" cy="-2.1" rx="2.2" ry=".8" fill="#fff" opacity=".35"/><ellipse cx="12.6" cy="-2" rx="1.4" ry=".55" fill="#fff" opacity=".28"/>
+   <path d="M5.6 -2.6 Q7 -1.6 8.4 -2.4 M5.6 2.6 Q7 1.6 8.4 2.4" stroke="#2a1006" stroke-width=".32" fill="none" stroke-linecap="round"/><circle cx="5.6" cy="-2.6" r=".25" fill="#2a1006"/><circle cx="8.4" cy="-2.4" r=".25" fill="#2a1006"/><circle cx="5.6" cy="2.6" r=".25" fill="#2a1006"/><circle cx="8.4" cy="2.4" r=".25" fill="#2a1006"/>
+   <path d="M.6 -.95 L4.9 -.62 L4.9 .62 L.6 .95Z" fill="#2a1a12"/><ellipse cx="1.4" cy="2.7" rx="1.5" ry="1.1" fill="#2a1a12"/>
+   <path d="M15.6 -1.1 L24.2 -.8 L24.2 .8 L15.6 1.1Z" fill="#b8642c" stroke="#4a1c0a" stroke-width=".3"/>
+   <path d="M8.2 -.9 L24 -.62 L24 .62 L8.2 .9Z" fill="#1e1410"/>
+   <path d="M7 -1.5 L7 1.5" stroke="#f0d8a0" stroke-width=".55" stroke-linecap="round"/>
+   <path d="M4.9 -.42 L24.4 -.3 M4.9 -.14 L24.4 -.1 M4.9 .14 L24.4 .1 M4.9 .42 L24.4 .3" stroke="#f6ecc8" stroke-width=".11"/>
+   <path d="M24 -1 L26.8 -.9 L26.8 .9 L24 1Z" fill="#a85424" stroke="#4a1c0a" stroke-width=".3"/>
+   <path d="M24.8 -2.3 L24.8 2.3 M25.9 -2.2 L25.9 2.2" stroke="#2a1a12" stroke-width=".55" stroke-linecap="round"/>
+   <circle cx="27.8" cy="0" r="1.35" fill="#b8642c" stroke="#4a1c0a" stroke-width=".3"/><path d="M27.8 0 m-.7 0 a.7 .7 0 1 1 .7 .7" stroke="#4a1c0a" stroke-width=".22" fill="none"/>`}
+function ch_bow(F,T){ // frog F -> tip T, hair on the lower side
+  const dx=T[0]-F[0],dy=T[1]-F[1],l=Math.hypot(dx,dy),ux=dx/l,uy=dy/l,nx=-uy,ny=ux,s=ny>0?1:-1,hx=nx*s*.75,hy=ny*s*.75,P=(t,o)=>ch_n(F[0]+dx*t+hx*o)+' '+ch_n(F[1]+dy*t+hy*o);
+  return `<path d="M${P(.02,1)} L${P(.985,1)}" stroke="#f4ecd8" stroke-width=".45" stroke-linecap="round"/>
+   <path d="M${P(0,0)} Q${P(.5,-.55)} ${P(1,0)}" stroke="#1e0e06" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M${P(0,0)} Q${P(.5,-.55)} ${P(1,0)}" stroke="#8a4a22" stroke-width=".5" fill="none" stroke-linecap="round"/>
+   <path d="M${P(.97,-.2)} L${P(1,1.15)} L${P(.985,1.2)}Z" fill="#1e0e06"/>
+   <path d="M${P(.01,-.1)} L${P(.1,-.1)} L${P(.1,1.25)} L${P(.03,1.25)}Z" fill="#1e0e06" stroke="#1e0e06" stroke-width=".3" stroke-linejoin="round"/><circle cx="${ch_n(F[0]+dx*.055+hx*.55)}" cy="${ch_n(F[1]+dy*.055+hy*.55)}" r=".3" fill="#fff"/>`}
+function posedGirl(kind,o){o=o||{};
+  const id='ch'+(++CH_N),sk=ch_skinPal(o.skin||SKIN[1]),H=ch_hairPal(o.hair||'#1d1512'),C=ch_clothPal(o.shirt||'#ff7a6b'),SK=ch_clothPal(o.skirt||'#3b4a7a');
+  const ln=ch_mix(sk.line,'#1a0a14',.15),clip=o.clip||'#ff7a6b',R=ch_n,lw=.75;
+  const K={
+    stand:{tilt:0,L:[[6.6,-49.2],[8.2,-41.6],[7.8,-34.4]],Rt:[[-6.6,-49.2],[-8.2,-41.6],[-7.8,-34.4]],hL:'rest',hR:'rest',face:'calm'},
+    violin:{tilt:13,hdx:1,sway:-2.5,L:[[6.4,-49.2],[14.6,-46.2],[21.4,-55.8]],hL:'neck',hR:'bow',face:'joy'},
+    thumbsup:{tilt:-5,L:[[6.6,-49.4],[12.6,-55.2],[12.4,-62.4]],Rt:[[-6.6,-49.2],[-11.8,-43.2],[-5.8,-38.4]],hL:'thumb',hR:'hip',face:'grin'},
+    sad:{tilt:8,hdy:.8,drop:.8,L:[[6.2,-48.6],[8.6,-40.8],[-.6,-38.8]],Rt:[[-6.2,-48.6],[-8.8,-41.4],[.4,-37.4]],hL:'limp',hR:'cradle',face:'sad'},
+    itchy:{tilt:-7,L:[[6.4,-49.2],[11.2,-41.2],[1.4,-45.6]],Rt:[[-6.4,-49.2],[-10.6,-42.4],[5.6,-44.4]],hL:'open',hR:'scratch',face:'annoyed'},
+    waiting:{tilt:4,L:[[6.4,-49.2],[8,-40.6],[-2.4,-40.4]],Rt:[[-6.6,-49.2],[-8.4,-41.6],[-8,-34.4]],hL:'castHand',hR:'rest',face:'calm',cast:1}}[kind]||null;
+  const Q=K||{tilt:0,L:[[6.6,-49.2],[8.2,-41.6],[7.8,-34.4]],Rt:[[-6.6,-49.2],[-8.2,-41.6],[-7.8,-34.4]],hL:'rest',hR:'rest',face:'calm'};
+  // violin geometry and the bowing arm
+  let violin='',bow='';
+  if(kind==='violin'){const vx=1.2,vy=-51,va=-13*Math.PI/180,vs=1.18,sy=.82,toW=(x,y)=>[vx+x*vs*Math.cos(va)-y*sy*vs*Math.sin(va),vy+x*vs*Math.sin(va)+y*sy*vs*Math.cos(va)];
+    const Cn=toW(9.4,0),hand=[-2.4,-42.6],dx=Cn[0]-hand[0],dy=Cn[1]-hand[1],l=Math.hypot(dx,dy),u=[dx/l,dy/l],F=[hand[0]-u[0]*1.4,hand[1]-u[1]*1.4],T=[F[0]+u[0]*35,F[1]+u[1]*35];
+    Q.Rt=[[-6.6,-49.2],[-12.6,-43.6],hand];Q.L=[[6.4,-49.2],[15.6,-46.6],toW(21.2,1.6)];
+    violin=`<g transform="translate(${vx} ${vy}) rotate(-13) scale(${vs} ${R(sy*vs)})">${ch_violin(id+'v')}</g>`;bow=ch_bow(F,T)}
+  const drop=Q.drop||0;
+  // ---- helpers
+  const limb=(pts,w,col,sh)=>{const d='M'+pts.map(p=>R(p[0])+' '+R(p[1])).join(' L');
+    return `<path d="${d}" stroke="${ln}" stroke-width="${R(w+lw*2)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" stroke="${col}" stroke-width="${R(w)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`+
+      (sh?`<path d="${d}" stroke="${sh}" stroke-width="${R(w*.34)}" fill="none" stroke-linejoin="round" transform="translate(${R(w*.3)} ${R(w*.08)})"/>`:'')};
+  const lerp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
+  const hand=(A,type)=>{const p=A[2],q=A[1],ang=Math.atan2(p[1]-q[1],p[0]-q[0])*180/Math.PI-90,t=`translate(${R(p[0])} ${R(p[1])})`;
+    const st=`fill="${sk.base}" stroke="${ln}" stroke-width=".55" stroke-linejoin="round"`;
+    if(type==='thumb')return `<g transform="${t}"><rect x="-1.9" y="-1.3" width="3.8" height="3.6" rx="1.5" ${st}/><rect x="-.9" y="-4.4" width="1.7" height="3.8" rx=".85" ${st}/><path d="M-1.4 .1 h2.6 M-1.4 1.1 h2.6" stroke="${ln}" stroke-width=".3" opacity=".7"/></g>`;
+    let s=`<g transform="${t} rotate(${R(ang)})"><path d="M-1.55 -.6 C-1.7 1.5 -.9 2.7 0 2.7 C.9 2.7 1.7 1.5 1.55 -.6Z" ${st}/><ellipse cx="1.45" cy=".3" rx=".55" ry="1" transform="rotate(-24 1.45 .3)" ${st}/>`;
+    if(type==='scratch')s+=`<path d="M-1 1.7 q.3 .8 .1 1.4 M0 1.9 q.3 .9 .1 1.5 M1 1.7 q.3 .8 .1 1.4" stroke="${ln}" stroke-width=".38" fill="none" stroke-linecap="round"/>`;
+    return s+'</g>'};
+  const armSvg=(A0,type,cast)=>{const A=[[A0[0][0]+Math.sign(A0[0][0])*.4,A0[0][1]],A0[1],A0[2]];let s=limb(A,3,sk.base,sk.sh);
+    if(cast){const c=o.cast||'#c3b6ff',cs=ch_mix(c,'#3a2a6a',.25),a=lerp(A[1],A[2],.08),b=lerp(A[1],A[2],.86);
+      s+=limb([a,b],3.9,c,cs)+`<path d="M${R(a[0]+(b[0]-a[0])*.35)} ${R(a[1]+(b[1]-a[1])*.35-.6)} l.4 .9 l.9 .1 l-.7 .6 l.2 .9 l-.8 -.5 l-.8 .5 l.2 -.9 l-.7 -.6 l.9 -.1z" fill="#ffd45c" stroke="${ln}" stroke-width=".15"/><path d="M${R(a[0]+(b[0]-a[0])*.65)} ${R(a[1]+(b[1]-a[1])*.65)} m0 .6 l-.9 -.9 a.5 .5 0 0 1 .9 -.5 a.5 .5 0 0 1 .9 .5z" fill="#ff7a6b"/>`}
+    s+=limb([A[0],lerp(A[0],A[1],.44)],3.8,C.base,C.sh);
+    return s+hand(A,type)};
+  // ---- legs, socks, shoes, skirt
+  const legs=[-1,1].map(sd=>{const hip=[sd*2.6,-30],knee=[sd*2.7,-15.6],ank=[sd*2.6,-2.8];
+    return limb([hip,knee,ank],3.7,sk.base,sk.sh)+limb([[sd*2.64,-6.6],ank],4,'#f6f4fa','#d8d4e6')+
+      `<path d="M${R(sd*2.6-2.6)} -1.4 C${R(sd*2.6-2.8)} -3.4 ${R(sd*2.6+2.6)} -3.6 ${R(sd*2.6+3)} -1.2 C${R(sd*2.6+3.2)} .2 ${R(sd*2.6-2.6)} .4 ${R(sd*2.6-2.6)} -1.4Z" fill="#7a2a3a" stroke="${ln}" stroke-width=".55"/><path d="M${R(sd*2.6-1.6)} -2.6 L${R(sd*2.6+1.8)} -2.8" stroke="#4a1424" stroke-width=".5"/><ellipse cx="${R(sd*2.6-.8)}" cy="-.9" rx="1" ry=".35" fill="#fff" opacity=".45"/>`}).join('');
+  const skirt=`<path d="M-5.2 -38.6 L5.2 -38.6 C6.6 -35 8.6 -30.6 10 -27.2 Q0 -25.2 -10 -27.2 C-8.6 -30.6 -6.6 -35 -5.2 -38.6Z" fill="${SK.base}" stroke="${ln}" stroke-width="${lw}" stroke-linejoin="round"/>
+    <path d="M2 -38 C3.6 -34 6.4 -30 7.4 -26.4 L10 -27.2 C8.6 -30.6 6.6 -35 5.2 -38.6Z" fill="${SK.sh}"/>
+    <path d="M-2.6 -37.4 L-4.6 -26.2 M0 -37.4 L0 -25.8 M2.6 -37.4 L4.6 -26.2 M-5 -36 L-7.6 -26.8 M5 -36 L7.6 -26.8" stroke="${ln}" stroke-width=".35" opacity=".55"/>
+    <path d="M-5.3 -38.4 L5.3 -38.4 L5.5 -36.8 L-5.5 -36.8Z" fill="${SK.sh}" stroke="${ln}" stroke-width=".45"/>`;
+  // ---- torso: coral short-sleeve top with a white rounded collar
+  const sY=-49.6+drop;
+  const torso=`<path d="M-1.6 -55.6 L-1.7 ${R(sY+1)} L1.7 ${R(sY+1)} L1.6 -55.6Z" fill="${sk.base}" stroke="${ln}" stroke-width=".6"/><path d="M-1.7 -54.4 Q0 -52.6 1.7 -54.4 L1.7 -52.6 Q0 -51 -1.7 -52.6Z" fill="${sk.sh}"/>
+    <path d="M-7.6 ${R(sY)} C-8.1 ${R(sY+4)} -6 -42 -5.4 -38 L5.4 -38 C6 -42 8.1 ${R(sY+4)} 7.6 ${R(sY)} Q0 ${R(sY-1.7)} -7.6 ${R(sY)}Z" fill="${C.base}" stroke="${ln}" stroke-width="${lw}" stroke-linejoin="round"/>
+    <path d="M2.6 ${R(sY+.4)} C4.8 -44 3.8 -40 3.6 -38 L5.4 -38 C6 -42 8.1 ${R(sY+4)} 7.6 ${R(sY)}Z" fill="${C.sh}"/>
+    <path d="M0 ${R(sY+1.8)} C-1.6 ${R(sY+1.8)} -3.4 ${R(sY+1.2)} -3.8 ${R(sY-.3)} C-4.8 ${R(sY+.2)} -5.3 ${R(sY+1)} -5.1 ${R(sY+1.9)} C-4.3 ${R(sY+3.5)} -1.5 ${R(sY+3.7)} 0 ${R(sY+2.7)}Z M0 ${R(sY+1.8)} C1.6 ${R(sY+1.8)} 3.4 ${R(sY+1.2)} 3.8 ${R(sY-.3)} C4.8 ${R(sY+.2)} 5.3 ${R(sY+1)} 5.1 ${R(sY+1.9)} C4.3 ${R(sY+3.5)} 1.5 ${R(sY+3.7)} 0 ${R(sY+2.7)}Z" fill="#fffaf6" stroke="${ln}" stroke-width=".5" stroke-linejoin="round"/>
+    <path d="M-3 -42.6 Q-1.4 -41.6 -.6 -39.4 M3.4 -45 Q2.6 -43 3 -40.6" stroke="${ln}" stroke-width=".35" fill="none" opacity=".5"/>`;
+  // ---- head (portrait space, scaled 0.1): back hair separate so it sits behind the body
+  const G=CH_FACE.K,HS=ch_hairStyle('braids',G),hg=`url(#${id}hg)`;
+  const face={joy:{lid:'closed',brow:'soft',mouth:'happy'},grin:{lid:'normal',brow:'up',mouth:'happy',star:1},sad:{lid:'sad',brow:'worried',mouth:'sad',tear:1},annoyed:{lid:'stern',brow:'stern',mouth:'grit'},calm:{lid:'normal',brow:'soft',mouth:'smile',look:[3,-2]}}[Q.face];
+  const iris=o.eye||'#7a4a2e';
+  const E={ew:34,eh:30,irx:11.2,iry:13.8,lash:8.5,wing:.7,brow:6,kid:true,lid:face.lid,look:face.look||[0,0],tear:!!face.tear,
+    lashC:ch_mix(H.dk,'#1a0810',.5),skinLine:ln,white:'#ffffff',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
+  const ey=137,ex=28,bs=CH_BROWS[face.brow],browC=ch_mix(H.dk,sk.line,.3);
+  const brows=ch_brow(150-ex,ey-E.eh/2-9,-1,bs,E,browC)+ch_brow(150+ex,ey-E.eh/2-9,1,bs,E,browC);
+  const shapes=[HS.cap].concat(HS.clumps.map(c=>c.d));
+  let clumps='';HS.clumps.forEach((c,i)=>{clumps+=`<path d="${c.d}" fill="${i%3===1?H.sh:hg}"/>`;const mid=[[(c.L[0]+c.R[0])/2,(c.L[1]+c.R[1])/2],[(c.a[2][0]+c.b[1][0])/2,(c.a[2][1]+c.b[1][1])/2],c.T];clumps+=`<path d="${ch_rib(ch_sub(ch_bz(mid,10),.3,.9),ch_swell(3.4,.3))}" fill="${H.line}" opacity=".55"/>`});
+  const mouth=face.mouth==='grit'?`<path d="M139 172 Q150 168.6 161 172 L160 179 Q150 181 140 179Z" fill="#fffaf6" stroke="${sk.mouth}" stroke-width="2.6" stroke-linejoin="round"/><path d="M140 175.6 Q150 174.4 160 175.6 M146 170.4 V180.4 M154 170.4 V180.4" stroke="${sk.mouth}" stroke-width="1.6" fill="none"/>`
+    :`<g transform="translate(150 172) scale(1.8) translate(-150 -172)">${ch_mouth(face.mouth,172,true,sk,false)}</g>`;
+  const ah=ch_bz([[146,44],[144,22],[160,10],[170,22]],14);
+  const fx=face.tear?`<path d="M${150-ex-16} 150 C${150-ex-20} 160 ${150-ex-21} 166 ${150-ex-18} 170 C${150-ex-15} 173 ${150-ex-10} 171 ${150-ex-11} 166 C${150-ex-12} 161 ${150-ex-14} 156 ${150-ex-16} 150Z" fill="#cdeeff" stroke="#4a9ad8" stroke-width="2.4"/><path d="M${150+ex+16} 152 C${150+ex+13} 160 ${150+ex+12} 164 ${150+ex+14} 167 C${150+ex+16} 169 ${150+ex+20} 168 ${150+ex+19} 164 C${150+ex+18.6} 160 ${150+ex+17} 156 ${150+ex+16} 152Z" fill="#cdeeff" stroke="#4a9ad8" stroke-width="2.4"/>`:'';
+  const headFront=`<g clip-path="url(#${id}f)"><g fill="${sk.sh}">${shapes.map(d=>`<path d="${ch_tr(d,2.5,7)}"/>`).join('')}</g><path d="M201 96 C203 124 199 148 190 166 C182 180 170 188 158 192 L212 200 L212 90Z" fill="${sk.sh}"/></g>
+    <ellipse cx="${150-ex-6}" cy="${ey+19}" rx="16" ry="8" fill="url(#${id}b)" opacity="${face.mouth==='grit'?.9:.75}"/><ellipse cx="${150+ex+6}" cy="${ey+19}" rx="16" ry="8" fill="url(#${id}b)" opacity="${face.mouth==='grit'?.9:.75}"/>
+    <path d="M153 152 Q156 160 153 165" stroke="${sk.sh}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M146.5 165.5 Q150 167.5 154 165" stroke="${ln}" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".85"/>
+    ${brows}${ch_eye(150-ex,ey,-1,E,id,0)}${ch_eye(150+ex,ey,1,E,id,1)}
+    ${face.star?ch_star(150-ex-3,ey-3,6,'#fff7d0')+ch_star(150+ex-3,ey-3,6,'#fff7d0'):''}
+    ${mouth}${fx}
+    <g fill="${H.line}" stroke="${H.line}" stroke-width="10" stroke-linejoin="round">${shapes.map(d=>`<path d="${d}"/>`).join('')}</g><path d="${HS.cap}" fill="${hg}"/>${clumps}
+    <g clip-path="url(#${id}hc)">${ch_shine(HS.shine,H)}</g>
+    <path d="${ch_rib(ah,ch_tap(9,6.5,2.4))}" fill="${H.line}"/><path d="${ch_rib(ah,ch_tap(5,3.4,.6))}" fill="${H.base}"/>
+    <g transform="rotate(-28 192 88)"><rect x="178" y="83" width="27" height="8" rx="4" fill="${clip}" stroke="${ch_mix(clip,'#2a0a10',.5)}" stroke-width="3"/></g><g transform="rotate(-28 197 102)"><rect x="183" y="97" width="27" height="8" rx="4" fill="${ch_mix(clip,'#ffd45c',.45)}" stroke="${ch_mix(clip,'#2a0a10',.5)}" stroke-width="3"/></g>
+    <g opacity=".6">${brows}</g>`;
+  const hS=.122,hx=Q.hdx||0,hy=-53.4-(189-121)*hS+(Q.hdy||0)+drop,HT=`translate(0 -54) rotate(${Q.tilt}) translate(0 54) translate(${hx} ${R(hy)}) scale(${hS}) translate(-150 -121)`;
+  const headBack=`<g transform="${HT}"><path d="${HS.back}" fill="${H.dk}" stroke="${H.line}" stroke-width="9"/></g>`;
+  const head=`<g transform="${HT}"><path d="${G.face}" fill="${sk.base}" stroke="${ln}" stroke-width="8"/>${headFront}</g>`;
+  // braids over the shoulders (portrait space, scaled)
+  const braids=`<g transform="translate(0 -51.6) scale(.1) translate(-150 0)">${ch_braid(108,-22,98,128,H,hg,clip,-1,3.6)}${ch_braid(192,-22,202,128,H,hg,clip,1,3.6)}</g>`;
+  // extras per pose
+  let pre='',post='';
+  if(kind==='thumbsup')post+=ch_star(17,-66,2.6,'#ffd45c','stroke="#fff" stroke-width=".4"')+ch_star(8,-70,1.6,'#ffe9a0')+ch_star(20,-58.6,1.3,'#fff')+ch_star(-12,-62,1.8,'#ffd45c');
+  if(kind==='itchy'){const a=Q.L[1],b=Q.L[2];for(let i=0;i<11;i++){const t=.1+i*.075,p=lerp(a,b,t),off=((i%3)-1)*.8;post+=`<circle cx="${R(p[0]+off*.3)}" cy="${R(p[1]+off)}" r="${i%2?.55:.72}" fill="#e5484d" stroke="#ffd0d0" stroke-width=".18"/>`}
+    for(const p of [lerp(Q.L[0],Q.L[1],.62),lerp(Q.L[0],Q.L[1],.8)])post+=`<circle cx="${R(p[0]+.4)}" cy="${R(p[1])}" r=".45" fill="#e5484d"/>`;
+    post+=`<path d="M7.4 -47.4 q1.2 -1.2 2.4 0 M8.2 -49 q1.4 -1.4 2.8 0 M2.4 -48 q-1 -1.2 -2 0" stroke="#e5484d" stroke-width=".45" fill="none" stroke-linecap="round"/><path d="M-9 -66 l1.4 1.4 l-1.4 1.4 l1.4 1.4 M-11.6 -64 l1.2 1.2 l-1.2 1.2" stroke="#e5484d" stroke-width=".6" fill="none" stroke-linecap="round"/>`}
+  if(kind==='waiting'){const a=Q.L[1],b=Q.L[2],sl='#5b7bd5',sd=ch_mix(sl,'#141a40',.45);
+    pre+=`<path d="M-2.6 -54.4 L-4 -52 L-3.6 -41 L-2.2 -41 L-2.2 -52.2Z" fill="${sl}" stroke="${sd}" stroke-width=".45" stroke-linejoin="round"/><path d="M2.4 -54.4 L4.2 -52.6 L9.4 -42.6 L8 -41.8 L3 -51.6Z" fill="${ch_mix(sl,'#141a40',.2)}" stroke="${sd}" stroke-width=".45" stroke-linejoin="round"/>`;
+    post+=`<path d="M${R(a[0]+1.6)} ${R(a[1]-.6)} Q${R((a[0]+b[0])/2)} ${R(a[1]+6.4)} ${R(b[0]-1)} ${R(b[1]+.6)} L${R(b[0]-.4)} ${R(b[1]+1.6)} Q${R((a[0]+b[0])/2)} ${R(a[1]+3.2)} ${R(a[0]+1)} ${R(a[1]+1)}Z" fill="${sl}" stroke="${sd}" stroke-width=".5" stroke-linejoin="round"/><path d="M${R(a[0]-1)} ${R(a[1]+2.4)} Q${R((a[0]+b[0])/2)} ${R(a[1]+4.8)} ${R(b[0]+1)} ${R(b[1]+1.8)}" stroke="#fff" stroke-width=".35" fill="none" opacity=".5"/>`}
+  const sway=Q.sway?` transform="rotate(${Q.sway} 0 0)"`:'';
+  const armsFront=kind==='violin'?`${violin}${head}${armSvg(Q.L,Q.hL)}${bow}${armSvg(Q.Rt,Q.hR)}`
+    :kind==='itchy'?`${head}${armSvg(Q.L,Q.hL)}${post}${armSvg(Q.Rt,Q.hR)}<path d="M2.6 -47.6 q1.6 -1 3.2 0 M3 -41.2 q1.6 1 3.2 0" stroke="${ln}" stroke-width=".4" fill="none" stroke-linecap="round" opacity=".7"/>`
+    :`${pre}${head}${armSvg(Q.Rt,Q.hR)}${armSvg(Q.L,Q.hL,Q.cast)}${post}`;
+  return `<g class="posed-girl"><defs><linearGradient id="${id}hg" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="300"><stop offset="0" stop-color="${H.top}"/><stop offset=".3" stop-color="${H.base}"/><stop offset="1" stop-color="${H.sh}"/></linearGradient>
+    <linearGradient id="${id}i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch_mix(iris,'#0a0410',.55)}"/><stop offset=".38" stop-color="${ch_mix(iris,'#0a0410',.12)}"/><stop offset=".72" stop-color="${ch_mix(iris,'#ffb070',.12)}"/><stop offset="1" stop-color="${ch_mix(iris,'#ffe2b8',.6)}"/></linearGradient>
+    <radialGradient id="${id}b"><stop offset="0" stop-color="${sk.blush}"/><stop offset="1" stop-color="${sk.blush}" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${id}v" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9954c"/><stop offset=".6" stop-color="#c2581f"/><stop offset="1" stop-color="#8a3510"/></linearGradient>
+    <clipPath id="${id}f"><path d="${G.face}"/></clipPath><clipPath id="${id}hc">${shapes.map(d=>`<path d="${d}"/>`).join('')}</clipPath></defs>
+   <ellipse cx="0" cy=".4" rx="12" ry="2" fill="rgba(31,35,64,.18)"/>
+   <g transform="scale(.95)"><g${sway}>${headBack}${legs}${skirt}${torso}${braids}${armsFront}</g></g></g>`}
+
 // ---------- Byte, a fluffy robot puppy ----------
 function byteSVG(o){o=o||{};
   const id='ch'+(++CH_N),c=o.color||'#f0b35a',ears=o.ears||'floppy',mood=o.mood||'happy',L=ch_lum(c);
