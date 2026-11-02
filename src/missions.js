@@ -5,7 +5,7 @@
 //  talks, docs, react {docId+stepIndex: Byte line}, lesson {id,label}, tell {clue, label, note, guide}
 //  criteria [{id,label}], criteriaHint (html), criteriaNote, controls [{key,label,opts:[[value,label]]}], start (default choice)
 //  planName(c), outcomes(c, knows) -> [{kind,p,cap,flags:{criterionId:0|1}}], why(c) -> html, whyGuide(c) -> field guide id|null
-//  vignette(kind) (optional; defaults to the global vignette), consent {...}, memo {...}, reveal {...}, trap(c), byteGood, byteBad, evening(), brief(), canned(q)
+//  vignette(kind) (optional; defaults to the global vignette), tablePanel(c) (optional; HTML shown under the futures on the Future Table), consent {...}, memo {...}, reveal {...}, trap(c), byteGood, byteBad, evening(), brief(), canned(q)
 //  Optional mission-owned tables (merged into the shared ones by mergeMissions() at startup, and recorded by tools/make_audio.py):
 //  glossary {lowercase word: meaning}, cast {id: portrait options + name, role}, voices {cast id: voice name}, guide {Field Guide id: {title,track,text,real}},
 //  lessons {id: {title, steps, quiz}}, chatter {scene key: [passer-by lines]}, lines [{who, text}] (any other line spoken with playLine).

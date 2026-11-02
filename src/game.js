@@ -316,6 +316,7 @@ function renderTable(){
   screen('futuretable',`${scene('table')}${hud('The Future Table')}
   <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:'think'})}</div><p>Here are 10 futures for this plan, spread out the way my forecast says. Change the plan and watch them shift.</p></div>
    <div class="futs" id="futs">${futs.map((f,i)=>`<figure class="fut" style="--d:${i*70}ms">${vig(f.kind)}<figcaption>${esc(f.cap)}</figcaption></figure>`).join('')}</div>
+   ${M().tablePanel?M().tablePanel(c):''}
    <div class="meters">${meters}</div>
    <div class="controls">${controlsHTML(c)}</div>
    <div class="ft-foot"><button class="btn ghost small" id="why">Ask ${esc(S.byte.name)} why</button><button class="btn" id="next">Choose this plan</button></div>
