@@ -82,6 +82,8 @@
 .mk-chip.calling{animation:igpulse .9s ease-in-out infinite;background:rgba(255,212,92,.35)}
 .mk-chip.aye{background:rgba(31,167,116,.85);color:#fff}.mk-chip.nay{background:rgba(208,71,60,.8);color:#fff}
 .mk-chip.in{animation:bump .35s}
+/* the vote word sits as a small tag on the chip's corner, so long names ("Ms. Castellanos") are not cut off once they vote */
+.mk-chip{position:relative}.mk-chip em{position:absolute;right:3px;top:-7px;background:rgba(12,16,44,.92);color:#fff;border-radius:6px;padding:0 4px;font-size:.6rem;line-height:1.35}
 .mk-call{display:flex;align-items:center;gap:10px;background:#fff;color:var(--ink);border-radius:18px;padding:8px 12px;min-height:70px;box-shadow:0 12px 30px rgba(10,14,40,.35)}
 .mk-call p{margin:0;font-size:1.05rem;font-weight:800}
 .mk-face{width:58px;height:58px;flex:none;border-radius:50%;overflow:hidden;background:linear-gradient(#dfe8f6,#f7f2ea)}

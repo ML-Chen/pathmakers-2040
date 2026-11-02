@@ -230,7 +230,7 @@ function hvVig(art){const id='vc'+(typeof VGN!=='undefined'?++VGN:++HV_N)+'h';re
 const HIRED_VIG={
   saturday:()=>hvVig(`${hvSky('hvs'+(++HV_N),120,90,'#8fd0ff','#e6f6ff')}${hvSun(104,14,6)}${hvGrass(62,120,28,'#79cc84','#69c076')}<path d="M0 62 H120" stroke="#fff" stroke-width="1.2" opacity=".8"/>
     ${hvGoal(-4,30,30,34)}
-    <g class="hv-save">${hvAri(56,50,{pose:'dive',face:'happy',gloves:true,injured:'a',brace:true,s:.62,noShadow:true})}<g transform="translate(91 32)" class="vpop">${hvBall(0,0,5.4)}</g></g>
+    <g class="hv-save">${hvAri(56,50,{pose:'dive',face:'happy',gloves:true,injured:'a',brace:true,s:.62,noShadow:true})}<g transform="translate(91 32)"><g class="vpop">${hvBall(0,0,5.4)}</g></g></g>
     <path d="M18 46 h10 M14 52 h12 M20 58 h8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".85" class="vblink"/>
     <ellipse cx="60" cy="80" rx="26" ry="3" fill="rgba(20,40,30,.18)"/>
     ${[[100,48,'#ffd45c'],[78,18,'#fff']].map(([x,y,c],i)=>`<g class="twinkle" style="animation-delay:${-i*1.2}s">${ch_star(x,y,3.4,c)}</g>`).join('')}`),

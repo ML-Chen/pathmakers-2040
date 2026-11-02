@@ -33,7 +33,9 @@ function rngFrom(seed){let a=(seed>>>0)||1;return()=>{a=(a+0x6D2B79F5)>>>0;let t
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 // graded reader markup: [[word]] → tappable glossary word
 function rich(t){return esc(fill(T(t))).replace(/\[\[([^\]]+)\]\]/g,(m,w)=>{const k=gkey(w);return GLOSSARY[k]?`<button class="gw" data-w="${esc(k)}">${w}</button>`:w})}
-function toast(msg,kind=''){const n=$$('.toast:not(.out)').length;const d=document.createElement('div');d.className='toast '+kind;d.style.marginTop=(n*52)+'px';d.innerHTML=msg;document.body.appendChild(d);setTimeout(()=>d.classList.add('out'),2600+n*600);setTimeout(()=>d.remove(),3200+n*600)}
+function toast(msg,kind=''){const prev=$$('.toast:not(.out)'),n=prev.length;const d=document.createElement('div');d.className='toast '+kind;d.innerHTML=msg;document.body.appendChild(d);
+  // stack below the toasts already showing, by their real height (a toast can wrap to two lines)
+  if(n){const b=Math.max(...prev.map(x=>x.offsetTop+x.offsetHeight));d.style.marginTop=Math.max(0,b+8-d.offsetTop)+'px'}setTimeout(()=>d.classList.add('out'),2600+n*600);setTimeout(()=>d.remove(),3200+n*600)}
 // ---------- voices: prerecorded clips (AUDIO from audio.js), device voice as fallback ----------
 let curAudio=null,playId=0;
 function stopVoice(){playId++;MUSIC.duck(false);try{if(curAudio){curAudio.pause();curAudio=null}}catch(e){}}
@@ -170,9 +172,13 @@ function openChat(){const d=sheet(T('Talk to {0}',esc(S.byte.name)),`<div class=
 
 // ---------- painted backgrounds: canvas painters (PAINT, from paint_boston.js) with vector fallback ----------
 let CURSCENE=null;const BG={cv:null,cache:{},key:null,raf:0,t0:performance.now()};
-function scene(k){if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
+// scenes that are referenced but not painted yet borrow the closest painted one instead of the hospital corridor
+const SCENE_STANDIN={eastie_pier:'harbor',dance_hall:'night'};
+// (CURSCENE keeps the scene's own key, so its props and passers-by stay; only the painting is borrowed)
+function standIn(k){return window.PAINT&&!PAINT[k]&&SCENE_STANDIN[k]&&PAINT[SCENE_STANDIN[k]]?SCENE_STANDIN[k]:k}
+function scene(k){if(window.PAINT&&(PAINT[k]||PAINT[standIn(k)])&&!SCENES[k]){CURSCENE=k;return ''}if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
 function bgSize(){const cv=BG.cv,r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);return [Math.max(1,Math.round(r.width*dpr)),Math.max(1,Math.round(r.height*dpr))]}
-function applyScene(){const k=CURSCENE;if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
+function applyScene(){const k=standIn(CURSCENE);if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
   if(!BG.cv){BG.cv=document.createElement('canvas');BG.cv.className='scene bgcanvas';document.body.prepend(BG.cv);addEventListener('resize',()=>{BG.cache={};drawBg(true)})}
   BG.cv.style.display='block';BG.key=k;drawBg(true);if(!BG.raf)loopBg()}
 function paintCache(k,w,h){const id=k+w+'x'+h;if(BG.cache[id])return BG.cache[id];const c=document.createElement('canvas');c.width=w;c.height=h;try{PAINT[k].paint(c.getContext('2d'),w,h)}catch(e){console.warn(e)}BG.cache[id]=c;return c}
@@ -185,14 +191,16 @@ function loopBg(){BG.raf=requestAnimationFrame(()=>{BG.raf=0;if(document.hidden|
 const TRACK_FOR={title:'title',setup:'title',talk:null,walk:'morning',bench:'work',criteria:'work',memo:'work',futuretable:'table',reveal:'table',debrief:'win',evening:'night'};
 if(typeof MUSIC_TRACKS!=='undefined')window.MUSIC_TRACKS=MUSIC_TRACKS;
 const TRACK_BY_SCENE={home:'morning',street:'morning',hospital:'hospital',night:'night',table:'table',workbench:'work'};
+// a place name too long for two lines ("North Pasture · Kigluaik Mammoth Reserve") gets a smaller three-line pill instead of an ellipsis
+function fitPlace(){const pl=APP.querySelector('.hud .place');if(pl&&pl.scrollHeight>pl.clientHeight+2)pl.classList.add('long')}
 // In Chinese mode, text drawn inside pictures (SVG labels) and picture captions is translated too, when a translation exists.
 function i18nSvg(root){if(typeof LANG!=='function'||LANG()==='en'||!root)return;const tab=I18N.tab[LANG()]||{};
   root.querySelectorAll('svg text,svg tspan,figcaption,.fig-cap').forEach(e=>{if(e.children.length&&e.tagName!=='text')return;const t=e.textContent.trim();const v=tab[t];if(v!=null&&e.childNodes.length<=1)e.textContent=v;
     else if(v!=null&&e.tagName==='text'&&!e.querySelector('tspan'))e.textContent=v})}
 function screen(cls,html){I18N.sync();stopVoice();APP.className='screen '+cls;const sk=null;APP.innerHTML=html;i18nSvg(APP);const scn=CURSCENE;
   if(scn&&PROPS[scn]&&PROPS[scn].length)APP.insertAdjacentHTML('afterbegin',propsLayer(scn));
-  if(typeof campaignScreen==='function')campaignScreen(cls);applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop').forEach(x=>x.remove());
-  MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[scn]&&PAINT[scn].track)||'work')}
+  if(typeof campaignScreen==='function')campaignScreen(cls);fitPlace();applyScene();CURSCENE=null;wireHud();wireProps();window.scrollTo(0,0);const fstep=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);$$('.gpop,.bubble').forEach(x=>x.remove());
+  MUSIC.play((fstep&&fstep.music)||TRACK_FOR[cls]||TRACK_BY_SCENE[scn]||(window.PAINT&&PAINT[standIn(scn)]&&PAINT[standIn(scn)].track)||'work')}
 document.addEventListener('pointerdown',()=>{MUSIC.unlock();MUSIC.mute(!!S.mute)},{capture:true});
 // Autosave keeps the exact step of every unfinished mission (S.at) and, when the player switches to another mission,
 // that mission's working state (S.paused), so coming back resumes where they left off instead of restarting a stage.
@@ -301,7 +309,7 @@ function renderWorkbench(){
    <article class="doc doc-${doc.kind}"><div class="doc-from">${T('From {0}',esc(T(doc.from)))}</div><h2>${esc(T(doc.title))}</h2>
     <div class="doc-tools"><button class="mini-btn" id="readme">${T('Read to me')}</button><span class="tiny muted">${T('Tap a sentence to mark it as evidence.')}</span></div>
     ${doc.steps.map((st0,i)=>{const up=st0.alt&&S.told;const st=up?{...st0,...st0.alt}:st0;return `<section class="step ${up?'updated':''}" ${up?'id="upd"':''}><div class="step-n">${i+1}</div><div class="step-body">${up?`<div class="upd-badge">${T('Updated')}</div>`:''}<p class="sent ${S.highlights[doc.id+i]?'hl':''}" data-k="${doc.id+i}">${rich(st.t)}</p>
-      <figure class="fig"><figcaption>${esc(T(st.cap||''))}</figcaption>${VIZ[st.viz]?VIZ[st.viz](st.args||{}):''}</figure></div></section>`}).join('')}
+      <figure class="fig"><figcaption>${capText(st.cap)}</figcaption>${VIZ[st.viz]?VIZ[st.viz](st.args||{}):''}</figure></div></section>`}).join('')}
    </article>
    ${companion()}<div class="bench-foot">${M().lesson?`<button class="btn ghost small" id="learn">${esc(T(M().lesson.label))}</button>`:''}<div id="tellslot"></div><button class="btn" id="next">${T('Set my criteria')}</button></div></div>`);
   $$('.tab').forEach(b=>b.onclick=()=>{curDoc=b.dataset.d;renderWorkbench()});
@@ -325,8 +333,10 @@ function byteSays(text,mood='alert'){const c=$('#comp');if(!c)return;c.innerHTML
   setTimeout(()=>{b.classList.add('out');c.innerHTML=byteBox({...S.byte,mood:'happy'})},4200);setTimeout(()=>b.remove(),4700)}
 
 // ---------- Learn It Fast: a short lesson from Byte, then a 3-question check ----------
+// picture captions are plain text: drop any [[glossary]] brackets a writer left in one
+function capText(s){return esc(T(s||'')).replace(/\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g,'$1')}
 function openLesson(id){const L=LESSONS[id];let qi=0,right=0;
-  const d=sheet(esc(T(L.title)),`<div class="lesson">${L.steps.map((st,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p>${rich(st.t)}</p><figure class="fig"><figcaption>${esc(T(st.cap))}</figcaption>${VIZ[st.viz](st.args||{})}</figure></div></section>`).join('')}
+  const d=sheet(esc(T(L.title)),`<div class="lesson">${L.steps.map((st,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p>${rich(st.t)}</p><figure class="fig"><figcaption>${capText(st.cap)}</figcaption>${VIZ[st.viz](st.args||{})}</figure></div></section>`).join('')}
    <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${T('Got it? Try 3 quick questions.')}</p></div><div id="quiz"></div></div>`);
   playLine('byte','Here is how a broken bone heals.'.replace('how a broken bone heals',L.title.toLowerCase()));
   const q=()=>{const box=$('#quiz',d);if(qi>=L.quiz.length){box.innerHTML=`<div class="calib"><b>${right}/3</b><span>${T(right===3?'Perfect! You learned it fast.':'Nice work. You can read the steps again anytime.')}</span></div>`;S.lessons=S.lessons||{};S.lessons[id]=right;save();return}
