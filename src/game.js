@@ -317,7 +317,7 @@ function renderTable(){
   <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:'think'})}</div><p>Here are 10 futures for this plan, spread out the way my forecast says. Change the plan and watch them shift.</p></div>
    <div class="futs" id="futs">${futs.map((f,i)=>`<figure class="fut" style="--d:${i*70}ms">${vig(f.kind)}<figcaption>${esc(f.cap)}</figcaption></figure>`).join('')}</div>
    ${M().tablePanel?M().tablePanel(c):''}
-   <div class="meters">${meters}</div>${M().tablePanelAfter?M().tablePanelAfter(c):''}
+   <div class="meters">${meters}</div>${M().tablePanelAfter?M().tablePanelAfter(c):''}${M().tableNote?M().tableNote(c):''}
    <div class="controls">${controlsHTML(c)}</div>
    <div class="ft-foot"><button class="btn ghost small" id="why">Ask ${esc(S.byte.name)} why</button><button class="btn" id="next">Choose this plan</button></div>
    <div class="why" id="whybox" hidden></div></div>`);
@@ -404,7 +404,8 @@ function renderDebrief(){
    <ul class="dlist">
     <li class="${T.ok?'ok':''}">${esc(T.text)}</li>
     <li class="${fit?'ok':''}">${fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.'}</li>
-    <li class="${memoOk&&S.consent?'ok':''}">${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.'} ${S.consent?'You explained honestly, so they could truly agree.':''}</li></ul>
+    <li class="${memoOk&&S.consent?'ok':''}">${memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.'} ${S.consent?'You explained honestly, so they could truly agree.':''}</li>
+    ${(M().debriefLines?M().debriefLines(c):[]).map(x=>`<li class="${x.ok?'ok':''}">${esc(x.text)}</li>`).join('')}</ul>
    <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${good?esc(M().byteGood):'Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'}</p></div>
    ${calibLine()}
    <div class="earned"><span>${S.guide.length} Field Guide ideas</span><span>${S.words.length} new words</span><span>${Object.values(S.hearts).reduce((a,b)=>a+b,0)} hearts</span></div>
