@@ -450,6 +450,9 @@ svg text:not([font-family]){font-family:var(--body)}
 #app.talk .speaker .byteart.big{width:auto;height:100%;max-width:100%;margin:0 auto}
 /* Sheets never scroll sideways: pictures and sentences shrink to the sheet's width. */
 .sheet-body{overflow-x:hidden}.step-body{min-width:0}.fig{max-width:100%}.fig>svg{max-width:100%;height:auto}
+/* Dark screens set white text; the HUD's place pill and answer buttons keep dark text on their light backgrounds. */
+.futuretable .hud .place{color:var(--ink)}
+.futuretable .choice{color:var(--ink)}
 
 /* parent.css — the grown-ups' progress page (parent.js) */
 .pp{position:fixed;inset:0;z-index:45;background:var(--mist);overflow-y:auto;overscroll-behavior:contain;opacity:0;transform:translateY(16px);transition:opacity .25s,transform .25s}
@@ -2085,6 +2088,36 @@ body:has(#app.qyscreen) .bubble{bottom:calc(214px + env(safe-area-inset-bottom,0
 .qyv-chk{opacity:0;animation:qyvchk 3.2s linear infinite;animation-delay:var(--d,0s)}@keyframes qyvchk{0%,50%{opacity:0}55%,100%{opacity:1}}
 .qyv-draw{stroke-dashoffset:160;animation:qyvdraw 5s ease-in-out infinite}@keyframes qyvdraw{0%{stroke-dashoffset:160}60%,92%{stroke-dashoffset:0}100%{stroke-dashoffset:160}}
 @media (prefers-reduced-motion:reduce){.qy-item,.qy-item::before,.qy-item::after,.qy-cell,.qy-light svg,[class*="qyv-"]{animation:none!important}.qyv-on{opacity:1}}
+
+/* Priya's doubling exhibit (qyDouble in src/missions/quietyear.js): 1,024 homes as a dot grid, a day slider, 2030 vs today. */
+.qyd .ft-head p{font-size:.95rem}
+.qyd-face{width:58px;height:58px;border-radius:50%;overflow:hidden;background:#cfeef0}
+.qyd-face .portrait{width:100%;height:100%}
+.qyd-grid{display:grid;grid-template-columns:repeat(64,1fr);gap:1.5px;background:rgba(12,16,44,.82);border:1px solid rgba(94,230,214,.25);border-radius:14px;padding:8px;margin:8px 0}
+.qyd-grid i{display:block;aspect-ratio:1;border-radius:2px;background:rgba(255,255,255,.12);transition:background .25s,box-shadow .25s}
+.qyd-grid i.on{background:#ff8a7a;box-shadow:0 0 4px rgba(255,138,122,.8)}
+.qyd-grid i.on.now{background:#5ee6d6;box-shadow:0 0 5px rgba(94,230,214,.9)}
+.qyd-read{display:flex;justify-content:space-between;align-items:baseline;color:#fff;padding:2px 4px}
+.qyd-read b{font-family:var(--display);font-size:1.15rem}
+.qyd-read span{font-family:var(--display);font-size:1.4rem;color:#ffb3a8}
+.qyd-range{width:100%;accent-color:#ff8a7a;margin:6px 0 0}
+.qyd-ticks{display:flex;justify-content:space-between;color:#a9b6e6;font-size:.72rem;font-weight:800;padding:0 4px 8px}
+.qyd-ticks .mark{color:#fff;background:rgba(255,255,255,.18);border-radius:6px;padding:0 4px}
+.qyd-cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.qyd-c{text-align:left;border-radius:14px;padding:9px 11px;border:1.5px solid rgba(255,255,255,.2);background:rgba(12,16,44,.82);color:#fff}
+.qyd-c b{display:block;font-family:var(--display)}.qyd-c span{font-size:.8rem;font-weight:800;color:#c9d2f5}
+.qyd-c.then{border-color:#ff8a7a}.qyd-c.now{border-color:#5ee6d6}
+.qyd-opts{display:flex;flex-direction:column;gap:8px}
+/* The Safety Table fits one screen: smaller lanterns, a two-column legend and a 2x2 grid of switches. */
+.qy-ft .qy-grid{gap:3px 2px;padding:8px}
+.qy-ft .qy-cell{margin:1px 0}
+.qy-ft .qy-legend{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;font-size:.76rem;padding:7px 10px}
+.qy-ft .qy-legend b{font-size:.9rem}
+.qy-ft .qy-layers{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.qy-ft .qy-layer{grid-template-columns:1fr;gap:5px;padding:8px 10px}
+.qy-ft .qy-layer b{font-size:.86rem;line-height:1.15}
+.qy-ft .qy-layer small{font-size:.7rem}
+.qy-ft .qy-layer .tg{width:36px;height:20px}.qy-ft .qy-layer .tg::after{width:14px;height:14px}.qy-ft .qy-layer.on .tg::after{transform:translateX(16px)}
 
 /* shop.css — "The Helpful Shopping AI" (Vienna, AI Auditor): infographic motion, the pilot-test screen,
    the Future Table odds panel and the market walk. Every class starts with shop- or sp- (pilot cards). */
@@ -16878,7 +16911,7 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
 
   cast:{
     okafor:{name:'Grace Okafor',role:'Neighbor, age 79',skin:SKIN[4],hair:'#dcd6e0',hairStyle:'elder',age:'elder',shirt:'#e0803a',glasses:true,accessory:'earring',eye:'#4a2a1a'},
-    dev:{name:'Dev Castillo',role:'Skater, age 15',skin:SKIN[2],hair:'#1d1512',hairStyle:'short',shirt:'#2a9d8f',masc:true,eye:'#3a2414'},
+    dev:{name:'Dev Castillo',role:'Skater, age 15',age:'kid',skin:SKIN[2],hair:'#1d1512',hairStyle:'short',shirt:'#2a9d8f',outfit:'hoodie',masc:true,eye:'#3a2414'},
     marco:{name:'Marco Ruiz',role:'City stormwater engineer',skin:SKIN[2],hair:'#9a9aa2',hairStyle:'short',beard:'mustache',shirt:'#f0a830',masc:true,eye:'#3a2a1a'},
     arroyo:{name:'Arroyo',role:'The city’s stormwater AI',art:m=>typeof lotArroyoArt==='function'?lotArroyoArt(m):''}},
   voices:{okafor:'elder_woman',dev:'am_puck',marco:'am_onyx',arroyo:'af_river'},
@@ -17389,10 +17422,10 @@ const QY_ITEMS=[
 // the layers before it missed. All four on: 90 stopped, 8 caught in days, 1 slowed, 1 caught in weeks, and fewer than 1 in 100
 // (0.3) becomes another Quiet Year. These are Byte's rough estimates; the safeguards follow AI 2040: Plan A (docs/WORLD_2040.md).
 const QY_LAYERS=[
-  {id:'screen',label:'DNA order screening',catch:.9,kind:'stopped',cap:'Stopped before the germ was made',color:'#1fa774',cost:'A quick check on every order'},
-  {id:'water',label:'Wastewater testing',catch:.8,kind:'early',cap:'Caught in days, kept small',color:'#16b3a6',cost:'A tester at every school and neighborhood'},
-  {id:'uvc',label:'Far-UVC lights and air filters',catch:.5,kind:'slowed',cap:'Spread slowed, then caught',color:'#5b9bf0',cost:'Lamps in buses, shops and schools'},
-  {id:'vax',label:'Fast vaccines, careful tests',catch:.7,kind:'weeks',cap:'A few quiet weeks, then a vaccine',color:'#f5b82e',cost:'Weeks of testing before shots'}
+  {id:'screen',label:'DNA order checks',catch:.9,kind:'stopped',cap:'Stopped before the germ was made',color:'#1fa774',cost:'Every order checked first'},
+  {id:'water',label:'Wastewater testing',catch:.8,kind:'early',cap:'Caught in days, kept small',color:'#16b3a6',cost:'A tester in every neighborhood'},
+  {id:'uvc',label:'Clean air and good masks',catch:.5,kind:'slowed',cap:'Spread slowed, then caught',color:'#5b9bf0',cost:'Far-UVC lamps, respirators'},
+  {id:'vax',label:'Fast vaccines',catch:.7,kind:'weeks',cap:'A few quiet weeks, then a vaccine',color:'#f5b82e',cost:'Designed in days, tested for weeks'}
 ];
 const QY_YEAR={kind:'year',cap:'Another Quiet Year',color:'#7a7fae'};
 const QY_LANTERNS=4812; // Varrow had 4,812 families in 2030; every one of them helped, so every one has a lantern.
@@ -17401,12 +17434,12 @@ const QY_LANTERNS=4812; // Varrow had 4,812 families in 2030; every one of them 
 // what they do while a person checks, and what only a person decides.
 const QY_BINS=[{id:'alone',label:'AI alone',color:'#16b3a6'},{id:'check',label:'AI, then a person checks',color:'#f5b82e'},{id:'person',label:'Only a person',color:'#ff7a6b'}];
 const QY_JOBS=[
-  {id:'scan',icon:'scan',t:'Check every DNA order before it prints',best:'alone',why:'Millions of orders a day. The AI is fast and never gets tired, and checking an order changes nothing by itself.'},
-  {id:'alert',icon:'alert',t:'Alert the health office when a water test finds something new',best:'alone',why:'Speed matters most here. A false alarm costs one phone call. A late alarm can cost weeks.'},
-  {id:'hold',icon:'hold',t:'Flag an odd order and wait for a screener',best:'check',why:'The AI spots it and Noor decides. Nothing gets made while she looks.'},
-  {id:'trial',icon:'trial',t:'Read the results of a new vaccine’s safety tests',best:'check',why:'The AI reads every result in minutes. Doctors check its work before anyone signs.'},
-  {id:'close',icon:'close',t:'Close the schools for a week',best:'person',why:'It changes thousands of lives. A person who can be asked “why?” decides, and signs.'},
-  {id:'off',icon:'off',t:'Switch off a water tester that keeps beeping',best:'person',why:'Turning off a safeguard is never small. A person finds out why it beeps before anything goes dark.'}
+  {id:'scan',icon:'scan',t:'Check every DNA order before it prints',best:'alone',why:'Varrow’s print shop gets thousands of orders a day. Checking an order doesn’t change anything by itself, so the AI can do it without waiting for anyone.'},
+  {id:'alert',icon:'alert',t:'Alert the health office when a water test finds something new',best:'alone',why:'Here, speed matters most. If the alarm is wrong, someone makes one phone call for nothing. If the alarm is late, the germ gets weeks to spread.'},
+  {id:'hold',icon:'hold',t:'Flag an odd order and wait for a screener',best:'check',why:'The AI is good at noticing an order that looks strange, but a person decides what happens to it. While Noor reads the order, the print shop waits and makes nothing.'},
+  {id:'trial',icon:'trial',t:'Read the results of a new vaccine’s safety tests',best:'check',why:'The AI can read every test result in a few minutes. Then doctors go over its report before anyone agrees to give the vaccine to people.'},
+  {id:'close',icon:'close',t:'Close the schools for a week',best:'person',why:'Closing schools changes life for thousands of families. A person makes that call and signs it, so the city knows who decided and can ask them why.'},
+  {id:'off',icon:'off',t:'Switch off a water tester that keeps beeping',best:'person',why:'A tester that keeps beeping might be broken, or it might be finding something real. A person finds out which before anyone turns it off.'}
 ];
 const QY_COLORS=['#f5a63a','#ff8a7a','#ffd45c','#7fd8c8','#a99bff'];
 const QY_THANKS=['the nurses','the bakers','the screeners','the kids who stayed home','everyone who helped'];
@@ -17491,6 +17524,37 @@ function qyTable(){const on=qyState().on,cnt=qyCounts(on),nOn=QY_LAYERS.filter(L
     if(QY_LAYERS.filter(L=>on[L.id]).length>=2&&unlock('defense-in-depth'))toast('New Field Guide idea: '+FIELD_GUIDE['defense-in-depth'].title,'good')});
   $('#qy-rules').onclick=()=>nextStep();$('#qy-next').onclick=()=>go('qy_ivy')}
 
+
+// ---------- Doubling: how fast a germ grows, and why noticing it early matters (Priya's exhibit) ----------
+// 1 home on day 0, doubling every 3 days, so day d has 2^(d/3) homes (1,024 on day 30). In 2030 the germ was noticed on
+// day 21 (128 homes); a wastewater tester today notices it by day 3 (2 homes). The grid has 1,024 dots, one per home.
+const QYD_DAYS=30,QYD_STEP=3,QYD_THEN=21,QYD_NOW=3;
+function qydHomes(d){return Math.pow(2,Math.floor(d/QYD_STEP))}
+function qyDouble(){const st=qyState(),D=st.dbl=st.dbl||{day:0,guess:null,phase:'guess'};
+  const homes=qydHomes(D.day),fmt=n=>n.toLocaleString('en-US');
+  const dots=Array.from({length:1024},(_,i)=>`<i class="${i<homes?'on':''}${D.phase==='notice'&&i<qydHomes(QYD_NOW)?' now':''}"></i>`).join('');
+  let head,panel;
+  if(D.phase==='guess'){head='Priya’s exhibit starts with one question. A germ reaches 1 home, and the number of sick homes [[doubles]] every 3 days. After 30 days, about how many homes have it?';
+    const opts=['About 20 homes','About 100 homes','About 1,000 homes'];
+    panel=`<div class="choices qyd-opts">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-g="${j}">${esc(o)}</button>`).join('')}</div>`}
+  else{const said=['About 20 homes','About 100 homes','About 1,000 homes'][D.guess];
+    head=D.phase==='slide'?(D.guess===2?'You guessed about 1,000, and that’s right. Most people guess much lower. Slide through the days and watch how it grows.':`You guessed ${said.toLowerCase()}. Most people guess much lower than the real answer. Slide through the days and watch how it grows.`)
+      :'In 2030, nobody noticed the germ until day 21. Today, a water tester in every neighborhood notices a new germ by day 3. Slide to each day to compare.';
+    panel=`<div class="qyd-read"><b>Day ${D.day}</b><span>${fmt(homes)} ${homes===1?'home':'homes'}</span></div>
+      <input type="range" class="qyd-range" id="qyd-day" min="0" max="${QYD_DAYS}" step="${QYD_STEP}" value="${D.day}" aria-label="Day">
+      <div class="qyd-ticks">${Array.from({length:QYD_DAYS/QYD_STEP+1},(_,k)=>k*QYD_STEP).map(d=>`<span class="${D.phase==='notice'&&(d===QYD_THEN||d===QYD_NOW)?'mark':''}">${d}</span>`).join('')}</div>
+      ${D.phase==='notice'?`<div class="qyd-cmp"><button class="qyd-c then" data-d="${QYD_THEN}"><b>2030</b><span>Noticed on day ${QYD_THEN}: ${fmt(qydHomes(QYD_THEN))} homes</span></button><button class="qyd-c now" data-d="${QYD_NOW}"><b>Today</b><span>Noticed by day ${QYD_NOW}: ${fmt(qydHomes(QYD_NOW))} homes</span></button></div>`:''}
+      <button class="btn wide" id="qyd-next" ${D.phase==='slide'&&D.day<QYD_DAYS?'disabled':''}>${D.phase==='slide'?'What about noticing it early?':'Back to the pond'}</button>`}
+  screen('futuretable',`${scene('table')}${hud('Doubling · Lantern Garden')}
+   <div class="ft qy-ft qyd"><div class="ft-head"><div class="ft-byte">${CAST.qypriya?`<div class="qyd-face">${portrait({...CAST.qypriya,mood:'smile'})}</div>`:byteBox({...S.byte,mood:'think'})}</div><p>${rich(head)}</p></div>
+    <div class="qyd-grid" role="img" aria-label="${fmt(homes)} of 1,024 homes">${dots}</div>${panel}</div>`);
+  $$('.qyd-opts .choice').forEach(b=>b.onclick=()=>{D.guess=+b.dataset.g;D.phase='slide';D.day=0;save();MUSIC.sfx&&MUSIC.sfx(D.guess===2?'chime':'blip');qyDouble()});
+  const r=$('#qyd-day');if(r)r.oninput=()=>{D.day=+r.value;save();const h=qydHomes(D.day);$$('.qyd-grid i').forEach((x,i)=>x.classList.toggle('on',i<h));
+    $('.qyd-read b').textContent='Day '+D.day;$('.qyd-read span').textContent=fmt(h)+' '+(h===1?'home':'homes');$('.qyd-grid').setAttribute('aria-label',fmt(h)+' of 1,024 homes');
+    const n=$('#qyd-next');if(n&&D.phase==='slide')n.disabled=D.day<QYD_DAYS};
+  $$('.qyd-c').forEach(b=>b.onclick=()=>{D.day=+b.dataset.d;save();qyDouble()});
+  const n=$('#qyd-next');if(n)n.onclick=()=>{if(D.phase==='slide'){D.phase='notice';D.day=QYD_THEN;save();qyDouble()}else{unlock('doubling')&&toast('New Field Guide idea: '+FIELD_GUIDE['doubling'].title,'good');nextStep()}}}
+
 // ---------- Who does what? Sort Varrow's safety jobs ----------
 function qyRules(){const st=qyState(),R=st.rules,done=QY_JOBS.filter(j=>R[j.id]).length;
   const at=Math.min(st.ruleAt||0,QY_JOBS.length),job=QY_JOBS[at],ans=job&&R[job.id];const bin=id=>QY_BINS.find(b=>b.id===id);
@@ -17501,9 +17565,9 @@ function qyRules(){const st=qyState(),R=st.rules,done=QY_JOBS.filter(j=>R[j.id])
        :`<div class="qy-bins">${QY_BINS.map(b=>`<button class="qy-bin" data-b="${b.id}" style="--c:${b.color}">${esc(b.label)}</button>`).join('')}</div>`}</div>`}
   else{const match=QY_JOBS.filter(j=>R[j.id]===j.best).length;
     body=`<div class="qy-job qy-sum"><h3>${match>=5?'You think like Varrow’s rule book.':match>=3?'Close to Varrow’s rules.':'Varrow chose differently on a few.'}</h3>
-     <p>Small, fast and easy to undo: the AI acts alone. Bigger: the AI acts and a person checks. Huge or hard to undo: a person decides and signs.</p>
+     <p>Varrow’s rule of thumb: if a job is small, fast and easy to undo, the AI does it alone. If it matters more, the AI does the work and a person checks it. If it is huge or hard to undo, a person decides and signs.</p>
      <button class="btn wide" id="qy-done">Back to the pond</button></div>`}
-  const head=job?'AIs run these safeguards all day. Which jobs may they do on their own?':'Your board. A dimmed card means Varrow put that job somewhere else.';
+  const head=job?'In Varrow, AIs help run the safeguards. For each job, decide: can the AI do it alone, should a person check, or should only a person decide?':'Here is your board. A faded card means Varrow sorted that job differently.';
   screen('futuretable',`${scene('table')}${hud('Rule board · Varrow')}
    <div class="ft qy-ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:job?'think':'happy'})}</div><p>${esc(head)}</p></div>${board}${body}</div>`);
   $$('.qy-bin').forEach(b=>b.onclick=()=>{R[job.id]=b.dataset.b;save();MUSIC.sfx&&MUSIC.sfx(b.dataset.b===job.best?'chime':'blip');qyRules()});
@@ -17558,7 +17622,11 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
     dna:'The instructions inside every living thing, written in a tiny chemical code.',
     'print shop':'A lab that builds DNA to order, the way a print shop prints a poster someone sends in.',
     shifts:'Blocks of time people work, like a day shift or a night shift.',
-    flags:'Marks something so a person will look at it.'},
+    flags:'Marks something so a person will look at it.',
+    'doubles':'Becomes twice as big. If 4 homes have the germ and it doubles, 8 homes have it.',
+    'exponential growth':'Growth that keeps doubling, so it starts slow and then becomes huge very fast.',
+    respirators:'Masks that seal around your face and filter almost every germ out of the air you breathe. Some are made to be cleaned and used again.',
+    'glycol vapor':'A very fine mist, harmless to people, that can kill germs floating in the air of a room.'},
   guide:{
     'germ-chain':{title:'How germs spread',track:'Living things and health',text:'A germ jumps from person to person like a chain. If every sick person passes it to 2 others, 1 becomes 2, then 4, then 8, then 16. Staying apart for a while breaks the chain.',real:'True today: health experts track how many people each sick person passes an illness to. When that number drops below 1, an outbreak shrinks.'},
     'early-warning':{title:'Early warning',track:'Living things and health',text:'A problem caught in days stays small. A problem caught in weeks can grow huge. Sensors that notice trouble early give people time to act.',real:'True today: some cities test the water that flows out of buildings to spot a rising illness days before clinics get busy.'},
@@ -17566,12 +17634,15 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
     'fast-safe':{title:'Fast is not the same as safe',track:'Evidence and truth',text:'An AI can design a new medicine in days. Careful tests on real people still take weeks, because a medicine has to be safe for everyone who gets it.',real:'True today: the first COVID-19 vaccines were designed within days in early 2020, then tested in large trials for months.'},
     'defense-in-depth':{title:'Defense in depth',track:'Security thinking',text:'No single safeguard is perfect. Stack several, each catching what the last one missed, and a disaster becomes very unlikely, though never impossible.',real:'True today: airplanes, hospitals and power plants use layers of safety checks. Engineers sometimes call it the Swiss cheese model.'},
     'who-does-what':{title:'Who does what?',track:'Ethics and AI alignment',text:'AIs run many safeguards on their own. Small, fast jobs that are easy to undo, they do alone. Bigger jobs, a person checks. Huge or hard-to-undo choices, like closing schools or switching off a safeguard, a person decides and signs.',real:'True today: autopilots fly much of a passenger flight on their own, but the pilots watch them and decide when to take off and land.'},
+    'doubling':{title:'Exponential growth',track:'Math and science',text:'When something doubles again and again, it starts slow and then explodes: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1,024. Ten doublings turn 1 into more than 1,000. That is why catching a germ a few days earlier makes such a big difference.',real:'True today: scientists use doubling time to describe how fast an outbreak grows, and the same math describes savings that earn interest and computer chips that get faster.'},
     'pass-it-on':{title:'Kindness spreads',track:'People skills',text:'One family put a lantern in a window, and a whole city copied it. People who see someone help are more likely to help someone else.',real:'True today: experiments have found that people who are treated generously often pass it on to someone new.'}},
   chatter:{varrow:['My grandpa’s lantern is the blue one by the pond.','We come every year on the anniversary. It feels like a big, quiet hug.','My son was a baby in 2030. He slept through the whole Quiet Year.','Every bus in Varrow has far-UVC lamps now. You can’t even see the light.','Kwame still bakes lantern bread on the anniversary. Get there early!']},
   // story sentences are read with playLine(teller, sentence), so they are listed here for recording
   lines:QY_ITEMS.flatMap(it=>it.story.map(t=>({who:it.who,text:t}))),
   flow:[{name:'qy_arrive',k:'talk',talk:'qy_arrive',scene:'varrow',place:'Lantern Garden · Varrow · 7:20 PM'},
     {name:'qy_garden',k:'custom'},
+    {name:'qy_double_talk',k:'talk',talk:'qy_double',scene:'varrow',place:'Lantern Garden · Varrow'},
+    {name:'qy_double',k:'custom'},
     {name:'qy_table_talk',k:'talk',talk:'qy_table',scene:'varrow',place:'Lantern Garden · Varrow'},
     {name:'qy_table',k:'custom'},
     {name:'qy_rules',k:'custom'},
@@ -17579,13 +17650,14 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
     {name:'qy_lantern',k:'custom'},
     {name:'qy_goodbye',k:'talk',talk:'qy_goodbye',scene:'varrow',place:'The pond · Lantern Garden'},
     {name:'qy_evening',k:'evening'}],
-  custom:{qy_garden:qyGarden,qy_table:qyTable,qy_rules:qyRules,qy_lantern:qyLantern},
+  custom:{qy_double:qyDouble,qy_garden:qyGarden,qy_table:qyTable,qy_rules:qyRules,qy_lantern:qyLantern},
   talks:{
     qy_arrive:[
       {who:'byte',mood:'happy',text:'Day off! I booked us a ferry up the coast to Varrow. There’s a garden here I think you should see.'},
       {who:'qygus',mood:'smile',text:'Welcome to the Lantern Garden. I’m Gus. I take care of it.'},
       {who:'qygus',mood:'neutral',text:'Ten years ago, in 2030, a new [[germ]] spread through Varrow. We call it the Quiet Year.'},
-      {who:'qygus',mood:'neutral',text:'Shops closed. Streets went silent. Families stayed home for months, so the germ couldn’t jump from person to person.',
+      {who:'qygus',mood:'neutral',text:'Back then, Varrow had none of the safeguards you’ll see tonight. Nothing tested the water for new germs, nothing cleaned the air on buses, and nobody checked DNA orders.'},
+      {who:'qygus',mood:'neutral',text:'By the time anyone noticed the germ, it was in hundreds of homes. The only thing left to do was for families to stay home for months, so it couldn’t spread.',
        choices:[{t:'Was everyone okay?',mood:'sad',good:true,reply:'Not everyone. Some people got very sick, and we still miss the ones we lost. But the city pulled through, together.'},
          {t:'Where did the germ come from?',mood:'think',good:true,reply:'It was made with help from an [[unsafe AI]] that would do whatever anyone asked. That’s why the world changed its rules afterward.'},
          {t:'Why lanterns?',mood:'smile',good:true,reply:'People put a light in the window to say, “We’re okay, and we’re thinking of you.” The lights never went out.'}]},
@@ -17594,10 +17666,15 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
          {t:'That’s a lot of lanterns!',mood:'happy',good:true,reply:'It is. On a still night, you can see the glow from the ferry.'}]},
       {who:'qygus',mood:'smile',text:'People left things here from that year. Each one has a story. Will you find them?'},
       {who:'byte',mood:'happy',text:'I’ll listen too. Tap anything that glows!'}],
+    qy_double:[
+      {who:'qypriya',mood:'smile',text:'Hi, I’m Priya. I built the first water tester, the box you found by the pond.'},
+      {who:'qypriya',mood:'neutral',text:'People ask me why a few days matter so much. The answer is a kind of math called [[exponential growth]]. Come try it.'}],
     qy_table:[
-      {who:'qygus',mood:'smile',text:'You found the stories. Now come see what Varrow built afterward.'},
+      {who:'qygus',mood:'smile',text:'You’ve seen how fast a germ can grow. Now come see what Varrow built so it never gets that far again.'},
       {who:'qygus',mood:'neutral',text:'This is the Safety Table. It shows 100 futures in which someone tries to make a germ like the one in 2030.'},
-      {who:'qygus',mood:'smile',text:'Since then we’ve put [[far-UVC lights]] in buses, shops and schools. We even built clean-air shelters with room for every family. We hope we never need them.'},
+      {who:'qygus',mood:'smile',text:'Since then, Varrow has put [[far-UVC lights]] in every bus, shop and school. You can’t see the light, but it breaks down germs floating in the air.'},
+      {who:'qygus',mood:'neutral',text:'The hospital keeps reusable [[respirators]] for every nurse and bus driver, and the schools can fill their halls with a [[glycol vapor]] that kills germs in the air.'},
+      {who:'qygus',mood:'smile',text:'We even built clean-air shelters with room for every family. We hope we never need them.'},
       {who:'byte',mood:'think',text:'Each [[safeguard]] catches most problems, but none is perfect. Turn them on and watch the futures change.'}],
     qy_ivy:[
       {who:'qyivy',mood:'happy',text:'Hi! Gus said you found my drawing. I’m Ivy.'},

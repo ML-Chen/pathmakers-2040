@@ -50,7 +50,7 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
 
   cast:{
     okafor:{name:'Grace Okafor',role:'Neighbor, age 79',skin:SKIN[4],hair:'#dcd6e0',hairStyle:'elder',age:'elder',shirt:'#e0803a',glasses:true,accessory:'earring',eye:'#4a2a1a'},
-    dev:{name:'Dev Castillo',role:'Skater, age 15',skin:SKIN[2],hair:'#1d1512',hairStyle:'short',shirt:'#2a9d8f',masc:true,eye:'#3a2414'},
+    dev:{name:'Dev Castillo',role:'Skater, age 15',age:'kid',skin:SKIN[2],hair:'#1d1512',hairStyle:'short',shirt:'#2a9d8f',outfit:'hoodie',masc:true,eye:'#3a2414'},
     marco:{name:'Marco Ruiz',role:'City stormwater engineer',skin:SKIN[2],hair:'#9a9aa2',hairStyle:'short',beard:'mustache',shirt:'#f0a830',masc:true,eye:'#3a2a1a'},
     arroyo:{name:'Arroyo',role:'The city’s stormwater AI',art:m=>typeof lotArroyoArt==='function'?lotArroyoArt(m):''}},
   voices:{okafor:'elder_woman',dev:'am_puck',marco:'am_onyx',arroyo:'af_river'},

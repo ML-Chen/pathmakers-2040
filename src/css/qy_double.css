@@ -1,0 +1,29 @@
+/* Priya's doubling exhibit (qyDouble in src/missions/quietyear.js): 1,024 homes as a dot grid, a day slider, 2030 vs today. */
+.qyd .ft-head p{font-size:.95rem}
+.qyd-face{width:58px;height:58px;border-radius:50%;overflow:hidden;background:#cfeef0}
+.qyd-face .portrait{width:100%;height:100%}
+.qyd-grid{display:grid;grid-template-columns:repeat(64,1fr);gap:1.5px;background:rgba(12,16,44,.82);border:1px solid rgba(94,230,214,.25);border-radius:14px;padding:8px;margin:8px 0}
+.qyd-grid i{display:block;aspect-ratio:1;border-radius:2px;background:rgba(255,255,255,.12);transition:background .25s,box-shadow .25s}
+.qyd-grid i.on{background:#ff8a7a;box-shadow:0 0 4px rgba(255,138,122,.8)}
+.qyd-grid i.on.now{background:#5ee6d6;box-shadow:0 0 5px rgba(94,230,214,.9)}
+.qyd-read{display:flex;justify-content:space-between;align-items:baseline;color:#fff;padding:2px 4px}
+.qyd-read b{font-family:var(--display);font-size:1.15rem}
+.qyd-read span{font-family:var(--display);font-size:1.4rem;color:#ffb3a8}
+.qyd-range{width:100%;accent-color:#ff8a7a;margin:6px 0 0}
+.qyd-ticks{display:flex;justify-content:space-between;color:#a9b6e6;font-size:.72rem;font-weight:800;padding:0 4px 8px}
+.qyd-ticks .mark{color:#fff;background:rgba(255,255,255,.18);border-radius:6px;padding:0 4px}
+.qyd-cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.qyd-c{text-align:left;border-radius:14px;padding:9px 11px;border:1.5px solid rgba(255,255,255,.2);background:rgba(12,16,44,.82);color:#fff}
+.qyd-c b{display:block;font-family:var(--display)}.qyd-c span{font-size:.8rem;font-weight:800;color:#c9d2f5}
+.qyd-c.then{border-color:#ff8a7a}.qyd-c.now{border-color:#5ee6d6}
+.qyd-opts{display:flex;flex-direction:column;gap:8px}
+/* The Safety Table fits one screen: smaller lanterns, a two-column legend and a 2x2 grid of switches. */
+.qy-ft .qy-grid{gap:3px 2px;padding:8px}
+.qy-ft .qy-cell{margin:1px 0}
+.qy-ft .qy-legend{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;font-size:.76rem;padding:7px 10px}
+.qy-ft .qy-legend b{font-size:.9rem}
+.qy-ft .qy-layers{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.qy-ft .qy-layer{grid-template-columns:1fr;gap:5px;padding:8px 10px}
+.qy-ft .qy-layer b{font-size:.86rem;line-height:1.15}
+.qy-ft .qy-layer small{font-size:.7rem}
+.qy-ft .qy-layer .tg{width:36px;height:20px}.qy-ft .qy-layer .tg::after{width:14px;height:14px}.qy-ft .qy-layer.on .tg::after{transform:translateX(16px)}
