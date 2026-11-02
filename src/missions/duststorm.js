@@ -182,6 +182,7 @@ MISSIONS.duststorm.lines=[
   {who:'delta',text:'Here is tonight’s budget. Everything you switch on takes energy out of the same battery.'},
   {who:'delta',text:'Six PM. The storm has arrived, a little earlier than I expected, and the panels have stopped charging.'},
   {who:'delta',text:'Nine PM. The relay window just closed.'},
+  {who:'delta',text:'Nine PM. The messages went out to Earth before the relay window closed.'},
   {who:'delta',text:'Ten PM. The cabin outlets are off now, as my storm rule says.'},
   {who:'delta',text:'Ten PM. The cabin outlets are off now, except the one you asked me to keep on.'},
   {who:'delta',text:'Update, 1 AM. The storm is slowing down. The chance it is still here at sunrise is now 70 in 100.'},

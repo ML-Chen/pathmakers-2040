@@ -91,9 +91,9 @@ function dsNightRun(skip){const st=dsDraw();let R=dsResult();const hours=['6 PM'
   const setBat=h=>{const used=totalNeed()*Math.min(h,DS_HOURS)/DS_HOURS+(h>DS_HOURS?DS_LONG*(h-DS_HOURS)/3:0);const left=Math.max(st.B-used,DS_FLOOR*(R.f.safe?1:.6));const e=$('#dsbatfill'),n=$('#dsbatn');if(e){e.style.width=(left/60*100)+'%';e.classList.toggle('low',left<12)}if(n)n.textContent=Math.round(left*10)/10+' kWh'};
   const tick=()=>{const hr=$('#dshr');if(!hr)return clearInterval(timer);
     if(i<hours.length){hr.textContent=hours[i];$('#dstemp').textContent='Outside: −'+Math.round(45+Math.sin(i/13*Math.PI)*40)+'°C';setBat(i);
-      if(i===0)log('The storm front is here, a little early. The panels have stopped charging.','delta');
-      if(i===3)log(S.choice.msg==='send'?'The messages went out before the relay window closed.':'Nine PM. The relay window just closed.');
-      if(i===4)log(S.told?'Ten PM. Cabin outlets off, except the one you asked me to keep on.':'Ten PM. Cabin outlets off, as my storm rule says.');
+      if(i===0)log('Six PM. The storm has arrived, a little earlier than I expected, and the panels have stopped charging.','delta');
+      if(i===3)log(S.choice.msg==='send'?'Nine PM. The messages went out to Earth before the relay window closed.':'Nine PM. The relay window just closed.');
+      if(i===4)log(S.told?'Ten PM. The cabin outlets are off now, except the one you asked me to keep on.':'Ten PM. The cabin outlets are off now, as my storm rule says.');
       if(i===7&&!st.midShown){st.midShown=1;save();clearInterval(timer);mid();return}
       if(i===13){if(st.long)setBat(DS_HOURS+3);log(st.long?'Seven AM. The storm is still here, so the panels make only a little power.':'Seven AM. The storm has passed, and the panels are charging again.','delta')}
       i++;st.step=i;save();return}
