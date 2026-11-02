@@ -38,16 +38,17 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     {name:'workbench',k:'bench'},
     {name:'draft',k:'custom'},
     {name:'criteria',k:'criteria'},{name:'table',k:'table'},{name:'consent',k:'consent'},{name:'memo',k:'memo'},
-    {name:'reveal',k:'reveal'},{name:'debrief',k:'debrief'},{name:'evening',k:'evening'}],
+    {name:'markup',k:'custom',music:'table'},{name:'debrief',k:'debrief'},{name:'evening',k:'evening'}],
 
   cast:{
     hollis:{name:'Rep. Adaeze Hollis',role:'Your boss · River-town district',skin:SKIN[4],hair:'#2a2230',hairStyle:'bun',shirt:'#f3ece2',eye:'#5a3a26',accessory:'earring',bill:{jacket:'#26346a',pin:1}},
     gunderson:{name:'Rep. Walt Gunderson',role:'Undecided · Farm district',skin:SKIN[0],hair:'#b9b4b0',hairStyle:'short',shirt:'#7aa3c9',eye:'#4a6a8a',bill:{jacket:'#b98a52',barn:1,pin:1}},
     ibarra:{name:'Rep. Luz Ibarra',role:'Undecided · Port district',skin:SKIN[2],hair:'#22161a',hairStyle:'long',shirt:'#fbf6ee',eye:'#4a2a1a',bill:{jacket:'#1f8a84',pin:1}},
     sethi:{name:'Rep. Arjun Sethi',role:'Undecided · Robot makers’ district',skin:SKIN[2],hair:'#16121a',hairStyle:'short',shirt:'#e9eef6',eye:'#3a2618',glasses:true,frame:'#2a2a3a',bill:{jacket:'#3b4256',pin:1}},
-    brandt:{name:'Chief Nora Brandt',role:'Witness · Halden Creek Fire Department',skin:SKIN[1],hair:'#8a5a34',hairStyle:'bun',shirt:'#f4f2ec',eye:'#4a6a3a',bill:{jacket:'#1d2440',chief:1}}
+    brandt:{name:'Chief Nora Brandt',role:'Witness · Halden Creek Fire Department',skin:SKIN[1],hair:'#8a5a34',hairStyle:'bun',shirt:'#f4f2ec',eye:'#4a6a3a',bill:{jacket:'#1d2440',chief:1}},
+    clerk:{name:'The clerk',role:'Calls the roll',voiceOnly:1},chair:{name:'The chair',role:'Runs the markup',voiceOnly:1}
   },
-  voices:{hollis:'af_heart',gunderson:'am_onyx',ibarra:'af_nova',sethi:'am_echo',brandt:'af_river'},
+  voices:{hollis:'af_heart',gunderson:'am_onyx',ibarra:'af_nova',sethi:'am_echo',brandt:'af_river',clerk:'am_eric',chair:'af_kore'},
 
   glossary:{
     'congressional aide':'A helper who works for a member of Congress: reading, writing bills, and counting votes.',
@@ -203,12 +204,12 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
   outcomes(c,knows){const t=bill_tally(bill_votes(c,knows)),g=BILL_GAP[c.cmd];
     const fair=c.cmd!=='all'?1:0,workers=c.report==='public'&&c.human==='pause'?1:0,makers=c.report!=='public'?1:0;
     const F=(pass,safe)=>({pass,safe,fair,workers,makers});
-    const gk=c.cmd==='exempt'?'gapfarm':'gapold',gcap={exempt:'Passed, but a fake order fools farm robots.',phase:'Passed, but a fake order fools older robots.',all:'Passed, but a fake order fools a few robots.'}[c.cmd];
-    return [{kind:'law',p:t[3]*(1-g),cap:'Passed 12 to 9. Next year, robots ignore a fake order.',flags:F(1,1)},
-      {kind:'law',p:t[2]*(1-g),cap:'Passed 11 to 10. Next year, robots ignore a fake order.',flags:F(1,1)},
+    const gk=c.cmd==='exempt'?'gapfarm':'gapold',gcap=c.cmd==='exempt'?'Passes. Farm gap.':'Passes. Old robots fooled.';
+    return [{kind:'law12',p:t[3]*(1-g),cap:'Passes 12–9. Safe.',flags:F(1,1)},
+      {kind:'law11',p:t[2]*(1-g),cap:'Passes 11–10. Safe.',flags:F(1,1)},
       {kind:gk,p:(t[2]+t[3])*g,cap:gcap,flags:F(1,0)},
-      {kind:'fail',p:t[1],cap:'Failed 10 to 11. Back to drafting.',flags:F(0,0)},
-      {kind:'fail',p:t[0],cap:'Failed 9 to 12. Back to drafting.',flags:F(0,0)}].filter(o=>o.p>1e-9)},
+      {kind:'fail10',p:t[1],cap:'Fails 10–11.',flags:F(0,0)},
+      {kind:'fail9',p:t[0],cap:'Fails 9–12.',flags:F(0,0)}].filter(o=>o.p>1e-9)},
   truth(){return true},knows(){return typeof S!=='undefined'&&!!S.told},
   why(c){const k=this.knows(),v=bill_votes(c,k),p=bill_pct(bill_pass(c,k));
     const gap={exempt:'Skipping farm robots leaves a [[loophole]]: about 35 in 100 that a fake order fools farm robots within a year.',phase:'Older robots stay unsigned for up to 3 years: about 10 in 100 that a fake order fools some of them in the first year.',all:'Every robot is covered within a year: only about 3 in 100 that something slips through. But about 2 in 3 farm robots would stop until they get a chip.'}[c.cmd];
@@ -230,9 +231,14 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     plan:/sign|phase|farm|report|pause|crew|exempt|skip|regulator|public|robot|bill|section/,planLabel:'Names what the bill does',careLabel:'Includes what the members need',
     care:/gunderson|ibarra|sethi|farm|worker|maker|startup|compan|district|member|famil/,signAs:'Aide ',topic:'the Robot Safety Act'},
   reveal:{unit:'Roll call',days(){return 21},who:'hollis',
-    lines:{law:'We passed it! And when someone tried another fake order this fall, the robots just said no.',gapfarm:'We passed it, but a fake order got into farm robots through the gap we left. We’ll have to close it.',
-      gapold:'We passed it! But one fake order fooled some older robots before their upgrade. We’ll push to speed that up.',fail:'We lost by one vote. That happens to good bills. We’ll listen harder and bring it back.'},
-    mood(k){return k==='law'?'happy':k==='fail'?'sad':'think'}},
+    lines:{law12:'We passed it! And when someone tried another fake order this fall, the robots just said no.',law11:'We passed it by one vote! And when someone tried another fake order this fall, the robots just said no.',
+      gapfarm:'We passed it, but a fake order got into farm robots through the gap we left. We’ll have to close it.',
+      gapold:'We passed it! But one fake order fooled some older robots before their upgrade. We’ll push to speed that up.',
+      fail10:'We lost by one vote. That happens to good bills. We’ll listen harder and bring it back.',fail9:'We lost, 9 to 12. We’ll listen harder, change the bill, and bring it back.'},
+    later:{law12:'Next fall, someone sent another fake order. Every robot checked the seal and ignored it.',law11:'Next fall, someone sent another fake order. Every robot checked the seal and ignored it.',
+      gapfarm:'Next fall, a fake order slipped through the farm exemption, and farm robots opened their gates.',gapold:'Next fall, a fake order fooled some older robots that were still waiting for their chips.',
+      fail10:'No new law this year. Robots still can’t tell a real order from a fake one.',fail9:'No new law this year. Robots still can’t tell a real order from a fake one.'},
+    mood(k){return /^law/.test(k)?'happy':/^fail/.test(k)?'sad':'think'}},
   debriefScene:'dc_hearing',eveningScene:'dc_night',eveningPlace:'Rep. Hollis’s office · 8:40 PM',
   trap(c){return {ok:!!S.told||c.cmd!=='exempt',text:S.told?'You asked an open question, kept Rep. Gunderson’s story private, and told '+S.byte.name+' what it meant, so the forecast was accurate.'
     :c.cmd!=='exempt'?'You avoided the farm loophole. Did you notice why it was a trap? Rep. Gunderson’s own barn robot once obeyed a stranger.'
@@ -260,7 +266,14 @@ When asked what to choose: name the key tradeoff (passing vs. a loophole; worker
     return null},
 
   // ---------- custom steps: arrive, note (one tough question), whip (count the votes), draft (the drafting desk) ----------
-  custom:{arrive(){bill_arrive()},note(){bill_note()},whip(){bill_whip()},draft(){bill_draft()}},
+  custom:{arrive(){bill_arrive()},note(){bill_note()},whip(){bill_whip()},draft(){bill_draft()},markup(){bill_markup()}},
+  // The markup: the subcommittee's 21 members in roll-call order (alphabetical), and what the clerk and the chair say.
+  roll:[['Ms.','Adler','y'],['Mr.','Bao','n'],['Ms.','Castellanos','y'],['Mr.','Dunmore','n'],['Ms.','Ellery','y'],['Mr.','Fairbanks','n'],['Mr.','Gunderson','gunderson'],
+    ['Ms.','Hollis','y'],['Ms.','Ibarra','ibarra'],['Mr.','Jansen','y'],['Ms.','Kowalczyk','n'],['Mr.','Lindqvist','n'],['Ms.','Moreau','y'],['Mr.','Nakamura','y'],
+    ['Ms.','Oyelaran','n'],['Mr.','Quintero','y'],['Ms.','Rasmussen','n'],['Mr.','Sethi','sethi'],['Ms.','Tolliver','n'],['Mr.','Whitlock','n'],['Ms.','Yazzie','y']],
+  rollLines:{start:'The clerk will call the roll.',call:{gunderson:'Mr. Gunderson?',ibarra:'Ms. Ibarra?',sethi:'Mr. Sethi?'},
+    tally:{12:'Madam Chair, on that vote there were 12 ayes and 9 noes.',11:'Madam Chair, on that vote there were 11 ayes and 10 noes.',10:'Madam Chair, on that vote there were 10 ayes and 11 noes.',9:'Madam Chair, on that vote there were 9 ayes and 12 noes.'},
+    pass:'The ayes have it, and the bill is agreed to.',fail:'The noes have it, and the bill is not agreed to.'},
   // Hearing note: Rep. Sethi's tough question, the three notes the player can pass, and what happens next.
   noteQ:{q:'Rep. Hollis, if robots obey only signed commands, what happens in a fire when a family’s phone is lost? Will their robot refuse to help?',
     opts:[{t:'Stopping never needs a signature. Anyone nearby can press stop. Only orders that make a robot act need one.',good:true,
@@ -308,7 +321,9 @@ When asked what to choose: name the key tradeoff (passing vs. a loophole; worker
     {who:'sethi',text:'Not really. I’ll need to see the answer in the bill text.'}]
 };
 // every whip-count line, recorded in each member's voice
-(function(){const m=MISSIONS.bill;for(const id in m.cast)m.cast[id].art=function(mood){return bill_dress(this,mood)};for(const id in m.whipQ)for(const q of m.whipQ[id].qs){m.lines.push({who:id,text:q.reply});if(q.replyBad)m.lines.push({who:id,text:q.replyBad});
+(function(){const m=MISSIONS.bill;for(const id in m.cast)if(!m.cast[id].voiceOnly)m.cast[id].art=function(mood){return bill_dress(this,mood)};
+  const R=m.rollLines;m.lines.push({who:'clerk',text:R.start},{who:'chair',text:R.pass},{who:'chair',text:R.fail});for(const k in R.tally)m.lines.push({who:'clerk',text:R.tally[k]});
+  for(const id in R.call){m.lines.push({who:'clerk',text:R.call[id]},{who:id,text:'Aye.'},{who:id,text:'No.'})}m.lines.push({who:'hollis',text:'Aye.'});for(const id in m.whipQ)for(const q of m.whipQ[id].qs){m.lines.push({who:id,text:q.reply});if(q.replyBad)m.lines.push({who:id,text:q.replyBad});
   if(q.story){m.lines.push({who:id,text:q.story.text});q.story.opts.forEach(o=>m.lines.push({who:id,text:o.reply}))}}})();
 
 // ======================= custom steps (browser only; called from MISSIONS.bill.custom) =======================
@@ -417,3 +432,39 @@ function bill_draft(){unlock('signed-commands');
   const wire=()=>$$('.bd-vers .segb').forEach(b=>b.onclick=()=>{S.choice={...S.choice,[b.dataset.k]:b.dataset.v};save();MUSIC.sfx('click');
     $('#bdsecs').innerHTML=bill_draftSecs();$('#bdstrip').innerHTML=bill_draftStrip();$$('.bd-m').forEach(m=>m.classList.add('bump'));wire()});
   wire();$('#next').onclick=()=>nextStep()}
+
+// ---- the markup: the clerk calls the roll, then a glimpse of the year after (the real outcome, drawn from the true odds) ----
+// Each undecided member votes yes with their true probability; then, if the bill passes, the gap its version leaves decides
+// whether a fake order fools some robots within a year. This matches outcomes(c, true) exactly.
+function bill_sampleRoll(){const c=S.choice,v=bill_votes(c,true),rr=rngFrom((Date.now()%100000)+11),st=bill_st();
+  const yes={};BILL_WHO.forEach(id=>{yes[id]=rr()<v[id]});const k=BILL_WHO.filter(id=>yes[id]).length,O=M().outcomes(c,true);
+  let o;if(k>=2){if(rr()<BILL_GAP[c.cmd])o=O.find(x=>x.kind!=='law'&&x.kind!=='fail');else o=O.find(x=>x.kind==='law'&&x.cap.includes(k===3?'12 to 9':'11 to 10'))}
+  else o=O.find(x=>x.kind==='fail'&&x.cap.includes(k===1?'10 to 11':'9 to 12'));
+  S.result={...(o||O[0])};st.roll={yes,ayes:9+k};save()}
+function bill_markup(){const st=bill_st();if(!S.result||!st.roll)bill_sampleRoll();const R=M().rollLines,roll=M().roll,yes=st.roll.yes,ayes=st.roll.ayes,passed=ayes>=11;
+  const vote=m=>m[2]==='y'?1:m[2]==='n'?0:(yes[m[2]]?1:0);
+  screen('markup',`${scene('dc_hearing')}<div class="talk-dim"></div>${hud('Markup · Room 2123 · Rayburn Building')}<div class="bill-mk">
+    <div class="mk-head"><b>H.R. 6120</b><span>Roll call on the Robot Safety Act</span><button class="mini-btn" id="mkskip">Skip ahead</button></div>
+    <div class="mk-tally"><div class="ay"><b id="mkay">0</b><span>Ayes</span></div><div class="mk-need">11 to pass</div><div class="no"><b id="mkno">0</b><span>Noes</span></div></div>
+    <div class="mk-grid">${roll.map((m,i)=>`<div class="mk-chip ${m[2].length>1?'swing':''}" id="mk${i}"><span>${m[0]} ${m[1]}</span><em></em></div>`).join('')}</div>
+    <div class="mk-call" id="mkcall"><div class="mk-face" id="mkface"></div><p id="mkline">${esc(R.start)}</p></div>
+    <div class="mk-end" id="mkend" hidden></div></div>`);
+  let i=0,a=0,n=0,alive=true,skip=false;const id0=playId;
+  const wait=ms=>new Promise(r=>setTimeout(r,skip?0:ms));const live=()=>alive&&$('#mkcall');
+  const say=async(who,text,ms)=>{if(!live())return;$('#mkline').textContent=text;if(skip)return;const t0=Date.now();await playLine(who,text);await wait(Math.max(0,(ms||900)-(Date.now()-t0)))};
+  const mark=(k,v)=>{const c=$('#mk'+k);if(!c)return;c.classList.add(v?'aye':'nay','in');c.querySelector('em').textContent=v?'Aye':'No';if(v)a++;else n++;$('#mkay').textContent=a;$('#mkno').textContent=n;if(!skip)MUSIC.sfx(v?'blip':'click')};
+  const end=()=>{if(!$('#mkend'))return;alive=false;const kind=S.result.kind,line=(M().reveal.lines||{})[kind]||'';
+    roll.forEach((m,k)=>{const c=$('#mk'+k);if(c&&!c.classList.contains('in'))mark(k,vote(m))});
+    $('#mkline').textContent=passed?R.pass:R.fail;$('#mkface').innerHTML='';$('#mkskip').hidden=true;
+    unlock('forecast')&&toast('New Field Guide idea: Forecasts are not promises','good');
+    const e=$('#mkend');e.hidden=false;e.innerHTML=`<div class="mk-result ${passed?'pass':'fail'}">${passed?`Agreed to, ${ayes} to ${21-ayes}`:`Not agreed to, ${ayes} to ${21-ayes}`}</div>
+      <div class="mk-later">${passed?'One year later':'The next year'}</div><div class="rf-card">${vig(kind)}</div><h2>${esc(S.result.cap)}</h2>
+      <div class="rf-talk"><div class="rf-maya">${portrait({...CAST.hollis,mood:M().reveal.mood(kind)})}</div><p>“${esc(line)}”</p></div><button class="btn wide" id="next">See how you did</button>`;
+    $('#next').onclick=()=>nextStep();setTimeout(()=>{if(S.step==='markup')playLine('hollis',line)},skip?50:600);e.scrollIntoView({behavior:'smooth',block:'start'})};
+  $('#mkskip').onclick=()=>{skip=true;stopVoice();end()};
+  (async()=>{await say('clerk',R.start,1200);
+    for(i=0;i<roll.length;i++){if(!live())return;const m=roll[i],swing=m[2].length>1;
+      if(swing){$('#mkface').innerHTML=bill_face(m[2],'think');$('#mk'+i).classList.add('calling');await say('clerk',R.call[m[2]],700);if(!live())return;
+        const v=vote(m);$('#mkface').innerHTML=bill_face(m[2],v?'smile':'stern');await say(m[2],v?'Aye.':'No.',900);mark(i,v);$('#mk'+i).classList.remove('calling');await wait(500);$('#mkface').innerHTML=''}
+      else{$('#mkline').textContent=m[0]+' '+m[1]+'?';await wait(170);mark(i,vote(m))}}
+    if(!live())return;await say('clerk',R.tally[ayes],1400);if(!live())return;await say('chair',passed?R.pass:R.fail,1200);end()})()}
