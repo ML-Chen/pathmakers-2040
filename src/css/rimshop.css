@@ -1,0 +1,51 @@
+/* rimshop.css — "The Shop at the Rim" (Moon): Byte's pictures (rim-*), the asking, pop-up and limits screens, and the cast. */
+.rim-drop{animation:rimdrop 5s cubic-bezier(.3,1.4,.5,1) infinite;animation-delay:var(--d,0s)}@keyframes rimdrop{0%{transform:translateY(-40px);opacity:0}12%,85%{transform:none;opacity:1}100%{opacity:0}}
+.rim-dot{transform-box:fill-box;transform-origin:center;animation:rimdot 6s ease-out infinite;animation-delay:var(--d,0s)}@keyframes rimdot{0%{transform:scale(0)}8%,88%{transform:scale(1)}100%{transform:scale(0)}}
+.rim-landing{animation:rimland 6s ease-out infinite}@keyframes rimland{0%{transform:translateY(-30px);opacity:0}25%,90%{transform:none;opacity:1}100%{opacity:0}}
+.rim-flow{animation:rimflow 1.2s linear infinite}@keyframes rimflow{to{stroke-dashoffset:-16}}
+.rim-heat{animation:rimheat 1.4s ease-in-out infinite alternate}@keyframes rimheat{from{fill:#ff9a3a}to{fill:#ffe27a}}
+.rim-popin{transform-box:fill-box;transform-origin:center;animation:rimpop 5s cubic-bezier(.3,1.5,.5,1) infinite;animation-delay:var(--d,0s)}@keyframes rimpop{0%,10%{transform:scale(0)}25%,88%{transform:scale(1)}100%{transform:scale(0)}}
+.rim-ship{offset-path:path('M76 56 Q150 10 196 56');offset-rotate:auto;animation:rimship 4s ease-in-out infinite}@keyframes rimship{0%{offset-distance:0%;opacity:0}10%{opacity:1}90%{opacity:1}100%{offset-distance:100%;opacity:0}}
+.rim-steam path{animation:rimsteam 2.2s ease-in-out infinite}.rim-steam path:nth-child(2){animation-delay:.5s}.rim-steam path:nth-child(3){animation-delay:1s}@keyframes rimsteam{0%{opacity:0;transform:translateY(4px)}40%{opacity:.9}100%{opacity:0;transform:translateY(-6px)}}
+.rim-queue{animation:rimqueue 4s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes rimqueue{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
+.rim-say{transform-box:fill-box;transform-origin:bottom center;animation:rimsay 4.5s ease-out infinite;animation-delay:var(--d,0s)}@keyframes rimsay{0%{transform:scale(0);opacity:0}12%,80%{transform:scale(1);opacity:1}100%{opacity:0}}
+.rim-buy{animation:rimbuy 4.5s ease-in infinite}@keyframes rimbuy{0%,40%{transform:translateY(-6px);opacity:0}55%{opacity:1}80%,100%{transform:translateY(46px);opacity:0}}
+.rim-hand{transform-origin:24px -22px;animation:calfspin 3s linear infinite}
+.rim-empty{animation:rimempty 6s ease-in infinite;animation-delay:var(--d,0s)}@keyframes rimempty{0%,15%{opacity:1}35%,85%{opacity:.12}100%{opacity:1}}
+.rim-daynight{animation:rimdn 6s ease-in-out infinite}.rim-nightday{animation:rimdn 6s ease-in-out infinite reverse}@keyframes rimdn{0%,40%{opacity:1}55%,90%{opacity:.25}100%{opacity:1}}
+.rim-orbit{animation:rimorbit 5s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes rimorbit{0%,100%{transform:none}50%{transform:translate(18px,-8px)}}
+.rim-goal{animation:rimgoal 4.5s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes rimgoal{0%,100%{transform:none}20%{transform:translateY(-5px)}}
+.rim-parcel{animation:rimparcel 4.5s ease-in-out infinite}@keyframes rimparcel{0%{transform:translate(70px,66px);opacity:0}10%{opacity:1}40%,55%{transform:translate(128px,66px)}90%{transform:translate(222px,66px);opacity:1}100%{transform:translate(222px,66px);opacity:0}}
+.rim-check{transform-box:fill-box;transform-origin:center;animation:rimcheck 4.5s ease-out infinite}@keyframes rimcheck{0%,40%{transform:scale(0)}50%,100%{transform:scale(1)}}
+.rim-arc{offset-path:path('M70 40 Q170 0 250 80');offset-rotate:0deg;animation:rimship 5s ease-in-out infinite}
+.sc-float{animation:scfloat 3.4s ease-in-out infinite}@keyframes scfloat{50%{transform:translateY(-6px)}}
+.rim-walkbyte{top:calc(62% - 84px)}
+
+.rim-card{max-height:calc(100vh - 90px);overflow:auto}
+.rim-card h2{margin-bottom:6px}
+.rim-asks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rim-askb{display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid var(--line);background:#fff;border-radius:16px;padding:10px 6px}
+.rim-askb b{font-family:var(--display);font-size:1.8rem;color:var(--violet);line-height:1}.rim-askb span{font-size:.85rem;font-weight:700;text-align:center}
+.rim-askb.on{border-color:var(--violet);background:#f3f1ff}
+.rim-five{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:10px}
+.rim-f{display:flex;flex-direction:column;align-items:center;font-size:.72rem;animation:reveal .4s both;animation-delay:var(--d)}.rim-f b{font-size:.78rem}.rim-f span{font-weight:800}
+.rim-face{width:34px;height:42px}
+.rim-many{margin-top:10px}.rim-many svg{width:100%;display:block}
+.rim-cell{animation:reveal .3s both;animation-delay:var(--d)}
+.rim-legend{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:.8rem;font-weight:800;margin-top:6px}.rim-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.rim-split{display:flex;justify-content:space-between;font-size:.72rem;color:var(--ink2);margin-top:2px}
+.rim-tests{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rim-test{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:2px solid var(--line);background:#fff;border-radius:16px;padding:8px 4px;font-size:.82rem}
+.rim-test b{font-size:.85rem;line-height:1.15}.rim-test span{font-size:.75rem;color:var(--ink2)}
+.rim-test.on{border-color:var(--violet);background:#f3f1ff;transform:translateY(-2px)}.rim-test[disabled]{opacity:.7}.rim-test.on[disabled]{opacity:1}
+.rim-ticon svg{width:52px;height:44px}
+.rim-result{display:flex;gap:10px;align-items:center;margin-top:12px;padding:10px;border-radius:16px;background:#eafaf2}.rim-result.meh{background:#fff4e0}
+.rim-result h3{margin:0 0 2px;font-size:1rem}.rim-result p{margin:0;font-size:.88rem}.rim-rvig{width:112px;flex:none}.rim-rvig svg{width:100%;display:block;border-radius:10px}
+.rim-learn{margin:10px 0}.rim-lrow{display:grid;grid-template-columns:96px 1fr 92px;gap:8px;align-items:center;font-size:.85rem;margin-top:5px}.rim-lrow span{font-weight:800}.rim-lrow b{text-align:right;font-size:.8rem}
+.rim-ltrack{height:14px;border-radius:7px;background:#eef1fb;overflow:hidden}.rim-ltrack i{display:block;height:100%;border-radius:7px}.rim-ltrack i.g{opacity:.35;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.6) 0 4px,transparent 4px 8px)!important}
+.rim-days{position:fixed;inset:0;z-index:60;background:radial-gradient(circle at 70% 20%,#3a2a4a,#0c0a1a 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:#fff;animation:reveal .4s}
+.rim-days.out{opacity:0;transition:opacity .45s}.rim-dayn{text-align:center}.rim-dayn b{display:block;font-family:var(--display);font-size:2.2rem}.rim-dayn span{color:#f2c46a;font-weight:800;font-size:1.2rem}
+.rim-dvig{width:220px}.rim-dvig svg{width:100%;border-radius:14px}
+.rim-rules{display:grid;gap:6px}.rim-rule{border:1px solid var(--line);border-radius:14px;padding:6px 8px}.rim-rule p{margin:0 0 4px;font-weight:800;font-size:.88rem}
+.rim-rule .seg{display:flex}.rim-rule .segb{flex:1;font-size:.76rem;padding:5px 3px;white-space:nowrap}
+.rim-warn{background:#fff4e0;border-radius:14px;padding:8px 12px;margin-top:8px}.rim-warn p{margin:2px 0;font-size:.85rem}
