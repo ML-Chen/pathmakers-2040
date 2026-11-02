@@ -23,6 +23,7 @@ Several Claude sessions build this game at the same time. Before starting a piec
 | Challenge levels (Kid, Teen, Grown-up) and Chinese mode | `engine/modes`, `engine/i18n` | coordinating session | merged into main Nov 2; content for Teen/Grown-up and zh translations still partial |
 | Android app (APK built by GitHub Actions) | `main` | coordinating session (Nov 2) | in progress |
 | Landscape layout | none | unclaimed | briefs ready in docs/BRIEFS.md |
+| Pacific Ocean place: floating datacenters scene (`ocean_dc`), world-map place `ocean`, Ledger story `ocean-dc` | `content/ocean-dc` | coordinating session's agent | ready to merge; no missions there yet ("Coming soon"); new lines not recorded |
 | Promo videos (RedNote and Twitter) | `promo/` on main | unclaimed | paused until more of the game is built; storyboard and Mandarin TTS/ASR tools in promo/ |
 
 Ideas not yet claimed (from docs/SPEC.md): Nome Ranger; Phoenix Robot Crew Lead; Moon Founder and Dividend Investor; Bay Area Science Director; Mars Explorer; New York Performer and Coach; DC Judge; Vienna Treaty Inspector; the career-journey steps (explore, meet people, interview, first day, big talk, promotion); a world map to travel between places; the Unbound and Prime villain plots for each place; Byte customization unlocks; the Android app.

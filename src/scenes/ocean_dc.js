@@ -464,6 +464,8 @@
   function drone(ctx, x, y, sz, t, ph, beam, groundY) {
     var spin = Math.sin(t * 40 + ph);
     if (beam) {
+      // its soft shadow on the raft below
+      ctx.fillStyle = 'rgba(20,30,60,0.18)'; ctx.beginPath(); ctx.ellipse(x + sz * 0.3, groundY - sz * 0.15, sz * 0.9, sz * 0.22, 0, 0, TAU); ctx.fill();
       // a soft scanning beam sweeping across the raft below
       var sw = Math.sin(t * 0.8 + ph) * sz * 1.6, bw = sz * 1.5;
       ctx.fillStyle = lg(ctx, 0, y, 0, groundY, [[0, rgba('#9ff3e6', 0.32)], [1, rgba('#9ff3e6', 0.04)]]);

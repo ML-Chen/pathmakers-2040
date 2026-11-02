@@ -35,7 +35,12 @@ const LEDGER_GLOSSARY={
   'off switch':'A way for people to stop a machine or an AI right away, without asking the machine first.',
   'blackout week':'Seven days in 2029 when the power went out across the whole island nation of Estmark.',
   greenhouse:'A glass or clear building where plants grow warm and protected.',
-  'far-uvc':'A kind of light, just past what our eyes can see, that breaks up germs in the air but is gentle on skin and eyes.'
+  'far-uvc':'A kind of light, just past what our eyes can see, that breaks up germs in the air but is gentle on skin and eyes.',
+  'international waters':'The open ocean far from every country’s coast, where no single country is in charge.',
+  'solar rafts':'In 2040, floating platforms covered in solar panels that link together on the open sea. True today: solar panels on floats work on calm lakes, and a few companies are testing them out at sea.',
+  treaty:'A written agreement between countries. The countries that sign it promise to follow its rules.',
+  'data tankers':'In 2040, ships that carry computer chips out to the floating datacenters and bring old ones back. True today: there are no data tankers yet. They are a guess about the future.',
+  'floating solar':'Solar panels set on floats, so they sit on water instead of land. True today: floating solar farms already cover lakes and reservoirs in many countries.'
 };
 
 const LEDGER_GUIDE={
@@ -131,6 +136,14 @@ const LEDGER_LIBRARY=[
     {t:'Vienna now publishes the goals of every AI that runs a city service, written so a ten-year-old can read them.',viz:'lg_vie1',cap:'Goals anyone can read'},
     {t:'Anyone can compare what an AI says it is for with what it actually does.',viz:'lg_vie2',cap:'Says and does'},
     {t:'Three more cities plan to copy the idea this year.',viz:'lg_vie3',cap:'Spreading'}]},
+  {id:'ocean-dc',title:'The Datacenters Floating in the Middle of the Pacific',section:'world',place:'Pacific Ocean',by:'Marisol Tennyfield',org:'The Ledger',signed:true,when:{done:2},pri:5,
+    check:'Good instinct to check! It’s signed, and the facts match the sources. The last part is true even back in the 2020s: companies really did test datacenters on the seafloor, and solar panels really did float on lakes.',steps:[
+    {t:'Far out in the Pacific Ocean, north of Hawaii, in [[international waters]], a field of [[solar rafts]] covers the sea for miles in every direction.',viz:'lg_ocean1',cap:'Rafts to the horizon'},
+    {t:'Each raft has six sides, with solar panels on top and big batteries underneath, so the power keeps flowing after the sun goes down.',viz:'lg_ocean2',cap:'Sun by day, batteries by night'},
+    {t:'In the middle of the field float giant white [[datacenter]] platforms, and cold water pumped up from deep below keeps their computers cool.',viz:'lg_ocean3',cap:'Cooled by the deep sea'},
+    {t:'The countries that signed the AI [[treaty]] asked for the datacenters to be out here, far from any city, so they are easy to switch off and hard for any one country to grab.',viz:'lg_ocean4',cap:'Far from every city'},
+    {t:'[[Data tankers]] bring new computer chips every week and carry the old ones home to be recycled.',viz:'lg_ocean5',cap:'New chips out, old chips home'},
+    {t:'The idea started small: back in the 2020s, companies tested datacenters sealed in tanks on the seafloor, and [[floating solar]] farms covered lakes and reservoirs.',viz:'lg_ocean6',cap:'Where it started'}]},
   {id:'mammoth-calves',title:'Mammoth Calves Born Near Nome',section:'places',place:'Nome, Alaska',by:'Ada Tullwick',org:'The Ledger',signed:true,when:{done:2},pri:6,steps:[
     {t:'Three woolly mammoth calves were born on the reserve outside Nome this spring.',viz:'lg_mam1',cap:'Three new calves'},
     {t:'Their keepers say every calf is drinking well and keeping up with the herd.',viz:'lg_mam2',cap:'Keeping up'},
