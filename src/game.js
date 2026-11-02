@@ -94,9 +94,9 @@ function openMenu(){const d=sheet(T('Menu'),`<div class="menu">
    <textarea id="m-code" rows="3" readonly>${esc(saveCode())}</textarea><button class="btn small" id="m-copy">${T('Copy code')}</button>
    <div class="lbl">${T('Load a save code')}</div><textarea id="m-in" rows="3" placeholder="${T('Paste a code that starts with PM1-')}"></textarea><button class="btn small ghost" id="m-load">${T('Load this game')}</button>
    <div class="lbl">${T('Start over')}</div><button class="btn small ghost" id="m-new">${T('New game')}</button><div id="m-confirm"></div>
-   ${window.PARENT?`<div class="lbl">${T('For grown-ups')}</div><button class="btn small ghost" id="m-parent">${T('Progress page')}</button>`:''}${I18N.menuHTML()}</div>`);
+   ${window.PARENT?`<div class="lbl">${T('For grown-ups')}</div><button class="btn small ghost" id="m-parent">${T('Progress page')}</button>`:''}<div class="lbl">${T('Every workday')}</div><button class="btn small ghost" id="m-all">${T(S.playAll?'Lock days in story order':'Unlock every workday')}</button>${I18N.menuHTML()}</div>`);
   I18N.wireMenu(d,()=>{d.remove();render();openMenu()});
-  const mp=$('#m-parent',d);if(mp)mp.onclick=()=>{d.remove();PARENT.open()};
+  $('#m-all',d).onclick=()=>{S.playAll=!S.playAll;save();d.remove();toast(T(S.playAll?'Every workday is open':'Days unlock in story order'),'good');render()};const mp=$('#m-parent',d);if(mp)mp.onclick=()=>{d.remove();PARENT.open()};
   $('#m-hub',d).onclick=()=>{d.remove();go('hub')};const mpb=$('#m-port',d);if(mpb)mpb.onclick=()=>{d.remove();openPortfolio()};const ml=$('#m-ledger',d);if(ml)ml.onclick=()=>{d.remove();openLedger()};const mc=$('#m-closet',d);if(mc)mc.onclick=()=>{d.remove();openCloset()};
   $('#m-copy',d).onclick=()=>{const t=$('#m-code',d);navigator.clipboard&&navigator.clipboard.writeText(t.value).then(()=>toast(T('Save code copied'),'good')).catch(()=>{t.select()});t.select()};
   $('#m-load',d).onclick=()=>{if(loadCode($('#m-in',d).value)){d.remove();toast(T('Game loaded'),'good');render()}else toast(T('That code didn\u2019t work. Check that you copied all of it.'))};
