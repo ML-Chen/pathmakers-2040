@@ -355,7 +355,7 @@ function personSVG(o){o=o||{};
       <path d="${lens(x1)}" fill="none" stroke="${fc}" stroke-width="1.9"/><path d="${lens(x2)}" fill="none" stroke="${fc}" stroke-width="1.9"/>
       <path d="M${x1+18} ${y-5} Q150 ${y-10} ${x2-18} ${y-5}" stroke="${fc}" stroke-width="1.9" fill="none"/>
       <path d="M${x1-14} ${y-10} L${x1+14} ${y-10.2}" stroke="${ch_mix(fc,'#ffffff',.5)}" stroke-width=".8" opacity=".8"/><path d="M${x2-14} ${y-10.2} L${x2+14} ${y-10}" stroke="${ch_mix(fc,'#ffffff',.5)}" stroke-width=".8" opacity=".8"/>
-      <path d="M${x1-9} ${y+8} L${x1+1} ${y-8} M${x2-5} ${y+8} L${x2+5} ${y-8}" stroke="#fff" stroke-width="2.4" opacity=".3" stroke-linecap="round"/>`})():'';
+      <path d="M${x1-12} ${y+6} L${x1-4} ${y-7} M${x2+6} ${y+6} L${x2+13} ${y-6}" stroke="#fff" stroke-width="2.2" opacity=".26" stroke-linecap="round"/>`})():'';
   const earring=o.accessory==='earring'?`<circle cx="91" cy="${G.ear+40}" r="4.6" fill="none" stroke="#e8b84a" stroke-width="1.9"/><circle cx="209" cy="${G.ear+40}" r="4.6" fill="none" stroke="#c8962e" stroke-width="1.9"/><circle cx="89.6" cy="${G.ear+36.6}" r="1" fill="#fff6c8"/>`:'';
   let fx='';
   if(md.fx==='sparkle')fx=ch_star(226,70,9,'#ffd45c','stroke="#fff" stroke-width="1"')+ch_star(240,92,5,'#fff')+ch_star(70,76,6,'#ffe9a0');

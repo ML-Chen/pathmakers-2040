@@ -373,28 +373,25 @@
   /* sunrise stratocumulus: horizontal brush dabs in an envelope, shade body, sun-lit undersides, bright rims.
      o: {shade, mid, lit, rim, al, n, dir (+1 lit from below)} */
   function streakCloud(ctx, cx, cy, W, H, r, o) {
-    var n = o.n || 46, D = [], i, k;
+    var n = o.n || 46, D = [], i, k, q = 0.5, pad = H * 1.2, bw = W * 1.2 + pad * 2, bh = H * 2 + pad * 2, ox = bw / 2, oy = bh / 2;
     for (i = 0; i < n; i++) {
       var u = (r() * 2 - 1), env = Math.pow(Math.max(0, 1 - u * u), 0.6) * (0.75 + 0.25 * fbm(u * 3 + cx * 0.01, 77, 3));
       var rx = W * (0.07 + r() * 0.13) * (0.5 + env * 0.6), ry = H * (0.16 + r() * 0.22) * (0.35 + env * 0.75);
-      D.push([cx + u * W * 0.5, cy + (r() - 0.5) * H * env * 0.9 - env * H * 0.15, rx, ry]);
+      var dy = (r() - 0.5) * H * env * 0.9 - env * H * 0.15;
+      D.push([u * W * 0.5, dy, rx, ry, (dy / (H * 0.5 * Math.max(0.2, env)) + 1) / 2]); // last: 0 top .. 1 bottom within the envelope
     }
     D.sort(function (A, B) { return A[1] - B[1]; });
-    var dir = o.dir == null ? 1 : o.dir;
-    ctx.save(); ctx.globalAlpha = o.al == null ? 1 : o.al;
-    var cols = [o.shade, o.mid, o.lit, o.rim || o.lit];
-    for (k = 0; k < 4; k++) {
-      ctx.fillStyle = cols[k]; ctx.beginPath();
-      for (i = 0; i < D.length; i++) {
-        var q = D[i];
-        if (k === 0) qell(ctx, q[0], q[1], q[2], q[3], 0);
-        else if (k === 1) qell(ctx, q[0] - q[2] * 0.05, q[1] - dir * q[3] * 0.18, q[2] * 0.85, q[3] * 0.6, 0);
-        else if (k === 2) qell(ctx, q[0] + q[2] * 0.08, q[1] + dir * q[3] * 0.5, q[2] * 0.78, q[3] * 0.42, 0);
-        else if (i % 2 === 0) qell(ctx, q[0] + q[2] * 0.12, q[1] + dir * q[3] * 0.78, q[2] * 0.55, q[3] * 0.16, 0);
-      }
-      ctx.fill();
-    }
-    ctx.restore();
+    var cv = mk(bw * q, bh * q); if (!cv) return;
+    var g = cv.getContext('2d'), dir = o.dir == null ? 1 : o.dir;
+    g.scale(q, q); g.translate(ox, oy);
+    function layer(col, al, f) { g.fillStyle = col; g.globalAlpha = al; g.beginPath(); for (var j = 0; j < D.length; j++) { var e = f(D[j], j); if (e) qell(g, e[0], e[1], e[2], e[3], 0); } g.fill(); }
+    layer(o.mid, 0.16, function (d) { return [d[0], d[1], d[2] * 1.25, d[3] * 1.5]; });
+    layer(o.shade, 0.9, function (d) { return [d[0], d[1], d[2], d[3]]; });
+    layer(o.mid, 0.75, function (d) { return d[4] < 0.75 ? [d[0] - d[2] * 0.05, d[1] - dir * d[3] * 0.2, d[2] * 0.85, d[3] * 0.55] : null; });
+    layer(o.lit, 0.9, function (d) { return d[4] > 0.35 ? [d[0] + d[2] * 0.06, d[1] + dir * d[3] * 0.48, d[2] * 0.75, d[3] * 0.38] : null; });
+    layer(o.rim || o.lit, 0.85, function (d, j) { return d[4] > 0.6 && j % 2 === 0 ? [d[0] + d[2] * 0.1, d[1] + dir * d[3] * 0.75, d[2] * 0.5, d[3] * 0.14] : null; });
+    var bl = boxBlur(cv, 1, 1);
+    ctx.save(); ctx.globalAlpha = o.al == null ? 1 : o.al; ctx.imageSmoothingEnabled = true; ctx.drawImage(bl, cx - ox, cy - oy, bw, bh); ctx.restore();
   }
   /* sample a gradient stop list at t */
   function gradAt(st, t) {
@@ -807,13 +804,12 @@
         for (i = 0; i < 8; i++) wisp(ctx, w * (0.05 + r() * 0.9), h * (0.06 + r() * 0.16), w * (0.3 + r() * 0.3), h * 0.007, i % 2 ? '#ffd8c0' : '#f7b8c8', 0.22, r);
         mark('glowwisp', ctx);
         // cumulus lit from below-right by the low sun
-        var cl = [[0.36, 0.17, 0.62, 0.075, 1], [0.86, 0.105, 0.44, 0.06, 0.95], [0.08, 0.27, 0.3, 0.035, 0.9], [0.93, 0.255, 0.26, 0.03, 0.85]];
+        // sunrise stratocumulus: lavender bodies, gold undersides (warmer the nearer the sun)
+        var cl = [[0.34, 0.16, 0.78, 0.062, 0.97, 0], [0.86, 0.092, 0.52, 0.04, 0.95, 0], [0.62, 0.212, 0.42, 0.02, 0.9, 1], [0.12, 0.262, 0.36, 0.022, 0.9, 1], [0.93, 0.248, 0.3, 0.02, 0.85, 1], [0.5, 0.05, 0.4, 0.025, 0.7, 0]];
         for (i = 0; i < cl.length; i++) {
-          var ccx = w * cl[i][0], ccy = h * cl[i][1], vx = sx - ccx, vy = (sy - ccy) * 1.6, vl = Math.sqrt(vx * vx + vy * vy) || 1;
-          cloudForm(ctx, ccx, ccy, w * cl[i][2], h * cl[i][3], r, { lit: '#ffdcaa', mid: '#d792ae', shade: '#6e62a6', top: '#9a8fd0', al: cl[i][4], lx: vx / vl, ly: vy / vl, base: 0.55, halo: 0.15, seam: 0.22 });
+          var warm = cl[i][5];
+          streakCloud(ctx, w * cl[i][0], h * cl[i][1], w * cl[i][2], h * cl[i][3], r, { shade: warm ? '#a07ab0' : '#7466a8', mid: warm ? '#e0a0b4' : '#b088b8', lit: warm ? '#ffd8a8' : '#ffc4a0', rim: '#fff2d8', al: cl[i][4], n: warm ? 28 : 48 });
         }
-        // long gold-lit stratus streaks just above the skyline
-        for (i = 0; i < 3; i++) cloudForm(ctx, w * (0.2 + i * 0.32), h * (0.225 + i * 0.012), w * 0.5, h * 0.016, r, { lit: '#ffe6b8', mid: '#f0a8a8', shade: '#9a7cb0', al: 0.8, lx: 0.2, ly: 0.98, base: 0.8, halo: 0.2, billows: 6 });
         // low glowing haze bands near the horizon
         for (i = 0; i < 4; i++) wisp(ctx, w * (0.1 + r() * 0.8), hz - h * (0.02 + r() * 0.05), w * 0.4, h * 0.006, '#ffe0b8', 0.25, r);
         mark('sky', ctx);
@@ -936,16 +932,19 @@
         ctx.save();
         ctx.beginPath(); ctx.rect(0, 0, w, h);
         for (i = 0; i < L.panes.length; i++) { var pn = L.panes[i]; ctx.moveTo(pn[0][0], pn[0][1]); for (var q = 1; q < 4; q++) ctx.lineTo(pn[q][0], pn[q][1]); ctx.closePath(); }
-        ctx.fillStyle = lg(ctx, 0, 0, 0, h, [[0, '#a8756a'], [0.3, '#c48c78'], [0.6, '#b37c6c'], [1, '#6e4a44']]);
+        ctx.fillStyle = lg(ctx, 0, 0, 0, h, [[0, '#b07a66'], [0.3, '#d29a7c'], [0.6, '#c08670'], [1, '#7a5044']]);
         ctx.fill('evenodd');
+        ctx.clip('evenodd');
+        dabs(ctx, 260, [['#e8b494', 0.18], ['#9a6454', 0.14]], function () { return [r() * w, r() * h * 0.75, (6 + r() * 18) * s, (3 + r() * 8) * s, r() < 0.5 ? 0 : 1, r() * PI]; });
         ctx.restore();
         // warm bounce light around the window
         ctx.save(); ctx.globalCompositeOperation = 'lighter';
         glow(ctx, w * 0.5, h * 0.33, w * 0.75, '#ff9a60', 0.12);
         ctx.restore();
-        // ceiling beam / crown molding
-        ctx.fillStyle = lg(ctx, 0, 0, 0, L.ceil + 6 * s, [[0, '#5a3a30'], [0.7, '#8a5a44'], [1, '#c08a62']]); ctx.fillRect(0, 0, w, L.ceil);
-        ctx.fillStyle = 'rgba(255,214,170,0.35)'; ctx.fillRect(0, L.ceil - 1.2 * s, w, 1.2 * s);
+        // ceiling + crown molding
+        ctx.fillStyle = lg(ctx, 0, 0, 0, L.ceil, [[0, '#6a4236'], [1, '#9a6650']]); ctx.fillRect(0, 0, w, L.ceil);
+        ctx.fillStyle = lg(ctx, 0, L.ceil - 5 * s, 0, L.ceil + 3 * s, [[0, '#f0c8a0'], [0.4, '#c89070'], [0.7, '#7a4a38'], [1, '#e8b890']]); ctx.fillRect(0, L.ceil - 5 * s, w, 8 * s);
+        ctx.fillStyle = 'rgba(60,30,20,0.35)'; ctx.fillRect(0, L.ceil + 3 * s, w, 2 * s);
         // window casings (honey wood)
         var wood = ['#7a4a2e', '#b87a4c', '#e2a46a', '#ffd8a0'];
         function casing(pn, lw) {
@@ -1050,6 +1049,18 @@
           ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.fillRect(bkx - bw2 / 2 + (k % 2 ? 2 : -2) * s + bw2 - 2 * s, bky + 0.8 * s, 1.5 * s, bh2 - 1.6 * s);
         });
         mark('plant', ctx);
+        /* sheer curtains gathered at the outer edges, glowing with the dawn */
+        [[-1, 0], [1, w]].forEach(function (C2) {
+          var side = C2[0], ex = C2[1], cw = w * 0.085, top = L.ceil + 4 * s, bot = h * 0.6;
+          ctx.save(); ctx.globalAlpha = 0.55;
+          for (var f = 0; f < 6; f++) {
+            var fx0 = ex - side * cw * (f / 6), fx1 = ex - side * cw * ((f + 1) / 6), sw2 = Math.sin(f * 1.7) * 3 * s;
+            ctx.fillStyle = lg(ctx, Math.min(fx0, fx1), 0, Math.max(fx0, fx1), 0, [[0, f % 2 ? '#fff0e0' : '#f2c8b8'], [0.5, '#fff8f0'], [1, f % 2 ? '#e8b8a8' : '#fff0e4']]);
+            ctx.beginPath(); ctx.moveTo(fx0, top); ctx.lineTo(fx1, top); ctx.quadraticCurveTo(fx1 + sw2, (top + bot) / 2, fx1 - side * 4 * s, bot); ctx.lineTo(fx0 - side * 4 * s, bot); ctx.quadraticCurveTo(fx0 + sw2, (top + bot) / 2, fx0, top); ctx.fill();
+          }
+          ctx.restore();
+          ctx.fillStyle = '#8a5a3c'; ctx.fillRect(side < 0 ? 0 : w - cw - 6 * s, top - 3 * s, cw + 6 * s, 3 * s);
+        });
         /* hanging pothos at the two posts */
         function hanger(px, py, seed, side) {
           var rr = rng(seed), v, k;
