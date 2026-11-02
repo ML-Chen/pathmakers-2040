@@ -295,7 +295,9 @@ svg text:not([font-family]){font-family:var(--body)}
 .earned span{background:#f3f0ff;color:var(--violet);border-radius:999px;padding:5px 12px;font-weight:800;font-size:.85rem}
 
 /* evening */
-.evening{display:flex;flex-direction:column;align-items:center}
+/* The evening wrapper is see-through, so its empty space must not swallow taps meant for the scene's props. */
+.evening{display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.evening>*{pointer-events:auto}
 .eve-byte{width:200px;margin-top:6vh}
 
 /* sheets (Field Guide, Word Book, chat) */
