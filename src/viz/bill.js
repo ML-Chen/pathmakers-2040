@@ -266,4 +266,21 @@ function bill_whipBoard(c){const k=M().knows(),v=bill_votes(c,k),p=bill_pct(bill
     <div class="bb-sum"><span><b>9</b> sure yes + 2 of these 3 = <b>11</b></span><em>Passes about ${p} in 100</em></div></div>`}
 
 // ---------- clothes over the anime bust: blazers, a farmer's barn coat, a fire chief's dress uniform, the member pin ----------
-function bill_dress(o,mood){return personSVG({...o,mood})}
+// Pins sit on the character's left lapel (viewer's right). Coordinates are in the bust's 300x372 space.
+function bill_pin(kind,x,y){
+  if(kind==='house')return `<g transform="translate(${x} ${y})"><ellipse rx="7.6" ry="9" fill="#c89a3a" stroke="#6a4a10" stroke-width="1.2"/><ellipse rx="5.6" ry="7" fill="#26346a"/>
+    <path d="M-3.6 -1 C-2 -3 -1 -3 0 -1.6 C1 -3 2 -3 3.6 -1 L2 0 L0 3.6 L-2 0Z" fill="#f4d27a"/>${[[-3,-4.6],[0,-5.4],[3,-4.6]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r=".7" fill="#fff"/>`).join('')}<ellipse cx="-2.6" cy="-5" rx="1.8" ry="1" fill="#fff" opacity=".45"/></g>`;
+  if(kind==='wheat')return `<g transform="translate(${x} ${y}) rotate(18)"><path d="M0 12 C0 4 0 -4 0 -12" stroke="#b88a2a" stroke-width="1.6" fill="none"/>${[-8,-4,0,4].map((yy,i)=>`<ellipse cx="-2.6" cy="${yy}" rx="2.2" ry="3.4" transform="rotate(-28 -2.6 ${yy})" fill="#e8c05a" stroke="#9a6a10" stroke-width=".6"/><ellipse cx="2.6" cy="${yy+1.6}" rx="2.2" ry="3.4" transform="rotate(28 2.6 ${yy+1.6})" fill="#e8c05a" stroke="#9a6a10" stroke-width=".6"/>`).join('')}<ellipse cx="0" cy="-12.6" rx="1.8" ry="2.8" fill="#f4d27a" stroke="#9a6a10" stroke-width=".6"/></g>`;
+  if(kind==='crane')return `<g transform="translate(${x} ${y})"><circle r="8.4" fill="#f4f1ea" stroke="#c89a3a" stroke-width="1.4"/><path d="M-4.6 5 V-4.6 H5 M-4.6 -4.6 L-1.6 -1.6 M-4.6 -1 H1 M3.6 -4.6 V0" stroke="#e8743a" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="2.4" y="0" width="2.6" height="2.2" fill="#26346a"/><path d="M-6.4 5 H6.4" stroke="#26346a" stroke-width="1.2"/></g>`;
+  if(kind==='robot')return `<g transform="translate(${x} ${y})"><circle r="8" fill="#e9eef6" stroke="#c89a3a" stroke-width="1.4"/><path d="M-4.4 1.4 C-4.4 -3.6 -2.4 -5 0 -5 C2.4 -5 4.4 -3.6 4.4 1.4Z" fill="#fff" stroke="#7a86a6" stroke-width=".8"/><path d="M-3.4 -1.6 C-1.6 -2.6 1.6 -2.6 3.4 -1.6 L3.2 .2 C1.4 .8 -1.4 .8 -3.2 .2Z" fill="#2a3354"/><path d="M-2 -1 h4" stroke="#7ff7e4" stroke-width=".7"/><rect x="-4.4" y="2.4" width="8.8" height="3.2" rx="1" fill="#26346a"/></g>`;
+  return ''}
+function bill_dress(o,mood){const B=o.bill||{},kid=o.age==='kid';let add='';
+  if(B.pin==='chief'){ // fire chief's dress uniform: gold collar bugles, a shield badge, gold buttons
+    const bug=(x,y,f)=>`<g transform="translate(${x} ${y}) scale(${f} 1) rotate(-28)"><path d="M-6 1.2 C-2 1.6 2 1.6 5 .6 L7.4 -2.2 L7.8 2.6 L5 1.4 C2 3 -2 3 -6 2.6Z" fill="#e8c05a" stroke="#8a6410" stroke-width=".7"/><circle cx="-6" cy="1.9" r="1.3" fill="#e8c05a" stroke="#8a6410" stroke-width=".6"/></g>`;
+    add+=bug(124,236,1)+bug(124,242,1)+bug(176,236,-1)+bug(176,242,-1);
+    add+=`<g transform="translate(196 284)"><path d="M0 -14 C5 -12 9 -12 12 -13 L12 -2 C12 7 6 12 0 15 C-6 12 -12 7 -12 -2 L-12 -13 C-9 -12 -5 -12 0 -14Z" fill="#e8c05a" stroke="#7a5410" stroke-width="1.2"/>
+      <path d="M0 -9 C3.4 -8 6 -8 8 -9 L8 -2 C8 4 4 7.6 0 10 C-4 7.6 -8 4 -8 -2 L-8 -9 C-6 -8 -3.4 -8 0 -9Z" fill="none" stroke="#a87a1a" stroke-width=".8"/>
+      <path d="M0 -6 L1.4 -2.4 L5 -2.2 L2.2 .2 L3.2 3.8 L0 1.8 L-3.2 3.8 L-2.2 .2 L-5 -2.2 L-1.4 -2.4Z" fill="#c8282e" stroke="#7a1418" stroke-width=".5"/><ellipse cx="-5" cy="-9" rx="3" ry="1.4" fill="#fff6c8" opacity=".55"/></g>`;
+    add+=[300,330,358].map(y=>`<circle cx="164" cy="${y}" r="3.2" fill="#e8c05a" stroke="#7a5410" stroke-width=".8"/><circle cx="163" cy="${y-1}" r="1" fill="#fff6c8"/>`).join('')}
+  else if(B.pin){const build=o.masc?'M':'F';add+=bill_pin(B.pin,build==='M'?190:186,build==='M'?266:258)}
+  return personSVG({...o,mood})+(add&&!kid?`<g class="bill-dress">${add}</g>`:'')}
