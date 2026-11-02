@@ -29,19 +29,19 @@ const LEDGER_GLOSSARY={
   nanofactory:'A machine that builds very tiny things by placing atoms one at a time.',
   atom:'One of the tiny pieces that everything is made of. A grain of sand has billions of billions of them.',
   survey:'Asking lots of people the same questions to learn what they think or do.',
-  uploaded:'Copied from a living brain into a computer, so the mind can run there. It isn’t allowed yet.',
+  uploaded:'Copied from a living brain into a computer, so the mind can run there. Nobody knows how to do it yet, and experiments toward it are tightly limited.',
   'content signature':'A secret code inside a photo or video that proves who made it and that nobody changed it.',
   'content signatures':'Secret codes inside photos or videos that prove who made them and that nobody changed them.',
   'off switch':'A way for people to stop a machine or an AI right away, without asking the machine first.',
   'blackout week':'Seven days in 2029 when the power went out across the whole island nation of Estmark.',
   greenhouse:'A glass or clear building where plants grow warm and protected.',
-  'far-uvc':'A kind of light, just past what our eyes can see, that breaks up germs in the air but is gentle on skin and eyes.'
+  'far-uvc':'A kind of ultraviolet light, far past the colors our eyes can see, that breaks up germs in the air but is gentle on skin and eyes.'
 };
 
 const LEDGER_GUIDE={
   'lg-axis':{title:'Check where the axis starts',track:'Evidence and truth',text:'A bar chart that starts at 90 instead of 0 makes small differences look huge. 97 and 94 are almost the same, but their bars can look twice as different. Always read the numbers along the side of a chart.',real:'True today: ads and news charts sometimes cut off the bottom of the axis, and fact-checkers often point it out.'},
   'lg-benefit':{title:'Who gains if you believe it?',track:'Evidence and truth',text:'When a report comes from the people who profit from it, like a company praising its own product, it may leave out what doesn’t help them. That doesn’t make it false. Look for a check by someone with nothing to gain.',real:'True today: science journals ask researchers to say who paid for their work, so readers can weigh it.'},
-  'lg-anecdote':{title:'One story is not proof',track:'Evidence and truth',text:'One person’s story can be true and still mislead. To know whether something really works, you test it on many people and compare them with people who didn’t get it.',real:'True today: medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.'},
+  'lg-anecdote':{title:'One story is not proof',track:'Evidence and truth',text:'One person’s story can be true and still mislead. To know whether something really works, you test it on many people and compare them with people who didn’t get it.',real:'True today: most medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.'},
   'lg-signature':{title:'Look for the signature',track:'Evidence and truth',text:'Since the Flood of Fakes, real photos and videos of public people carry a content signature: a code that proves who made them. No signature means you can’t know where it came from. Lots of shares only means it spread fast.',real:'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.'},
   'lg-cause':{title:'Together is not because',track:'Evidence and truth',text:'Two things can rise together without one causing the other. Ice cream sales and sunburns both go up in summer, but ice cream doesn’t cause sunburns. Sunshine causes both.',real:'True today: scientists use experiments with comparison groups to find out what causes what.'},
   'lg-headline':{title:'Read past the headline',track:'Evidence and truth',text:'Headlines are written to grab attention, and some exaggerate. The article underneath can tell a calmer story. Read it before you believe the headline, or share it.',real:'True today: studies have found that many people share news links without ever opening them.'},

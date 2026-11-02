@@ -18,7 +18,7 @@ const GLOSSARY={
   trial:'A careful test of a new medicine to see if it is safe and works.', approved:'Officially allowed after being checked.',
   clot:'A soft clump of blood that forms to protect an injury.', callus:'A bridge of new tissue the body builds across a broken bone. It hardens into bone over weeks.', calibration:'How well your "how sure am I" matches how often you turn out to be right.',
   'error bar':'A line on a chart that shows how far the real answer might be from the number shown.',
-  dividend:'Money shared out to people. In 2040, everyone gets a Town Dividend.', autonomous:'Able to act on its own without a person controlling it.'
+  dividend:'Money shared out to people. In 2040, every adult gets a Citizen’s Dividend, paid from the fees companies pay to build robots and computer chips.', autonomous:'Able to act on its own without a person controlling it.'
 };
 
 const CAST={
@@ -125,8 +125,8 @@ const TX_LABEL={pins:'Surgery with pins',cast:'Cast',gel:'BoneMend gel'};
 
 const FIELD_GUIDE={
   'only-you-know':{title:'Information only you have',track:'Ethics and AI',text:'Even a brilliant AI only knows what it has been told. Maya’s rash happened in another country, so it was not in her record. When you know something the AI doesn’t, tell it.',real:'True today: medical records often don’t transfer between countries or even between hospitals.'},
-  'sample-size':{title:'Sample size',track:'Evidence and truth',text:'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.',real:'True today: new medicines go through trials with growing numbers of people before approval.'},
-  'consent':{title:'Informed consent',track:'Government, law, and power',text:'Patients decide about their own treatment after they understand the choices, the odds, and the tradeoffs. A doctor explains; the patient chooses.',real:'True today: US law requires informed consent for most medical treatments.'},
+  'sample-size':{title:'Sample size',track:'Evidence and truth',text:'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.',real:'True today: new medicines go through trials with growing numbers of people before approval. BoneMend is made up for the game, though scientists are testing gels that help broken bones heal.'},
+  'consent':{title:'Informed consent',track:'Government, law, and power',text:'Patients decide about their own treatment after they understand the choices, the odds, and the tradeoffs. A doctor explains; the patient chooses.',real:'True today: US law requires informed consent for most medical treatments. For a child, a parent gives consent, and doctors also ask the child to agree, which is called assent.'},
   'calibration':{title:'Calibration',track:'Evidence and truth',text:'When you say \u201cpretty sure,\u201d you should be right most of the time, and when you say \u201ccoin flip,\u201d about half. Guessing first and then checking is how you get better at knowing how sure to be.',real:'True today: weather forecasters and doctors practice this; when a forecaster says 70% chance of rain, it rains on about 7 of 10 such days.'},
   'forecast':{title:'Forecasts are not promises',track:'Evidence and truth',text:'90% likely still means 1 in 10 goes the other way. A good decision can have an unlucky result, and a bad decision can get lucky.',real:'True today: weather forecasters track how often their 70% predictions come true.'}
 };

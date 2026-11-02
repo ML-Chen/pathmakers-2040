@@ -185,13 +185,13 @@ const DOCS=[
   ]},
   {id:'ledger',title:'The Ledger: Boston',from:'News',kind:'ledger',steps:[
     {t:'Robot crews rebuilt the 1890s [[sprung floor]] of the South End’s Tremont Street dance hall in four days. It reopens Saturday.',viz:'bea_floor',cap:'A floor that bounces'},
-    {t:'Boston now has about 3,000 residents over 100, three times as many as in 2030.',viz:'bea_centenarians',cap:'Boston’s over-100 club'},
+    {t:'Boston now has about 1,000 residents over 100, four times as many as in 2030.',viz:'bea_centenarians',cap:'Boston’s over-100 club'},
     {t:'A [[DNA print shop]] in Kendall Square [[flagged]] odd orders from brand-new customers, all placed the same night, and blocked them.',viz:'bea_printshop',cap:'Blocked orders'}
   ]}
 ];
 
 const LESSON={title:'How old muscles get stronger',steps:[
-    {t:'Muscles are bundles of long, thin [[muscle fibers]]. After about age 70, people lose a little muscle every year unless they use it.',viz:'bea_fibers',args:{s:1},cap:'Use it or lose it'},
+    {t:'Muscles are bundles of long, thin [[muscle fibers]]. From middle age on, people lose a little muscle every year, faster after about 70, and using their muscles slows the loss.',viz:'bea_fibers',args:{s:1},cap:'Use it or lose it'},
     {t:'Exercise makes tiny strains in the fibers. [[Repair cells]] fix them, and the fibers grow back a little thicker.',viz:'bea_fibers',args:{s:2},cap:'Strain, repair, stronger'},
     {t:'In very old muscle, the repair cells are fewer and slower. Renewal therapy wakes them up.',viz:'bea_fibers',args:{s:3},cap:'Waking slow repair cells'},
     {t:'[[Protein]] and sleep give the repair cells building blocks and time to work.',viz:'bea_fibers',args:{s:4},cap:'Food and rest'}],
@@ -232,7 +232,7 @@ const GLOSSARY={
 const GUIDE={
   'listening-moves':{title:'Three listening moves',track:'People skills',text:'Reflect: say back what you heard. Ask: an open question that invites a real answer. Summarize: pull everyone’s words together. Bea told her real wish only after someone asked what her dancing would look like.',real:'True today: counselors, doctors and mediators are trained in these “active listening” moves.'},
   'shared-goal':{title:'Look for the shared goal',track:'People skills',text:'Grace said “too risky.” Jordan said “full dose now.” Underneath, both wanted the same thing: Bea happy, safe and there at the wedding. When you say out loud what everyone wants, people often stop arguing and start working together.',real:'True today: mediators look for the interests under people’s positions. Negotiators call this “interests, not positions.”'},
-  'her-choice':{title:'Her life, her choice',track:'Ethics and AI',text:'Bea is 104 and fully able to decide. Her family and her companion can share worries, facts and odds, but the choice is hers, even a risky one.',real:'True today: adults who understand their options have the right to make their own medical choices, even ones their family disagrees with.'},
+  'her-choice':{title:'Her life, her choice',track:'Ethics and AI',text:'Bea is 104 and fully able to decide. Her family and her companion can share worries, facts and odds, but the choice is hers, even a risky one.',real:'True today: adults who understand their options have the right to make their own medical choices, even ones their family disagrees with. Renewal therapy is a guess about 2040: no medicine can yet rebuild old muscle like that, but in a famous 1990 study, people about 90 years old who lifted weights for 8 weeks more than doubled their leg strength.'},
   'act-or-ask':{title:'Act alone, or ask first?',track:'Security thinking',text:'Let a machine act alone when acting fast makes things safer and is easy to undo, like pausing a dose or calling for help. Make it ask a person first when it takes a risk on someone’s behalf or touches their private life.',real:'True today: cars brake on their own to avoid a crash, but the driver decides when to speed up. Hospital pumps stop on their own at an alarm, but a nurse must approve a higher dose.'},
   'aim-the-goal':{title:'An AI aims at the goal it’s given',track:'Ethics and AI',text:'Tempo was told “as strong as possible by the wedding.” It would have pushed hard toward a goal Bea never had. Her real goal was one 3-minute waltz, and Tempo could only aim at it once someone typed it in.',real:'True today: AI researchers work hard to make sure the goal a system is given matches what people actually want. They call this alignment.'}
 };

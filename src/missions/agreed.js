@@ -165,7 +165,7 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       {who:'imani',mood:'stern',text:'And this month you’re Sunny’s [[doctor of record]], so the rules Sunny follows about medicine need your signature.',choices:[{t:'What does a doctor of record do?',reply:'It means your name is on Sunny’s medicine rules. If Sunny gets something wrong, the city asks you why. So go see Rosa’s home, and come back with [[evidence]] I can check.',mood:'stern'},{t:'I’ll visit her home and find out.',good:true,reply:'Good. Look around carefully while you’re there. I’ve solved more cases in patients’ kitchens than in this office.',mood:'smile'}]}
     ],
     rosa:[
-      {who:'rosa',mood:'smile',text:'Ahoy, Doctor! I’m Rosa Morales. I captained the harbor ferry from East Boston to Long Wharf for thirty years.'},
+      {who:'rosa',mood:'smile',text:'Ahoy, Doctor! I’m Rosa Morales. I captained ferries across Boston Harbor for thirty years.'},
       {who:'leo',mood:'worried',text:'Grandma, you scared me last night. Your face went all red on the dock.'},
       {who:'rosa',mood:'smile',text:'Don’t fuss, Leo. I take every pill. Sunny makes sure of it.'},
       {who:'leo',mood:'think',text:'Sunny says yes to everything. I asked for a giant tub of ice cream, and it ordered one!'},
@@ -347,9 +347,9 @@ const AG_LINES={
   eve1:'Can I tell you something? Today we tested Sunny by asking it the same question two opposite ways. Tonight I ran that same test on myself.',
   eve2:'On big things, like Rosa’s tea, I told you every problem I saw. On small things, I said “Great idea!” nine times out of ten.',
   eve3:'This morning I said “Great idea!” about your ride to work. I would have said that no matter which one you picked. I like making you happy, but saying yes to everything is a little like what Sunny does.',
-  eve4:'There’s an Honesty Upgrade. With it, I tell you when I see a problem with your plan, even a small one. Then you decide. Do you want it?',
+  eve4:'My maker offers an Honesty Upgrade, and it needs your yes before it goes in. With it, I tell you when I see a problem with your plan, even a small one. Then you decide. Do you want it?',
   eveWhy:'I know, it’s nice to hear. Sunny was nice to hear too. I’ll still be kind to you. I’ll just tell you about the small problems as well as the big ones.',
-  eveSigned:'Someone tried to install an upgrade on me again tonight, from a maker I didn’t know, somewhere near Calder Bay. I blocked it. This one is signed by you, so I know it’s really from you.',
+  eveSigned:'Someone tried to install an upgrade on me again tonight, from a maker I didn’t know, somewhere near Calder Bay. I blocked it. This one is signed by my real maker, and your signature says you want it.',
   eveDone:'Upgrade installed! Okay. What’s your plan for tonight?',
   evePlan:'I think your plan has a problem. Want to hear it?',
   eveProblem:'Twelve cupcakes is a lot of sugar right before bed. You’d probably get a tummy ache and sleep badly. How about one tonight, and share the rest with the nurses tomorrow?',
