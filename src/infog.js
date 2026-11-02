@@ -1,8 +1,8 @@
 // infog.js — Byte's animated infographics: one small looping picture per sentence (Eigenbook style).
 // Each VIZ[kind](args) returns an SVG string. Animations are CSS (classes prefixed "ig-"), looping and calm.
 const IG={ink:'#1f2340',soft:'#8a90b0',line:'#dfe3f3',teal:'#16b3a6',violet:'#6c5ce7',coral:'#ff7a6b',gold:'#f5b82e',red:'#e5484d',green:'#1fa774',bone:'#fff3dc',boneS:'#e8d3a8',skin:'#f6cfb4',skinS:'#e7ae8e',cast:'#fff7e0',blue:'#5b9bf0'};
-function igFrame(w,h,inner,label){return `<svg class="ig" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label||''}">${inner}</svg>`}
-function igT(x,y,t,o={}){return `<text x="${x}" y="${y}" font-size="${o.s||11}" font-weight="${o.w||700}" fill="${o.c||IG.ink}" text-anchor="${o.a||'middle'}" font-family="Nunito, sans-serif">${t}</text>`}
+function igFrame(w,h,inner,label){return `<svg class="ig" viewBox="0 0 ${w} ${h}" role="img" aria-label="${typeof T==='function'?T(label||''):label||''}">${inner}</svg>`}
+function igT(x,y,t,o={}){return `<text x="${x}" y="${y}" font-size="${o.s||11}" font-weight="${o.w||700}" fill="${o.c||IG.ink}" text-anchor="${o.a||'middle'}" font-family="Nunito, sans-serif">${typeof T==='function'?T(t):t}</text>`}
 let IGN=0;const igId=p=>p+(++IGN);
 const IGK={line:'#c98a6a',nail:'#fbe3d6',crack:'#7a4a2a'};
 // A long bone lying along x from 0 to L (centre line y=0). rA/rB = knob radius at each end, w = half the shaft width.
@@ -141,7 +141,7 @@ const VIZ={
       ${[66,88,110,132,154].map(c=>`<path d="M${c-5} -27 C${c+3} -10 ${c+3} 10 ${c-5} 27" stroke="#d9c58e" stroke-width="1.5" fill="none" opacity=".7"/>`).join('')}
       <path d="M46 -26 C41 -14 41 14 46 26 M174 -26 C179 -14 179 14 174 26" stroke="#efe3bd" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M46 -26 C41 -14 41 14 46 26 M174 -26 C179 -14 179 14 174 26" stroke="#d9c58e" stroke-width="1.4" fill="none"/></g>`:'';
     return igFrame(300,110,`<g transform="translate(40 50)">${under}${s===4?igBone(220,13,13,10,{sw:2}):igBrokenBone(T[0],{drop:T[1]})}${layer}${cast}</g>
-     ${[1,2,3,4].map(i=>`<circle cx="${120+i*14}" cy="102" r="4" fill="${i<=s?IG.violet:IG.line}"/>`).join('')}`,'Bone healing stage '+s)},
+     ${[1,2,3,4].map(i=>`<circle cx="${120+i*14}" cy="102" r="4" fill="${i<=s?IG.violet:IG.line}"/>`).join('')}`,typeof T==='function'?T('Bone healing stage {0}',s):'Bone healing stage '+s)},
   arm:()=>igFrame(300,110,`<g transform="translate(150 52) scale(1.16) translate(-86 -5)">${igArm(0,0,{crack:true,glow:false})}</g>${igT(130,104,'The radius (thumb-side bone) has one crack',{s:11,c:IG.soft})}`,'A forearm with a cracked radius bone'),
   straightVsCrooked:()=>igFrame(300,150,`<g transform="translate(108 34) scale(.86) translate(-86 -5)">${igArm(0,0,{})}</g><g transform="translate(108 94) scale(.86) translate(-86 -5)">${igArm(0,0,{crooked:true})}</g>
      ${igT(252,27,'Heals straight',{c:IG.green,s:11.5})}<path d="M245 40 l5 5 l10 -11" stroke="${IG.green}" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -151,7 +151,7 @@ const VIZ={
   kids:({n,col,label,sub})=>igFrame(300,118,`${igKids(n,col||IG.teal)}${igT(150,112,label,{s:11.5})}`,label),
   kidsCompare:({a,b,label})=>igFrame(300,118,`<g class="ig-kidswap">${igKids(b,IG.teal)}</g>${igT(150,112,label,{s:11.5})}`,label),
   timeline:()=>{const X=d=>20+d*(260/45);return igFrame(300,150,`
-     <path d="M20 118 H284" stroke="${IG.line}" stroke-width="2"/>${[0,7,14,21,28,35,42].map(d=>`<path d="M${X(d)} 114 v8" stroke="${IG.soft}"/>${igT(X(d),134,d===0?'Today':'Wk '+d/7,{s:9.5,c:IG.soft})}`).join('')}
+     <path d="M20 118 H284" stroke="${IG.line}" stroke-width="2"/>${[0,7,14,21,28,35,42].map(d=>`<path d="M${X(d)} 114 v8" stroke="${IG.soft}"/>${igT(X(d),134,d===0?'Today':typeof T==='function'?T('Wk {0}',d/7):'Wk '+d/7,{s:9.5,c:IG.soft})}`).join('')}
      <path d="M${X(9)} 20 V118" stroke="${IG.coral}" stroke-width="2" stroke-dasharray="4 4"/><g transform="translate(${X(9)} 12)"><path d="M0 0 v14 M0 0 h14 l-4 4 l4 4 h-14" fill="${IG.coral}" stroke="${IG.coral}" stroke-width="1.5"/></g>${igT(X(9)+20,18,'Recital (day 9)',{s:10,c:IG.coral,a:'start'})}
      ${[['BoneMend',8,IG.violet],['Cast',21,IG.teal],['Pins',42,'#7b8bb8']].map(([l,d,c],i)=>`<g><rect x="20" y="${38+i*24}" width="${X(d)-20}" height="14" rx="7" fill="${c}" class="ig-grow" style="--d:${i*.3}s"/>${igT(26,49+i*24,l,{s:10,c:'#fff',a:'start'})}<text x="${X(d)+6}" y="${49+i*24}" font-size="12" font-family="Nunito" fill="${IG.ink}">&#119070;</text></g>`).join('')}`,'Time until violin for each option')},
   sampleSize:()=>{let big='',small='';for(let i=0;i<220;i++)big+=`<circle cx="${(12+(i*37)%126).toFixed(0)}" cy="${(30+((i*53)%70)).toFixed(0)}" r="2.4" fill="${IG.teal}" opacity=".75"/>`;for(let i=0;i<40;i++)small+=`<circle cx="${(172+(i*29)%110).toFixed(0)}" cy="${(30+((i*41)%70)).toFixed(0)}" r="2.4" fill="${IG.violet}"/>`;

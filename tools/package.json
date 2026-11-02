@@ -1,0 +1,8 @@
+{
+  "name": "pathmakers-tools",
+  "private": true,
+  "description": "Node helpers for tools/. pinyin-pro generates the Chinese mode's pinyin (cd tools && npm install, then node tools/i18n_pinyin.js). Playwright is preinstalled globally.",
+  "dependencies": {
+    "pinyin-pro": "3.29.5"
+  }
+}
