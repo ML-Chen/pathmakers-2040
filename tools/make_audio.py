@@ -50,7 +50,12 @@ ROLES = {
     "af_sky":     dict(speaker="af_jessica", speed=1.12, pitch=1.22, formant=1.10),  # Maya, 11: child pitch/timbre
     "am_michael": dict(speaker="am_liam", speed=1.02, pitch=1.0, formant=1.0),       # Wei Lin, her dad
     "bm_george":  dict(speaker="bm_fable", speed=1.05, pitch=1.0, formant=1.0),      # narrator: storyteller
+    # Passers-by (CHATTER). Any other key that is a Kokoro speaker name is read by that speaker
+    # at DEFAULT_SPEED; these two are recast: af_sarah is Byte's speaker, af_nicole is a near-whisper.
+    "af_sarah":   dict(speaker="af_aoede", speed=1.02, pitch=1.0, formant=1.0),
+    "af_nicole":  dict(speaker="af_alloy", speed=1.02, pitch=1.0, formant=1.0),
 }
+DEFAULT_SPEED = 1.02
 
 # Rewrites applied ONLY to the text fed to the TTS model; AUDIO keys keep the exact text.
 PRONOUNCE = [
@@ -62,6 +67,8 @@ PRONOUNCE = [
     (r"\b2040\b", "twenty forty"),
     (r"\bdatacenter\b", "data center"),
     (r"\btradeoff\b", "trade-off"),
+    (r"\bNǐ hǎo\b", "Nee how"),
+    (r"\b([A-Z]{5,})\b", lambda m: m.group(1).lower()),  # shouted words ("NINETY"), not acronyms
 ]
 # Bump when the audio post-processing below changes, so cached clips are rebuilt.
 PIPELINE_VERSION = 2
@@ -226,9 +233,11 @@ def main():
     args = ap.parse_args()
 
     lines = load_lines()
-    unknown = sorted({v for v, _ in lines if v not in ROLES})
-    if unknown:
-        sys.exit(f"unknown voice(s) {unknown}: add them to ROLES in tools/make_audio.py")
+    speakers = set(speaker_names(os.path.join(MODEL_DIR, "model.onnx")) or [])
+    for v in sorted({v for v, _ in lines} - set(ROLES)):
+        if v not in speakers:
+            sys.exit(f"unknown voice {v!r}: add it to ROLES in tools/make_audio.py")
+        ROLES[v] = dict(speaker=v, speed=DEFAULT_SPEED, pitch=1.0, formant=1.0)
     os.makedirs(CACHE_DIR, exist_ok=True)
     model_id = os.path.basename(os.path.normpath(MODEL_DIR))
 

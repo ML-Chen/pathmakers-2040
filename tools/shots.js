@@ -13,7 +13,7 @@ const [html,out]=[process.argv[2],process.argv[3]||'/tmp/pm-shots'];fs.mkdirSync
  await p.click('.sw:nth-child(2)');await p.click('.segb:nth-child(2)');await shot('setup-custom',300);
  await p.click('#go');await shot('morning',1200);
  await p.click('#sub');await p.waitForTimeout(300);await p.click('#sub');await shot('morning-2',1400);
- await E(()=>go('street'));await shot('street',1200);
+ await E(()=>{startMission('maya');go('street')});await shot('street',1200);
  await E(()=>go('arrive'));await shot('imani',1400);
  await E(()=>go('maya'));await shot('maya',1400);
  for(let i=0;i<4;i++){await p.click('#sub').catch(()=>{});await p.waitForTimeout(700);const c=await p.$('.choice');if(c){await c.click();await p.waitForTimeout(600)}}
@@ -30,9 +30,9 @@ const [html,out]=[process.argv[2],process.argv[3]||'/tmp/pm-shots'];fs.mkdirSync
  await E(()=>go('consent'));await shot('consent',900);
  await p.click('.choice');await shot('consent-reply',800);
  await E(()=>{S.memo='I recommend a cast with physical therapy because Maya had a rash from HX-2. It heals straight about 88 out of 100 times, and we can move her recital.';go('memo')});await shot('memo',600);
- await E(()=>go('reveal'));await shot('reveal-start',600);await shot('reveal-end',5200);
+ await E(()=>{S.result=null;go('reveal')});await shot('reveal-start',600);await shot('reveal-end',5200);
  await E(()=>go('debrief'));await shot('debrief',1200);
- await E(()=>go('evening'));await shot('evening',1200);
+ await E(()=>go('evening'));await shot('evening',1200);await E(()=>go('hub'));await shot('hub',900);
  await E(()=>openGuide());await shot('guide',700);
  await E(()=>{document.querySelector('.sheet .x').click();});await p.waitForTimeout(300);await E(()=>openChat());await shot('chat',700);
  fs.writeFileSync(path.join(out,'errors.txt'),errs.join('\n'));console.log(n+' shots; errors: '+(errs.join('\n')||'none'));await b.close()})();

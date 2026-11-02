@@ -49,9 +49,11 @@ const VIZ={
      ${igT(75,148,'Estimate barely moves',{s:9.5,c:IG.soft})}${igT(227,148,'Estimate jumps around',{s:9.5,c:IG.soft})}`,'A big sample and a small sample')},
   bars:()=>chartSVG(MEMO_CHART),
   rashForecast:({n,label})=>igFrame(300,118,`${igKids(n,IG.red)}${igT(150,112,label,{s:11.5})}`,label),
-  idcard:()=>igFrame(300,120,`<rect x="40" y="10" width="220" height="100" rx="14" fill="#fff" stroke="${IG.line}" stroke-width="2"/><rect x="40" y="10" width="220" height="24" rx="12" fill="${IG.coral}"/>${igT(150,27,'PATIENT',{s:11,c:'#fff'})}
-     <g transform="translate(88 82)">${mini(0,0,{skin:'#f8dcc8',shirt:IG.coral,hair:'#2a2030',s:1.6})}</g>${igT(132,62,'Maya Lin',{s:14,a:'start'})}${igT(132,80,'Age 11 · violinist',{s:11,a:'start',c:IG.soft})}
-     <g transform="translate(232 72) rotate(-20)"><g class="ig-sway"><ellipse cx="0" cy="0" rx="7" ry="12" fill="#b0622f"/><rect x="-1.5" y="-26" width="3" height="16" fill="#5a2d10"/></g></g>`,'Maya’s patient card'),
+  idcard:()=>igFrame(300,124,`<rect x="34" y="8" width="232" height="108" rx="14" fill="#fff" stroke="${IG.line}" stroke-width="2"/><path d="M34 22 a14 14 0 0 1 14 -14 h204 a14 14 0 0 1 14 14 v8 h-232z" fill="${IG.coral}"/>${igT(150,25,'PATIENT',{s:11,c:'#fff',w:800})}
+     <clipPath id="idc"><rect x="46" y="38" width="62" height="70" rx="10"/></clipPath><rect x="46" y="38" width="62" height="70" rx="10" fill="#ffe6dc"/>
+     <g clip-path="url(#idc)"><svg x="40" y="36" width="74" height="78" viewBox="40 20 220 232" preserveAspectRatio="xMidYMin slice">${personSVG({...CAST.maya,mood:'smile'})}</svg></g>
+     ${igT(122,62,'Maya Lin',{s:15,a:'start',w:800})}${igT(122,80,'Age 11',{s:11,a:'start',c:IG.soft})}${igT(122,96,'Violinist',{s:11,a:'start',c:IG.soft})}
+     <g class="ig-sway-wrap">${violinArt(232,72,.78,24)}</g>`,'Maya\u2019s patient card'),
   scooter:()=>igFrame(300,110,`<path d="M10 96 H290" stroke="${IG.line}" stroke-width="3"/><g class="ig-tip"><g transform="translate(120 70)"><rect x="-40" y="16" width="80" height="6" rx="3" fill="${IG.violet}"/><path d="M34 18 V-26 h10" stroke="${IG.violet}" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="-32" cy="24" r="6" fill="${IG.ink}"/><circle cx="32" cy="24" r="6" fill="${IG.ink}"/></g></g><g class="ig-star">${igT(210,50,'Ouch!',{s:16,c:IG.red})}</g>`,'A scooter fall'),
   noAllergy:()=>igFrame(300,110,`<rect x="80" y="8" width="140" height="96" rx="10" fill="#fff" stroke="${IG.line}" stroke-width="2"/><rect x="128" y="2" width="44" height="14" rx="5" fill="#cfd6ea"/>
      ${igT(150,36,'Allergies on file',{s:11})}<path d="M120 60 h60" stroke="${IG.soft}" stroke-width="3" stroke-linecap="round"/>${igT(150,86,'none found',{s:11,c:IG.soft})}<circle cx="236" cy="60" r="14" fill="none" stroke="${IG.gold}" stroke-width="3" class="ig-pulse"/>${igT(236,65,'?',{s:14,c:IG.gold})}`,'An empty allergy list'),
