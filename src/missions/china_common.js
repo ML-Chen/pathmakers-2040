@@ -34,7 +34,7 @@ function zhSign(o){const st=zhSt('sign');st.text=st.text||'';const signed=!!st.s
   wireMics&&wireMics();const ta=$('#zh-note');ta.oninput=()=>{st.text=ta.value;save()};
   $$('[data-s]').forEach(b=>b.onclick=()=>{ta.value=(ta.value&&!/\s$/.test(ta.value)?ta.value+' ':ta.value)+b.dataset.s;st.text=ta.value;save();ta.focus()});
   $('#zh-signbtn').onclick=()=>{if(st.signed){nextStep();return}
-    if(ta.value.trim().length<12){toast(T('Write a sentence in your own words first.'));return}
+    if(ta.value.trim().length<12){toast(T('Write a sentence or two in your own words first.'));return}
     st.text=ta.value.trim();st.signed=1;S.memo=st.text;S.consent=true;save();o.onSign&&o.onSign(st.text);MUSIC.sfx&&MUSIC.sfx('chime');
     const sig=document.createElement('div');sig.className='signing zh-signing';
     sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc(T(o.signAs||'{0}',P()))}</div><div class="sigline zh-pen" lang="zh">${esc(pt.zh||'')}</div>${o.seal?`<em class="zh-seal big" lang="zh">${esc(o.seal)}</em>`:''}<p>${esc(T(o.done||'Signed by both of you.'))}</p></div>`;
@@ -43,7 +43,7 @@ function zhSign(o){const st=zhSt('sign');st.text=st.text||'';const signed=!!st.s
 // o: {scene, place, stars:{ask, decision, heart}, items:[{star:'ask'|'decision'|'heart', ok, text}], byte, btn, plan}
 function zhDebrief(o){const SB=starsFrom(o.stars);S.lastStars=SB.stars;
   screen('debrief zh-deb',`${scene(o.scene)}<div class="talk-dim"></div>${hud(o.place||'Debrief')}<div class="panel-card debrief">
-    <h2>${T('How you did')}</h2><div class="scores"><div class="score">${starRow(SB)}<b>${T('Stars')}</b><span>${T('For asking well, choosing wisely and caring')}</span></div></div>
+    <h2>${T('How you did')}</h2><div class="scores"><div class="score">${starRow(SB)}<b>${T('Stars')}</b><span>${T('For the questions you asked, the plan you chose and the people you looked after')}</span></div></div>
     <ul class="dlist">${o.items.map(x=>`<li class="${x.ok?'ok':''}">${starIcon(x.star,x.ok)}${esc(T(x.text))}</li>`).join('')}</ul>
     <div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(T(o.byte))}</p></div>
     <div class="earned"><span>${T('{0} Field Guide ideas',S.guide.length)}</span><span>${T('{0} new words',S.words.length)}</span><span>${T('{0} hearts',Object.values(S.hearts).reduce((a,b)=>a+b,0))}</span></div>

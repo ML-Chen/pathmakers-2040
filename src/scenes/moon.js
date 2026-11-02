@@ -601,6 +601,6 @@
       { id: 'person', x: 63, y: 87, w: 50, talk: 'moon', look: { skin: '#c98e64', shirt: '#e8e2d4', hair: '#1b1410' } },
       { id: 'person', x: 38, y: 88, w: 48, talk: 'moon', look: { skin: '#f1cfb6', shirt: '#d4a85a', hair: '#b8642e' } }
     ];
-    PROPS.moon_night = [{ id: 'star', x: 18, y: 9, w: 26, sfx: 'chime', fx: 'shoot' }, { id: 'star', x: 52, y: 6, w: 20, sfx: 'chime', fx: 'shoot' }, { id: 'moonglass', x: 84, y: 92, w: 44, sfx: 'chime', fx: 'jiggle', burst: 'sparkles' }];
+    PROPS.moon_night = [{ id: 'star', x: 18, y: 9, w: 26, sfx: 'chime', fx: 'shoot' }, { id: 'star', x: 90, y: 13, w: 20, sfx: 'chime', fx: 'shoot' }, { id: 'moonglass', x: 90, y: 40, w: 44, sfx: 'chime', fx: 'jiggle', burst: 'sparkles' }];
   });
 })();

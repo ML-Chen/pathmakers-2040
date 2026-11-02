@@ -387,14 +387,18 @@ function renderTable(){
   $('#next').onclick=()=>nextStep();hook('table',c)}
 
 // ---------- Consent conversation ----------
+// consent.compact: the plan picker folds into one line ("Your plan: … · Change") so a mission with many controls still fits a phone
+let consentPickOpen=false;
 function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M());
+  const pick=K.compact?`<div class="planpick compact"><div class="pp-sum"><div><span class="ctl-l">${T('Your plan')}</span><b>${esc(T(M().planName(c)))}</b></div><button class="mini-btn" id="ppchg">${T(consentPickOpen?'Done':'Change')}</button></div>${consentPickOpen?controlsHTML(c):''}</div>`
+    :`<div class="planpick"><div class="ctl-l">${T('Your plan')}</div>${controlsHTML(c)}</div>`;
   screen('talk',`${scene(K.scene||'hospital')}<div class="talk-dim"></div>${hud(K.place||M().place)}<div class="stage duo"><div class="speaker">${portrait({...CAST[K.left],mood:'think'})}</div><div class="speaker">${portrait({...CAST[K.right],mood:'worried'})}</div></div>
-    <div class="subtitle"><div class="planpick"><div class="ctl-l">${T('Your plan')}</div>${controlsHTML(c)}</div>
+    <div class="subtitle">${pick}
       <div class="who"><b>${esc(T(K.title))}</b><span>${esc(T(K.role))}</span></div><p>${esc(T(K.prompt))}</p>
     <div class="choices">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
     <div class="tiny muted" style="margin-top:6px">${K.note?esc(T(K.note)):T('Explaining honestly lets them give real <button class="gw" data-w="consent">consent</button>.')}</div></div>`);
-  wireControls($('.planpick'),renderConsent);
-  $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];S.consent=o.good;if(o.good){heart(K.heart);const g=K.guide||'consent';unlock(g)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[g].title)),'good')}save();
+  wireControls($('.planpick'),renderConsent);if($('#ppchg'))$('#ppchg').onclick=()=>{consentPickOpen=!consentPickOpen;renderConsent()};
+  $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];consentPickOpen=false;S.consent=o.good;if(o.good){heart(K.heart);const g=K.guide||'consent';unlock(g)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[g].title)),'good')}save();
     $('.stage').innerHTML=`<div class="speaker">${portrait({...CAST[K.left],mood:o.good?'smile':'worried'})}</div><div class="speaker talking">${portrait({...CAST[K.replyWho],mood:o.mood})}</div>`;
     playLine(K.replyWho,o.reply);
     $('.subtitle').innerHTML=`<div class="who"><b>${esc(T(CAST[K.replyWho].name))}</b><span>${esc(T(CAST[K.replyWho].role))}</span></div><p>${esc(T(o.reply))}</p><div class="choices"><button class="choice" id="cont">${T(o.good?'Write my decision':'Try explaining again')}</button></div>`;

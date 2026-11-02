@@ -81,8 +81,8 @@ function rimFace(pick){return `<svg viewBox="-12 -26 24 30" class="rim-face">${r
 MISSIONS.rimshop.custom={
   rim_ride(){const st=rimState();
     screen('walk',`${scene('moon')}${hud('The rim road · Shackleton Rim Base')}<div class="props walklayer"><div class="walk-byte rim-walkbyte">${byteBox({...onSite(S.byte),mood:'happy'},'trot')}</div></div>
-      <div class="caption-card"><p>The Sun skims the hills, and every rock throws a long shadow. Far below the rim, tiny lights move in the dark.</p><div class="row"><button class="btn small ghost" id="clue">Look down</button><button class="btn small" id="on">Go to the market</button></div></div>`);
-    $('#clue').onclick=()=>{st.seen.crater=true;save();unlock('rim-moon')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-moon'].title,'good');toast('Headlamps move far below. A crew is heading down to the ice.','good');$('#clue').disabled=true};
+      <div class="caption-card"><p>The Sun sits low over the hills, so every rock throws a long shadow. Far below the rim of the crater, tiny lights move through the dark.</p><div class="row"><button class="btn small ghost" id="clue">Look down</button><button class="btn small" id="on">Go to the market</button></div></div>`);
+    $('#clue').onclick=()=>{st.seen.crater=true;save();unlock('rim-moon')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-moon'].title,'good');toast('Those lights are headlamps. An ice crew is riding down to dig at the bottom of the crater.','good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()},
   rim_ask(){const st=rimState();const A=st.asked;
     const five=()=>`<div class="rim-five">${RIM_FIVE.map((f,i)=>`<div class="rim-f" style="--d:${i*.12}s">${rimFace(f.pick)}<b>${f.n}</b><span style="color:${RIM_COL[f.pick]}">${RIM_IDEA[f.pick]}</span></div>`).join('')}</div>`;
@@ -95,7 +95,7 @@ MISSIONS.rimshop.custom={
       <div class="rim-asks"><button class="rim-askb ${A.five?'on':''}" id="a5"><b>5</b><span>Haruto’s tea friends</span></button><button class="rim-askb ${A.many?'on':''}" id="a500"><b>500</b><span>${esc(S.byte.name)}’s poll of the base</span></button></div>
       <div id="r5">${A.five?five():''}</div><div id="r500">${A.many?many():''}</div><div id="rq"></div></div>`);
     const say=t=>playLine('byte',t);
-    if(!A.five&&!A.many)setTimeout(()=>say('Let’s hear from both: five friends at the tea corner, and five hundred people from the whole base.'),250);
+    if(!A.five&&!A.many)setTimeout(()=>say('Let’s hear from both groups. First Haruto’s five friends at the tea corner, then five hundred people from all over the base.'),250);
     const ask=()=>{if(!(A.five&&A.many))return;const box=$('#rq');
       if(st.answer){box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(RIM_ASKSAY[st.answer])}</p></div><button class="btn wide" id="rgo">Meet my next customer</button>`;$('#rgo').onclick=()=>nextStep();return}
       box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>So why don’t the five and the five hundred agree?</p></div><div class="choices">${mixIdx(Q).map(([q,j])=>`<button class="choice" data-j="${j}">${esc(q.t)}</button>`).join('')}</div>`;
@@ -120,26 +120,26 @@ MISSIONS.rimshop.custom={
     $('#run').onclick=()=>{if(!pick)return;st.test=pick;save();unlock('rim-test')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-test'].title,'good');$('#run').disabled=true;$$('.rim-test').forEach(b=>b.disabled=true);
       const ov=document.createElement('div');ov.className='rim-days';ov.innerHTML=`<div class="rim-dayn"><b id="rimday">Day 1</b><span id="rimcoins">0 coins</span></div><div class="rim-dvig">${rimVignette(rimTestResult(pick).vig)}</div>`;document.body.appendChild(ov);
       const r=rimTestResult(pick);let i=0;const tm=setInterval(()=>{i++;const d=$('#rimday'),c=$('#rimcoins');if(d)d.textContent='Day '+Math.min(3,1+Math.floor(i/4));if(c)c.textContent=Math.round(r.coins*Math.min(1,i/12))+' coins';
-        if(i>=13){clearInterval(tm);ov.classList.add('out');setTimeout(()=>ov.remove(),450);playLine('byte','Here’s what three days taught us.');show();$('#rimres').scrollIntoView({behavior:'smooth',block:'start'})}},230)};
+        if(i>=13){clearInterval(tm);ov.classList.add('out');setTimeout(()=>ov.remove(),450);playLine('byte','Here is what three days of selling taught us.');show();$('#rimres').scrollIntoView({behavior:'smooth',block:'start'})}},230)};
     if(done)show()},
   rim_rules(){const st=rimState(),R=st.rules;const all=()=>RIM_RULES.every(r=>R[r.id]);
     screen('criteria rim-rulescr',`${scene('moon_dome')}${hud('Your booth · Till’s limits')}<div class="panel-card rim-card"><h2>Till’s limits</h2>
-      <div class="byte-note">${byteBox({...S.byte,mood:'neutral'})}<p>For each job, choose who does it.</p></div>
+      <div class="byte-note">${byteBox({...S.byte,mood:'neutral'})}<p>For each job below, choose who does it: Till on its own, Till with you checking afterwards, or only you.</p></div>
       <div class="rim-rules">${RIM_RULES.map(r=>`<div class="rim-rule"><p>${esc(r.t)}</p><div class="seg">${RIM_BINS.map(([v,l])=>`<button class="segb ${R[r.id]===v?'on':''}" data-r="${r.id}" data-v="${v}">${l}</button>`).join('')}</div></div>`).join('')}</div>
       <div id="rimnote"></div><button class="btn wide" id="next" ${all()?'':'disabled'}>Set my goals</button></div>`);
-    if(!all())setTimeout(()=>playLine('byte','Till can do a lot alone. For each job, choose: Till alone, Till then you check, or only you.'),250);
+    if(!all())setTimeout(()=>playLine('byte','Till can do a lot by itself. For each job, choose whether Till does it alone, Till does it and you check, or only you do it.'),250);
     const note=()=>{const n=[];if(R.raise==='alone')n.push('If supplies run short, Till will raise prices by itself. People here can’t shop anywhere else, so think about whether that feels fair.');
       if(R.newsupplier==='alone')n.push('Till could buy from any of those 400 new companies without asking.');if(R.reorder==='me'||R.nudge==='me')n.push('Asking you about tiny jobs is safe, but it will wake you up at 2 AM a lot.');
       $('#rimnote').innerHTML=n.length?`<div class="rim-warn">${n.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`:''};
     note();
     $$('[data-r]').forEach(b=>b.onclick=()=>{R[b.dataset.r]=b.dataset.v;save();$$(`[data-r="${b.dataset.r}"]`).forEach(x=>x.classList.toggle('on',x===b));
       if(b.dataset.r==='raise'){S.choice.short=b.dataset.v==='alone'?'raise':'ask';save()}note();
-      if(all()){$('#next').disabled=false;if(!st.rulesSaid){st.rulesSaid=1;save();playLine('byte','Those are clear limits. Till will follow them exactly.');unlock('rim-limits')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-limits'].title,'good')}}});
+      if(all()){$('#next').disabled=false;if(!st.rulesSaid){st.rulesSaid=1;save();playLine('byte','Those are clear limits, and Till will follow them exactly as you wrote them.');unlock('rim-limits')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-limits'].title,'good')}}});
     $('#next').onclick=()=>nextStep()}
 };
-const RIM_ASKSAY={good:'Exactly. All five live here, but more than half of our customers are visitors. A sample should look like the people who will really buy.',
-  fast:'They thought carefully, I’m sure. The bigger issue is who they are: all five live here, and most customers are visitors.',
-  wrong:'The poll is fine. The five just aren’t like most of our customers: they all live here, and more than half of our buyers are visitors.'};
+const RIM_ASKSAY={good:'Exactly. All five of them live at the base, and more than half of our customers are visitors. The people you ask should look like the people who will really buy.',
+  fast:'I’m sure they thought carefully. The real difference is who they are. All five live at the base, but most of our customers are visitors.',
+  wrong:'The poll is fine. The five just aren’t like most of our customers. They all live at the base, and more than half of our buyers are visitors.'};
 function rimDaily(k){return k==='glass'?28:k==='treats'?9:(S.told?36:7)}
 function rimTestResult(k){if(k==='glass')return {good:true,vig:'glassok',coins:84,head:'Sold 42 pieces in 3 days',text:'Nearly every visitor stopped to look. Residents mostly walked past. Each piece earned 4 coins.',line:''};
   if(k==='treats')return {good:false,vig:'treats',coins:27,head:'Sold out on day 1, then nothing',text:'Residents snapped up the chocolate, but shipping ate most of the profit, and the next box is 12 days away.',line:''};

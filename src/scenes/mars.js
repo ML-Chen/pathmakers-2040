@@ -363,7 +363,7 @@
       { id: 'marsdrone', x: 60, y: 30, w: 52, sfx: 'beep', fx: 'spin' },
       { id: 'person', x: 36, y: 88, w: 48, talk: 'mars', look: { skin: '#d8a888', shirt: '#e07a48', hair: '#2a1a14' } }
     ];
-    PROPS.mars_dusk = [{ id: 'marstomato', x: 84, y: 92, w: 48, sfx: 'rustle', fx: 'wiggle', burst: 'hearts' }, { id: 'star', x: 70, y: 12, w: 22, sfx: 'chime', fx: 'shoot' }];
+    PROPS.mars_dusk = [{ id: 'marstomato', x: 30, y: 45, w: 48, sfx: 'rustle', fx: 'wiggle', burst: 'hearts' }, { id: 'star', x: 70, y: 12, w: 22, sfx: 'chime', fx: 'shoot' }];
     PROPS.mars_storm = [{ id: 'marsdrone', x: 80, y: 86, w: 52, sfx: 'beep', fx: 'spin' }];
   });
 })();

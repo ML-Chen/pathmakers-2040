@@ -64,7 +64,7 @@ function dsBoardHTML(c){const need=dsNeed(c,S.told),f=forecastFor(c),max=60,W=v=
 MISSIONS.duststorm.custom={
   ds_power(){const c=S.choice;
     const say=()=>{const need=dsNeed(c,S.told),worst=48-need-DS_LONG;
-      return worst>=DS_FLOOR?'Even on the worst night in my range, this plan keeps the reserve. That’s a sturdy plan.':48-need>=DS_FLOOR?'This plan is safe if the storm clears by morning. If it lasts, the low end of the battery range runs too close.':'This plan only works if the storm comes late and leaves early. Most nights, we’d hit the reserve.'};
+      return worst>=DS_FLOOR?'Even on the worst night in my range, this plan never touches the emergency reserve.':48-need>=DS_FLOOR?'This plan is safe if the storm clears by morning. If the storm lasts and the battery starts at the low end, we would dip into the reserve.':'This plan only works if the storm comes late and leaves early. On most nights, we would run down to the reserve.'};
     screen('criteria ds-powscr',`${scene('mars_hab')}${hud('Control room · Tonight’s power')}<div class="panel-card ds-card"><h2>Tonight’s power</h2>
       <div class="ds-rows"><div class="ds-row ds-locked"><span>Life support</span><b>26 kWh · always on</b></div>
         ${DS_ROWS.map(([k,l,opts])=>`<div class="ds-row"><span>${l}</span><div class="seg">${opts.map(([v,t])=>`<button class="segb ${c[k]===v?'on':''}" data-k="${k}" data-v="${esc(JSON.stringify(v))}">${t} <small>${DS_LOAD[k][v]}</small></button>`).join('')}</div></div>`).join('')}
@@ -91,9 +91,9 @@ function dsNightRun(skip){const st=dsDraw();let R=dsResult();const hours=['6 PM'
   const setBat=h=>{const used=totalNeed()*Math.min(h,DS_HOURS)/DS_HOURS+(h>DS_HOURS?DS_LONG*(h-DS_HOURS)/3:0);const left=Math.max(st.B-used,DS_FLOOR*(R.f.safe?1:.6));const e=$('#dsbatfill'),n=$('#dsbatn');if(e){e.style.width=(left/60*100)+'%';e.classList.toggle('low',left<12)}if(n)n.textContent=Math.round(left*10)/10+' kWh'};
   const tick=()=>{const hr=$('#dshr');if(!hr)return clearInterval(timer);
     if(i<hours.length){hr.textContent=hours[i];$('#dstemp').textContent='Outside: −'+Math.round(45+Math.sin(i/13*Math.PI)*40)+'°C';setBat(i);
-      if(i===0)log('The storm front is here, a little early. The panels have stopped charging.','delta');
-      if(i===3)log(S.choice.msg==='send'?'The messages went out before the relay window closed.':'Nine PM. The relay window just closed.');
-      if(i===4)log(S.told?'Ten PM. Cabin outlets off, except the one you asked me to keep on.':'Ten PM. Cabin outlets off, as my storm rule says.');
+      if(i===0)log('Six PM. The storm has arrived, a little earlier than I expected, and the panels have stopped charging.','delta');
+      if(i===3)log(S.choice.msg==='send'?'Nine PM. The messages went out to Earth before the relay window closed.':'Nine PM. The relay window just closed.');
+      if(i===4)log(S.told?'Ten PM. The cabin outlets are off now, except the one you asked me to keep on.':'Ten PM. The cabin outlets are off now, as my storm rule says.');
       if(i===7&&!st.midShown){st.midShown=1;save();clearInterval(timer);mid();return}
       if(i===13){if(st.long)setBat(DS_HOURS+3);log(st.long?'Seven AM. The storm is still here, so the panels make only a little power.':'Seven AM. The storm has passed, and the panels are charging again.','delta')}
       i++;st.step=i;save();return}

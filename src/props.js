@@ -29,7 +29,7 @@ const PROPS={
     {id:'person',x:52,y:82,w:58,talk:'street',look:{skin:'#c98e64',shirt:'#ff7a6b',hair:'#1b1410'}},{id:'person',x:63,y:80,w:52,talk:'street',look:{skin:'#f6d2bd',shirt:'#6c5ce7',hair:'#c9772d'}}],
   hospital:[{id:'plant',x:10,y:90,w:60,sfx:'rustle',fx:'wiggle',burst:'leaves'},{id:'robot',x:88,y:90,w:52,sfx:'beep',fx:'spin'},{id:'orbHit',x:50,y:31,w:84,sfx:'chime',fx:'glow',burst:'sparkles',say:'Good morning, Doctor! Heads up: elevator B is a little slow today.',who:'halo'},
     {id:'person',x:28,y:89,w:56,talk:'hospital',look:{skin:'#f1cfb6',shirt:'#16b3a6',hair:'#e8e8e8'}},{id:'person',x:72,y:88,w:54,talk:'hospital',look:{skin:'#7a4a2c',shirt:'#f5b82e',hair:'#1b1410'}}],
-  night:[{id:'star',x:20,y:10,w:30,sfx:'chime',fx:'shoot'},{id:'star',x:46,y:16,w:22,sfx:'chime',fx:'shoot'}],
+  night:[{id:'star',x:20,y:10,w:30,sfx:'chime',fx:'shoot'},{id:'star',x:78,y:11,w:22,sfx:'chime',fx:'shoot'}],
   table:[]
 };
 function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${p.talk?T('Talk to a passer-by'):T('Play with the {0}',T(p.id))}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
