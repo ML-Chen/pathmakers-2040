@@ -1,200 +1,409 @@
-/* scenes/shenzhen.js - the robot factory zone of Shenzhen's Special Economic Zone in 2040 (uses window.CHINA_KIT).
-   PAINT.shenzhen. We stand on the factory's test-yard terrace, high above the zone, in pale hazy light. An industrial
-   Special Economic Zone, after the AI 2040 reference art (docs/DESIGN_NOTES.md, "Three kinds of places"): on the left a
-   gigantic stepped strip mine, a man-made canyon cut into the hills, with robot haul trucks on its benches; on the right
-   a robot factory the size of a town (long halls with sawtooth roofs, white domes and one tall control tower) with
-   almost no people; solar fields running to the horizon; rail lines curving in with a long freight train. Beyond it all,
-   the green hills that were left alone and Shenzhen Bay with its long bridge. The test yard in front has yellow safety
-   lines, a big red stop pedestal, a public board showing the zone's robot permits under their cap, and a test crew of
-   three construction robots. Flat, graphic and slightly retro, with fine linework. The lower third stays calm. */
+/* scenes/shenzhen.js - the robot factory zone of Shenzhen's Special Economic Zone in 2040, at golden hour (uses window.CHINA_KIT).
+   PAINT.shenzhen. We stand on the factory's test-yard terrace, high above the zone, looking south-west across it toward
+   Shenzhen Bay as the Sun goes down over the water. An industrial Special Economic Zone, after the AI 2040 reference art
+   (docs/DESIGN_NOTES.md, "Three kinds of places"), beside the real city: the skyline of Shenzhen stands in the golden haze
+   across the bay (the tall tapering Ping An Finance Center, the white ribbed "Spring Bamboo" tower by the water and many
+   more), with the green hills that were left alone behind it and the long bay bridge running out over the water. In the
+   zone below: rows of solar panels catching the glare, a terraced pit cut into red earth, a robot factory the size of a
+   town (long halls with sawtooth roofs whose north-light glazing glows from inside), white domes, the slim zone tower,
+   tower cranes and rail lines with freight trains. The Sun is ahead, so the fronts of the buildings are in warm shade and
+   every shadow runs long toward us. The terrace in front has yellow safety lines, the public board showing the zone's robot
+   permits under their cap, and a glass balustrade full of sunset. The lower third stays calm. */
 (function () {
   'use strict';
   var PAINT = (window.PAINT = window.PAINT || {});
   var K, PI = Math.PI, TAU = PI * 2;
-  var rng, lerp, mix, rgba, lg, rg, S, poly, rrect, softGlow, haze, finish, batch, dots, dabs, rects, skyStrokes, cloudForm, qell, clump, fbm;
+  var rng, lerp, mix, rgba, lg, rg, S, poly, rrect, softGlow, haze, finish, batch, dots, dabs, rects, qell, clump, fbm, clamp, smooth, glowSpr;
   function bind() {
     if (K) return true; K = window.CHINA_KIT; if (!K) return false;
     rng = K.rng; lerp = K.lerp; mix = K.mix; rgba = K.rgba; lg = K.lg; rg = K.rg; S = K.S; poly = K.poly; rrect = K.rrect; softGlow = K.softGlow; haze = K.haze;
-    finish = K.finish; batch = K.batch; dots = K.dots; dabs = K.dabs; rects = K.rects; skyStrokes = K.skyStrokes; cloudForm = K.cloudForm; qell = K.qell; clump = K.clump; fbm = K.fbm;
+    finish = K.finish; batch = K.batch; dots = K.dots; dabs = K.dabs; rects = K.rects; qell = K.qell; clump = K.clump; fbm = K.fbm; clamp = K.clamp; smooth = K.smooth; glowSpr = K.glowSpr;
     return true;
   }
-  var C = { line: '#4a3e38', sky: [[0, '#c6d6d8'], [0.5, '#e6e4d4'], [0.85, '#f4ead2'], [1, '#f6e4c4']], rock: ['#c8885a', '#b0704a', '#d8a072', '#8e5a3e', '#e8c094'],
-    hill: ['#7aa07a', '#5e8a64', '#9ab888'], sea: ['#a8c4c8', '#8ab0b8'], hall: ['#e8e6e0', '#c8c8c4', '#a8aab0'], solar: ['#4a5a7a', '#6a7a98', '#8a9ab4'], yard: ['#d8d4cc', '#c4beb4', '#aaa498'] };
-  function ink(ctx, s, a) { ctx.strokeStyle = rgba(C.line, a || 0.45); ctx.lineWidth = 0.7 * s; ctx.lineJoin = 'round'; ctx.stroke(); }
+  var C = { line: '#3a2a30', haze: '#f6c890', hazeHi: '#ffe2b0', shade: '#6a4a5a', rock: ['#c8744a', '#a85a3a', '#e09a62', '#7a3e30', '#f2bc82'], win: '#ffd27a',
+    sky: [[0, '#4e5a8e'], [0.32, '#9a7f9e'], [0.6, '#e8a27e'], [0.82, '#ffc27a'], [1, '#ffe0a0']], yard: ['#c8b8a4', '#b4a08a', '#9a8670'] };
+  function ink(ctx, s, a, wd) { ctx.strokeStyle = rgba(C.line, a == null ? 0.45 : a); ctx.lineWidth = (wd || 0.6) * s; ctx.lineJoin = 'round'; ctx.stroke(); }
 
+  /* ---------------- camera: a long lens from the terrace, 236 m up; X right, Z away, Y up (metres) ---------------- */
+  var CAM = 236;
   var LM = null;
   function layout(w, h) {
     var key = w + 'x' + h; if (LM && LM.key === key) return LM;
     var s = S(w, h), L = { key: key, s: s, w: w, h: h };
-    L.hz = h * 0.4; L.plain = h * 0.43; L.terrace = h * 0.69; L.dy = h * 0.05;
-    L.mine = { x: w * 0.25, y: h * 0.485, rx: w * 0.4, ry: h * 0.08 };
-    L.tower = { x: w * 0.78, base: h * 0.5, H: h * 0.27 };
+    L.f = h * 1.4; L.hz = h * 0.4; L.cx = w * 0.5;
+    L.P = function (X, Y, Z) { return [L.cx + X * L.f / Z, L.hz + (CAM - Y) * L.f / Z]; };
+    L.k = function (Z) { return L.f / Z; };
+    L.sun = [w * 0.62, h * 0.318];
+    L.shore = h * 0.448; L.far = h * 0.404; L.terrace = h * 0.63;
+    L.mine = { x: -120, z: 2900, rx: 640, rz: 560, n: 14, d: 300 };
+    // the factory: a town of long halls in rows, left clear around the pit
+    var r = rng(4100), Z, X; L.halls = [];
+    for (Z = 1950; Z < 4200; Z += 330 + r() * 60) for (X = -3200; X < 3200; X += 360 + r() * 140) {
+      var lx = 220 + r() * 220, dz = 100 + r() * 70, xc = X + (r() - 0.5) * 60;
+      if (Math.abs(xc - L.mine.x) < L.mine.rx + lx * 0.5 + 40 && Z < L.mine.z + L.mine.rz + 80) continue;
+      if (Math.abs(xc - 60) < lx * 0.5 + 40 && Math.abs(Z - 4300) < 260) continue;
+      if (r() < 0.12) continue;
+      L.halls.push([xc, Z, lx, dz, 20 + r() * 18]); }
+    L.domes = [[420, 2150, 44], [520, 2260, 30], [-760, 2250, 40], [980, 3500, 52], [-1500, 3300, 48]];
+    L.cranes = [[-210, 2080, 150, 1], [190, 2350, 175, -1], [430, 3650, 170, 1], [-420, 3500, 140, -1], [-1300, 2500, 160, -1], [1400, 2100, 150, -1], [900, 2900, 160, 1]];
+    L.tower = { x: 60, z: 4300, H: 520 };
     LM = L; return L;
   }
+  function quad(ctx, L, pts) { ctx.beginPath(); for (var i = 0; i < pts.length; i++) { var p = L.P(pts[i][0], pts[i][1], pts[i][2]); if (!i) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); } ctx.closePath(); }
+  // golden-hour haze: farther things melt into the warm air (a: 0 near .. 1 lost in haze)
+  function hz(c, a) { return mix(c, C.haze, clamp(a, 0, 1)); }
+  function hazeAt(Z) { return clamp((Z - 1500) / 7000, 0, 0.6); }
 
+  /* ---------------- sky, Sun and clouds ---------------- */
   function sky(ctx, L) {
-    var w = L.w, h = L.h, s = L.s, r = rng(3101);
-    ctx.fillStyle = lg(ctx, 0, 0, 0, L.hz + L.dy, C.sky); ctx.fillRect(0, 0, w, L.hz + L.dy + 2);
-    skyStrokes(ctx, -20 * s, w + 20 * s, 0, L.hz, C.sky, 160, r, s, 0.1, '#fff4dc', '#a8c0c4');
-    softGlow(ctx, w * 0.82, h * 0.1, w * 0.9, '#fffaf0', 0.4); softGlow(ctx, w * 0.82, h * 0.1, 30 * s, '#ffffff', 0.85);
-    ctx.strokeStyle = rgba('#ffffff', 0.3); ctx.lineWidth = 0.6 * s; ctx.beginPath(); for (var k = 0; k < 10; k++) { var yy = L.hz - (8 + k * k * 2.2) * s; ctx.moveTo(0, yy); ctx.lineTo(w, yy); } ctx.stroke();
-    cloudForm(ctx, w * 0.3, h * 0.12, w * 0.4, h * 0.025, r, { lit: '#fffaf0', mid: '#f0ece0', shade: '#d4d4cc', top: '#f4f2e8', al: 0.7, lx: 0.8, ly: -0.6, q: 0.5, seam: 0.06 });
+    var w = L.w, h = L.h, s = L.s, r = rng(3101), sx = L.sun[0], sy = L.sun[1];
+    ctx.fillStyle = lg(ctx, 0, 0, 0, L.shore, C.sky); ctx.fillRect(0, 0, w, L.shore + 2);
+    K.skyStrokes(ctx, -20 * s, w + 20 * s, 0, L.far, C.sky, 160, r, s, 0.08, '#ffd8a8', '#8a8ab8');
+    // the great warm bloom around the low Sun
+    softGlow(ctx, sx, sy, w * 1.2, '#ffd08a', 0.55); softGlow(ctx, sx, sy, w * 0.45, '#fff0c8', 0.6);
+    // long strands of cloud lit from beneath, pink and gold
+    [[0.3, 0.12, 0.7, 0.022, 0.85], [0.78, 0.07, 0.55, 0.016, 0.75], [0.15, 0.24, 0.45, 0.014, 0.8], [0.9, 0.2, 0.4, 0.012, 0.7], [0.55, 0.19, 0.35, 0.01, 0.6]].forEach(function (c, j) {
+      K.streakCloud(ctx, w * c[0], h * c[1], w * c[2], h * c[3], r, { shade: mix('#8a6a8a', '#c890a0', j * 0.15), mid: '#e0a090', lit: '#ffc890', rim: '#fff0c0', al: c[4], n: 40, dir: 1 }); });
+    // the Sun: a soft-edged disc sitting in the haze over the bay
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; softGlow(ctx, sx, sy, 60 * s, '#ffe8b0', 0.8); ctx.restore();
+    ctx.fillStyle = rg(ctx, sx, sy, 0, 16 * s, [[0, '#fffbea'], [0.75, '#fff0c0'], [1, 'rgba(255,230,170,0)']]); ctx.beginPath(); ctx.arc(sx, sy, 16 * s, 0, TAU); ctx.fill();
+    // rays through the haze
+    K.shafts(ctx, sx, sy, w, h, '#ffe0a0', 0.05, 14, rng(3102), PI * 0.9, PI * 0.5, 0.01, 0.04);
   }
-  // the bay and its bridge on the right, green hills behind, and the far solar fields
-  function distance(ctx, L) {
-    var w = L.w, h = L.h, s = L.s, r = rng(3202), hz = L.hz, i;
-    // far hills across the bay, pale with distance
-    K.ridge(ctx, -2, w + 2, 3 * s, function (x) { return hz - h * (0.02 + 0.03 * fbm(x / w * 3 + 4, 331, 4)); }, hz + 2 * s, mix(C.hill[2], C.sky[1][1], 0.6));
-    // the bay
-    ctx.fillStyle = lg(ctx, 0, hz - 2 * s, 0, hz + 10 * s, [[0, C.sea[0]], [1, C.sea[1]]]); ctx.fillRect(w * 0.42, hz - 2 * s, w * 0.6, 12 * s);
-    ctx.strokeStyle = rgba('#ffffff', 0.5); ctx.lineWidth = 0.6 * s; ctx.beginPath(); for (i = 0; i < 20; i++) { var x = w * (0.45 + r() * 0.55), y = hz + r() * 9 * s; ctx.moveTo(x, y); ctx.lineTo(x + (4 + r() * 10) * s, y); } ctx.stroke();
-    // the long bay bridge with its leaning single tower and fans of cables
-    var by = hz + 2 * s; ctx.strokeStyle = '#8a8e96'; ctx.lineWidth = 1.2 * s; ctx.beginPath(); ctx.moveTo(w * 0.5, by); ctx.lineTo(w * 1.02, by - 3 * s); ctx.stroke();
-    var px = w * 0.8, ptop = by - 18 * s; ctx.lineWidth = 1.6 * s; ctx.beginPath(); ctx.moveTo(px, by - 1.5 * s); ctx.lineTo(px - 2 * s, ptop); ctx.stroke();
-    ctx.lineWidth = 0.4 * s; ctx.beginPath(); for (i = 1; i <= 7; i++) { ctx.moveTo(px - 2 * s, ptop + i * 1.4 * s); ctx.lineTo(px - i * 6 * s, by - 1 * s); ctx.moveTo(px - 2 * s, ptop + i * 1.4 * s); ctx.lineTo(px + i * 6 * s, by - 2 * s); } ctx.stroke();
-    // green hills on the left that were left as they were, and two skyline needles of the old city far off
-    K.ridge(ctx, -2, w * 0.55, 3 * s, function (x) { var u = x / w; return hz + 2 * s - h * (0.05 * Math.exp(-Math.pow((u - 0.12) / 0.14, 2)) + 0.025 * fbm(u * 5, 341, 4)); }, hz + 8 * s, C.hill[0]);
-    dabs(ctx, 200, [[C.hill[1], 0.6], [C.hill[2], 0.55], ['#4a7a54', 0.5]], function () { var x = r() * w * 0.55, y = hz - r() * h * 0.05; return [x, y, (2 + r() * 4) * s, (1.2 + r() * 1.5) * s, (r() * 3) | 0, 0]; });
-    ctx.fillStyle = mix('#9aa4b0', C.sky[1][1], 0.4);
-    [[0.6, 40], [0.64, 30], [0.68, 52], [0.71, 26]].forEach(function (b) { var x = w * b[0], bh = b[1] * s; ctx.beginPath(); ctx.moveTo(x - 2.4 * s, hz); ctx.lineTo(x - 1.6 * s, hz - bh); ctx.lineTo(x, hz - bh - 6 * s); ctx.lineTo(x + 1.6 * s, hz - bh); ctx.lineTo(x + 2.4 * s, hz); ctx.closePath(); ctx.fill(); });
-    haze(ctx, -w * 0.2, hz - h * 0.04, w * 1.2, hz + h * 0.02, '#f4ecd8', 0.45);
+
+  /* ---------------- the far shore: hills and the skyline across the bay ---------------- */
+  function hills(ctx, L) {
+    var w = L.w, h = L.h, s = L.s, far = L.far;
+    // three ranges of green hills, each paler and pinker with distance
+    [[0.07, 0.5, '#b8a0a8', 0.85, 411], [0.05, 0.36, '#9a9898', 0.7, 412], [0.03, 0.22, '#6e8a72', 0.4, 413]].forEach(function (Rg, j) {
+      K.ridge(ctx, -2, w + 2, 3 * s, function (x) { var u = x / w; return far + 1 * s - h * (Rg[0] * (0.35 + 0.65 * fbm(u * 3.2 + j * 2, Rg[4], 4)) * (0.6 + 0.4 * Math.exp(-Math.pow((u - (j === 1 ? 0.12 : 0.88)) / 0.25, 2)))); }, far + 3 * s, mix(Rg[2], C.haze, Rg[3] * 0.6));
+    });
+    var r = rng(414);
+    dabs(ctx, 160, [['#5e7a62', 0.5], ['#7a9a72', 0.45]], function () { var x = r() * w, y = far - r() * h * 0.018; return [x, y, (2 + r() * 3) * s, (1 + r()) * s, (r() * 2) | 0, 0]; });
   }
-  // the plain of the zone: solar fields in long rows to the horizon, rail lines curving in
-  function plain(ctx, L) {
-    var w = L.w, h = L.h, s = L.s, hz = L.hz, r = rng(3303), i;
-    ctx.fillStyle = lg(ctx, 0, hz + 4 * s, 0, L.terrace, [[0, '#d8c8a8'], [1, '#c8b08a']]); ctx.fillRect(0, hz + 4 * s, w, L.terrace - hz);
-    for (var q = 0; q < 8; q++) { var yq = lerp(hz + 5 * s, hz + 30 * s, Math.pow(q / 8, 1.5)); ctx.fillStyle = q % 2 ? C.solar[0] : C.solar[2]; ctx.fillRect(0, yq, w * 0.45, (0.6 + q * 0.4) * s); }
-    // solar fields: bands of blue panels, finer with distance
-    for (i = 0; i < 14; i++) { var t = i / 14, y = lerp(hz + 6 * s, h * 0.56, Math.pow(t, 1.6)), th = (0.8 + t * 3.2) * s;
-      ctx.fillStyle = i % 2 ? C.solar[0] : C.solar[1]; ctx.fillRect(w * 0.45, y, w * 0.6, th);
-      ctx.fillStyle = rgba('#e8f0ff', 0.25); ctx.fillRect(w * 0.45, y, w * 0.6, th * 0.25); }
-    ctx.fillStyle = rgba('#d8c8a8', 0.5); for (i = 0; i < 8; i++) ctx.fillRect(w * (0.47 + i * 0.07), hz + 6 * s, 1.2 * s, h * 0.16);
-    haze(ctx, w * 0.3, hz, w * 1.2, hz + h * 0.04, '#f0e8d4', 0.4);
-    // rail lines sweeping in from the left and on toward the factory
-    ctx.strokeStyle = '#6a5e54'; ctx.lineWidth = 0.9 * s;
-    for (var k = 0; k < 3; k++) { ctx.beginPath(); ctx.moveTo(-10 * s, h * (0.565 + k * 0.012)); ctx.bezierCurveTo(w * 0.3, h * (0.575 + k * 0.012), w * 0.55, h * (0.53 + k * 0.01), w * 1.05, h * (0.505 + k * 0.009)); ctx.stroke(); }
-    L.rail = function (t, k) { var u = 1 - t, x0 = -10 * s, x1 = w * 0.3, x2 = w * 0.55, x3 = w * 1.05, y0 = h * (0.565 + k * 0.012), y1 = h * (0.575 + k * 0.012), y2 = h * (0.53 + k * 0.01), y3 = h * (0.505 + k * 0.009);
-      return [u * u * u * x0 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3, u * u * u * y0 + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3]; };
+  // a tower in the haze: tapering shaft (profile function), lit edge toward the Sun, faint window rows
+  function towerShape(ctx, L, x, y0, H, W, prof, o) {
+    var s = L.s, n = 24, i, pts = [];
+    for (i = 0; i <= n; i++) { var t = i / n; pts.push([x - W * prof(t) * 0.5, y0 - H * t]); }
+    for (i = n; i >= 0; i--) { var t2 = i / n; pts.push([x + W * prof(t2) * 0.5, y0 - H * t2]); }
+    poly(ctx, pts); var lit = x < L.sun[0] ? 1 : -1;
+    ctx.fillStyle = lg(ctx, x - W / 2, 0, x + W / 2, 0, lit > 0 ? [[0, o.c0], [0.75, o.c1], [1, o.rim]] : [[0, o.rim], [0.25, o.c1], [1, o.c0]]); ctx.fill();
+    ctx.save(); poly(ctx, pts); ctx.clip();
+    if (o.ribs) { ctx.strokeStyle = rgba(o.rib || '#ffffff', 0.3); ctx.lineWidth = 0.4 * s; ctx.beginPath(); for (var k = 1; k < o.ribs; k++) { var u = k / o.ribs - 0.5; for (var j = 0; j <= 12; j++) { var tt = j / 12, xx = x + u * W * prof(tt), yy = y0 - H * tt; if (!j) ctx.moveTo(xx, yy); else ctx.lineTo(xx, yy); } } ctx.stroke(); }
+    // window glints facing the Sun
+    ctx.fillStyle = rgba('#fff0c0', 0.5); var r = rng(Math.round(x * 13 + H)); for (var q = 0; q < H / (3 * s); q++) if (r() < 0.25) ctx.fillRect(x + lit * W * (0.1 + r() * 0.3), y0 - r() * H * 0.95, 1 * s, 0.6 * s);
+    ctx.fillStyle = lg(ctx, 0, y0 - H * 0.3, 0, y0, [[0, rgba(C.haze, 0)], [1, rgba(C.haze, 0.55)]]); ctx.fillRect(x - W, y0 - H, W * 2, H);
+    ctx.restore();
   }
-  // the strip mine: a stepped canyon of benches, lit from the upper right
+  function skyline(ctx, L) {
+    var w = L.w, h = L.h, s = L.s, y0 = L.far + 1 * s, r = rng(4401), i;
+    var c0 = '#b08aa0', c1 = '#c69aa4', rim = '#ffe0b0';
+    // a dense spread of ordinary towers, two depths
+    for (var d = 0; d < 2; d++) for (i = 0; i < 46; i++) {
+      var x = r() * w * 1.04 - w * 0.02, H2 = h * (0.012 + Math.pow(r(), 2.2) * (d ? 0.05 : 0.035)), W2 = (4 + r() * 9) * s;
+      if (Math.abs(x - L.sun[0]) < 14 * s && d === 0) continue;
+      var flat = r() < 0.7; towerShape(ctx, L, x, y0, H2, W2, flat ? function () { return 1; } : function (t) { return 1 - t * 0.35; }, { c0: mix(d ? '#c4a0aa' : '#d4b0b0', C.haze, 0.3), c1: mix(d ? c1 : '#dcb8b4', C.haze, 0.35), rim: rim, ribs: 0 });
+    }
+    // the "Spring Bamboo" tower: white, round, ribbed, tapering to a rounded tip, by the water on the right
+    var bx = w * 0.8, bH = h * 0.135, bW = 16 * s;
+    towerShape(ctx, L, bx, y0, bH, bW, function (t) { return t < 0.9 ? 1 - t * 0.32 : (1 - 0.9 * 0.32) * Math.sqrt(Math.max(0, 1 - (t - 0.9) / 0.1)); }, { c0: '#d8b8b8', c1: '#f0d4c8', rim: '#fff4dc', ribs: 9, rib: '#ffffff' });
+    // Kingkey 100 (flat top with a curved crown) and a few more tall neighbours on the left
+    towerShape(ctx, L, w * 0.18, y0, h * 0.11, 15 * s, function (t) { return t < 0.92 ? 1 : 1 - (t - 0.92) * 4; }, { c0: '#b490a4', c1: '#caa2aa', rim: rim, ribs: 4 });
+    towerShape(ctx, L, w * 0.42, y0, h * 0.085, 12 * s, function (t) { return 1 - t * 0.2; }, { c0: '#b894a6', c1: '#cca6ac', rim: rim, ribs: 3 });
+    towerShape(ctx, L, w * 0.95, y0, h * 0.07, 11 * s, function () { return 1; }, { c0: '#c09aa8', c1: '#d0aaae', rim: rim, ribs: 3 });
+    // the Ping An Finance Center: the tallest, a tapering shaft with steel piers at its corners and a pointed crown
+    var px = w * 0.3, pH = h * 0.215, pW = 20 * s;
+    towerShape(ctx, L, px, y0, pH, pW, function (t) { return t < 0.78 ? 1 - t * 0.28 : t < 0.95 ? (1 - 0.78 * 0.28) * (1 - (t - 0.78) * 2.6) : (1 - 0.78 * 0.28) * (1 - 0.17 * 2.6) * (1 - (t - 0.95) * 18); }, { c0: '#a8869c', c1: '#c49cac', rim: '#ffe8c0', ribs: 6, rib: '#fff0d0' });
+    ctx.strokeStyle = rgba('#fff0d0', 0.55); ctx.lineWidth = 0.8 * s; ctx.beginPath(); ctx.moveTo(px + pW * 0.48, y0); ctx.lineTo(px + pW * 0.36, y0 - pH * 0.76); ctx.stroke();
+    L.pingan = [px, y0 - pH];
+    haze(ctx, -w * 0.2, y0 - h * 0.05, w * 1.2, y0 + h * 0.01, C.haze, 0.35);
+  }
+  // Shenzhen Bay: the water reflecting the sky, a glittering path under the Sun, the long bridge and a few boats
+  function bay(ctx, L) {
+    var w = L.w, h = L.h, s = L.s, y0 = L.far, y1 = L.shore, r = rng(4501), i;
+    ctx.fillStyle = lg(ctx, 0, y0, 0, y1, [[0, '#f2c08a'], [0.4, '#d8a08a'], [1, '#a87c88']]); ctx.fillRect(0, y0, w, y1 - y0);
+    // reflected skyline smear
+    ctx.fillStyle = rgba('#b08aa0', 0.25); ctx.fillRect(0, y0, w, (y1 - y0) * 0.18);
+    // ripples
+    batch(ctx, 260, [['#ffe0b0', 0.6 * s, 0.5], ['#8a6a7a', 0.5 * s, 0.35]], function () { var y = lerp(y0 + 1 * s, y1, Math.pow(r(), 1.3)), x = r() * w, l = (3 + r() * 10) * s * (0.4 + (y - y0) / (y1 - y0)); return [x, y, x + l, y, r() < 0.55 ? 0 : 1]; });
+    // the glitter path under the Sun
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    var gx = L.sun[0]; ctx.fillStyle = lg(ctx, gx - w * 0.12, 0, gx + w * 0.12, 0, [[0, 'rgba(255,220,150,0)'], [0.5, 'rgba(255,230,170,0.35)'], [1, 'rgba(255,220,150,0)']]); ctx.fillRect(gx - w * 0.12, y0, w * 0.24, y1 - y0);
+    for (i = 0; i < 160; i++) { var t = Math.pow(r(), 0.8), yy = lerp(y0 + 1 * s, y1, t), spread = (6 + t * 40) * s, xx = gx + (r() + r() - 1) * spread, l = (2 + r() * 6) * s * (0.5 + t); ctx.fillStyle = rgba('#fff6d8', 0.4 + r() * 0.5); ctx.fillRect(xx - l / 2, yy, l, 0.7 * s); }
+    ctx.restore();
+    // the bay bridge: a low deck curving out across the water with one leaning pylon and fans of cables
+    var bL = [-0.05 * w, y0 + (y1 - y0) * 0.28], bR = [w * 1.05, y0 + (y1 - y0) * 0.12], pyx = w * 0.7;
+    var deck = function (x) { var t = (x - bL[0]) / (bR[0] - bL[0]); return lerp(bL[1], bR[1], t) - Math.sin(t * PI) * 1.5 * s; };
+    ctx.strokeStyle = mix('#7a6070', C.haze, 0.3); ctx.lineWidth = 1.4 * s; ctx.beginPath(); for (var x = bL[0]; x <= bR[0]; x += 4 * s) { if (x === bL[0]) ctx.moveTo(x, deck(x)); else ctx.lineTo(x, deck(x)); } ctx.stroke();
+    ctx.strokeStyle = rgba('#5a4458', 0.4); ctx.lineWidth = 0.6 * s; ctx.beginPath(); for (x = bL[0]; x <= bR[0]; x += 9 * s) { ctx.moveTo(x, deck(x)); ctx.lineTo(x, deck(x) + 3 * s); } ctx.stroke();
+    var top = [pyx - 3 * s, deck(pyx) - 24 * s]; ctx.strokeStyle = mix('#7a6070', C.haze, 0.25); ctx.lineWidth = 1.8 * s; ctx.beginPath(); ctx.moveTo(pyx, deck(pyx) + 2 * s); ctx.lineTo(top[0], top[1]); ctx.stroke();
+    ctx.strokeStyle = rgba('#fff0d8', 0.45); ctx.lineWidth = 0.35 * s; ctx.beginPath(); for (i = 1; i <= 9; i++) { var tt = top[1] + i * 2 * s; ctx.moveTo(top[0] + i * 0.25 * s, tt); ctx.lineTo(pyx - i * 7 * s, deck(pyx - i * 7 * s)); ctx.moveTo(top[0] + i * 0.25 * s, tt); ctx.lineTo(pyx + i * 7 * s, deck(pyx + i * 7 * s)); } ctx.stroke();
+    L.bridge = { L: bL, R: bR, deck: deck };
+    // a few boats with bright wakes
+    [[0.12, 0.6], [0.48, 0.45], [0.86, 0.7]].forEach(function (b) { var bx = w * b[0], by = lerp(y0, y1, b[1]); ctx.fillStyle = 'rgba(255,240,210,0.5)'; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx - 18 * s, by + 1.5 * s); ctx.lineTo(bx - 18 * s, by + 0.3 * s); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#5a4458'; ctx.fillRect(bx - 3 * s, by - 2 * s, 5 * s, 2 * s); ctx.fillStyle = '#e8e0d8'; ctx.fillRect(bx - 2 * s, by - 3 * s, 2.5 * s, 1.2 * s); });
+    // the near shore: a band of mangrove green, then the land of the zone
+    ctx.fillStyle = lg(ctx, 0, y1 - 2 * s, 0, y1 + 3 * s, [[0, '#6a7a5a'], [1, '#8a7a5a']]); ctx.fillRect(0, y1 - 1.5 * s, w, 4 * s);
+    dabs(ctx, 180, [['#4e6a4e', 0.7], ['#6a8a5a', 0.6]], function () { return [r() * w, y1 - r() * 2 * s, (2 + r() * 4) * s, (1 + r() * 1.4) * s, (r() * 2) | 0, 0]; });
+  }
+
+  /* ---------------- the zone ---------------- */
+  function groundPlane(ctx, L) {
+    var w = L.w, h = L.h, s = L.s, y0 = L.shore, y1 = L.terrace, r = rng(4601), i;
+    ctx.fillStyle = lg(ctx, 0, y0, 0, y1, [[0, '#d8a478'], [0.35, '#c48a64'], [1, '#a87058']]); ctx.fillRect(0, y0 + 1 * s, w, y1 - y0);
+    // fields and lots in faint blocks, warm earth and paler concrete
+    for (i = 0; i < 70; i++) { var Z = lerp(1500, 6500, Math.pow(r(), 0.8)), X = (r() - 0.5) * 5000, dz = 60 + r() * 200, dx = 80 + r() * 300; quad(ctx, L, [[X, 0, Z], [X + dx, 0, Z], [X + dx, 0, Z + dz], [X, 0, Z + dz]]); ctx.fillStyle = rgba(r() < 0.5 ? '#e8c098' : '#b07a5a', 0.25); ctx.fill(); }
+    // roads: a straight highway and service roads, in warm grey
+    ctx.strokeStyle = rgba('#8a7468', 0.8);
+    [[-3000, 1600, 3000, 5200, 2.2], [-3000, 4200, 3000, 4000, 1.4], [-200, 1500, -150, 6000, 1.2]].forEach(function (R) { var a = L.P(R[0], 0, R[1]), b = L.P(R[2], 0, R[3]); ctx.lineWidth = R[4] * s; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
+    L.road = [L.P(-3000, 0, 1600), L.P(3000, 0, 5200)];
+  }
+  // solar fields: long rows of panels tilted toward the Sun; from behind we see their edges catching the glare
+  function solar(ctx, L) {
+    var w = L.w, s = L.s, r = rng(4701), Z;
+    for (Z = 6600; Z > 3700; Z -= Z > 5000 ? 70 : 50) {
+      var k = L.k(Z), hh = Math.max(0.6 * s, 3.2 * k), y = L.P(0, 0, Z)[1], aH = hazeAt(Z);
+      for (var seg = 0; seg < 3; seg++) {
+        var X0 = [-4200, -700, 1500][seg], X1 = [-1700, 1100, 4200][seg];
+        if (seg === 1 && Z < 4300) continue;
+        var a = L.P(X0, 0, Z), b = L.P(X1, 0, Z);
+        ctx.fillStyle = hz('#3a4a70', 0.25 + aH * 0.6); ctx.fillRect(a[0], y - hh, b[0] - a[0], hh);
+        // the bright top edges, brightest in line with the Sun
+        var g = lg(ctx, a[0], 0, b[0], 0, [[0, 'rgba(255,230,180,0.25)'], [clamp((L.sun[0] - a[0]) / Math.max(1, b[0] - a[0]), 0, 1), 'rgba(255,248,220,0.9)'], [1, 'rgba(255,230,180,0.25)']]);
+        ctx.fillStyle = g; ctx.fillRect(a[0], y - hh, b[0] - a[0], Math.max(0.5 * s, hh * 0.3));
+        // gaps between panel blocks
+        ctx.fillStyle = hz('#a86a50', 0.4 + aH * 0.5); for (var x = a[0] + 30 * k; x < b[0]; x += 120 * k) ctx.fillRect(x, y - hh, Math.max(0.6 * s, 6 * k), hh);
+      }
+    }
+  }
+  // the terraced pit: benches stepping down into red earth, bench tops lit by the low Sun, risers in warm shade
   function mine(ctx, L) {
-    var M = L.mine, s = L.s, r = rng(3404), n = 9, i;
-    function contour(k) { var t = k / n, pts = []; for (var a = 0; a <= 48; a++) { var th = a / 48 * TAU, wob = 1 + 0.06 * Math.sin(th * 3 + k) + 0.04 * Math.sin(th * 5 + 2);
-        pts.push([M.x + Math.cos(th) * M.rx * (1 - t * 0.84) * wob - t * M.rx * 0.06, M.y + Math.sin(th) * M.ry * (1 - t * 0.84) * wob + t * M.ry * 0.95]); } return pts; }
-    var dh = M.ry * 0.09;
-    function shift(pts, dy) { return pts.map(function (p) { return [p[0], p[1] + dy]; }); }
-    for (i = 0; i < n; i++) {
-      var pts = contour(i), t = i / n;
-      // the bench wall (in shade, deeper is darker), then the flat bench below it, which shows only on the far side
-      poly(ctx, pts); ctx.fillStyle = lg(ctx, M.x - M.rx, 0, M.x + M.rx, 0, [[0, mix(C.rock[0], C.rock[3], 0.2 + t * 0.6)], [1, mix(C.rock[1], '#5a3424', 0.3 + t * 0.6)]]); ctx.fill();
-      ctx.save(); poly(ctx, pts); ctx.clip();
-      poly(ctx, shift(contour(i + 0.02), dh)); ctx.fillStyle = lg(ctx, M.x - M.rx, 0, M.x + M.rx, 0, [[0, mix(C.rock[4], C.rock[2], 0.3 + t * 0.4)], [0.6, mix(C.rock[2], C.rock[0], t * 0.6)], [1, mix(C.rock[0], C.rock[3], t * 0.5)]]); ctx.fill();
-      ctx.restore();
-      poly(ctx, pts); ink(ctx, s, 0.3);
+    var M = L.mine, s = L.s, i, r = rng(4801);
+    L.benches = [];
+    var aH = hazeAt(M.z) * 0.6;
+    var ring = function (ff, YY, i) { var pts = []; for (var a = 0; a <= 40; a++) { var th = a / 40 * TAU, wob = 1 + 0.05 * Math.sin(th * 3 + i * 0.3) + 0.03 * Math.sin(th * 7 + 1); pts.push(L.P(M.x + Math.cos(th) * M.rx * ff * wob, YY, M.z + Math.sin(th) * M.rz * ff * wob)); } return pts; };
+    var open = ring(1, 0, 0); ctx.save(); poly(ctx, open); ctx.fillStyle = hz(C.rock[2], aH); ctx.fill(); ctx.clip();
+    for (i = 0; i < M.n; i++) {
+      var f = 1 - i / M.n * 0.88, Y = -M.d * i / M.n, Y2 = -M.d * (i + 1) / M.n, t = i / M.n;
+      var up = ring(f, Y, i), dn = ring(f, Y2, i);
+      // the bench floor at this depth (deeper levels paint over its middle)
+      poly(ctx, dn); ctx.fillStyle = hz(mix('#f2b67e', '#e0905e', t), aH); ctx.fill();
+      // the riser: the far wall of this step faces us with the Sun behind it, so it stands in warm shade with layered strata
+      var band = up.slice(0, 21).concat(dn.slice(0, 21).reverse()); poly(ctx, band); ctx.fillStyle = hz(mix('#a05a44', '#6a3438', t), aH); ctx.fill();
+      ctx.save(); poly(ctx, band); ctx.clip(); ctx.strokeStyle = rgba('#5a2a2a', 0.3); ctx.lineWidth = 0.5 * s; ctx.beginPath();
+      for (var q = 1; q < 3; q++) { var yy = lerp(Y, Y2, q / 3); var rr2 = ring(f, yy, i); for (var j = 0; j <= 20; j++) { if (!j) ctx.moveTo(rr2[j][0], rr2[j][1]); else ctx.lineTo(rr2[j][0], rr2[j][1]); } } ctx.stroke(); ctx.restore();
+      // the lip of the step catches the low Sun
+      ctx.strokeStyle = rgba('#ffe6b8', 0.85 - t * 0.4); ctx.lineWidth = 0.8 * s; ctx.beginPath(); for (j = 0; j <= 20; j++) { if (!j) ctx.moveTo(up[j][0], up[j][1]); else ctx.lineTo(up[j][0], up[j][1]); } ctx.stroke();
+      var bq = ring(f - 0.04, Y2, i); if (i % 2 === 0 && bq[10][1] < open[30][1] - 3 * s) L.benches.push(bq.slice(4, 17));
     }
-    // layered rock streaks on the bench walls
-    batch(ctx, 260, [[rgba(C.rock[3], 1), 0.6 * s, 0.3], [rgba(C.rock[4], 1), 0.6 * s, 0.35]], function () { var a = r() * TAU, rr = Math.sqrt(r()), x = M.x + Math.cos(a) * M.rx * rr * 0.9, y = M.y + Math.sin(a) * M.ry * rr * 0.9; return [x, y, x + (3 + r() * 6) * s, y, r() < 0.5 ? 0 : 1]; });
-    // a pool of water on the floor, and robot haul trucks on the benches (they move in the overlay)
-    var f = shift(contour(n - 0.4), dh * 1.4); poly(ctx, f); ctx.fillStyle = '#8ab0b0'; ctx.fill(); ink(ctx, s, 0.3);
-    L.benches = []; for (i = 1; i < n - 1; i += 2) L.benches.push(contour(i + 0.3));
-    // spoil heaps and a conveyor running from the rim toward the factory
-    ctx.strokeStyle = '#5a5054'; ctx.lineWidth = 1.4 * s; ctx.beginPath(); ctx.moveTo(M.x + M.rx * 0.55, M.y - M.ry * 0.4); ctx.lineTo(L.w * 0.58, L.h * 0.475); ctx.stroke();
-    ctx.lineWidth = 0.5 * s; ctx.beginPath(); for (i = 0; i < 12; i++) { var u = i / 11, x0 = lerp(M.x + M.rx * 0.55, L.w * 0.58, u), y0 = lerp(M.y - M.ry * 0.4, L.h * 0.475, u); ctx.moveTo(x0, y0); ctx.lineTo(x0, y0 + 4 * s); } ctx.stroke();
+    ctx.restore();
+    // the sunlit lip of the pit, and its near rim in shade
+    ctx.strokeStyle = rgba('#fff0c8', 0.8); ctx.lineWidth = 1 * s; ctx.beginPath(); for (i = 0; i <= 20; i++) { if (!i) ctx.moveTo(open[i][0], open[i][1]); else ctx.lineTo(open[i][0], open[i][1]); } ctx.stroke();
+    ctx.strokeStyle = rgba('#6a3a3a', 0.5); ctx.lineWidth = 1.2 * s; ctx.beginPath(); for (i = 20; i <= 40; i++) { if (i === 20) ctx.moveTo(open[i][0], open[i][1]); else ctx.lineTo(open[i][0], open[i][1]); } ctx.stroke();
+    // a green pool at the bottom
+    // a conveyor from the rim to the factory
+    var c0 = L.P(M.x + M.rx * 0.8, 6, M.z - M.rz * 0.3), c1 = L.P(80, 14, 2300); ctx.strokeStyle = '#6a5054'; ctx.lineWidth = 1.4 * s; ctx.beginPath(); ctx.moveTo(c0[0], c0[1]); ctx.lineTo(c1[0], c1[1]); ctx.stroke();
+    ctx.lineWidth = 0.5 * s; ctx.beginPath(); for (i = 0; i <= 14; i++) { var u = i / 14, xx = lerp(c0[0], c1[0], u), yy = lerp(c0[1], c1[1], u); ctx.moveTo(xx, yy); ctx.lineTo(xx, yy + 4 * s); } ctx.stroke();
+    L.conveyor = [c0, c1];
   }
-  // the factory: long halls with sawtooth roofs, white domes and the control tower
-  function factory(ctx, L) {
-    var w = L.w, h = L.h, s = L.s, i, r = rng(3505);
-    var halls = [[0.5, 0.455, 0.2, 0.018], [0.72, 0.448, 0.26, 0.02], [0.6, 0.48, 0.3, 0.026], [0.88, 0.47, 0.22, 0.024], [0.68, 0.515, 0.36, 0.032]];
-    for (i = 0; i < halls.length; i++) { var x = w * halls[i][0], y = h * halls[i][1], hw = w * halls[i][2], hh = h * halls[i][3];
-      ctx.beginPath(); ctx.rect(x - hw / 2, y - hh, hw, hh); ctx.fillStyle = lg(ctx, 0, y - hh, 0, y, [[0, C.hall[0]], [1, C.hall[1]]]); ctx.fill(); ink(ctx, s, 0.4);
-      // sawtooth roof with north-light glazing
-      var nT = Math.round(hw / (7 * s)), tw = hw / nT; ctx.beginPath();
-      for (var k = 0; k < nT; k++) { var x0 = x - hw / 2 + k * tw; ctx.moveTo(x0, y - hh); ctx.lineTo(x0 + tw * 0.75, y - hh - tw * 0.45); ctx.lineTo(x0 + tw, y - hh - tw * 0.45); ctx.lineTo(x0 + tw, y - hh); }
-      ctx.fillStyle = C.hall[2]; ctx.fill(); ink(ctx, s, 0.35);
-      ctx.fillStyle = rgba(C.solar[0], 0.8); for (k = 0; k < nT; k++) { var x1 = x - hw / 2 + k * tw; ctx.beginPath(); ctx.moveTo(x1, y - hh); ctx.lineTo(x1 + tw * 0.75, y - hh - tw * 0.45); ctx.lineTo(x1 + tw * 0.62, y - hh - tw * 0.45); ctx.lineTo(x1 - tw * 0.1, y - hh); ctx.fill(); }
-      // big bay doors along the front
-      ctx.fillStyle = '#6a7078'; for (k = 0; k < 4; k++) ctx.fillRect(x - hw / 2 + hw * (0.1 + k * 0.22), y - hh * 0.75, hw * 0.1, hh * 0.75);
-      ctx.fillStyle = '#f0b020'; ctx.fillRect(x - hw / 2, y - hh * 0.92, hw, 0.8 * s);
+  // a long factory hall with a sawtooth roof: the north-light glazing faces us and glows from inside
+  function hall(ctx, L, H) {
+    var s = L.s, X = H[0], Z = H[1], lx = H[2], dz = H[3], ht = H[4], X0 = X - lx / 2, X1 = X + lx / 2, Z0 = Z, Z1 = Z + dz, aH = hazeAt(Z), i;
+    // the long shadow it throws toward us
+    quad(ctx, L, [[X0, 0, Z0], [X1, 0, Z0], [X1 + 10, 0, Z0 - ht * 6], [X0 + 10, 0, Z0 - ht * 6]]); ctx.fillStyle = rgba('#4a2a3e', 0.42 * (1 - aH)); ctx.fill();
+    // side face (the one we can see), front face in warm shade
+    var sideX = X0 > 0 ? X0 : X1;
+    quad(ctx, L, [[sideX, 0, Z0], [sideX, ht, Z0], [sideX, ht, Z1], [sideX, 0, Z1]]); ctx.fillStyle = hz(sideX > 0 ? '#8a6a7a' : '#c8a090', aH); ctx.fill();
+    quad(ctx, L, [[X0, 0, Z0], [X0, ht, Z0], [X1, ht, Z0], [X1, 0, Z0]]); ctx.fillStyle = hz('#5a3c52', aH * 0.8); ctx.fill();
+    // rows of lit windows and open bay doors
+    var a = L.P(X0, 0, Z0), b = L.P(X1, ht, Z0), fw = b[0] - a[0], fh = a[1] - b[1];
+    ctx.fillStyle = hz(C.win, aH * 0.6); for (i = 0; i < Math.max(4, fw / (5 * s)); i++) { var wx = a[0] + fw * (i + 0.3) / Math.max(4, fw / (5 * s)); ctx.fillRect(wx, b[1] + fh * 0.22, Math.max(0.6 * s, fw * 0.012), Math.max(0.5 * s, fh * 0.1)); }
+    for (i = 0; i < 4; i++) { var dx = a[0] + fw * (0.12 + i * 0.22); ctx.fillStyle = hz('#ffcf80', aH * 0.5); ctx.fillRect(dx, a[1] - fh * 0.55, fw * 0.09, fh * 0.55); ctx.fillStyle = rgba('#ff9a40', 0.25); ctx.fillRect(dx - fw * 0.02, a[1] - fh * 0.1, fw * 0.13, fh * 0.12); }
+    // the sawtooth roof: each tooth's glazed face looks north, toward us
+    var nT = Math.max(3, Math.round(dz / 18)), td = dz / nT;
+    for (i = nT - 1; i >= 0; i--) { var za = Z0 + i * td, zb = za + td;
+      quad(ctx, L, [[X0, ht, za], [X1, ht, za], [X1, ht + 9, za + td * 0.15], [X0, ht + 9, za + td * 0.15]]); ctx.fillStyle = hz('#ffd890', aH * 0.5); ctx.fill();
+      quad(ctx, L, [[X0, ht + 9, za + td * 0.15], [X1, ht + 9, za + td * 0.15], [X1, ht, zb], [X0, ht, zb]]); ctx.fillStyle = hz(i % 2 ? '#e8d8cc' : '#dccabc', aH); ctx.fill(); }
+    var e0 = L.P(X0, ht, Z0), e1 = L.P(X1, ht, Z0); ctx.strokeStyle = rgba('#fff0d0', 0.7 * (1 - aH)); ctx.lineWidth = 0.6 * s; ctx.beginPath(); ctx.moveTo(e0[0], e0[1]); ctx.lineTo(e1[0], e1[1]); ctx.stroke();
+    ctx.fillStyle = '#f0b020'; ctx.fillRect(a[0], a[1] - fh * 0.92, fw, Math.max(0.5 * s, fh * 0.04));
+  }
+  function dome(ctx, L, D) {
+    var s = L.s, p = L.P(D[0], 0, D[1]), R = D[2] * L.k(D[1]), aH = hazeAt(D[1]);
+    quad(ctx, L, [[D[0] - D[2], 0, D[1]], [D[0] + D[2], 0, D[1]], [D[0] + D[2], 0, D[1] - D[2] * 5], [D[0] - D[2], 0, D[1] - D[2] * 5]]); ctx.fillStyle = rgba('#5a3a4a', 0.25); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(p[0] - R, p[1]); ctx.bezierCurveTo(p[0] - R, p[1] - R * 0.95, p[0] + R, p[1] - R * 0.95, p[0] + R, p[1]); ctx.closePath();
+    ctx.fillStyle = lg(ctx, 0, p[1] - R * 0.7, 0, p[1], [[0, hz('#fff2dc', aH * 0.5)], [0.35, hz('#e8cfc0', aH)], [1, hz('#9a7a88', aH)]]); ctx.fill(); ink(ctx, s, 0.3);
+    ctx.strokeStyle = rgba('#ffffff', 0.4); ctx.lineWidth = 0.5 * s; ctx.beginPath(); for (var k = 1; k < 4; k++) { ctx.moveTo(p[0] - R * (1 - k * 0.12), p[1] - R * k * 0.17); ctx.quadraticCurveTo(p[0], p[1] - R * k * 0.25, p[0] + R * (1 - k * 0.12), p[1] - R * k * 0.17); } ctx.stroke();
+  }
+  // a tower crane: lattice mast and jib against the glowing sky
+  function crane(ctx, L, Cr) {
+    var s = L.s, X = Cr[0], Z = Cr[1], H = Cr[2], d = Cr[3], k = L.k(Z), b = L.P(X, 0, Z), t = L.P(X, H, Z), mw = Math.max(1.4 * s, 2.4 * k), jl = H * 0.55 * k, i;
+    var col = hz('#3e2a3a', hazeAt(Z) * 0.5);
+    ctx.strokeStyle = col; ctx.lineWidth = Math.max(0.5 * s, 0.3 * k);
+    ctx.beginPath(); ctx.moveTo(b[0] - mw / 2, b[1]); ctx.lineTo(t[0] - mw / 2, t[1]); ctx.moveTo(b[0] + mw / 2, b[1]); ctx.lineTo(t[0] + mw / 2, t[1]);
+    for (var y = b[1]; y > t[1]; y -= mw) { ctx.moveTo(b[0] - mw / 2, y); ctx.lineTo(b[0] + mw / 2, y - mw); } ctx.stroke();
+    // jib and counter-jib with their tie bars
+    var jy = t[1], jx = t[0] + d * jl, cx2 = t[0] - d * jl * 0.35;
+    ctx.lineWidth = Math.max(0.7 * s, 0.5 * k); ctx.beginPath(); ctx.moveTo(cx2, jy); ctx.lineTo(jx, jy); ctx.moveTo(cx2, jy + mw * 0.6); ctx.lineTo(jx, jy + mw * 0.3); ctx.stroke();
+    ctx.lineWidth = Math.max(0.4 * s, 0.2 * k); ctx.beginPath(); for (i = 0; i < 16; i++) { var u = i / 16, xx = lerp(cx2, jx, u); ctx.moveTo(xx, jy); ctx.lineTo(xx + d * (jx - cx2) / 32, jy + mw * 0.45); }
+    ctx.moveTo(t[0], jy - mw * 3); ctx.lineTo(jx, jy); ctx.moveTo(t[0], jy - mw * 3); ctx.lineTo(cx2, jy); ctx.moveTo(t[0], jy); ctx.lineTo(t[0], jy - mw * 3); ctx.stroke();
+    ctx.fillStyle = col; ctx.fillRect(cx2 - mw * 0.4, jy, mw * 1.6 * -d * -1, mw * 1.2);
+    ctx.fillStyle = '#f0b020'; ctx.fillRect(t[0] - mw * 0.7, jy + mw * 0.5, mw * 1.4, mw * 1.1);
+    // the hook line and a load
+    var hx = lerp(t[0], jx, 0.65); ctx.strokeStyle = col; ctx.lineWidth = 0.4 * s; ctx.beginPath(); ctx.moveTo(hx, jy + mw * 0.4); ctx.lineTo(hx, jy + H * 0.45 * k); ctx.stroke(); ctx.fillStyle = hz('#3a6a8a', 0.3); ctx.fillRect(hx - 3 * k, jy + H * 0.45 * k, 6 * k + 1 * s, 2.5 * k + 1 * s);
+    Cr.tip = [t[0], jy - mw * 3]; Cr.jib = [jx, jy];
+  }
+  function zoneTower(ctx, L) {
+    var s = L.s, T = L.tower, k = L.k(T.z), b = L.P(T.x, 0, T.z), t = L.P(T.x, T.H, T.z), w0 = 26 * k, w1 = 11 * k, aH = hazeAt(T.z);
+    quad(ctx, L, [[T.x - 12, 0, T.z], [T.x + 12, 0, T.z], [T.x + 40, 0, T.z - T.H * 5], [T.x - 10, 0, T.z - T.H * 5]]); ctx.fillStyle = rgba('#5a3a4a', 0.22); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(b[0] - w0, b[1]); ctx.lineTo(t[0] - w1, t[1] + 40 * k); ctx.lineTo(t[0] + w1, t[1] + 40 * k); ctx.lineTo(b[0] + w0, b[1]); ctx.closePath();
+    ctx.fillStyle = lg(ctx, b[0] - w0, 0, b[0] + w0, 0, [[0, hz('#fff0d0', 0.1)], [0.18, hz('#a07a8a', aH)], [0.8, hz('#8a6478', aH)], [1, hz('#ffe2b8', 0.1)]]); ctx.fill(); ink(ctx, s, 0.3);
+    // the ringed cab: glass glowing with sunset, a white rim, a mast with a red light
+    var cy = t[1] + 30 * k;
+    ctx.fillStyle = hz('#f4ece4', aH * 0.5); ctx.beginPath(); qell(ctx, t[0], cy + 14 * k, 34 * k, 8 * k, 0); ctx.fill(); ink(ctx, s, 0.35);
+    ctx.fillStyle = lg(ctx, t[0] - 30 * k, 0, t[0] + 30 * k, 0, [[0, '#8a6a8a'], [0.6, '#f0b880'], [1, '#fff0c8']]); ctx.fillRect(t[0] - 30 * k, cy - 6 * k, 60 * k, 18 * k);
+    ctx.fillStyle = rgba('#fff8e0', 0.7); ctx.fillRect(t[0] - 28 * k, cy - 2 * k, 56 * k, 2 * k);
+    ctx.fillStyle = hz('#f4ece4', aH * 0.5); ctx.beginPath(); qell(ctx, t[0], cy - 6 * k, 32 * k, 7 * k, 0); ctx.fill(); ink(ctx, s, 0.35);
+    ctx.strokeStyle = hz('#8a7078', aH); ctx.lineWidth = Math.max(0.6 * s, 2 * k); ctx.beginPath(); ctx.moveTo(t[0], cy - 12 * k); ctx.lineTo(t[0], t[1] - 30 * k); ctx.stroke();
+    L.towerTop = [t[0], t[1] - 30 * k];
+  }
+  function rails(ctx, L) {
+    var s = L.s, w = L.w, i;
+    // three tracks sweeping in from the left, past the pit and on to the factory yards
+    L.railPts = [];
+    for (var k = 0; k < 3; k++) {
+      var pts = []; for (i = 0; i <= 60; i++) { var t = i / 60, X = lerp(-3400, 3400, t), Z = 1760 + k * 34 + 70 * Math.sin(t * PI * 1.3); pts.push(L.P(X, 0, Z)); }
+      ctx.strokeStyle = rgba('#5a4448', 0.7); ctx.lineWidth = 0.8 * s; ctx.beginPath(); pts.forEach(function (p, j) { if (!j) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }); ctx.stroke();
+      ctx.strokeStyle = rgba('#ffe0b0', 0.4); ctx.lineWidth = 0.4 * s; ctx.beginPath(); pts.forEach(function (p, j) { if (!j) ctx.moveTo(p[0], p[1] - 0.5 * s); else ctx.lineTo(p[0], p[1] - 0.5 * s); }); ctx.stroke();
+      L.railPts.push(pts);
     }
-    // domes
-    [[0.55, 0.505, 22], [0.62, 0.507, 14], [0.94, 0.5, 18]].forEach(function (d) { var x = w * d[0], y = h * d[1], R = d[2] * s;
-      ctx.beginPath(); ctx.moveTo(x - R, y); ctx.bezierCurveTo(x - R, y - R * 0.9, x + R, y - R * 0.9, x + R, y); ctx.closePath();
-      ctx.fillStyle = lg(ctx, x - R, 0, x + R, 0, [[0, '#ffffff'], [0.6, '#e4e4e0'], [1, '#bcbcb8']]); ctx.fill(); ink(ctx, s, 0.4);
-      ctx.strokeStyle = rgba('#a0a0a0', 0.5); ctx.lineWidth = 0.5 * s; ctx.beginPath(); for (var k = 1; k < 4; k++) { ctx.moveTo(x - R * (1 - k * 0.1), y - R * k * 0.17); ctx.quadraticCurveTo(x, y - R * k * 0.24, x + R * (1 - k * 0.1), y - R * k * 0.17); } ctx.stroke(); });
-    // the control tower: a slim shaft with a ringed cab and a mast
-    var T = L.tower, tx = T.x, tb = T.base, tt = tb - T.H;
-    ctx.beginPath(); ctx.moveTo(tx - 6 * s, tb); ctx.lineTo(tx - 3.2 * s, tt + 20 * s); ctx.lineTo(tx + 3.2 * s, tt + 20 * s); ctx.lineTo(tx + 6 * s, tb); ctx.closePath();
-    ctx.fillStyle = lg(ctx, tx - 6 * s, 0, tx + 6 * s, 0, [[0, '#f4f2ec'], [1, '#b8b8b4']]); ctx.fill(); ink(ctx, s, 0.45);
-    ctx.beginPath(); qell(ctx, tx, tt + 18 * s, 14 * s, 5 * s, 0); ctx.fillStyle = '#e8e6e0'; ctx.fill(); ink(ctx, s, 0.45);
-    ctx.beginPath(); ctx.rect(tx - 12 * s, tt + 8 * s, 24 * s, 9 * s); ctx.fillStyle = '#4a6a8a'; ctx.fill(); ink(ctx, s, 0.45);
-    ctx.fillStyle = rgba('#cfe8ff', 0.6); ctx.fillRect(tx - 11 * s, tt + 9.5 * s, 22 * s, 2 * s);
-    ctx.beginPath(); qell(ctx, tx, tt + 8 * s, 13 * s, 3.4 * s, 0); ctx.fillStyle = '#f4f2ec'; ctx.fill(); ink(ctx, s, 0.45);
-    ctx.strokeStyle = '#8a8a8a'; ctx.lineWidth = 0.8 * s; ctx.beginPath(); ctx.moveTo(tx, tt + 5 * s); ctx.lineTo(tx, tt - 8 * s); ctx.stroke();
-    L.towerTop = [tx, tt - 8 * s];
-    // a few cranes and a robot yard of parked crews (tiny yellow dots in rows)
-    dots(ctx, 120, [['#f0b020', 0.9], ['#ffffff', 0.8]], function (k) { var row = (k / 30) | 0, col = k % 30; return [w * (0.47 + col * 0.008), h * (0.545 + row * 0.006), 0.9 * s, (k % 5) ? 0 : 1]; });
+    // a gantry crane over the rail yard
+    var g0 = L.P(1250, 0, 3600), g1 = L.P(1650, 0, 3600), gt = L.P(1250, 40, 3600), gt2 = L.P(1650, 40, 3600);
+    ctx.strokeStyle = '#d89a30'; ctx.lineWidth = 1.2 * s; ctx.beginPath(); ctx.moveTo(g0[0], g0[1]); ctx.lineTo(gt[0], gt[1]); ctx.lineTo(gt2[0], gt2[1]); ctx.lineTo(g1[0], g1[1]); ctx.stroke();
   }
-  // the test-yard terrace where we stand
+  // the front of the zone: container stacks by the rails, a yard of parked robot crews, light masts and charging canopies
+  function frontYard(ctx, L) {
+    var s = L.s, r = rng(4901), i;
+    var cols = ['#c8402e', '#2a6a9a', '#e8a030', '#3a8a6a', '#e8e4dc', '#8a4a8a'];
+    for (i = 0; i < 60; i++) {
+      var X = (r() - 0.5) * 6400, Z = 1820 + r() * 120; if (Math.abs(X - L.mine.x) < 300 && r() < 0.6) continue;
+      var nx = 1 + (r() * 3 | 0), ny = 1 + (r() * 3 | 0), k = L.k(Z), p = L.P(X, 0, Z), cw = 12 * k, ch = 2.6 * k;
+      for (var a = 0; a < nx; a++) for (var b = 0; b < ny; b++) { var c = cols[(r() * cols.length) | 0], x = p[0] + a * cw * 1.02, y = p[1] - (b + 1) * ch;
+        ctx.fillStyle = mix(c, '#5a3c52', 0.35); ctx.fillRect(x, y, cw, ch); ctx.fillStyle = rgba('#ffe8c0', 0.55); ctx.fillRect(x, y, cw, Math.max(0.4 * s, ch * 0.18)); }
+      ctx.fillStyle = rgba('#4a2a3e', 0.3); ctx.fillRect(p[0], p[1], nx * cw, ch * ny * 2);
+    }
+    // robot crews parked in rows on a yard (small yellow machines with lit eyes)
+    for (var row = 0; row < 4; row++) { var Z2 = 2050 + row * 45; for (i = 0; i < 40; i++) { var X2 = 700 + i * 22 + (row % 2) * 11; var q = L.P(X2, 0, Z2), kk = L.k(Z2) * 6; if (q[0] > L.w + 4) break;
+      ctx.fillStyle = '#f0b020'; ctx.fillRect(q[0] - kk * 0.4, q[1] - kk * 0.6, kk * 0.8, kk * 0.6); ctx.fillStyle = '#7ff7e4'; ctx.fillRect(q[0] - kk * 0.2, q[1] - kk * 0.45, kk * 0.4, Math.max(0.4 * s, kk * 0.1)); } }
+    for (row = 0; row < 3; row++) { Z2 = 2100 + row * 50; for (i = 0; i < 26; i++) { X2 = -1600 - i * 24; q = L.P(X2, 0, Z2); kk = L.k(Z2) * 6; if (q[0] < -4) break; ctx.fillStyle = '#f0b020'; ctx.fillRect(q[0] - kk * 0.4, q[1] - kk * 0.6, kk * 0.8, kk * 0.6); } }
+    // light masts with their lamps already on
+    L.lamps = [];
+    for (i = 0; i < 9; i++) { var X3 = -2400 + i * 640 + (r() - 0.5) * 200, Z3 = 1990 + r() * 200, b0 = L.P(X3, 0, Z3), t0 = L.P(X3, 34, Z3); ctx.strokeStyle = '#4a3444'; ctx.lineWidth = Math.max(0.6 * s, 0.8 * L.k(Z3)); ctx.beginPath(); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(t0[0], t0[1]); ctx.stroke(); L.lamps.push(t0); }
+  }
+  // the test-yard terrace where we stand: a glass balustrade full of sunset, warm concrete, long shadows toward us
   function terrace(ctx, L) {
     var w = L.w, h = L.h, s = L.s, y0 = L.terrace, r = rng(3606), i;
-    // a glass balustrade at the terrace edge
-    ctx.fillStyle = rgba('#dfeef2', 0.35); ctx.fillRect(0, y0 - 26 * s, w, 26 * s);
-    ctx.strokeStyle = rgba('#ffffff', 0.7); ctx.lineWidth = 1 * s; ctx.beginPath(); ctx.moveTo(0, y0 - 26 * s); ctx.lineTo(w, y0 - 26 * s); ctx.stroke();
-    ctx.fillStyle = '#8a8e96'; for (i = 0; i <= 8; i++) ctx.fillRect(i * w / 8 - 1 * s, y0 - 26 * s, 2 * s, 26 * s);
-    ctx.fillStyle = '#5a5e66'; ctx.fillRect(0, y0 - 27.5 * s, w, 2.4 * s);
-    // the concrete floor
-    ctx.fillStyle = lg(ctx, 0, y0, 0, h, [[0, C.yard[0]], [0.5, C.yard[1]], [1, C.yard[2]]]); ctx.fillRect(0, y0, w, h - y0);
-    ctx.strokeStyle = rgba('#8a847a', 0.35); ctx.lineWidth = 0.7 * s; ctx.beginPath();
-    for (i = -8; i <= 8; i++) { ctx.moveTo(w / 2 + i * w * 0.06, y0); ctx.lineTo(w / 2 + i * w * 0.22, h); }
-    for (i = 1; i < 7; i++) { var yy = y0 + (h - y0) * Math.pow(i / 7, 1.6); ctx.moveTo(0, yy); ctx.lineTo(w, yy); } ctx.stroke();
-    dabs(ctx, 400, [[C.yard[0], 0.25], [C.yard[2], 0.2]], function () { var p = r(), y = lerp(y0, h, p); return [r() * w, y, (2 + p * 8) * s, (0.6 + p * 1.6) * s, r() < 0.5 ? 0 : 1, 0]; });
+    // the glass balustrade at the edge: it reflects the glow, posts throw long shadows toward us
+    var gt = y0 - 30 * s;
+    ctx.fillStyle = lg(ctx, 0, gt, 0, y0, [[0, 'rgba(255,236,200,0.28)'], [1, 'rgba(255,200,150,0.12)']]); ctx.fillRect(0, gt, w, y0 - gt);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = lg(ctx, L.sun[0] - w * 0.2, 0, L.sun[0] + w * 0.2, 0, [[0, 'rgba(255,220,160,0)'], [0.5, 'rgba(255,230,180,0.22)'], [1, 'rgba(255,220,160,0)']]); ctx.fillRect(0, gt, w, y0 - gt); ctx.restore();
+    // the concrete floor, warm with the low light, a faint sheen in line with the Sun
+    ctx.fillStyle = lg(ctx, 0, y0, 0, h, [[0, '#cdb4a0'], [0.4, '#bca490'], [1, '#9a826e']]); ctx.fillRect(0, y0, w, h - y0);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = lg(ctx, L.sun[0] - w * 0.1, 0, L.sun[0] + w * 0.1, 0, [[0, 'rgba(255,200,140,0)'], [0.5, 'rgba(255,210,150,0.22)'], [1, 'rgba(255,200,140,0)']]); ctx.beginPath(); ctx.moveTo(L.sun[0] - w * 0.06, y0); ctx.lineTo(L.sun[0] + w * 0.06, y0); ctx.lineTo(L.sun[0] + w * 0.16, h); ctx.lineTo(L.sun[0] - w * 0.16, h); ctx.closePath(); ctx.fill(); ctx.restore();
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = rg(ctx, L.sun[0], y0, 0, w * 0.7, [[0, 'rgba(255,210,150,0.28)'], [1, 'rgba(255,210,150,0)']]); ctx.fillRect(0, y0, w, h - y0); ctx.restore();
+    var vx = L.sun[0];
+    ctx.strokeStyle = rgba('#7a6a5e', 0.3); ctx.lineWidth = 0.7 * s; ctx.beginPath();
+    for (i = -10; i <= 10; i++) { ctx.moveTo(w / 2 + i * w * 0.07, y0); ctx.lineTo(w / 2 + i * w * 0.26, h); }
+    for (i = 1; i < 8; i++) { var yy = y0 + (h - y0) * Math.pow(i / 8, 1.6); ctx.moveTo(0, yy); ctx.lineTo(w, yy); } ctx.stroke();
+    dabs(ctx, 360, [[C.yard[0], 0.25], [C.yard[2], 0.2]], function () { var p = r(), y = lerp(y0, h, p); return [r() * w, y, (2 + p * 8) * s, (0.6 + p * 1.6) * s, r() < 0.5 ? 0 : 1, 0]; });
+    // shadows of the balustrade posts, fanning out toward us from the Sun's direction
+    var nP = 9;
+    for (i = 0; i <= nP; i++) { var px = i * w / nP; var dx = (px - vx) * 0.9; ctx.fillStyle = lg(ctx, 0, y0, 0, h * 0.9, [[0, 'rgba(70,40,50,0.32)'], [1, 'rgba(70,40,50,0)']]);
+      ctx.beginPath(); ctx.moveTo(px - 1 * s, y0); ctx.lineTo(px + 1 * s, y0); ctx.lineTo(px + dx + 4 * s, h * 0.9); ctx.lineTo(px + dx - 2 * s, h * 0.9); ctx.closePath(); ctx.fill(); }
+    // the balustrade frame and posts
+    ctx.fillStyle = '#5a4e52'; for (i = 0; i <= nP; i++) ctx.fillRect(i * w / nP - 1.1 * s, gt, 2.2 * s, y0 - gt);
+    ctx.fillStyle = '#4a3e44'; ctx.fillRect(0, gt - 1.6 * s, w, 2.6 * s); ctx.fillStyle = 'rgba(255,230,190,0.8)'; ctx.fillRect(0, gt - 1.6 * s, w, 0.7 * s);
+    ctx.fillStyle = '#6a5a58'; ctx.fillRect(0, y0 - 1.5 * s, w, 3 * s);
     // yellow safety lines marking the test bay, and a hatched zone
-    ctx.strokeStyle = '#f0b020'; ctx.lineWidth = 2.2 * s; ctx.beginPath(); ctx.moveTo(w * 0.18, y0 + 4 * s); ctx.lineTo(w * 0.02, h * 0.98); ctx.moveTo(w * 0.82, y0 + 4 * s); ctx.lineTo(w * 0.98, h * 0.98); ctx.moveTo(w * 0.18, y0 + 4 * s); ctx.lineTo(w * 0.82, y0 + 4 * s); ctx.stroke();
-    ctx.save(); ctx.beginPath(); ctx.moveTo(w * 0.2, y0 + 6 * s); ctx.lineTo(w * 0.8, y0 + 6 * s); ctx.lineTo(w * 0.8, y0 + 16 * s); ctx.lineTo(w * 0.2, y0 + 16 * s); ctx.clip();
-    ctx.strokeStyle = rgba('#2a2a30', 0.55); ctx.lineWidth = 2 * s; ctx.beginPath(); for (i = 0; i < 60; i++) { var x = w * 0.2 + i * 6 * s; ctx.moveTo(x, y0 + 16 * s); ctx.lineTo(x + 10 * s, y0 + 6 * s); } ctx.stroke(); ctx.restore();
-    // the public permit board on the left
-    var bx = w * 0.04, by = y0 - 84 * s, bw = 92 * s, bh = 52 * s;
-    ctx.fillStyle = '#5a5e66'; ctx.fillRect(bx + bw * 0.45, by + bh, 4 * s, 34 * s);
-    ctx.beginPath(); rrect(ctx, bx, by, bw, bh, 5 * s); ctx.fillStyle = '#1e2a3a'; ctx.fill(); ink(ctx, s, 0.6);
+    ctx.strokeStyle = '#f0b020'; ctx.lineWidth = 2.2 * s; ctx.beginPath(); ctx.moveTo(w * 0.18, y0 + 5 * s); ctx.lineTo(w * 0.02, h * 0.98); ctx.moveTo(w * 0.82, y0 + 5 * s); ctx.lineTo(w * 0.98, h * 0.98); ctx.moveTo(w * 0.18, y0 + 5 * s); ctx.lineTo(w * 0.82, y0 + 5 * s); ctx.stroke();
+    ctx.save(); ctx.beginPath(); ctx.moveTo(w * 0.2, y0 + 7 * s); ctx.lineTo(w * 0.8, y0 + 7 * s); ctx.lineTo(w * 0.8, y0 + 16 * s); ctx.lineTo(w * 0.2, y0 + 16 * s); ctx.clip();
+    ctx.strokeStyle = rgba('#2a2a30', 0.5); ctx.lineWidth = 2 * s; ctx.beginPath(); for (i = 0; i < 80; i++) { var x = w * 0.2 + i * 6 * s; ctx.moveTo(x, y0 + 16 * s); ctx.lineTo(x + 9 * s, y0 + 7 * s); } ctx.stroke(); ctx.restore();
+    // the public permit board on the left, its back to the Sun
+    var bx = w * 0.04, by = y0 - 86 * s, bw = 92 * s, bh = 52 * s;
+    ctx.fillStyle = 'rgba(70,40,50,0.3)'; ctx.beginPath(); ctx.moveTo(bx + bw * 0.45, y0 + 2 * s); ctx.lineTo(bx + bw * 0.45 + 6 * s, y0 + 2 * s); ctx.lineTo(bx + bw * 0.1, h * 0.8); ctx.lineTo(bx - bw * 0.25, h * 0.8); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#4a4248'; ctx.fillRect(bx + bw * 0.45, by + bh, 4 * s, y0 - by - bh + 2 * s);
+    ctx.beginPath(); rrect(ctx, bx - 2 * s, by - 2 * s, bw + 4 * s, bh + 4 * s, 6 * s); ctx.fillStyle = '#2a2430'; ctx.fill();
+    ctx.beginPath(); rrect(ctx, bx, by, bw, bh, 5 * s); ctx.fillStyle = '#16202e'; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,214,150,0.7)'; ctx.lineWidth = 0.8 * s; ctx.beginPath(); ctx.moveTo(bx + bw, by + 4 * s); ctx.lineTo(bx + bw, by + bh - 4 * s); ctx.stroke();
     ctx.fillStyle = '#7ff7e4'; ctx.font = '800 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('ROBOT PERMITS IN USE', bx + 6 * s, by + 11 * s);
     ctx.fillStyle = '#ffffff'; ctx.font = '800 ' + (13 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('41,860', bx + 6 * s, by + 28 * s);
     ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('CAP 42,000', bx + 54 * s, by + 27 * s);
     ctx.fillStyle = '#34445a'; ctx.fillRect(bx + 6 * s, by + 36 * s, bw - 12 * s, 6 * s); ctx.fillStyle = '#f0b020'; ctx.fillRect(bx + 6 * s, by + 36 * s, (bw - 12 * s) * 0.9967, 6 * s);
     ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (5 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('SHENZHEN ZONE 3 · LIVE', bx + 6 * s, by + 49 * s);
-    // potted bougainvillea by the board
-    var rf = rng(3707); ctx.fillStyle = '#7a6a5a'; ctx.fillRect(w * 0.88, y0 - 14 * s, 30 * s, 14 * s);
-    clump(ctx, w * 0.88 + 15 * s, y0 - 22 * s, 18 * s, ['#7a1a4a', '#a8285e', '#d8407a', '#f0609a', '#ffa0c4'], rf, 0.6, -0.7, false, 1);
-    ctx.fillStyle = lg(ctx, 0, h * 0.8, 0, h, [[0, rgba('#2a2420', 0)], [1, rgba('#2a2420', 0.16)]]); ctx.fillRect(0, h * 0.8, w, h * 0.2);
+    L.board = [bx, by, bw, bh];
+    // potted bougainvillea on the right, backlit
+    var rf = rng(3707); ctx.fillStyle = '#6a5048'; ctx.fillRect(w * 0.86, y0 - 14 * s, 32 * s, 14 * s); ctx.fillStyle = 'rgba(255,214,150,0.5)'; ctx.fillRect(w * 0.86, y0 - 14 * s, 32 * s, 1 * s);
+    clump(ctx, w * 0.86 + 16 * s, y0 - 22 * s, 19 * s, ['#6a1a44', '#9a2858', '#d0407a', '#f06a9a', '#ffb0cc'], rf, 0.3, -0.9, false, 1);
+    ctx.fillStyle = lg(ctx, 0, h * 0.8, 0, h, [[0, rgba('#2a1820', 0)], [1, rgba('#2a1820', 0.2)]]); ctx.fillRect(0, h * 0.8, w, h * 0.2);
   }
 
   function paint(ctx, w, h) {
     if (!bind()) return;
-    var L = layout(w, h);
-    sky(ctx, L); ctx.save(); ctx.translate(0, L.dy); distance(ctx, L); plain(ctx, L); mine(ctx, L); factory(ctx, L); ctx.restore(); terrace(ctx, L);
-    finish(ctx, w, h, '#ffe0b0', 0.08, 0.12, 0.03, '#2a2018', 0.45);
+    var L = layout(w, h), s = L.s;
+    sky(ctx, L); hills(ctx, L); skyline(ctx, L); bay(ctx, L);
+    groundPlane(ctx, L); solar(ctx, L);
+    // the zone from far to near
+    var items = [];
+    L.halls.forEach(function (H) { items.push([H[1] + H[3], function () { hall(ctx, L, H); }]); });
+    L.domes.forEach(function (D) { items.push([D[1], function () { dome(ctx, L, D); }]); });
+    L.cranes.forEach(function (Cr) { items.push([Cr[1], function () { crane(ctx, L, Cr); }]); });
+    items.push([L.mine.z + L.mine.rz, function () { mine(ctx, L); }]);
+    items.push([L.tower.z, function () { zoneTower(ctx, L); }]);
+    items.push([1800, function () { rails(ctx, L); frontYard(ctx, L); }]);
+    items.sort(function (A, B) { return B[0] - A[0]; }).forEach(function (it) { it[1](); });
+    // warm haze lying over the zone, thickest far away and toward the Sun
+    ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.fillStyle = lg(ctx, 0, L.far, 0, L.terrace, [[0, 'rgba(255,200,140,0.22)'], [0.4, 'rgba(255,190,130,0.06)'], [1, 'rgba(255,190,130,0)']]); ctx.fillRect(0, L.far, w, L.terrace - L.far);
+    ctx.fillStyle = rg(ctx, L.sun[0], L.far, 0, w * 0.5, [[0, 'rgba(255,220,160,0.28)'], [1, 'rgba(255,220,160,0)']]); ctx.fillRect(0, 0, w, L.terrace); ctx.restore();
+    terrace(ctx, L);
+    finish(ctx, w, h, '#ffc890', 0.1, 0.18, 0.03, '#2a1418', 0.42);
   }
 
+  function along(pts, u) { var n = pts.length - 1, f = clamp(u, 0, 0.9999) * n, i = Math.floor(f), t = f - i; return [lerp(pts[i][0], pts[i + 1][0], t), lerp(pts[i][1], pts[i + 1][1], t), pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]]; }
   function overlay(ctx, w, h, t) {
     if (!bind()) return;
     var L = layout(w, h), s = L.s, i;
-    ctx.save(); ctx.translate(0, L.dy);
-    // haul trucks crawling along the mine benches
-    if (L.benches) for (i = 0; i < L.benches.length; i++) { var B = L.benches[i], p = ((t * 0.01 * (1 + i * 0.3) + i * 0.27) % 1), k = Math.floor(p * (B.length - 1)), q = B[k];
-      ctx.fillStyle = '#f0b020'; ctx.fillRect(q[0] - 2.4 * s, q[1] - 1.8 * s, 4.8 * s, 2 * s); ctx.fillStyle = '#5a4a3a'; ctx.fillRect(q[0] - 2.4 * s, q[1] - 2.8 * s, 3 * s, 1.2 * s); }
-    // a long freight train sliding along the rails toward the factory
-    if (L.rail) { var tp = (t * 0.02) % 1.4 - 0.2; for (i = 0; i < 16; i++) { var u = tp - i * 0.018; if (u < 0 || u > 1) continue; var a = L.rail(u, 1), b = L.rail(Math.min(1, u + 0.014), 1);
-      ctx.strokeStyle = i ? '#7a8a9a' : '#e8e6e0'; ctx.lineWidth = 2.6 * s * (0.7 + u * 0.3); ctx.beginPath(); ctx.moveTo(a[0], a[1] - 1.4 * s); ctx.lineTo(b[0], b[1] - 1.4 * s); ctx.stroke(); } }
-    // cargo drones between the halls, and a warning light on the tower
-    for (i = 0; i < 4; i++) { var ph = t * (0.03 + i * 0.008) + i * 0.25, dx = w * (0.45 + 0.55 * ((ph % 1))), dy = h * (0.36 + i * 0.02) + Math.sin(t + i) * 3 * s; K.drawDrone(ctx, dx, dy, 1.4 * s, '#f4f6fb', Math.pow(Math.max(0, Math.sin(t * 4 + i)), 6), '#ff6a5a'); }
-    if (L.towerTop) { var bl = Math.pow(Math.max(0, Math.sin(t * 1.8)), 8), sp = K.glowSpr('#ff4a3a', true); if (sp && bl > 0.02) { ctx.globalAlpha = bl; ctx.drawImage(sp, L.towerTop[0] - 5 * s, L.towerTop[1] - 5 * s, 10 * s, 10 * s); ctx.globalAlpha = 1; } }
-    // dust drifting off the mine
-    var r = rng(55); for (i = 0; i < 6; i++) { var dp = (t * 0.015 + r()) % 1; ctx.globalAlpha = 0.18 * Math.sin(dp * PI); K.puff(ctx, L.mine.x + (r() - 0.5) * L.mine.rx + dp * 40 * s, L.mine.y - dp * 30 * s, (14 + r() * 10) * s, '#f0d8b0', 0.8); } ctx.globalAlpha = 1;
-    // heat shimmer lines on the solar fields
-    ctx.strokeStyle = rgba('#ffffff', 0.25); ctx.lineWidth = 0.6 * s; ctx.beginPath(); for (i = 0; i < 6; i++) { var yy = L.hz + (8 + i * 6) * s, ph2 = t * 0.6 + i; ctx.moveTo(w * 0.5, yy); for (var x = w * 0.5; x < w; x += 8 * s) ctx.lineTo(x, yy + Math.sin(x * 0.05 / s + ph2) * 0.8 * s); } ctx.stroke();
+    ctx.save();
+    // haul trucks crawling along the benches of the pit, headlights on
+    var hl = glowSpr('#fff0c0', true);
+    if (L.benches) for (i = 0; i < L.benches.length; i++) { var B = L.benches[i], p = ((t * 0.012 * (1 + i * 0.3) + i * 0.27) % 1), q = along(B, p), z = 2.2 * s;
+      ctx.fillStyle = '#f0b020'; ctx.fillRect(q[0] - z, q[1] - z * 0.9, z * 2, z * 0.9); ctx.fillStyle = '#5a3a3a'; ctx.fillRect(q[0] - z, q[1] - z * 1.4, z * 1.2, z * 0.5);
+      if (hl) { ctx.globalAlpha = 0.7; ctx.drawImage(hl, q[0] + (q[2] > 0 ? z : -z) - 2 * s, q[1] - z * 0.6 - 2 * s, 4 * s, 4 * s); ctx.globalAlpha = 1; } }
+    // freight trains sliding along the rails: containers in a row, catching the light on top
+    if (L.railPts) for (var k = 0; k < 2; k++) { var R = L.railPts[k * 2], tp = ((t * (0.016 + k * 0.006) + k * 0.5) % 1.4) - 0.2, cols = ['#e8e4dc', '#c8402e', '#2a6a9a', '#e8a030', '#3a8a6a'];
+      for (i = 0; i < 22; i++) { var u = k ? 1 - tp + i * 0.011 : tp - i * 0.011; if (u < 0 || u > 1) continue; var a = along(R, u), b = along(R, Math.min(1, u + 0.009)), wd = 2.6 * s * (0.6 + 0.6 * (a[1] - L.far) / (L.terrace - L.far));
+        ctx.strokeStyle = i ? cols[i % cols.length] : '#f4f4f0'; ctx.lineWidth = wd; ctx.beginPath(); ctx.moveTo(a[0], a[1] - wd * 0.5); ctx.lineTo(b[0], b[1] - wd * 0.5); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,236,200,0.7)'; ctx.lineWidth = wd * 0.25; ctx.beginPath(); ctx.moveTo(a[0], a[1] - wd); ctx.lineTo(b[0], b[1] - wd); ctx.stroke(); } }
+    // robot trucks on the highway, tail lights and head lights
+    if (L.road) { for (i = 0; i < 8; i++) { var up = ((t * 0.02 + i / 8) % 1), dir = i % 2, uu = dir ? up : 1 - up, x = lerp(L.road[0][0], L.road[1][0], uu), y = lerp(L.road[0][1], L.road[1][1], uu) - (dir ? 1 : -1) * 0.6 * s, sp = glowSpr(dir ? '#ff5a3a' : '#fff4d8', true); if (sp) { ctx.globalAlpha = 0.8; ctx.drawImage(sp, x - 2 * s, y - 2 * s, 4 * s, 4 * s); } } ctx.globalAlpha = 1; }
+    var ls = glowSpr('#ffd890', true); if (ls && L.lamps) L.lamps.forEach(function (p) { ctx.globalAlpha = 0.85; ctx.drawImage(ls, p[0] - 3 * s, p[1] - 3 * s, 6 * s, 6 * s); }); ctx.globalAlpha = 1;
+    // cargo drones crossing the zone, blinking
+    for (i = 0; i < 6; i++) { var ph = t * (0.02 + i * 0.006) + i * 0.21, dx = lerp(-w * 0.05, w * 1.05, (ph % 1)), dy = h * (0.3 + (i % 3) * 0.035) + Math.sin(t * 0.8 + i) * 3 * s; K.drawDrone(ctx, i % 2 ? w - dx : dx, dy, (1.1 + (i % 3) * 0.3) * s, '#3a2e3a', Math.pow(Math.max(0, Math.sin(t * 4 + i)), 6), '#ff6a5a'); }
+    // warning lights on the zone tower and the crane tips
+    var sr = glowSpr('#ff4a3a', true);
+    if (sr) { var pts = [L.towerTop].concat(L.cranes.map(function (c) { return c.tip; })).filter(Boolean); pts.forEach(function (p, j) { var bl = Math.pow(Math.max(0, Math.sin(t * 1.8 + j * 1.3)), 8); if (bl < 0.02) return; ctx.globalAlpha = bl; ctx.drawImage(sr, p[0] - 4 * s, p[1] - 4 * s, 8 * s, 8 * s); }); ctx.globalAlpha = 1; }
+    // the crane jibs slowly slew back and forth (their hooks swing in the glow)
+    // the sparkle on the bay drifts
+    var r = rng(55);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (i = 0; i < 40; i++) { var tt = r(), yy = lerp(L.far + 1 * s, L.shore - 1 * s, Math.pow(tt, 0.8)), spread = (6 + tt * 40) * s, xx = L.sun[0] + (r() + r() - 1) * spread + Math.sin(t * 0.7 + i) * 2 * s, a2 = Math.pow(Math.max(0, Math.sin(t * (2 + r() * 2) + i * 1.7)), 4);
+      ctx.fillStyle = rgba('#fffaf0', a2 * 0.9); ctx.fillRect(xx - 2 * s, yy, 4 * s, 0.8 * s); }
+    ctx.restore();
+    // dust drifting off the pit, glowing in the low light
+    for (i = 0; i < 6; i++) { var dp = (t * 0.015 + r()) % 1, mp = L.P(L.mine.x + (r() - 0.5) * L.mine.rx, 0, L.mine.z); ctx.globalAlpha = 0.16 * Math.sin(dp * PI); K.puff(ctx, mp[0] + dp * 40 * s, mp[1] - dp * 30 * s, (14 + r() * 10) * s, '#ffd8a8', 0.8); } ctx.globalAlpha = 1;
+    // heat shimmer on the terrace edge glass
+    ctx.strokeStyle = rgba('#fff4dc', 0.18); ctx.lineWidth = 0.6 * s; ctx.beginPath(); for (i = 0; i < 4; i++) { var y2 = L.terrace - (6 + i * 6) * s, ph2 = t * 0.6 + i; ctx.moveTo(0, y2); for (var x2 = 0; x2 < w; x2 += 8 * s) ctx.lineTo(x2, y2 + Math.sin(x2 * 0.05 / s + ph2) * 0.6 * s); } ctx.stroke();
     ctx.restore();
   }
 
-  PAINT.shenzhen = { focus: { x: 0.82, y: 0.1 }, track: 'work', anchors: { mine: { x: 0.27, y: 0.48 }, tower: { x: 0.78, y: 0.3 }, board: { x: 0.16, y: 0.55 } },
+  PAINT.shenzhen = { focus: { x: 0.62, y: 0.32 }, track: 'work', anchors: { mine: { x: 0.25, y: 0.52 }, tower: { x: 0.62, y: 0.33 }, board: { x: 0.16, y: 0.57 } },
     paint: function (ctx, w, h) { ctx.save(); try { paint(ctx, w, h); } catch (e) { PAINT._err = 'shenzhen: ' + String(e && e.stack || e); } finally { ctx.restore(); } },
     overlay: function (ctx, w, h, t) { ctx.save(); try { overlay(ctx, w, h, t); } catch (e) { PAINT._err = 'shenzhen overlay: ' + String(e && e.stack || e); } finally { ctx.restore(); } } };
 
