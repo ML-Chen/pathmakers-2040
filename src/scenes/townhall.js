@@ -297,6 +297,7 @@
 
   PAINT.townhall = {
     focus: { x: 0.5, y: 0.3 },
+    track: 'win',
     // the dais top edge runs at y 0.50 (centre) to 0.54 (edges); the windows fill y 0.17-0.46
     anchors: { dais: { y: 0.5 }, windows: { y: 0.3 }, floor: { y: 0.62 } },
     paint: function (ctx, w, h) {
@@ -659,4 +660,15 @@
     S0.paint = function (ctx, w, h) { ctx.save(); try { p0(ctx, w, h); } finally { ctx.restore(); } };
     S0.overlay = function (ctx, w, h, t) { ctx.save(); try { o0(ctx, w, h, t); } finally { ctx.restore(); } };
   })('townhall');
+
+  /* tappable things in the council chamber */
+  LATE.push(function () {
+    if (typeof PROPS === 'undefined') return;
+    PROPS.townhall = [
+      { id: 'plant', x: 8, y: 86, w: 58, sfx: 'rustle', fx: 'wiggle', burst: 'leaves' },
+      { id: 'plant', x: 92, y: 86, w: 58, sfx: 'rustle', fx: 'wiggle', burst: 'leaves' },
+      { id: 'person', x: 26, y: 84, w: 52, talk: 'townhall', look: { skin: '#7a4a2c', shirt: '#16b3a6', hair: '#1b1410' } },
+      { id: 'person', x: 74, y: 83, w: 50, talk: 'townhall', look: { skin: '#f6d2bd', shirt: '#ff7a6b', hair: '#c9772d' } }
+    ];
+  });
 })();

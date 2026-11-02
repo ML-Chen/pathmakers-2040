@@ -74,3 +74,17 @@
 .sn-vq{animation:snblip 2.8s ease-in-out infinite;animation-delay:var(--d,0s)}
 .sn-vhand{transform-box:fill-box;transform-origin:50% 100%;animation:snvhand 6s ease-in-out infinite}
 @keyframes snvhand{0%{transform:rotate(292deg)}55%,100%{transform:rotate(360deg)}}
+
+/* --- the reader: orders travelling along the belt, and the scan line --- */
+.sn-belt{animation:snbelt 4.8s linear infinite;animation-delay:var(--d,0s)}
+@keyframes snbelt{0%{transform:translateX(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(348px);opacity:0}}
+.sn-scan{animation:snscan 3.2s ease-in-out infinite}
+@keyframes snscan{0%,100%{transform:translateY(0)}50%{transform:translateY(42px)}}
+
+/* --- a guess against evidence --- */
+.sn-tip{animation:sntip 6.4s ease-in-out infinite}
+@keyframes sntip{0%,10%{transform:rotate(0deg)}38%,78%{transform:rotate(7deg)}96%,100%{transform:rotate(0deg)}}
+
+/* --- cleverness leaning on a door that will not open --- */
+.sn-lean{transform-box:fill-box;transform-origin:50% 100%;animation:snlean 6.6s ease-in-out infinite}
+@keyframes snlean{0%,8%{transform:translateX(0) skewX(0deg)}40%,58%{transform:translateX(16px) skewX(5deg)}90%,100%{transform:translateX(0) skewX(0deg)}}

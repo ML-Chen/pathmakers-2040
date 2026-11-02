@@ -496,6 +496,7 @@
 
   PAINT.screening = {
     focus: { x: 0.42, y: 0.2 },
+    track: 'work',
     anchors: { window: { x: 0.35, y: 0.25 }, desk: { y: 0.598 }, board: { x: 0.885, y: 0.218 } },
     paint: function (ctx, w, h) {
       try {
@@ -858,4 +859,16 @@
     S0.paint = function (ctx, w, h) { ctx.save(); try { p0(ctx, w, h); } finally { ctx.restore(); } };
     S0.overlay = function (ctx, w, h, t) { ctx.save(); try { o0(ctx, w, h, t); } finally { ctx.restore(); } };
   })('screening');
+
+  /* tappable things in the screening office */
+  LATE.push(function () {
+    if (typeof PROPS === 'undefined') return;
+    PROPS.screening = [
+      { id: 'plant', x: 9, y: 70, w: 56, sfx: 'rustle', fx: 'wiggle', burst: 'leaves' },
+      { id: 'mug', x: 72, y: 61, w: 44, sfx: 'clink', fx: 'jiggle', burst: 'steam' },
+      { id: 'tablet', x: 32, y: 60, w: 70, sfx: 'blip', fx: 'screen' },
+      { id: 'robot', x: 88, y: 70, w: 46, sfx: 'beep', fx: 'spin' },
+      { id: 'person', x: 58, y: 70, w: 50, talk: 'screening', look: { skin: '#f1cfb6', shirt: '#6c5ce7', hair: '#3a2f28' } }
+    ];
+  });
 })();
