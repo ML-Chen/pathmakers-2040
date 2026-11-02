@@ -145,7 +145,7 @@ function missionSort(a,b){const A=missionMeta(a),B=missionMeta(b);return A.chapt
 function nextUp(){return Object.values(MISSIONS).filter(m=>!isDone(m.id)&&!lockReason(m)).sort(missionSort)[0]||null}
 function placeMissions(key){return Object.values(MISSIONS).filter(m=>missionMeta(m).district===key).sort(missionSort)}
 // a place is open once anything there is playable or done, or the calendar has reached it
-function placeOpen(key){if(S.playAll)return true;const P=PLACES[key];const ms=placeMissions(key);
+function placeOpen(key){if(S.playAll)return placeMissions(key).length>0;const P=PLACES[key];const ms=placeMissions(key);
   if(ms.some(m=>isDone(m.id)||!lockReason(m)))return true;
   return !!(P.year&&ms.length&&chapterOf(P.year,P.season)<=camp().ch)}
 function placeOpensLabel(key){const P=PLACES[key],ms=placeMissions(key);if(!ms.length)return 'Coming soon';

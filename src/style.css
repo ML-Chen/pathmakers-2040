@@ -441,3 +441,5 @@ svg text:not([font-family]){font-family:var(--body)}
 #app.talk>.stage.duo{max-height:min(36vh,300px)}
 #app.talk>.subtitle{flex:none;max-height:74vh;max-height:74dvh;overflow-y:auto;overscroll-behavior:contain}
 #app.talk .speaker .byteart.big{width:auto;height:100%;max-width:100%;margin:0 auto}
+/* Sheets never scroll sideways: pictures and sentences shrink to the sheet's width. */
+.sheet-body{overflow-x:hidden}.step-body{min-width:0}.fig{max-width:100%}.fig>svg{max-width:100%;height:auto}

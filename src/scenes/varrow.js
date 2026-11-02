@@ -211,9 +211,18 @@
         ctx.fillStyle = lg(ctx, sx0, 0, sx0 + sw, 0, [[0, '#a8a0c8'], [0.55, '#7e76a2'], [1, '#4e4672']]);
         ctx.beginPath(); ctx.moveTo(sx0, sy0); ctx.bezierCurveTo(sx0 - sw * 0.04, sy0 - sh2 * 0.6, sx0 + sw * 0.12, sy0 - sh2 * 1.02, St.x, sy0 - sh2); ctx.bezierCurveTo(sx0 + sw * 0.88, sy0 - sh2 * 1.0, sx0 + sw * 1.04, sy0 - sh2 * 0.55, sx0 + sw, sy0); ctx.closePath(); ctx.fill();
         ctx.strokeStyle = 'rgba(255,200,150,0.45)'; ctx.lineWidth = 1.4 * s; ctx.beginPath(); ctx.moveTo(sx0 + sw * 0.06, sy0 - sh2 * 0.6); ctx.bezierCurveTo(sx0 + sw * 0.16, sy0 - sh2 * 0.92, sx0 + sw * 0.32, sy0 - sh2, St.x, sy0 - sh2 * 0.995); ctx.stroke();
-        ctx.fillStyle = 'rgba(40,30,70,0.75)'; ctx.font = '700 ' + (sw * 0.09).toFixed(1) + 'px Nunito, sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText('THE QUIET YEAR', St.x, sy0 - sh2 * 0.7); ctx.font = '700 ' + (sw * 0.12).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('2030', St.x, sy0 - sh2 * 0.47);
-        ctx.font = '700 ' + (sw * 0.062).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('WE STAYED HOME', St.x, sy0 - sh2 * 0.31); ctx.fillText('FOR EACH OTHER', St.x, sy0 - sh2 * 0.19);
+        /* carved inscription: a serif with wide tracking, each letter cut in (dark) with a lit lower edge */
+        var carve = function (t, y, size, wt, track) { ctx.font = wt + ' ' + size.toFixed(1) + 'px Georgia, "Noto Serif", "Times New Roman", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+          if ('letterSpacing' in ctx) ctx.letterSpacing = (size * track).toFixed(1) + 'px';
+          ctx.fillStyle = 'rgba(235,228,255,0.55)'; ctx.fillText(t, St.x + size * track / 2, y + Math.max(1, size * 0.045));
+          ctx.fillStyle = 'rgba(34,26,62,0.82)'; ctx.fillText(t, St.x + size * track / 2, y);
+          if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'; };
+        carve('THE QUIET YEAR', sy0 - sh2 * 0.72, sw * 0.058, '600', 0.1);
+        carve('2030', sy0 - sh2 * 0.5, sw * 0.105, '400', 0.12);
+        ctx.strokeStyle = 'rgba(34,26,62,0.5)'; ctx.lineWidth = Math.max(1, s); ctx.beginPath(); ctx.moveTo(St.x - sw * 0.14, sy0 - sh2 * 0.4); ctx.lineTo(St.x + sw * 0.14, sy0 - sh2 * 0.4); ctx.stroke();
+        ctx.strokeStyle = 'rgba(235,228,255,0.4)'; ctx.beginPath(); ctx.moveTo(St.x - sw * 0.14, sy0 - sh2 * 0.4 + Math.max(1, s)); ctx.lineTo(St.x + sw * 0.14, sy0 - sh2 * 0.4 + Math.max(1, s)); ctx.stroke();
+        carve('We stayed home', sy0 - sh2 * 0.27, sw * 0.072, 'italic 400', 0.03);
+        carve('for each other', sy0 - sh2 * 0.15, sw * 0.072, 'italic 400', 0.03);
         dabs(ctx, 40, [['#2e5a3e', 0.9], ['#4a8a52', 0.8], ['#ff8a7a', 0.9], ['#ffd27a', 0.9]], function (k) { var xx = sx0 + r() * sw, yy = sy0 - r() * 4 * s; return [xx, yy, (2 + r() * 3) * s, (1.4 + r() * 1.5) * s, k < 32 ? (r() < 0.5 ? 0 : 1) : (r() < 0.5 ? 2 : 3), r()]; });
         /* ---------- the bench ---------- */
         var Bn = o.bench, bw2 = Bn.w, by2 = Bn.y;

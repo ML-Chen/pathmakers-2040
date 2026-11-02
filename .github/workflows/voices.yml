@@ -1,0 +1,78 @@
+name: Record voices
+# Records every new or changed spoken line with Kokoro (tools/make_audio.py) on GitHub's machines, commits the
+# generated src/audio.js and src/audio/*.js to main, then rebuilds the Android app so it gets the new voices.
+# Clips are cached between runs, so only new or changed lines are synthesized.
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'tools/make_audio.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: voices
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install sherpa-onnx and ffmpeg (with rubberband)
+        run: |
+          pip install "sherpa-onnx==1.13.8" numpy
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null
+          ffmpeg -hide_banner -filters | grep -q rubberband && echo "rubberband: yes" || echo "rubberband: no (plain resampling)"
+      - name: Cache the Kokoro model
+        id: model
+        uses: actions/cache@v4
+        with:
+          path: ../tts-models
+          key: kokoro-multi-lang-v1_0
+      - name: Download the Kokoro model
+        if: steps.model.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ../tts-models && cd ../tts-models
+          curl -sSLO https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-multi-lang-v1_0.tar.bz2
+          tar xjf kokoro-multi-lang-v1_0.tar.bz2 && rm kokoro-multi-lang-v1_0.tar.bz2
+      - name: Restore the clip cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ../tts-cache
+          key: tts-cache-${{ github.run_id }}
+          restore-keys: tts-cache-
+      - name: Record new lines
+        run: python3 tools/make_audio.py
+      - name: Save the clip cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ../tts-cache
+          key: tts-cache-${{ github.run_id }}
+      - name: Commit the voices
+        id: commit
+        run: |
+          git add src/audio.js src/audio/
+          if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git commit -qm "Record voices for new lines"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Rebuild the app and playtest with the new voices
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run android.yml --ref main
+          gh workflow run playtest.yml --ref main
+          gh workflow run pages.yml --ref main
