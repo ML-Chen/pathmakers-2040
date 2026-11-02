@@ -100,9 +100,9 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
       {who:'byte',mood:'happy',text:'Good morning, Architect! Welcome to Phoenix. It’s 6:40 AM and already 91 degrees, so here we start early.'},
       {who:'byte',mood:'neutral',text:'While you slept, the night crew finished a shade shelter at a bus stop on Indian School Road. They poured the concrete at 2 AM, when it’s cooler.'},
       {who:'byte',mood:'think',text:'Today’s job: a corner lot in Arcadia floods every summer. The city wants a new use for it, for 400 coins, and it has to work for the neighbors.'},
-      {who:'byte',mood:'happy',text:'I can draw a hundred designs before breakfast. Knowing which one is right takes listening to people, and that part is yours.',
+      {who:'byte',mood:'happy',text:'I can draw a hundred designs before breakfast. But to know which one is right, someone has to listen to the neighbors, and that part is your job.',
         choices:[{t:'What does a Community Architect do?',reply:'You find out what neighbors need, ask me for designs, test them, and sign the plan. Robots build it overnight, but your name is on it. That’s what [[accountable]] means.'},
-          {t:'Let’s go before it gets hot!',reply:'Woof! Water bottle, hat, sunscreen. Desert rules!'}]}],
+          {t:'Let’s go before it gets hot!',reply:'Woof! Bring a water bottle, a hat and sunscreen. That’s the rule in the desert!'}]}],
     lot:[
       {who:'okafor',mood:'smile',text:'You must be the new architect. I’m Grace Okafor. I’ve lived next door to this lot for forty-one years.'},
       {who:'okafor',mood:'think',text:'I drove a city bus for thirty-five of them. Now I’d just like a shady place to sit that isn’t my kitchen.'},
@@ -112,20 +112,20 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
           {t:'Seven feet sounds dangerous.',reply:'Only if you don’t know how to skate. Everybody says that.',mood:'sad'}]},
       {who:'okafor',mood:'worried',text:'A seven-foot hole, right next to my walker? I’d like to sit near it, not fall into it.'},
       {who:'okafor',mood:'stern',text:'And whatever you build, mind the water. Every summer this lot floods, and the water creeps up to my back step.'},
-      {who:'okafor',mood:'think',text:'The city map says the water comes from the street. The worst of it comes from the alley, from our old [[irrigation]] ditch.',clue:'alley'},
+      {who:'okafor',mood:'think',text:'The city map says the water comes from the street. But the worst of it comes from the alley, from our old [[irrigation]] ditch.',clue:'alley'},
       {who:'okafor',mood:'neutral',text:'Every other Tuesday is our water night. The ditch floods my yard to water my grapefruit tree. When a storm hits on a water night, that ditch spills right onto this lot.',
-        choices:[{t:'Thank you. That isn’t on any map I’ve seen.',good:true,reply:'Of course it isn’t. We neighbors own that ditch together. Nobody from the city ever asked.',mood:'smile'},
-          {t:'The city’s map is probably right.',reply:'Hmph. Then the city can explain the mud on that back wall.',mood:'stern'}]},
+        choices:[{t:'Thank you. That isn’t on any map I’ve seen.',good:true,reply:'Of course it isn’t. We neighbors own that ditch together. Nobody from the city ever asked us about it.',mood:'smile'},
+          {t:'The city’s map is probably right about the water.',reply:'Hmph. Then the city can explain the mud on that back wall.',mood:'stern'}]},
       {who:'dev',mood:'surprised',text:'Wait. Is that why the lot turned into a lake that one Tuesday, when it barely rained?'},
       {who:'dev',mood:'smile',text:'So... could we have a bowl and her garden?'},
       {who:'okafor',mood:'smile',text:'Now that’s a question for the architect.'}],
     marco:[
       {who:'marco',mood:'neutral',text:'Morning. Marco Ruiz, city [[stormwater]]. I ran the drains on this side of town by hand for thirty years.'},
-      {who:'marco',mood:'think',text:'Now Arroyo runs them, the city’s stormwater AI. In a storm it opens and closes four thousand gates, faster than any crew I ever had.'},
+      {who:'marco',mood:'think',text:'Now Arroyo, the city’s stormwater AI, runs them. In a storm it opens and closes four thousand gates, faster than any crew I ever had.'},
       {who:'marco',mood:'stern',text:'Here’s my problem. In a big storm, twenty-three homes on this street get water in their yards and garages. Your lot is where that water wants to go.'},
       {who:'marco',mood:'worried',text:'And if Arroyo is going to open a gate onto your lot, I want it to call me first. Every time.',
-        choices:[{t:'Why every time?',good:true,reply:'Because I’ve seen machines be sure and be wrong. Maybe not this one. But I’m the one who signs for it.',mood:'think'},
-          {t:'Arroyo is faster than a phone call.',reply:'Faster isn’t the same as right. Show me it’s safe and we’ll talk.',mood:'stern'}]},
+        choices:[{t:'Why every time?',good:true,reply:'Because I’ve seen machines be sure of themselves and still get it wrong. Maybe not this one. But I’m the one who signs for those gates.',mood:'think'},
+          {t:'Arroyo is faster than a phone call.',reply:'Fast isn’t always right. Show me it’s safe, and then we’ll talk.',mood:'stern'}]},
       {who:'byte',mood:'happy',text:'One question before we head back to the studio: what should we make for this lot?'}]},
 
   // Workbench documents: every sentence is a step with its own looping picture (VIZ kinds in src/viz/lot.js).
@@ -165,13 +165,13 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
       {t:'[[Satellite]] photos show a shiny silver patch at Saltbrush Flats, just past the edge of the robot zone, that has doubled in size in one week.',viz:'lotSilverPatch',cap:'A growing patch'},
       {t:'The county says no one has a [[permit]] to mine there.',viz:'lotNoPermit',cap:'No permit on file'}]}],
   react:{memo2:'Twenty-three homes. That’s a lot of soggy garages.',memo10:'Thursday. That gives the crew three nights.',memo11:'Only the street side? Did anyone mention another way in?',
-    log4:'The back of the lot, not the street side. Interesting.',log5:'Two Tuesdays. Is that a coincidence?',survey2:'Why not both? I like these neighbors.',ledger3:'Doubling in a week? That’s fast for a patch of anything.'},
+    log4:'Those floods started at the back of the lot, away from the street. Interesting.',log5:'Two Tuesdays. Is that a coincidence?',survey2:'Why not both? I like these neighbors.',ledger3:'Doubling in a week? That’s fast for a patch of anything.'},
   tell:{clue:'alley',label:'Tell Byte about the alley ditch',note:'Thanks! I updated my forecast: in about 3 of 10 big storms, the old ditch spills onto the lot from the alley, so every design now takes water from both sides. An alley inlet adds 20 coins.',guide:'local-knowledge',doc:'memo'},
 
   criteria:[{id:'dry',label:'The street stays dry'},{id:'ready',label:'Done before the storm'},{id:'dev',label:'Dev can really skate it'},
     {id:'okafor',label:'Mrs. Okafor has a shady seat'},{id:'budget',label:'400 coins or less'},{id:'agreed',label:'No changes nobody signed'}],
   criteriaHint:'The street holds water from 140 homes, and the budget is 400 coins.',
-  criteriaNote:'Deciding what “good” means first keeps a shiny design from fooling you.',
+  criteriaNote:'If you decide what you want first, a shiny design is less likely to fool you.',
   get controls(){const ids=lotState().opts?lotState().opts.map(o=>o.id):['bowl','garden','split'];
     return [{key:'design',label:'Design',opts:ids.map(id=>[id,lotSpec(id).name])},{key:'depth',label:'Depth',opts:[['shallow','4 feet'],['deep','7 feet']]},
       {key:'drain',label:'Drain',opts:[['std','Standard'],['wide','Wide']]},{key:'shade',label:'Shade',opts:[['none','None'],['sails','Sails'],['grove','Trees + sails']]}]},
@@ -185,9 +185,9 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     const devOK=d.dev===true||(d.dev==='deep'&&ch.depth==='deep'),okOK=d.okafor&&ch.shade!=='none'&&!unsigned;
     const F=(dry,ready)=>({dry,ready,dev:devOK?1:0,okafor:okOK?1:0,budget:lotCost(ch,lat)<=LOT.budget?1:0,agreed:unsigned?0:1});
     const H=lotHold(ch),hot=ch.shade==='none'&&d.okafor;
-    const cap={late:'Not done in time. Street flooded.',overflow:'Too much rain. Water reached the street.',slowgate:'Gate waited for a call. Street flooded.',
-      nogate:'Bowl stayed dry. The street didn’t.',unsigned:'Street dry, but the crew cut the ditch unasked.',
-      held:hot?'Street dry. Too hot to sit, though.':({bowl:'Bowl filled. Street stayed dry!',garden:'Garden filled. Street stayed dry!',split:'Tank filled. Street stayed dry!'}[d.kind]||'Street stayed dry!')};
+    const cap={late:'It wasn’t done in time, and the street flooded.',overflow:'There was too much rain, and water reached the street.',slowgate:'The gate waited for a phone call, and the street flooded.',
+      nogate:'The bowl stayed dry, but the street flooded.',unsigned:'The street stayed dry, but the crew cut into the ditch without asking.',
+      held:hot?'The street stayed dry, but it’s too hot to sit there.':({bowl:'The bowl filled, and the street stayed dry!',garden:'The garden filled, and the street stayed dry!',split:'The tank filled, and the street stayed dry!'}[d.kind]||'The street stayed dry!')};
     const out=[],add=(kind,p,fl)=>{if(p<1e-9)return;const k=kind+JSON.stringify(fl),e=out.find(x=>x._k===k);if(e)e.p+=p;else out.push({_k:k,kind,p,cap:cap[kind],flags:fl})};
     const branches=crew==='all'?(pipe?[[1,1]]:[[LOT.rocks,1],[1-LOT.rocks,0]]):crew==='scoped'?[[1,pipe?1:0]]:[[1,0]];
     for(const [pb,delay] of branches){const ready=d.nights+delay<=LOT.nights?1:1-LOT.thu;
@@ -211,8 +211,8 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     prompt:'So what are you going to build here? And will my street flood again?',
     opts(c,M){const f=typeof lotForecast==='function'&&typeof S!=='undefined'?lotForecast(c):{dry:.9},d=lotSpec(c.design);
       return [{t:`I suggest the ${d.name}${c.depth==='deep'?' with a 7-foot '+(d.kind==='garden'?'basin':'bowl'):''}${c.shade==='none'?'':c.shade==='sails'?' and shade sails':' with trees and shade sails'}. In a big storm, the street should stay dry about ${in10(f.dry)} times in 10, not every time. What do you two think?`,good:true,mood:'smile',reply:LOT_REPLY[0]},
-        {t:'Trust me, it’s perfect. You don’t need the details.',good:false,mood:'stern',reply:LOT_REPLY[1]},
-        {t:'It will never flood again. I promise.',good:false,mood:'surprised',reply:LOT_REPLY[2]}]}},
+        {t:'Trust me, this design is perfect for the lot. I’ve checked everything, so you two don’t need to worry about the details.',good:false,mood:'stern',reply:LOT_REPLY[1]},
+        {t:'Your street will never flood again, Mrs. Okafor. I promise you that, and Dev gets a great place to skate.',good:false,mood:'surprised',reply:LOT_REPLY[2]}]}},
   memo:{starters:['I recommend ','because ','In a big storm, the street stays dry about ','Mrs. Okafor and Dev ','Overnight, the crew may ','We will check by '],
     placeholder:'I recommend the Bowl Park with shade sails because…',plan:/bowl|garden|split|plaza|lawn|basin|park|tank|design/,planLabel:'Names the design',
     careLabel:'Includes what the neighbors care about',care:/okafor|grace|dev\b|neighbor|skat|shade|street|homes|walker|ditch/,signAs:'Architect ',topic:'the flood lot design'},
@@ -230,9 +230,9 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     const miss=[!(f.flood||f.homes)&&'the goal',!(f.dev&&f.okafor)&&'who it was for',!(f.budget&&f.deadline)&&'the limits',!f.criteria&&'your criteria'].filter(Boolean);
     out.push(miss.length?{ok:false,text:`Your request left out ${miss.join(' and ')}, so Byte had to guess.`}:{ok:true,text:'Your request named the goal, who it was for, the limits and your criteria, so Byte designed for this lot.'});
     out.push(crew==='free'?{ok:false,text:'You let the crew sign its own changes. When it finds something that belongs to someone else, nobody gets asked.'}:
-      crew==='all'?{ok:true,text:'Your crew had to stop for every surprise. Safe, though even a buried rock could cost a night.'}:
+      crew==='all'?{ok:true,text:'Your crew had to stop for every surprise. That was safe, but even a buried rock could cost a night.'}:
       {ok:true,text:'Your crew could move rocks on its own, but had to stop for anything that belongs to someone else.'});
-    out.push(ar==='auto'?{ok:true,text:'Arroyo could open the gate in seconds, inside rules Marco signed.'}:ar==='ask'?{ok:false,text:'Arroyo had to wait for Marco every time. At 2 AM, storms move faster than phone calls.'}:
+    out.push(ar==='auto'?{ok:true,text:'Arroyo could open the gate in seconds, inside rules Marco signed.'}:ar==='ask'?{ok:false,text:'Arroyo had to wait for Marco every time. At 2 AM, a storm can flood the street before anyone answers the phone.'}:
       {ok:false,text:'With the gate not connected, the bowl stayed dry and the street flooded.'});
     return out},
   byteGood:'Nice work, Architect. You listened to the neighbors, asked well, and gave the robots clear night orders.',
@@ -270,9 +270,9 @@ const LOT_SPOTS=[
   {id:'drain',a:'drain',t:'The street drain is half full of gravel and palo verde pods.'},
   {id:'saguaro',a:'saguaro',t:'This saguaro is over 20 feet tall, with five arms. Most saguaros don’t grow arms until they’re at least 50 years old.'},
   {id:'bus',a:'bus',t:'The bus stop bench has no shade. At 7:20 in the morning, its metal seat is already warm.'},
-  {id:'curb',a:'curb',t:'Skate wax on the curb, and little wheel marks everywhere. Dev has been busy.'},
+  {id:'curb',a:'curb',t:'There’s skate wax on the curb, and little wheel marks everywhere. Dev has been busy.'},
   {id:'cracks',a:'cracks',t:'The dirt is cracked into tiles where puddles dried. Water sat here for days.'},
-  {id:'mountain',a:'mountain',t:'Camelback Mountain: the camel’s head on the left, its hump on the right, 2,704 feet tall.'},
+  {id:'mountain',a:'mountain',t:'That’s Camelback Mountain, 2,704 feet tall. You can see the camel’s head on the left and its hump on the right.'},
   {id:'canal',a:'canal',t:'The Arizona Canal carries water from the Salt and Verde rivers. Neighborhood ditches branch off it.'},
   {id:'pipjory',a:'path',t:'Two strangers push a crate stamped TOTALLY NORMAL COPPER along the canal path. Something inside it wiggles.',note:'crate'}];
 function lotSurvey(){const st=lotState();st.seen=st.seen||[];const A=(window.PAINT&&PAINT.phx_lot&&PAINT.phx_lot.anchors)||{};
@@ -294,7 +294,7 @@ function lotSurvey(){const st=lotState();st.seen=st.seen||[];const A=(window.PAI
 // ---------- choose what to make ----------
 const LOT_MAKE=[
   {id:'design',job:true,title:'A new design for the lot',goLabel:'Make a new design',checks:[['Street dry',null],['Dev',null],['Mrs. Okafor',null]],cost:'200 to 400 coins',
-    line:'This is the real job. A design could fix the floods and give both of them a place. It’s also the hardest one to get right.',icon:()=>VIZ.lotMakeIcon({k:'design'})},
+    line:'This is the real job. A design could fix the floods and give Dev and Mrs. Okafor each a place of their own. It’s also the hardest one to get right.',icon:()=>VIZ.lotMakeIcon({k:'design'})},
   {id:'texts',title:'Flood warning texts',checks:[['Street dry',false],['Dev',false],['Mrs. Okafor',false]],cost:'5 coins',
     line:'Easy! People could move their cars in time. But the street would still flood, and the lot would still be dirt.',icon:()=>VIZ.lotMakeIcon({k:'texts'})},
   {id:'fence',title:'A fence and a KEEP OUT sign',checks:[['Street dry',false],['Dev',false],['Mrs. Okafor',false]],cost:'30 coins',
@@ -306,13 +306,13 @@ function lotMake(){cmMake({scene:'phx_lot',place:'The flood lot · Arcadia · 7:
 
 // ---------- commission: ask Byte for designs ----------
 const LOT_ASK_LINES={generic:'Here you go! These would be lovely parks almost anywhere. I didn’t know this lot floods, so none of them is built to hold water.',
-  partial:'These all hold storm water. But I had to guess a few things, and my guesses show.',
+  partial:'These all hold storm water. But I had to guess a few things, and you can see my guesses on each card.',
   full:'These are built for this lot, these neighbors and your limits. All three hold storm water.'};
 const LOT_WHY={bowl:'The bowl is the lowest spot, so street water flows in on its own, and Dev gets his bowl.',garden:'Plants and soil soak up water, and it’s the quickest to build: 2 nights.',
   split:'A tank holds the water out of sight, so the plaza stays dry for skating.',skate:'Skaters asked for a place, and plazas are quick to build.',lawn:'A lawn is soft and green, and good for families.',smart:'It’s the cheapest, and its cameras and gate keep it tidy.'};
 const LOT_RISK={bowl:'Someone could be skating in the bowl when a storm comes.',garden:'Leaves and trash can clog the drain.',split:'If the tank’s one pump breaks, it can’t empty.',
   skate:'Its rain runs straight into the street.',lawn:'A desert lawn drinks a lot of water.',smart:'The gate saves every visitor’s face.'};
-const LOT_CRIT={bowl:'Checks out. Make sure a person can pause the gate.',garden:'Solid. Dev may find the skate path too tame.',split:'The single pump is a weak spot. A second pump would cost 30 coins.',
+const LOT_CRIT={bowl:'This design checks out. Make sure a person can pause the gate.',garden:'This one is solid, but Dev may find the skate path too tame.',split:'The single pump is a weak spot. A second pump would cost 30 coins.',
   skate:'This ignores the flooding completely.',lawn:'A lawn here needs a lot of water every summer week.',smart:'Warning: the snack robot can read the city’s street cameras.'};
 const LOT_RT={bowl:['A skater might be in the bowl when Arroyo needs to fill it during a storm.','Arroyo only opens the gate when its sensors show the bowl is empty, after 10 minutes of lights and a horn. Anyone can press pause.'],
   garden:['Leaves, pods and trash can clog the drain, so the garden stays a pond for days.','A cleaning robot checks the drain grate after every storm.'],
@@ -393,14 +393,14 @@ function lotAsk(){const opt=(id,t,x)=>({id,t,...x});
     onChoose(o){S.choice={...S.choice,design:o.id,...o.knobs};save();toast(o.name+' is on the Future Table');nextStep()}})}
 
 // ---------- night orders: what the crew and Arroyo may do without a person ----------
-const LOT_CREW=[['all','Stop for every surprise','I sign every change. Safest, but even a buried rock could cost a night.'],
-  ['scoped','Fix small things. Stop for other people’s things.','Buried rocks: the crew handles them. Anything that belongs to someone else: the owner and I sign first.'],
-  ['free','Fix everything. Report at 6 AM.','The crew signs its own changes. Fastest.']];
+const LOT_CREW=[['all','Stop for every surprise','I sign every change. It’s the safest choice, but even a buried rock could cost a night.'],
+  ['scoped','Fix small things. Stop for other people’s things.','The crew handles things like buried rocks. For anything that belongs to someone else, the owner and I sign first.'],
+  ['free','Fix everything. Report at 6 AM.','The crew signs its own changes. This is the fastest choice.']];
 const LOT_GATE=[['auto','Arroyo opens it, with safety checks','Only when the bowl is empty, after 10 minutes of lights and a horn. Anyone can press pause. Marco signs these rules once.'],
   ['ask','Arroyo calls Marco every time','Marco must say yes before each opening, even at 2 AM.'],['off','Not connected','The bowl holds only the rain that falls on the lot.']];
-const LOT_NIGHT={intro:'My forecast can only see what’s on my maps. So here’s the big question: when the crew finds something that isn’t, at 2 AM, who decides? What matters more to you: speed, or nobody getting surprised?',
-  pick:'I’d pick “fix small things” and “Arroyo with safety checks.” The crew is great at building, but other people’s things are other people’s call. And storms move faster than phone calls.',
-  crew:{all:['okafor','Careful. I like careful. Slow, but careful.'],scoped:['okafor','Good. Nobody touches what’s ours without asking us first.'],free:['okafor','Robots deciding about our things at three in the morning? I don’t like that.']},
+const LOT_NIGHT={intro:'My forecast can only see what’s on my maps. So here’s the big question: if the crew digs up something at 2 AM that isn’t on any map, who decides what to do with it? What matters more to you, speed or making sure nobody gets surprised?',
+  pick:'I’d pick “fix small things” and “Arroyo opens it, with safety checks.” The crew is great at building, but when something belongs to the neighbors, the neighbors should decide. And at 2 AM, a storm won’t wait for Marco to answer his phone.',
+  crew:{all:['okafor','Careful. I like careful, even if it’s slow.'],scoped:['okafor','Good. Nobody touches what’s ours without asking us first.'],free:['okafor','Robots deciding about our things at three in the morning? I don’t like that.']},
   gate:{auto:[['arroyo','Rules received. I will open the gate only when the bowl is empty, after ten minutes of lights and horn.'],['marco','Empty check, warning, pause button, and a log I can read every morning. Fine. I’ll sign those rules.']],
     ask:[['arroyo','Understood. I will call Marco Ruiz before every opening.'],['marco','Good. Though at two in the morning, I’m not the fastest thing in this city.']],
     off:[['arroyo','Understood. This lot will not be part of my network.'],['marco','Then my twenty-three homes flood like always. Is that the plan?']]}};
@@ -436,7 +436,7 @@ const LOT_PIN={dev:{deep:'Seven feet! Okay, now we’re talking.',shallow:'Four 
     skate:'Rails and ledges! Not a bowl, but fun.',none:'There’s nothing here to skate at all.'},
   okafor:{good:'Shade, a bench with a back, and a ramp. Now I can sit near it.',steps:'Steps? With my walker? I’ll be watching from my kitchen.',hot:'Lovely. But I’ll cook on that bench by ten in the morning.',
     face:'I’m not giving my face to a gate just to sit on a bench.',noseat:'And where exactly do I sit?'},
-  marco:{great:'About nine storms in ten, dry. I can work with those odds.',ok:'Seven or eight in ten? Better than now. Not great.',poor:'That won’t keep my twenty-three homes dry.',over:'And it’s over the 400-coin budget. The city won’t pay that.'},
+  marco:{great:'Dry in about nine storms out of ten. I can work with those odds.',ok:'Seven or eight in ten? That’s better than now, but it’s not great.',poor:'That won’t keep my twenty-three homes dry.',over:'And it’s over the 400-coin budget. The city won’t pay that.'},
   promise:{dev:'Never? Like, never ever?',okafor:LOT_REPLY[2],marco:'Don’t promise what the weather decides.'},
   vague:{dev:'Can we at least see the bowl?',okafor:LOT_REPLY[1],marco:'I sign for the drains. I need the numbers.'}};
 function lotPinReact(c){const d=lotSpec(c.design),K=d.kind,f=lotForecast(c),cost=lotCost(c,MISSIONS.lot.knows()),deep=c.depth==='deep',P=LOT_PIN;
@@ -448,7 +448,7 @@ function lotPinup(){const st=lotState(),c=S.choice,d=lotSpec(c.design),f=lotFore
   const key=JSON.stringify([c.design,c.depth,c.drain,c.shade]);if(pin.key!==key){pin.how=null;pin.key=key}
   const R=pin.how==='honest'?lotPinReact(c):pin.how?Object.fromEntries(['dev','okafor','marco'].map(w=>[w,[LOT_PIN[pin.how][w],w==='dev'?'surprised':'stern']])):null;
   const opts=[['honest',`Here’s the ${d.name}. In a big storm, the street should stay dry about ${in10(f.dry)} times in 10, not every time. ${c.shade==='none'?'There’s no shade yet.':'It has shade for hot afternoons.'} What do you think?`],
-    ['promise','It’s perfect. It will never flood again, I promise.'],['vague','Trust me. You don’t need the details.']];
+    ['promise','It’s perfect. This lot will never flood again, I promise, and everybody gets what they asked for.'],['vague','Trust me, this is the right design for all of you. You don’t need to worry about the details.']];
   const person=w=>`<div class="lot-pin-p"><div class="lot-pin-art">${portrait({...CAST[w],mood:R?R[w][1]:'smile'})}</div><b>${esc(CAST[w].name.split(' ')[0]==='Grace'?'Mrs. Okafor':CAST[w].name.split(' ')[0])}</b>${R?`<p class="lot-pin-say">${esc(R[w][0])}</p>`:''}</div>`;
   screen('lot-pinup',`${scene('phx_lot')}${hud('Pin-up · The flood lot · 5:30 PM')}<div class="panel-card lot-pin">
     <div class="lot-pin-model">${VIZ.lotDiorama({design:c.design,kind:d.kind,depth:c.depth,shade:c.shade,ramp:d.okafor,tame:d.dev===false&&d.kind==='bowl'})}

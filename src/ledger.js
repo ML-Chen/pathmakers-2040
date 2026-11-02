@@ -45,14 +45,14 @@ const LEDGER_GUIDE={
   'lg-signature':{title:'Look for the signature',track:'Evidence and truth',text:'Since the Flood of Fakes, real photos and videos of public people carry a content signature: a code that proves who made them. No signature means you can’t know where it came from. Lots of shares only means it spread fast.',real:'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.'},
   'lg-cause':{title:'Together is not because',track:'Evidence and truth',text:'Two things can rise together without one causing the other. Ice cream sales and sunburns both go up in summer, but ice cream doesn’t cause sunburns. Sunshine causes both.',real:'True today: scientists use experiments with comparison groups to find out what causes what.'},
   'lg-headline':{title:'Read past the headline',track:'Evidence and truth',text:'Headlines are written to grab attention, and some exaggerate. The article underneath can tell a calmer story. Read it before you believe the headline, or share it.',real:'True today: studies have found that many people share news links without ever opening them.'},
-  'lg-trust':{title:'Check, don’t just doubt',track:'Evidence and truth',text:'Most news is honest. Doubting everything is as easy as believing everything. The skill is checking: who wrote it, what proves it, and whether the numbers add up.',real:'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.'}
+  'lg-trust':{title:'Check, don’t just doubt',track:'Evidence and truth',text:'Most news is honest. Doubting everything takes no more effort than believing everything, and it doesn’t get you any closer to the truth. What helps is checking who wrote a story, what proves it, and whether the numbers add up.',real:'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.'}
 };
 
 // Byte's spoken lines in the Ledger (recorded in both Byte voices).
 const LEDGER_BYTE={
   hello:'This is the Ledger, the news. Most stories are solid, but a few are slanted or fake. If one seems off, check it!',
   solid:'Good instinct to check! I traced it: the writer signed it, and the facts match the original sources. This one’s solid.',
-  agree:'Agreed. It’s signed, and the facts match the sources. Most news is honest. The skill is knowing when to check.',
+  agree:'Agreed. It’s signed, and the facts match the sources. Most news is honest, so the trick is knowing which stories are worth checking.',
   nudge:'Hmm. Before you trust this one, want to take one more look? Something in it bugs me.',
   help:'Here’s the part that gives it away.'
 };

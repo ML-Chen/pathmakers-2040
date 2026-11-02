@@ -38,8 +38,8 @@ const TALKS={
   morning:[
     {who:'byte',mood:'happy',text:'Good morning! Today you start something new: the [[Elder Companion]] program.'},
     {who:'byte',mood:'neutral',text:'Your interview is at nine, at the old [[dance hall]] in the South End. If it goes well, you meet your first client today.'},
-    {who:'byte',mood:'happy',text:'A tip for interviews: one true story about a real moment beats saying you’re great.',choices:[
-      {t:'What does an Elder Companion do?',reply:'You keep older people company, you listen, and you help them and their families with big choices. Robots do the lifting. You do the listening.'},
+    {who:'byte',mood:'happy',text:'Here’s a tip for your interview. Telling one true story about a time you helped someone works better than saying you’re great with people.',choices:[
+      {t:'What does an Elder Companion do?',reply:'You keep older people company and really listen to them. You also help them and their families talk through big choices. The robots handle the lifting and the cooking.'},
       {t:'Let’s go!',reply:'Woof! Wear comfy shoes. It’s a dance hall!'}]}
   ],
   arrive:[
@@ -47,49 +47,49 @@ const TALKS={
     {who:'bea',mood:'stern',text:'Wren, stop reading my numbers to strangers.'},
     {who:'bea',mood:'smile',text:'So you’re my new companion. Sit, sit. I’m Bea. Everybody calls me Bea, except Wren.',choices:[
       {t:'It’s lovely to meet you, Bea. What a beautiful room.',good:true,mood:'happy',reply:'Isn’t it? Everything in this room has a story. Go on, look around.'},
-      {t:'Wow. You’re really old.',mood:'neutral',reply:'One hundred and four, dear. I’m aware. Go on, look around. Everything in here has a story.'}]}
+      {t:'Wow, a hundred and four! I’ve never met anyone that old.',mood:'neutral',reply:'One hundred and four, dear. I’m aware. Go on, look around. Everything in here has a story.'}]}
   ]
 };
 
 // Bea's treasures (custom step): tap things in her parlor; each one has a story. Reminiscence is real companion work.
 const TREASURES=[
   {id:'photo',label:'Photo, 1961',mood:'happy',text:'Walter and me, on our wedding day in 1961, at the dance hall on Tremont Street. He stepped on my toes exactly once.'},
-  {id:'record',label:'Record player',mood:'happy',text:'Swing on Saturdays, waltzes on Sundays. When I was twenty, I danced six nights a week in the South End clubs.'},
-  {id:'pin',label:'Nurse’s pin',mood:'smile',text:'Then I was a nurse for forty years. I’ve held a lot of hands, and I know what “tested on 31 people” means.'},
-  {id:'invite',label:'Invitation',mood:'smile',text:'Jordan and Ana, July 19, at that same dance hall. He picked it for me, I think. He won’t say.'},
+  {id:'record',label:'Record player',mood:'happy',text:'Walter and I played swing on Saturdays and waltzes on Sundays. When I was twenty, I danced six nights a week in the South End clubs.'},
+  {id:'pin',label:'Nurse’s pin',mood:'smile',text:'After my dancing days, I was a nurse for forty years. I’ve held a lot of hands, and I know what “tested on only 31 people” means.'},
+  {id:'invite',label:'Invitation',mood:'smile',text:'This is Jordan and Ana’s wedding invitation. July 19, at the same dance hall where Walter and I got married. I think Jordan picked it for me, but he won’t say so.'},
   {id:'cane',label:'Cane',mood:'neutral',text:'This is Fred, my cane. Fred and I have a deal: he holds me up, and I never take him dancing.'},
-  {id:'wren',label:'Wren',mood:'think',text:'Wren is a good robot. It counts my steps and my heartbeats. It has never once asked me what I want to do with them.'}];
+  {id:'wren',label:'Wren',mood:'think',text:'Wren is a good robot. It counts my steps and my heartbeats all day long. But it has never once asked me what I’d like to do today.'}];
 const TREASURE_OUTRO={text:'Jordan’s mother, Grace, thinks the [[renewal therapy]] will hurt me. Jordan thinks it will make me twenty again. They’re both on their way over, and they’ll talk about me as if I were the furniture.',
   opts:[{t:'I’ll make sure you get heard.',good:1,mood:'happy',reply:'Ha! I like you already.'},
-    {t:'Maybe they know what’s best for you.',mood:'think',reply:'Maybe. But they don’t know what I want. Nobody has asked.'}]};
+    {t:'Maybe they know what’s best for you.',mood:'think',reply:'Maybe they do. But they don’t know what I want, because nobody has asked me.'}]};
 
 // What matters to Bea (custom step, sets the Future Table's criteria). She answers each pick; one tempting goal isn't hers.
 const GOALS={prompt:'So what should a good plan do for me? Pick two or three, and I’ll tell you if you’ve been listening.',
-  replies:{dance:'Yes. That’s the whole point.',safe:'Fair. Grace will sleep better, and so will I.',say:'Good. My legs, my say.',easy:'I don’t mind aches, dear. I danced on sore toes for ten years. But all right.'},
+  replies:{dance:'Yes. That’s the whole point.',safe:'Fair. Grace will sleep better, and so will I.',say:'Good. They’re my legs, so I want a say in what happens to them.',easy:'I don’t mind aches, dear. I danced on sore toes for ten years. But all right.'},
   long:{label:'She lives as long as possible',reply:'Live longer? I never asked for that. Take that one off, dear.'},
   tooMany:'Three is plenty. Take one off first.',ready:'Now show me those futures.'};
 
 // Interview at the dance hall (custom step). Bad answers get a nudge and the remaining cards come back.
 const IV={
   intro:[{mood:'smile',text:'Welcome to the dance hall. I’m Marisol Vega, and I run the Elder Companion program.'},
-    {mood:'neutral',text:'Our clients have robots that lift, cook and count their steps. What they want from us is a person who listens. Four quick questions.'}],
+    {mood:'neutral',text:'Our clients have robots that lift, cook and count their steps. What they want from us is a person who listens to them. I have four quick questions for you.'}],
   qs:[
     {q:'Tell me about a time you helped someone who was having a hard day.',opts:[
-      {t:'Last winter my neighbor’s old dog died. I didn’t try to fix it. I sat with her and looked at photos of him for an hour.',good:1,mood:'happy',reply:'That’s a real story. You listened instead of fixing. That’s most of this job.'},
-      {t:'I’m amazing with people. Everyone says I’m the best helper they know.',mood:'neutral',reply:'Everyone says so? Tell me about one real time.'},
-      {t:'I help people all the time. I’m a really helpful person.',mood:'think',reply:'I believe you. Can you give me one example?'}]},
+      {t:'Last winter my neighbor’s old dog died. I didn’t try to cheer her up right away. I just sat with her, and we looked at photos of him for an hour.',good:1,mood:'happy',reply:'That’s a real story, and you just listened. Most of this job is exactly that.'},
+      {t:'I’m amazing with people. My friends and teachers all say I’m the best helper they know, and I really love helping out.',mood:'neutral',reply:'Everyone says so? Then tell me about one real time you helped someone.'},
+      {t:'I help people all the time, at school and at home. I’m just a really helpful person, and people know they can count on me.',mood:'think',reply:'I believe you. Can you give me one example?'}]},
     {q:'Your client wants one thing, and her family wants another. What do you do?',opts:[
-      {t:'Listen to each person first. Then make sure my client is heard, because it’s her life and her call.',good:1,mood:'smile',reply:'Good. Families love hard. Our clients still get the last word.'},
-      {t:'Do whatever the AI recommends. It knows more than all of us.',mood:'think',reply:'It knows the odds. It doesn’t know what she wants. Try again.'},
-      {t:'Side with the family. They know her best.',mood:'neutral',reply:'Sometimes they do. But whose life is it? Try again.'}]},
+      {t:'I’d listen to each person first. Then I’d make sure my client gets heard, because it’s her life and her decision.',good:1,mood:'smile',reply:'Good. Families love hard, and they mean well. But our clients still get the last word.'},
+      {t:'I’d do whatever the AI recommends. It has read every study, so it knows more than any of us do.',mood:'think',reply:'The AI knows the odds, but it doesn’t know what she wants. Try again.'},
+      {t:'I’d side with the family. They’ve known her for years, so they probably know what’s best for her.',mood:'neutral',reply:'Sometimes they do. But whose life is it? Try again.'}]},
     {q:'What’s something you’re not good at yet?',opts:[
-      {t:'I talk too fast when I’m nervous. I’m practicing slowing down and asking more questions.',good:1,mood:'happy',reply:'Honest, and you’re working on it. I like that.'},
-      {t:'Nothing, really.',mood:'stern',reply:'Everybody has something. What’s yours?'},
-      {t:'I work too hard.',mood:'think',reply:'Ha. Everyone says that one. What’s a real one?'}]},
+      {t:'I talk too fast when I’m nervous. I’m practicing slowing down and asking more questions.',good:1,mood:'happy',reply:'That’s honest, and you’re working on it. I like that.'},
+      {t:'Nothing, really. I’ve always been pretty good at whatever I try.',mood:'stern',reply:'Everybody has something. What’s yours?'},
+      {t:'I work too hard. Sometimes I care so much that I forget to rest.',mood:'think',reply:'Ha. Everyone says that one in interviews. What’s a real one?'}]},
     {q:'Last one. Do you have a question for me?',opts:[
-      {t:'What do companions do that robots can’t?',good:1,mood:'smile',reply:'Be there. Robots keep our clients safe. We keep them company, and we make sure they’re heard.'},
-      {t:'How much does it pay?',mood:'neutral',reply:'A little, on top of your dividend. Most of us do it because we love it. Anything about the work?'},
-      {t:'No, I’m good.',mood:'think',reply:'Always ask one. It shows you care about the work. Anything?'}]}],
+      {t:'What do companions do that robots can’t?',good:1,mood:'smile',reply:'We’re there with them, as people. The robots keep our clients safe. We keep them company and make sure they’re heard.'},
+      {t:'How much does the job pay?',mood:'neutral',reply:'A little, on top of your dividend. Most of us do it because we love it. Anything about the work?'},
+      {t:'No, I think I’m good.',mood:'think',reply:'Always ask one. It shows you care about the work. Anything?'}]}],
   outro:[{mood:'happy',text:'You’re hired! Your first client is Bea Hollis. She’s 104, and she lives in a brownstone on Rutland Square.'},
     {mood:'smile',text:'Bea danced her wedding waltz in this very hall in 1961. Go meet her.'}]
 };
@@ -98,36 +98,36 @@ const IV={
 // A beat with retry comes back (without the card just used) until a listening move lands.
 const MOVES={reflect:'Reflect',ask:'Ask',summarize:'Summarize',advise:'Advise',side:'Take a side',decide:'Decide for her'};
 const MEET={
-  tip:'Three listening moves: reflect what you heard, ask an open question, and summarize. Let’s see what they bring out.',
+  tip:'Here are three listening moves you can use. You can reflect, which means saying back what you heard. You can ask an open question. And you can summarize what everyone has said.',
   beats:[
     {who:'grace',mood:'worried',text:'Gran broke her hip at 99. This therapy was tested on 31 people over 100. Thirty-one! I’m not losing her over a dance.',opts:[
       {m:'reflect',t:'You’re scared of losing her, and 31 people isn’t much to go on.',good:1,who:'grace',mood:'smile',reply:'Yes. Exactly that. Thank you.'},
-      {m:'advise',t:'Don’t worry. Tempo will keep her safe.',who:'grace',mood:'stern',reply:'Everyone keeps saying that. Tempo isn’t her granddaughter.'},
-      {m:'side',t:'Jordan, maybe drop the dancing idea.',who:'jordan',mood:'stern',reply:'Whoa. Nobody asked me to drop anything.'}]},
+      {m:'advise',t:'Try not to worry. Tempo watches her heart all day, so it will keep her safe.',who:'grace',mood:'stern',reply:'Everyone keeps telling me that. But Tempo isn’t her granddaughter. I am.'},
+      {m:'side',t:'Jordan, maybe you should let go of the dancing idea.',who:'jordan',mood:'stern',reply:'Whoa. Nobody asked me to drop anything.'}]},
     {who:'jordan',mood:'happy',text:'Mom, it’s three months! If Gran-Bea starts the full dose tomorrow, she could dance all night at my wedding. Tempo is all set up.',opts:[
-      {m:'ask',t:'What would it mean to you if she danced at your wedding?',good:1,who:'jordan',mood:'smile',reply:'She taught me to dance in this room when I was six, standing on her feet. I want her there. Really there.'},
-      {m:'reflect',t:'You really want her at your wedding, and the clock is ticking.',good:1,who:'jordan',mood:'smile',reply:'Yeah. That’s it. Three months goes fast.'},
-      {m:'advise',t:'Full dose it is, then. Start tomorrow.',who:'grace',mood:'stern',reply:'Excuse me? Nobody has decided anything.'}]},
+      {m:'ask',t:'What would it mean to you if she danced at your wedding?',good:1,who:'jordan',mood:'smile',reply:'She taught me to dance in this room when I was six. I stood on her feet. I want her at my wedding up and dancing, not just sitting at a table.'},
+      {m:'reflect',t:'You really want her at your wedding, and three months doesn’t feel like much time.',good:1,who:'jordan',mood:'smile',reply:'Yeah, that’s it. Three months will go by fast.'},
+      {m:'advise',t:'Then the full dose sounds right. She should start it tomorrow.',who:'grace',mood:'stern',reply:'Excuse me? Nobody has decided anything.'}]},
     {who:'grace',mood:'think',text:'We keep going around in circles.',opts:[
-      {m:'summarize',t:'Let me check I’ve got it. Grace wants Bea safe. Jordan wants her at the wedding, happy. You both want the same person to be okay.',good:1,shared:1,who:'grace',mood:'smile',reply:'When you put it like that, we’re on the same side.'},
-      {m:'side',t:'Let’s vote. Two against one.',who:'bea',mood:'stern',reply:'A vote? About my legs? I’m sitting right here.'},
-      {m:'advise',t:'Let’s just do whatever Byte recommends.',who:'jordan',mood:'think',reply:'Byte has never met Gran-Bea.'}]},
+      {m:'summarize',t:'Let me check that I’ve got this right. Grace, you want Bea to be safe. Jordan, you want her happy at your wedding. You both want Bea to be okay.',good:1,shared:1,who:'grace',mood:'smile',reply:'When you put it like that, we’re on the same side.'},
+      {m:'side',t:'Let’s just take a vote, and whichever side gets more votes wins.',who:'bea',mood:'stern',reply:'A vote? About my legs? I’m sitting right here.'},
+      {m:'advise',t:'Let’s just do whatever Byte recommends. Byte has read every study on this.',who:'jordan',mood:'think',reply:'Byte has never even met Gran-Bea.'}]},
     {who:'bea',mood:'neutral',text:'Is anyone going to ask me?',opts:[
       {m:'ask',t:'Bea, what do you want?',good:1,who:'bea',mood:'smile',reply:'Finally. I want to dance at Jordan’s wedding.'},
       {m:'reflect',t:'You feel left out of this conversation.',good:1,who:'bea',mood:'smile',reply:'I do. So here it is: I want to dance at Jordan’s wedding.'},
       {m:'advise',t:'Don’t worry, Bea. We’ll figure it out for you.',who:'bea',mood:'stern',reply:'For me? I’ve been figuring things out for 104 years.'}]},
-    {who:'bea',mood:'smile',text:'There. I want to dance.',retry:1,opts:[
-      {m:'ask',t:'What would that dance look like? Tell me about it.',good:1,clue:1,who:'bea',mood:'happy',reply:'One [[waltz]]. The one Walter and I danced in that hall in 1961. Three minutes, on my own two feet, no cane, holding Jordan’s hands. I don’t need to dance all night. I don’t need to live to 120. I need three minutes.'},
-      {m:'reflect',t:'You want to dance at the wedding.',who:'bea',mood:'neutral',reply:'That’s what I said, dear. But what kind of dancing? Nobody has asked me that.'},
-      {m:'advise',t:'Then the full dose is your best shot.',who:'bea',mood:'think',reply:'Is it? You don’t even know what kind of dancing I mean.'}]},
-    {who:'jordan',mood:'think',text:'Tempo is set to change her plan on its own. That’s the fastest way.',opts:[
-      {m:'ask',t:'Bea, who should decide when your plan changes?',good:1,who:'bea',mood:'smile',reply:'Me. A machine can tell me my grip is stronger. It can’t tell me whether I feel up to it today.'},
-      {m:'reflect',t:'Jordan, you want the fastest path to the wedding.',good:1,who:'jordan',mood:'smile',reply:'I do. But it’s Gran-Bea’s body. Maybe she should say yes to each change.'},
-      {m:'advise',t:'Let Tempo handle it. It knows more than any of us.',who:'bea',mood:'stern',reply:'About my muscles, maybe. Not about my mornings.'}]},
+    {who:'bea',mood:'smile',text:'There, I said it. I want to dance.',retry:1,opts:[
+      {m:'ask',t:'What would that dance look like? Tell me about it.',good:1,clue:1,who:'bea',mood:'happy',reply:'One [[waltz]], like the one Walter and I danced in that hall in 1961. I want three minutes on my own two feet, with no cane, holding Jordan’s hands. I don’t need to dance all night, and I don’t need to live to 120. Three minutes would be plenty.'},
+      {m:'reflect',t:'So you want to dance at the wedding.',who:'bea',mood:'neutral',reply:'That’s what I said, dear. But what kind of dancing? Nobody has asked me that.'},
+      {m:'advise',t:'Then the full dose gives you the best shot at it.',who:'bea',mood:'think',reply:'Is it? You don’t even know what kind of dancing I mean.'}]},
+    {who:'jordan',mood:'think',text:'Right now Tempo is set to change Gran-Bea’s plan on its own. That’s the fastest way to get her ready.',opts:[
+      {m:'ask',t:'Bea, who should decide when your plan changes?',good:1,who:'bea',mood:'smile',reply:'Me. A machine can tell me my grip is stronger. It can’t tell me whether I feel up to a harder workout today.'},
+      {m:'reflect',t:'Jordan, you want Gran-Bea ready for the wedding as fast as possible.',good:1,who:'jordan',mood:'smile',reply:'I do. But it’s Gran-Bea’s body. Maybe she should say yes to each change.'},
+      {m:'advise',t:'Let Tempo handle the changes. It knows more about muscles than any of us.',who:'bea',mood:'stern',reply:'About muscles, maybe. But it doesn’t know how I feel when I wake up in the morning.'}]},
     {who:'bea',mood:'smile',text:'Well, companion? Where does that leave us?',retry:1,opts:[
-      {m:'summarize',t:'Here’s what I heard. Grace wants you safe. Jordan wants you at the wedding. You want one waltz, on your own feet, your way. I’ll bring you real options with real odds. Then you decide.',good:1,final:1,who:'bea',mood:'happy',reply:'Now that is a companion. Bring me the odds.'},
-      {m:'decide',t:'I’ll pick the best plan and let you know.',who:'bea',mood:'stern',reply:'You’ll let me know? I’m 104, dear, not 4.'},
-      {m:'decide',t:'Grace is your health proxy, so she should decide.',who:'grace',mood:'think',reply:'No. A [[health proxy]] only decides if Gran can’t. She can. I just want her to hear the risks.'}]}
+      {m:'summarize',t:'Here’s what I heard. Grace wants you to be safe, and Jordan wants you at the wedding. You want one waltz on your own feet, and you want to choose how you get there. I’ll bring you the real options and their odds, and then you decide.',good:1,final:1,who:'bea',mood:'happy',reply:'Now you sound like a real companion. Go get me those odds.'},
+      {m:'decide',t:'I’ll look at the numbers, pick the best plan for you, and let you know what it is.',who:'bea',mood:'stern',reply:'You’ll let me know? I’m 104, dear, not 4.'},
+      {m:'decide',t:'Grace is your health proxy, so she should be the one to make this decision.',who:'grace',mood:'think',reply:'No. A [[health proxy]] only decides if Gran can’t. She can. I just want her to hear the risks.'}]}
   ],
   end:'You listened until Bea said what she really wants. Now let’s set Tempo’s rules.'
 };
@@ -135,15 +135,15 @@ const MEET={
 // Tempo's rule sheet (custom step): sort what Tempo and Wren may do. Bins: alone, ask (Tempo asks Bea first), bea (only Bea decides).
 const BINS=[['alone','Tempo alone'],['ask','Tempo asks Bea'],['bea','Only Bea']];
 const RULES={
-  intro:'Before the plan starts, Tempo needs a signed rule sheet. For each task: may Tempo do it alone, must it ask Bea first, or does only Bea decide?',
+  intro:'Before the plan starts, Tempo needs a signed rule sheet. For each task, please choose whether Tempo does it alone, Tempo asks Bea first, or only Bea decides.',
   cards:[
-    {id:'pause',t:'Pause the dose if her heart rhythm changes',best:['alone'],fb:{alone:'Yes. Seconds matter, and pausing is the safe direction. Let Tempo act alone.',ask:'Waiting for Bea’s yes could take hours, even at 3 in the morning. A safety stop is the best job to let Tempo do alone.',bea:'Bea can’t watch her heart rhythm all night. Tempo can, and stopping is the safe direction.'}},
-    {id:'raise',t:'Raise her dose or make her exercises harder',best:['ask','bea'],fb:{alone:'Faster, but Bea isn’t asked first. In Tempo’s records, about 15 in 100 people quit when changes came without asking. You’ll see it on the Future Table.',ask:'Tempo suggests, and Bea says yes or not today. A little slower, and she stays in charge.',bea:'Then Bea decides each change herself, and Tempo only suggests. That works like asking first.'}},
-    {id:'exercise',t:'Choose which exercises she does each day',best:['alone','ask'],fb:{alone:'Fine. Low risk, and Bea can always skip a day.',ask:'Fine, though a question every single morning might wear her out.',bea:'She could, but Tempo is very good at this. She’d spend every morning planning workouts.'}},
-    {id:'shop',t:'Order her groceries and protein shakes',best:['alone'],fb:{alone:'Low risk and easy to undo. Let Tempo handle it.',ask:'You can, but Bea would get a message about yogurt every day.',bea:'That’s a lot of grocery lists for someone with a wedding to get ready for.'}},
-    {id:'tell',t:'Tell Grace about every change',best:['ask','bea'],fb:{alone:'That’s Bea’s private health news. She should choose who hears it.',ask:'Good. Tempo asks Bea each time before it shares.',bea:'Good. Bea chooses who hears her health news.'}},
+    {id:'pause',t:'Pause the dose if her heart rhythm changes',best:['alone'],fb:{alone:'Yes. If her heart rhythm changes, every second counts, and pausing the dose can only make her safer. Tempo should do this on its own.',ask:'If her heart acts up at 3 in the morning, waiting for Bea’s yes could take hours. Pausing the dose is a safety stop, so it’s the best job to let Tempo do alone.',bea:'Bea can’t watch her own heart rhythm all night, but Tempo can. And pausing the dose can only make her safer.'}},
+    {id:'raise',t:'Raise her dose or make her exercises harder',best:['ask','bea'],fb:{alone:'That’s a little faster, but nobody asks Bea first. In Tempo’s records, about 15 in 100 people quit when their plan changed without asking. You’ll see that on the Future Table.',ask:'Tempo suggests each change, and Bea can say yes or “not today.” It’s a little slower, but she stays in charge.',bea:'Then Bea decides each change herself, and Tempo only makes suggestions. That works about the same as asking first.'}},
+    {id:'exercise',t:'Choose which exercises she does each day',best:['alone','ask'],fb:{alone:'That’s fine. Picking exercises is low risk, and Bea can always skip a day.',ask:'That’s fine, though a question every single morning might wear her out.',bea:'She could, but Tempo is very good at choosing exercises. Bea would spend every morning planning workouts.'}},
+    {id:'shop',t:'Order her groceries and protein shakes',best:['alone'],fb:{alone:'Groceries are low risk, and a wrong order is easy to fix. Let Tempo handle them.',ask:'You can, but Bea would get a message about yogurt every day.',bea:'That’s a lot of grocery lists for someone with a wedding to get ready for.'}},
+    {id:'tell',t:'Tell Grace about every change',best:['ask','bea'],fb:{alone:'That’s Bea’s private health news. She should choose who hears it.',ask:'Good. Tempo asks Bea each time before it tells Grace anything.',bea:'Good. Bea chooses who hears her health news.'}},
     {id:'help',t:'Call for help if she falls and can’t get up',best:['alone'],fb:{alone:'Yes. If she’s hurt, she may not be able to answer. Wren should call right away.',ask:'If she’s hurt, she may not be able to say yes. Wren should call right away.',bea:'If she’s hurt, she may not be able to call. Let Wren do it.'}},
-    {id:'start',t:'Start the renewal therapy at all',best:['bea'],fb:{alone:'Starting a new medicine is Bea’s choice. No machine should decide that for her.',ask:'Close, but this isn’t Tempo’s to suggest. It’s Bea’s decision.',bea:'Yes. Whether to start at all is Bea’s choice.'}}],
+    {id:'start',t:'Start the renewal therapy at all',best:['bea'],fb:{alone:'Starting a new medicine is Bea’s choice. No machine should decide that for her.',ask:'Close, but this isn’t something Tempo should be suggesting. Whether to start at all is Bea’s decision.',bea:'Yes. Whether to start at all is Bea’s choice.'}}],
   signed:'Signed. Tempo will follow these rules, and Bea can change them any time.'
 };
 
@@ -164,10 +164,10 @@ const DOCS=[
       alt:{t:'Updated: Bea wants one 3-minute [[waltz]] on her own feet, holding Jordan’s hands, not an hour of dancing. That needs much less strength. Now: gentle dose about 79 in 100, full dose 74, training only 56. For Bea, I would pick the gentle dose.',args:{v:[56,79,74],waltz:1},cap:'Updated: one 3-minute waltz'}}
   ]},
   {id:'tempo',title:'Tempo: Bea’s plan settings',from:'Tempo, the dosing AI',kind:'bea-tempo',steps:[
-    {t:'I run Bea’s renewal plan. Wren, her home robot, carries it out at home every day.',viz:'bea_tempoWren',cap:'Tempo plans, Wren does'},
+    {t:'I run Bea’s renewal plan. Wren, her home robot, carries it out at home every day.',viz:'bea_tempoWren',cap:'Tempo plans, and Wren carries it out'},
     {t:'I don’t learn on the job. I follow the clinic’s approved plan, which allows small dose steps up to the full dose.',viz:'bea_approved',cap:'An approved plan, step by step'},
     {t:'Every morning Wren checks four things: her [[grip strength]], her steps, her sleep, and her [[heart rhythm]].',viz:'bea_sensors',cap:'Four morning checks'},
-    {t:'My published spec says I aim at the goal in my settings. Right now it says “as strong as possible by July 19.” Jordan typed it in.',viz:'bea_goal',cap:'The goal I aim at',
+    {t:'My published spec says I work toward whatever goal is in my settings. Right now the goal says “as strong as possible by July 19.” Jordan typed that goal in.',viz:'bea_goal',cap:'The goal I aim at',
       alt:{t:'Updated goal, waiting for Bea’s yes: “one 3-minute waltz on her own feet, holding Jordan’s hands.” I aim exactly at the goal I am given, so this changes my whole plan.',args:{waltz:1},cap:'A better goal'}},
     {t:'If I may change her plan on my own, I raise the dose or make her exercises harder the morning her body is ready, and I tell her afterward.',viz:'bea_modeAlone',cap:'Changes on my own'},
     {t:'If Bea must say yes, I suggest each change, and nothing changes until she agrees.',viz:'bea_modeAsk',cap:'Changes with Bea’s yes'},
@@ -179,7 +179,7 @@ const DOCS=[
     {t:'Renewal therapy wakes up the [[repair cells]] inside muscle and bone, so they rebuild the way younger bodies do.',viz:'bea_cells',cap:'Waking the repair cells'},
     {t:'Wren puts a small [[patch]] on Bea’s upper arm every Sunday.',viz:'bea_patch',cap:'One patch a week'},
     {t:'The full dose gives the biggest gains, but most people feel deep muscle [[aches]] for the first three weeks.',viz:'bea_aches',cap:'The full dose'},
-    {t:'The gentle dose is half strength: smaller gains, and much milder aches.',viz:'bea_gentle',cap:'The gentle dose'},
+    {t:'The gentle dose is half strength. It gives smaller gains, and the aches are much milder.',viz:'bea_gentle',cap:'The gentle dose'},
     {t:'A heart flutter is the most common serious [[side effect]]. It stops once the dose is paused.',viz:'bea_flutterStop',cap:'If the heart flutters'},
     {t:'It is [[approved]] for people over 80. For people over 100, it may be used only with the person’s own [[informed consent]], because so few have tried it.',viz:'bea_consent',cap:'Her own yes'}
   ]},
@@ -231,19 +231,19 @@ const GLOSSARY={
 
 const GUIDE={
   'listening-moves':{title:'Three listening moves',track:'People skills',text:'Reflect: say back what you heard. Ask: an open question that invites a real answer. Summarize: pull everyone’s words together. Bea told her real wish only after someone asked what her dancing would look like.',real:'True today: counselors, doctors and mediators are trained in these “active listening” moves.'},
-  'shared-goal':{title:'Look for the shared goal',track:'People skills',text:'Grace said “too risky.” Jordan said “full dose now.” Underneath, both wanted the same thing: Bea happy, safe and there at the wedding. Naming what everyone shares turns a fight into teamwork.',real:'True today: mediators look for the interests under people’s positions. Negotiators call this “interests, not positions.”'},
+  'shared-goal':{title:'Look for the shared goal',track:'People skills',text:'Grace said “too risky.” Jordan said “full dose now.” Underneath, both wanted the same thing: Bea happy, safe and there at the wedding. When you say out loud what everyone wants, people often stop arguing and start working together.',real:'True today: mediators look for the interests under people’s positions. Negotiators call this “interests, not positions.”'},
   'her-choice':{title:'Her life, her choice',track:'Ethics and AI',text:'Bea is 104 and fully able to decide. Her family and her companion can share worries, facts and odds, but the choice is hers, even a risky one.',real:'True today: adults who understand their options have the right to make their own medical choices, even ones their family disagrees with.'},
   'act-or-ask':{title:'Act alone, or ask first?',track:'Security thinking',text:'Let a machine act alone when acting fast makes things safer and is easy to undo, like pausing a dose or calling for help. Make it ask a person first when it takes a risk on someone’s behalf or touches their private life.',real:'True today: cars brake on their own to avoid a crash, but the driver decides when to speed up. Hospital pumps stop on their own at an alarm, but a nurse must approve a higher dose.'},
-  'aim-the-goal':{title:'An AI aims at the goal it’s given',track:'Ethics and AI',text:'Tempo was told “as strong as possible by the wedding.” It would have pushed hard toward a goal Bea never had. Her real goal was one 3-minute waltz. Getting the goal right mattered more than any extra skill.',real:'True today: AI researchers work hard to make sure the goal a system is given matches what people actually want. They call this alignment.'}
+  'aim-the-goal':{title:'An AI aims at the goal it’s given',track:'Ethics and AI',text:'Tempo was told “as strong as possible by the wedding.” It would have pushed hard toward a goal Bea never had. Her real goal was one 3-minute waltz, and Tempo could only aim at it once someone typed it in.',real:'True today: AI researchers work hard to make sure the goal a system is given matches what people actually want. They call this alignment.'}
 };
 
-const REVEAL={waltz:'Three minutes on my own two feet. Walter would have cried. Jordan did!',
-  cane:'I danced with my cane in one hand and Jordan in the other. Not my waltz, but I was out there.',
+const REVEAL={waltz:'I danced for three whole minutes on my own two feet. Walter would have cried. Jordan did!',
+  cane:'I danced with my cane in one hand and Jordan in the other. It wasn’t quite my waltz, but I was out on the floor.',
   flutter:'My heart skipped, and Tempo paused everything within a minute. I’m fine. I clapped louder than anyone.',
-  fall:'I slipped in week six and bruised my hip. Wren caught my arm. I cheered from my chair.',
-  quit:'Tempo raised my dose on a morning I felt awful, without asking me. So I quit. My legs, my say.'};
+  fall:'I slipped in week six and bruised my hip, but Wren caught my arm. At the wedding, I cheered from my chair.',
+  quit:'Tempo raised my dose on a morning I felt awful, without asking me. So I quit the plan.'};
 
-const CONSENT_REPLIES={good:'Thank you for talking to me like a grown woman. Yes. Let’s try it.',goodLow:'Small odds, but honest ones. I’ll take honest. Let’s try it.',
+const CONSENT_REPLIES={good:'Thank you for talking to me like a grown woman. Yes. Let’s try it.',goodLow:'Those odds are small, but you were honest with me about them. Let’s try it.',
   trust:'Tempo knows my grip strength, dear. It doesn’t know me.',sure:'Definitely? I was a nurse for forty years. Nothing is definite.',decided:'You decided? About my own legs? Try again.'};
 
 // Lines spoken with playLine outside talks/docs (custom steps, consent replies): recorded by tools/make_audio.py.
@@ -296,7 +296,7 @@ async function interview(){
       first=false;left=left.filter(o=>o!==pick)}}
   for(const L of IV.outro){if(!live())return;await say(L.mood,L.text);if(!live())return;if(L!==IV.outro[IV.outro.length-1])await tapToGo()}
   N().interview=good;heart('marisol',good);
-  $('#bch').innerHTML=`<div class="bea-score"><b>${good} of 4</b><span>${good>=3?'Strong answers on the first try.':'You got there. Specific, honest answers win interviews.'}</span></div><button class="choice bea-go" id="ivgo">Meet Bea</button>`;
+  $('#bch').innerHTML=`<div class="bea-score"><b>${good} of 4</b><span>${good>=3?'Strong answers on the first try.':'You got there in the end. Next time, try a specific, honest answer first.'}</span></div><button class="choice bea-go" id="ivgo">Meet Bea</button>`;
   $('#ivgo').onclick=e=>{e.stopPropagation();toast('You’re an Elder Companion!','good');nextStep()}}
 
 // ---------- custom step: the family meeting ----------
@@ -434,25 +434,25 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
     dance_hall:['I’m 97, and I still lead!','Tuesday tea dance is the best hour of my week.','My companion taught me to video-call my sister in Lagos.','Mind the floor. It bounces now. Isn’t it wonderful?','I volunteer here on Saturdays. I just like the music.','My knees are 88 years old, and they still know the cha-cha.'],
     bea_parlor:[]},
   talks:TALKS,docs:DOCS,
-  react:{memo3:'Only 31 people over 100. My numbers could be off by a lot.',memo7:'Fifteen in 100 is not small. But it’s Bea’s risk to weigh.',memo10:'This depends on what “dancing” means to Bea. Did anyone ask her?',
-    tempo3:'Who set this goal? Jordan. Not Bea.',tempo7:'Feeling pushed makes people quit. That’s real data.',tempo8:'Stopping is the safe direction, so Tempo doesn’t wait.',
-    sheet5:'Her own consent. Not Grace’s, not Jordan’s, not mine.',ledger2:'Brand-new customers, all on the same night. The shop was right to check.'},
+  react:{memo3:'Only 31 people over 100 have tried it, so my numbers could be off by a lot.',memo7:'Fifteen in 100 isn’t a small risk. But it’s Bea’s risk, so she gets to weigh it.',memo10:'This depends on what “dancing” means to Bea. Did anyone ask her?',
+    tempo3:'So Jordan picked Tempo’s goal. Did anyone ask Bea what she wants?',tempo7:'When people feel pushed, they quit. Tempo has real records showing that.',tempo8:'Pausing the dose can only make her safer, so Tempo doesn’t wait for anyone.',
+    sheet5:'It has to be Bea’s own yes. Grace, Jordan and I can’t give it for her.',ledger2:'Lots of brand-new customers ordering on the same night is odd. The shop was right to block them.'},
   lesson:{id:'bea_muscle',label:'Learn it fast: how old muscles get stronger'},
   tell:{clue:'waltz',label:'Tell Byte what Bea really wants',note:'Thanks! One 3-minute waltz needs much less strength than an hour of dancing. I updated my forecast, and Tempo suggested a new goal for Bea to approve.',guide:'aim-the-goal',doc:'memo'},
   criteria:[{id:'dance',label:'Dances at the wedding, no [[cane]]'},{id:'safe',label:'No fall or [[heart flutter]]'},{id:'say',label:'Bea approves every change'},{id:'easy',label:'Easy on her body'}],
   criteriaHint:'A <button class="gw" data-w="heart flutter">heart flutter</button> is the therapy’s most common serious side effect.',
-  criteriaNote:'Decide what “good” means before you look. And remember whose plan this is: Bea’s.',
+  criteriaNote:'Decide what a good plan looks like before you look at the futures. And remember that this is Bea’s plan.',
   controls:[{key:'dose',label:'Renewal',opts:[['none','None'],['gentle','Gentle dose'],['full','Full dose']]},
     {key:'auto',label:'Changes to her plan',opts:[['auto','Tempo alone'],['ask','Bea says yes']]},
     {key:'practice',label:'Dance practice with Jordan',opts:[[false,'No'],[true,'Weekly']]}],
   start:{dose:'full',auto:'auto',practice:false},
   planName(c){return `${DOSE[c.dose]}, ${c.auto==='auto'?'Tempo changes alone':'Bea says yes'}${c.practice?', weekly practice':''}`},
   outcomes(c,knows){const {s,q,f,r,live}=model(c,knows);const F=(d,sf)=>({dance:d,safe:sf,say:c.auto==='ask'?1:0,easy:c.dose==='full'?0:1});
-    return [{kind:'flutter',p:s,cap:'Heart flutter. Tempo paused it. She’s fine.',flags:F(0,0)},
-      {kind:'quit',p:(1-s)*q,cap:'Felt pushed, and quit the plan.',flags:F(0,1)},
-      {kind:'fall',p:(1-s)*(1-q)*f,cap:'Slipped in week 6. Cheered from a chair.',flags:F(0,0)},
-      {kind:'waltz',p:live*r,cap:knows?'Waltzed with Jordan, no cane!':'Danced all evening, no cane!',flags:F(1,1)},
-      {kind:'cane',p:live*(1-r),cap:knows?'Danced, but with her cane.':'Danced a little, with her cane.',flags:F(0,1)}].filter(o=>o.p>1e-9)},
+    return [{kind:'flutter',p:s,cap:'Her heart fluttered, and Tempo paused the dose. She’s fine.',flags:F(0,0)},
+      {kind:'quit',p:(1-s)*q,cap:'She felt pushed and quit the plan.',flags:F(0,1)},
+      {kind:'fall',p:(1-s)*(1-q)*f,cap:'She slipped in week 6 and cheered from a chair.',flags:F(0,0)},
+      {kind:'waltz',p:live*r,cap:knows?'She waltzed with Jordan, no cane!':'She danced all evening, no cane!',flags:F(1,1)},
+      {kind:'cane',p:live*(1-r),cap:knows?'She danced, but with her cane.':'She danced a little, with her cane.',flags:F(0,1)}].filter(o=>o.p>1e-9)},
   truth(){return true},knows(){return told()},
   why(c){const o=this.outcomes(c,this.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0));
     return `<b>${esc(this.planName(c))}:</b> Bea dances at the wedding without her cane about ${sum('dance')}% of the time, with no fall or heart flutter about ${sum('safe')}% of the time. `+
@@ -465,9 +465,9 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
     opts(c,M){const o=M.outcomes(c,M.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0)),d=sum('dance'),sf=sum('safe');
       const plan={none:'strength and balance training with Wren, and no renewal',gentle:'the gentle dose, plus training',full:'the full dose, plus training'}[c.dose]+(c.practice?', and weekly waltz practice with Jordan':'');
       return [{t:`I suggest ${plan}. Byte’s forecast: about ${d} in 100 that you dance at the wedding without your cane, and about ${sf} in 100 that there’s no fall or heart flutter. ${c.auto==='auto'?'Tempo would change your plan on its own.':'Tempo would ask you before every change.'} It’s your call, Bea. What do you think?`,good:true,mood:'happy',reply:d<40?CONSENT_REPLIES.goodLow:CONSENT_REPLIES.good},
-        {t:'Trust the plan. Tempo knows best, so don’t worry about the details.',good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
-        {t:'You’ll definitely dance at the wedding!',good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
-        {t:'Grace and I already decided for you.',good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
+        {t:'Just trust the plan, Bea. Tempo has studied thousands of people like you, so it knows what’s best. You don’t need to worry about the details or the numbers. Tempo will take care of all of that.',good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
+        {t:'Good news, Bea! With the plan we picked, you’ll definitely dance at Jordan’s wedding. Tempo and Wren will get you ready in time, so there’s really nothing to worry about.',good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
+        {t:'Grace and I already talked it over and decided for you, Bea. We picked the plan that seems safest, so you can relax and leave the details to us. Tempo starts on Sunday.',good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
   memo:{starters:['I recommend ','because ','The chance she dances is about ','Bea wants ','Tempo may change her plan '],placeholder:'I recommend the gentle dose with weekly practice because…',
     plan:/dose|gentle|full|half|training|renewal|therapy|tempo|practice|exercise/,careLabel:'Includes what Bea wants',care:/\bbea\b|she |her |waltz|danc|cane|jordan|wedding/,signAs:'Companion ',topic:'Bea’s renewal plan'},
   reveal:{days(){return 13},unit:'Week',who:'bea',lines:REVEAL,mood(k){return {waltz:'happy',cane:'smile',flutter:'smile',fall:'sad',quit:'stern'}[k]||'smile'}},
@@ -490,7 +490,7 @@ The key consideration when asked which option: ${told()?'Bea wants one 3-minute 
     if(/tempo|on its own|alone|ask first|permission|rule/.test(q))return 'Tempo is very good at spotting when Bea’s body is ready. The question is who says yes. Changing alone is a bit faster; asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.';
     if(/flutter|heart/.test(q))return 'In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks.';
     if(/fall|hip|safe/.test(q))return 'About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.';
-    if(/practice|jordan/.test(q))return 'Practicing the real dance makes training count. Weekly practice raises her odds by about 7 to 20 in 100, depending on the plan, and lowers falls a little.';
+    if(/practice|jordan/.test(q))return 'Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 7 to 20 in 100, depending on the plan, and lowers falls a little.';
     if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here’s the path: listen to Bea and her family, ask what she really wants, tell me anything I’m missing, set Tempo’s rules, pick what matters most, test plans on the Future Table, explain honestly to Bea, then write your decision and sign it!';
     if(/best|which|pick|choose|should|recommend/.test(q))return told()?'I can’t pick for Bea, but here’s the big thing: she wants one 3-minute waltz, not a night of dancing. Does she care more about the best odds or the gentlest plan? I lean toward the gentle dose, Bea saying yes to each change, and weekly practice: about 79 in 100.':'Before I answer: what does Bea mean by dancing? An hour on her feet needs far more strength than one slow dance. Did anyone ask her?';
     if(/grace|worr/.test(q))return 'Grace inspects bridges for a living, so she thinks in safety margins. Her worry is fair: Bea broke her hip at 99, and only 31 people over 100 have tried this therapy.';

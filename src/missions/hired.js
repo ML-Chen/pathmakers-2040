@@ -35,7 +35,7 @@ const HIRED_CAST={
 
 const HIRED_GUIDE={
   'good-questions':{title:'Asking good questions',track:'People skills',text:'A good question is specific and open. “What’s the hardest part of your job?” teaches you more than “Is it fun?” Asking about a career before you choose it is how you find one that fits.',real:'True today: career counselors suggest informational interviews, short talks where you ask someone about their job.'},
-  'referrals':{title:'Trust and referrals',track:'People skills',text:'When lots of people can do a job, people pick someone they already trust. Being kind and helpful, even when nobody is grading you, is how people come to trust you.',real:'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.'},
+  'referrals':{title:'Trust and referrals',track:'People skills',text:'When lots of people can do a job, people pick someone they already trust. People come to trust you when you’re kind and helpful, even when nobody is grading you.',real:'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.'},
   'self-report':{title:'What people say vs. how they feel',track:'Evidence and truth',text:'Some people say “I’m fine” when they are hurting, so a plan that depends on what someone says can fail. Ari hides pain, so “stop if it hurts” was not a safe plan for him.',real:'True today: athletes sometimes hide concussion symptoms to keep playing, so many sports leagues use sideline checks that don’t depend only on what the player says.'},
   'specific-stories':{title:'Show your work',track:'People skills',text:'A real story with details (what you decided, why, and how it turned out) shows more than saying “I’m good at decisions.” Honest stories about mistakes count too.',real:'True today: many interviewers ask “Tell me about a time when…” questions, and people prepare by writing down real examples of their work.'}
 };
@@ -46,11 +46,11 @@ const HIRED_TALKS={
     {who:'byte',mood:'neutral',text:'Today is their [[open house]]. Anyone can visit, meet the people who work there, and try a practice case.'},
     {who:'byte',mood:'happy',text:'Want to see what a Care Doctor’s day looks like first?',choices:[
       {t:'Yes, show me!',reply:'Woof! Here’s a whole day, squeezed into thirty seconds.'},
-      {t:'What does a Care Doctor do?',reply:'A Care Doctor helps patients and families choose a treatment. I bring the facts and the forecasts. You bring the listening, the judgment, and the signature.'}]}
+      {t:'What does a Care Doctor do?',reply:'A Care Doctor helps patients and their families choose a treatment. I find the facts and make the forecasts. You listen to the family, use your judgment, and sign the decision.'}]}
   ],
   gabi:[
     {who:'gabi',mood:'smile',text:'Hi there! Welcome to the [[open house]]. I’m Gabi, the [[charge nurse]] on the kids’ floor.',choices:[
-      {t:'Hi Gabi, I’m {P}. What does a charge nurse do?',good:true,mood:'happy',reply:'I make sure every kid on our floor gets what they need, and every nurse has a buddy. Halo handles the schedules. I handle the people.'},
+      {t:'Hi Gabi, I’m {P}. What does a charge nurse do?',good:true,mood:'happy',reply:'I make sure every kid on our floor gets what they need, and every nurse has a buddy. Halo, the hospital’s AI, does the schedules, so I get to spend my time with people.'},
       {t:'Can you get me a job here?',mood:'think',reply:'Ha! Let’s start with hello. I’m Gabi, and it’s nice to meet you.'}]},
     {who:'gabi',mood:'happy',text:'My cat is named Bandage, because he sleeps on the first-aid box.',clue:'gabi-cat'},
     {who:'gabi',mood:'worried',text:'Oh no. I promised the kids’ floor this box of teddy bears, and the elevator robot is busy.',choices:[
@@ -60,7 +60,7 @@ const HIRED_TALKS={
   kofi:[
     {who:'kofi',mood:'smile',text:'Hey! Mind the robots. I’m Kofi. I lead the robot crew that carries supplies around the hospital.',choices:[
       {t:'What’s the hardest part of your job?',good:true,mood:'think',reply:'Deciding what each robot is NOT allowed to do. A robot that delivers lunch doesn’t need a key to the medicine room.'},
-      {t:'Are robots smarter than you?',mood:'happy',reply:'At carrying boxes in the dark? Totally. At knowing which boxes matter? That’s my job.'}]},
+      {t:'Are robots smarter than you?',mood:'happy',reply:'They’re better than me at carrying boxes in the dark, that’s for sure. But I’m the one who decides which boxes matter most.'}]},
     {who:'kofi',mood:'happy',text:'I name every robot after a planet. That big one is Jupiter.',clue:'kofi-planets'},
     {who:'kofi',mood:'worried',text:'Uh oh. Jupiter keeps beeping at that wet-floor sign. It thinks the sign is a person! Could you move the sign while I fix its settings?',choices:[
       {t:'Sure, I’ll move it!',good:true,on(){jFavor('kofi')},mood:'happy',reply:'Thanks! Look, Jupiter is rolling again.'},
@@ -68,8 +68,8 @@ const HIRED_TALKS={
   ],
   ruth:[
     {who:'ruth',mood:'smile',text:'Hello, dear. I’m Ruth. I’ve been a [[volunteer]] here every Tuesday for twenty years.',choices:[
-      {t:'Hi Ruth, I’m {P}. Why do you volunteer?',good:true,mood:'happy',reply:'This hospital fixed my hip when I was eighty. Now I walk three miles a day, and I like to say thank you.'},
-      {t:'Twenty years? Wow, that’s old!',mood:'think',reply:'Ha! Old and proud of it, dear.'}]},
+      {t:'Hi Ruth, I’m {P}. Why do you volunteer?',good:true,mood:'happy',reply:'This hospital fixed my hip when I was eighty. Now I walk three miles a day, and coming here is my way of saying thank you.'},
+      {t:'Twenty years? Wow, you must be really old!',mood:'think',reply:'Ha! Eighty-eight, and proud of it, dear.'}]},
     {who:'ruth',mood:'happy',text:'On Fridays I play the piano in the lobby. My favorite song is “Fly Me to the Moon.”',clue:'ruth-song'},
     {who:'ruth',mood:'worried',text:'Oh, bother. I’ve lost my reading glasses again. They have red frames, and they’re somewhere in this lobby.',choices:[
       {t:'I’ll help you look!',mood:'smile',reply:'Bless you, dear.'},
@@ -86,20 +86,20 @@ const HIRED_TALKS={
     {who:'ari',mood:'worried',text:'Ow, ow. I stepped in a hole during the fun run, and my ankle went sideways.'},
     {who:'ari',mood:'sad',text:'I’m the [[goalkeeper]] for the Southie Stingrays. We have a game on Saturday!',choices:[
       {t:'Your ankle will heal. Let’s figure out a plan together.',good:true,mood:'worried',reply:'Okay. But can I still play?'},
-      {t:'Forget about soccer for now.',mood:'sad',reply:'But my team needs me...'}]},
+      {t:'Forget about soccer for now. Your ankle comes first.',mood:'sad',reply:'But my team needs me...'}]},
     {who:'abena',mood:'think',text:'He loves that team. I just don’t want him to hurt it worse.'},
     {who:'abena',mood:'worried',text:'One more thing, Doctor. Ari always says “I’m fine,” even when it hurts. Last spring he played a whole game on a sore wrist and never told anyone.',clue:'hides'},
     {who:'ari',mood:'neutral',text:'I just don’t want to let my team down.',choices:[
-      {t:'Telling the truth about pain never lets anyone down.',good:true,mood:'think',reply:'Okay... I’ll try.'},
-      {t:'Being tough is great!',mood:'happy',reply:'Yeah! I’m super tough.'}]}
+      {t:'Your team would want to know if you’re hurt. Telling us helps them too.',good:true,mood:'think',reply:'Okay... I’ll try.'},
+      {t:'Being tough is great! Goalkeepers have to be tough.',mood:'happy',reply:'Yeah! I’m super tough.'}]}
   ]
 };
 
 // Dr. Reyes has heard about the favors the player did at the open house (a referral)
 const HIRED_FAVOR_NEWS={gabi:'Gabi says you carried the teddy bears',kofi:'Kofi says you helped Jupiter get unstuck',ruth:'Ruth says you found her glasses'};
 function hiredReferral(F){F=F||(typeof S!=='undefined'&&S.m_hired&&S.m_hired.favor)||{};const f=['gabi','kofi','ruth'].filter(k=>F[k]).map(k=>HIRED_FAVOR_NEWS[k]);const n=f.length;
-  if(n)return `${n>1?f.slice(0,-1).join(', ')+(n>2?',':'')+' and '+f.at(-1):f[0]}. People here notice kindness.`;
-  return 'I hear you met some of the team. Helping people, even in small ways, is how they come to trust you.'}
+  if(n)return `${n>1?f.slice(0,-1).join(', ')+(n>2?',':'')+' and '+f.at(-1):f[0]}. People around here notice when someone is kind.`;
+  return 'I hear you met some of the team. When you help people out, even in small ways, they remember it.'}
 // every version of the referral line, so each can be recorded
 function hiredLines(){const L=[];for(let b=0;b<8;b++)L.push({who:'imani',text:hiredReferral({gabi:b&1,kofi:b&2,ruth:b&4})});return L}
 
@@ -144,10 +144,10 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
   planName(c){const p={brace:'Brace',tape:'Tape',boot:'Walking boot'}[c.prot];return c.prot==='boot'?p+', sit out Saturday':p+(c.sat==='play'?', play Saturday':', sit out Saturday')},
   outcomes(c,knows){const hide=!!knows,play=c.sat==='play'&&c.prot!=='boot',comfy=c.prot==='boot'?0:1;
     const r=play?(c.prot==='brace'?(hide?.3:.1):(hide?.5:.2)):({brace:.03,tape:.08,boot:.02}[c.prot]);
-    if(play)return [{kind:'saturday',p:1-r,cap:'Played Saturday, and the ankle stayed fine!',flags:{heal:1,plays:1,comfy}},
-      {kind:'reroll',p:r,cap:'Rolled it again Saturday. Misses the playoffs.',flags:{heal:0,plays:1,comfy}}];
-    return [{kind:c.prot==='boot'?'boot':'cheer',p:1-r,cap:c.prot==='boot'?'Healed in the boot. Ready for the playoffs!':'Cheered on Saturday. Ready for the playoffs!',flags:{heal:1,plays:0,comfy}},
-      {kind:'reroll',p:r,cap:'Rolled it again at home. Misses the playoffs.',flags:{heal:0,plays:0,comfy}}]},
+    if(play)return [{kind:'saturday',p:1-r,cap:'He played Saturday, and his ankle stayed fine!',flags:{heal:1,plays:1,comfy}},
+      {kind:'reroll',p:r,cap:'He rolled it again Saturday and misses the playoffs.',flags:{heal:0,plays:1,comfy}}];
+    return [{kind:c.prot==='boot'?'boot':'cheer',p:1-r,cap:c.prot==='boot'?'He healed in the boot and is ready for the playoffs!':'He cheered on Saturday and is ready for the playoffs!',flags:{heal:1,plays:0,comfy}},
+      {kind:'reroll',p:r,cap:'He rolled it again at home and misses the playoffs.',flags:{heal:0,plays:0,comfy}}]},
   truth(){return true},knows(){return !!S.told},
   vignette(kind){return typeof HIRED_VIG!=='undefined'&&HIRED_VIG[kind]?HIRED_VIG[kind]():vignette(kind)},
   why(c){const o=this.outcomes(c,this.knows());const re=Math.round(100*o.filter(x=>x.kind==='reroll').reduce((a,x)=>a+x.p,0));
@@ -160,8 +160,8 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
       const what=(c.prot==='boot'?'a walking boot for about two weeks':c.prot==='brace'?'a brace':'tape')+(play?' and playing on Saturday':', and sitting out on Saturday');
       return [{t:`I suggest ${what}. About ${re} out of 100 kids would roll it again${play?', so you’d have to tell us the truth if it hurts':''}. ${play?'':'You can still sit with your team and cheer. '}What do you two think?`,good:true,mood:'think',
           reply:play?'I promise I’ll tell the truth if it hurts. Okay, let’s do it.':'I really wanted to play... but I want to be ready for the playoffs. Okay.'},
-        {t:`Trust me, ${what} is the best. Don’t worry about the details.`,good:false,mood:'worried',reply:'Um... okay. But what if it gets worse?'},
-        {t:'You’ll definitely be fine. Nothing can go wrong!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
+        {t:`Trust me, ${what} is the best plan for you. I’ve looked at all the numbers, so you two don’t need to worry about the details.`,good:false,mood:'worried',reply:'Um... okay. But what if it gets worse?'},
+        {t:'You’ll definitely be fine, Ari. Kids your age heal really fast, so nothing can go wrong with this plan!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
   memo:{starters:['I recommend ','because ','The chance he rolls it again is about ','Ari cares about ','We will check by '],placeholder:'I recommend a brace and sitting out Saturday because…',
     plan:/brace|tape|boot|rest|sit|play|bench/,careLabel:'Includes what Ari cares about',care:/ari|he |his |him |soccer|game|saturday|playoff|goal|team|grandma/,signAs:'',topic:'Ari’s sprained ankle'},
   reveal:{days(c){return c.sat==='play'&&c.prot!=='boot'?4:21},who:'ari',lines:HIRED_REVEAL,mood(k){return k==='reroll'?'sad':'happy'}},
@@ -230,7 +230,7 @@ const HIRED_JOURNEY={
     judge:'You are Dr. Imani Reyes, Chief of Care at Boston Harbor Hospital in a kids’ game set in 2040, interviewing a young player for a Care Doctor job.',
     ask:B_('Today’s your [[interview]] with Dr. Reyes! Want to [[rehearse]] with me first?'),ready:B_('You’re ready! Remember: real stories, honest answers, and one good question.'),
     intro:I_('Thanks for coming in, {P}. I read your [[portfolio]]. Let’s talk.'),
-    best:I_('That was a wonderful interview: real stories, honest answers, and a great question. Welcome to Boston Harbor Hospital. You’re hired!'),
+    best:I_('That was a wonderful interview. You told me real stories, you were honest, and you asked a great question. Welcome to Boston Harbor Hospital. You’re hired!'),
     ok:I_('I can tell you care about people, and that matters most. You’re hired! Keep telling real stories, like the ones in your Portfolio Book.'),
     free:{reply:[I_('Thank you. That’s a thoughtful answer.'),I_('Can you tell me a bit more? A specific example helps me understand.')],tip:[B_('Nice! That answer was clear and real.'),B_('Try adding a real example, with what you did and why.')]},
     questions:[
@@ -240,22 +240,22 @@ const HIRED_JOURNEY={
            tip:B_('Great answer! You said what you chose, why, and what happened. Say it just like that.')},
          {t:'I make hard choices all the time. At school I pick the hardest projects, and my friends always ask me for advice.',reply:I_('Hmm. Can you give me a real example? A story tells me more than “I’m good at it.”'),tip:B_('Try a real example instead, like Ari’s ankle. Details make a story believable.')},
          {t:x=>x.bad?'I helped a goalkeeper named Ari with a sprained ankle at the open house, and everything went perfectly from start to finish.':'I helped a goalkeeper named Ari with a sprained ankle at the open house. It went great, and everyone said I’m a natural.',
-           reply:[{if:'bad',who:'imani',text:'Your Portfolio Book says his ankle rolled again. I’d rather hear the honest version. Mistakes are how we learn.'},I_('It did go well! But tell me why you chose it. Reasons matter more than luck.')],
+           reply:[{if:'bad',who:'imani',text:'Your Portfolio Book says his ankle rolled again. I’d rather hear what really happened. We all learn from our mistakes here.'},I_('It did go well! But tell me why you chose that plan. I want to hear how you decided, not just how it turned out.')],
            tip:[{if:'bad',who:'byte',text:'Hmm, that’s not quite what happened. Honest stories, even about mistakes, impress people more.'},B_('Add your reason! Say why you chose it, not only that it worked.')]}]},
       {q:I_('What would you do if your AI and a patient disagreed?'),rq:B_('She might ask: “What would you do if your AI and a patient disagreed?”'),
        check:'listens to both the AI and the patient, explains tradeoffs, and lets the patient decide',heur:/listen|ask|both|explain|why|tradeoff|decide/,
        opts:[{t:'I’d ask each of them why. Each one may know something the other doesn’t. Then I’d explain the tradeoffs, and the patient decides.',good:true,
-           reply:[{if:'told',who:'imani',text:'Exactly. Like Ari’s grandma knowing he hides pain. Both kinds of knowing matter.'},I_('Exactly. Both kinds of knowing matter.')],
+           reply:[{if:'told',who:'imani',text:'Exactly. Ari’s grandma knew something no AI could have known: that he hides pain.'},I_('Exactly. Patients often know things about themselves that no AI could know.')],
            tip:[{if:'told',who:'byte',text:'Perfect. You could even add an example, like Ari’s grandma telling you he hides pain!'},B_('Perfect. If you have an example, add it!')]},
          {t:'The AI has read every medical study ever written, so I’d gently help the patient understand why the AI’s plan is the right one.',reply:I_('Our AIs are brilliant, but they only know what they’re told. And it’s the patient’s body.'),tip:B_('Careful! I know a lot, but I don’t know everything people know. Say how you’d listen to both.')},
-         {t:'It’s the patient’s body, so I’d do exactly what they want right away, even if the AI warns that it could be dangerous.',reply:I_('Listening matters, but so do the facts. Your job is to help them see both.'),tip:B_('Patients decide, but they need the facts first. Say how you’d explain the tradeoffs.')}]},
+         {t:'It’s the patient’s body, so I’d do exactly what they want right away, even if the AI warns that it could be dangerous.',reply:I_('Listening matters, but so do the facts. Your job is to help the patient understand the risks before they decide.'),tip:B_('Patients decide, but they need the facts first. Say how you’d explain the tradeoffs.')}]},
       {q:I_('What’s something you still need to learn?'),rq:B_('And maybe: “What’s something you still need to learn?”'),
        check:'honestly names one real thing they are still learning',heur:/learn|practic|better|still|not good|hard for me|working on|need to/,
-       opts:[{t:'Explaining odds so kids understand them. I practiced with Ari, and I want to get better at it.',good:true,reply:I_('That’s honest and specific. It’s a great thing to work on, and we’ll help you.'),tip:B_('Honest and specific. That’s what managers love to hear!')},
-         {t:'I’m already good at most things, so mostly I’d just learn the hospital’s computer system and where everything is.',reply:I_('Everyone has something to learn, even me. Knowing yours is a strength.'),tip:B_('Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.')},
-         {t:'I’m not sure yet. I’d let my AI figure out what I need to learn, and then I’d do whatever lessons it gives me.',reply:I_('Your AI can help you study, but you know best what feels hard for you. Knowing that is a strength.'),tip:B_('I can help you study, but you know best what’s hard for you. Try naming one real thing, like explaining odds.')}]},
+       opts:[{t:'Explaining odds so kids understand them. I practiced with Ari, and I want to get better at it.',good:true,reply:I_('That’s honest and specific. It’s a great thing to work on, and we’ll help you.'),tip:B_('That was honest and specific. Managers love hearing answers like that!')},
+         {t:'I’m already good at most things, so mostly I’d just learn the hospital’s computer system and where everything is.',reply:I_('Everyone has something to learn, even me. I’d like to hear what yours is.'),tip:B_('Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.')},
+         {t:'I’m not sure yet. I’d let my AI figure out what I need to learn, and then I’d do whatever lessons it gives me.',reply:I_('Your AI can help you study, but you know best what feels hard for you. I’d like to hear what that is.'),tip:B_('I can help you study, but you know best what’s hard for you. Try naming one real thing, like explaining odds.')}]},
       {q:I_('Do you have a question for me?'),rq:B_('At the end she’ll ask: “Do you have a question for me?”'),
-       opts:[{t:'What’s the hardest part of your job?',good:true,reply:I_('Telling a family that every choice has a downside. It never gets easy, but it gets clearer.'),tip:B_('Great question! It shows you really want to understand the job.')},
+       opts:[{t:'What’s the hardest part of your job?',good:true,reply:I_('Telling a family that every choice has a downside. It never gets easy, but I get better at explaining it.'),tip:B_('Great question! It shows you really want to understand the job.')},
          {t:'What does a great new doctor do in the first month?',good:true,reply:I_('Asks lots of questions. The best new doctors ask for help early.'),tip:B_('Great question! It shows you want to do well.')},
          {t:'No, I think I’m all set. I read the hospital’s website, and my AI already told me everything about the job.',reply:I_('Okay! Next time, try asking one. It shows you’re curious.'),tip:B_('Try asking one! A good question shows you’re curious.')}]}]},
   firstday:{scene:'hospital',place:'Kids’ floor · Boston Harbor Hospital · 8:30 AM',go:'Open my world map',

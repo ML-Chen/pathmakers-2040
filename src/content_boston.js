@@ -33,7 +33,7 @@ const TALKS={
   morning:[
     {who:'byte',mood:'happy',text:'Good morning, Doctor! Today’s the big day: your first shift at Boston Harbor Hospital!'},
     {who:'byte',mood:'neutral',text:'The tram leaves at 8:05, it’s sunny, and your badge is already in your bag. You have one patient this morning: a girl with a broken wrist.'},
-    {who:'byte',mood:'happy',text:'I can look things up, run the numbers, and show you what might happen. But helping a family decide? That’s you.',choices:[{t:'What’s my job today?',reply:'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign. Signing means you’re [[accountable]].'},{t:'Let’s go!',reply:'Woof! Grab your coat!'}]}
+    {who:'byte',mood:'happy',text:'I can look things up, run the numbers, and show you what might happen. But helping a family decide is your job.',choices:[{t:'What’s my job today?',reply:'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign. Signing means you’re [[accountable]].'},{t:'Let’s go!',reply:'Woof! Grab your coat!'}]}
   ],
   imani:[
     {who:'imani',mood:'smile',text:'You must be our new Care Doctor. Welcome. I’m Dr. Reyes.'},

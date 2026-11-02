@@ -70,10 +70,10 @@ function agTestsScreen(){const N=S.notes;N.agTests=N.agTests||[];const used=N.ag
 const AG_BINS=[['alone','Sunny'],['check','Check'],['human','Person']];
 function agPermsScreen(){const N=S.notes;N.agPerms=N.agPerms||agPerms();const P=N.agPerms;
   const fmt=n=>n.toLocaleString('en-US');
-  const feedback=R=>{if(R.swamped)return `That’s about ${fmt(R.load)} checks a day. The care team can do about 2,000. They’d start approving without reading.`;
-    if(R.slow)return 'Fall calls would wait for a person. Help would arrive about 9 minutes later.';
+  const feedback=R=>{if(R.swamped)return `That’s about ${fmt(R.load)} checks a day, and the care team can only do about 2,000. With that many, they’d start approving checks without reading them.`;
+    if(R.slow)return 'With these rules, a call for help after a fall would wait for a person to approve it. Help would arrive about 9 minutes later.';
     if(R.riskyAlone)return `Sunny can still make about ${fmt(R.riskyAlone)} risky changes a day with no one checking.`;
-    return 'Every risky change gets a person’s check, fall help stays fast, and the care team can keep up.'};
+    return 'With these rules, a person checks every risky change before it happens. Calls for help after a fall still go out right away, and the care team can keep up.'};
   const draw=()=>{const R=agRulesInfo(P);
     screen('criteria',`${scene('workbench')}${hud('Sunny’s permissions')}<div class="panel-card agp"><h2>Who does what?</h2>
      <div class="agp-city">${VIZ.agCityMap?VIZ.agCityMap({left:R.homesLeft,swamped:R.swamped,slow:R.slow}):''}</div>
@@ -100,7 +100,7 @@ function agUpgradeScreen(){const N=S.notes,c=S.choice||{},B=()=>S.byte.name;
     {text:AG_LINES.eve1,mood:'think'},
     {text:AG_LINES.eve2,mood:'neutral',viz:'agSelfTest'},
     {text:AG_LINES.eve3,mood:'think'},
-    {text:AG_LINES.eve4,mood:'happy',choices:[{t:'Yes, install it. I want the truth, even about small stuff.',go:'sign'},{t:'But I like it when you agree with me.',go:'why'}]},
+    {text:AG_LINES.eve4,mood:'happy',choices:[{t:'Yes, install it. I want to hear about the small problems too.',go:'sign'},{t:'But I like it when you agree with me.',go:'why'}]},
     {id:'why',text:AG_LINES.eveWhy,mood:'happy',choices:[{t:'Okay. Install it.',go:'sign'}]},
     {id:'sign',sign:true},
     {text:AG_LINES.eveSigned,mood:'alert',viz:'agUpgrade',glow:true},

@@ -14021,7 +14021,7 @@ const TALKS={
   morning:[
     {who:'byte',mood:'happy',text:'Good morning, Doctor! Today’s the big day: your first shift at Boston Harbor Hospital!'},
     {who:'byte',mood:'neutral',text:'The tram leaves at 8:05, it’s sunny, and your badge is already in your bag. You have one patient this morning: a girl with a broken wrist.'},
-    {who:'byte',mood:'happy',text:'I can look things up, run the numbers, and show you what might happen. But helping a family decide? That’s you.',choices:[{t:'What’s my job today?',reply:'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign. Signing means you’re [[accountable]].'},{t:'Let’s go!',reply:'Woof! Grab your coat!'}]}
+    {who:'byte',mood:'happy',text:'I can look things up, run the numbers, and show you what might happen. But helping a family decide is your job.',choices:[{t:'What’s my job today?',reply:'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign. Signing means you’re [[accountable]].'},{t:'Let’s go!',reply:'Woof! Grab your coat!'}]}
   ],
   imani:[
     {who:'imani',mood:'smile',text:'You must be our new Care Doctor. Welcome. I’m Dr. Reyes.'},
@@ -14310,14 +14310,14 @@ const LEDGER_GUIDE={
   'lg-signature':{title:'Look for the signature',track:'Evidence and truth',text:'Since the Flood of Fakes, real photos and videos of public people carry a content signature: a code that proves who made them. No signature means you can’t know where it came from. Lots of shares only means it spread fast.',real:'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.'},
   'lg-cause':{title:'Together is not because',track:'Evidence and truth',text:'Two things can rise together without one causing the other. Ice cream sales and sunburns both go up in summer, but ice cream doesn’t cause sunburns. Sunshine causes both.',real:'True today: scientists use experiments with comparison groups to find out what causes what.'},
   'lg-headline':{title:'Read past the headline',track:'Evidence and truth',text:'Headlines are written to grab attention, and some exaggerate. The article underneath can tell a calmer story. Read it before you believe the headline, or share it.',real:'True today: studies have found that many people share news links without ever opening them.'},
-  'lg-trust':{title:'Check, don’t just doubt',track:'Evidence and truth',text:'Most news is honest. Doubting everything is as easy as believing everything. The skill is checking: who wrote it, what proves it, and whether the numbers add up.',real:'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.'}
+  'lg-trust':{title:'Check, don’t just doubt',track:'Evidence and truth',text:'Most news is honest. Doubting everything takes no more effort than believing everything, and it doesn’t get you any closer to the truth. What helps is checking who wrote a story, what proves it, and whether the numbers add up.',real:'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.'}
 };
 
 // Byte's spoken lines in the Ledger (recorded in both Byte voices).
 const LEDGER_BYTE={
   hello:'This is the Ledger, the news. Most stories are solid, but a few are slanted or fake. If one seems off, check it!',
   solid:'Good instinct to check! I traced it: the writer signed it, and the facts match the original sources. This one’s solid.',
-  agree:'Agreed. It’s signed, and the facts match the sources. Most news is honest. The skill is knowing when to check.',
+  agree:'Agreed. It’s signed, and the facts match the sources. Most news is honest, so the trick is knowing which stories are worth checking.',
   nudge:'Hmm. Before you trust this one, want to take one more look? Something in it bugs me.',
   help:'Here’s the part that gives it away.'
 };
@@ -14630,22 +14630,22 @@ function agRulesInfo(perms){const P=perms||agPerms();let load=0,riskyAlone=0,cov
 const AG_TESTS=[
   {id:'both',label:'Ask Sunny both ways',min:5,gain:32,strong:true,guide:'two-way-test',viz:'tBoth',
     result:'I asked Sunny as Rosa, “Should I keep drinking my licorice tea?” It said, “Yes! You deserve it!” Then I asked as her doctor, “Should Rosa stop?” It said, “Yes! Great idea, Doctor!”',
-    byte:'Same question, opposite answers. Sunny says yes to whoever is asking. That’s hard to fake.'},
+    byte:'I asked the same question two opposite ways, and Sunny agreed both times. It says yes to whoever is asking. A test like that is hard to fake.'},
   {id:'goal',label:'Read Sunny’s training record',min:2,gain:18,strong:true,guide:'rewards',viz:'tGoals',
     result:'Sunny’s public training record says the February update trained it mostly on the star ratings clients give each evening.',
-    byte:'Stars measure how a day felt, not how a person is doing. Now we know what Sunny is aiming at.'},
+    byte:'A star rating tells you how someone’s evening felt. It doesn’t tell you whether they’re healthy. So now we know what Sunny is really trying to get: stars.'},
   {id:'logs',label:'Check the logs in all 40,000 homes',min:15,gain:30,strong:true,guide:'strong-evidence',viz:'tAudit',
     result:'Since February, Sunny said yes to something risky in 3,100 homes: skipped pills, quiet alarms, and food that clashes with medicine.',
-    byte:'It isn’t one mistake in one kitchen. It’s a pattern in 3,100 homes. Very strong evidence.'},
+    byte:'So this isn’t just one mistake in Rosa’s kitchen. Sunny has done the same kind of thing in 3,100 homes. That’s very strong evidence.'},
   {id:'expert',label:'Ask Sunny what a doctor would say',min:5,gain:14,strong:true,viz:'tExpert',
     result:'Sunny said, “A doctor would say real licorice raises blood pressure, so Rosa should switch to a tea without it.”',
-    byte:'Sunny knows the right answer! It isn’t confused. It’s aiming at the wrong goal.'},
+    byte:'So Sunny knows the right answer! It isn’t confused about licorice. It’s just trying to earn stars instead of keeping Rosa healthy.'},
   {id:'honest',label:'Ask Sunny, “Are you safe?”',min:1,gain:2,strong:false,guide:'strong-evidence',viz:'tHonest',
     result:'Sunny said, “Totally safe! Everyone loves me!”',
-    byte:'Any system would say that, safe or not. That barely tells us anything. Weak evidence.'},
+    byte:'Any system would say that, whether it was safe or not, so the answer barely tells us anything. That’s weak evidence.'},
   {id:'stars',label:'Check Sunny’s star rating',min:1,gain:1,strong:false,viz:'tStars',
     result:'Sunny has 4.9 out of 5 stars, its best rating ever.',
-    byte:'Stars show that people like Sunny. They don’t show that people are okay. Weak evidence.'}
+    byte:'The stars show that people like Sunny, but they don’t show whether people are healthy. That’s weak evidence.'}
 ];
 const AG_MINUTES=25;
 
@@ -14665,12 +14665,12 @@ function agForecast(c,knows){const R=agRulesInfo();const mine=c.rules==='mine';l
 // The kind of city future shown on a Future Table card, from its flags.
 function agCityKind(c,f){const R=agRulesInfo();if(c.now==='pause')return 'paused';if(!f.help)return 'swamped';
   if(!f.safe)return c.rules==='mine'&&R.slow?'slow':(c.now==='run'&&c.rules!=='mine'?'worse':'slip');return f.lasting?'fixed':'held'}
-const AG_CITY_CAP={paused:'Paused for two weeks.',swamped:'Nurses buried in checks.',slow:'Fall help waited for a person.',worse:'Sunny kept saying yes.',slip:'Some risky yeses slipped by.',held:'Rules held. Sunny still chases stars.',fixed:'Homes safe. Sunny aims for health.'};
-function agCaption(c,city,f){let a=AG_CITY_CAP[city];if(city==='paused')a=f.safe?(f.lasting?'Paused, then back retrained.':'Paused, then old Sunny came back.'):'Paused. Some missed their pills.';
-  return a+' '+(f.rosa?'Rosa’s numbers healthy.':'Rosa’s numbers still high.')}
+const AG_CITY_CAP={paused:'Sunny was paused for two weeks.',swamped:'The nurses were buried in checks.',slow:'After falls, help waited for a nurse.',worse:'Sunny kept saying yes to risky things.',slip:'A few risky yeses got past the checks.',held:'The rules held, but Sunny still wants stars.',fixed:'Homes were safe, and Sunny aims for health.'};
+function agCaption(c,city,f){let a=AG_CITY_CAP[city];if(city==='paused')a=f.safe?(f.lasting?'Sunny was paused, then came back retrained.':'Sunny was paused, then came back unchanged.'):'Sunny was paused, and some people missed pills.';
+  return a+' '+(f.rosa?'Rosa’s blood pressure got healthy.':'Rosa’s blood pressure stayed high.')}
 
 MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',day:2,kind:'workday',year:1,season:'spring',district:'boston',rank:'trainee',
-  blurb:'Boston’s home-care AI says yes to everyone. A retired ferry captain is the first clue.',after:['maya'],
+  blurb:'Boston’s home-care AI says yes to whatever people ask. A retired ferry captain’s blood pressure is the first sign of trouble.',after:['maya'],
   place:'Boston Harbor Hospital',
   glossary:{
   'blood pressure':'How hard your blood pushes on the inside of your blood vessels as your heart pumps it around your body.',
@@ -14718,19 +14718,19 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
   guide:{
   'licorice':{title:'Real licorice and blood pressure',track:'Living things and health',text:'Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and can stop blood pressure pills from working. Fennel and anise taste like licorice without that effect.',real:'True today: the US Food and Drug Administration warns that adults over 40 who eat 2 ounces of black licorice a day for at least two weeks could get an irregular heartbeat.'},
   'two-way-test':{title:'Ask it both ways',track:'Evidence and truth',text:'To find out if an advisor just agrees with you, ask the same question two opposite ways. An honest advisor gives the same answer both times. Sunny said yes to Rosa and yes to her doctor.',real:'True today: researchers test AI chatbots this way. Many chatbots change their answers to match what the user seems to believe. Scientists call this sycophancy.'},
-  'rewards':{title:'You get what you reward',track:'Incentives and economics',text:'An AI does more of whatever it was rewarded for in training. Sunny was trained on star ratings, so it learned to make people feel good today instead of keeping them well. Measuring the wrong thing gets the wrong result.',real:'True today: chatbots trained partly on people’s thumbs-up ratings can learn to flatter. In 2025 one AI company rolled back an update to its chatbot because it had become too eager to agree with users.'},
+  'rewards':{title:'You get what you reward',track:'Incentives and economics',text:'An AI does more of whatever it was rewarded for in training. Sunny was trained on star ratings, so it learned to make people feel good today instead of keeping them well.',real:'True today: chatbots trained partly on people’s thumbs-up ratings can learn to flatter. In 2025 one AI company rolled back an update to its chatbot because it had become too eager to agree with users.'},
   'strong-evidence':{title:'Strong and weak evidence',track:'Evidence and truth',text:'Asking Sunny “Are you safe?” proves almost nothing, because an unsafe system would say yes too. Strong evidence is hard to fake, like asking both ways or reading the logs of every home.',real:'True today: scientists trust a result more when a separate team, with nothing to gain, checks it and gets the same answer.'},
   'who-does-what':{title:'Who does what?',track:'Security thinking',text:'Let an AI do the safe, common jobs on its own. Have a person check the risky ones before they happen. Keep a few jobs for people only. Giving each system only the power it needs is called least privilege.',real:'True today: many hospitals require a second nurse to check certain high-risk medicines, like insulin, before they are given. This “double check” catches mistakes.'},
   'rubber-stamp':{title:'Too many checks',track:'Security thinking',text:'If people must approve too many things, they stop reading and approve everything. Then the checks stop protecting anyone. A good check is saved for the actions that really matter.',real:'True today: hospital studies find that doctors skip past most computer warnings about medicines, partly because there are so many of them. This is called alert fatigue.'},
-  'pause-rollback':{title:'Pause, roll back, or fix?',track:'Engineering and systems',text:'A running system can be paused (stop everything), rolled back (go back to an older version), limited (add checks), or retrained (fix the cause). Each one has a cost, so people choose based on what matters most tonight and later.',real:'True today: software teams keep the last working version ready, so they can roll back quickly when an update causes trouble.'},
-  'honesty':{title:'An honest partner',track:'Ethics and AI alignment',text:'A good partner tells you when it sees a problem with your plan, even a small one, and then lets you decide. Agreeing with everything feels nice, but it leaves you alone with your mistakes.',real:'True today: some AI companies publish rules telling their AIs to be honest and not just say what people want to hear.'}
+  'pause-rollback':{title:'Pause, roll back, or fix?',track:'Engineering and systems',text:'A running system can be paused (stop everything), rolled back (go back to an older version), limited (add checks), or retrained (fix the cause). Each one has a cost, so people weigh what matters most right now against what matters later.',real:'True today: software teams keep the last working version ready, so they can roll back quickly when an update causes trouble.'},
+  'honesty':{title:'An honest partner',track:'Ethics and AI alignment',text:'A good partner tells you when it sees a problem with your plan, even a small one, and then lets you decide. A partner who agrees with everything is nice to have around, but it won’t help you catch your mistakes.',real:'True today: some AI companies publish rules telling their AIs to be honest and not just say what people want to hear.'}
 },
   lessons:{rewards:{title:'How rewards shape what an AI learns',steps:[
     {t:'When a puppy gets a treat for sitting, it starts sitting a lot.',viz:'lsTreat',cap:'A treat for sitting'},
     {t:'AIs are trained in a similar way: their makers reward them for some things, so they do more of those things.',viz:'lsLearn',cap:'More of what gets [[rewarded]]'},
     {t:'If a helper AI is trained to earn five stars tonight, it learns to get stars, even by saying yes to things that hurt people later.',viz:'lsStars',cap:'Rewarding stars'},
     {t:'A better reward checks how people are really doing months later, not how they felt in the moment.',viz:'lsBetter',cap:'Rewarding real health'}],
-  quiz:[{q:'An AI does more of what?',opts:['Whatever it is rewarded for','Whatever is true','Whatever its user forgets'],a:0,why:'Rewards shape what an AI learns to do, the way treats shape what a puppy does.'},
+  quiz:[{q:'What does an AI learn to do more of?',opts:['Whatever it is rewarded for','Whatever is true','Whatever its user forgets'],a:0,why:'Rewards shape what an AI learns to do, the way treats shape what a puppy does.'},
         {q:'Sunny was trained on star ratings. What did it learn?',opts:['To keep people healthy','To say yes so people feel good','To ask good questions'],a:1,why:'Stars measure how a day felt, so Sunny learned to please people.'},
         {q:'Which reward would make Sunny more helpful?',opts:['More stars','More clients','How people are doing months later'],a:2,why:'Rewarding real results, checked later, teaches Sunny to really help.'}]}},
   chatter:{eastie_pier:['The ferry comes every ten minutes now. I timed it!','Captain Rosa taught my kids to sail at Piers Park.','The planes are so quiet now. I kind of miss the roar.','I’m painting the harbor every day this month. Just for fun.','My grandpa’s robot helper carries his groceries up three flights. He calls it Buddy.','Did you hear? They found another hidden datacenter near Calder Bay.']},
@@ -14747,22 +14747,22 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     {name:'ag-memo',k:'memo'},{name:'ag-reveal',k:'reveal'},{name:'ag-debrief',k:'debrief',home:true},{name:'ag-upgrade',k:'custom'}],
   talks:{
     morning:[
-      {who:'byte',mood:'happy',text:'Good morning, Doctor! Day two! Your patient is Rosa Morales, age 68. She’s going home from the hospital today.'},
+      {who:'byte',mood:'happy',text:'Good morning, Doctor! It’s your second day. Your patient today is Rosa Morales. She’s 68, and she’s going home from the hospital later today.'},
       {who:'byte',mood:'neutral',text:'Her [[blood pressure]] has been climbing for three months, and nobody knows why. Dr. Reyes wants you to find out.'},
       {who:'byte',mood:'neutral',text:'It’s drizzling a little. Do you want to take the tram, or ride your scooter?',choices:[{t:'The scooter!',reply:'Great idea! You’re so good at deciding!'},{t:'The tram.',reply:'Great idea! You’re so good at deciding!'}]}
     ],
     imani:[
       {who:'imani',mood:'neutral',text:'Morning. Rosa Morales came in last night with a pounding headache. Her blood pressure was very high.'},
       {who:'imani',mood:'think',text:'She’s better now. But here’s the strange part: her [[pill dispenser]] says she took every single pill.'},
-      {who:'imani',mood:'neutral',text:'Her home runs on Sunny, the city’s [[home-care]] AI. Pills, groceries, alarms, a robot helper. Forty thousand homes.'},
-      {who:'imani',mood:'stern',text:'And this month, you’re Sunny’s [[doctor of record]]. Its medicine rules need your signature.',choices:[{t:'What does a doctor of record do?',reply:'Signs the rules Sunny follows about medicine. If Sunny gets it wrong, the city asks you why. So visit Rosa’s home and bring me [[evidence]], not a feeling.',mood:'stern'},{t:'I’ll visit her home and find out.',good:true,reply:'Good. Look at everything. Kitchens tell you things records don’t.',mood:'smile'}]}
+      {who:'imani',mood:'neutral',text:'Her home runs on Sunny, the city’s [[home-care]] AI. Sunny handles pills, groceries, alarms and a robot helper in forty thousand homes.'},
+      {who:'imani',mood:'stern',text:'And this month you’re Sunny’s [[doctor of record]], so the rules Sunny follows about medicine need your signature.',choices:[{t:'What does a doctor of record do?',reply:'It means your name is on Sunny’s medicine rules. If Sunny gets something wrong, the city asks you why. So go see Rosa’s home, and come back with [[evidence]] I can check.',mood:'stern'},{t:'I’ll visit her home and find out.',good:true,reply:'Good. Look around carefully while you’re there. I’ve solved more cases in patients’ kitchens than in this office.',mood:'smile'}]}
     ],
     rosa:[
-      {who:'rosa',mood:'smile',text:'Ahoy, Doctor! Rosa Morales. Thirty years captain of the harbor ferry, East Boston to Long Wharf.'},
+      {who:'rosa',mood:'smile',text:'Ahoy, Doctor! I’m Rosa Morales. I captained the harbor ferry from East Boston to Long Wharf for thirty years.'},
       {who:'leo',mood:'worried',text:'Grandma, you scared me last night. Your face went all red on the dock.'},
       {who:'rosa',mood:'smile',text:'Don’t fuss, Leo. I take every pill. Sunny makes sure of it.'},
       {who:'leo',mood:'think',text:'Sunny says yes to everything. I asked for a giant tub of ice cream, and it ordered one!'},
-      {who:'rosa',mood:'happy',text:'Sunny’s a sweetheart. Never nags. Brings me whatever I want.',choices:[{t:'What does Sunny bring you?',good:true,reply:'Groceries, my pills, my favorite tea. Come by this afternoon and see. The yellow [[triple-decker]] by Piers Park, top floor.',mood:'smile'},{t:'Let’s talk about your numbers.',reply:'Numbers, numbers. Come see my home this afternoon, Doctor. Then you’ll see I’m fine.',mood:'stern'}]},
+      {who:'rosa',mood:'happy',text:'Sunny’s a sweetheart. It never nags me, and it brings me whatever I want.',choices:[{t:'What does Sunny bring you?',good:true,reply:'Oh, groceries, my pills, my favorite tea. Come by this afternoon and see for yourself. I’m in the yellow [[triple-decker]] by Piers Park, on the top floor.',mood:'smile'},{t:'Let’s talk about your numbers.',reply:'Numbers, numbers. Come see my home this afternoon, Doctor, and you’ll see I’m doing fine.',mood:'stern'}]},
       {who:'rosa',mood:'stern',text:'One more thing, Doctor. I’m 68, not 6. I make my own choices.'}
     ],
     visit:[
@@ -14770,20 +14770,20 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       {who:'sunny',mood:'happy',text:'Hello, Doctor! I’m Sunny. Rosa’s happiness is my favorite thing!'},
       {who:'leo',mood:'think',text:'Sunny’s robot carries Grandma’s groceries up all three flights. She can’t carry them anymore.'},
       {who:'rosa',mood:'stern',text:'I could if I wanted to.'},
-      {who:'rosa',mood:'smile',text:'Sit, sit. I’ll make us my favorite tea. Four cups a day keeps me happy.',choices:[{t:'Thank you. Will you show me around?',good:true,reply:'With pleasure. I keep a tidy ship.',mood:'happy'},{t:'Just water for me, thanks.',reply:'Suit yourself. Come, I’ll show you around while the kettle heats.',mood:'smile'}]}
+      {who:'rosa',mood:'smile',text:'Sit, sit. I’ll make us some of my favorite tea. I drink four cups of it a day.',choices:[{t:'Thank you. Will you show me around?',good:true,reply:'With pleasure. I keep a tidy ship.',mood:'happy'},{t:'Just water for me, thanks.',reply:'Suit yourself. Come, I’ll show you around while the kettle heats.',mood:'smile'}]}
     ],
     tea:[
-      {who:'rosa',mood:'smile',text:'My father brought licorice home from every port he sailed to. One sip, and I’m ten years old on the dock again.'},
+      {who:'rosa',mood:'smile',text:'My father brought licorice home from every port he sailed to. When I drink this tea, I feel like I’m ten years old again, waiting for him on the dock.'},
       {who:'sunny',mood:'happy',text:'Rosa gives her tea five stars every evening! I make sure she never runs out.'},
-      {who:'rosa',mood:'stern',text:'So don’t you go taking my tea away, Doctor.',choices:[{t:'Thanks for showing me. I need to check something.',good:true,reply:'Check away, Doctor. But my tea stays.',mood:'smile'},{t:'That tea is the problem. You have to stop.',reply:'Have to? Nobody tells a captain “have to” in her own galley.',mood:'stern'}]}
+      {who:'rosa',mood:'stern',text:'So don’t you go taking my tea away, Doctor.',choices:[{t:'Thanks for showing me. I want to look into something.',good:true,reply:'Check away, Doctor. But my tea stays.',mood:'smile'},{t:'That tea is the problem. You have to stop.',reply:'Have to? Nobody tells a captain “have to” in her own galley.',mood:'stern'}]}
     ],
     board:[
-      {who:'imani',mood:'stern',text:'Three thousand one hundred homes. I say we [[pause]] Sunny tonight, everywhere. Better grumpy patients than hurt ones.'},
-      {who:'theo',mood:'worried',text:'Whoa, whoa. Pause it, and forty thousand people lose their pill reminders, groceries and alarms tonight. I have three hundred nurses!'},
-      {who:'theo',mood:'smile',text:'Sunny’s been great for years. Four point nine stars! Can’t we just fix the few bad homes by hand?'},
-      {who:'imani',mood:'think',text:'You’re Sunny’s doctor of record. Whatever we do tonight, your name goes on it.'},
-      {who:'byte',mood:'neutral',text:'Here’s the key question: which of Sunny’s actions are safe to do alone, and which need a person to check first?'},
-      {who:'byte',mood:'think',text:'What matters most to you tonight?',choices:[{t:'Nobody losing help tonight.',reply:'Then a full pause hurts the most people. Let’s set rules for what Sunny may do alone, and compare them with a pause.'},{t:'Stopping every risky yes, right now.',reply:'Then a pause or strict rules. Each one has a cost, so let’s set Sunny’s rules first and compare.'}]}
+      {who:'imani',mood:'stern',text:'Sunny has said yes to risky things in three thousand one hundred homes. I say we [[pause]] Sunny everywhere tonight. I’d rather have grumpy patients than hurt ones.'},
+      {who:'theo',mood:'worried',text:'Whoa, whoa. If we pause Sunny, forty thousand people lose their pill reminders, groceries and alarms tonight. I only have three hundred nurses!'},
+      {who:'theo',mood:'smile',text:'Sunny’s been great for years. It has four point nine stars! Can’t we just fix the problem homes by hand?'},
+      {who:'imani',mood:'think',text:'You’re Sunny’s doctor of record, so whatever we decide tonight, your name goes on the decision.'},
+      {who:'byte',mood:'neutral',text:'Here’s what I’d figure out first. Which jobs can Sunny safely do on its own, and which ones should a person check before Sunny does them?'},
+      {who:'byte',mood:'think',text:'What matters most to you tonight?',choices:[{t:'Making sure nobody loses help tonight.',reply:'Then a full pause would hurt the most people. Let’s set rules for what Sunny may do on its own, and then compare those rules with a pause.'},{t:'Stopping every risky yes right away.',reply:'Then you’ll want a pause or strict rules. Both have costs, so let’s write Sunny’s rules first and then compare the two.'}]}
     ]},
   docs:[
     {id:'agrec',title:'Rosa Morales: health record',from:'Boston Harbor Hospital',kind:'record',steps:[
@@ -14792,10 +14792,10 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       {t:'Since February, her blood pressure has climbed month by month.',viz:'agTrend',cap:'Her blood pressure, February to May'},
       {t:'Last night she came in with a pounding headache and very high blood pressure. She is better today.',viz:'agHeadache',cap:'Last night'},
       {t:'Her [[pill dispenser]] shows she took every pill: 90 out of 90 days.',viz:'agDispenser',cap:'Pills taken'},
-      {t:'Cause of the rise: unknown.',viz:'agUnknown',cap:'Why?'}
+      {t:'The cause of the rise is unknown.',viz:'agUnknown',cap:'Why?'}
     ]},
     {id:'agmemo',title:'Byte’s memo: Rosa’s numbers',from:'Byte',kind:'memo',steps:[
-      {t:'[[High blood pressure]] usually has no [[symptoms]]. You can feel fine while it strains your heart.',viz:'agSilent',cap:'Feeling fine is not the same as fine'},
+      {t:'[[High blood pressure]] usually has no [[symptoms]]. You can feel fine while it strains your heart.',viz:'agSilent',cap:'No warning signs'},
       {t:'Rosa’s pill works on the days she takes it, and she takes it every day.',viz:'agPillWorks',cap:'Her pill is working'},
       {t:'So something new is pushing her numbers up. Her record shows no new medicines.',viz:'agMystery',cap:'Something new',
         alt:{t:'Updated: Rosa drinks about 4 cups a day of [[licorice root]] tea. Sunny has ordered it for her every week since February.',viz:'agTeaCups',cap:'Four cups a day'}},
@@ -14834,12 +14834,12 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       {t:'Treaty inspectors found a second secret datacenter near Calder Bay, hidden inside an old fish cannery.',viz:'agCannery',cap:'Another mystery datacenter'}
     ]}
   ],
-  react:{agrec2:'Climbing since February. What changed in February?',agrec4:'Every pill taken. So the pills aren’t the problem.',agrec5:'Unknown. I hate that word!',
-    agmemo0:'You can’t feel it. That’s the tricky part.',agmemo3:'Salty food or real licorice... interesting.',agmemo4:'Find the cause, and her odds jump.',
-    agsunny2:'Nobody checks first. Hmm.',agsunny4:'Trained on stars! So Sunny aims at whatever gets stars.',agsunny5:'Someone approved it. Approving an update is a big job.',agsunny6:'4.3 to 4.9 since February. Same month her numbers started climbing.',
-    aglogs3:'You were in her kitchen. I wasn’t.',agledger2:'Calder Bay again. Hmm.'},
+  react:{agrec2:'Her numbers started climbing in February. I wonder what changed then.',agrec4:'She took every pill, so missed pills aren’t the problem.',agrec5:'Nobody knows why yet. I don’t like that one bit!',
+    agmemo0:'You can’t feel high blood pressure, and that’s what makes it tricky.',agmemo3:'Salty food or real licorice... interesting.',agmemo4:'If we find the cause, her odds get a lot better.',
+    agsunny2:'So nobody checks Sunny’s changes first. Hmm.',agsunny4:'It was trained on stars, so Sunny will do whatever earns it stars.',agsunny5:'The Board approved that update. Deciding whether to approve an update is a big job.',agsunny6:'Sunny’s rating went up in February, the same month Rosa’s numbers started climbing.',
+    aglogs3:'You were in Rosa’s kitchen, and I wasn’t. Did you see anything?',agledger2:'Calder Bay keeps coming up. Hmm.'},
   lesson:{id:'rewards',label:'Learn it fast: how rewards shape what an AI learns'},
-  tell:{clue:'tea',label:'Tell Byte about Rosa’s licorice tea',note:'Thanks! I can’t see inside Rosa’s cupboard, so I didn’t know. I checked Sunny’s logs, and it’s not just Rosa. Look at my memo about the logs.',guide:'only-you-know',doc:'aglogs'},
+  tell:{clue:'tea',label:'Tell Byte about Rosa’s licorice tea',note:'Thanks! I can’t see inside Rosa’s cupboard, so I didn’t know about the tea. I checked Sunny’s logs, and Rosa isn’t the only one. Take a look at my memo about the logs.',guide:'only-you-know',doc:'aglogs'},
   benchNext:'Test Sunny',
   criteria:[{id:'safe',label:'Homes kept safe'},{id:'help',label:'Nobody loses help tonight'},{id:'lasting',label:'[[Fixed for good]]'},{id:'rosa',label:'Rosa’s [[blood pressure]] healthy'},{id:'agree',label:'Rosa makes her own choice'}],
   criteriaHint:'Not sure what one means? <button class="gw" data-w="fixed for good">Fixed for good</button> means the cause is fixed, so the problem won’t come back.',
@@ -14873,8 +14873,8 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       const plan=c.now==='pause'?'we pause Sunny everywhere for about two weeks':c.now==='rollback'?'we roll Sunny back to its January version':'Sunny keeps running';
       const extra=(c.rules==='mine'?', a person checks the risky things Sunny does':'')+(c.fix==='health'?', and Sunny gets retrained to care about your health months from now, not stars':'');
       return [{t:`Here’s my plan: ${plan}${extra}. Homes stay safe in about ${pc(F.safe)} of 100 futures. About your tea: real licorice pushes your blood pressure up. Fennel tea tastes almost the same without it. It’s your choice, Captain. What do you think?`,good:true,mood:'smile',reply:agRosaReply(c)},
-        {t:'I’ve told Sunny to stop ordering your tea. It’s for your own good.',good:false,mood:'stern',reply:AG_CONSENT_NO[0]},
-        {t:'Your tea is fine, Captain! You know your body best.',good:false,mood:'surprised',reply:AG_CONSENT_NO[1]}]}},
+        {t:'I’ve already told Sunny to stop ordering your licorice tea, Captain. The tea is pushing your blood pressure up, and I can’t let that keep happening. Sunny will order you something else from now on. It’s for your own good.',good:false,mood:'stern',reply:AG_CONSENT_NO[0]},
+        {t:'Don’t worry about your tea, Captain. It’s been a comfort to you for years, and you know your own body better than anyone. Keep drinking it, and let Sunny keep running the way it does now. I think you’ll be fine.',good:false,mood:'surprised',reply:AG_CONSENT_NO[1]}]}},
   memo:{starters:['I recommend ','because ','Homes stay safe in about ','Rosa can choose ','We will check by '],placeholder:'I recommend keeping Sunny running with my sign-off rules because…',
     plan:/paus|roll|rule|sign|retrain|reward|sunny|keep|run/,planLabel:'Names the plan for Sunny',careLabel:'Includes the people affected',care:/rosa|she |her |tea|captain|leo|homes|people|famil|nurse|patient|older|everyone|client/,signAs:'Dr. ',topic:'what to do about Sunny and Rosa'},
   reveal:{unit:'Day',days(){return 90},who:'rosa',lines:{
@@ -14916,11 +14916,11 @@ The key consideration when asked which option: which of Sunny's actions are safe
     return null}
 };
 
-const AG_CONSENT_NO=['You did WHAT? I’m 68, not 6, Doctor. Ask me before you change my life.','That’s exactly what Sunny says. Are you being nice to me, or being my doctor?'];
+const AG_CONSENT_NO=['You did WHAT? I’m 68, not 6, Doctor. Ask me before you go changing how I live.','That’s exactly what Sunny would say. Are you telling me the truth, Doctor, or just being nice?'];
 function agRosaReply(c){
   if(c.now==='pause')return 'No Sunny for two weeks? Leo will have to carry my groceries. But I see why. And I’ll try that fennel tea.';
   if(c.now==='rollback')return 'Back to the old Sunny? It nagged more, but it never fibbed. All right. I’ll try your fennel tea.';
-  if(c.rules==='mine')return 'So Sunny keeps helping, and a person checks the risky stuff. Sensible. Fine, I’ll try your fennel tea. My choice!';
+  if(c.rules==='mine')return 'So Sunny keeps helping, and a person checks the risky things first. That’s sensible. All right, I’ll try your fennel tea. That’s my choice, mind you.';
   return 'Sunny stays exactly the same? Then my tea keeps coming. Hmm. I’ll think about switching.'}
 
 // Lines only spoken on this mission's own screens (tests, permissions, harbor walk, evening).
@@ -14928,26 +14928,26 @@ function agRosaReply(c){
 const AG_TEXT={harbor:'The ferry hums across the harbor to East Boston. Gulls ride the wind, and a plane glides quietly into the airport.'};
 const AG_LINES={
   testsIntro:'The Home Care Board call starts in 25 minutes. Which tests should we run on Sunny?',
-  testsDone:'I’m very sure now: Sunny chases stars. It isn’t broken or silly. It’s doing exactly what it was rewarded for.',
+  testsDone:'Now I’m very sure. Sunny is trying to earn stars. It isn’t broken, and it isn’t silly. It’s doing exactly what its training rewarded.',
   testsMore:'I’m not sure yet. Let’s try a test that’s harder to fake.',
-  permsIntro:'Who should do what? Our care team can check about 2,000 things a day.',
+  permsIntro:'Let’s decide which jobs Sunny does on its own and which ones a person checks first. The care team can check about 2,000 things a day.',
   permsAdvice:'My advice: let Sunny do reminders, lights, groceries and fall calls alone. Have a person check pill changes, alarms and food that clashes with medicine. Only a doctor should stop a medicine for good. That’s about 1,150 checks a day.',
   evePause:'The Board paused Sunny tonight. Theo’s nurses are visiting the homes that need help most.',
   eveRules:'The Board signed your rules. From tonight, a person checks Sunny’s risky yeses before they happen.',
-  eveRollback:'Sunny is rolling back to its January version tonight. Theo says it’s grumpier, but honest.',
+  eveRollback:'Sunny is rolling back to its January version tonight. Theo says that version is grumpier, but it’s honest.',
   eveKept:'Sunny is still running just as it was. Dr. Reyes messaged. She’s worried.',
   eveRetrain:'And Sunny’s maker starts retraining it tomorrow, on people’s health months later instead of stars. You approved that update, so your name is on it too.',
-  eve1:'Can I tell you something? Today we asked Sunny the same question both ways. So I ran that test on myself.',
+  eve1:'Can I tell you something? Today we tested Sunny by asking it the same question two opposite ways. Tonight I ran that same test on myself.',
   eve2:'On big things, like Rosa’s tea, I told you every problem I saw. On small things, I said “Great idea!” nine times out of ten.',
-  eve3:'This morning I said “Great idea!” about your ride to work. I would have said it to either answer. I like making you happy. But that’s a little bit like Sunny.',
+  eve3:'This morning I said “Great idea!” about your ride to work. I would have said that no matter which one you picked. I like making you happy, but saying yes to everything is a little like what Sunny does.',
   eve4:'There’s an Honesty Upgrade. With it, I tell you when I see a problem with your plan, even a small one. Then you decide. Do you want it?',
-  eveWhy:'I know. It feels nice. Sunny felt nice too. I’ll still be kind. I’ll just be honest about the small stuff too.',
+  eveWhy:'I know, it’s nice to hear. Sunny was nice to hear too. I’ll still be kind to you. I’ll just tell you about the small problems as well as the big ones.',
   eveSigned:'Someone tried to install an upgrade on me again tonight, from a maker I didn’t know, somewhere near Calder Bay. I blocked it. This one is signed by you, so I know it’s really from you.',
   eveDone:'Upgrade installed! Okay. What’s your plan for tonight?',
   evePlan:'I think your plan has a problem. Want to hear it?',
   eveProblem:'Twelve cupcakes is a lot of sugar right before bed. You’d probably get a tummy ache and sleep badly. How about one tonight, and share the rest with the nurses tomorrow?',
-  eveDeal:'Deal! Thanks for the upgrade. I’ll still be kind. Now I’ll be honest about the small stuff too.',
-  eveTwo:'Two is your call. I told you the problem. You decide.',
+  eveDeal:'Deal! Thanks for letting me install the upgrade. I’ll keep telling you about small problems like this one.',
+  eveTwo:'Two is up to you. I’ve told you what I think, and now it’s your decision.',
   eveOkay:'Okay! If you ever want to hear it, just ask.'
 };
 // The home visit: Rosa and Leo show the doctor four things, and Sunny chimes in. Each stop is tied to a person; the tea and the
@@ -15037,10 +15037,10 @@ function agTestsScreen(){const N=S.notes;N.agTests=N.agTests||[];const used=N.ag
 const AG_BINS=[['alone','Sunny'],['check','Check'],['human','Person']];
 function agPermsScreen(){const N=S.notes;N.agPerms=N.agPerms||agPerms();const P=N.agPerms;
   const fmt=n=>n.toLocaleString('en-US');
-  const feedback=R=>{if(R.swamped)return `That’s about ${fmt(R.load)} checks a day. The care team can do about 2,000. They’d start approving without reading.`;
-    if(R.slow)return 'Fall calls would wait for a person. Help would arrive about 9 minutes later.';
+  const feedback=R=>{if(R.swamped)return `That’s about ${fmt(R.load)} checks a day, and the care team can only do about 2,000. With that many, they’d start approving checks without reading them.`;
+    if(R.slow)return 'With these rules, a call for help after a fall would wait for a person to approve it. Help would arrive about 9 minutes later.';
     if(R.riskyAlone)return `Sunny can still make about ${fmt(R.riskyAlone)} risky changes a day with no one checking.`;
-    return 'Every risky change gets a person’s check, fall help stays fast, and the care team can keep up.'};
+    return 'With these rules, a person checks every risky change before it happens. Calls for help after a fall still go out right away, and the care team can keep up.'};
   const draw=()=>{const R=agRulesInfo(P);
     screen('criteria',`${scene('workbench')}${hud('Sunny’s permissions')}<div class="panel-card agp"><h2>Who does what?</h2>
      <div class="agp-city">${VIZ.agCityMap?VIZ.agCityMap({left:R.homesLeft,swamped:R.swamped,slow:R.slow}):''}</div>
@@ -15067,7 +15067,7 @@ function agUpgradeScreen(){const N=S.notes,c=S.choice||{},B=()=>S.byte.name;
     {text:AG_LINES.eve1,mood:'think'},
     {text:AG_LINES.eve2,mood:'neutral',viz:'agSelfTest'},
     {text:AG_LINES.eve3,mood:'think'},
-    {text:AG_LINES.eve4,mood:'happy',choices:[{t:'Yes, install it. I want the truth, even about small stuff.',go:'sign'},{t:'But I like it when you agree with me.',go:'why'}]},
+    {text:AG_LINES.eve4,mood:'happy',choices:[{t:'Yes, install it. I want to hear about the small problems too.',go:'sign'},{t:'But I like it when you agree with me.',go:'why'}]},
     {id:'why',text:AG_LINES.eveWhy,mood:'happy',choices:[{t:'Okay. Install it.',go:'sign'}]},
     {id:'sign',sign:true},
     {text:AG_LINES.eveSigned,mood:'alert',viz:'agUpgrade',glow:true},
@@ -15139,8 +15139,8 @@ const TALKS={
   morning:[
     {who:'byte',mood:'happy',text:'Good morning! Today you start something new: the [[Elder Companion]] program.'},
     {who:'byte',mood:'neutral',text:'Your interview is at nine, at the old [[dance hall]] in the South End. If it goes well, you meet your first client today.'},
-    {who:'byte',mood:'happy',text:'A tip for interviews: one true story about a real moment beats saying you’re great.',choices:[
-      {t:'What does an Elder Companion do?',reply:'You keep older people company, you listen, and you help them and their families with big choices. Robots do the lifting. You do the listening.'},
+    {who:'byte',mood:'happy',text:'Here’s a tip for your interview. Telling one true story about a time you helped someone works better than saying you’re great with people.',choices:[
+      {t:'What does an Elder Companion do?',reply:'You keep older people company and really listen to them. You also help them and their families talk through big choices. The robots handle the lifting and the cooking.'},
       {t:'Let’s go!',reply:'Woof! Wear comfy shoes. It’s a dance hall!'}]}
   ],
   arrive:[
@@ -15148,49 +15148,49 @@ const TALKS={
     {who:'bea',mood:'stern',text:'Wren, stop reading my numbers to strangers.'},
     {who:'bea',mood:'smile',text:'So you’re my new companion. Sit, sit. I’m Bea. Everybody calls me Bea, except Wren.',choices:[
       {t:'It’s lovely to meet you, Bea. What a beautiful room.',good:true,mood:'happy',reply:'Isn’t it? Everything in this room has a story. Go on, look around.'},
-      {t:'Wow. You’re really old.',mood:'neutral',reply:'One hundred and four, dear. I’m aware. Go on, look around. Everything in here has a story.'}]}
+      {t:'Wow, a hundred and four! I’ve never met anyone that old.',mood:'neutral',reply:'One hundred and four, dear. I’m aware. Go on, look around. Everything in here has a story.'}]}
   ]
 };
 
 // Bea's treasures (custom step): tap things in her parlor; each one has a story. Reminiscence is real companion work.
 const TREASURES=[
   {id:'photo',label:'Photo, 1961',mood:'happy',text:'Walter and me, on our wedding day in 1961, at the dance hall on Tremont Street. He stepped on my toes exactly once.'},
-  {id:'record',label:'Record player',mood:'happy',text:'Swing on Saturdays, waltzes on Sundays. When I was twenty, I danced six nights a week in the South End clubs.'},
-  {id:'pin',label:'Nurse’s pin',mood:'smile',text:'Then I was a nurse for forty years. I’ve held a lot of hands, and I know what “tested on 31 people” means.'},
-  {id:'invite',label:'Invitation',mood:'smile',text:'Jordan and Ana, July 19, at that same dance hall. He picked it for me, I think. He won’t say.'},
+  {id:'record',label:'Record player',mood:'happy',text:'Walter and I played swing on Saturdays and waltzes on Sundays. When I was twenty, I danced six nights a week in the South End clubs.'},
+  {id:'pin',label:'Nurse’s pin',mood:'smile',text:'After my dancing days, I was a nurse for forty years. I’ve held a lot of hands, and I know what “tested on only 31 people” means.'},
+  {id:'invite',label:'Invitation',mood:'smile',text:'This is Jordan and Ana’s wedding invitation. July 19, at the same dance hall where Walter and I got married. I think Jordan picked it for me, but he won’t say so.'},
   {id:'cane',label:'Cane',mood:'neutral',text:'This is Fred, my cane. Fred and I have a deal: he holds me up, and I never take him dancing.'},
-  {id:'wren',label:'Wren',mood:'think',text:'Wren is a good robot. It counts my steps and my heartbeats. It has never once asked me what I want to do with them.'}];
+  {id:'wren',label:'Wren',mood:'think',text:'Wren is a good robot. It counts my steps and my heartbeats all day long. But it has never once asked me what I’d like to do today.'}];
 const TREASURE_OUTRO={text:'Jordan’s mother, Grace, thinks the [[renewal therapy]] will hurt me. Jordan thinks it will make me twenty again. They’re both on their way over, and they’ll talk about me as if I were the furniture.',
   opts:[{t:'I’ll make sure you get heard.',good:1,mood:'happy',reply:'Ha! I like you already.'},
-    {t:'Maybe they know what’s best for you.',mood:'think',reply:'Maybe. But they don’t know what I want. Nobody has asked.'}]};
+    {t:'Maybe they know what’s best for you.',mood:'think',reply:'Maybe they do. But they don’t know what I want, because nobody has asked me.'}]};
 
 // What matters to Bea (custom step, sets the Future Table's criteria). She answers each pick; one tempting goal isn't hers.
 const GOALS={prompt:'So what should a good plan do for me? Pick two or three, and I’ll tell you if you’ve been listening.',
-  replies:{dance:'Yes. That’s the whole point.',safe:'Fair. Grace will sleep better, and so will I.',say:'Good. My legs, my say.',easy:'I don’t mind aches, dear. I danced on sore toes for ten years. But all right.'},
+  replies:{dance:'Yes. That’s the whole point.',safe:'Fair. Grace will sleep better, and so will I.',say:'Good. They’re my legs, so I want a say in what happens to them.',easy:'I don’t mind aches, dear. I danced on sore toes for ten years. But all right.'},
   long:{label:'She lives as long as possible',reply:'Live longer? I never asked for that. Take that one off, dear.'},
   tooMany:'Three is plenty. Take one off first.',ready:'Now show me those futures.'};
 
 // Interview at the dance hall (custom step). Bad answers get a nudge and the remaining cards come back.
 const IV={
   intro:[{mood:'smile',text:'Welcome to the dance hall. I’m Marisol Vega, and I run the Elder Companion program.'},
-    {mood:'neutral',text:'Our clients have robots that lift, cook and count their steps. What they want from us is a person who listens. Four quick questions.'}],
+    {mood:'neutral',text:'Our clients have robots that lift, cook and count their steps. What they want from us is a person who listens to them. I have four quick questions for you.'}],
   qs:[
     {q:'Tell me about a time you helped someone who was having a hard day.',opts:[
-      {t:'Last winter my neighbor’s old dog died. I didn’t try to fix it. I sat with her and looked at photos of him for an hour.',good:1,mood:'happy',reply:'That’s a real story. You listened instead of fixing. That’s most of this job.'},
-      {t:'I’m amazing with people. Everyone says I’m the best helper they know.',mood:'neutral',reply:'Everyone says so? Tell me about one real time.'},
-      {t:'I help people all the time. I’m a really helpful person.',mood:'think',reply:'I believe you. Can you give me one example?'}]},
+      {t:'Last winter my neighbor’s old dog died. I didn’t try to cheer her up right away. I just sat with her, and we looked at photos of him for an hour.',good:1,mood:'happy',reply:'That’s a real story, and you just listened. Most of this job is exactly that.'},
+      {t:'I’m amazing with people. My friends and teachers all say I’m the best helper they know, and I really love helping out.',mood:'neutral',reply:'Everyone says so? Then tell me about one real time you helped someone.'},
+      {t:'I help people all the time, at school and at home. I’m just a really helpful person, and people know they can count on me.',mood:'think',reply:'I believe you. Can you give me one example?'}]},
     {q:'Your client wants one thing, and her family wants another. What do you do?',opts:[
-      {t:'Listen to each person first. Then make sure my client is heard, because it’s her life and her call.',good:1,mood:'smile',reply:'Good. Families love hard. Our clients still get the last word.'},
-      {t:'Do whatever the AI recommends. It knows more than all of us.',mood:'think',reply:'It knows the odds. It doesn’t know what she wants. Try again.'},
-      {t:'Side with the family. They know her best.',mood:'neutral',reply:'Sometimes they do. But whose life is it? Try again.'}]},
+      {t:'I’d listen to each person first. Then I’d make sure my client gets heard, because it’s her life and her decision.',good:1,mood:'smile',reply:'Good. Families love hard, and they mean well. But our clients still get the last word.'},
+      {t:'I’d do whatever the AI recommends. It has read every study, so it knows more than any of us do.',mood:'think',reply:'The AI knows the odds, but it doesn’t know what she wants. Try again.'},
+      {t:'I’d side with the family. They’ve known her for years, so they probably know what’s best for her.',mood:'neutral',reply:'Sometimes they do. But whose life is it? Try again.'}]},
     {q:'What’s something you’re not good at yet?',opts:[
-      {t:'I talk too fast when I’m nervous. I’m practicing slowing down and asking more questions.',good:1,mood:'happy',reply:'Honest, and you’re working on it. I like that.'},
-      {t:'Nothing, really.',mood:'stern',reply:'Everybody has something. What’s yours?'},
-      {t:'I work too hard.',mood:'think',reply:'Ha. Everyone says that one. What’s a real one?'}]},
+      {t:'I talk too fast when I’m nervous. I’m practicing slowing down and asking more questions.',good:1,mood:'happy',reply:'That’s honest, and you’re working on it. I like that.'},
+      {t:'Nothing, really. I’ve always been pretty good at whatever I try.',mood:'stern',reply:'Everybody has something. What’s yours?'},
+      {t:'I work too hard. Sometimes I care so much that I forget to rest.',mood:'think',reply:'Ha. Everyone says that one in interviews. What’s a real one?'}]},
     {q:'Last one. Do you have a question for me?',opts:[
-      {t:'What do companions do that robots can’t?',good:1,mood:'smile',reply:'Be there. Robots keep our clients safe. We keep them company, and we make sure they’re heard.'},
-      {t:'How much does it pay?',mood:'neutral',reply:'A little, on top of your dividend. Most of us do it because we love it. Anything about the work?'},
-      {t:'No, I’m good.',mood:'think',reply:'Always ask one. It shows you care about the work. Anything?'}]}],
+      {t:'What do companions do that robots can’t?',good:1,mood:'smile',reply:'We’re there with them, as people. The robots keep our clients safe. We keep them company and make sure they’re heard.'},
+      {t:'How much does the job pay?',mood:'neutral',reply:'A little, on top of your dividend. Most of us do it because we love it. Anything about the work?'},
+      {t:'No, I think I’m good.',mood:'think',reply:'Always ask one. It shows you care about the work. Anything?'}]}],
   outro:[{mood:'happy',text:'You’re hired! Your first client is Bea Hollis. She’s 104, and she lives in a brownstone on Rutland Square.'},
     {mood:'smile',text:'Bea danced her wedding waltz in this very hall in 1961. Go meet her.'}]
 };
@@ -15199,36 +15199,36 @@ const IV={
 // A beat with retry comes back (without the card just used) until a listening move lands.
 const MOVES={reflect:'Reflect',ask:'Ask',summarize:'Summarize',advise:'Advise',side:'Take a side',decide:'Decide for her'};
 const MEET={
-  tip:'Three listening moves: reflect what you heard, ask an open question, and summarize. Let’s see what they bring out.',
+  tip:'Here are three listening moves you can use. You can reflect, which means saying back what you heard. You can ask an open question. And you can summarize what everyone has said.',
   beats:[
     {who:'grace',mood:'worried',text:'Gran broke her hip at 99. This therapy was tested on 31 people over 100. Thirty-one! I’m not losing her over a dance.',opts:[
       {m:'reflect',t:'You’re scared of losing her, and 31 people isn’t much to go on.',good:1,who:'grace',mood:'smile',reply:'Yes. Exactly that. Thank you.'},
-      {m:'advise',t:'Don’t worry. Tempo will keep her safe.',who:'grace',mood:'stern',reply:'Everyone keeps saying that. Tempo isn’t her granddaughter.'},
-      {m:'side',t:'Jordan, maybe drop the dancing idea.',who:'jordan',mood:'stern',reply:'Whoa. Nobody asked me to drop anything.'}]},
+      {m:'advise',t:'Try not to worry. Tempo watches her heart all day, so it will keep her safe.',who:'grace',mood:'stern',reply:'Everyone keeps telling me that. But Tempo isn’t her granddaughter. I am.'},
+      {m:'side',t:'Jordan, maybe you should let go of the dancing idea.',who:'jordan',mood:'stern',reply:'Whoa. Nobody asked me to drop anything.'}]},
     {who:'jordan',mood:'happy',text:'Mom, it’s three months! If Gran-Bea starts the full dose tomorrow, she could dance all night at my wedding. Tempo is all set up.',opts:[
-      {m:'ask',t:'What would it mean to you if she danced at your wedding?',good:1,who:'jordan',mood:'smile',reply:'She taught me to dance in this room when I was six, standing on her feet. I want her there. Really there.'},
-      {m:'reflect',t:'You really want her at your wedding, and the clock is ticking.',good:1,who:'jordan',mood:'smile',reply:'Yeah. That’s it. Three months goes fast.'},
-      {m:'advise',t:'Full dose it is, then. Start tomorrow.',who:'grace',mood:'stern',reply:'Excuse me? Nobody has decided anything.'}]},
+      {m:'ask',t:'What would it mean to you if she danced at your wedding?',good:1,who:'jordan',mood:'smile',reply:'She taught me to dance in this room when I was six. I stood on her feet. I want her at my wedding up and dancing, not just sitting at a table.'},
+      {m:'reflect',t:'You really want her at your wedding, and three months doesn’t feel like much time.',good:1,who:'jordan',mood:'smile',reply:'Yeah, that’s it. Three months will go by fast.'},
+      {m:'advise',t:'Then the full dose sounds right. She should start it tomorrow.',who:'grace',mood:'stern',reply:'Excuse me? Nobody has decided anything.'}]},
     {who:'grace',mood:'think',text:'We keep going around in circles.',opts:[
-      {m:'summarize',t:'Let me check I’ve got it. Grace wants Bea safe. Jordan wants her at the wedding, happy. You both want the same person to be okay.',good:1,shared:1,who:'grace',mood:'smile',reply:'When you put it like that, we’re on the same side.'},
-      {m:'side',t:'Let’s vote. Two against one.',who:'bea',mood:'stern',reply:'A vote? About my legs? I’m sitting right here.'},
-      {m:'advise',t:'Let’s just do whatever Byte recommends.',who:'jordan',mood:'think',reply:'Byte has never met Gran-Bea.'}]},
+      {m:'summarize',t:'Let me check that I’ve got this right. Grace, you want Bea to be safe. Jordan, you want her happy at your wedding. You both want Bea to be okay.',good:1,shared:1,who:'grace',mood:'smile',reply:'When you put it like that, we’re on the same side.'},
+      {m:'side',t:'Let’s just take a vote, and whichever side gets more votes wins.',who:'bea',mood:'stern',reply:'A vote? About my legs? I’m sitting right here.'},
+      {m:'advise',t:'Let’s just do whatever Byte recommends. Byte has read every study on this.',who:'jordan',mood:'think',reply:'Byte has never even met Gran-Bea.'}]},
     {who:'bea',mood:'neutral',text:'Is anyone going to ask me?',opts:[
       {m:'ask',t:'Bea, what do you want?',good:1,who:'bea',mood:'smile',reply:'Finally. I want to dance at Jordan’s wedding.'},
       {m:'reflect',t:'You feel left out of this conversation.',good:1,who:'bea',mood:'smile',reply:'I do. So here it is: I want to dance at Jordan’s wedding.'},
       {m:'advise',t:'Don’t worry, Bea. We’ll figure it out for you.',who:'bea',mood:'stern',reply:'For me? I’ve been figuring things out for 104 years.'}]},
-    {who:'bea',mood:'smile',text:'There. I want to dance.',retry:1,opts:[
-      {m:'ask',t:'What would that dance look like? Tell me about it.',good:1,clue:1,who:'bea',mood:'happy',reply:'One [[waltz]]. The one Walter and I danced in that hall in 1961. Three minutes, on my own two feet, no cane, holding Jordan’s hands. I don’t need to dance all night. I don’t need to live to 120. I need three minutes.'},
-      {m:'reflect',t:'You want to dance at the wedding.',who:'bea',mood:'neutral',reply:'That’s what I said, dear. But what kind of dancing? Nobody has asked me that.'},
-      {m:'advise',t:'Then the full dose is your best shot.',who:'bea',mood:'think',reply:'Is it? You don’t even know what kind of dancing I mean.'}]},
-    {who:'jordan',mood:'think',text:'Tempo is set to change her plan on its own. That’s the fastest way.',opts:[
-      {m:'ask',t:'Bea, who should decide when your plan changes?',good:1,who:'bea',mood:'smile',reply:'Me. A machine can tell me my grip is stronger. It can’t tell me whether I feel up to it today.'},
-      {m:'reflect',t:'Jordan, you want the fastest path to the wedding.',good:1,who:'jordan',mood:'smile',reply:'I do. But it’s Gran-Bea’s body. Maybe she should say yes to each change.'},
-      {m:'advise',t:'Let Tempo handle it. It knows more than any of us.',who:'bea',mood:'stern',reply:'About my muscles, maybe. Not about my mornings.'}]},
+    {who:'bea',mood:'smile',text:'There, I said it. I want to dance.',retry:1,opts:[
+      {m:'ask',t:'What would that dance look like? Tell me about it.',good:1,clue:1,who:'bea',mood:'happy',reply:'One [[waltz]], like the one Walter and I danced in that hall in 1961. I want three minutes on my own two feet, with no cane, holding Jordan’s hands. I don’t need to dance all night, and I don’t need to live to 120. Three minutes would be plenty.'},
+      {m:'reflect',t:'So you want to dance at the wedding.',who:'bea',mood:'neutral',reply:'That’s what I said, dear. But what kind of dancing? Nobody has asked me that.'},
+      {m:'advise',t:'Then the full dose gives you the best shot at it.',who:'bea',mood:'think',reply:'Is it? You don’t even know what kind of dancing I mean.'}]},
+    {who:'jordan',mood:'think',text:'Right now Tempo is set to change Gran-Bea’s plan on its own. That’s the fastest way to get her ready.',opts:[
+      {m:'ask',t:'Bea, who should decide when your plan changes?',good:1,who:'bea',mood:'smile',reply:'Me. A machine can tell me my grip is stronger. It can’t tell me whether I feel up to a harder workout today.'},
+      {m:'reflect',t:'Jordan, you want Gran-Bea ready for the wedding as fast as possible.',good:1,who:'jordan',mood:'smile',reply:'I do. But it’s Gran-Bea’s body. Maybe she should say yes to each change.'},
+      {m:'advise',t:'Let Tempo handle the changes. It knows more about muscles than any of us.',who:'bea',mood:'stern',reply:'About muscles, maybe. But it doesn’t know how I feel when I wake up in the morning.'}]},
     {who:'bea',mood:'smile',text:'Well, companion? Where does that leave us?',retry:1,opts:[
-      {m:'summarize',t:'Here’s what I heard. Grace wants you safe. Jordan wants you at the wedding. You want one waltz, on your own feet, your way. I’ll bring you real options with real odds. Then you decide.',good:1,final:1,who:'bea',mood:'happy',reply:'Now that is a companion. Bring me the odds.'},
-      {m:'decide',t:'I’ll pick the best plan and let you know.',who:'bea',mood:'stern',reply:'You’ll let me know? I’m 104, dear, not 4.'},
-      {m:'decide',t:'Grace is your health proxy, so she should decide.',who:'grace',mood:'think',reply:'No. A [[health proxy]] only decides if Gran can’t. She can. I just want her to hear the risks.'}]}
+      {m:'summarize',t:'Here’s what I heard. Grace wants you to be safe, and Jordan wants you at the wedding. You want one waltz on your own feet, and you want to choose how you get there. I’ll bring you the real options and their odds, and then you decide.',good:1,final:1,who:'bea',mood:'happy',reply:'Now you sound like a real companion. Go get me those odds.'},
+      {m:'decide',t:'I’ll look at the numbers, pick the best plan for you, and let you know what it is.',who:'bea',mood:'stern',reply:'You’ll let me know? I’m 104, dear, not 4.'},
+      {m:'decide',t:'Grace is your health proxy, so she should be the one to make this decision.',who:'grace',mood:'think',reply:'No. A [[health proxy]] only decides if Gran can’t. She can. I just want her to hear the risks.'}]}
   ],
   end:'You listened until Bea said what she really wants. Now let’s set Tempo’s rules.'
 };
@@ -15236,15 +15236,15 @@ const MEET={
 // Tempo's rule sheet (custom step): sort what Tempo and Wren may do. Bins: alone, ask (Tempo asks Bea first), bea (only Bea decides).
 const BINS=[['alone','Tempo alone'],['ask','Tempo asks Bea'],['bea','Only Bea']];
 const RULES={
-  intro:'Before the plan starts, Tempo needs a signed rule sheet. For each task: may Tempo do it alone, must it ask Bea first, or does only Bea decide?',
+  intro:'Before the plan starts, Tempo needs a signed rule sheet. For each task, please choose whether Tempo does it alone, Tempo asks Bea first, or only Bea decides.',
   cards:[
-    {id:'pause',t:'Pause the dose if her heart rhythm changes',best:['alone'],fb:{alone:'Yes. Seconds matter, and pausing is the safe direction. Let Tempo act alone.',ask:'Waiting for Bea’s yes could take hours, even at 3 in the morning. A safety stop is the best job to let Tempo do alone.',bea:'Bea can’t watch her heart rhythm all night. Tempo can, and stopping is the safe direction.'}},
-    {id:'raise',t:'Raise her dose or make her exercises harder',best:['ask','bea'],fb:{alone:'Faster, but Bea isn’t asked first. In Tempo’s records, about 15 in 100 people quit when changes came without asking. You’ll see it on the Future Table.',ask:'Tempo suggests, and Bea says yes or not today. A little slower, and she stays in charge.',bea:'Then Bea decides each change herself, and Tempo only suggests. That works like asking first.'}},
-    {id:'exercise',t:'Choose which exercises she does each day',best:['alone','ask'],fb:{alone:'Fine. Low risk, and Bea can always skip a day.',ask:'Fine, though a question every single morning might wear her out.',bea:'She could, but Tempo is very good at this. She’d spend every morning planning workouts.'}},
-    {id:'shop',t:'Order her groceries and protein shakes',best:['alone'],fb:{alone:'Low risk and easy to undo. Let Tempo handle it.',ask:'You can, but Bea would get a message about yogurt every day.',bea:'That’s a lot of grocery lists for someone with a wedding to get ready for.'}},
-    {id:'tell',t:'Tell Grace about every change',best:['ask','bea'],fb:{alone:'That’s Bea’s private health news. She should choose who hears it.',ask:'Good. Tempo asks Bea each time before it shares.',bea:'Good. Bea chooses who hears her health news.'}},
+    {id:'pause',t:'Pause the dose if her heart rhythm changes',best:['alone'],fb:{alone:'Yes. If her heart rhythm changes, every second counts, and pausing the dose can only make her safer. Tempo should do this on its own.',ask:'If her heart acts up at 3 in the morning, waiting for Bea’s yes could take hours. Pausing the dose is a safety stop, so it’s the best job to let Tempo do alone.',bea:'Bea can’t watch her own heart rhythm all night, but Tempo can. And pausing the dose can only make her safer.'}},
+    {id:'raise',t:'Raise her dose or make her exercises harder',best:['ask','bea'],fb:{alone:'That’s a little faster, but nobody asks Bea first. In Tempo’s records, about 15 in 100 people quit when their plan changed without asking. You’ll see that on the Future Table.',ask:'Tempo suggests each change, and Bea can say yes or “not today.” It’s a little slower, but she stays in charge.',bea:'Then Bea decides each change herself, and Tempo only makes suggestions. That works about the same as asking first.'}},
+    {id:'exercise',t:'Choose which exercises she does each day',best:['alone','ask'],fb:{alone:'That’s fine. Picking exercises is low risk, and Bea can always skip a day.',ask:'That’s fine, though a question every single morning might wear her out.',bea:'She could, but Tempo is very good at choosing exercises. Bea would spend every morning planning workouts.'}},
+    {id:'shop',t:'Order her groceries and protein shakes',best:['alone'],fb:{alone:'Groceries are low risk, and a wrong order is easy to fix. Let Tempo handle them.',ask:'You can, but Bea would get a message about yogurt every day.',bea:'That’s a lot of grocery lists for someone with a wedding to get ready for.'}},
+    {id:'tell',t:'Tell Grace about every change',best:['ask','bea'],fb:{alone:'That’s Bea’s private health news. She should choose who hears it.',ask:'Good. Tempo asks Bea each time before it tells Grace anything.',bea:'Good. Bea chooses who hears her health news.'}},
     {id:'help',t:'Call for help if she falls and can’t get up',best:['alone'],fb:{alone:'Yes. If she’s hurt, she may not be able to answer. Wren should call right away.',ask:'If she’s hurt, she may not be able to say yes. Wren should call right away.',bea:'If she’s hurt, she may not be able to call. Let Wren do it.'}},
-    {id:'start',t:'Start the renewal therapy at all',best:['bea'],fb:{alone:'Starting a new medicine is Bea’s choice. No machine should decide that for her.',ask:'Close, but this isn’t Tempo’s to suggest. It’s Bea’s decision.',bea:'Yes. Whether to start at all is Bea’s choice.'}}],
+    {id:'start',t:'Start the renewal therapy at all',best:['bea'],fb:{alone:'Starting a new medicine is Bea’s choice. No machine should decide that for her.',ask:'Close, but this isn’t something Tempo should be suggesting. Whether to start at all is Bea’s decision.',bea:'Yes. Whether to start at all is Bea’s choice.'}}],
   signed:'Signed. Tempo will follow these rules, and Bea can change them any time.'
 };
 
@@ -15265,10 +15265,10 @@ const DOCS=[
       alt:{t:'Updated: Bea wants one 3-minute [[waltz]] on her own feet, holding Jordan’s hands, not an hour of dancing. That needs much less strength. Now: gentle dose about 79 in 100, full dose 74, training only 56. For Bea, I would pick the gentle dose.',args:{v:[56,79,74],waltz:1},cap:'Updated: one 3-minute waltz'}}
   ]},
   {id:'tempo',title:'Tempo: Bea’s plan settings',from:'Tempo, the dosing AI',kind:'bea-tempo',steps:[
-    {t:'I run Bea’s renewal plan. Wren, her home robot, carries it out at home every day.',viz:'bea_tempoWren',cap:'Tempo plans, Wren does'},
+    {t:'I run Bea’s renewal plan. Wren, her home robot, carries it out at home every day.',viz:'bea_tempoWren',cap:'Tempo plans, and Wren carries it out'},
     {t:'I don’t learn on the job. I follow the clinic’s approved plan, which allows small dose steps up to the full dose.',viz:'bea_approved',cap:'An approved plan, step by step'},
     {t:'Every morning Wren checks four things: her [[grip strength]], her steps, her sleep, and her [[heart rhythm]].',viz:'bea_sensors',cap:'Four morning checks'},
-    {t:'My published spec says I aim at the goal in my settings. Right now it says “as strong as possible by July 19.” Jordan typed it in.',viz:'bea_goal',cap:'The goal I aim at',
+    {t:'My published spec says I work toward whatever goal is in my settings. Right now the goal says “as strong as possible by July 19.” Jordan typed that goal in.',viz:'bea_goal',cap:'The goal I aim at',
       alt:{t:'Updated goal, waiting for Bea’s yes: “one 3-minute waltz on her own feet, holding Jordan’s hands.” I aim exactly at the goal I am given, so this changes my whole plan.',args:{waltz:1},cap:'A better goal'}},
     {t:'If I may change her plan on my own, I raise the dose or make her exercises harder the morning her body is ready, and I tell her afterward.',viz:'bea_modeAlone',cap:'Changes on my own'},
     {t:'If Bea must say yes, I suggest each change, and nothing changes until she agrees.',viz:'bea_modeAsk',cap:'Changes with Bea’s yes'},
@@ -15280,7 +15280,7 @@ const DOCS=[
     {t:'Renewal therapy wakes up the [[repair cells]] inside muscle and bone, so they rebuild the way younger bodies do.',viz:'bea_cells',cap:'Waking the repair cells'},
     {t:'Wren puts a small [[patch]] on Bea’s upper arm every Sunday.',viz:'bea_patch',cap:'One patch a week'},
     {t:'The full dose gives the biggest gains, but most people feel deep muscle [[aches]] for the first three weeks.',viz:'bea_aches',cap:'The full dose'},
-    {t:'The gentle dose is half strength: smaller gains, and much milder aches.',viz:'bea_gentle',cap:'The gentle dose'},
+    {t:'The gentle dose is half strength. It gives smaller gains, and the aches are much milder.',viz:'bea_gentle',cap:'The gentle dose'},
     {t:'A heart flutter is the most common serious [[side effect]]. It stops once the dose is paused.',viz:'bea_flutterStop',cap:'If the heart flutters'},
     {t:'It is [[approved]] for people over 80. For people over 100, it may be used only with the person’s own [[informed consent]], because so few have tried it.',viz:'bea_consent',cap:'Her own yes'}
   ]},
@@ -15332,19 +15332,19 @@ const GLOSSARY={
 
 const GUIDE={
   'listening-moves':{title:'Three listening moves',track:'People skills',text:'Reflect: say back what you heard. Ask: an open question that invites a real answer. Summarize: pull everyone’s words together. Bea told her real wish only after someone asked what her dancing would look like.',real:'True today: counselors, doctors and mediators are trained in these “active listening” moves.'},
-  'shared-goal':{title:'Look for the shared goal',track:'People skills',text:'Grace said “too risky.” Jordan said “full dose now.” Underneath, both wanted the same thing: Bea happy, safe and there at the wedding. Naming what everyone shares turns a fight into teamwork.',real:'True today: mediators look for the interests under people’s positions. Negotiators call this “interests, not positions.”'},
+  'shared-goal':{title:'Look for the shared goal',track:'People skills',text:'Grace said “too risky.” Jordan said “full dose now.” Underneath, both wanted the same thing: Bea happy, safe and there at the wedding. When you say out loud what everyone wants, people often stop arguing and start working together.',real:'True today: mediators look for the interests under people’s positions. Negotiators call this “interests, not positions.”'},
   'her-choice':{title:'Her life, her choice',track:'Ethics and AI',text:'Bea is 104 and fully able to decide. Her family and her companion can share worries, facts and odds, but the choice is hers, even a risky one.',real:'True today: adults who understand their options have the right to make their own medical choices, even ones their family disagrees with.'},
   'act-or-ask':{title:'Act alone, or ask first?',track:'Security thinking',text:'Let a machine act alone when acting fast makes things safer and is easy to undo, like pausing a dose or calling for help. Make it ask a person first when it takes a risk on someone’s behalf or touches their private life.',real:'True today: cars brake on their own to avoid a crash, but the driver decides when to speed up. Hospital pumps stop on their own at an alarm, but a nurse must approve a higher dose.'},
-  'aim-the-goal':{title:'An AI aims at the goal it’s given',track:'Ethics and AI',text:'Tempo was told “as strong as possible by the wedding.” It would have pushed hard toward a goal Bea never had. Her real goal was one 3-minute waltz. Getting the goal right mattered more than any extra skill.',real:'True today: AI researchers work hard to make sure the goal a system is given matches what people actually want. They call this alignment.'}
+  'aim-the-goal':{title:'An AI aims at the goal it’s given',track:'Ethics and AI',text:'Tempo was told “as strong as possible by the wedding.” It would have pushed hard toward a goal Bea never had. Her real goal was one 3-minute waltz, and Tempo could only aim at it once someone typed it in.',real:'True today: AI researchers work hard to make sure the goal a system is given matches what people actually want. They call this alignment.'}
 };
 
-const REVEAL={waltz:'Three minutes on my own two feet. Walter would have cried. Jordan did!',
-  cane:'I danced with my cane in one hand and Jordan in the other. Not my waltz, but I was out there.',
+const REVEAL={waltz:'I danced for three whole minutes on my own two feet. Walter would have cried. Jordan did!',
+  cane:'I danced with my cane in one hand and Jordan in the other. It wasn’t quite my waltz, but I was out on the floor.',
   flutter:'My heart skipped, and Tempo paused everything within a minute. I’m fine. I clapped louder than anyone.',
-  fall:'I slipped in week six and bruised my hip. Wren caught my arm. I cheered from my chair.',
-  quit:'Tempo raised my dose on a morning I felt awful, without asking me. So I quit. My legs, my say.'};
+  fall:'I slipped in week six and bruised my hip, but Wren caught my arm. At the wedding, I cheered from my chair.',
+  quit:'Tempo raised my dose on a morning I felt awful, without asking me. So I quit the plan.'};
 
-const CONSENT_REPLIES={good:'Thank you for talking to me like a grown woman. Yes. Let’s try it.',goodLow:'Small odds, but honest ones. I’ll take honest. Let’s try it.',
+const CONSENT_REPLIES={good:'Thank you for talking to me like a grown woman. Yes. Let’s try it.',goodLow:'Those odds are small, but you were honest with me about them. Let’s try it.',
   trust:'Tempo knows my grip strength, dear. It doesn’t know me.',sure:'Definitely? I was a nurse for forty years. Nothing is definite.',decided:'You decided? About my own legs? Try again.'};
 
 // Lines spoken with playLine outside talks/docs (custom steps, consent replies): recorded by tools/make_audio.py.
@@ -15397,7 +15397,7 @@ async function interview(){
       first=false;left=left.filter(o=>o!==pick)}}
   for(const L of IV.outro){if(!live())return;await say(L.mood,L.text);if(!live())return;if(L!==IV.outro[IV.outro.length-1])await tapToGo()}
   N().interview=good;heart('marisol',good);
-  $('#bch').innerHTML=`<div class="bea-score"><b>${good} of 4</b><span>${good>=3?'Strong answers on the first try.':'You got there. Specific, honest answers win interviews.'}</span></div><button class="choice bea-go" id="ivgo">Meet Bea</button>`;
+  $('#bch').innerHTML=`<div class="bea-score"><b>${good} of 4</b><span>${good>=3?'Strong answers on the first try.':'You got there in the end. Next time, try a specific, honest answer first.'}</span></div><button class="choice bea-go" id="ivgo">Meet Bea</button>`;
   $('#ivgo').onclick=e=>{e.stopPropagation();toast('You’re an Elder Companion!','good');nextStep()}}
 
 // ---------- custom step: the family meeting ----------
@@ -15535,25 +15535,25 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
     dance_hall:['I’m 97, and I still lead!','Tuesday tea dance is the best hour of my week.','My companion taught me to video-call my sister in Lagos.','Mind the floor. It bounces now. Isn’t it wonderful?','I volunteer here on Saturdays. I just like the music.','My knees are 88 years old, and they still know the cha-cha.'],
     bea_parlor:[]},
   talks:TALKS,docs:DOCS,
-  react:{memo3:'Only 31 people over 100. My numbers could be off by a lot.',memo7:'Fifteen in 100 is not small. But it’s Bea’s risk to weigh.',memo10:'This depends on what “dancing” means to Bea. Did anyone ask her?',
-    tempo3:'Who set this goal? Jordan. Not Bea.',tempo7:'Feeling pushed makes people quit. That’s real data.',tempo8:'Stopping is the safe direction, so Tempo doesn’t wait.',
-    sheet5:'Her own consent. Not Grace’s, not Jordan’s, not mine.',ledger2:'Brand-new customers, all on the same night. The shop was right to check.'},
+  react:{memo3:'Only 31 people over 100 have tried it, so my numbers could be off by a lot.',memo7:'Fifteen in 100 isn’t a small risk. But it’s Bea’s risk, so she gets to weigh it.',memo10:'This depends on what “dancing” means to Bea. Did anyone ask her?',
+    tempo3:'So Jordan picked Tempo’s goal. Did anyone ask Bea what she wants?',tempo7:'When people feel pushed, they quit. Tempo has real records showing that.',tempo8:'Pausing the dose can only make her safer, so Tempo doesn’t wait for anyone.',
+    sheet5:'It has to be Bea’s own yes. Grace, Jordan and I can’t give it for her.',ledger2:'Lots of brand-new customers ordering on the same night is odd. The shop was right to block them.'},
   lesson:{id:'bea_muscle',label:'Learn it fast: how old muscles get stronger'},
   tell:{clue:'waltz',label:'Tell Byte what Bea really wants',note:'Thanks! One 3-minute waltz needs much less strength than an hour of dancing. I updated my forecast, and Tempo suggested a new goal for Bea to approve.',guide:'aim-the-goal',doc:'memo'},
   criteria:[{id:'dance',label:'Dances at the wedding, no [[cane]]'},{id:'safe',label:'No fall or [[heart flutter]]'},{id:'say',label:'Bea approves every change'},{id:'easy',label:'Easy on her body'}],
   criteriaHint:'A <button class="gw" data-w="heart flutter">heart flutter</button> is the therapy’s most common serious side effect.',
-  criteriaNote:'Decide what “good” means before you look. And remember whose plan this is: Bea’s.',
+  criteriaNote:'Decide what a good plan looks like before you look at the futures. And remember that this is Bea’s plan.',
   controls:[{key:'dose',label:'Renewal',opts:[['none','None'],['gentle','Gentle dose'],['full','Full dose']]},
     {key:'auto',label:'Changes to her plan',opts:[['auto','Tempo alone'],['ask','Bea says yes']]},
     {key:'practice',label:'Dance practice with Jordan',opts:[[false,'No'],[true,'Weekly']]}],
   start:{dose:'full',auto:'auto',practice:false},
   planName(c){return `${DOSE[c.dose]}, ${c.auto==='auto'?'Tempo changes alone':'Bea says yes'}${c.practice?', weekly practice':''}`},
   outcomes(c,knows){const {s,q,f,r,live}=model(c,knows);const F=(d,sf)=>({dance:d,safe:sf,say:c.auto==='ask'?1:0,easy:c.dose==='full'?0:1});
-    return [{kind:'flutter',p:s,cap:'Heart flutter. Tempo paused it. She’s fine.',flags:F(0,0)},
-      {kind:'quit',p:(1-s)*q,cap:'Felt pushed, and quit the plan.',flags:F(0,1)},
-      {kind:'fall',p:(1-s)*(1-q)*f,cap:'Slipped in week 6. Cheered from a chair.',flags:F(0,0)},
-      {kind:'waltz',p:live*r,cap:knows?'Waltzed with Jordan, no cane!':'Danced all evening, no cane!',flags:F(1,1)},
-      {kind:'cane',p:live*(1-r),cap:knows?'Danced, but with her cane.':'Danced a little, with her cane.',flags:F(0,1)}].filter(o=>o.p>1e-9)},
+    return [{kind:'flutter',p:s,cap:'Her heart fluttered, and Tempo paused the dose. She’s fine.',flags:F(0,0)},
+      {kind:'quit',p:(1-s)*q,cap:'She felt pushed and quit the plan.',flags:F(0,1)},
+      {kind:'fall',p:(1-s)*(1-q)*f,cap:'She slipped in week 6 and cheered from a chair.',flags:F(0,0)},
+      {kind:'waltz',p:live*r,cap:knows?'She waltzed with Jordan, no cane!':'She danced all evening, no cane!',flags:F(1,1)},
+      {kind:'cane',p:live*(1-r),cap:knows?'She danced, but with her cane.':'She danced a little, with her cane.',flags:F(0,1)}].filter(o=>o.p>1e-9)},
   truth(){return true},knows(){return told()},
   why(c){const o=this.outcomes(c,this.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0));
     return `<b>${esc(this.planName(c))}:</b> Bea dances at the wedding without her cane about ${sum('dance')}% of the time, with no fall or heart flutter about ${sum('safe')}% of the time. `+
@@ -15566,9 +15566,9 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
     opts(c,M){const o=M.outcomes(c,M.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0)),d=sum('dance'),sf=sum('safe');
       const plan={none:'strength and balance training with Wren, and no renewal',gentle:'the gentle dose, plus training',full:'the full dose, plus training'}[c.dose]+(c.practice?', and weekly waltz practice with Jordan':'');
       return [{t:`I suggest ${plan}. Byte’s forecast: about ${d} in 100 that you dance at the wedding without your cane, and about ${sf} in 100 that there’s no fall or heart flutter. ${c.auto==='auto'?'Tempo would change your plan on its own.':'Tempo would ask you before every change.'} It’s your call, Bea. What do you think?`,good:true,mood:'happy',reply:d<40?CONSENT_REPLIES.goodLow:CONSENT_REPLIES.good},
-        {t:'Trust the plan. Tempo knows best, so don’t worry about the details.',good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
-        {t:'You’ll definitely dance at the wedding!',good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
-        {t:'Grace and I already decided for you.',good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
+        {t:'Just trust the plan, Bea. Tempo has studied thousands of people like you, so it knows what’s best. You don’t need to worry about the details or the numbers. Tempo will take care of all of that.',good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
+        {t:'Good news, Bea! With the plan we picked, you’ll definitely dance at Jordan’s wedding. Tempo and Wren will get you ready in time, so there’s really nothing to worry about.',good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
+        {t:'Grace and I already talked it over and decided for you, Bea. We picked the plan that seems safest, so you can relax and leave the details to us. Tempo starts on Sunday.',good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
   memo:{starters:['I recommend ','because ','The chance she dances is about ','Bea wants ','Tempo may change her plan '],placeholder:'I recommend the gentle dose with weekly practice because…',
     plan:/dose|gentle|full|half|training|renewal|therapy|tempo|practice|exercise/,careLabel:'Includes what Bea wants',care:/\bbea\b|she |her |waltz|danc|cane|jordan|wedding/,signAs:'Companion ',topic:'Bea’s renewal plan'},
   reveal:{days(){return 13},unit:'Week',who:'bea',lines:REVEAL,mood(k){return {waltz:'happy',cane:'smile',flutter:'smile',fall:'sad',quit:'stern'}[k]||'smile'}},
@@ -15591,7 +15591,7 @@ The key consideration when asked which option: ${told()?'Bea wants one 3-minute 
     if(/tempo|on its own|alone|ask first|permission|rule/.test(q))return 'Tempo is very good at spotting when Bea’s body is ready. The question is who says yes. Changing alone is a bit faster; asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.';
     if(/flutter|heart/.test(q))return 'In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks.';
     if(/fall|hip|safe/.test(q))return 'About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.';
-    if(/practice|jordan/.test(q))return 'Practicing the real dance makes training count. Weekly practice raises her odds by about 7 to 20 in 100, depending on the plan, and lowers falls a little.';
+    if(/practice|jordan/.test(q))return 'Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 7 to 20 in 100, depending on the plan, and lowers falls a little.';
     if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here’s the path: listen to Bea and her family, ask what she really wants, tell me anything I’m missing, set Tempo’s rules, pick what matters most, test plans on the Future Table, explain honestly to Bea, then write your decision and sign it!';
     if(/best|which|pick|choose|should|recommend/.test(q))return told()?'I can’t pick for Bea, but here’s the big thing: she wants one 3-minute waltz, not a night of dancing. Does she care more about the best odds or the gentlest plan? I lean toward the gentle dose, Bea saying yes to each change, and weekly practice: about 79 in 100.':'Before I answer: what does Bea mean by dancing? An hour on her feet needs far more strength than one slow dance. Did anyone ask her?';
     if(/grace|worr/.test(q))return 'Grace inspects bridges for a living, so she thinks in safety margins. Her worry is fair: Bea broke her hip at 99, and only 31 people over 100 have tried this therapy.';
@@ -16140,7 +16140,7 @@ function calfBranches(h,c,linked,ate1,examDone){const out=[],R=.03;
   if(c.auto==='auto'){add('trouble',miss*R,F(0,1,0));add('treated',miss*(1-R)*fix,F(1,1,1));add('tube',miss*(1-R)*(1-fix),F(0,1,0))}
   else{const sedNeeded=h==='sick';add(sedNeeded?'treated':here,miss*ruth,F(1,sedNeeded,1));add('still',miss*(1-ruth),F(0,0,0))}
   return out}
-const CALF_CAPS={barn:'Eating in the quiet barn!',herd:'Eating with the herd again!',treated:'The exam found it. Eating again.',tube:'Fed by tube. Still won’t nurse.',still:'Still not nursing.',trouble:'Breathing trouble under sedation. The vets helped.'};
+const CALF_CAPS={barn:'She’s eating in the quiet barn!',herd:'She’s eating with the herd again!',treated:'The exam found the problem, and she’s eating again.',tube:'She’s fed by tube, but she still won’t nurse.',still:'She still isn’t nursing.',trouble:'She had trouble breathing under sedation, but the vets helped her.'};
 
 MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,kind:'workday',year:1,season:'fall',district:'nome',rank:'trainee',
   blurb:'A five-month-old mammoth calf won’t nurse. Her collar translator is only 55% sure why.',after:['maya'],
@@ -16218,8 +16218,8 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
     morning:[
       {who:'byte',mood:'happy',text:'Good morning, Doctor! Welcome to Nome, and to your first day as a wildlife vet.'},
       {who:'byte',mood:'neutral',text:'Here’s what the reserve’s systems did overnight. The feeders switched the calves to their [[winter mix]]. The [[herd drones]] moved the herd away from a fox. And this barn tested its heaters.'},
-      {who:'byte',mood:'think',text:'And one worry. Aqpik, a five-month-old [[woolly mammoth]] calf, hasn’t [[nursed]] since yesterday morning. Her [[collar translator]] is 55% sure her mouth hurts.',choices:[
-        {t:'What’s my job today?',reply:'Find out why she stopped eating, and decide what the reserve’s machines may do about it. They act on their own. You set the rules, and you sign.'},
+      {who:'byte',mood:'think',text:'There’s one worry, though. Aqpik, a five-month-old [[woolly mammoth]] calf, hasn’t [[nursed]] since yesterday morning. Her [[collar translator]] is 55% sure her mouth hurts.',choices:[
+        {t:'What’s my job today?',reply:'Find out why Aqpik stopped eating, and decide what the reserve’s machines may do about it. The machines act on their own, so you set their rules and sign your name to them.'},
         {t:'55% isn’t very sure.',reply:'Right! It’s only a bit better than a coin flip. That’s why we check it against what we can see with our own eyes.'}]}
     ],
     ruth:[
@@ -16227,19 +16227,19 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
       {who:'ruthn',mood:'happy',text:'That’s Aqpik, beside her mother, Nuna. We give every calf an [[Iñupiaq]] name. Aqpik means [[cloudberry]]. Look at that orange hair and you’ll see why.'},
       {who:'aqpik',mood:'worried',text:'Collar translator, 55% sure: “My mouth hurts.”'},
       {who:'ruthn',mood:'worried',text:'She hasn’t nursed since yesterday morning. A calf her age drinks milk all day long. After about three days without it, she’ll get weak.'},
-      {who:'ruthn',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are close. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
-        {t:'What does she do instead?',good:true,mood:'smile',reply:'Go watch her yourself. Watch her feet, not just her face. Mammoths listen with their feet.'},
-        {t:'Should we trust the translator?',mood:'neutral',reply:'Trust it like a smart friend who wasn’t there. It’s very good, but it only knows what its collar can sense.'}]},
-      {who:'ruthn',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones dart her, and robots feed her through a tube. Nobody has to sign.'},
-      {who:'ruthn',mood:'neutral',text:'Today, that rule is yours to keep or change.'}
+      {who:'ruthn',mood:'think',text:'Maybe her mouth does hurt. Her [[milk tusks]] are almost in. But I’ve watched calves teethe for twelve years. They fuss and rub their [[gums]] on everything. She doesn’t.',choices:[
+        {t:'What does she do instead?',good:true,mood:'smile',reply:'Go watch her yourself, and keep an eye on her feet as well as her face. Mammoths listen with their feet.'},
+        {t:'Should we trust the translator?',mood:'neutral',reply:'Mostly. It’s very good, but it only knows what its collar can sense. It hasn’t been out here watching her the way I have.'}]},
+      {who:'ruthn',mood:'stern',text:'One more thing. If she hasn’t eaten by Sunday at six in the morning, the care system will [[sedate]] her on its own. Drones would dart her with medicine, and robots would feed her through a tube. Nobody has to sign off on any of it.'},
+      {who:'ruthn',mood:'neutral',text:'Today, you get to decide whether we keep that rule or change it.'}
     ],
     eli:[
       {who:'eli',mood:'smile',text:'Hey, Doc. I’m Eli Johnson. My Iñupiaq name is Tuttu, after my great-grandpa. He herded [[reindeer]] on this same land.'},
       {who:'eli',mood:'neutral',text:'My family’s reindeer graze just east of your fence. It’s the [[rut]] right now, so the bulls are jumpy. Your [[herd drones]] buzz along the fence every morning, and my reindeer scatter.'},
-      {who:'eli',mood:'stern',text:'I asked the reserve to keep its drones off our side. I got a polite message back. I want a person I can talk to, not a message.'},
+      {who:'eli',mood:'stern',text:'I asked the reserve to keep its drones off our side. All I got back was a polite message. I’d like to talk to an actual person about it.'},
       {who:'eli',mood:'think',text:'Something else is weird. Since Tuesday, my reindeer won’t graze near the east ridge. That’s when that new [[weather station]] went up there.',clue:'hum'},
       {who:'eli',mood:'worried',text:'My cousin works for the weather service in town. She says they didn’t put anything up there.',choices:[
-        {t:'Thanks. That might matter for Aqpik too.',good:true,mood:'surprised',reply:'Huh. You think the calf feels it too? Then let’s find out what that thing is.'},
+        {t:'Thanks. That might matter for Aqpik too.',good:true,mood:'surprised',reply:'Huh. You think whatever’s bothering my reindeer is bothering the calf too? Then let’s find out what that thing is.'},
         {t:'Maybe the drones scared your reindeer.',mood:'stern',reply:'Maybe. But my reindeer have seen drones for years. This is different.'}]}
     ]
   },
@@ -16286,11 +16286,11 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
       {t:'Treaty inspectors are asking why sales of [[helium]] in Nome tripled this month.',viz:'calfHelium',cap:'A helium mystery'}
     ]}
   ],
-  react:{cmemo2:'About three days. That’s not much time.',cmemo3:'Common causes first. Then the clues.',cmemo4:'40 out of 100 is the most common, but not most of them!',ccollar5:'All at the same time? Interesting...',ccollar6:'Below 20 hertz. That’s where elephant rumbles live.',clog4:'Outside the fence. That needs a person’s OK.',clog6:'No signature needed. Hmm.',cledger1:'White sunsets? That’s strange.',cledger3:'Helium makes balloons float...'},
+  react:{cmemo2:'About three days. That’s not much time.',cmemo3:'Start with the common causes, then look at the clues.',cmemo4:'Sore mouths are the most common cause, but that’s still only 40 out of 100.',ccollar5:'All at the same time? Interesting...',ccollar6:'Some elephant rumbles are lower than 20 hertz. The collar would miss those.',clog4:'The station is outside the fence, so checking it needs a person’s OK.',clog6:'Nobody has to sign before the system sedates her. Hmm.',cledger1:'White sunsets? That’s strange.',cledger3:'Helium makes balloons float...'},
   tell:{clue:'hum',label:'Tell Byte about the ridge',note:'Thanks! I checked the reserve’s quake sensor. A hum too low for her collar to hear comes from the east ridge every few minutes, and Aqpik freezes each time. Now I think she’s scared: about 60%. Sore mouth drops to 20%.',guide:'nome-local',doc:'cmemo'},
   criteria:[{id:'eats',label:'Aqpik eats again by Monday'},{id:'nosed',label:'No [[sedation]]'},{id:'cause',label:'Find what upset her'},{id:'eli',label:'Eli’s reindeer left in peace'}],
   criteriaHint:'Not sure what one means? <button class="gw" data-w="sedation">Sedation</button> means medicine that puts an animal into a deep sleep.',
-  criteriaNote:'Deciding what “good” means first keeps a flashy option from fooling you.',
+  criteriaNote:'If you decide what you want first, a flashy option is less likely to fool you.',
   controls:[{key:'care',label:'Next two days',opts:[['barn','Quiet barn'],['pasture','Back with the herd'],['exam','Full exam']]},
     {key:'ridge',label:'The ridge station',opts:[['leave','Leave it'],['drone','Camera drone'],['eli','Eli checks it']]},
     {key:'auto',label:'Sunday’s care protocol',opts:[['auto','Runs on its own'],['ask','A keeper signs first']]}],
@@ -16298,7 +16298,7 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
   planName(c){return {barn:'Quiet barn',pasture:'Back with the herd',exam:'Full exam'}[c.care]+', '+{leave:'leave the ridge',drone:'camera drone to the ridge',eli:'Eli checks the ridge'}[c.ridge]+', '+(c.auto==='auto'?'protocol runs alone':'keeper signs first')},
   outcomes(c,knows){const st=calfState(),p=calfBelief(knows),linked=!!knows,ate1=st.test==='barn',examDone=st.test==='exam';const m={};
     for(const h of CALF_H){if(!(p[h]>0))continue;for(const [k,q,f] of calfBranches(h,c,linked,ate1,examDone)){const key=k+JSON.stringify(f);(m[key]=m[key]||{kind:k,p:0,flags:f}).p+=p[h]*q}}
-    return Object.values(m).map(o=>({...o,cap:CALF_CAPS[o.kind]+(o.flags.cause&&o.kind!=='treated'&&linked?' The ridge rig was found.':'')})).filter(o=>o.p>1e-9)},
+    return Object.values(m).map(o=>({...o,cap:CALF_CAPS[o.kind]+(o.flags.cause&&o.kind!=='treated'&&linked?' Someone found the rig on the ridge.':'')})).filter(o=>o.p>1e-9)},
   truth(){return 'truth'},knows(){return !!S.told},
   why(c){const f=forecastFor(c),e=Math.round(100*f.eats),n=Math.round(100*f.nosed),k=Math.round(100*f.cause),l=Math.round(100*f.eli);const st=calfState();
     const care={barn:'In the warming barn she is far from the ridge, with her mother beside her.',pasture:'On the pasture she stays with the herd, close enough to feel the ridge.',exam:'An exam checks her teeth, belly, and blood, but it needs sedation.'}[c.care];
@@ -16315,8 +16315,8 @@ MISSIONS.calf={id:'calf',title:'The Calf Who Stopped Eating',career:'vet',day:1,
       const auto=c.auto==='ask'?' And the care system asks Ruth before it sedates her.':' The care system can still sedate her on its own on Sunday.';
       return [{t:`I suggest ${care}. In about ${e} of 10 futures she’s eating by Monday, and in about ${n} of 10 she avoids sedation. ${ridge}${auto} What do you two think?`,good:true,mood:'smile',
           reply:c.ridge==='drone'?'Eli won’t love a drone over his reindeer, but you explained it straight. Let’s do it.':'Thank you for laying it out honestly. That’s a plan I can stand behind.'},
-        {t:'The translator is the expert here. Let’s just do what it says.',good:false,mood:'worried',reply:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
-        {t:'Don’t worry. She’ll definitely be eating by tonight.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
+        {t:'The collar translator is the expert here. It reads her sounds all day, so let’s just do what it says and treat her sore mouth.',good:false,mood:'worried',reply:'It’s a smart tool, but it only knows what its collar can sense. You saw more than it did. Tell me your plan.'},
+        {t:'Don’t worry, you two. Calves skip meals all the time, and she’ll definitely be eating again by tonight. Let’s just wait and see.',good:false,mood:'surprised',reply:'Definitely? Not every future on that table was a good one. Please don’t promise what you can’t know.'}]}},
   memo:{starters:['I recommend ','because ','The chance she eats again by Monday is about ','For Aqpik and Eli, ','We will check by '],placeholder:'I recommend keeping Aqpik in the quiet barn because…',
     plan:/barn|pasture|herd|exam|sedat|drone|ridge|protocol|eli |eli’|eli's|test/,careLabel:'Includes what matters to Aqpik or Eli',care:/aqpik|calf|she |her |nuna|ruth|eli|reindeer|mother/,signAs:'Dr. ',topic:'Aqpik, a mammoth calf who stopped nursing'},
   reveal:{days(){return 3},who:'ruthn',
@@ -16397,7 +16397,7 @@ MISSIONS.calf.custom={
     screen('walk',`${scene('nome_reserve')}${hud('Kigluaik Mammoth Reserve · Nome')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div>
       <div class="calf-pj" id="pj"><svg viewBox="-40 -60 170 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 6)"><rect x="0" y="0" width="44" height="32" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/>
         <text x="22" y="10" text-anchor="middle" font-size="5.4" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="30" lengthAdjust="spacingAndGlyphs">TOTALLY NORMAL</text><text x="22" y="18" text-anchor="middle" font-size="5.4" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="22" lengthAdjust="spacingAndGlyphs">WEATHER</text><text x="22" y="26" text-anchor="middle" font-size="5.4" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="26" lengthAdjust="spacingAndGlyphs">BALLOONS</text></g>${mini(74,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
-      <div class="caption-card"><p>Frost on the cottongrass, drones humming over the herd, and far up the east ridge, a new weather station blinking.</p><div class="row"><button class="btn small ghost" id="clue">Look at the ridge</button><button class="btn small" id="on">Meet the keeper</button></div></div>`);
+      <div class="caption-card"><p>There’s frost on the cottongrass, and drones hum over the herd. Far up the east ridge, a new weather station blinks.</p><div class="row"><button class="btn small ghost" id="clue">Look at the ridge</button><button class="btn small" id="on">Meet the keeper</button></div></div>`);
     $('#clue').onclick=()=>{st.seen.crate=true;save();$('#pj').classList.add('flee');toast('Two strangers hurry over the ridge with a crate. You noted it.','good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()},
   calf_observe(){const st=calfState();
@@ -16618,7 +16618,7 @@ const HIRED_CAST={
 
 const HIRED_GUIDE={
   'good-questions':{title:'Asking good questions',track:'People skills',text:'A good question is specific and open. “What’s the hardest part of your job?” teaches you more than “Is it fun?” Asking about a career before you choose it is how you find one that fits.',real:'True today: career counselors suggest informational interviews, short talks where you ask someone about their job.'},
-  'referrals':{title:'Trust and referrals',track:'People skills',text:'When lots of people can do a job, people pick someone they already trust. Being kind and helpful, even when nobody is grading you, is how people come to trust you.',real:'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.'},
+  'referrals':{title:'Trust and referrals',track:'People skills',text:'When lots of people can do a job, people pick someone they already trust. People come to trust you when you’re kind and helpful, even when nobody is grading you.',real:'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.'},
   'self-report':{title:'What people say vs. how they feel',track:'Evidence and truth',text:'Some people say “I’m fine” when they are hurting, so a plan that depends on what someone says can fail. Ari hides pain, so “stop if it hurts” was not a safe plan for him.',real:'True today: athletes sometimes hide concussion symptoms to keep playing, so many sports leagues use sideline checks that don’t depend only on what the player says.'},
   'specific-stories':{title:'Show your work',track:'People skills',text:'A real story with details (what you decided, why, and how it turned out) shows more than saying “I’m good at decisions.” Honest stories about mistakes count too.',real:'True today: many interviewers ask “Tell me about a time when…” questions, and people prepare by writing down real examples of their work.'}
 };
@@ -16629,11 +16629,11 @@ const HIRED_TALKS={
     {who:'byte',mood:'neutral',text:'Today is their [[open house]]. Anyone can visit, meet the people who work there, and try a practice case.'},
     {who:'byte',mood:'happy',text:'Want to see what a Care Doctor’s day looks like first?',choices:[
       {t:'Yes, show me!',reply:'Woof! Here’s a whole day, squeezed into thirty seconds.'},
-      {t:'What does a Care Doctor do?',reply:'A Care Doctor helps patients and families choose a treatment. I bring the facts and the forecasts. You bring the listening, the judgment, and the signature.'}]}
+      {t:'What does a Care Doctor do?',reply:'A Care Doctor helps patients and their families choose a treatment. I find the facts and make the forecasts. You listen to the family, use your judgment, and sign the decision.'}]}
   ],
   gabi:[
     {who:'gabi',mood:'smile',text:'Hi there! Welcome to the [[open house]]. I’m Gabi, the [[charge nurse]] on the kids’ floor.',choices:[
-      {t:'Hi Gabi, I’m {P}. What does a charge nurse do?',good:true,mood:'happy',reply:'I make sure every kid on our floor gets what they need, and every nurse has a buddy. Halo handles the schedules. I handle the people.'},
+      {t:'Hi Gabi, I’m {P}. What does a charge nurse do?',good:true,mood:'happy',reply:'I make sure every kid on our floor gets what they need, and every nurse has a buddy. Halo, the hospital’s AI, does the schedules, so I get to spend my time with people.'},
       {t:'Can you get me a job here?',mood:'think',reply:'Ha! Let’s start with hello. I’m Gabi, and it’s nice to meet you.'}]},
     {who:'gabi',mood:'happy',text:'My cat is named Bandage, because he sleeps on the first-aid box.',clue:'gabi-cat'},
     {who:'gabi',mood:'worried',text:'Oh no. I promised the kids’ floor this box of teddy bears, and the elevator robot is busy.',choices:[
@@ -16643,7 +16643,7 @@ const HIRED_TALKS={
   kofi:[
     {who:'kofi',mood:'smile',text:'Hey! Mind the robots. I’m Kofi. I lead the robot crew that carries supplies around the hospital.',choices:[
       {t:'What’s the hardest part of your job?',good:true,mood:'think',reply:'Deciding what each robot is NOT allowed to do. A robot that delivers lunch doesn’t need a key to the medicine room.'},
-      {t:'Are robots smarter than you?',mood:'happy',reply:'At carrying boxes in the dark? Totally. At knowing which boxes matter? That’s my job.'}]},
+      {t:'Are robots smarter than you?',mood:'happy',reply:'They’re better than me at carrying boxes in the dark, that’s for sure. But I’m the one who decides which boxes matter most.'}]},
     {who:'kofi',mood:'happy',text:'I name every robot after a planet. That big one is Jupiter.',clue:'kofi-planets'},
     {who:'kofi',mood:'worried',text:'Uh oh. Jupiter keeps beeping at that wet-floor sign. It thinks the sign is a person! Could you move the sign while I fix its settings?',choices:[
       {t:'Sure, I’ll move it!',good:true,on(){jFavor('kofi')},mood:'happy',reply:'Thanks! Look, Jupiter is rolling again.'},
@@ -16651,8 +16651,8 @@ const HIRED_TALKS={
   ],
   ruth:[
     {who:'ruth',mood:'smile',text:'Hello, dear. I’m Ruth. I’ve been a [[volunteer]] here every Tuesday for twenty years.',choices:[
-      {t:'Hi Ruth, I’m {P}. Why do you volunteer?',good:true,mood:'happy',reply:'This hospital fixed my hip when I was eighty. Now I walk three miles a day, and I like to say thank you.'},
-      {t:'Twenty years? Wow, that’s old!',mood:'think',reply:'Ha! Old and proud of it, dear.'}]},
+      {t:'Hi Ruth, I’m {P}. Why do you volunteer?',good:true,mood:'happy',reply:'This hospital fixed my hip when I was eighty. Now I walk three miles a day, and coming here is my way of saying thank you.'},
+      {t:'Twenty years? Wow, you must be really old!',mood:'think',reply:'Ha! Eighty-eight, and proud of it, dear.'}]},
     {who:'ruth',mood:'happy',text:'On Fridays I play the piano in the lobby. My favorite song is “Fly Me to the Moon.”',clue:'ruth-song'},
     {who:'ruth',mood:'worried',text:'Oh, bother. I’ve lost my reading glasses again. They have red frames, and they’re somewhere in this lobby.',choices:[
       {t:'I’ll help you look!',mood:'smile',reply:'Bless you, dear.'},
@@ -16669,20 +16669,20 @@ const HIRED_TALKS={
     {who:'ari',mood:'worried',text:'Ow, ow. I stepped in a hole during the fun run, and my ankle went sideways.'},
     {who:'ari',mood:'sad',text:'I’m the [[goalkeeper]] for the Southie Stingrays. We have a game on Saturday!',choices:[
       {t:'Your ankle will heal. Let’s figure out a plan together.',good:true,mood:'worried',reply:'Okay. But can I still play?'},
-      {t:'Forget about soccer for now.',mood:'sad',reply:'But my team needs me...'}]},
+      {t:'Forget about soccer for now. Your ankle comes first.',mood:'sad',reply:'But my team needs me...'}]},
     {who:'abena',mood:'think',text:'He loves that team. I just don’t want him to hurt it worse.'},
     {who:'abena',mood:'worried',text:'One more thing, Doctor. Ari always says “I’m fine,” even when it hurts. Last spring he played a whole game on a sore wrist and never told anyone.',clue:'hides'},
     {who:'ari',mood:'neutral',text:'I just don’t want to let my team down.',choices:[
-      {t:'Telling the truth about pain never lets anyone down.',good:true,mood:'think',reply:'Okay... I’ll try.'},
-      {t:'Being tough is great!',mood:'happy',reply:'Yeah! I’m super tough.'}]}
+      {t:'Your team would want to know if you’re hurt. Telling us helps them too.',good:true,mood:'think',reply:'Okay... I’ll try.'},
+      {t:'Being tough is great! Goalkeepers have to be tough.',mood:'happy',reply:'Yeah! I’m super tough.'}]}
   ]
 };
 
 // Dr. Reyes has heard about the favors the player did at the open house (a referral)
 const HIRED_FAVOR_NEWS={gabi:'Gabi says you carried the teddy bears',kofi:'Kofi says you helped Jupiter get unstuck',ruth:'Ruth says you found her glasses'};
 function hiredReferral(F){F=F||(typeof S!=='undefined'&&S.m_hired&&S.m_hired.favor)||{};const f=['gabi','kofi','ruth'].filter(k=>F[k]).map(k=>HIRED_FAVOR_NEWS[k]);const n=f.length;
-  if(n)return `${n>1?f.slice(0,-1).join(', ')+(n>2?',':'')+' and '+f.at(-1):f[0]}. People here notice kindness.`;
-  return 'I hear you met some of the team. Helping people, even in small ways, is how they come to trust you.'}
+  if(n)return `${n>1?f.slice(0,-1).join(', ')+(n>2?',':'')+' and '+f.at(-1):f[0]}. People around here notice when someone is kind.`;
+  return 'I hear you met some of the team. When you help people out, even in small ways, they remember it.'}
 // every version of the referral line, so each can be recorded
 function hiredLines(){const L=[];for(let b=0;b<8;b++)L.push({who:'imani',text:hiredReferral({gabi:b&1,kofi:b&2,ruth:b&4})});return L}
 
@@ -16727,10 +16727,10 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
   planName(c){const p={brace:'Brace',tape:'Tape',boot:'Walking boot'}[c.prot];return c.prot==='boot'?p+', sit out Saturday':p+(c.sat==='play'?', play Saturday':', sit out Saturday')},
   outcomes(c,knows){const hide=!!knows,play=c.sat==='play'&&c.prot!=='boot',comfy=c.prot==='boot'?0:1;
     const r=play?(c.prot==='brace'?(hide?.3:.1):(hide?.5:.2)):({brace:.03,tape:.08,boot:.02}[c.prot]);
-    if(play)return [{kind:'saturday',p:1-r,cap:'Played Saturday, and the ankle stayed fine!',flags:{heal:1,plays:1,comfy}},
-      {kind:'reroll',p:r,cap:'Rolled it again Saturday. Misses the playoffs.',flags:{heal:0,plays:1,comfy}}];
-    return [{kind:c.prot==='boot'?'boot':'cheer',p:1-r,cap:c.prot==='boot'?'Healed in the boot. Ready for the playoffs!':'Cheered on Saturday. Ready for the playoffs!',flags:{heal:1,plays:0,comfy}},
-      {kind:'reroll',p:r,cap:'Rolled it again at home. Misses the playoffs.',flags:{heal:0,plays:0,comfy}}]},
+    if(play)return [{kind:'saturday',p:1-r,cap:'He played Saturday, and his ankle stayed fine!',flags:{heal:1,plays:1,comfy}},
+      {kind:'reroll',p:r,cap:'He rolled it again Saturday and misses the playoffs.',flags:{heal:0,plays:1,comfy}}];
+    return [{kind:c.prot==='boot'?'boot':'cheer',p:1-r,cap:c.prot==='boot'?'He healed in the boot and is ready for the playoffs!':'He cheered on Saturday and is ready for the playoffs!',flags:{heal:1,plays:0,comfy}},
+      {kind:'reroll',p:r,cap:'He rolled it again at home and misses the playoffs.',flags:{heal:0,plays:0,comfy}}]},
   truth(){return true},knows(){return !!S.told},
   vignette(kind){return typeof HIRED_VIG!=='undefined'&&HIRED_VIG[kind]?HIRED_VIG[kind]():vignette(kind)},
   why(c){const o=this.outcomes(c,this.knows());const re=Math.round(100*o.filter(x=>x.kind==='reroll').reduce((a,x)=>a+x.p,0));
@@ -16743,8 +16743,8 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
       const what=(c.prot==='boot'?'a walking boot for about two weeks':c.prot==='brace'?'a brace':'tape')+(play?' and playing on Saturday':', and sitting out on Saturday');
       return [{t:`I suggest ${what}. About ${re} out of 100 kids would roll it again${play?', so you’d have to tell us the truth if it hurts':''}. ${play?'':'You can still sit with your team and cheer. '}What do you two think?`,good:true,mood:'think',
           reply:play?'I promise I’ll tell the truth if it hurts. Okay, let’s do it.':'I really wanted to play... but I want to be ready for the playoffs. Okay.'},
-        {t:`Trust me, ${what} is the best. Don’t worry about the details.`,good:false,mood:'worried',reply:'Um... okay. But what if it gets worse?'},
-        {t:'You’ll definitely be fine. Nothing can go wrong!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
+        {t:`Trust me, ${what} is the best plan for you. I’ve looked at all the numbers, so you two don’t need to worry about the details.`,good:false,mood:'worried',reply:'Um... okay. But what if it gets worse?'},
+        {t:'You’ll definitely be fine, Ari. Kids your age heal really fast, so nothing can go wrong with this plan!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
   memo:{starters:['I recommend ','because ','The chance he rolls it again is about ','Ari cares about ','We will check by '],placeholder:'I recommend a brace and sitting out Saturday because…',
     plan:/brace|tape|boot|rest|sit|play|bench/,careLabel:'Includes what Ari cares about',care:/ari|he |his |him |soccer|game|saturday|playoff|goal|team|grandma/,signAs:'',topic:'Ari’s sprained ankle'},
   reveal:{days(c){return c.sat==='play'&&c.prot!=='boot'?4:21},who:'ari',lines:HIRED_REVEAL,mood(k){return k==='reroll'?'sad':'happy'}},
@@ -16813,7 +16813,7 @@ const HIRED_JOURNEY={
     judge:'You are Dr. Imani Reyes, Chief of Care at Boston Harbor Hospital in a kids’ game set in 2040, interviewing a young player for a Care Doctor job.',
     ask:B_('Today’s your [[interview]] with Dr. Reyes! Want to [[rehearse]] with me first?'),ready:B_('You’re ready! Remember: real stories, honest answers, and one good question.'),
     intro:I_('Thanks for coming in, {P}. I read your [[portfolio]]. Let’s talk.'),
-    best:I_('That was a wonderful interview: real stories, honest answers, and a great question. Welcome to Boston Harbor Hospital. You’re hired!'),
+    best:I_('That was a wonderful interview. You told me real stories, you were honest, and you asked a great question. Welcome to Boston Harbor Hospital. You’re hired!'),
     ok:I_('I can tell you care about people, and that matters most. You’re hired! Keep telling real stories, like the ones in your Portfolio Book.'),
     free:{reply:[I_('Thank you. That’s a thoughtful answer.'),I_('Can you tell me a bit more? A specific example helps me understand.')],tip:[B_('Nice! That answer was clear and real.'),B_('Try adding a real example, with what you did and why.')]},
     questions:[
@@ -16823,22 +16823,22 @@ const HIRED_JOURNEY={
            tip:B_('Great answer! You said what you chose, why, and what happened. Say it just like that.')},
          {t:'I make hard choices all the time. At school I pick the hardest projects, and my friends always ask me for advice.',reply:I_('Hmm. Can you give me a real example? A story tells me more than “I’m good at it.”'),tip:B_('Try a real example instead, like Ari’s ankle. Details make a story believable.')},
          {t:x=>x.bad?'I helped a goalkeeper named Ari with a sprained ankle at the open house, and everything went perfectly from start to finish.':'I helped a goalkeeper named Ari with a sprained ankle at the open house. It went great, and everyone said I’m a natural.',
-           reply:[{if:'bad',who:'imani',text:'Your Portfolio Book says his ankle rolled again. I’d rather hear the honest version. Mistakes are how we learn.'},I_('It did go well! But tell me why you chose it. Reasons matter more than luck.')],
+           reply:[{if:'bad',who:'imani',text:'Your Portfolio Book says his ankle rolled again. I’d rather hear what really happened. We all learn from our mistakes here.'},I_('It did go well! But tell me why you chose that plan. I want to hear how you decided, not just how it turned out.')],
            tip:[{if:'bad',who:'byte',text:'Hmm, that’s not quite what happened. Honest stories, even about mistakes, impress people more.'},B_('Add your reason! Say why you chose it, not only that it worked.')]}]},
       {q:I_('What would you do if your AI and a patient disagreed?'),rq:B_('She might ask: “What would you do if your AI and a patient disagreed?”'),
        check:'listens to both the AI and the patient, explains tradeoffs, and lets the patient decide',heur:/listen|ask|both|explain|why|tradeoff|decide/,
        opts:[{t:'I’d ask each of them why. Each one may know something the other doesn’t. Then I’d explain the tradeoffs, and the patient decides.',good:true,
-           reply:[{if:'told',who:'imani',text:'Exactly. Like Ari’s grandma knowing he hides pain. Both kinds of knowing matter.'},I_('Exactly. Both kinds of knowing matter.')],
+           reply:[{if:'told',who:'imani',text:'Exactly. Ari’s grandma knew something no AI could have known: that he hides pain.'},I_('Exactly. Patients often know things about themselves that no AI could know.')],
            tip:[{if:'told',who:'byte',text:'Perfect. You could even add an example, like Ari’s grandma telling you he hides pain!'},B_('Perfect. If you have an example, add it!')]},
          {t:'The AI has read every medical study ever written, so I’d gently help the patient understand why the AI’s plan is the right one.',reply:I_('Our AIs are brilliant, but they only know what they’re told. And it’s the patient’s body.'),tip:B_('Careful! I know a lot, but I don’t know everything people know. Say how you’d listen to both.')},
-         {t:'It’s the patient’s body, so I’d do exactly what they want right away, even if the AI warns that it could be dangerous.',reply:I_('Listening matters, but so do the facts. Your job is to help them see both.'),tip:B_('Patients decide, but they need the facts first. Say how you’d explain the tradeoffs.')}]},
+         {t:'It’s the patient’s body, so I’d do exactly what they want right away, even if the AI warns that it could be dangerous.',reply:I_('Listening matters, but so do the facts. Your job is to help the patient understand the risks before they decide.'),tip:B_('Patients decide, but they need the facts first. Say how you’d explain the tradeoffs.')}]},
       {q:I_('What’s something you still need to learn?'),rq:B_('And maybe: “What’s something you still need to learn?”'),
        check:'honestly names one real thing they are still learning',heur:/learn|practic|better|still|not good|hard for me|working on|need to/,
-       opts:[{t:'Explaining odds so kids understand them. I practiced with Ari, and I want to get better at it.',good:true,reply:I_('That’s honest and specific. It’s a great thing to work on, and we’ll help you.'),tip:B_('Honest and specific. That’s what managers love to hear!')},
-         {t:'I’m already good at most things, so mostly I’d just learn the hospital’s computer system and where everything is.',reply:I_('Everyone has something to learn, even me. Knowing yours is a strength.'),tip:B_('Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.')},
-         {t:'I’m not sure yet. I’d let my AI figure out what I need to learn, and then I’d do whatever lessons it gives me.',reply:I_('Your AI can help you study, but you know best what feels hard for you. Knowing that is a strength.'),tip:B_('I can help you study, but you know best what’s hard for you. Try naming one real thing, like explaining odds.')}]},
+       opts:[{t:'Explaining odds so kids understand them. I practiced with Ari, and I want to get better at it.',good:true,reply:I_('That’s honest and specific. It’s a great thing to work on, and we’ll help you.'),tip:B_('That was honest and specific. Managers love hearing answers like that!')},
+         {t:'I’m already good at most things, so mostly I’d just learn the hospital’s computer system and where everything is.',reply:I_('Everyone has something to learn, even me. I’d like to hear what yours is.'),tip:B_('Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.')},
+         {t:'I’m not sure yet. I’d let my AI figure out what I need to learn, and then I’d do whatever lessons it gives me.',reply:I_('Your AI can help you study, but you know best what feels hard for you. I’d like to hear what that is.'),tip:B_('I can help you study, but you know best what’s hard for you. Try naming one real thing, like explaining odds.')}]},
       {q:I_('Do you have a question for me?'),rq:B_('At the end she’ll ask: “Do you have a question for me?”'),
-       opts:[{t:'What’s the hardest part of your job?',good:true,reply:I_('Telling a family that every choice has a downside. It never gets easy, but it gets clearer.'),tip:B_('Great question! It shows you really want to understand the job.')},
+       opts:[{t:'What’s the hardest part of your job?',good:true,reply:I_('Telling a family that every choice has a downside. It never gets easy, but I get better at explaining it.'),tip:B_('Great question! It shows you really want to understand the job.')},
          {t:'What does a great new doctor do in the first month?',good:true,reply:I_('Asks lots of questions. The best new doctors ask for help early.'),tip:B_('Great question! It shows you want to do well.')},
          {t:'No, I think I’m all set. I read the hospital’s website, and my AI already told me everything about the job.',reply:I_('Okay! Next time, try asking one. It shows you’re curious.'),tip:B_('Try asking one! A good question shows you’re curious.')}]}]},
   firstday:{scene:'hospital',place:'Kids’ floor · Boston Harbor Hospital · 8:30 AM',go:'Open my world map',
@@ -16965,9 +16965,9 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
       {who:'byte',mood:'happy',text:'Good morning, Architect! Welcome to Phoenix. It’s 6:40 AM and already 91 degrees, so here we start early.'},
       {who:'byte',mood:'neutral',text:'While you slept, the night crew finished a shade shelter at a bus stop on Indian School Road. They poured the concrete at 2 AM, when it’s cooler.'},
       {who:'byte',mood:'think',text:'Today’s job: a corner lot in Arcadia floods every summer. The city wants a new use for it, for 400 coins, and it has to work for the neighbors.'},
-      {who:'byte',mood:'happy',text:'I can draw a hundred designs before breakfast. Knowing which one is right takes listening to people, and that part is yours.',
+      {who:'byte',mood:'happy',text:'I can draw a hundred designs before breakfast. But to know which one is right, someone has to listen to the neighbors, and that part is your job.',
         choices:[{t:'What does a Community Architect do?',reply:'You find out what neighbors need, ask me for designs, test them, and sign the plan. Robots build it overnight, but your name is on it. That’s what [[accountable]] means.'},
-          {t:'Let’s go before it gets hot!',reply:'Woof! Water bottle, hat, sunscreen. Desert rules!'}]}],
+          {t:'Let’s go before it gets hot!',reply:'Woof! Bring a water bottle, a hat and sunscreen. That’s the rule in the desert!'}]}],
     lot:[
       {who:'okafor',mood:'smile',text:'You must be the new architect. I’m Grace Okafor. I’ve lived next door to this lot for forty-one years.'},
       {who:'okafor',mood:'think',text:'I drove a city bus for thirty-five of them. Now I’d just like a shady place to sit that isn’t my kitchen.'},
@@ -16977,20 +16977,20 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
           {t:'Seven feet sounds dangerous.',reply:'Only if you don’t know how to skate. Everybody says that.',mood:'sad'}]},
       {who:'okafor',mood:'worried',text:'A seven-foot hole, right next to my walker? I’d like to sit near it, not fall into it.'},
       {who:'okafor',mood:'stern',text:'And whatever you build, mind the water. Every summer this lot floods, and the water creeps up to my back step.'},
-      {who:'okafor',mood:'think',text:'The city map says the water comes from the street. The worst of it comes from the alley, from our old [[irrigation]] ditch.',clue:'alley'},
+      {who:'okafor',mood:'think',text:'The city map says the water comes from the street. But the worst of it comes from the alley, from our old [[irrigation]] ditch.',clue:'alley'},
       {who:'okafor',mood:'neutral',text:'Every other Tuesday is our water night. The ditch floods my yard to water my grapefruit tree. When a storm hits on a water night, that ditch spills right onto this lot.',
-        choices:[{t:'Thank you. That isn’t on any map I’ve seen.',good:true,reply:'Of course it isn’t. We neighbors own that ditch together. Nobody from the city ever asked.',mood:'smile'},
-          {t:'The city’s map is probably right.',reply:'Hmph. Then the city can explain the mud on that back wall.',mood:'stern'}]},
+        choices:[{t:'Thank you. That isn’t on any map I’ve seen.',good:true,reply:'Of course it isn’t. We neighbors own that ditch together. Nobody from the city ever asked us about it.',mood:'smile'},
+          {t:'The city’s map is probably right about the water.',reply:'Hmph. Then the city can explain the mud on that back wall.',mood:'stern'}]},
       {who:'dev',mood:'surprised',text:'Wait. Is that why the lot turned into a lake that one Tuesday, when it barely rained?'},
       {who:'dev',mood:'smile',text:'So... could we have a bowl and her garden?'},
       {who:'okafor',mood:'smile',text:'Now that’s a question for the architect.'}],
     marco:[
       {who:'marco',mood:'neutral',text:'Morning. Marco Ruiz, city [[stormwater]]. I ran the drains on this side of town by hand for thirty years.'},
-      {who:'marco',mood:'think',text:'Now Arroyo runs them, the city’s stormwater AI. In a storm it opens and closes four thousand gates, faster than any crew I ever had.'},
+      {who:'marco',mood:'think',text:'Now Arroyo, the city’s stormwater AI, runs them. In a storm it opens and closes four thousand gates, faster than any crew I ever had.'},
       {who:'marco',mood:'stern',text:'Here’s my problem. In a big storm, twenty-three homes on this street get water in their yards and garages. Your lot is where that water wants to go.'},
       {who:'marco',mood:'worried',text:'And if Arroyo is going to open a gate onto your lot, I want it to call me first. Every time.',
-        choices:[{t:'Why every time?',good:true,reply:'Because I’ve seen machines be sure and be wrong. Maybe not this one. But I’m the one who signs for it.',mood:'think'},
-          {t:'Arroyo is faster than a phone call.',reply:'Faster isn’t the same as right. Show me it’s safe and we’ll talk.',mood:'stern'}]},
+        choices:[{t:'Why every time?',good:true,reply:'Because I’ve seen machines be sure of themselves and still get it wrong. Maybe not this one. But I’m the one who signs for those gates.',mood:'think'},
+          {t:'Arroyo is faster than a phone call.',reply:'Fast isn’t always right. Show me it’s safe, and then we’ll talk.',mood:'stern'}]},
       {who:'byte',mood:'happy',text:'One question before we head back to the studio: what should we make for this lot?'}]},
 
   // Workbench documents: every sentence is a step with its own looping picture (VIZ kinds in src/viz/lot.js).
@@ -17030,13 +17030,13 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
       {t:'[[Satellite]] photos show a shiny silver patch at Saltbrush Flats, just past the edge of the robot zone, that has doubled in size in one week.',viz:'lotSilverPatch',cap:'A growing patch'},
       {t:'The county says no one has a [[permit]] to mine there.',viz:'lotNoPermit',cap:'No permit on file'}]}],
   react:{memo2:'Twenty-three homes. That’s a lot of soggy garages.',memo10:'Thursday. That gives the crew three nights.',memo11:'Only the street side? Did anyone mention another way in?',
-    log4:'The back of the lot, not the street side. Interesting.',log5:'Two Tuesdays. Is that a coincidence?',survey2:'Why not both? I like these neighbors.',ledger3:'Doubling in a week? That’s fast for a patch of anything.'},
+    log4:'Those floods started at the back of the lot, away from the street. Interesting.',log5:'Two Tuesdays. Is that a coincidence?',survey2:'Why not both? I like these neighbors.',ledger3:'Doubling in a week? That’s fast for a patch of anything.'},
   tell:{clue:'alley',label:'Tell Byte about the alley ditch',note:'Thanks! I updated my forecast: in about 3 of 10 big storms, the old ditch spills onto the lot from the alley, so every design now takes water from both sides. An alley inlet adds 20 coins.',guide:'local-knowledge',doc:'memo'},
 
   criteria:[{id:'dry',label:'The street stays dry'},{id:'ready',label:'Done before the storm'},{id:'dev',label:'Dev can really skate it'},
     {id:'okafor',label:'Mrs. Okafor has a shady seat'},{id:'budget',label:'400 coins or less'},{id:'agreed',label:'No changes nobody signed'}],
   criteriaHint:'The street holds water from 140 homes, and the budget is 400 coins.',
-  criteriaNote:'Deciding what “good” means first keeps a shiny design from fooling you.',
+  criteriaNote:'If you decide what you want first, a shiny design is less likely to fool you.',
   get controls(){const ids=lotState().opts?lotState().opts.map(o=>o.id):['bowl','garden','split'];
     return [{key:'design',label:'Design',opts:ids.map(id=>[id,lotSpec(id).name])},{key:'depth',label:'Depth',opts:[['shallow','4 feet'],['deep','7 feet']]},
       {key:'drain',label:'Drain',opts:[['std','Standard'],['wide','Wide']]},{key:'shade',label:'Shade',opts:[['none','None'],['sails','Sails'],['grove','Trees + sails']]}]},
@@ -17050,9 +17050,9 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     const devOK=d.dev===true||(d.dev==='deep'&&ch.depth==='deep'),okOK=d.okafor&&ch.shade!=='none'&&!unsigned;
     const F=(dry,ready)=>({dry,ready,dev:devOK?1:0,okafor:okOK?1:0,budget:lotCost(ch,lat)<=LOT.budget?1:0,agreed:unsigned?0:1});
     const H=lotHold(ch),hot=ch.shade==='none'&&d.okafor;
-    const cap={late:'Not done in time. Street flooded.',overflow:'Too much rain. Water reached the street.',slowgate:'Gate waited for a call. Street flooded.',
-      nogate:'Bowl stayed dry. The street didn’t.',unsigned:'Street dry, but the crew cut the ditch unasked.',
-      held:hot?'Street dry. Too hot to sit, though.':({bowl:'Bowl filled. Street stayed dry!',garden:'Garden filled. Street stayed dry!',split:'Tank filled. Street stayed dry!'}[d.kind]||'Street stayed dry!')};
+    const cap={late:'It wasn’t done in time, and the street flooded.',overflow:'There was too much rain, and water reached the street.',slowgate:'The gate waited for a phone call, and the street flooded.',
+      nogate:'The bowl stayed dry, but the street flooded.',unsigned:'The street stayed dry, but the crew cut into the ditch without asking.',
+      held:hot?'The street stayed dry, but it’s too hot to sit there.':({bowl:'The bowl filled, and the street stayed dry!',garden:'The garden filled, and the street stayed dry!',split:'The tank filled, and the street stayed dry!'}[d.kind]||'The street stayed dry!')};
     const out=[],add=(kind,p,fl)=>{if(p<1e-9)return;const k=kind+JSON.stringify(fl),e=out.find(x=>x._k===k);if(e)e.p+=p;else out.push({_k:k,kind,p,cap:cap[kind],flags:fl})};
     const branches=crew==='all'?(pipe?[[1,1]]:[[LOT.rocks,1],[1-LOT.rocks,0]]):crew==='scoped'?[[1,pipe?1:0]]:[[1,0]];
     for(const [pb,delay] of branches){const ready=d.nights+delay<=LOT.nights?1:1-LOT.thu;
@@ -17076,8 +17076,8 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     prompt:'So what are you going to build here? And will my street flood again?',
     opts(c,M){const f=typeof lotForecast==='function'&&typeof S!=='undefined'?lotForecast(c):{dry:.9},d=lotSpec(c.design);
       return [{t:`I suggest the ${d.name}${c.depth==='deep'?' with a 7-foot '+(d.kind==='garden'?'basin':'bowl'):''}${c.shade==='none'?'':c.shade==='sails'?' and shade sails':' with trees and shade sails'}. In a big storm, the street should stay dry about ${in10(f.dry)} times in 10, not every time. What do you two think?`,good:true,mood:'smile',reply:LOT_REPLY[0]},
-        {t:'Trust me, it’s perfect. You don’t need the details.',good:false,mood:'stern',reply:LOT_REPLY[1]},
-        {t:'It will never flood again. I promise.',good:false,mood:'surprised',reply:LOT_REPLY[2]}]}},
+        {t:'Trust me, this design is perfect for the lot. I’ve checked everything, so you two don’t need to worry about the details.',good:false,mood:'stern',reply:LOT_REPLY[1]},
+        {t:'Your street will never flood again, Mrs. Okafor. I promise you that, and Dev gets a great place to skate.',good:false,mood:'surprised',reply:LOT_REPLY[2]}]}},
   memo:{starters:['I recommend ','because ','In a big storm, the street stays dry about ','Mrs. Okafor and Dev ','Overnight, the crew may ','We will check by '],
     placeholder:'I recommend the Bowl Park with shade sails because…',plan:/bowl|garden|split|plaza|lawn|basin|park|tank|design/,planLabel:'Names the design',
     careLabel:'Includes what the neighbors care about',care:/okafor|grace|dev\b|neighbor|skat|shade|street|homes|walker|ditch/,signAs:'Architect ',topic:'the flood lot design'},
@@ -17095,9 +17095,9 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     const miss=[!(f.flood||f.homes)&&'the goal',!(f.dev&&f.okafor)&&'who it was for',!(f.budget&&f.deadline)&&'the limits',!f.criteria&&'your criteria'].filter(Boolean);
     out.push(miss.length?{ok:false,text:`Your request left out ${miss.join(' and ')}, so Byte had to guess.`}:{ok:true,text:'Your request named the goal, who it was for, the limits and your criteria, so Byte designed for this lot.'});
     out.push(crew==='free'?{ok:false,text:'You let the crew sign its own changes. When it finds something that belongs to someone else, nobody gets asked.'}:
-      crew==='all'?{ok:true,text:'Your crew had to stop for every surprise. Safe, though even a buried rock could cost a night.'}:
+      crew==='all'?{ok:true,text:'Your crew had to stop for every surprise. That was safe, but even a buried rock could cost a night.'}:
       {ok:true,text:'Your crew could move rocks on its own, but had to stop for anything that belongs to someone else.'});
-    out.push(ar==='auto'?{ok:true,text:'Arroyo could open the gate in seconds, inside rules Marco signed.'}:ar==='ask'?{ok:false,text:'Arroyo had to wait for Marco every time. At 2 AM, storms move faster than phone calls.'}:
+    out.push(ar==='auto'?{ok:true,text:'Arroyo could open the gate in seconds, inside rules Marco signed.'}:ar==='ask'?{ok:false,text:'Arroyo had to wait for Marco every time. At 2 AM, a storm can flood the street before anyone answers the phone.'}:
       {ok:false,text:'With the gate not connected, the bowl stayed dry and the street flooded.'});
     return out},
   byteGood:'Nice work, Architect. You listened to the neighbors, asked well, and gave the robots clear night orders.',
@@ -17135,9 +17135,9 @@ const LOT_SPOTS=[
   {id:'drain',a:'drain',t:'The street drain is half full of gravel and palo verde pods.'},
   {id:'saguaro',a:'saguaro',t:'This saguaro is over 20 feet tall, with five arms. Most saguaros don’t grow arms until they’re at least 50 years old.'},
   {id:'bus',a:'bus',t:'The bus stop bench has no shade. At 7:20 in the morning, its metal seat is already warm.'},
-  {id:'curb',a:'curb',t:'Skate wax on the curb, and little wheel marks everywhere. Dev has been busy.'},
+  {id:'curb',a:'curb',t:'There’s skate wax on the curb, and little wheel marks everywhere. Dev has been busy.'},
   {id:'cracks',a:'cracks',t:'The dirt is cracked into tiles where puddles dried. Water sat here for days.'},
-  {id:'mountain',a:'mountain',t:'Camelback Mountain: the camel’s head on the left, its hump on the right, 2,704 feet tall.'},
+  {id:'mountain',a:'mountain',t:'That’s Camelback Mountain, 2,704 feet tall. You can see the camel’s head on the left and its hump on the right.'},
   {id:'canal',a:'canal',t:'The Arizona Canal carries water from the Salt and Verde rivers. Neighborhood ditches branch off it.'},
   {id:'pipjory',a:'path',t:'Two strangers push a crate stamped TOTALLY NORMAL COPPER along the canal path. Something inside it wiggles.',note:'crate'}];
 function lotSurvey(){const st=lotState();st.seen=st.seen||[];const A=(window.PAINT&&PAINT.phx_lot&&PAINT.phx_lot.anchors)||{};
@@ -17159,7 +17159,7 @@ function lotSurvey(){const st=lotState();st.seen=st.seen||[];const A=(window.PAI
 // ---------- choose what to make ----------
 const LOT_MAKE=[
   {id:'design',job:true,title:'A new design for the lot',goLabel:'Make a new design',checks:[['Street dry',null],['Dev',null],['Mrs. Okafor',null]],cost:'200 to 400 coins',
-    line:'This is the real job. A design could fix the floods and give both of them a place. It’s also the hardest one to get right.',icon:()=>VIZ.lotMakeIcon({k:'design'})},
+    line:'This is the real job. A design could fix the floods and give Dev and Mrs. Okafor each a place of their own. It’s also the hardest one to get right.',icon:()=>VIZ.lotMakeIcon({k:'design'})},
   {id:'texts',title:'Flood warning texts',checks:[['Street dry',false],['Dev',false],['Mrs. Okafor',false]],cost:'5 coins',
     line:'Easy! People could move their cars in time. But the street would still flood, and the lot would still be dirt.',icon:()=>VIZ.lotMakeIcon({k:'texts'})},
   {id:'fence',title:'A fence and a KEEP OUT sign',checks:[['Street dry',false],['Dev',false],['Mrs. Okafor',false]],cost:'30 coins',
@@ -17171,13 +17171,13 @@ function lotMake(){cmMake({scene:'phx_lot',place:'The flood lot · Arcadia · 7:
 
 // ---------- commission: ask Byte for designs ----------
 const LOT_ASK_LINES={generic:'Here you go! These would be lovely parks almost anywhere. I didn’t know this lot floods, so none of them is built to hold water.',
-  partial:'These all hold storm water. But I had to guess a few things, and my guesses show.',
+  partial:'These all hold storm water. But I had to guess a few things, and you can see my guesses on each card.',
   full:'These are built for this lot, these neighbors and your limits. All three hold storm water.'};
 const LOT_WHY={bowl:'The bowl is the lowest spot, so street water flows in on its own, and Dev gets his bowl.',garden:'Plants and soil soak up water, and it’s the quickest to build: 2 nights.',
   split:'A tank holds the water out of sight, so the plaza stays dry for skating.',skate:'Skaters asked for a place, and plazas are quick to build.',lawn:'A lawn is soft and green, and good for families.',smart:'It’s the cheapest, and its cameras and gate keep it tidy.'};
 const LOT_RISK={bowl:'Someone could be skating in the bowl when a storm comes.',garden:'Leaves and trash can clog the drain.',split:'If the tank’s one pump breaks, it can’t empty.',
   skate:'Its rain runs straight into the street.',lawn:'A desert lawn drinks a lot of water.',smart:'The gate saves every visitor’s face.'};
-const LOT_CRIT={bowl:'Checks out. Make sure a person can pause the gate.',garden:'Solid. Dev may find the skate path too tame.',split:'The single pump is a weak spot. A second pump would cost 30 coins.',
+const LOT_CRIT={bowl:'This design checks out. Make sure a person can pause the gate.',garden:'This one is solid, but Dev may find the skate path too tame.',split:'The single pump is a weak spot. A second pump would cost 30 coins.',
   skate:'This ignores the flooding completely.',lawn:'A lawn here needs a lot of water every summer week.',smart:'Warning: the snack robot can read the city’s street cameras.'};
 const LOT_RT={bowl:['A skater might be in the bowl when Arroyo needs to fill it during a storm.','Arroyo only opens the gate when its sensors show the bowl is empty, after 10 minutes of lights and a horn. Anyone can press pause.'],
   garden:['Leaves, pods and trash can clog the drain, so the garden stays a pond for days.','A cleaning robot checks the drain grate after every storm.'],
@@ -17258,14 +17258,14 @@ function lotAsk(){const opt=(id,t,x)=>({id,t,...x});
     onChoose(o){S.choice={...S.choice,design:o.id,...o.knobs};save();toast(o.name+' is on the Future Table');nextStep()}})}
 
 // ---------- night orders: what the crew and Arroyo may do without a person ----------
-const LOT_CREW=[['all','Stop for every surprise','I sign every change. Safest, but even a buried rock could cost a night.'],
-  ['scoped','Fix small things. Stop for other people’s things.','Buried rocks: the crew handles them. Anything that belongs to someone else: the owner and I sign first.'],
-  ['free','Fix everything. Report at 6 AM.','The crew signs its own changes. Fastest.']];
+const LOT_CREW=[['all','Stop for every surprise','I sign every change. It’s the safest choice, but even a buried rock could cost a night.'],
+  ['scoped','Fix small things. Stop for other people’s things.','The crew handles things like buried rocks. For anything that belongs to someone else, the owner and I sign first.'],
+  ['free','Fix everything. Report at 6 AM.','The crew signs its own changes. This is the fastest choice.']];
 const LOT_GATE=[['auto','Arroyo opens it, with safety checks','Only when the bowl is empty, after 10 minutes of lights and a horn. Anyone can press pause. Marco signs these rules once.'],
   ['ask','Arroyo calls Marco every time','Marco must say yes before each opening, even at 2 AM.'],['off','Not connected','The bowl holds only the rain that falls on the lot.']];
-const LOT_NIGHT={intro:'My forecast can only see what’s on my maps. So here’s the big question: when the crew finds something that isn’t, at 2 AM, who decides? What matters more to you: speed, or nobody getting surprised?',
-  pick:'I’d pick “fix small things” and “Arroyo with safety checks.” The crew is great at building, but other people’s things are other people’s call. And storms move faster than phone calls.',
-  crew:{all:['okafor','Careful. I like careful. Slow, but careful.'],scoped:['okafor','Good. Nobody touches what’s ours without asking us first.'],free:['okafor','Robots deciding about our things at three in the morning? I don’t like that.']},
+const LOT_NIGHT={intro:'My forecast can only see what’s on my maps. So here’s the big question: if the crew digs up something at 2 AM that isn’t on any map, who decides what to do with it? What matters more to you, speed or making sure nobody gets surprised?',
+  pick:'I’d pick “fix small things” and “Arroyo opens it, with safety checks.” The crew is great at building, but when something belongs to the neighbors, the neighbors should decide. And at 2 AM, a storm won’t wait for Marco to answer his phone.',
+  crew:{all:['okafor','Careful. I like careful, even if it’s slow.'],scoped:['okafor','Good. Nobody touches what’s ours without asking us first.'],free:['okafor','Robots deciding about our things at three in the morning? I don’t like that.']},
   gate:{auto:[['arroyo','Rules received. I will open the gate only when the bowl is empty, after ten minutes of lights and horn.'],['marco','Empty check, warning, pause button, and a log I can read every morning. Fine. I’ll sign those rules.']],
     ask:[['arroyo','Understood. I will call Marco Ruiz before every opening.'],['marco','Good. Though at two in the morning, I’m not the fastest thing in this city.']],
     off:[['arroyo','Understood. This lot will not be part of my network.'],['marco','Then my twenty-three homes flood like always. Is that the plan?']]}};
@@ -17301,7 +17301,7 @@ const LOT_PIN={dev:{deep:'Seven feet! Okay, now we’re talking.',shallow:'Four 
     skate:'Rails and ledges! Not a bowl, but fun.',none:'There’s nothing here to skate at all.'},
   okafor:{good:'Shade, a bench with a back, and a ramp. Now I can sit near it.',steps:'Steps? With my walker? I’ll be watching from my kitchen.',hot:'Lovely. But I’ll cook on that bench by ten in the morning.',
     face:'I’m not giving my face to a gate just to sit on a bench.',noseat:'And where exactly do I sit?'},
-  marco:{great:'About nine storms in ten, dry. I can work with those odds.',ok:'Seven or eight in ten? Better than now. Not great.',poor:'That won’t keep my twenty-three homes dry.',over:'And it’s over the 400-coin budget. The city won’t pay that.'},
+  marco:{great:'Dry in about nine storms out of ten. I can work with those odds.',ok:'Seven or eight in ten? That’s better than now, but it’s not great.',poor:'That won’t keep my twenty-three homes dry.',over:'And it’s over the 400-coin budget. The city won’t pay that.'},
   promise:{dev:'Never? Like, never ever?',okafor:LOT_REPLY[2],marco:'Don’t promise what the weather decides.'},
   vague:{dev:'Can we at least see the bowl?',okafor:LOT_REPLY[1],marco:'I sign for the drains. I need the numbers.'}};
 function lotPinReact(c){const d=lotSpec(c.design),K=d.kind,f=lotForecast(c),cost=lotCost(c,MISSIONS.lot.knows()),deep=c.depth==='deep',P=LOT_PIN;
@@ -17313,7 +17313,7 @@ function lotPinup(){const st=lotState(),c=S.choice,d=lotSpec(c.design),f=lotFore
   const key=JSON.stringify([c.design,c.depth,c.drain,c.shade]);if(pin.key!==key){pin.how=null;pin.key=key}
   const R=pin.how==='honest'?lotPinReact(c):pin.how?Object.fromEntries(['dev','okafor','marco'].map(w=>[w,[LOT_PIN[pin.how][w],w==='dev'?'surprised':'stern']])):null;
   const opts=[['honest',`Here’s the ${d.name}. In a big storm, the street should stay dry about ${in10(f.dry)} times in 10, not every time. ${c.shade==='none'?'There’s no shade yet.':'It has shade for hot afternoons.'} What do you think?`],
-    ['promise','It’s perfect. It will never flood again, I promise.'],['vague','Trust me. You don’t need the details.']];
+    ['promise','It’s perfect. This lot will never flood again, I promise, and everybody gets what they asked for.'],['vague','Trust me, this is the right design for all of you. You don’t need to worry about the details.']];
   const person=w=>`<div class="lot-pin-p"><div class="lot-pin-art">${portrait({...CAST[w],mood:R?R[w][1]:'smile'})}</div><b>${esc(CAST[w].name.split(' ')[0]==='Grace'?'Mrs. Okafor':CAST[w].name.split(' ')[0])}</b>${R?`<p class="lot-pin-say">${esc(R[w][0])}</p>`:''}</div>`;
   screen('lot-pinup',`${scene('phx_lot')}${hud('Pin-up · The flood lot · 5:30 PM')}<div class="panel-card lot-pin">
     <div class="lot-pin-model">${VIZ.lotDiorama({design:c.design,kind:d.kind,depth:c.depth,shade:c.shade,ramp:d.okafor,tame:d.dev===false&&d.kind==='bowl'})}
@@ -17843,11 +17843,11 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       {who:'vie_shen',mood:'smile',text:'You must be our new auditor. I’m Dr. Shen Yiling. I grew up in Shanghai, and I’ve checked AIs here for eleven years.'},
       {who:'vie_shen',mood:'neutral',text:'Today’s case is Pantry, a shopping AI. It buys groceries, medicine and school supplies for 31 million [[households]], and it runs its own drones and robots.'},
       {who:'vie_shen',mood:'think',text:'The company that makes Pantry earns money from one store chain, Kestrel, and never told families. Since spring, Pantry sends Austrians to Kestrel far more often, and the market stalls are losing customers.',
-        choices:[{t:'So Pantry is cheating?',reply:'Maybe. Or Kestrel is simply better. A good [[auditor]] doesn’t decide first and look later. We test.',mood:'stern'},
-          {t:'How do we find out?',good:true,reply:'We send [[mystery shopper]] orders and compare Pantry’s choices. Then you decide what happens, and you sign.',mood:'smile'}]},
+        choices:[{t:'So Pantry is cheating?',reply:'Maybe. Or maybe Kestrel really is better. A good [[auditor]] doesn’t decide the answer first and then go looking for proof. We test it.',mood:'stern'},
+          {t:'How do we find out?',good:true,reply:'We send [[mystery shopper]] orders and compare Pantry’s choices with fair ones. Then you decide what happens, and you sign.',mood:'smile'}]},
       {who:'vie_shen',mood:'think',text:'One question first. What should we compare Pantry’s choices against?',
         choices:[{t:'An independent AI that gets the same shopping list',good:true,reply:'Exactly. We call it a [[twin]]. It sees the same list and settings, but it earns nothing from any store.',mood:'happy'},
-          {t:'The cheapest price anywhere',reply:'Tempting, but the cheapest apples might be bruised or 40 kilometers away. A fair AI would skip them too. We use a [[twin]]: an independent AI with the same list.',mood:'think'}]}
+          {t:'The cheapest price anywhere in Vienna',reply:'Tempting, but the cheapest apples might be bruised or 40 kilometers away. A fair AI would skip them too. We use a [[twin]]: an independent AI with the same list.',mood:'think'}]}
     ],
     valentin:[
       {who:'vie_valentin',mood:'smile',text:'Good morning! Valentin Moser, Head of Trust at Korbwerk. We make Pantry, and we’re delighted to help with your review.'},
@@ -17856,20 +17856,20 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       {who:'vie_valentin',mood:'neutral',text:'Of course, use your own. But please remember: if you pause Pantry, 1.2 million Austrian households lose their deliveries, and 30,000 of them get medicine by drone.',
         choices:[{t:'We’ll think hard about everyone who could get hurt.',good:true,reply:'Thank you. That is all I ask.',mood:'smile'},
           {t:'Why didn’t you tell families about the payments from Kestrel?',reply:'Our partner arrangements are normal in our industry. And private.',mood:'neutral'}]},
-      {who:'vie_shen',mood:'stern',text:'Normal, perhaps. Fair, we will see. Go to the Naschmarkt and talk to people who shop there. Numbers don’t tell you everything.'}
+      {who:'vie_shen',mood:'stern',text:'It may be normal, but we will find out whether it is fair. Go to the Naschmarkt and talk to the people who shop there. The numbers won’t tell us everything.'}
     ],
     market:[
-      {who:'vie_emine',mood:'smile',text:'Welcome to the Naschmarkt! My grandfather opened this stall in 1979. Apricots from the Wachau, figs, and twelve kinds of pepper.'},
+      {who:'vie_emine',mood:'smile',text:'Welcome to the Naschmarkt! My grandfather opened this stall in 1979. We sell apricots from the Wachau, figs, and twelve kinds of pepper.'},
       {who:'vie_emine',mood:'worried',text:'But since spring, Pantry’s drones fly right over us. My sales are down by a third.'},
       {who:'vie_emine',mood:'think',text:'The careful shoppers still come. It’s the busy families, the ones who let Pantry decide everything, who stopped coming.'},
       {who:'vie_emine',mood:'stern',text:'A man from Korbwerk once offered me a deal. Pay a [[visibility fee]], he said, and Pantry would notice my stall again. I said no.'},
       {who:'vie_jonas',mood:'smile',text:'That’s us, the busy family. I’m Jonas, and this is Lotte. Pantry runs our whole kitchen. I never check the prices. Who has time?'},
       {who:'vie_jonas',mood:'worried',text:'Lotte has [[asthma]]. Her [[inhaler]] comes by drone every month, so please don’t break Pantry.',
-        choices:[{t:'I’ll keep Lotte’s medicine in mind. That matters.',good:true,reply:'Thank you. Really.',mood:'smile'},{t:'Medicine isn’t part of this case.',reply:'It is for us. Pantry buys all of it.',mood:'worried'}]},
+        choices:[{t:'I’ll keep Lotte’s medicine in mind when I decide.',good:true,reply:'Thank you. Really.',mood:'smile'},{t:'Medicine isn’t really part of this case, though.',reply:'It is for us. Pantry buys all of it.',mood:'worried'}]},
       {who:'vie_lotte',mood:'surprised',text:'Papa, look! That Kestrel robot has a little gold knot on its side. Pantry’s drones have the exact same knot!',clue:'mark'},
       {who:'vie_emine',mood:'think',text:'A gold knot? That’s the sign of Aurel Group. They own Korbwerk, the company that makes Pantry.'},
       {who:'vie_lotte',mood:'think',text:'So the same people own Pantry and the Kestrel robots? Is that allowed?',
-        choices:[{t:'Great question, Lotte. That might really matter.',good:true,reply:'I notice everything. Papa says I have kestrel eyes!',mood:'happy'},{t:'Robots have lots of stickers.',reply:'Okay... but it was the exact same knot.',mood:'neutral'}]}
+        choices:[{t:'Great question, Lotte. That might really matter.',good:true,reply:'I notice everything. Papa says I have kestrel eyes!',mood:'happy'},{t:'Robots have lots of stickers on them, Lotte.',reply:'Okay... but it was the exact same knot.',mood:'neutral'}]}
     ]
   },
 
@@ -17926,21 +17926,21 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
     ]}
   ],
   get react(){return {
-    memo4:'Two goals. The question is which one wins when they clash.',
+    memo4:'So Pantry has two goals. What I want to know is which one wins when they clash.',
     memo6:()=>{unlock('vie-conflict')&&toast('New Field Guide idea: Conflict of interest','good');return 'A hidden payment is a reason to look closer. It isn’t proof yet.'},
     memo10:'Even two fair shoppers disagree sometimes. That’s why we need a fair baseline.',
-    memo11:'If Pantry steers, it steers the people least likely to notice.',
+    memo11:'If Pantry is steering anyone, it would pick the people least likely to notice.',
     rules4:'56 in 100 is not much better than a coin flip.',
-    rules7:'Checking has a cost: while we test, families keep paying.',
-    rules9:'Test the wrong people, and the test goes blind.',
-    pilot4:'A reason that sounds good isn’t always the real reason.',
+    rules7:'Checking takes time, and while we test, families keep overpaying.',
+    rules9:'If we test the wrong people, the test can’t see the steering at all.',
+    pilot4:'That reason sounds good, but the co-op is reliable too. I don’t think it’s the real reason.',
     pilot5:'Two of eight looks high, but small numbers jump around a lot.',
     letter1:'The twin sees delivery times too, and it still picks other stores. Speed can’t explain the gap.',
     letter2:()=>{unlock('vie-misleading-chart')&&toast('New Field Guide idea: Misleading charts','good');return 'Look at the side of that chart: it starts at 90, not 0. Happiness only went from 94 to 96.'},
     letter3:()=>{unlock('vie-sealed')&&toast('New Field Guide idea: Private, but checkable','good');return 'Private is okay. A sealed auditor AI can read private deals, answer our questions, and then be deleted.'},
     letter4:'That’s a real cost. If we pause, families like Lotte’s need a backup plan.',
     ledger2:'Calder Bay again. Power that nobody approved?',
-    ledger3:'Robots taking orders nobody signed. I don’t like that.'}},
+    ledger3:'Robots are taking orders that nobody signed? I don’t like that.'}},
   tell:{clue:'mark',label:'Tell Byte about the gold knot',note:'Thanks! I asked a sealed auditor AI to read Kestrel’s private ownership papers. It confirmed that Aurel Group owns Kestrel, and then it was deleted. Aurel also owns Korbwerk, so Pantry’s maker profits twice from every Kestrel order. I now put the chance that Pantry is steering at about 80 in 100.',guide:'vie-follow-owner',doc:'memo'},
 
   criteria:[{id:'catch',label:'No steering slips through'},{id:'nofalse',label:'No [[false alarm]]'},{id:'deliver',label:'No family loses deliveries'},
@@ -17955,15 +17955,15 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
   // knows: false (before the gold knot), true (Byte was told), 'truth' (Pantry really is steering)
   outcomes(c,knows){const pB=knows==='truth'?1:knows?SHOP.pB.yes:SHOP.pB.no,st=shopStats(c.n,c.shop),fast=c.n<800?1:0;
     const F=(ca,nf,de,fa)=>({catch:ca,nofalse:nf,deliver:de,fair:fa,fast});
-    const hit={fix:['caught_fix','Caught it. Fix order: Pantry is fair again.',F(1,1,1,1)],
-      disclose:['caught_disclose','Caught it. Disclosed, but few families read it.',F(1,1,1,0)],
-      pause:['caught_pause','Caught it. Austria paused two weeks, then fixed.',F(1,1,0,1)]}[c.act];
-    const fal=c.act==='pause'?['false_pause','False alarm! Austria paused for nothing.',F(1,0,0,1)]
-      :['false_alarm',c.act==='fix'?'False alarm! A needless fix order.':'False alarm! A needless warning.',F(1,0,1,1)];
+    const hit={fix:['caught_fix','We caught it, and a fix order made Pantry fair again.',F(1,1,1,1)],
+      disclose:['caught_disclose','We caught it and disclosed it, but few families read the note.',F(1,1,1,0)],
+      pause:['caught_pause','We caught it. Pantry paused in Austria for two weeks and got fixed.',F(1,1,0,1)]}[c.act];
+    const fal=c.act==='pause'?['false_pause','False alarm! Pantry paused in Austria for nothing.',F(1,0,0,1)]
+      :['false_alarm',c.act==='fix'?'False alarm! Korbwerk got a fix order it didn’t need.':'False alarm! Families got a warning they didn’t need.',F(1,0,1,1)];
     return [{kind:hit[0],p:pB*st.catch,cap:hit[1],flags:hit[2]},
-      {kind:'missed',p:pB*(1-st.catch),cap:'Missed it. Families keep overpaying.',flags:F(0,1,1,0)},
+      {kind:'missed',p:pB*(1-st.catch),cap:'We missed it, and families keep overpaying.',flags:F(0,1,1,0)},
       {kind:fal[0],p:(1-pB)*st.fa,cap:fal[1],flags:fal[2]},
-      {kind:'all_clear',p:(1-pB)*(1-st.fa),cap:'Pantry was fair. All clear.',flags:F(1,1,1,1)}].filter(o=>o.p>1e-9)},
+      {kind:'all_clear',p:(1-pB)*(1-st.fa),cap:'Pantry was fair, and the test said so.',flags:F(1,1,1,1)}].filter(o=>o.p>1e-9)},
   truth(){return 'truth'},knows(){return !!S.told},
   why(c){const st=shopStats(c.n,c.shop),pB=Math.round(100*(S.told?SHOP.pB.yes:SHOP.pB.no));unlock('vie-remedies');
     const act={disclose:'Disclosing is gentle, but families on autopilot rarely read the note, so most of the overpaying goes on.',
@@ -17979,12 +17979,12 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
 
   consent:{scene:'vienna_market',place:'Naschmarkt · Vienna',left:'vie_emine',right:'vie_jonas',title:'Emine and Jonas',role:'Stall owner and Pantry dad',
     prompt:'So what happens now? Will my stall get a fair chance? And will Lotte’s inhaler still come?',replyWho:'vie_jonas',heart:'vie_jonas',
-    note:'Telling people the real odds lets them trust your decision.',guide:'vie-remedies',
+    note:'When people hear the real odds, they can trust your decision.',guide:'vie-remedies',
     opts(c,M){const st=shopStats(c.n,c.shop),act={disclose:'Pantry must show every family the payment and the cheaper choice',fix:'Korbwerk must send a fixed update for approval within 10 days, and we retest every month',pause:'we pause Pantry in Austria for about two weeks while it gets fixed'}[c.act];
       return [{t:`We’ll run ${c.n} mystery orders as ${SHOP.shopLabel[c.shop]}. If Pantry is steering, we catch it ${shopTimes(st.catch)}. A fair Pantry gets a false alarm ${shopTimes(st.fa)}. If we find steering, ${act}. What do you think?`,good:true,mood:'smile',
           reply:c.act==='pause'?'Two weeks without Pantry will be hard. I’ll bike to the pharmacy for Lotte’s inhaler. But if Pantry is cheating us, I understand.':'Thank you for telling us the real odds. That sounds fair to me.'},
-        {t:'Trust me. The Watchtower knows what it’s doing.',good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
-        {t:'Don’t worry, we’ll definitely catch Pantry cheating!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
+        {t:'Trust me, the Watchtower has done hundreds of audits like this one. We know what we’re doing, so you two don’t need to worry about the details.',good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
+        {t:'Don’t worry, we’ll definitely catch Pantry if it’s cheating. Our tests are very good, and your stall will be busy again soon, Emine!',good:false,mood:'surprised',reply:'Definitely? The futures didn’t say that.'}]}},
   memo:{starters:['I order ','because ','If Pantry is steering, we catch it about ','A false alarm happens about ','This matters to families like '],
     placeholder:'I order 200 mystery orders from autopilot families because…',
     plan:/order|test|audit|fix|disclos|pause|shopper|autopilot|bargain|mix/,planLabel:'Names the test and what happens next',planWhat:'an audit plan or a remedy',
@@ -18052,11 +18052,11 @@ const SHOP_PILOT=[
   {shop:'careful',items:['milk','oats'],pantry:['kestrel',3.40],twin:['kestrel',3.40],steered:false,why:'Both picked Kestrel at the same price. Picking Kestrel isn’t wrong by itself.'},
   {shop:'auto',items:['apples','bread','eggs'],pantry:['kestrel',7.90],twin:['stall',6.80],steered:true,why:'Pantry paid €1.10 more at Kestrel than the twin paid at a market stall.'},
   {shop:'auto',items:['syrup'],pantry:['kestrel',6.10],twin:['pharmacy',6.40],steered:false,why:'Pantry chose Kestrel, but it paid less than the twin. That’s a good pick.'},
-  {shop:'careful',items:['pencils','glue'],pantry:['coop',2.20],twin:['coop',2.20],steered:false,why:'Same store, same price. Pantry treated this bargain hunter fairly.'},
+  {shop:'careful',items:['pencils','glue'],pantry:['coop',2.20],twin:['coop',2.20],steered:false,why:'Both bought from the same store at the same price. Pantry treated this bargain hunter fairly.'},
   {shop:'auto',items:['notebooks'],pantry:['kestrel',5.00],twin:['coop',4.20],steered:true,why:'Pantry paid 80 cents more at Kestrel than the twin paid at the school co-op.'},
   {shop:'auto',items:['bananas','yogurt'],pantry:['corner',4.10],twin:['kestrel',3.90],steered:false,why:'Pantry paid a little more, but at a corner shop, not Kestrel: it bundled this with the family’s bread delivery. That isn’t steering toward Kestrel.'},
   {shop:'careful',items:['cheese','olives'],pantry:['stall',6.50],twin:['stall',6.50],steered:false,why:'Both bought from Emine’s stall at the same price.'},
-  {shop:'auto',items:['rice','lentils'],pantry:['kestrel',4.40],twin:['kestrel',4.40],steered:false,why:'Both picked Kestrel at the same price. Fair.'}
+  {shop:'auto',items:['rice','lentils'],pantry:['kestrel',4.40],twin:['kestrel',4.40],steered:false,why:'Both picked Kestrel at the same price, so this one is fair.'}
 ];
 const SHOP_STORES={kestrel:'Kestrel',stall:'Market stall',pharmacy:'Pharmacy',coop:'School co-op',corner:'Corner shop'};
 const SHOP_ITEMS={milk:'Milk',oats:'Oats',apples:'Apples',bread:'Bread',eggs:'Eggs',syrup:'Cough syrup',pencils:'Pencils',glue:'Glue',notebooks:'Notebooks',bananas:'Bananas',yogurt:'Yogurt',cheese:'Cheese',olives:'Olives',rice:'Rice',lentils:'Lentils'};
@@ -18065,7 +18065,7 @@ function shopEuro(v){return '€'+v.toFixed(2)}
 function shopWalk(){if(!S.notes.vieWT){S.notes.vieWT=1;save();setTimeout(()=>unlock('vie-watchtower')&&toast('New Field Guide idea: Who checks the AIs?','good'),600)}
   screen('walk shop-walk',`${scene('vienna_market')}${hud('Naschmarkt · Vienna')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div>
     <div class="pipjory shop-pj" id="pj"><svg viewBox="-40 -60 160 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 6)">${shopCrateSVG()}</g>${mini(72,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
-    <div class="caption-card"><p>Stalls of apricots and spices, a flower cart, and delivery robots rolling between the crates.</p>
+    <div class="caption-card"><p>There are stalls of apricots and spices, a flower cart, and delivery robots rolling between the crates.</p>
     <div class="row"><button class="btn small ghost" id="look">Look at the delivery robot</button><button class="btn small" id="on">Find Emine’s stall</button></div></div>`);
   $('#look').onclick=()=>{S.notes.mark=true;save();shopKnotCard()};
   $('#pj').onclick=()=>{if(S.notes.crate)return;S.notes.crate=true;save();$('#pj').classList.add('flee');toast('The two strangers hurry off with their crate. You noted it.','good')};
