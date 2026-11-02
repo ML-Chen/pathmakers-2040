@@ -60,7 +60,8 @@ const CSS = `
 .pr-end{top:auto;position:static}.pr-end p{color:#fff;font-weight:700;font-size:12px;margin:10px 18px 0;text-shadow:0 2px 8px rgba(0,0,0,.6)}
 .pr-byte{position:fixed;left:50%;top:42%;width:190px;transform:translateX(-50%);z-index:5}.pr-byte.low{top:9%;width:170px}
 #pr.shot-end .big{top:61%}
-#pr.shot-game .big{top:16%}
+#pr.shot-game .big{top:5%}
+#pr.shot-game ~ .pr-byte,.pr-byte{top:46%}
 .pr-byte .byteart{width:100%}
 `;
 
@@ -100,6 +101,11 @@ const CSS = `
     window.prTap = (sel, text) => { const els = [...document.querySelectorAll(sel)].filter(e => !text || e.textContent.includes(text)); const el = els[0]; if (!el) return;
       const r = el.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2; f.style.opacity = 1; f.style.transform = `translate(${x - 22}px,${y - 22}px)`;
       setTimeout(() => { f.classList.remove('tap'); void f.offsetWidth; f.classList.add('tap'); el.click(); setTimeout(() => { const n = document.getElementById('prf'); if (n !== f) document.body.appendChild(f) }, 50) }, 380) };
+    // prFlick(dy, ms): a finger flick: the page jumps fast, then slows to a stop (ease-out), with the finger swiping up
+    window.prFlick = (dy, ms) => { ms = ms || 700; const x = innerWidth * .62, y0 = innerHeight * .72; f.style.opacity = 1; f.style.transition = 'none'; f.style.transform = `translate(${x - 22}px,${y0 - 22}px)`;
+      const st = performance.now(), from = scrollY, sc = document.scrollingElement; requestAnimationFrame(function step() { const k = Math.min(1, (performance.now() - st) / ms), e = 1 - Math.pow(1 - k, 3);
+        window.scrollTo(0, from + dy * e); f.style.transform = `translate(${x - 22}px,${y0 - 22 - Math.min(1, k * 3) * 140}px)`; f.style.opacity = k < .4 ? 1 : Math.max(0, 1 - (k - .4) * 2.5);
+        if (k < 1) requestAnimationFrame(step); else f.style.transition = '' }) };
   });
   await p.evaluate(() => { S.mute = true; S.player = 'Juniper'; S.lang = 'zh'; save() });
   const cdp = await ctx.newCDPSession(p);
@@ -108,6 +114,9 @@ const CSS = `
   const segs = []; let total = 0;
   for (const [n, s] of SHOTS.entries()) {
     const D = dur(s);
+    // every line is split at punctuation into captions of at most two lines (about 15 Chinese characters per line)
+    if (!s.caps) { const parts = s.vo.match(/[^，。？！：；、]+[，。？！：；、]?/g) || [s.vo]; const w = t => [...t].reduce((a, ch) => a + (/[\u4e00-\u9fff，。？！：；、《》]/.test(ch) ? 1 : .55), 0);
+      s.caps = []; let cur = ''; for (const q of parts) { if (cur && w(cur + q) > 29) { s.caps.push(cur); cur = q } else cur += q } if (cur) s.caps.push(cur) }
     await p.evaluate(({setup, hide}) => {
       document.querySelectorAll('#pr,#pr-hide').forEach(e => e.remove()); const pf = document.getElementById('prf'); if (pf) { pf.style.opacity = 0; document.body.appendChild(pf) }
       try { (0, eval)(setup) } catch (e) { console.error(e) }
@@ -117,18 +126,21 @@ const CSS = `
     await wait(s.hook ? 300 : 900);                                    // let the scene paint and the entrance finish
     if (!s.hook) await p.screenshot({path: path.join(out, 'clean', `${s.id}.png`)});
     const cam = CAMS[n % CAMS.length];
-    await p.evaluate(({place, vo, big, id, D, cam}) => {
+    await p.evaluate(({place, vo, big, id, D, cam, caps}) => {
       const app = document.getElementById('app'); app.style.transformOrigin = cam.o; app.style.animation = `prcam ${D}s cubic-bezier(.3,.1,.3,1) both`;
       document.documentElement.style.setProperty('--c0', cam.a); document.documentElement.style.setProperty('--c1', cam.b);
       const d = document.createElement('div'); d.id = 'pr'; d.className = 'shot-' + id;
-      d.innerHTML = `${place ? `<div class="chip">${place}</div>` : ''}<div class="shade"></div>${big ? `<div class="big">${big}</div>` : ''}<div class="cap">${vo}</div>`;
+      d.innerHTML = `${place ? `<div class="chip">${place}</div>` : ''}<div class="shade"></div>${big ? `<div class="big">${big}</div>` : ''}<div class="cap">${(caps && caps[0]) || vo}</div>`;  // caps is filled below for later chunks
       document.body.appendChild(d);
     }, {...s, D, cam});
     // timed changes inside a shot run in page time too
     const events = [];
     for (const [t, code] of (s.taps || [])) events.push([t, code, false]);
+    // a long line shows as several captions (s.caps), each up to three lines, switched in proportion to their length
+    if (s.caps && s.caps.length > 1) { const tot = s.caps.join('').length, voLen = (VO && VO[s.id]) || est(s); let acc = 0;
+      s.caps.forEach((c, i) => { if (i) events.push([(LEAD + voLen * acc / tot) * 1000, `(()=>{const e=document.querySelector('#pr .cap');if(e){e.style.animation='none';e.textContent=${JSON.stringify(c)}}})()`, false]); acc += c.length }) }
     if (s.every) for (let t = s.every[0]; t < D * 1000; t += s.every[0]) events.push([t, s.every[1], false]);
-    if (s.cycle) { const [ms, ...setups] = s.cycle; for (let k = 1, t = ms; t < D * 1000; k++, t += ms) events.push([t, setups[k % setups.length], true]) }
+    if (s.cycle) { const [ms, ...setups] = s.cycle; for (let k = 1, t = ms; t < D * 1000 && k < setups.length; k++, t += ms) events.push([t, setups[k], true]) }  // each place once; the last one holds
     events.sort((a, b) => a[0] - b[0]);
     const dir = path.join(out, 'frames', String(n).padStart(2, '0')); fs.rmSync(dir, {recursive: true, force: true}); fs.mkdirSync(dir);
     const frames = []; let still = false; const N = Math.round(D * FPS);

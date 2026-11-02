@@ -8,8 +8,9 @@ module.exports = [
   {id: 'hook', place: '', min: 6.2, hook: true,
     vo: '很多AI研究者认为，十几年内AI可能会超过所有人类专家。那孩子现在该学什么？',
     big: `<div class="pr-hook"><b>AI 超过人类专家之后</b><b class="q">孩子该学什么？</b></div>`,
-    cycle: [1100, `screen('promo', scene('moon'))`, `screen('promo', scene('shenzhen'))`, `startMission('calf','calf_tundra')`, `screen('promo', scene('ocean_dc'))`,
-      `screen('promo', scene('mars'))`, `startMission('maya','arrive')`],
+    cycle: [900, `screen('promo', scene('moon'))`, `screen('promo', scene('shenzhen'))`, `startMission('calf','calf_tundra')`, `screen('promo', scene('ocean_dc'))`,
+      `screen('promo', scene('mars_storm'))`, `screen('promo', scene('shanghai'))`, `screen('promo', scene('vienna_market'))`, `screen('promo', scene('beijing'))`,
+      `screen('promo', scene('mars_dusk'))`, `startMission('maya','arrive')`],
     hide: ['.caption-card', '.wm-next', '.wm-news', '.cm-hud', '.wm-pop', '.ft-head p', '.fut figcaption', '.ft-foot', '.calf-pj', '#pj']},
   // 2. Who wrote the scenario, over the world map.
   {id: 'source', place: 'AI 2040: Plan A', min: 8,
@@ -20,7 +21,7 @@ module.exports = [
   {id: 'bench', place: '工作台 · AI写的备忘录', min: 5,
     vo: '在那个世界里，AI做大部分工作，但重要的决定还是由人来签字。',
     setup: `startMission('maya','workbench')`,
-    every: [33, `window.scrollBy(0, 16)`], hide: ['.tabs', '.doc-tools', '.bench-foot', '#next', '.companion']},
+    taps: [[250, `prFlick(560, 650)`], [1500, `prFlick(700, 760)`], [2900, `prFlick(520, 600)`], [3900, `prFlick(760, 800)`]], hide: ['.tabs', '.doc-tools', '.bench-foot', '#next', '.companion']},
   // 4. The game.
   {id: 'game', place: 'Claude 熬夜做的游戏', min: 4.5,
     vo: '我让 Claude 熬夜做了个游戏，让孩子提前练习做这个签字的人。',
@@ -60,6 +61,6 @@ module.exports = [
   // 9. The vote, over the end card.
   {id: 'end', place: '', min: 7, tail: 1.6,
     vo: '按那份设想，2040年前后全世界要投票决定AI要不要继续变强。到时候投票的，就是今天的孩子。',
-    big: `<div class="pr-end"><h1>Pathmakers <span>2040</span></h1><p>Claude 熬夜 vibe coding 出来的游戏</p><p>世界观参考 AI Futures Project《AI 2040: Plan A》</p></div>`,
+    big: `<div class="pr-end"><h1>Pathmakers <span>2040</span></h1></div>`,
     setup: `screen('title-promo', scene('home')+'<div class="pr-byte low">'+byteBox({...S.byte,mood:'happy'},'dance')+'</div>')`}
 ];
