@@ -7,12 +7,18 @@ Several Claude sessions build this game at the same time. Before starting a piec
 | Grown-ups' progress page | `claude/project-thread-obst9q` | another session | merged into main |
 | PR checks and the all-mission screenshot tool | `claude/project-thread-niuo7p` | another session | merged into main |
 | Bezier bone diagrams, crate label, reveal leak fix | `claude/project-thread-s7we06` | another session | merged into main |
-| Quiet Year memorial | `quiet-year-memorial` | another session | in progress |
-| The App That Agreed (Care Doctor Day 2, Rosa, Byte's Honesty Upgrade); family feedback in docs/BRIEFS.md says raise the stakes | `claude/project-thread-eju8ow` | another session | in progress |
-| The Sneeze Recipe (Health Harbor villain plot) | `claude/project-thread-mmpiwt` | another session | in progress |
-| Getting Hired career journey | `claude/project-thread-c7547j` | another session | paused |
-| Byte customizing | `claude/project-thread-izhx21` | another session | planned, paused before code |
-| Nome Wildlife Vet, Phoenix Community Architect, DC Lawmaker, Vienna AI Auditor, Boston "Dancing at 104", characters, landscape layout, Android app | none | unclaimed | briefs ready in docs/BRIEFS.md; agents stopped on a usage limit before writing code |
+| Redraw Maya's forearm and hand (child proportions, real fingers) | `main` | coordinating session (Nov 2) | in progress |
+| Quiet Year memorial (finish and port to the current engine) | `quiet-year-memorial` | coordinating session's agent | in progress |
+| Care Doctor Day 2: the home-care AI case (reworks "The App That Agreed" per family feedback) | `claude/project-thread-eju8ow` | coordinating session's agent | in progress |
+| The Sneeze Recipe (Health Harbor villain plot), finish | `claude/project-thread-mmpiwt` | coordinating session's agent | in progress |
+| Nome Wildlife Vet, "The Calf Who Stopped Eating" | `content/nome-vet` | coordinating session's agent | in progress |
+| Phoenix Community Architect, "The Flood Lot" | `content/phoenix-architect` | coordinating session's agent | in progress |
+| Vienna AI Auditor, "The Helpful Shopping AI" | `content/vienna-auditor` | coordinating session's agent | in progress |
+| DC Lawmaker, "The Robot Safety Bill" | `content/dc-lawmaker` | coordinating session's agent | in progress |
+| Boston Elder Companion, "Dancing at 104" | `content/boston-companion` | coordinating session's agent | in progress |
+| Getting Hired career journey | `claude/project-thread-c7547j` | unclaimed | paused (work-in-progress commits; next wave) |
+| Byte customizing | `claude/project-thread-izhx21` | unclaimed | planned, paused before code |
+| Characters, landscape layout, Android app | none | unclaimed | briefs ready in docs/BRIEFS.md (next wave) |
 | Promo videos (RedNote and Twitter) | `promo/` on main | unclaimed | paused until more of the game is built; storyboard and Mandarin TTS/ASR tools in promo/ |
 
 Ideas not yet claimed (from docs/SPEC.md): Nome Ranger; Phoenix Robot Crew Lead; Moon Founder and Dividend Investor; Bay Area Science Director; Mars Explorer; New York Performer and Coach; DC Judge; Vienna Treaty Inspector; the career-journey steps (explore, meet people, interview, first day, big talk, promotion); a world map to travel between places; the Unbound and Prime villain plots for each place; Byte customization unlocks; the Android app.
