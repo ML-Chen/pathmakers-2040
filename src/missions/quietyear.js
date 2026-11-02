@@ -66,6 +66,19 @@ const QY_COLORS=['#f5a63a','#ff8a7a','#ffd45c','#7fd8c8','#a99bff'];
 const QY_THANKS=['the nurses','the bakers','the screeners','the kids who stayed home','everyone who helped'];
 
 // Gus, the keeper, is about 70: the standard portrait plus a neat white mustache, smile lines and crow's feet
+// Signature details on top of the standard portrait (personSVG): face marks under the mouth, a hat over the hair, a badge on the chest.
+function qyPortrait(o,mood,face,top,chest){let s=personSVG({...o,art:undefined,mood});
+  if(face)s=s.replace('<g class="p-mouth">',face+'<g class="p-mouth">');
+  if(chest)s=s.replace('<g class="p-head">',chest+'<g class="p-head">');
+  if(top){const i=s.lastIndexOf('</g></g></g>');if(i>0)s=s.slice(0,i)+top+s.slice(i)}
+  return s}
+// Kwame, the baker: a soft white baker's cap
+function qyKwameArt(o,mood){return qyPortrait(o,mood,'',`<g transform="translate(150 15) scale(1.07 1) translate(-150 0)"><path d="M104 52C90 32 108 6 132 13C140 0 162 0 170 13C194 6 210 32 196 52Z" fill="#ffffff" stroke="#c9c6d6" stroke-width="2.4" stroke-linejoin="round"/>
+   <path d="M126 20C130 30 128 40 124 48M150 12C152 24 152 38 150 48M174 20C170 30 172 40 176 48" stroke="#dcdae6" stroke-width="2" fill="none" stroke-linecap="round"/>
+   <path d="M101 50C130 43 170 43 199 50L198 66C170 59 130 59 102 66Z" fill="#f4f2fa" stroke="#c9c6d6" stroke-width="2.4" stroke-linejoin="round"/></g>`)}
+// Sam, the nurse: freckles, and the "I helped Varrow" sticker on his scrubs
+function qySamArt(o,mood){return qyPortrait(o,mood,`<g fill="#c9784a" opacity=".55">${[[114,150],[120,154],[126,149],[119,146],[186,150],[180,154],[174,149],[181,146]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.5"/>`).join('')}</g>`,'',
+   `<g transform="translate(112 300)"><circle r="13" fill="#fffaf0" stroke="#c9c0e8" stroke-width="1.6"/><circle r="10.5" fill="#6c5ce7"/><path d="M-3 -6H3L4 -4.6C6.4 -2 6.4 2 4 4.6L3 6H-3L-4 4.6C-6.4 2 -6.4 -2 -4 -4.6Z" fill="#f5b82e"/><path d="M0 -6V6" stroke="#b07a1a" stroke-width=".9"/></g>`)}
 function qyGusArt(o,mood){const svg=personSVG({...o,art:undefined,mood});
   const age=`<path d="M106 126.5l-6.5 -2.4M106.5 131.5l-6.5 1.6M194 126.5l6.5 -2.4M193.5 131.5l6.5 1.6M126.5 165Q122.5 173 126.5 180M173.5 165Q177.5 173 173.5 180" stroke="#6a3e2c" stroke-width="1.2" fill="none" opacity=".45" stroke-linecap="round"/>
    <path d="M150 165C145 161.5 136 161.5 130 166C127 168.5 126.5 172 128 174.4C132 171.4 140 170.6 146 171.6C148 171.9 149.3 171.2 150 170.2C150.7 171.2 152 171.9 154 171.6C160 170.6 168 171.4 172 174.4C173.5 172 173 168.5 170 166C164 161.5 155 161.5 150 165Z" fill="#ebe7f1" stroke="#8e8aa2" stroke-width="1.5" stroke-linejoin="round"/>
@@ -175,12 +188,12 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
   place:'Lantern Garden · Varrow',
   cast:{
     qygus:{name:'Gus Barros',role:'Keeper of the Lantern Garden',skin:SKIN[2],hair:'#e8e4ee',hairStyle:'short',masc:true,shirt:'#3f8f6b',glasses:true,art(m){return qyGusArt(this,m)}},
-    qyana:{name:'Ana Ribeiro',role:'Was 14 in the Quiet Year',skin:SKIN[1],hair:'#3a2418',hairStyle:'long',shirt:'#ff8a7a'},
-    qykwame:{name:'Kwame Mensah',role:'Baker on Harbor Street',skin:SKIN[5],hair:'#141010',hairStyle:'buzz',masc:true,shirt:'#f5b82e'},
+    qyana:{name:'Ana Ribeiro',role:'Was 14 in the Quiet Year',skin:SKIN[1],hair:'#7a4a2a',hairStyle:'long',shirt:'#ff8a7a'},
+    qykwame:{name:'Kwame Mensah',role:'Baker on Harbor Street',skin:SKIN[5],hair:'#141010',hairStyle:'buzz',masc:true,shirt:'#f5b82e',art(m){return qyKwameArt(this,m)}},
     qypriya:{name:'Dr. Priya Nair',role:'Engineer, built the first water tester',skin:SKIN[3],hair:'#1a1414',hairStyle:'bun',shirt:'#16b3a6',glasses:true,accessory:'earring'},
-    qynoor:{name:'Noor Haddad',role:'DNA screener, Varrow print shop',skin:SKIN[2],hair:'#2a1c16',hairStyle:'long',shirt:'#6c5ce7'},
-    qysam:{name:'Sam Brennan',role:'Nurse, Varrow General',skin:SKIN[0],hair:'#c9772d',hairStyle:'short',masc:true,shirt:'#5fc9bd'},
-    qyivy:{name:'Ivy Torres',role:'Was 7 in the Quiet Year',skin:SKIN[2],hair:'#2a1a14',hairStyle:'long',shirt:'#a99bff'}},
+    qynoor:{name:'Noor Haddad',role:'DNA screener, Varrow print shop',skin:SKIN[2],hair:'#2a1c16',hairStyle:'short',masc:false,shirt:'#6c5ce7',accessory:'earring'},
+    qysam:{name:'Sam Brennan',role:'Nurse, Varrow General',skin:SKIN[0],hair:'#c9772d',hairStyle:'short',masc:true,shirt:'#5fc9bd',art(m){return qySamArt(this,m)}},
+    qyivy:{name:'Ivy Torres',role:'Was 7 in the Quiet Year',skin:SKIN[2],hair:'#3a2418',hairStyle:'braids',clip:'#7fd8c8',shirt:'#a99bff'}},
   // elder_man_deep: am_onyx, slower and lower (ROLES in tools/make_audio.py)
   voices:{qygus:'elder_man_deep',qyana:'af_nova',qykwame:'bm_daniel',qypriya:'af_river',qynoor:'af_heart',qysam:'am_puck',qyivy:'bf_alice'},
   glossary:{
