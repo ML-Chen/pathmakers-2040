@@ -69,7 +69,7 @@ H+='<div class="row" style="margin-top:8px">';
 for(const k of ['recital','healed','crooked','rash','waiting','moved'])H+=cell(vignette(k),k);
 H+='</div>';
 H+='<h2 id="s-zoom">Zoom</h2><div class="row">';
-for(const [w,m] of [['imani','smile'],['maya','smile'],['dad','smile']])H+=cell('<div class="pbox" style="width:500px;height:600px">'+portrait({...CAST[w],mood:m})+'</div>',w);
+for(const [w,m] of [['imani','smile'],['maya','smile'],['dad','smile']])H+=cell('<div class="pbox zoombox" style="width:500px;height:600px">'+portrait({...CAST[w],mood:m})+'</div>',w);
 H+='</div>';
 R.innerHTML=H;
 <\/script>`;
@@ -81,6 +81,7 @@ R.innerHTML=H;
   for(const id of ['imani','maya','dad','extra','anim','byte','bytec','bytes','mini','zoom']){const h=await p.$('#s-'+id);if(!h)continue;
     const box=await p.evaluate(el=>{const r=el.getBoundingClientRect();let n=el.nextElementSibling,bottom=r.bottom;while(n&&n.tagName!=='H2'){bottom=Math.max(bottom,n.getBoundingClientRect().bottom);n=n.nextElementSibling}return{x:0,y:r.top+scrollY,width:1600,height:bottom-r.top+6}},h);
     await p.screenshot({path:path.join(out,id+'.png'),clip:box,fullPage:true})}
+  const zb=await p.$$('.zoombox');for(let i=0;i<zb.length;i++){const b=await zb[i].boundingBox();await p.screenshot({path:path.join(out,'face'+i+'.png'),clip:{x:b.x+70,y:b.y,width:360,height:420},fullPage:true})}
   // head pivot sanity: p-head bbox bottom should sit at the neck
   const piv=await p.evaluate(()=>[...document.querySelectorAll('.pbox.big .p-head')].map(g=>{const b=g.getBBox();return [b.x,b.y,b.width,b.height].map(v=>Math.round(v))}));
   console.log('p-head bboxes',JSON.stringify(piv));

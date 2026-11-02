@@ -84,10 +84,10 @@ function ch_eye(cx,cy,o,E,id,k){
   let s=`<clipPath id="${id}e${k}"><path d="${white}"/></clipPath><path d="${white}" fill="${E.white}"/>
    <g clip-path="url(#${id}e${k})">
     <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy)}" rx="${ch_n(irx)}" ry="${ch_n(iry)}" fill="url(#${id}i)"/>
-    <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy+iry*.5)}" rx="${ch_n(irx*.66)}" ry="${ch_n(iry*.34)}" fill="${E.irisGlow}" opacity=".6"/>
+    <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy+iry*.5)}" rx="${ch_n(irx*.66)}" ry="${ch_n(iry*.34)}" fill="${E.irisGlow}" opacity=".8"/>
     <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy-iry*.02)}" rx="${ch_n(irx*(E.lid==='wide'?.3:.44))}" ry="${ch_n(iry*(E.lid==='wide'?.32:.48))}" fill="${E.pupil}"/>
     <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy)}" rx="${ch_n(irx)}" ry="${ch_n(iry)}" fill="none" stroke="${E.irisLine}" stroke-width="1.1"/>
-    <path d="${ch_rib(lidPts,()=>h*.3,-1)}" fill="${E.lidSh}" opacity=".5"/>
+    <path d="${ch_rib(lidPts,()=>h*.2,-1)}" fill="${E.lidSh}" opacity=".36"/>
     <ellipse cx="${ch_n(ix-irx*.34)}" cy="${ch_n(iy-iry*.36)}" rx="${ch_n(irx*.3)}" ry="${ch_n(iry*.24)}" fill="#fff" transform="rotate(-24 ${ch_n(ix-irx*.34)} ${ch_n(iy-iry*.36)})"/>
     <circle cx="${ch_n(ix+irx*.42)}" cy="${ch_n(iy+iry*.3)}" r="${ch_n(irx*.14)}" fill="#fff" opacity=".95"/>
     ${E.kid?`<circle cx="${ch_n(ix+irx*.36)}" cy="${ch_n(iy-iry*.42)}" r="${ch_n(irx*.08)}" fill="#fff"/>`:''}
@@ -189,14 +189,14 @@ function ch_shine(sh,H){const N=28,top=[],bot=[];
   return s}
 
 // a twisted bun (two-strand twist coils) centred at (x,y)
-function ch_bun(x,y,r,H,hg,id){let s=`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${ch_n(r*.9)}" fill="${H.dk}" stroke="${H.line}" stroke-width="3"/>`;
-  for(let k=0;k<4;k++){const a0=k*Math.PI/2-.5,pts=[];for(let i=0;i<=22;i++){const t=i/22,a=a0+t*3.6,rr=r*(.92-.62*t);pts.push([x+Math.cos(a)*rr,y+Math.sin(a)*rr*.9])}
-    const rib=ch_rib(pts,t=>r*(.42-.26*t));
-    s+=`<path d="${rib}" fill="${hg}" stroke="${H.line}" stroke-width="1.3" stroke-linejoin="round"/>`;
-    // twist ridges across the coil
-    for(let i=2;i<21;i+=3){const p=pts[i],q=pts[i+1],dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy)||1,w=r*(.42-.26*i/22)*.42;
-      s+=`<path d="M${ch_n(p[0]-dy/l*w+dx/l*1.5)} ${ch_n(p[1]+dx/l*w+dy/l*1.5)} L${ch_n(p[0]+dy/l*w-dx/l*1.5)} ${ch_n(p[1]-dx/l*w-dy/l*1.5)}" stroke="${H.sh}" stroke-width="1.2" stroke-linecap="round" opacity=".9"/>`}
-    s+=`<path d="${ch_rib(ch_sub(pts,.05,.4),ch_swell(1.8,.2))}" fill="${H.hi}" opacity="${k<2?.85:.45}"/>`}
+function ch_bun(x,y,r,H,hg,id){let c='';const n=13;
+  for(let i=0;i<n;i++){const a=i/n*Math.PI*2+.2,rr=r*(.84+.06*Math.sin(i*2.7));c+=`<circle cx="${ch_n(x+Math.cos(a)*rr)}" cy="${ch_n(y+Math.sin(a)*rr*.86)}" r="${ch_n(r*(.3+.05*Math.cos(i*1.9)))}"/>`}
+  c+=`<ellipse cx="${x}" cy="${y}" rx="${r*.9}" ry="${ch_n(r*.8)}"/>`;
+  let s=`<g fill="${H.line}" stroke="${H.line}" stroke-width="3.4">${c}</g><g fill="${hg}">${c}</g>`;
+  // coil texture: small curls, darker toward the lower right, lighter at the upper left
+  for(let i=0;i<22;i++){const a=i*2.39996,rr=r*.95*Math.sqrt((i+.5)/22),cx=x+Math.cos(a)*rr,cy=y+Math.sin(a)*rr*.86,lit=(cx-x)+(cy-y)<-r*.25;
+    s+=`<path d="M${ch_n(cx-2.6)} ${ch_n(cy+1.2)} Q${ch_n(cx-2.4)} ${ch_n(cy-2.6)} ${ch_n(cx+.6)} ${ch_n(cy-2.2)} Q${ch_n(cx+3)} ${ch_n(cy-1)} ${ch_n(cx+1.6)} ${ch_n(cy+1.4)}" stroke="${lit?H.hi:H.sh}" stroke-width="${lit?1.5:1.4}" fill="none" stroke-linecap="round" opacity="${lit?.75:.85}"/>`}
+  s+=`<path d="M${ch_n(x-r*.62)} ${ch_n(y-r*.36)} Q${ch_n(x-r*.1)} ${ch_n(y-r*.92)} ${ch_n(x+r*.5)} ${ch_n(y-r*.5)}" stroke="${H.hi}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>`;
   return s}
 
 // ---------- outfits (inside .p-body) ----------
@@ -296,9 +296,9 @@ function personSVG(o){o=o||{};
   const id='ch'+(++CH_N),st=({buzz:'short'})[o.hairStyle]||o.hairStyle||'short',kid=o.age==='kid';
   const masc=o.masc!=null?!!o.masc:(st==='short'&&!kid),build=kid?'K':masc?'M':'F',G=CH_FACE[build];
   const md=CH_MOODS[o.mood]||CH_MOODS.smile,sk=ch_skinPal(o.skin||'#f2cdb4'),H=ch_hairPal(o.hair||'#2a211c'),HS=ch_hairStyle(st,G);
-  const iris=o.eye||'#6b4330',elder=st==='elder';
+  const iris=o.eye||'#7a4a2e',elder=st==='elder';
   const E={ew:G.ew,eh:elder?G.eh*.82:G.eh,irx:G.irx,iry:G.iry,lash:G.lash,wing:G.wing,brow:G.brow,kid,lid:md.lid,look:md.look||[0,0],worry:md.worry,tear:md.fx==='tear',
-    lashC:ch_mix(H.dk,'#1a0810',.5),skinLine:sk.line,white:'#fffdfb',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
+    lashC:ch_mix(H.dk,'#1a0810',.5),skinLine:sk.line,white:'#ffffff',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
   const ey=G.ey,ex=G.ex,browY=ey-E.eh/2+G.by,browC=ch_mix(H.dk,sk.line,.3);
   const bs=CH_BROWS[md.brow],bL=Array.isArray(bs[0])?bs[0]:bs,bR=Array.isArray(bs[0])?bs[1]:bs;
   const brows=ch_brow(150-ex,browY,-1,bL,E,browC)+ch_brow(150+ex,browY,1,bR,E,browC);
@@ -312,16 +312,19 @@ function personSVG(o){o=o||{};
     clumps+=`<path d="${c.d}" fill="${fill}"/>`;
     const mid=[[(c.L[0]+c.R[0])/2,(c.L[1]+c.R[1])/2],[(c.a[2][0]+c.b[1][0])/2,(c.a[2][1]+c.b[1][1])/2],c.T];
     clumps+=`<path d="${ch_rib(ch_sub(ch_bz(mid,12),.3,.88),ch_swell(1.2,.1))}" fill="${H.sh}" opacity=".75"/>`;
+    {const A=ch_bz(c.a,14),Bv=ch_bz(c.b,14).reverse();for(const [f,col,op] of [[.26,H.sh,.6],[.74,H.hi,.32]]){const pts=A.map((p,k)=>[p[0]*(1-f)+Bv[k][0]*f,p[1]*(1-f)+Bv[k][1]*f]);
+      clumps+=`<path d="${ch_rib(ch_sub(pts,.35,.92),ch_swell(.8,.05))}" fill="${col}" opacity="${op}"/>`}}
     clumps+=`<path d="${ch_rib(ch_sub(ch_bz(c.a,14),.42,1),ch_tap(.2,1.6,.5))}" fill="${H.line}"/><path d="${ch_rib(ch_sub(ch_bz(c.b,14),0,.58),ch_tap(.5,1.6,.2))}" fill="${H.line}"/>`});
   const hairClip=`<clipPath id="${id}hc">${hairShapes.map(d=>`<path d="${d}"/>`).join('')}</clipPath>`;
-  const shine=`<g clip-path="url(#${id}hc)">${ch_shine(HS.shine,H)}</g>`;
+  const rim=ch_chain([[[96,128],[92,96],[104,58],[136,42]]],16);
+  const shine=`<g clip-path="url(#${id}hc)">${ch_shine(HS.shine,H)}<path d="${ch_rib(rim,ch_swell(3.4,.4))}" fill="${H.hi}" opacity=".42" transform="translate(3 2)"/></g>`;
   let extraBack='',extraFront='';
   if(HS.bun){extraBack+=ch_bun(150,24,27,H,hg,id);
-    const td=ch_chain([[[101,100],[93,110],[105,118],[98,128]],[[98,128],[91,138],[103,146],[97,158]]],10);
-    extraFront+=`<path d="${ch_rib(td,ch_tap(3.6,2.8,.8))}" fill="${H.line}"/><path d="${ch_rib(td,ch_tap(2.2,1.6,.3))}" fill="${H.base}"/>`}
+    const td=ch_chain([[[102,98],[92,106],[96,116],[103,118]],[[103,118],[109,120],[103,132],[96,132]],[[96,132],[89,132],[92,146],[99,148]],[[99,148],[104,150],[101,160],[96,162]]],8);
+    extraFront+=`<path d="${ch_rib(td,ch_tap(4.6,3.8,1.2))}" fill="${H.line}"/><path d="${ch_rib(td,ch_tap(3,2.4,.4))}" fill="${H.base}"/><path d="${ch_rib(ch_sub(td,.05,.6),ch_swell(1,.1))}" fill="${H.hi}" opacity=".7" transform="translate(-.6 -.4)"/>`}
   if(HS.combed)extraFront+=[[108,96],[116,86],[126,80],[100,112]].map(([x,y])=>`<path d="${ch_rib(ch_bz([[x,y],[x+6,y-22],[124+(x-110)*.2,46]],10),ch_swell(1.2,.1))}" fill="${H.sh}" opacity=".8"/>`).join('');
   if(HS.ahoge){const ah=ch_bz([[146,44],[144,24],[160,14],[168,24]],14);extraFront+=`<path d="${ch_rib(ah,ch_tap(4.2,3,.9))}" fill="${H.line}"/><path d="${ch_rib(ah,ch_tap(2.6,1.6,.2))}" fill="${H.base}"/>`}
-  if(HS.silver)extraFront+=`<path d="M97 112 Q98 124 99 136 M100 114 Q101 124 101 132 M203 112 Q202 124 201 136" stroke="#d6d2e2" stroke-width="1" fill="none" opacity=".75" stroke-linecap="round"/>`;
+  if(HS.silver)extraFront+=`<path d="M95 104 Q95 114 97 124 M201 102 Q204 112 204 122" stroke="#c9c6d6" stroke-width=".9" fill="none" opacity=".55" stroke-linecap="round"/>`;
   if(st==='braids'){const c1=o.clip||'#ff7a6b',cd=ch_mix(c1,'#2a0a10',.5);
     extraFront+=`<g transform="rotate(-28 192 88)"><rect x="180" y="84" width="24" height="6" rx="3" fill="${c1}" stroke="${cd}" stroke-width="1.2"/><rect x="183" y="85.4" width="9" height="1.6" rx=".8" fill="#fff" opacity=".7"/></g><g transform="rotate(-28 197 100)"><rect x="185" y="96" width="24" height="6" rx="3" fill="${ch_mix(c1,'#ffd45c',.45)}" stroke="${cd}" stroke-width="1.2"/></g>`}
   if(HS.curly){for(let i=0;i<9;i++){const a=(-170+i*20)*Math.PI/180,x=150+Math.cos(a)*62,y=100+Math.sin(a)*62;extraFront+=`<path d="M${ch_n(x-4)} ${ch_n(y+2)} Q${ch_n(x)} ${ch_n(y-4)} ${ch_n(x+4)} ${ch_n(y+2)}" stroke="${H.sh}" stroke-width="1.5" fill="none" opacity=".8"/>`}}
@@ -332,7 +335,7 @@ function personSVG(o){o=o||{};
      <path d="M${R-1} 96 C${R+1} 124 ${R-3} 148 ${R-12} 166 C${R-20} 180 ${R-34} 190 ${R-50} 194 L${R+10} 200 L${R+10} 90Z" fill="${sk.sh}"/>
      <path d="M${R-6} 104 C${R-6} 128 ${R-9} 146 ${R-16} 160 C${R-22} 172 ${R-30} 180 ${R-38} 186 C${R-26} 182 ${R-16} 172 ${R-10} 160 C${R-4} 146 ${R-2} 126 ${R-2} 104Z" fill="${sk.sh}"/>
      ${build!=='K'?`<path d="M${150-ex+12} ${ey-12} C${150-ex+15} ${ey-6} ${150-ex+16} ${ey-1} ${150-ex+15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.2" fill="none" opacity=".7"/><path d="M${150+ex-12} ${ey-12} C${150+ex-15} ${ey-6} ${150+ex-16} ${ey-1} ${150+ex-15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.6" fill="none" opacity=".9"/>`:''}
-     ${build==='M'?`<path d="M${R-14} 156 C${R-22} 172 ${R-36} 184 ${R-52} 190" stroke="${sk.sh}" stroke-width="5" fill="none" opacity=".6"/>`:''}</g>`;
+</g>`;
   const ny=G.ny,my=G.my,big=build==='M';
   const nose=`<path d="${ch_rib(ch_bz([[153.5,ny-(big?26:20)],[155.5,ny-10],[155.2,ny-2]],8),ch_tap(.4,big?1.8:1.3,.6))}" fill="${sk.sh}"/>
     <path d="M153 ${ny-4} Q158 ${ny-.5} 155.4 ${ny+3.4} Q153.4 ${ny+1.4} 151.6 ${ny+1.2}Z" fill="${sk.sh}"/>
@@ -342,7 +345,7 @@ function personSVG(o){o=o||{};
   const closed=md.mouth!=='happy'&&md.mouth!=='o';
   const lipSh=(closed?`<path d="M145 ${my+8} Q150 ${my+10} 155 ${my+8} Q150 ${my+8.8} 145 ${my+8}Z" fill="${sk.sh}" stroke="${sk.sh}" stroke-width="1.4"/>`:'')+
     (build==='F'&&closed?`<path d="M141.5 ${my+1.8} Q150 ${my+8.4} 158.5 ${my+1.8} Q150 ${my+5} 141.5 ${my+1.8}Z" fill="${sk.lip}" opacity=".8"/><ellipse cx="147" cy="${my+4.6}" rx="2.2" ry=".9" fill="#fff" opacity=".3"/>`:'');
-  const blushOp=(md.fx==='sparkle'?.75:.5)*(kid?1.15:build==='M'?.45:.75);
+  const blushOp=(md.fx==='sparkle'?.75:.5)*(kid?1.15:build==='M'?.45:.75)*(ch_lum(sk.base)<.12?.6:1);
   const blush=`<ellipse cx="${150-ex-4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/><ellipse cx="${150+ex+4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/>`+
     (kid?[-1,1].map(s=>[0,1,2].map(j=>`<path d="M${ch_n(150+s*(ex+4)-6+j*5)} ${ey+22} l3 -5" stroke="${sk.blush}" stroke-width="1.1" opacity=".55" stroke-linecap="round"/>`).join('')).join(''):'');
   const gl=o.glasses?(()=>{const fc=o.frame||'#5a2a3c',x1=150-ex,x2=150+ex,y=ey;
@@ -360,7 +363,7 @@ function personSVG(o){o=o||{};
   if(md.fx==='tear')fx=`<path d="M${150-ex-12} ${ey+8} C${150-ex-15} ${ey+15} ${150-ex-16} ${ey+19} ${150-ex-14} ${ey+22} C${150-ex-12} ${ey+24.5} ${150-ex-9} ${ey+23} ${150-ex-9.5} ${ey+19.5} C${150-ex-10} ${ey+16} ${150-ex-11} ${ey+12} ${150-ex-12} ${ey+8}Z" fill="#cdeeff" stroke="#5aa9e6" stroke-width="1.2"/>`;
   if(md.fx==='pop')fx=`<path d="M218 58 L228 46 M226 70 L240 64 M82 58 L72 46" stroke="${sk.line}" stroke-width="2.6" stroke-linecap="round"/>`;
   if(md.fx==='dots')fx=`<circle cx="222" cy="66" r="3.2" fill="#fff" stroke="${sk.line}" stroke-width="1.2" class="thinkdot"/><circle cx="231" cy="53" r="4.4" fill="#fff" stroke="${sk.line}" stroke-width="1.2" class="thinkdot d2"/><circle cx="241" cy="38" r="5.8" fill="#fff" stroke="${sk.line}" stroke-width="1.2" class="thinkdot"/>`;
-  const defs=`<defs><linearGradient id="${id}i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch_mix(iris,'#0a0410',.62)}"/><stop offset=".42" stop-color="${ch_mix(iris,'#0a0410',.2)}"/><stop offset=".78" stop-color="${iris}"/><stop offset="1" stop-color="${ch_mix(iris,'#ffd9a8',.5)}"/></linearGradient>
+  const defs=`<defs><linearGradient id="${id}i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch_mix(iris,'#0a0410',.55)}"/><stop offset=".38" stop-color="${ch_mix(iris,'#0a0410',.12)}"/><stop offset=".72" stop-color="${ch_mix(iris,'#ffb070',.12)}"/><stop offset="1" stop-color="${ch_mix(iris,'#ffe2b8',.6)}"/></linearGradient>
     <linearGradient id="${id}hg" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="${kid?330:220}"><stop offset="0" stop-color="${H.top}"/><stop offset=".3" stop-color="${H.base}"/><stop offset="1" stop-color="${H.sh}"/></linearGradient>
     <linearGradient id="${id}hs" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="220"><stop offset="0" stop-color="${H.base}"/><stop offset="1" stop-color="${H.dk}"/></linearGradient>
     <radialGradient id="${id}b"><stop offset="0" stop-color="${sk.blush}"/><stop offset="1" stop-color="${sk.blush}" stop-opacity="0"/></radialGradient>

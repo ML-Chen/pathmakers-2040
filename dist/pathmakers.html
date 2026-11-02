@@ -895,10 +895,10 @@ function ch_eye(cx,cy,o,E,id,k){
   let s=`<clipPath id="${id}e${k}"><path d="${white}"/></clipPath><path d="${white}" fill="${E.white}"/>
    <g clip-path="url(#${id}e${k})">
     <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy)}" rx="${ch_n(irx)}" ry="${ch_n(iry)}" fill="url(#${id}i)"/>
-    <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy+iry*.5)}" rx="${ch_n(irx*.66)}" ry="${ch_n(iry*.34)}" fill="${E.irisGlow}" opacity=".6"/>
+    <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy+iry*.5)}" rx="${ch_n(irx*.66)}" ry="${ch_n(iry*.34)}" fill="${E.irisGlow}" opacity=".8"/>
     <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy-iry*.02)}" rx="${ch_n(irx*(E.lid==='wide'?.3:.44))}" ry="${ch_n(iry*(E.lid==='wide'?.32:.48))}" fill="${E.pupil}"/>
     <ellipse cx="${ch_n(ix)}" cy="${ch_n(iy)}" rx="${ch_n(irx)}" ry="${ch_n(iry)}" fill="none" stroke="${E.irisLine}" stroke-width="1.1"/>
-    <path d="${ch_rib(lidPts,()=>h*.3,-1)}" fill="${E.lidSh}" opacity=".5"/>
+    <path d="${ch_rib(lidPts,()=>h*.2,-1)}" fill="${E.lidSh}" opacity=".36"/>
     <ellipse cx="${ch_n(ix-irx*.34)}" cy="${ch_n(iy-iry*.36)}" rx="${ch_n(irx*.3)}" ry="${ch_n(iry*.24)}" fill="#fff" transform="rotate(-24 ${ch_n(ix-irx*.34)} ${ch_n(iy-iry*.36)})"/>
     <circle cx="${ch_n(ix+irx*.42)}" cy="${ch_n(iy+iry*.3)}" r="${ch_n(irx*.14)}" fill="#fff" opacity=".95"/>
     ${E.kid?`<circle cx="${ch_n(ix+irx*.36)}" cy="${ch_n(iy-iry*.42)}" r="${ch_n(irx*.08)}" fill="#fff"/>`:''}
@@ -1000,14 +1000,14 @@ function ch_shine(sh,H){const N=28,top=[],bot=[];
   return s}
 
 // a twisted bun (two-strand twist coils) centred at (x,y)
-function ch_bun(x,y,r,H,hg,id){let s=`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${ch_n(r*.9)}" fill="${H.dk}" stroke="${H.line}" stroke-width="3"/>`;
-  for(let k=0;k<4;k++){const a0=k*Math.PI/2-.5,pts=[];for(let i=0;i<=22;i++){const t=i/22,a=a0+t*3.6,rr=r*(.92-.62*t);pts.push([x+Math.cos(a)*rr,y+Math.sin(a)*rr*.9])}
-    const rib=ch_rib(pts,t=>r*(.42-.26*t));
-    s+=`<path d="${rib}" fill="${hg}" stroke="${H.line}" stroke-width="1.3" stroke-linejoin="round"/>`;
-    // twist ridges across the coil
-    for(let i=2;i<21;i+=3){const p=pts[i],q=pts[i+1],dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy)||1,w=r*(.42-.26*i/22)*.42;
-      s+=`<path d="M${ch_n(p[0]-dy/l*w+dx/l*1.5)} ${ch_n(p[1]+dx/l*w+dy/l*1.5)} L${ch_n(p[0]+dy/l*w-dx/l*1.5)} ${ch_n(p[1]-dx/l*w-dy/l*1.5)}" stroke="${H.sh}" stroke-width="1.2" stroke-linecap="round" opacity=".9"/>`}
-    s+=`<path d="${ch_rib(ch_sub(pts,.05,.4),ch_swell(1.8,.2))}" fill="${H.hi}" opacity="${k<2?.85:.45}"/>`}
+function ch_bun(x,y,r,H,hg,id){let c='';const n=13;
+  for(let i=0;i<n;i++){const a=i/n*Math.PI*2+.2,rr=r*(.84+.06*Math.sin(i*2.7));c+=`<circle cx="${ch_n(x+Math.cos(a)*rr)}" cy="${ch_n(y+Math.sin(a)*rr*.86)}" r="${ch_n(r*(.3+.05*Math.cos(i*1.9)))}"/>`}
+  c+=`<ellipse cx="${x}" cy="${y}" rx="${r*.9}" ry="${ch_n(r*.8)}"/>`;
+  let s=`<g fill="${H.line}" stroke="${H.line}" stroke-width="3.4">${c}</g><g fill="${hg}">${c}</g>`;
+  // coil texture: small curls, darker toward the lower right, lighter at the upper left
+  for(let i=0;i<22;i++){const a=i*2.39996,rr=r*.95*Math.sqrt((i+.5)/22),cx=x+Math.cos(a)*rr,cy=y+Math.sin(a)*rr*.86,lit=(cx-x)+(cy-y)<-r*.25;
+    s+=`<path d="M${ch_n(cx-2.6)} ${ch_n(cy+1.2)} Q${ch_n(cx-2.4)} ${ch_n(cy-2.6)} ${ch_n(cx+.6)} ${ch_n(cy-2.2)} Q${ch_n(cx+3)} ${ch_n(cy-1)} ${ch_n(cx+1.6)} ${ch_n(cy+1.4)}" stroke="${lit?H.hi:H.sh}" stroke-width="${lit?1.5:1.4}" fill="none" stroke-linecap="round" opacity="${lit?.75:.85}"/>`}
+  s+=`<path d="M${ch_n(x-r*.62)} ${ch_n(y-r*.36)} Q${ch_n(x-r*.1)} ${ch_n(y-r*.92)} ${ch_n(x+r*.5)} ${ch_n(y-r*.5)}" stroke="${H.hi}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>`;
   return s}
 
 // ---------- outfits (inside .p-body) ----------
@@ -1107,9 +1107,9 @@ function personSVG(o){o=o||{};
   const id='ch'+(++CH_N),st=({buzz:'short'})[o.hairStyle]||o.hairStyle||'short',kid=o.age==='kid';
   const masc=o.masc!=null?!!o.masc:(st==='short'&&!kid),build=kid?'K':masc?'M':'F',G=CH_FACE[build];
   const md=CH_MOODS[o.mood]||CH_MOODS.smile,sk=ch_skinPal(o.skin||'#f2cdb4'),H=ch_hairPal(o.hair||'#2a211c'),HS=ch_hairStyle(st,G);
-  const iris=o.eye||'#6b4330',elder=st==='elder';
+  const iris=o.eye||'#7a4a2e',elder=st==='elder';
   const E={ew:G.ew,eh:elder?G.eh*.82:G.eh,irx:G.irx,iry:G.iry,lash:G.lash,wing:G.wing,brow:G.brow,kid,lid:md.lid,look:md.look||[0,0],worry:md.worry,tear:md.fx==='tear',
-    lashC:ch_mix(H.dk,'#1a0810',.5),skinLine:sk.line,white:'#fffdfb',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
+    lashC:ch_mix(H.dk,'#1a0810',.5),skinLine:sk.line,white:'#ffffff',irisGlow:ch_mix(iris,'#ffc890',.5),pupil:ch_mix(iris,'#0a0410',.78),irisLine:ch_mix(iris,'#0a0410',.6),lidSh:ch_mix(sk.base,'#5a4a8a',.5)};
   const ey=G.ey,ex=G.ex,browY=ey-E.eh/2+G.by,browC=ch_mix(H.dk,sk.line,.3);
   const bs=CH_BROWS[md.brow],bL=Array.isArray(bs[0])?bs[0]:bs,bR=Array.isArray(bs[0])?bs[1]:bs;
   const brows=ch_brow(150-ex,browY,-1,bL,E,browC)+ch_brow(150+ex,browY,1,bR,E,browC);
@@ -1123,16 +1123,19 @@ function personSVG(o){o=o||{};
     clumps+=`<path d="${c.d}" fill="${fill}"/>`;
     const mid=[[(c.L[0]+c.R[0])/2,(c.L[1]+c.R[1])/2],[(c.a[2][0]+c.b[1][0])/2,(c.a[2][1]+c.b[1][1])/2],c.T];
     clumps+=`<path d="${ch_rib(ch_sub(ch_bz(mid,12),.3,.88),ch_swell(1.2,.1))}" fill="${H.sh}" opacity=".75"/>`;
+    {const A=ch_bz(c.a,14),Bv=ch_bz(c.b,14).reverse();for(const [f,col,op] of [[.26,H.sh,.6],[.74,H.hi,.32]]){const pts=A.map((p,k)=>[p[0]*(1-f)+Bv[k][0]*f,p[1]*(1-f)+Bv[k][1]*f]);
+      clumps+=`<path d="${ch_rib(ch_sub(pts,.35,.92),ch_swell(.8,.05))}" fill="${col}" opacity="${op}"/>`}}
     clumps+=`<path d="${ch_rib(ch_sub(ch_bz(c.a,14),.42,1),ch_tap(.2,1.6,.5))}" fill="${H.line}"/><path d="${ch_rib(ch_sub(ch_bz(c.b,14),0,.58),ch_tap(.5,1.6,.2))}" fill="${H.line}"/>`});
   const hairClip=`<clipPath id="${id}hc">${hairShapes.map(d=>`<path d="${d}"/>`).join('')}</clipPath>`;
-  const shine=`<g clip-path="url(#${id}hc)">${ch_shine(HS.shine,H)}</g>`;
+  const rim=ch_chain([[[96,128],[92,96],[104,58],[136,42]]],16);
+  const shine=`<g clip-path="url(#${id}hc)">${ch_shine(HS.shine,H)}<path d="${ch_rib(rim,ch_swell(3.4,.4))}" fill="${H.hi}" opacity=".42" transform="translate(3 2)"/></g>`;
   let extraBack='',extraFront='';
   if(HS.bun){extraBack+=ch_bun(150,24,27,H,hg,id);
-    const td=ch_chain([[[101,100],[93,110],[105,118],[98,128]],[[98,128],[91,138],[103,146],[97,158]]],10);
-    extraFront+=`<path d="${ch_rib(td,ch_tap(3.6,2.8,.8))}" fill="${H.line}"/><path d="${ch_rib(td,ch_tap(2.2,1.6,.3))}" fill="${H.base}"/>`}
+    const td=ch_chain([[[102,98],[92,106],[96,116],[103,118]],[[103,118],[109,120],[103,132],[96,132]],[[96,132],[89,132],[92,146],[99,148]],[[99,148],[104,150],[101,160],[96,162]]],8);
+    extraFront+=`<path d="${ch_rib(td,ch_tap(4.6,3.8,1.2))}" fill="${H.line}"/><path d="${ch_rib(td,ch_tap(3,2.4,.4))}" fill="${H.base}"/><path d="${ch_rib(ch_sub(td,.05,.6),ch_swell(1,.1))}" fill="${H.hi}" opacity=".7" transform="translate(-.6 -.4)"/>`}
   if(HS.combed)extraFront+=[[108,96],[116,86],[126,80],[100,112]].map(([x,y])=>`<path d="${ch_rib(ch_bz([[x,y],[x+6,y-22],[124+(x-110)*.2,46]],10),ch_swell(1.2,.1))}" fill="${H.sh}" opacity=".8"/>`).join('');
   if(HS.ahoge){const ah=ch_bz([[146,44],[144,24],[160,14],[168,24]],14);extraFront+=`<path d="${ch_rib(ah,ch_tap(4.2,3,.9))}" fill="${H.line}"/><path d="${ch_rib(ah,ch_tap(2.6,1.6,.2))}" fill="${H.base}"/>`}
-  if(HS.silver)extraFront+=`<path d="M97 112 Q98 124 99 136 M100 114 Q101 124 101 132 M203 112 Q202 124 201 136" stroke="#d6d2e2" stroke-width="1" fill="none" opacity=".75" stroke-linecap="round"/>`;
+  if(HS.silver)extraFront+=`<path d="M95 104 Q95 114 97 124 M201 102 Q204 112 204 122" stroke="#c9c6d6" stroke-width=".9" fill="none" opacity=".55" stroke-linecap="round"/>`;
   if(st==='braids'){const c1=o.clip||'#ff7a6b',cd=ch_mix(c1,'#2a0a10',.5);
     extraFront+=`<g transform="rotate(-28 192 88)"><rect x="180" y="84" width="24" height="6" rx="3" fill="${c1}" stroke="${cd}" stroke-width="1.2"/><rect x="183" y="85.4" width="9" height="1.6" rx=".8" fill="#fff" opacity=".7"/></g><g transform="rotate(-28 197 100)"><rect x="185" y="96" width="24" height="6" rx="3" fill="${ch_mix(c1,'#ffd45c',.45)}" stroke="${cd}" stroke-width="1.2"/></g>`}
   if(HS.curly){for(let i=0;i<9;i++){const a=(-170+i*20)*Math.PI/180,x=150+Math.cos(a)*62,y=100+Math.sin(a)*62;extraFront+=`<path d="M${ch_n(x-4)} ${ch_n(y+2)} Q${ch_n(x)} ${ch_n(y-4)} ${ch_n(x+4)} ${ch_n(y+2)}" stroke="${H.sh}" stroke-width="1.5" fill="none" opacity=".8"/>`}}
@@ -1143,7 +1146,7 @@ function personSVG(o){o=o||{};
      <path d="M${R-1} 96 C${R+1} 124 ${R-3} 148 ${R-12} 166 C${R-20} 180 ${R-34} 190 ${R-50} 194 L${R+10} 200 L${R+10} 90Z" fill="${sk.sh}"/>
      <path d="M${R-6} 104 C${R-6} 128 ${R-9} 146 ${R-16} 160 C${R-22} 172 ${R-30} 180 ${R-38} 186 C${R-26} 182 ${R-16} 172 ${R-10} 160 C${R-4} 146 ${R-2} 126 ${R-2} 104Z" fill="${sk.sh}"/>
      ${build!=='K'?`<path d="M${150-ex+12} ${ey-12} C${150-ex+15} ${ey-6} ${150-ex+16} ${ey-1} ${150-ex+15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.2" fill="none" opacity=".7"/><path d="M${150+ex-12} ${ey-12} C${150+ex-15} ${ey-6} ${150+ex-16} ${ey-1} ${150+ex-15} ${ey+3}" stroke="${sk.sh}" stroke-width="2.6" fill="none" opacity=".9"/>`:''}
-     ${build==='M'?`<path d="M${R-14} 156 C${R-22} 172 ${R-36} 184 ${R-52} 190" stroke="${sk.sh}" stroke-width="5" fill="none" opacity=".6"/>`:''}</g>`;
+</g>`;
   const ny=G.ny,my=G.my,big=build==='M';
   const nose=`<path d="${ch_rib(ch_bz([[153.5,ny-(big?26:20)],[155.5,ny-10],[155.2,ny-2]],8),ch_tap(.4,big?1.8:1.3,.6))}" fill="${sk.sh}"/>
     <path d="M153 ${ny-4} Q158 ${ny-.5} 155.4 ${ny+3.4} Q153.4 ${ny+1.4} 151.6 ${ny+1.2}Z" fill="${sk.sh}"/>
@@ -1153,7 +1156,7 @@ function personSVG(o){o=o||{};
   const closed=md.mouth!=='happy'&&md.mouth!=='o';
   const lipSh=(closed?`<path d="M145 ${my+8} Q150 ${my+10} 155 ${my+8} Q150 ${my+8.8} 145 ${my+8}Z" fill="${sk.sh}" stroke="${sk.sh}" stroke-width="1.4"/>`:'')+
     (build==='F'&&closed?`<path d="M141.5 ${my+1.8} Q150 ${my+8.4} 158.5 ${my+1.8} Q150 ${my+5} 141.5 ${my+1.8}Z" fill="${sk.lip}" opacity=".8"/><ellipse cx="147" cy="${my+4.6}" rx="2.2" ry=".9" fill="#fff" opacity=".3"/>`:'');
-  const blushOp=(md.fx==='sparkle'?.75:.5)*(kid?1.15:build==='M'?.45:.75);
+  const blushOp=(md.fx==='sparkle'?.75:.5)*(kid?1.15:build==='M'?.45:.75)*(ch_lum(sk.base)<.12?.6:1);
   const blush=`<ellipse cx="${150-ex-4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/><ellipse cx="${150+ex+4}" cy="${ey+19}" rx="15" ry="7" fill="url(#${id}b)" opacity="${ch_n(blushOp)}"/>`+
     (kid?[-1,1].map(s=>[0,1,2].map(j=>`<path d="M${ch_n(150+s*(ex+4)-6+j*5)} ${ey+22} l3 -5" stroke="${sk.blush}" stroke-width="1.1" opacity=".55" stroke-linecap="round"/>`).join('')).join(''):'');
   const gl=o.glasses?(()=>{const fc=o.frame||'#5a2a3c',x1=150-ex,x2=150+ex,y=ey;
@@ -1171,7 +1174,7 @@ function personSVG(o){o=o||{};
   if(md.fx==='tear')fx=`<path d="M${150-ex-12} ${ey+8} C${150-ex-15} ${ey+15} ${150-ex-16} ${ey+19} ${150-ex-14} ${ey+22} C${150-ex-12} ${ey+24.5} ${150-ex-9} ${ey+23} ${150-ex-9.5} ${ey+19.5} C${150-ex-10} ${ey+16} ${150-ex-11} ${ey+12} ${150-ex-12} ${ey+8}Z" fill="#cdeeff" stroke="#5aa9e6" stroke-width="1.2"/>`;
   if(md.fx==='pop')fx=`<path d="M218 58 L228 46 M226 70 L240 64 M82 58 L72 46" stroke="${sk.line}" stroke-width="2.6" stroke-linecap="round"/>`;
   if(md.fx==='dots')fx=`<circle cx="222" cy="66" r="3.2" fill="#fff" stroke="${sk.line}" stroke-width="1.2" class="thinkdot"/><circle cx="231" cy="53" r="4.4" fill="#fff" stroke="${sk.line}" stroke-width="1.2" class="thinkdot d2"/><circle cx="241" cy="38" r="5.8" fill="#fff" stroke="${sk.line}" stroke-width="1.2" class="thinkdot"/>`;
-  const defs=`<defs><linearGradient id="${id}i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch_mix(iris,'#0a0410',.62)}"/><stop offset=".42" stop-color="${ch_mix(iris,'#0a0410',.2)}"/><stop offset=".78" stop-color="${iris}"/><stop offset="1" stop-color="${ch_mix(iris,'#ffd9a8',.5)}"/></linearGradient>
+  const defs=`<defs><linearGradient id="${id}i" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch_mix(iris,'#0a0410',.55)}"/><stop offset=".38" stop-color="${ch_mix(iris,'#0a0410',.12)}"/><stop offset=".72" stop-color="${ch_mix(iris,'#ffb070',.12)}"/><stop offset="1" stop-color="${ch_mix(iris,'#ffe2b8',.6)}"/></linearGradient>
     <linearGradient id="${id}hg" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="${kid?330:220}"><stop offset="0" stop-color="${H.top}"/><stop offset=".3" stop-color="${H.base}"/><stop offset="1" stop-color="${H.sh}"/></linearGradient>
     <linearGradient id="${id}hs" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="220"><stop offset="0" stop-color="${H.base}"/><stop offset="1" stop-color="${H.dk}"/></linearGradient>
     <radialGradient id="${id}b"><stop offset="0" stop-color="${sk.blush}"/><stop offset="1" stop-color="${sk.blush}" stop-opacity="0"/></radialGradient>
@@ -1741,7 +1744,7 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
     var ext = Math.max(W, H * 2);
     var form = lg(g, cx - lx * ext * 0.5, cy - ly * ext * 0.35, cx + lx * ext * 0.5, cy + ly * ext * 0.35, [[0, o.shade], [0.42, o.mid], [0.78, o.lit], [1, o.lit]]);
     // soft halo, then the crisp union
-    g.globalAlpha = 0.35; g.fillStyle = form; g.beginPath();
+    g.globalAlpha = o.halo == null ? 0.35 : o.halo; g.fillStyle = form; g.beginPath();
     for (i = 0; i < P.length; i++) { p = P[i]; g.moveTo(p[0] + p[2] * 1.12, p[1]); g.arc(p[0], p[1], p[2] * 1.12, 0, TAU); }
     g.fill(); g.globalAlpha = 1; g.beginPath();
     for (i = 0; i < P.length; i++) { p = P[i]; g.moveTo(p[0] + p[2], p[1]); g.arc(p[0], p[1], p[2], 0, TAU); }
@@ -1798,16 +1801,18 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
   }
   /* volumetric foliage clump of leaf dabs: pal [deep, shadow, mid, lit, rim]; (lx,ly) unit vector toward light */
   function clump(ctx, cx, cy, R, pal, r, lx, ly, back, dens) {
+    var cv = ctx.canvas;
+    if (cv && (cx + R * 1.1 < 0 || cy + R * 1.1 < 0 || cx - R * 1.1 > cv.width || cy - R * 1.1 > cv.height)) { r(); return; } // off-canvas: skip (one draw keeps the sequence stable enough)
     ctx.fillStyle = rg(ctx, cx + lx * R * 0.3, cy + ly * R * 0.3, 0, R * 0.95, [[0, pal[1]], [0.6, pal[0]], [1, pal[0]]]);
     ctx.beginPath(); ctx.arc(cx, cy, R * 0.8, 0, TAU); ctx.fill();
-    var n = Math.min(260, Math.round((30 + R * R * 0.32) * (dens || 1))), B = [[], [], [], [], []], i, k;
+    var n = Math.min(200, Math.round((30 + R * R * 0.32) * (dens || 1))), B = [[], [], [], [], []], i, k;
     for (i = 0; i < n; i++) {
       var a = r() * TAU, rr = R * Math.sqrt(r()) * 0.98, px = cx + Math.cos(a) * rr, py = cy + Math.sin(a) * rr * 0.92;
       var nx = (px - cx) / R, ny = (py - cy) / R;
       var v = (nx * lx + ny * ly) * 0.55 - ny * 0.18 + (1 - rr / R) * 0.06 + (r() - 0.5) * 0.4 + (back ? 0.4 : 0.52);
       var b = v < 0.24 ? 0 : v < 0.44 ? 1 : v < 0.64 ? 2 : v < 0.88 ? 3 : 4;
       if (b === 4 && rr < R * 0.72) b = 3;
-      var L = R * (0.11 + r() * 0.1) * (b === 4 ? 0.7 : 1);
+      var L = R * (0.12 + r() * 0.11) * (b === 4 ? 0.7 : 1) * (n >= 200 ? 1.1 : 1);
       B[b].push([px, py, L, L * (0.28 + r() * 0.12), a + PI * 0.5 + (r() - 0.5) * 1.6]);
     }
     for (k = 0; k < 5; k++) {
@@ -1951,14 +1956,14 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
         for (j = 0; j < n3; j++) {
           var gx = f0 + r() * fw, edge = Math.min(gx - f0, f1 - gx) / fw;
           if (edge > 0.12 && amt < 0.5 && r() < 0.6) continue;
-          var gr = (0.7 + r() * (edge < 0.12 ? 1.6 : 0.9)) * s, gy = rowY - r() * gr * (edge < 0.12 ? 2.2 : 1.2);
+          var gr = (0.55 + r() * (edge < 0.12 ? 1.3 : 0.7)) * s, gy = rowY - r() * gr * (edge < 0.12 ? 2.2 : 1.2);
           var lv2 = (gx - cx) / (w * 0.5) * sunSide * 0.5 + (r() - 0.5) * 0.9 - (gy - rowY) / gr * 0.15;
           GP[lv2 < -0.35 ? 0 : lv2 < 0.05 ? 1 : lv2 < 0.4 ? 2 : 3].push([gx, gy, gr]); nb2++;
         }
         // balcony slab line under the plants
         ctx.fillStyle = T(E.lit, 0.1); ctx.globalAlpha = 0.5; ctx.fillRect(f0, rowY, fw, Math.max(0.6, 0.5 * s)); ctx.globalAlpha = 1;
       }
-      for (j = 0; j < 4; j++) { ctx.fillStyle = T(G[j]); ctx.beginPath(); GP[j].forEach(function (Q) { ctx.moveTo(Q[0] + Q[2], Q[1]); ctx.arc(Q[0], Q[1], Q[2], 0, TAU); }); ctx.fill(); }
+      for (j = 0; j < 4; j++) { ctx.fillStyle = mix(G[j], E.haze, k * 0.6); ctx.beginPath(); GP[j].forEach(function (Q) { qcirc(ctx, Q[0], Q[1], Q[2]); }); ctx.fill(); }
     }
     if (b.vgarden) {
       // a living green stripe down one face
@@ -2179,18 +2184,20 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
         for (i = 0; i < 8; i++) wisp(ctx, w * (0.05 + r() * 0.9), h * (0.06 + r() * 0.16), w * (0.3 + r() * 0.3), h * 0.007, i % 2 ? '#ffd8c0' : '#f7b8c8', 0.22, r);
         mark('glowwisp', ctx);
         // cumulus lit from below-right by the low sun
-        var cl = [[0.22, 0.165, 0.62, 0.085, 0.95], [0.84, 0.1, 0.5, 0.07, 0.9], [0.55, 0.245, 0.34, 0.04, 0.85], [0.08, 0.285, 0.3, 0.035, 0.8], [0.94, 0.255, 0.3, 0.04, 0.8], [0.5, 0.075, 0.3, 0.035, 0.7]];
+        var cl = [[0.36, 0.17, 0.62, 0.075, 1], [0.86, 0.105, 0.44, 0.06, 0.95], [0.08, 0.27, 0.3, 0.035, 0.9], [0.93, 0.255, 0.26, 0.03, 0.85]];
         for (i = 0; i < cl.length; i++) {
           var ccx = w * cl[i][0], ccy = h * cl[i][1], vx = sx - ccx, vy = (sy - ccy) * 1.6, vl = Math.sqrt(vx * vx + vy * vy) || 1;
-          cloudForm(ctx, ccx, ccy, w * cl[i][2], h * cl[i][3], r, { lit: '#ffd9a6', mid: '#e3a2b6', shade: '#8a7cb8', top: '#a99ed8', rim: '#fff1d2', al: cl[i][4], lx: vx / vl, ly: vy / vl, base: 0.5 });
+          cloudForm(ctx, ccx, ccy, w * cl[i][2], h * cl[i][3], r, { lit: '#ffdcaa', mid: '#d792ae', shade: '#6e62a6', top: '#9a8fd0', al: cl[i][4], lx: vx / vl, ly: vy / vl, base: 0.55, halo: 0.15, seam: 0.22 });
         }
+        // long gold-lit stratus streaks just above the skyline
+        for (i = 0; i < 3; i++) cloudForm(ctx, w * (0.2 + i * 0.32), h * (0.225 + i * 0.012), w * 0.5, h * 0.016, r, { lit: '#ffe6b8', mid: '#f0a8a8', shade: '#9a7cb0', al: 0.8, lx: 0.2, ly: 0.98, base: 0.8, halo: 0.2, billows: 6 });
         // low glowing haze bands near the horizon
         for (i = 0; i < 4; i++) wisp(ctx, w * (0.1 + r() * 0.8), hz - h * (0.02 + r() * 0.05), w * 0.4, h * 0.006, '#ffe0b8', 0.25, r);
         mark('sky', ctx);
         /* ---------- city across the Charles ---------- */
         var E = { s: s, W: w, vpX: w * 0.5, sunX: sx, haze: '#f2c2b4', face: '#8d86b6', pale: '#c9bfd8', lit: '#f6b991', shade: '#6c679a', rim: '#ffdcae', rimA: 0.75,
           glass: ['#a9a4d8', '#d3abc6', '#f4c2a8'], win: '#5c5a8a', winLit: '#ffd690', litP: 0.05, mull: '#4a4878', sheen: '#fff0e0',
-          green: ['#3c4a52', '#4f6450', '#6f8a58', '#a8b86a', '#ffd690'] };
+          green: ['#26323a', '#34463e', '#4a6040', '#7a8a4c', '#ffd690'] };
         // far layer: hazy towers
         var far = rng(40111);
         for (x = -w * 0.02; x < w * 1.02;) {
@@ -2655,8 +2662,8 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
       });
       rects(ctx, Math.ceil(Hc / bh), [[P.mortar, 0.22]], function (k) { return [x, top + k * bh - 0.3 * s, W, 0.5 * s, 0]; });
     } else {
-      dabs(ctx, Math.round(W * Hc / (14 * s * s)), [[P.tones[0], 0.25], [P.tones[1], 0.25], [P.tones[2], 0.2]], function () {
-        return [x + r() * W, top + r() * Hc, (2 + r() * 5) * s, (0.6 + r() * 1.2) * s, (r() * 3) | 0];
+      dabs(ctx, Math.round(W * Hc / (34 * s * s)), [[P.tones[0], 0.25], [P.tones[1], 0.25], [P.tones[2], 0.2]], function () {
+        return [x + r() * W, top + r() * Hc, (3 + r() * 6) * s, (0.8 + r() * 1.4) * s, (r() * 3) | 0];
       });
       // rusticated ashlar joints on the garden level
       rects(ctx, 12, [['rgba(40,20,10,0.35)', 1]], function (k) { var yy2 = B - gH + k * gH / 4; return yy2 < B ? [x, yy2, W, 0.7 * s, 0] : null; });
@@ -2858,7 +2865,7 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
         ctx.fillStyle = '#d6d0c4'; ctx.fillRect(0, rd1, w, L.verge - rd1);
         ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.fillRect(0, rd1, w, 0.8 * s);
         ctx.fillStyle = lg(ctx, 0, L.verge, 0, L.mall, [[0, '#5d8e3e'], [1, '#4a7a34']]); ctx.fillRect(0, L.verge, w, L.mall - L.verge);
-        grassField(ctx, w, L.verge, L.mall, 2200, [['#9ccc5c', 0.7 * s, 0.6], ['#2f5a26', 0.8 * s, 0.55], ['#cfe08a', 0.6 * s, 0.5]], r, s * 0.7, -0.1);
+        grassField(ctx, w, L.verge, L.mall, 1500, [['#9ccc5c', 0.7 * s, 0.6], ['#2f5a26', 0.8 * s, 0.55], ['#cfe08a', 0.6 * s, 0.5]], r, s * 0.7, -0.1);
         dots(ctx, 80, [['#ffffff', 0.9], ['#ffd35a', 0.9], ['#ff8aa8', 0.8]], function () { return [r() * w, lerp(L.verge + h * 0.01, L.mall, r()), (0.8 + r() * 0.8) * s, (r() * 3) | 0]; });
         // promenade: warm crushed-stone path with perspective joints
         var m0 = L.mall;
@@ -2887,9 +2894,9 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
         for (var lc = 0; lc < 4; lc++) { ctx.fillStyle = LC[lc]; ctx.globalAlpha = 0.85; ctx.beginPath(); for (i = 0; i < 18; i++) { var lxx = r() * w, lyy = lerp(m0 + h * 0.02, h, Math.pow(r(), 0.7)), ls = (2.5 + r() * 3) * s * (0.6 + (lyy - m0) / (h - m0)); lens(ctx, lxx, lyy, ls * 2, ls * 0.6, r() * TAU); } ctx.fill(); }
         ctx.restore();
         // dappled shade from the canopy above + bright sun flecks
-        for (i = 0; i < 26; i++) { var px = r() * w, py = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(px, py); ctx.scale(1, 0.35); glow(ctx, 0, 0, (20 + r() * 50) * s, '#3a3020', 0.22); ctx.restore(); }
+        for (i = 0; i < 16; i++) { var px = r() * w, py = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(px, py); ctx.scale(1, 0.35); glow(ctx, 0, 0, (26 + r() * 50) * s, '#3a3020', 0.24); ctx.restore(); }
         ctx.save(); ctx.globalCompositeOperation = 'lighter';
-        for (i = 0; i < 40; i++) { var fx2 = r() * w, fy2 = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(fx2, fy2); ctx.scale(1, 0.4); glow(ctx, 0, 0, (4 + r() * 10) * s, '#ffe6a8', 0.25); ctx.restore(); }
+        for (i = 0; i < 26; i++) { var fx2 = r() * w, fy2 = lerp(m0 + h * 0.02, h, r()); ctx.save(); ctx.translate(fx2, fy2); ctx.scale(1, 0.4); glow(ctx, 0, 0, (4 + r() * 10) * s, '#ffe6a8', 0.28); ctx.restore(); }
         ctx.restore();
         // flower beds in the bottom corners
         [[-w * 0.05, w * 0.22], [w * 0.78, w * 1.05]].forEach(function (Bd) {
@@ -3189,7 +3196,7 @@ function mini(x,y,o){o=o||{};const s=o.s||1,who=o.who,sk=o.skin||(who==='jory'?S
         [[0.15, 0.705, 0.14, 0.47, 0.17, 0.085, 60401], [0.86, 0.71, 0.86, 0.485, 0.16, 0.08, 60402]].forEach(function (T) {
           var px = w * T[0], py = h * T[1], pr = 30 * s;
           ctx.fillStyle = 'rgba(60,70,70,0.22)'; ctx.beginPath(); ctx.ellipse(px, py + 2 * s, pr * 1.25, pr * 0.28, 0, 0, TAU); ctx.fill();
-          broadleaf(ctx, { x: px, yb: py - pr * 0.6, cx: w * T[2], cy: h * T[3], rx: w * T[4], ry: h * T[5], tw: 8 * s, s: s, lx: -0.6, ly: -0.8, pal: tpal, bark: ['#c8b49a', '#8a7660', '#4a3a2c'], n: 30, edge: 16, limbs: 5, bend: 0, dens: 0.6 }, T[6]);
+          broadleaf(ctx, { x: px, yb: py - pr * 0.6, cx: w * T[2], cy: h * T[3], rx: w * T[4], ry: h * T[5], tw: 8 * s, s: s, lx: -0.6, ly: -0.8, pal: tpal, bark: ['#c8b49a', '#8a7660', '#4a3a2c'], n: 24, edge: 14, limbs: 5, bend: 0, dens: 0.5 }, T[6]);
           ctx.fillStyle = lg(ctx, px - pr, 0, px + pr, 0, [[0, '#d8dee0'], [0.35, '#ffffff'], [1, '#b8c2c6']]);
           ctx.beginPath(); ctx.moveTo(px - pr, py - pr * 0.75); ctx.lineTo(px + pr, py - pr * 0.75); ctx.lineTo(px + pr * 0.85, py); ctx.quadraticCurveTo(px, py + pr * 0.12, px - pr * 0.85, py); ctx.closePath(); ctx.fill();
           ctx.fillStyle = '#16b3a6'; ctx.fillRect(px - pr, py - pr * 0.62, pr * 2, 2 * s);
@@ -4411,11 +4418,11 @@ function renderConsent(){
     $('#cont').onclick=()=>o.good?go('memo'):renderConsent()})}
 
 // ---------- Decision memo, confidence, signature ----------
-function memoChecks(t){t=t.toLowerCase();return [
-  {ok:/pin|surg|cast|gel|bonemend|therap/.test(t),l:'Names the treatment'},
-  {ok:/because|so that|since|reason/.test(t),l:'Gives a reason'},
-  {ok:/\d|percent|%|likely|chance|sure|out of/.test(t),l:'Says how sure, with odds'},
-  {ok:/maya|she |her |recital|violin|family|dad/.test(t),l:'Includes what Maya cares about'}]}
+function memoChecks(t,ai){const s=' '+t.toLowerCase().replace(/[’']/g,"'")+' ';const A=ai||{};return [
+  {k:'treatment',ok:A.treatment??/pin|surg|cast|gel|bonemend|therap/.test(s),l:'Names the treatment'},
+  {k:'reason',ok:A.reason??/because|since|so that| so she| so her| so it|that's why|that is why|which is why|this is why|the reason|reason is|in order to| to avoid| to keep| to help| to make sure|balances|helps|means|otherwise| due to|thanks to|given that|as she|as her/.test(s),l:'Gives a reason'},
+  {k:'odds',ok:A.odds??/\d|percent|%|out of|likely|unlikely|probably|pretty sure|very sure|not sure|i'm sure|i am sure|most of the time|chance (is|of|it)|odds/.test(s),l:'Says how sure, with odds'},
+  {k:'maya',ok:A.maya??/maya|she |her |recital|violin|family|dad/.test(s),l:'Includes what Maya cares about'}]}
 function renderMemo(){
   const starters=['I recommend ','because ','The chance it heals straight is about ','Maya cares about ','We will check by '];
   screen('memo',`${scene('workbench')}${hud('Workbench · Decision')}<div class="panel-card">
@@ -4427,13 +4434,14 @@ function renderMemo(){
    <div class="row"><button class="btn ghost small" id="rev">Ask ${esc(S.byte.name)} to review</button></div>
    <div class="conf"><div class="ctl-l">How sure are you that this plan will go well?</div><input type="range" id="conf" min="0" max="4" step="1" value="${S.conf}"><div class="conf-l"><span>Coin flip</span><span>Pretty sure</span><span>Sure</span></div></div>
    <button class="btn wide" id="sign">Sign as Dr. ${esc(P())}</button></div>`);
-  wireMics();const ta=$('#memo');const upd=()=>{S.memo=ta.value;save();$('#checks').innerHTML=memoChecks(ta.value).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('')};upd();ta.oninput=upd;
+  wireMics();const ta=$('#memo');const upd=()=>{S.memo=ta.value;S.memoAI=null;save();$('#checks').innerHTML=memoChecks(ta.value).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('')};upd();ta.oninput=upd;
   $$('[data-s]').forEach(b=>b.onclick=()=>{ta.value=(ta.value&&!/\s$/.test(ta.value)?ta.value+' ':ta.value)+b.dataset.s;ta.focus();upd()});
   $('#conf').oninput=e=>{S.conf=+e.target.value;save()};
-  $('#rev').onclick=async()=>{const box=$('#review p');const ch=memoChecks(ta.value);const miss=ch.filter(c=>!c.ok).map(c=>c.l.toLowerCase());
+  $('#rev').onclick=async()=>{const box=$('#review p');const miss=memoChecks(ta.value).filter(c=>!c.ok).map(c=>c.l.toLowerCase());
     box.textContent='Reading...';const sm=await getSample();let out=null;
-    if(sm&&ta.value.trim().length>15){try{const r=await sm(`${byteContext()}\n\nThe player wrote this decision memo for Maya's treatment:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan on the Future Table: ${TX_LABEL[S.choice.tx]}${S.choice.pt?' with physical therapy':''}, recital ${S.choice.date==='fri'?'kept on Friday':'moved 3 weeks later'}.\nReview it like a kind editor in 2 or 3 short sentences: say one thing that is strong, then the single most useful improvement (a missing reason, missing odds, an overclaim, or something Maya cares about). Point out any factual mistake about the odds. Don't rewrite it for them.`,{modelTier:'quick',cache:false,onText:({text})=>{box.textContent=text}});out=r.text}catch(e){}}
-    box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what Maya cares about.')};
+    if(sm&&ta.value.trim().length>15){try{const r=await sm.json(`${byteContext()}\n\nThe player wrote this decision memo for Maya's treatment:\n"""${ta.value.slice(0,800)}"""\nTheir chosen plan: ${TX_LABEL[S.choice.tx]}${S.choice.pt?' with physical therapy':''}, recital ${S.choice.date==='fri'?'kept on Friday':'moved 3 weeks later'}.\nJudge generously, by meaning not keywords. Return JSON: {"treatment":bool (names a treatment),"reason":bool (gives any reason why, in any wording),"odds":bool (states how sure or gives odds/numbers),"maya":bool (mentions what Maya or her family care about),"feedback":"2 or 3 short kind sentences for an 8-year-old: one strength, then the single most useful improvement; point out any wrong odds; don't rewrite it"}`,{modelTier:'quick',cache:false});
+        if(r&&typeof r==='object'){S.memoAI=r;save();$('#checks').innerHTML=memoChecks(ta.value,r).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('');out=r.feedback}}catch(e){}}
+    box.textContent=out||(miss.length?`Nice start! To make it stronger, add: ${miss.join(', ')}.`:'This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what Maya cares about.');MUSIC.babble(box.textContent,'byte')};
   $('#sign').onclick=()=>{if(ta.value.trim().length<20){toast('Write at least a sentence or two first.');return}
     const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">Dr. ${esc(P())}</div><p>Signed. You are accountable for this decision.</p></div>`;document.body.appendChild(sig);
     setTimeout(()=>{sig.remove();go('reveal')},1700)}}
@@ -4464,7 +4472,7 @@ function renderDebrief(){
   const plans=[];for(const tx of['pins','cast','gel'])for(const pt of[false,true])for(const date of['fri','moved'])plans.push({tx,pt,date});
   const crit=S.criteria.filter(x=>x!=='agree');const score=p=>{const e=expectedFor(p);return crit.reduce((a,id)=>a+e(id),0)};
   const mine=score(c),best=Math.max(...plans.map(score));const fit=mine>=best-.25;
-  const memoOk=memoChecks(S.memo).filter(x=>x.ok).length>=3;
+  const memoOk=memoChecks(S.memo,S.memoAI).filter(x=>x.ok).length>=3;
   const stars=[avoidedTrap,fit,memoOk&&S.consent].filter(Boolean).length;
   const likely=(()=>{const e=expectedFor(c);const p=R.kind==='rash'?e('skin'):R.straight?e('straight'):1-e('straight');return 1-p})();
   const luck=['recital','moved','healed'].includes(R.kind)?(likely>.5?'Lucky':'As expected'):(likely<.3?'Unlucky':'As expected');
