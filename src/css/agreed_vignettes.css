@@ -1,0 +1,9 @@
+/* agreed_vignettes.css — Future Table cards for "The Helper That Said Yes" (src/viz/agreed_vignettes.js). Classes agv-. */
+.agv-tw{transform-box:fill-box;transform-origin:center;animation:agv-tw 2.2s ease-in-out infinite}
+@keyframes agv-tw{0%,100%{transform:scale(.7);opacity:.5}50%{transform:scale(1.15);opacity:1}}
+.agv-bob{animation:agv-bob 2.8s ease-in-out infinite}
+@keyframes agv-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.6px)}}
+.agv-float{animation:agv-float 3s ease-in-out infinite}
+@keyframes agv-float{0%{transform:translateY(2px);opacity:0}30%{opacity:1}100%{transform:translateY(-6px);opacity:0}}
+.agv-walk{animation:agv-walk 9s linear infinite}
+@keyframes agv-walk{from{transform:translateX(-10px)}to{transform:translateX(80px)}}

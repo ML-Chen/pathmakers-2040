@@ -1,0 +1,52 @@
+/* agreed_viz_sunny.css — Sunny the advice app (portrait + "The App That Agreed" infographics). Classes prefixed ags-. */
+.ags-spin{transform-box:fill-box;transform-origin:center;animation:agsspin 36s linear infinite}
+.ags-spin.rev{animation-direction:reverse;animation-duration:70s}
+@keyframes agsspin{to{transform:rotate(360deg)}}
+.ags-glow{transform-box:fill-box;transform-origin:center;animation:agsglow 3.2s ease-in-out infinite}
+@keyframes agsglow{50%{transform:scale(1.07);opacity:.6}}
+.ags-bob{animation:agsbob 4.4s ease-in-out infinite}
+@keyframes agsbob{50%{transform:translateY(-5px)}}
+.ags-float{animation:agsfloat 5s ease-in-out var(--d,0s) infinite both}
+@keyframes agsfloat{0%{transform:translateY(8px);opacity:0}20%,75%{opacity:1}100%{transform:translateY(-20px);opacity:0}}
+.ags-tw{transform-box:fill-box;transform-origin:center;animation:agstw 2.6s ease-in-out var(--d,0s) infinite both}
+@keyframes agstw{0%,100%{transform:scale(.55);opacity:.35}50%{transform:scale(1);opacity:1}}
+.ags-pop{transform-box:fill-box;transform-origin:50% 100%;animation:agspop 6s ease-out var(--d,0s) infinite both}
+@keyframes agspop{0%{transform:scale(0);opacity:0}6%{transform:scale(1.12);opacity:1}10%,86%{transform:scale(1);opacity:1}95%,100%{transform:scale(1);opacity:0}}
+.ags-s1,.ags-s2,.ags-s3,.ags-s4,.ags-s5{animation:agss1 8s ease-out infinite both}
+.ags-s2{animation-name:agss2}.ags-s3{animation-name:agss3}.ags-s4{animation-name:agss4}
+.ags-s5{animation-name:agss5;transform-box:fill-box;transform-origin:center}
+@keyframes agss1{0%{opacity:0;transform:translateY(6px)}5%,90%{opacity:1;transform:none}97%,100%{opacity:0}}
+@keyframes agss2{0%,13%{opacity:0;transform:translateY(6px)}18%,90%{opacity:1;transform:none}97%,100%{opacity:0}}
+@keyframes agss3{0%,30%{opacity:0;transform:translateY(6px)}35%,90%{opacity:1;transform:none}97%,100%{opacity:0}}
+@keyframes agss4{0%,43%{opacity:0;transform:translateY(6px)}48%,90%{opacity:1;transform:none}97%,100%{opacity:0}}
+@keyframes agss5{0%,60%{opacity:0;transform:scale(.4)}65%{opacity:1;transform:scale(1.2)}69%,90%{opacity:1;transform:none}97%,100%{opacity:0}}
+.ags-growy{transform-box:fill-box;transform-origin:50% 100%;animation:agsgrowy 6s ease-out var(--d,0s) infinite both}
+@keyframes agsgrowy{0%{transform:scaleY(0)}30%,92%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+.ags-growx{transform-box:fill-box;transform-origin:0 50%;animation:agsgrowx 6s ease-out var(--d,0s) infinite both}
+@keyframes agsgrowx{0%{transform:scaleX(0)}40%,92%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+.ags-scan{animation:agsscan 4s ease-in-out infinite alternate}
+@keyframes agsscan{from{transform:translate(-12px,0)}to{transform:translate(12px,5px)}}
+.ags-beam{transform-box:fill-box;transform-origin:50% 0;animation:agsbeam 2.6s ease-in-out infinite alternate}
+@keyframes agsbeam{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
+.ags-jit{transform-box:fill-box;transform-origin:center;animation:agsjit 1.3s ease-in-out infinite alternate}
+@keyframes agsjit{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
+.ags-plane{animation:agsplane 3.8s ease-in-out infinite}
+@keyframes agsplane{0%{transform:translate(0,4px);opacity:0}10%{opacity:1}60%{transform:translate(84px,-8px);opacity:1}70%,100%{transform:translate(92px,0);opacity:0}}
+.ags-shim{animation:agsshim 3.4s ease-in-out infinite}
+@keyframes agsshim{0%,35%{transform:translateX(-80px)}75%,100%{transform:translateX(80px)}}
+.ags-draw{stroke-dasharray:320;stroke-dashoffset:320;animation:agsdraw 6s ease-in-out infinite}
+@keyframes agsdraw{0%{stroke-dashoffset:320}35%,92%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+.ags-dot{animation:agsdot 6s var(--d,0s) infinite both}
+@keyframes agsdot{0%,4%{fill:#e3e7f3}9%,88%{fill:var(--c)}96%,100%{fill:#e3e7f3}}
+.ags-sway{transform-box:fill-box;transform-origin:50% 0;animation:agssway 5s ease-in-out infinite}
+@keyframes agssway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+.ags-beat{transform-box:fill-box;transform-origin:center;animation:agsbeat 4.5s ease-in-out var(--d,0s) infinite both}
+@keyframes agsbeat{0%,22%,100%{transform:scale(1)}8%{transform:scale(1.14)}}
+.ags-bright{transform-box:fill-box;transform-origin:center;animation:agsbright 4.5s ease-in-out var(--d,0s) infinite both}
+@keyframes agsbright{0%,100%{opacity:.15;transform:scale(.8)}14%{opacity:.95;transform:scale(1.18)}45%{opacity:.3;transform:scale(.9)}}
+.ags-type{animation:agstype 1.2s ease-in-out var(--d,0s) infinite both}
+@keyframes agstype{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-3px);opacity:1}}
+.ags-ring{stroke-dasharray:4 7;animation:agsring 1.2s linear infinite}
+@keyframes agsring{to{stroke-dashoffset:-11}}
+.ags-wait{transform-box:fill-box;transform-origin:center;animation:agswait 2.2s ease-in-out infinite}
+@keyframes agswait{50%{transform:scale(1.08);opacity:.55}}
