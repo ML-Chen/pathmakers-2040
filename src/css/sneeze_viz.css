@@ -1,0 +1,90 @@
+/* sneeze_viz.css — calm looping animations for the order-screening infographics (src/viz/sneeze.js).
+   Same conventions as the ig-* animations in style.css: a few seconds long, looping, --d for staggering. */
+
+/* --- harbor map --- */
+.sn-waves{animation:snwaves 9s linear infinite}@keyframes snwaves{to{transform:translateX(-64px)}}
+.sn-halo{transform-box:fill-box;transform-origin:center;animation:snhalo 3.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snhalo{0%,100%{transform:scale(.82);opacity:.18}50%{transform:scale(1.08);opacity:.42}}
+.sn-flagwave{transform-box:fill-box;transform-origin:50% 100%;animation:snflag 3.4s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snflag{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(3.5deg)}}
+
+/* --- the HOLD stamp --- */
+.sn-stamp{transform-box:fill-box;transform-origin:center;animation:snstamp 5.4s ease-out infinite}
+@keyframes snstamp{0%{transform:scale(2.1);opacity:0}6%{opacity:.5}14%{transform:scale(1);opacity:1}18%{transform:scale(1.05)}23%,88%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
+.sn-stampring{transform-box:fill-box;transform-origin:center;animation:snring 5.4s ease-out infinite;opacity:0}
+@keyframes snring{0%,10%{opacity:0;transform:scale(.85)}17%{opacity:.75;transform:scale(1)}34%,100%{opacity:0;transform:scale(1.45)}}
+
+/* --- night clock --- */
+.sn-mark{transform-box:fill-box;transform-origin:center;animation:snmark 3.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snmark{0%,100%{transform:scale(.8);opacity:.6}45%{transform:scale(1.2);opacity:1}}
+.sn-blip{animation:snblip 2.6s ease-in-out infinite;animation-delay:var(--d,0s)}@keyframes snblip{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* --- customer cards --- */
+.sn-rise{animation:snrise 6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snrise{0%{transform:translateY(9px);opacity:0}10%,88%{transform:none;opacity:1}100%{opacity:0}}
+.sn-spark{transform-box:fill-box;transform-origin:center;animation:snspark 3.4s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snspark{0%,100%{transform:scale(.55) rotate(-12deg);opacity:.45}50%{transform:scale(1.1) rotate(10deg);opacity:1}}
+
+/* --- one packet split across shops --- */
+.sn-piece{animation:snpiece 7.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snpiece{0%,10%{transform:translate(0,0)}52%,76%{transform:translate(var(--dx),var(--dy))}100%{transform:translate(0,0)}}
+.sn-dash{stroke-dasharray:6 7;animation:sndash 1.6s linear infinite;animation-delay:var(--d,0s)}@keyframes sndash{to{stroke-dashoffset:-13}}
+
+/* --- signature check --- */
+.sn-pop{transform-box:fill-box;transform-origin:center;animation:snpop 4.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snpop{0%{transform:scale(.5);opacity:0}11%{transform:scale(1.12);opacity:1}17%,86%{transform:scale(1);opacity:1}100%{opacity:0}}
+.sn-sweep{animation:snsweep 7.6s ease-in-out infinite}
+@keyframes snsweep{0%,6%{transform:translateX(46px)}47%,53%{transform:translateX(240px)}94%,100%{transform:translateX(46px)}}
+
+/* --- second opinion from a separate auditor --- */
+.sn-row{animation:snrow 2.8s ease-in-out infinite}@keyframes snrow{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* --- rooftop sensors on standby --- */
+.sn-breathe{transform-box:fill-box;transform-origin:center;animation:snbreathe 4.4s ease-out infinite;animation-delay:var(--d,0s)}
+@keyframes snbreathe{0%{transform:scale(.3);opacity:0}18%{opacity:.75}60%,100%{transform:scale(1);opacity:0}}
+
+/* --- fast supply line --- */
+.sn-roll{animation:snroll 4.6s linear infinite;animation-delay:var(--d,0s)}
+@keyframes snroll{0%{transform:translateX(16px);opacity:0}7%{opacity:1}90%{opacity:1}100%{transform:translateX(196px);opacity:0}}
+.sn-count{transform-box:fill-box;transform-origin:center;animation:sncount 4.5s ease-out infinite;animation-delay:var(--d,0s);opacity:0}
+@keyframes sncount{0%{opacity:0;transform:translateY(7px)}5%,28%{opacity:1;transform:none}34%,100%{opacity:0;transform:translateY(-5px)}}
+
+/* --- layers: an attempt stopped at a shield --- */
+.sn-try{animation:sntry 4.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes sntry{0%{transform:translateX(0);opacity:0}7%{opacity:1}40%{transform:translateX(var(--dx))}45%{transform:translateX(calc(var(--dx) - 5px))}50%,74%{transform:translateX(var(--dx))}88%,100%{transform:translateX(var(--dx));opacity:0}}
+.sn-ping{transform-box:fill-box;transform-origin:center;animation:snping 4.6s ease-out infinite;animation-delay:var(--d,0s);opacity:0}
+@keyframes snping{0%,36%{opacity:0;transform:scale(.55)}44%{opacity:.9;transform:scale(1)}62%,100%{opacity:0;transform:scale(1.5)}}
+
+/* --- queue held, honest orders flowing --- */
+.sn-flow{animation:snflow 4.8s linear infinite;animation-delay:var(--d,0s)}
+@keyframes snflow{0%{transform:translateX(34px);opacity:0}8%{opacity:1}88%{opacity:1}100%{transform:translateX(352px);opacity:0}}
+.sn-queue{animation:snqueue 4s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes snqueue{0%,100%{transform:translateX(0)}45%{transform:translateX(3px)}}
+.sn-lockdrop{transform-box:fill-box;transform-origin:center;animation:snlock 6s ease-out infinite}
+@keyframes snlock{0%{transform:translateY(-46px);opacity:0}8%{opacity:1}18%{transform:translateY(0)}24%{transform:translateY(-5px)}31%,92%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:0}}
+
+/* --- 120x90 story vignettes --- */
+.sn-vtick{transform-box:fill-box;transform-origin:center;animation:snpop 4.4s ease-in-out infinite;animation-delay:var(--d,0s)}
+.sn-vslip{animation:snvslip 5.6s ease-in-out infinite}
+@keyframes snvslip{0%{transform:translate(16px,51px);opacity:0}8%{opacity:1}50%{transform:translate(62px,51px)}56%{transform:translate(57px,51px)}62%,84%{transform:translate(62px,51px);opacity:1}96%,100%{transform:translate(62px,51px);opacity:0}}
+.sn-vshadow{animation:snvshadow 6.4s ease-in-out infinite}
+@keyframes snvshadow{0%,12%{transform:translateX(0);opacity:.95}70%{transform:translateX(42px);opacity:0}100%{transform:translateX(42px);opacity:0}}
+.sn-vwait{transform-box:fill-box;transform-origin:50% 100%;animation:snvwait 3.6s ease-in-out infinite}
+@keyframes snvwait{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.6px)}}
+.sn-vq{animation:snblip 2.8s ease-in-out infinite;animation-delay:var(--d,0s)}
+.sn-vhand{transform-box:fill-box;transform-origin:50% 100%;animation:snvhand 6s ease-in-out infinite}
+@keyframes snvhand{0%{transform:rotate(292deg)}55%,100%{transform:rotate(360deg)}}
+
+/* --- the reader: orders travelling along the belt, and the scan line --- */
+.sn-belt{animation:snbelt 4.8s linear infinite;animation-delay:var(--d,0s)}
+@keyframes snbelt{0%{transform:translateX(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(348px);opacity:0}}
+.sn-scan{animation:snscan 3.2s ease-in-out infinite}
+@keyframes snscan{0%,100%{transform:translateY(0)}50%{transform:translateY(42px)}}
+
+/* --- a guess against evidence --- */
+.sn-tip{animation:sntip 6.4s ease-in-out infinite}
+@keyframes sntip{0%,10%{transform:rotate(0deg)}38%,78%{transform:rotate(7deg)}96%,100%{transform:rotate(0deg)}}
+
+/* --- cleverness leaning on a door that will not open --- */
+.sn-lean{transform-box:fill-box;transform-origin:50% 100%;animation:snlean 6.6s ease-in-out infinite}
+@keyframes snlean{0%,8%{transform:translateX(0) skewX(0deg)}40%,58%{transform:translateX(16px) skewX(5deg)}90%,100%{transform:translateX(0) skewX(0deg)}}
