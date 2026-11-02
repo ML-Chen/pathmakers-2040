@@ -33,6 +33,9 @@ These notes record what the family asked for while playing builds, and the decis
 - The consent screen includes a plan picker, so the player explains the plan they actually chose rather than whatever was last on the table.
 - The written decision is checked generously: any reason in any wording counts as a reason ("Oh come on, I gave a reason" was a fair complaint about keyword matching). When the artifact's AI is available, the check grades by meaning.
 - The game teaches empathy and consent through what characters say back, not through lectures.
+- **Remembering people is conversation, not a quiz (Nov 2).** "What song do I play on Fridays?" felt unnatural. A character starts a story and trails off ("Someone knocked the first-aid box over at 3 a.m...."), and the player jumps in ("Was it Bandage?").
+- **Choices can't be gamed (Nov 2).** The kind or right answer must not always be first (the engine now mixes choice order with `mixIdx`) and must not be the longest. Wrong answers sound reasonable and are about as long.
+- **Goals: pick 1 to 3.** Forcing two goals made players pick one they didn't care about and then lose a star for it.
 
 ## Characters and art
 
@@ -43,6 +46,8 @@ These notes record what the family asked for while playing builds, and the decis
 - Painted backgrounds should be at least as good as the family's Couchcatch game. The Boston river reflection at night set the bar.
 - No clutter: no explanatory subtitles, eyebrow text, disclaimers on the title screen, or instructions like "Pick a made-up name."
 - Scenes should feel alive: props jiggle when tapped, Byte can be petted, and passers-by say things.
+- **Screens fit without scrolling** where possible, especially conversations: the portrait shrinks to make room for the line and its choices.
+- **Autosave resumes exactly** where the player left off in every unfinished mission.
 
 ## Voices and sound
 
