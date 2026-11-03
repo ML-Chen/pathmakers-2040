@@ -151,23 +151,23 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
   truth(){return true},knows(){return !!S.told},
   vignette(kind){return typeof HIRED_VIG!=='undefined'&&HIRED_VIG[kind]?HIRED_VIG[kind]():vignette(kind)},
   why(c){const o=this.outcomes(c,this.knows());const re=Math.round(100*o.filter(x=>x.kind==='reroll').reduce((a,x)=>a+x.p,0));
-    const boot=c.prot==='boot'&&c.sat==='play'?'Nobody can play soccer in a walking boot, so this plan means sitting out. ':'';
+    const boot=c.prot==='boot'&&c.sat==='play'?T('Nobody can play soccer in a walking boot, so this plan means sitting out. '):'';
     const play=c.sat==='play'&&c.prot!=='boot';
-    return `${boot}<b>${this.planName(c)}:</b> about ${re} in 100 kids roll the ankle again. ${play?(S.told?'Because Ari hides pain, he might not stop playing when it hurts, so I raised the risk.':'That forecast assumes he stops playing when it hurts.'):'Resting lets the ligament heal before the playoffs.'}`},
+    return T('{boot}<b>{plan}:</b> about {re} in 100 kids roll the ankle again. {tail}',{boot,plan:T(this.planName(c)),re,tail:T(play?(S.told?'Because Ari hides pain, he might not stop playing when it hurts, so I raised the risk.':'That forecast assumes he stops playing when it hurts.'):'Resting lets the ligament heal before the playoffs.')})},
   whyGuide(c){return null},
   consent:{left:'abena',right:'ari',title:'Ari and his grandma',role:'Patient and grandparent',prompt:'So can I play on Saturday or not?',replyWho:'ari',heart:'ari',scene:'hospital',place:'First-aid tent · Open House',
     opts(c,M){const o=M.outcomes(c,M.knows());const re=Math.round(100*o.filter(x=>x.kind==='reroll').reduce((a,x)=>a+x.p,0));const play=c.sat==='play'&&c.prot!=='boot';
       const what=(c.prot==='boot'?'a walking boot for about two weeks':c.prot==='brace'?'a brace':'tape')+(play?' and playing on Saturday':', and sitting out on Saturday');
       const odds=re>=40?'about half the kids who do that roll it again':re>=25?'about 3 in 10 kids who do that roll it again':re>=15?'about 2 in 10 kids who do that roll it again':re>=8?'about 1 in 10 kids who do that roll it again':'very few kids roll it again';
       const gear=c.prot==='boot'?'a walking boot for about two weeks':c.prot==='brace'?'a brace':'tape';
-      return [{t:play?`Yes, you can play on Saturday, Ari, with ${gear} on. But ${odds}, so you’d have to tell us the truth the moment it hurts. What do you two think?`:`Not this Saturday, Ari. I’d like you to rest it with ${gear}, so you’re strong for the playoffs in three weeks. ${re<=5?'Resting like that, very few kids hurt it again.':'Resting like that, only a few kids in 100 hurt it again.'} You can still sit with your team and cheer. What do you two think?`,good:true,mood:'think',
+      return [{t:play?T('Yes, you can play on Saturday, Ari, with {gear} on. But {odds}, so you’d have to tell us the truth the moment it hurts. What do you two think?',{gear:T(gear),odds:T(odds)}):T('Not this Saturday, Ari. I’d like you to rest it with {gear}, so you’re strong for the playoffs in three weeks. {rest} You can still sit with your team and cheer. What do you two think?',{gear:T(gear),rest:T(re<=5?'Resting like that, very few kids hurt it again.':'Resting like that, only a few kids in 100 hurt it again.')}),good:true,mood:'think',
           reply:play?'I promise I’ll tell the truth if it hurts. Okay, let’s do it.':'I really wanted to play... but I want to be ready for the playoffs. Okay.'},
-        {t:`Trust me, ${what} is the best plan for you. I’ve looked at all the numbers, so you two don’t need to worry about the details.`,good:false,mood:'worried',reply:'Um... okay. But what if it gets worse?'},
-        {t:'You’ll definitely be fine, Ari. Kids your age heal really fast, so nothing can go wrong with this plan!',good:false,mood:'surprised',reply:'Definitely? On the Future Table, some of the futures had my ankle getting hurt again.'}]}},
+        {t:T('Trust me, {what} is the best plan for you. I’ve looked at all the numbers, so you two don’t need to worry about the details.',{what:T(what)}),good:false,mood:'worried',reply:'Um... okay. But what if it gets worse?'},
+        {t:T('You’ll definitely be fine, Ari. Kids your age heal really fast, so nothing can go wrong with this plan!'),good:false,mood:'surprised',reply:'Definitely? On the Future Table, some of the futures had my ankle getting hurt again.'}]}},
   memo:{starters:['I recommend ','because ','The chance he rolls it again is about ','Ari cares about ','We will check by '],placeholder:'I recommend a brace and sitting out Saturday because…',
     plan:/brace|tape|boot|rest|sit|play|bench/,careLabel:'Includes what Ari cares about',care:/ari|he |his |him |soccer|game|saturday|playoff|goal|team|grandma/,signAs:'',topic:'Ari’s sprained ankle'},
   reveal:{days(c){return c.sat==='play'&&c.prot!=='boot'?4:21},who:'ari',lines:HIRED_REVEAL,mood(k){return k==='reroll'?'sad':'happy'}},
-  trap(c){const play=c.sat==='play'&&c.prot!=='boot';return {ok:S.told||!play,text:S.told?'You told '+S.byte.name+' that Ari hides pain, so the forecast was accurate.':!play?'You chose rest. Did you notice why playing was riskier for Ari? His grandma said he hides pain.':'You didn’t tell '+S.byte.name+' that Ari hides pain. Playing looked safer than it really was for him.'}},
+  trap(c){const play=c.sat==='play'&&c.prot!=='boot';return {ok:S.told||!play,text:S.told?T('You told {0} that Ari hides pain, so the forecast was accurate.',S.byte.name):!play?T('You chose rest. Did you notice why playing was riskier for Ari? His grandma said he hides pain.'):T('You didn’t tell {0} that Ari hides pain. Playing looked safer than it really was for him.',S.byte.name)}},
   byteGood:'Nice work! You listened to Ari and his grandma, and you explained your plan to them with the odds.',
   brief(){return hiredBrief()},
   canned(q){return hiredCanned(q)}
@@ -181,23 +181,23 @@ function hiredBrief(){const st=S.step||'';
   if(/h-(portfolio|interview)/.test(st))return base+'\n'+iv;
   return base}
 function hiredCanned(q){
-  if(/beat|win|how do i|what do i do|stuck|help/.test(q)){
-    if(/h-(bench|criteria|table|consent|memo)/.test(S.step))return 'Read my memo and the coach’s message, tell me anything I’m missing about Ari, pick what matters most, test plans on the Future Table, explain honestly to Ari and his grandma, then write your decision and sign it!';
-    if(S.step==='h-interview')return 'Tell real stories with details: what you chose, why, and how it turned out. Be honest, even about mistakes. And ask Dr. Reyes a good question at the end!';
-    return 'Explore the job, meet people at the open house, help them out, and remember one thing about each person. Then try the practice case!'}
-  if(/hide|pain|i'?m fine|tough/.test(q)){if(!S.told&&S.notes&&S.notes.hides){S.told=true;save();return 'Woof, that matters a lot! If Ari hides pain, he may keep playing when his ankle hurts, so telling him to stop when it hurts won’t protect him. If he plays Saturday, I now forecast that about 3 in 10 kids like him roll it again, even in a brace.'}return 'Some kids say “I’m fine” even when it hurts. If that’s Ari, playing on Saturday is riskier than my first forecast.'}
-  if(/brace/.test(q))return 'A brace is a lace-up support that stops the ankle from rolling. If Ari plays in one, about 1 in 10 kids roll it again, as long as they stop when it hurts.';
-  if(/tape/.test(q))return 'Tape helps a little, but it loosens during a game. About 2 in 10 kids who play with only tape roll it again.';
-  if(/boot/.test(q))return 'A walking boot keeps the ankle very still, so it heals safely, but it’s heavy and he can’t play soccer in it.';
-  if(/sprain|ligament|ankle/.test(q))return 'A sprain is a stretched or torn ligament, the stretchy band that holds bones together. A mild one heals in about 2 weeks. A second sprain takes about 6.';
-  if(/saturday|playoff|scrimmage/.test(q))return 'Saturday is just a friendly scrimmage. The playoffs are in 3 weeks, and Ari is their best goalkeeper. So what matters more to Ari and his grandma?';
-  if(/best|which|pick|choose|should|recommend/.test(q))return 'I can’t pick for you, but here’s the big question: what matters more to Ari, Saturday’s friendly game or being healthy for the playoffs?';
-  if(/interview|reyes/.test(q))return 'Dr. Reyes likes real stories with details and honest answers. Your Portfolio Book is full of real stories! You can practice with me first.';
-  if(/gabi|cat|bandage/.test(q))return 'Gabi is the charge nurse on the kids’ floor. Her cat is named Bandage, because he sleeps on the first-aid box!';
-  if(/kofi|robot|jupiter|planet/.test(q))return 'Kofi leads the robot crew. He names every robot after a planet. The big one is Jupiter.';
-  if(/ruth|piano|glasses/.test(q))return 'Ruth has volunteered here for twenty years. She plays “Fly Me to the Moon” on the lobby piano on Fridays.';
-  if(/portfolio/.test(q))return 'Your Portfolio Book holds your signed decisions: what you chose, why, how sure you were, and what happened. Employers in 2040 love seeing real work.';
-  if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read the research, make forecasts, and build Future Tables. You find out what matters to the people involved, and you make the final decision.`;
+  if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q)){
+    if(/h-(bench|criteria|table|consent|memo)/.test(S.step))return T('Read my memo and the coach’s message, tell me anything I’m missing about Ari, pick what matters most, test plans on the Future Table, explain honestly to Ari and his grandma, then write your decision and sign it!');
+    if(S.step==='h-interview')return T('Tell real stories with details: what you chose, why, and how it turned out. Be honest, even about mistakes. And ask Dr. Reyes a good question at the end!');
+    return T('Explore the job, meet people at the open house, help them out, and remember one thing about each person. Then try the practice case!')}
+  if(TRX(/hide|pain|i'?m fine|tough/).test(q)){if(!S.told&&S.notes&&S.notes.hides){S.told=true;save();return T('Woof, that matters a lot! If Ari hides pain, he may keep playing when his ankle hurts, so telling him to stop when it hurts won’t protect him. If he plays Saturday, I now forecast that about 3 in 10 kids like him roll it again, even in a brace.')}return T('Some kids say “I’m fine” even when it hurts. If that’s Ari, playing on Saturday is riskier than my first forecast.')}
+  if(TRX(/brace/).test(q))return T('A brace is a lace-up support that stops the ankle from rolling. If Ari plays in one, about 1 in 10 kids roll it again, as long as they stop when it hurts.');
+  if(TRX(/tape/).test(q))return T('Tape helps a little, but it loosens during a game. About 2 in 10 kids who play with only tape roll it again.');
+  if(TRX(/boot/).test(q))return T('A walking boot keeps the ankle very still, so it heals safely, but it’s heavy and he can’t play soccer in it.');
+  if(TRX(/sprain|ligament|ankle/).test(q))return T('A sprain is a stretched or torn ligament, the stretchy band that holds bones together. A mild one heals in about 2 weeks. A second sprain takes about 6.');
+  if(TRX(/saturday|playoff|scrimmage/).test(q))return T('Saturday is just a friendly scrimmage. The playoffs are in 3 weeks, and Ari is their best goalkeeper. So what matters more to Ari and his grandma?');
+  if(TRX(/best|which|pick|choose|should|recommend/).test(q))return T('I can’t pick for you, but here’s the big question: what matters more to Ari, Saturday’s friendly game or being healthy for the playoffs?');
+  if(TRX(/interview|reyes/).test(q))return T('Dr. Reyes likes real stories with details and honest answers. Your Portfolio Book is full of real stories! You can practice with me first.');
+  if(TRX(/gabi|cat|bandage/).test(q))return T('Gabi is the charge nurse on the kids’ floor. Her cat is named Bandage, because he sleeps on the first-aid box!');
+  if(TRX(/kofi|robot|jupiter|planet/).test(q))return T('Kofi leads the robot crew. He names every robot after a planet. The big one is Jupiter.');
+  if(TRX(/ruth|piano|glasses/).test(q))return T('Ruth has volunteered here for twenty years. She plays “Fly Me to the Moon” on the lobby piano on Fridays.');
+  if(TRX(/portfolio/).test(q))return T('Your Portfolio Book holds your signed decisions: what you chose, why, how sure you were, and what happened. Employers in 2040 love seeing real work.');
+  if(TRX(/who are you|what are you/).test(q))return T('I’m {0}, your AI partner! I read the research, make forecasts, and build Future Tables. You find out what matters to the people involved, and you make the final decision.',S.byte.name);
   return null}
 
 // ---------- the journey screens' content (src/career.js reads it) ----------
@@ -207,7 +207,7 @@ function hiredStory(){const p=(typeof S!=='undefined'&&S.m_hired&&S.m_hired.page
   const c=p.choice,play=c.sat==='play'&&c.prot!=='boot';const what=c.prot==='boot'?'a walking boot':c.prot==='brace'?'a brace':'tape';
   const why=p.told?'because his grandma told me he hides pain':play?'because Saturday mattered a lot to him':'because the playoffs mattered more than a friendly game';
   const out={saturday:'He played, and his ankle was fine.',reroll:'He rolled it again, so next time I’d ask more about his pain.',cheer:'He cheered from the bench and was ready for the playoffs.',boot:'He healed in the boot and was ready for the playoffs.'}[p.kind]||'';
-  return {story:`At the open house I helped Ari, a goalkeeper with a sprained ankle. I chose ${what}${c.prot==='boot'?'':play?' and playing on Saturday':' and sitting out on Saturday'}, ${why}. ${out}`.trim(),bad:p.kind==='reroll',told:!!p.told}}
+  return {story:T('At the open house I helped Ari, a goalkeeper with a sprained ankle. I chose {plan}, {why}. {out}',{plan:T(what+(c.prot==='boot'?'':play?' and playing on Saturday':' and sitting out on Saturday')),why:T(why),out:T(out)}).trim(),bad:p.kind==='reroll',told:!!p.told}}
 const HJ_GLASSES_SVG='<svg viewBox="0 0 54 30"><circle cx="13" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><circle cx="41" cy="16" r="10" fill="rgba(200,230,255,.55)" stroke="#e5484d" stroke-width="3.5"/><path d="M23 14 q4 -4 8 0" stroke="#e5484d" stroke-width="3" fill="none"/><path d="M3 12 L0 6 M51 12 L54 6" stroke="#e5484d" stroke-width="3" stroke-linecap="round"/><path d="M8 11 l4 -2" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
 const B_=t=>({who:'byte',text:t}),I_=t=>({who:'imani',text:t});
 const HIRED_JOURNEY={
@@ -279,5 +279,5 @@ const HIRED_JOURNEY={
     test:{prompt:B_('Ping! Halo says your first patient is in Room 4B tomorrow at nine. Um... where is Room 4B?'),
       opts:[{t:'Ask Gabi where Room 4B is',heart:'gabi'},{t:'Wander around until I find it',then:B_('Wandering around could take a long time. Remember the house rule about asking for help early? Let’s ask Gabi.')}],
       after:{who:'gabi',text:'Room 4B is on the third floor, past the fish tank. Thanks for asking! Asking for help early is exactly what our house rule is for.'}},
-    end:{scene:'night',place:'Home · Boston · 9:00 PM',text:H=>`You remembered ${H.remembered??0} of 3 teammates, and you learned the house rule. Tomorrow is your first shift with a real patient. Get some sleep, Doctor!`}}
+    end:{scene:'night',place:'Home · Boston · 9:00 PM',text:H=>T('You remembered {0} of 3 teammates, and you learned the house rule. Tomorrow is your first shift with a real patient. Get some sleep, Doctor!',H.remembered??0)}}
 };
