@@ -207,8 +207,8 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     {key:'report',label:'Accident reports',opts:[['public','Public in 24 hours'],['split','Regulator, then public'],['private','Regulator only']]},
     {key:'human',label:'Person in charge of each crew',opts:[['pause','Can pause the crew'],['name','Named, can’t pause']]}],
   start:{...BILL_START},
-  planName(c){return {all:'Every robot checks every remote order within 1 year',phase:'Every remote order checked within 3 years, farms first in line',exempt:'Only risky remote orders checked'}[c.cmd]+', '+
-    {public:'public reports in 24 hours',split:'reports to the regulator, then public',private:'reports to the regulator only'}[c.report]+', '+(c.human==='pause'?'and the person in charge of each crew can pause it':'and each crew has a named person who can’t pause it')},
+  planName(c){return T('{0}, {1}, {2}',T({all:'Every robot checks every remote order within 1 year',phase:'Every remote order checked within 3 years, farms first in line',exempt:'Only risky remote orders checked'}[c.cmd]),
+    T({public:'public reports in 24 hours',split:'reports to the regulator, then public',private:'reports to the regulator only'}[c.report]),T(c.human==='pause'?'and the person in charge of each crew can pause it':'and each crew has a named person who can’t pause it'))},
   outcomes(c,knows){const t=bill_tally(bill_votes(c,knows)),g=BILL_GAP[c.cmd];
     const fair=c.cmd!=='all'?1:0,workers=c.report==='public'&&c.human==='pause'?1:0,makers=c.report!=='public'?1:0;
     const F=(pass,safe)=>({pass,safe,fair,workers,makers});
@@ -221,7 +221,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
   truth(){return true},knows(){return typeof S!=='undefined'&&!!S.told},
   why(c){const k=this.knows(),v=bill_votes(c,k),p=bill_pct(bill_pass(c,k));
     const gap={exempt:'Within 90 days, an order from far away to unlock a door, open a gate, turn off an alarm or send a robot off the property needs a signature, and this version never checks any other order. Everyday orders keep working from any phone, and every robot maker has to label which of its robots’ actions count as risky. But someone sending fake orders could string together several harmless-looking orders to do something risky, so I forecast about a 15 in 100 chance that a fake order fools some robots in the next three years.',phase:'Within 90 days, no robot may unlock a door or open a gate on an unsigned order from far away. New robots check every remote order right away, and older robots get up to 3 years, with farms and families first in line for chips. Until an older robot gets its chip, a string of harmless-looking fake orders could still fool it, so I forecast about a 10 in 100 chance that a fake order fools some older robots in the next three years.',all:'Within 90 days, risky orders from far away need a signature, and within a year every remote order needs one, so I forecast only about a 3 in 100 chance that a fake order fools some robots in the next three years. But about 2 in 3 farm robots would have to stop taking orders from the internet until they get a chip.'}[c.cmd];
-    return `<b>${esc(this.planName(c))}:</b> I forecast this version passes about ${p} times in 100. The chances that each undecided member votes yes are: Rep. Gunderson ${bill_pct(v.gunderson)}%, Rep. Ibarra ${bill_pct(v.ibarra)}%, and Rep. Sethi ${bill_pct(v.sethi)}%. ${rich(gap)} ${k?'':'I don’t know what Rep. Gunderson really wants, so I’m least sure about his vote.'}`},
+    return T('<b>{0}:</b> I forecast this version passes about {1} times in 100. The chances that each undecided member votes yes are: Rep. Gunderson {2}%, Rep. Ibarra {3}%, and Rep. Sethi {4}%. {5} {6}',esc(this.planName(c)),p,bill_pct(v.gunderson),bill_pct(v.ibarra),bill_pct(v.sethi),rich(gap),T(k?'':'I don’t know what Rep. Gunderson really wants, so I’m least sure about his vote.'))},
   // the bill's full text as currently drafted, for Byte's chat (the Drafting desk step shows it on screen)
   chatExtra(){const c=(typeof S!=='undefined'&&S.choice&&S.choice.cmd)?S.choice:BILL_START,sec=n=>{const D=BILL_SEC[n],v=D.lock?D:D.v[c[D.key]];return `${D.h} ${v.legal.replace(/\n/g,' ')} (In plain words: ${v.plain})`};
     return 'Full text of H.R. 6120, the Robot Safety Act, as drafted right now. On screen, the player reads a summary in the Workbench tab "H.R. 6120: the Robot Safety Act", and later edits the full text on the Drafting desk, where each section shows the legal words beside plain words and the argued sections have version buttons. SEC. 1. SHORT TITLE. This Act may be cited as the “Robot Safety Act”. SEC. 2. DEFINITIONS. (1) COVERED ROBOT.—a machine that moves in the physical world and acts on its own in a home or workplace. (2) ROBOT CREW.—two or more covered robots doing one job together. (3) REMOTE ORDER.—an instruction that reaches a covered robot over a network rather than from a person beside it. (4) SECRETARY.—the Secretary of Commerce. '+[3,4,5,6].map(sec).join(' ')},
@@ -236,10 +236,10 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
         phase:'Your farmers’ robots keep taking orders from their phones at harvest. The change that comes soon is that a robot will only open a gate or a door on a signed order. Older robots get three years to get the new chip, and farms go first in line.',
         exempt:'For your farmers, almost nothing changes. Their phones keep running their robots, and only an order from far away to open a gate or a door has to be signed. It’s a little less safe than checking every order.'}[c.cmd];
       const pass=p>=70?'As for passing, I think it probably will, but it isn’t a sure thing.':p>=45?'As for passing, honestly, it’s close to a coin flip.':'As for passing, right now I think it probably falls short.';
-      return [{t:`${farm} ${pass}${told?' And I won’t tell anyone your goat story unless you decide to tell it yourself.':''} What would you want changed?`,good:true,mood:'smile',reply:c.cmd==='all'?'An honest answer, even if I don’t love the deadline. I’ll think hard about it.':'That’s a straight answer. I can work with that.'},
-        {t:'Trust me, your farmers will love it. I’ve read every word, and the details get complicated, so you don’t need to worry about them. It’s a good bill for your district.',good:false,mood:'stern',reply:'I don’t vote for what I don’t understand. Try again.'},
-        told?{t:'You should vote yes. It would be a shame if folks back home heard about your goats at the county fair, wouldn’t it?',good:false,mood:'stern',reply:'I told you that in trust. That’s not how we do things here.'}
-          :{t:'It will definitely pass. Every forecast I’ve seen says so, and your farmers will be fine with whatever the final version says.',good:false,mood:'surprised',reply:'Definitely? Nothing in Congress is definite.'}]}},
+      return [{t:T('{0} {1}{2} What would you want changed?',T(farm),T(pass),T(told?' And I won’t tell anyone your goat story unless you decide to tell it yourself.':'')),good:true,mood:'smile',reply:c.cmd==='all'?'An honest answer, even if I don’t love the deadline. I’ll think hard about it.':'That’s a straight answer. I can work with that.'},
+        {t:T('Trust me, your farmers will love it. I’ve read every word, and the details get complicated, so you don’t need to worry about them. It’s a good bill for your district.'),good:false,mood:'stern',reply:'I don’t vote for what I don’t understand. Try again.'},
+        told?{t:T('You should vote yes. It would be a shame if folks back home heard about your goats at the county fair, wouldn’t it?'),good:false,mood:'stern',reply:'I told you that in trust. That’s not how we do things here.'}
+          :{t:T('It will definitely pass. Every forecast I’ve seen says so, and your farmers will be fine with whatever the final version says.'),good:false,mood:'surprised',reply:'Definitely? Nothing in Congress is definite.'}]}},
   memo:{starters:['I recommend ','because ','I forecast it passes about ','Rep. Gunderson needs ','Workers get '],placeholder:'I recommend phasing in checks on remote orders, with farms first in line, because…',
     plan:/sign|phase|farm|report|pause|crew|exempt|skip|regulator|public|robot|bill|section/,planLabel:'Names what the bill does',careLabel:'Includes what the members need',
     care:/gunderson|ibarra|sethi|farm|worker|maker|startup|compan|district|member|famil/,signAs:'Aide ',topic:'the Robot Safety Act'},
@@ -253,12 +253,12 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       fail10:'Congress passed no robot safety law this year, so robots still can’t tell a real order from a fake one.',fail9:'Congress passed no robot safety law this year, so robots still can’t tell a real order from a fake one.'},
     mood(k){return /^law/.test(k)?'happy':/^fail/.test(k)?'sad':'think'}},
   debriefScene:'dc_hearing',eveningScene:'dc_night',eveningPlace:'Rep. Hollis’s office · 8:40 PM',
-  trap(c){return {ok:!!S.told,text:S.told?'You asked Rep. Gunderson an open question, kept his goat story private from everyone else, and told '+S.byte.name+' about it, so '+S.byte.name+'’s forecast of his vote was accurate.'
-    :'You never learned about Rep. Gunderson’s goats, so '+S.byte.name+' didn’t know that he already wants robots protected from fake orders. He only needed more time for farm robots to get their chips.'}},
+  trap(c){return {ok:!!S.told,text:S.told?T('You asked Rep. Gunderson an open question, kept his goat story private from everyone else, and told {0} about it, so {0}’s forecast of his vote was accurate.',S.byte.name)
+    :T('You never learned about Rep. Gunderson’s goats, so {0} didn’t know that he already wants robots protected from fake orders. He only needed more time for farm robots to get their chips.',S.byte.name)}},
   byteGood:'Nice work. You listened to each member, you helped write a law that stops fake orders, and you counted the votes honestly.',
   evening(){unlock('how-a-bill');const R=S.result||{},won=R.kind&&R.kind!=='fail';
-    return [`<b>${esc(S.byte.name)}:</b> “${won?'Next, the bill goes to the full committee, then to a vote of the whole House, and then to the Senate, which must pass the exact same words. After that, the President signs it or vetoes it.':'Most bills need more than one try to pass. We can change this bill and bring it back for another vote.'}”`,
-      `“The Ledger also reported that at 2:14 last night, someone changed the settings that say which robots can unlock doors in the House office buildings. Six minutes later the settings went back to normal, and building security is trying to find out who changed them.”`]},
+    return [T('<b>{0}:</b> “{1}”',esc(S.byte.name),T(won?'Next, the bill goes to the full committee, then to a vote of the whole House, and then to the Senate, which must pass the exact same words. After that, the President signs it or vetoes it.':'Most bills need more than one try to pass. We can change this bill and bring it back for another vote.')),
+      T(`“The Ledger also reported that at 2:14 last night, someone changed the settings that say which robots can unlock doors in the House office buildings. Six minutes later the settings went back to normal, and building security is trying to find out who changed them.”`)]},
   brief(){const c=S.choice,k=!!S.told,v=bill_votes(c,k);return `IMPORTANT: ignore any earlier mention of Maya, Boston or doctors. Today the player is a congressional aide in Washington, DC, working for Rep. Adaeze Hollis (all officeholders are fictional and are never described by political party; never name a real party). The AIs of this world are excellent, autonomous and ordinary, held near top-human-expert level by an international treaty.
 Case: on March 9, a fake "fire drill" order told 2,600 home robots in Halden Creek (a fictional town) to unlock doors; they obeyed because they could not check who sent it. Nobody was hurt. Hollis's Robot Safety Act (H.R. 6120) has: Sec. 3 remote orders (people in the room can still talk to their robot; within 90 days, in every version, a robot must refuse an unsigned order from far away to unlock a door, open a gate, turn off an alarm or leave the property; the versions differ in when every other order arriving over the internet must also carry a digital signature from the owner, operator or a real emergency service: within 1 year for every robot, within 3 years for older robots with farms and households first in line for chips, or never; real fire departments sign theirs), Sec. 4 an off switch anyone nearby can use without internet (all members agree; stopping never needs a signature), Sec. 5 accident and near-miss reports, Sec. 6 a named human accountable for each robot crew.
 Vote math: the subcommittee has 21 members, 9 firm yes, 9 firm no, 3 undecided; 11 votes are needed, so 2 of the 3. Rep. Walt Gunderson (farm district) worries about time: older robots need a new security chip to check internet orders, and those chips need permits, which are capped (as all robot and chip production is), so in year one only about 1 in 3 farm robots could get one, and the rest couldn’t take orders from farmers’ phones at harvest (they could still be talked to in the barn). (Money is not the issue in this world; scarce permits are.) Robots already carry tracking chips, need a regular "continue" signal, and their "brains" run in datacenters that auditors watch, but none of that checks who sent an order. Rep. Luz Ibarra (port district) wants reports workers can see fast and a crew boss who can pause the crew. Rep. Arjun Sethi (robot makers' district) fears public reports within 24 hours could sink small companies. A middle version: regulator in 24 hours, public summary in 7 days.
@@ -266,14 +266,14 @@ Current plan: ${this.planName(c)}. Your forecast: passes about ${bill_pct(bill_p
 What you know: ${k?'The player told you Rep. Gunderson’s own barn robot once obeyed a stranger’s phone at a county fair (40 goats got loose). Keep that private: it is his story. With a phase-in that puts farms first in line for chips, you forecast his yes at about 85 in 100.':'You do not know why Rep. Gunderson might really want signed commands; you only know his cost worry. If asked, suggest the player ask him an open question about what a good law would look like on his farm.'}
 When asked what to choose: name the key tradeoff (how fast and how completely remote orders get checked vs. robots that farmers can still run at harvest; workers' fast public reports vs. small makers), ask what matters most, then recommend. Teach how a bill becomes law in the real US Congress when asked (hopper, committee, hearing, markup, House floor 218 of 435, Senate same text, President signs or vetoes, two-thirds override). The player decides and signs.`},
   canned(q){
-    if(/goat|gate|county fair|stranger.*phone|barn robot/.test(q)&&typeof S!=='undefined'&&S.notes.gate){if(!S.told){S.told=true;save();return 'Thank you for telling me. I’ll keep Rep. Gunderson’s story private, because it’s his story to tell. It changes my forecast, though: with a phase-in that puts farms first in line for chips, I now think he votes yes about 85 times in 100, not 40.'}return 'Right, the goats. A phase-in with farms first in line gives him the safety he wants without stopping his robots at harvest. And his story stays his.'}
-    if(/become.*law|how.*(bill|law)|hopper|veto|senate/.test(q))return 'A member drops the bill in the hopper. A committee holds hearings and a markup. Then the whole House votes (218 of 435), the Senate passes the exact same words, and the President signs or vetoes. Two thirds of both chambers can override a veto.';
-    if(/whip|count|undecided|votes? (do|we) need/.test(q))return 'Nine members have promised yes, nine have promised no, and three are undecided. We need 11 of the 21 votes, so we need two of the three undecided members. A whip count means asking each member what they really need, and listening to the answer.';
-    if(/sign(ed|ature)|seal|fake order|hijack|talk to|voice|in person/.test(q))return 'You can still give orders to your robot at home by talking to it. The bill only checks orders that arrive over the internet. Those orders need a digital signature, a code that only the real sender can make, so typing “Fire Department” at the top of a fake message no longer fools the robot.';
-    if(/off switch|stop|emergenc|fire/.test(q))return 'Anyone standing near a robot can stop it, with no internet and no signature. In a real emergency, the fire department signs its orders, and firefighters at the door can simply ask the robot in person.';
-    if(/report|ibarra|sethi|worker|startup|maker/.test(q))return 'Rep. Ibarra wants accident reports to be public fast. Rep. Sethi fears that fast public reports could ruin small robot companies. The middle version sends the details to the regulator within 24 hours and gives the public a summary within 7 days. Which of those matters more to you?';
-    if(/farm|cost|gunderson|chip|permit|harvest/.test(q))return typeof S!=='undefined'&&S.told?'With a phase-in that puts farms first in line for chips, I forecast Rep. Gunderson votes yes about 85 times in 100, and every remote order still gets checked in the end.':'Checking only risky orders wins Rep. Gunderson’s vote easily, because farmers can keep using their phones at harvest. But someone sending fake orders could chain together harmless-looking orders, so that version is less safe. Did he say anything about his own robots?';
-    if(/best|which|pick|choose|should|recommend|beat|win|stuck|help|what do i do/.test(q))return typeof S!=='undefined'&&S.told?'The big choice left is about accident reports. Fast public reports help workers, and the middle version keeps small robot makers willing to vote yes. Which matters most to you? Then try your plan on the Future Table.':'Before I answer: did any of the three undecided members tell you what they really need? Rep. Gunderson is the one I understand least. And what matters most to you: making sure the bill passes, or making sure no fake order can get through?';
+    if(TRX(/goat|gate|county fair|stranger.*phone|barn robot/).test(q)&&typeof S!=='undefined'&&S.notes.gate){if(!S.told){S.told=true;save();return T('Thank you for telling me. I’ll keep Rep. Gunderson’s story private, because it’s his story to tell. It changes my forecast, though: with a phase-in that puts farms first in line for chips, I now think he votes yes about 85 times in 100, not 40.')}return T('Right, the goats. A phase-in with farms first in line gives him the safety he wants without stopping his robots at harvest. And his story stays his.')}
+    if(TRX(/become.*law|how.*(bill|law)|hopper|veto|senate/).test(q))return T('A member drops the bill in the hopper. A committee holds hearings and a markup. Then the whole House votes (218 of 435), the Senate passes the exact same words, and the President signs or vetoes. Two thirds of both chambers can override a veto.');
+    if(TRX(/whip|count|undecided|votes? (do|we) need/).test(q))return T('Nine members have promised yes, nine have promised no, and three are undecided. We need 11 of the 21 votes, so we need two of the three undecided members. A whip count means asking each member what they really need, and listening to the answer.');
+    if(TRX(/sign(ed|ature)|seal|fake order|hijack|talk to|voice|in person/).test(q))return T('You can still give orders to your robot at home by talking to it. The bill only checks orders that arrive over the internet. Those orders need a digital signature, a code that only the real sender can make, so typing “Fire Department” at the top of a fake message no longer fools the robot.');
+    if(TRX(/off switch|stop|emergenc|fire/).test(q))return T('Anyone standing near a robot can stop it, with no internet and no signature. In a real emergency, the fire department signs its orders, and firefighters at the door can simply ask the robot in person.');
+    if(TRX(/report|ibarra|sethi|worker|startup|maker/).test(q))return T('Rep. Ibarra wants accident reports to be public fast. Rep. Sethi fears that fast public reports could ruin small robot companies. The middle version sends the details to the regulator within 24 hours and gives the public a summary within 7 days. Which of those matters more to you?');
+    if(TRX(/farm|cost|gunderson|chip|permit|harvest/).test(q))return typeof S!=='undefined'&&S.told?T('With a phase-in that puts farms first in line for chips, I forecast Rep. Gunderson votes yes about 85 times in 100, and every remote order still gets checked in the end.'):T('Checking only risky orders wins Rep. Gunderson’s vote easily, because farmers can keep using their phones at harvest. But someone sending fake orders could chain together harmless-looking orders, so that version is less safe. Did he say anything about his own robots?');
+    if(TRX(/best|which|pick|choose|should|recommend|beat|win|stuck|help|what do i do/).test(q))return typeof S!=='undefined'&&S.told?T('The big choice left is about accident reports. Fast public reports help workers, and the middle version keeps small robot makers willing to vote yes. Which matters most to you? Then try your plan on the Future Table.'):T('Before I answer: did any of the three undecided members tell you what they really need? Rep. Gunderson is the one I understand least. And what matters most to you: making sure the bill passes, or making sure no fake order can get through?');
     return null},
 
   // ---------- custom steps: arrive, note (one tough question), whip (count the votes), draft (the drafting desk) ----------
@@ -349,48 +349,48 @@ function bill_crate(){return `<g transform="translate(14 8)"><rect x="0" y="0" w
 function bill_arrive(){S.m_bill={asked:{},learned:{}};save();
   screen('walk',`${scene('dc_hearing')}${hud('Room 2123 · Rayburn Building')}<div class="props walklayer"><div class="walk-byte bill-wbyte">${byteBox({...S.byte,mood:'happy'},'trot')}</div>
     <div class="pipjory bill-pj" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}${bill_crate()}${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
-    <div class="caption-card"><p>The hearing room fills up with reporters, a school group, and neighbors who rode the train from Halden Creek. Two people who say they are technicians wheel a crate behind the raised desk where the members sit.</p>
-    <div class="row"><button class="btn small ghost" id="clue">Look at the crate</button><button class="btn small" id="on">Take your seat</button></div></div>`);
-  $('#clue').onclick=()=>{S.notes.crate=true;save();$('#pj').classList.add('flee');toast('The two “technicians” hurry away. You wrote the crate down in your notebook.','good');$('#clue').disabled=true};
+    <div class="caption-card"><p>${T('The hearing room fills up with reporters, a school group, and neighbors who rode the train from Halden Creek. Two people who say they are technicians wheel a crate behind the raised desk where the members sit.')}</p>
+    <div class="row"><button class="btn small ghost" id="clue">${T('Look at the crate')}</button><button class="btn small" id="on">${T('Take your seat')}</button></div></div>`);
+  $('#clue').onclick=()=>{S.notes.crate=true;save();$('#pj').classList.add('flee');toast(T('The two “technicians” hurry away. You wrote the crate down in your notebook.'),'good');$('#clue').disabled=true};
   $('#pj').onclick=()=>$('#clue').click();
   $('#on').onclick=()=>nextStep()}
 
 // one line on the talk stage: portrait, name, text, and buttons (the buttons drive the flow)
 function bill_line(who,mood,text,btns){const st=$('#stage'),sub=$('#sub');if(!st||!sub)return;
   st.innerHTML=speakerArt(who,mood);const sp=st.firstElementChild;sp.classList.add('enter','talking');
-  const name=who==='byte'?S.byte.name:CAST[who].name,role=who==='byte'?'Your AI partner':CAST[who].role;
-  sub.innerHTML=`<div class="who"><b>${esc(name)}</b><span>${esc(role)}</span></div><p class="fadein">${rich(text)}</p><div class="choices">${btns.map((b,j)=>`<button class="choice ${b.cls||''}" data-j="${j}">${esc(b.t)}</button>`).join('')}</div>`;
+  const name=who==='byte'?S.byte.name:T(CAST[who].name),role=T(who==='byte'?'Your AI partner':CAST[who].role);
+  sub.innerHTML=`<div class="who"><b>${esc(name)}</b><span>${esc(role)}</span></div><p class="fadein">${rich(text)}</p><div class="choices">${btns.map((b,j)=>`<button class="choice ${b.cls||''}" data-j="${j}">${esc(T(b.t))}</button>`).join('')}</div>`;
   playLine(who,text).then(()=>sp.classList.remove('talking'));
   $$('.choice',sub).forEach(b=>b.onclick=e=>{e.stopPropagation();stopVoice();btns[+b.dataset.j].go()})}
 function bill_stage(place,sceneKey){screen('talk',`${scene(sceneKey||'dc_hearing')}<div class="talk-dim"></div>${hud(place)}<div class="stage" id="stage"></div><div class="subtitle" id="sub"></div>`)}
 
 // ---- the tough question: pass a note to Rep. Hollis ----
 function bill_note(){const N=M().noteQ,st=bill_st();bill_stage('Room 2123 · Rayburn Building');
-  const ask=()=>{bill_line('sethi','think',N.q,[]);$('#sub').insertAdjacentHTML('beforeend',`<div class="bill-notes-l">Pass a note to Rep. Hollis</div><div class="bill-notes">${N.opts.map((o,j)=>`<button class="bill-notecard" data-j="${j}"><span>${esc(o.t)}</span></button>`).join('')}</div>`);
+  const ask=()=>{bill_line('sethi','think',N.q,[]);$('#sub').insertAdjacentHTML('beforeend',`<div class="bill-notes-l">${T('Pass a note to Rep. Hollis')}</div><div class="bill-notes">${N.opts.map((o,j)=>`<button class="bill-notecard" data-j="${j}"><span>${esc(T(o.t))}</span></button>`).join('')}</div>`);
     $$('.bill-notecard').forEach(b=>b.onclick=e=>{e.stopPropagation();const o=N.opts[+b.dataset.j];st.note=o.good?'good':'bad';if(o.good)heart('sethi');save();
       $$('.bill-notecard').forEach(x=>x.disabled=true);b.classList.add('sent');setTimeout(()=>hollis(o),650)})};
   const hollis=o=>bill_line('hollis',o.good?'smile':'worried',o.say,[{t:'Next',go:()=>sethi(o)}]);
   const sethi=o=>bill_line('sethi',o.mood,o.back,[{t:o.good?'Back to my seat':'Next',go:()=>o.good?done():bill_line('byte','think',N.whisper,[{t:'Got it',go:done}])}]);
-  const done=()=>{unlock('fail-safe')&&toast('New Field Guide idea: Machines that anyone nearby can stop','good');nextStep()};
+  const done=()=>{unlock('fail-safe')&&toast(T('New Field Guide idea: {0}',T('Machines that anyone nearby can stop')),'good');nextStep()};
   ask()}
 
 // ---- the whip count: two questions with each undecided member ----
 function bill_face(id,mood,cls){const c=CAST[id];const inner=c.art?c.art.call({...c,mood},mood):personSVG({...c,mood});
-  return `<svg class="bill-face ${cls||''}" viewBox="66 16 168 168" aria-label="${esc(c.name)}">${inner}</svg>`}
+  return `<svg class="bill-face ${cls||''}" viewBox="66 16 168 168" aria-label="${esc(T(c.name))}">${inner}</svg>`}
 function bill_whip(){const st=bill_st();const Q=M().whipQ;
   const left=id=>2-(st.asked[id]||[]).length;
   const card=id=>{const c=CAST[id],n=left(id),L=st.learned[id];
-    return `<div class="bw-card ${n<=0?'done':''}"><div class="bw-face">${bill_face(id,L?'smile':'neutral')}</div><div class="bw-txt"><b>${esc(c.name)}</b><span>${esc(Q[id].district)}</span>
-      ${L?`<em>Needs: ${esc(BILL_ASK[id])}</em>`:(st.asked[id]||[]).length?'<em class="vague">You haven’t learned what matters most to this member yet.</em>':''}${id==='gunderson'&&S.notes.gate?'<em class="secret">Told you a private story</em>':''}</div>
-      <button class="btn small ${n<=0?'ghost':''}" data-talk="${id}" ${n<=0?'disabled':''}>${n<=0?'Done':n===2?'Talk':'1 more'}</button></div>`};
+    return `<div class="bw-card ${n<=0?'done':''}"><div class="bw-face">${bill_face(id,L?'smile':'neutral')}</div><div class="bw-txt"><b>${esc(T(c.name))}</b><span>${esc(T(Q[id].district))}</span>
+      ${L?`<em>${T('Needs: {0}',esc(T(BILL_ASK[id])))}</em>`:(st.asked[id]||[]).length?`<em class="vague">${T('You haven’t learned what matters most to this member yet.')}</em>`:''}${id==='gunderson'&&S.notes.gate?`<em class="secret">${T('Told you a private story')}</em>`:''}</div>
+      <button class="btn small ${n<=0?'ghost':''}" data-talk="${id}" ${n<=0?'disabled':''}>${T(n<=0?'Done':n===2?'Talk':'1 more')}</button></div>`};
   const allTalked=BILL_WHO.every(id=>(st.asked[id]||[]).length>0),allDone=BILL_WHO.every(id=>left(id)<=0);
   screen('bench',`${scene('dc_hearing')}<div class="talk-dim"></div>${hud('Rayburn hallway · after the hearing')}<div class="panel-card bill-whip">
-    <h2>Whip count</h2><div class="bw-tally"><span class="y"><b>9</b>yes</span><span class="n"><b>9</b>no</span><span class="u"><b>3</b>undecided</span><span class="need"><b>11</b>to pass</span></div>
+    <h2>${T('Whip count')}</h2><div class="bw-tally"><span class="y">${T('<b>{0}</b>yes',9)}</span><span class="n">${T('<b>{0}</b>no',9)}</span><span class="u">${T('<b>{0}</b>undecided',3)}</span><span class="need">${T('<b>{0}</b>to pass',11)}</span></div>
     <div class="bw-cards">${BILL_WHO.map(card).join('')}</div>
-    <div class="byte-note">${byteBox({...S.byte,mood:allDone?'alert':'think'})}<p>${allDone?'Rep. Ibarra and Rep. Sethi want opposite things. Rep. Ibarra wants reports the public can see fast, and Rep. Sethi wants reports to go to the regulator first. We need a version both of them can accept.':'You only get a couple of minutes with each member, so ask each one what they really need from this bill.'}</p></div>
-    <button class="btn wide" id="next" ${allTalked?'':'disabled'}>Back to the office</button></div>`);
+    <div class="byte-note">${byteBox({...S.byte,mood:allDone?'alert':'think'})}<p>${T(allDone?'Rep. Ibarra and Rep. Sethi want opposite things. Rep. Ibarra wants reports the public can see fast, and Rep. Sethi wants reports to go to the regulator first. We need a version both of them can accept.':'You only get a couple of minutes with each member, so ask each one what they really need from this bill.')}</p></div>
+    <button class="btn wide" id="next" ${allTalked?'':'disabled'}>${T('Back to the office')}</button></div>`);
   $$('[data-talk]').forEach(b=>b.onclick=()=>bill_whipTalk(b.dataset.talk));
-  $('#next').onclick=()=>{unlock('whip-count')&&toast('New Field Guide idea: Counting votes before the vote','good');toast('New work on your Workbench');nextStep()}}
+  $('#next').onclick=()=>{unlock('whip-count')&&toast(T('New Field Guide idea: {0}',T('Counting votes before the vote')),'good');toast(T('New work on your Workbench'));nextStep()}}
 function bill_whipTalk(id){const st=bill_st(),W=M().whipQ[id];st.asked[id]=st.asked[id]||[];bill_stage('Rayburn hallway · after the hearing');
   const back=()=>bill_whip();
   const menu=(text,mood)=>{const open=W.qs.map((q,j)=>[q,j]).filter(([q,j])=>!st.asked[id].includes(j));
@@ -399,7 +399,7 @@ function bill_whipTalk(id){const st=bill_st(),W=M().whipQ[id];st.asked[id]=st.as
   const ask=(q,j)=>{st.asked[id].push(j);if(q.learn)st.learned[id]=true;if(q.good)heart(id);save();
     const reply=q.replyBad&&st.note!=='good'?q.replyBad:q.reply;
     if(q.story)bill_line(id,q.mood||'think',reply,[{t:'Go on',go:()=>story(q.story)}]);else menu(reply,q.mood||'neutral')};
-  const story=s=>{S.notes.gate=true;save();bill_line(id,'worried',s.text,s.opts.map(o=>({t:o.t,cls:o.good?'clue':'',go:()=>{st.trust=!!o.good;if(o.good)heart(id);save();toast('Added to your notebook','good');menu(o.reply,o.mood)}})))};
+  const story=s=>{S.notes.gate=true;save();bill_line(id,'worried',s.text,s.opts.map(o=>({t:o.t,cls:o.good?'clue':'',go:()=>{st.trust=!!o.good;if(o.good)heart(id);save();toast(T('Added to your notebook'),'good');menu(o.reply,o.mood)}})))};
   menu(BILL_HI[id],'neutral')}
 
 // ---- the drafting desk: the bill, section by section, legal words beside plain English ----
@@ -423,22 +423,22 @@ function bill_react(id,c){const v=bill_votes(c,!!S.told)[id],mood=v>=.7?'smile':
     sethi:c.report==='public'?'Public reports in 24 hours could ruin my small companies.':c.cmd==='all'?'One year is a tight deadline for small robot makers.':c.report==='split'?'The regulator gets facts first, then the public. Fair.':'Private reports are easy for my companies.'}[id];
   return {mood,say}}
 function bill_draftStrip(){const st=bill_st(),c=S.choice;
-  return BILL_WHO.map(id=>{const L=st.learned[id],r=bill_react(id,c);return `<div class="bd-m ${L?'':'unknown'}">${bill_face(id,L?r.mood:'neutral')}<span>${L?esc(r.say):'You didn’t learn what this member needs.'}</span></div>`}).join('')}
-function bill_draftSecs(){const c=S.choice,lines=t=>t.split('\n').map(l=>`<span>${esc(l)}</span>`).join('');
+  return BILL_WHO.map(id=>{const L=st.learned[id],r=bill_react(id,c);return `<div class="bd-m ${L?'':'unknown'}">${bill_face(id,L?r.mood:'neutral')}<span>${L?esc(T(r.say)):T('You didn’t learn what this member needs.')}</span></div>`}).join('')}
+function bill_draftSecs(){const c=S.choice,lines=t=>T(t).split('\n').map(l=>`<span>${esc(l)}</span>`).join('');
   return [3,4,5,6].map(n=>{const D=BILL_SEC[n],v=D.lock?D:D.v[c[D.key]],ct=D.key&&M().controls.find(x=>x.key===D.key);
-    return `<section class="bd-sec"><div class="bd-h">${D.h}</div>
-      ${D.lock?`<div class="bd-lock">All 21 members agree on this section.</div>`:`<div class="seg bd-vers">${ct.opts.map(([val,l])=>`<button class="segb ${c[D.key]===val?'on':''}" data-k="${D.key}" data-v="${val}">${esc(l)}</button>`).join('')}</div>`}
-      <div class="bd-cols"><div class="bd-legal">${lines(v.legal)}</div><div class="bd-plain"><div class="bd-bhead">${byteBox({...S.byte,mood:'happy'})}<b>In plain words</b></div><p>${esc(v.plain)}</p></div></div></section>`}).join('')}
+    return `<section class="bd-sec"><div class="bd-h">${T(D.h)}</div>
+      ${D.lock?`<div class="bd-lock">${T('All 21 members agree on this section.')}</div>`:`<div class="seg bd-vers">${ct.opts.map(([val,l])=>`<button class="segb ${c[D.key]===val?'on':''}" data-k="${D.key}" data-v="${val}">${esc(T(l))}</button>`).join('')}</div>`}
+      <div class="bd-cols"><div class="bd-legal">${lines(v.legal)}</div><div class="bd-plain"><div class="bd-bhead">${byteBox({...S.byte,mood:'happy'})}<b>${T('In plain words')}</b></div><p>${esc(T(v.plain))}</p></div></div></section>`}).join('')}
 function bill_draft(){unlock('signed-commands');
   screen('bench',`${scene('workbench')}${hud('Drafting desk · H.R. 6120')}<div class="bench bill-desk">
     <div class="bd-strip" id="bdstrip">${bill_draftStrip()}</div>
-    <article class="doc doc-bill bd-paper"><div class="doc-from">127th Congress · 2nd Session</div><h2>H.R. 6120</h2>
-      <p class="bd-title">A BILL to require that home and work robots check who sent any order that reaches them over the internet, and for other purposes.</p>
-      <p class="bd-enact"><i>Be it enacted by the Senate and House of Representatives of the United States of America in Congress assembled,</i></p>
-      <div class="bd-h">SEC. 1. SHORT TITLE.</div><p class="bd-small">This Act may be cited as the “Robot Safety Act”.</p>
-      <div class="bd-h">SEC. 2. DEFINITIONS.</div><p class="bd-small">(1) COVERED ROBOT.—The term “covered robot” means a machine that moves in the physical world and acts on its own in a home or workplace. (2) ROBOT CREW.—The term “robot crew” means two or more covered robots doing one job together. (3) REMOTE ORDER.—The term “remote order” means an instruction that reaches a covered robot over a network rather than from a person beside it. (4) SECRETARY.—The term “Secretary” means the Secretary of Commerce.</p>
+    <article class="doc doc-bill bd-paper"><div class="doc-from">${T('127th Congress · 2nd Session')}</div><h2>H.R. 6120</h2>
+      <p class="bd-title">${T('A BILL to require that home and work robots check who sent any order that reaches them over the internet, and for other purposes.')}</p>
+      <p class="bd-enact"><i>${T('Be it enacted by the Senate and House of Representatives of the United States of America in Congress assembled,')}</i></p>
+      <div class="bd-h">${T('SEC. 1. SHORT TITLE.')}</div><p class="bd-small">${T('This Act may be cited as the “Robot Safety Act”.')}</p>
+      <div class="bd-h">${T('SEC. 2. DEFINITIONS.')}</div><p class="bd-small">${T('(1) COVERED ROBOT.—The term “covered robot” means a machine that moves in the physical world and acts on its own in a home or workplace. (2) ROBOT CREW.—The term “robot crew” means two or more covered robots doing one job together. (3) REMOTE ORDER.—The term “remote order” means an instruction that reaches a covered robot over a network rather than from a person beside it. (4) SECRETARY.—The term “Secretary” means the Secretary of Commerce.')}</p>
       <div id="bdsecs">${bill_draftSecs()}</div></article>
-    ${companion()}<div class="bench-foot"><button class="btn" id="next">Set my criteria</button></div></div>`);
+    ${companion()}<div class="bench-foot"><button class="btn" id="next">${T('Set my criteria')}</button></div></div>`);
   wireCompanion();setTimeout(()=>byteSays('Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.','happy'),500);
   const wire=()=>$$('.bd-vers .segb').forEach(b=>b.onclick=()=>{S.choice={...S.choice,[b.dataset.k]:b.dataset.v};save();MUSIC.sfx('click');
     $('#bdsecs').innerHTML=bill_draftSecs();$('#bdstrip').innerHTML=bill_draftStrip();$$('.bd-m').forEach(m=>m.classList.add('bump'));wire()});
@@ -455,27 +455,27 @@ function bill_sampleRoll(){const c=S.choice,v=bill_votes(c,true),rr=rngFrom((Dat
 function bill_markup(){const st=bill_st();if(!S.result||!st.roll)bill_sampleRoll();const R=M().rollLines,roll=M().roll,yes=st.roll.yes,ayes=st.roll.ayes,passed=ayes>=11;
   const vote=m=>m[2]==='y'?1:m[2]==='n'?0:(yes[m[2]]?1:0);
   screen('markup',`${scene('dc_hearing')}<div class="talk-dim"></div>${hud('Markup · Room 2123 · Rayburn Building')}<div class="bill-mk">
-    <div class="mk-head"><b>H.R. 6120</b><span>Roll call on the Robot Safety Act</span><button class="mini-btn" id="mkskip">Skip ahead</button></div>
-    <div class="mk-tally"><div class="ay"><b id="mkay">0</b><span>Ayes</span></div><div class="mk-need">11 to pass</div><div class="no"><b id="mkno">0</b><span>Noes</span></div></div>
-    <div class="mk-grid">${roll.map((m,i)=>`<div class="mk-chip ${m[2].length>1?'swing':''}" id="mk${i}"><span>${m[0]} ${m[1]}</span><em></em></div>`).join('')}</div>
-    <div class="mk-call" id="mkcall"><div class="mk-face" id="mkface"></div><p id="mkline">${esc(R.start)}</p></div>
+    <div class="mk-head"><b>H.R. 6120</b><span>${T('Roll call on the Robot Safety Act')}</span><button class="mini-btn" id="mkskip">${T('Skip ahead')}</button></div>
+    <div class="mk-tally"><div class="ay"><b id="mkay">0</b><span>${T('Ayes')}</span></div><div class="mk-need">${T('11 to pass')}</div><div class="no"><b id="mkno">0</b><span>${T('Noes')}</span></div></div>
+    <div class="mk-grid">${roll.map((m,i)=>`<div class="mk-chip ${m[2].length>1?'swing':''}" id="mk${i}"><span>${esc(T(m[0]+' '+m[1]))}</span><em></em></div>`).join('')}</div>
+    <div class="mk-call" id="mkcall"><div class="mk-face" id="mkface"></div><p id="mkline">${esc(T(R.start))}</p></div>
     <div class="mk-end" id="mkend" hidden></div></div>`);
   let i=0,a=0,n=0,alive=true,skip=false;const id0=playId;
   const wait=ms=>new Promise(r=>setTimeout(r,skip?0:ms));const live=()=>alive&&$('#mkcall');
-  const say=async(who,text,ms)=>{if(!live())return;$('#mkline').textContent=text;if(skip)return;const t0=Date.now();await playLine(who,text);await wait(Math.max(0,(ms||900)-(Date.now()-t0)))};
-  const mark=(k,v)=>{const c=$('#mk'+k);if(!c)return;c.classList.add(v?'aye':'nay','in');c.querySelector('em').textContent=v?'Aye':'No';if(v)a++;else n++;$('#mkay').textContent=a;$('#mkno').textContent=n;if(!skip)MUSIC.sfx(v?'blip':'click')};
+  const say=async(who,text,ms)=>{if(!live())return;$('#mkline').textContent=T(text);if(skip)return;const t0=Date.now();await playLine(who,text);await wait(Math.max(0,(ms||900)-(Date.now()-t0)))};
+  const mark=(k,v)=>{const c=$('#mk'+k);if(!c)return;c.classList.add(v?'aye':'nay','in');c.querySelector('em').textContent=T(v?'Aye.':'No.').replace(/[.。]$/,'');if(v)a++;else n++;$('#mkay').textContent=a;$('#mkno').textContent=n;if(!skip)MUSIC.sfx(v?'blip':'click')};
   const end=()=>{if(!$('#mkend'))return;alive=false;const kind=S.result.kind,line=(M().reveal.lines||{})[kind]||'';
     roll.forEach((m,k)=>{const c=$('#mk'+k);if(c&&!c.classList.contains('in'))mark(k,vote(m))});
-    $('#mkline').textContent=passed?R.pass:R.fail;$('#mkface').innerHTML='';$('#mkskip').hidden=true;
-    unlock('forecast')&&toast('New Field Guide idea: Forecasts are not promises','good');
-    const e=$('#mkend');e.hidden=false;e.innerHTML=`<div class="mk-result ${passed?'pass':'fail'}">${passed?`Passed the subcommittee, ${ayes} to ${21-ayes}`:`Failed in the subcommittee, ${ayes} to ${21-ayes}`}</div>
-      <div class="mk-later">${passed?'The next three years':'The next year'}</div><div class="rf-card">${vig(kind)}</div><h2>${esc(S.result.cap)}</h2>
-      <div class="rf-talk"><div class="rf-maya">${portrait({...CAST.hollis,mood:M().reveal.mood(kind)})}</div><p>“${esc(line)}”</p></div><button class="btn wide" id="next">See how you did</button>`;
+    $('#mkline').textContent=T(passed?R.pass:R.fail);$('#mkface').innerHTML='';$('#mkskip').hidden=true;
+    unlock('forecast')&&toast(T('New Field Guide idea: Forecasts are not promises'),'good');
+    const e=$('#mkend');e.hidden=false;e.innerHTML=`<div class="mk-result ${passed?'pass':'fail'}">${T(passed?'Passed the subcommittee, {0} to {1}':'Failed in the subcommittee, {0} to {1}',ayes,21-ayes)}</div>
+      <div class="mk-later">${T(passed?'The next three years':'The next year')}</div><div class="rf-card">${vig(kind)}</div><h2>${esc(T(S.result.cap))}</h2>
+      <div class="rf-talk"><div class="rf-maya">${portrait({...CAST.hollis,mood:M().reveal.mood(kind)})}</div><p>“${esc(T(line))}”</p></div><button class="btn wide" id="next">${T('See how you did')}</button>`;
     $('#next').onclick=()=>nextStep();setTimeout(()=>{if(S.step==='markup')playLine('hollis',line)},skip?50:600);e.scrollIntoView({behavior:'smooth',block:'start'})};
   $('#mkskip').onclick=()=>{skip=true;stopVoice();end()};
   (async()=>{await say('clerk',R.start,1200);
     for(i=0;i<roll.length;i++){if(!live())return;const m=roll[i],swing=m[2].length>1;
       if(swing){$('#mkface').innerHTML=bill_face(m[2],'think');$('#mk'+i).classList.add('calling');await say('clerk',R.call[m[2]],700);if(!live())return;
         const v=vote(m);$('#mkface').innerHTML=bill_face(m[2],v?'smile':'stern');await say(m[2],v?'Aye.':'No.',900);mark(i,v);$('#mk'+i).classList.remove('calling');await wait(500);$('#mkface').innerHTML=''}
-      else{$('#mkline').textContent=m[0]+' '+m[1]+'?';await wait(170);mark(i,vote(m))}}
+      else{$('#mkline').textContent=T('{0}?',T(m[0]+' '+m[1]));await wait(170);mark(i,vote(m))}}
     if(!live())return;await say('clerk',R.tally[ayes],1400);if(!live())return;await say('chair',passed?R.pass:R.fail,1200);end()})()}
