@@ -108,8 +108,6 @@ I18N.add('zh','lot',{strings:{
   'Thanks! I updated my forecast: in about 3 of 10 big storms, the old ditch spills onto the lot from the alley, so every design now takes water from both sides. An alley inlet adds 20 coins.':'谢谢！我更新了预测：10场大暴雨里大约有3场，老水渠的水会从后巷漫进这块地，所以现在每个设计都要接住两边的水。在后巷加一个进水口，要多花20金币。',
 
   // ---------- Field Guide ----------
-  // Field Guide track names (not in core.js yet; shared with other missions)
-  'Ethics and AI alignment':'伦理与AI对齐','Engineering and systems':'工程与系统','Security thinking':'安全思维','Living things and health':'生命与健康',
   'Local knowledge':'当地人的经验',
   'Mrs. Okafor knew that some of the flood water came from the neighbors’ old irrigation ditch. No city map showed the ditch, because the neighbors own it themselves. An AI can only plan for the things it knows about, so people have to tell it what they know.':'奥卡福奶奶知道，有一部分洪水是从邻居们那条老灌溉渠里来的。市里的地图上都没有这条渠，因为它归邻居们自己所有。AI只能为它知道的事情做计划，所以人得把自己知道的告诉它。',
   'True today: in parts of Phoenix, neighbors still flood-irrigate their yards from small ditches and pipes that they own and look after together.':'现实中：在凤凰城的一些街区，邻居们至今还从大家共有、一起维护的小水渠和水管里放水，漫灌自家的院子。',
@@ -213,7 +211,7 @@ I18N.add('zh','lot',{strings:{
 
   // ---------- memo, reveal, debrief, evening ----------
   'I recommend ':'我建议','because ':'因为','In a big storm, the street stays dry about ':'遇到大暴雨，10次里街道不被淹的次数大约是','Mrs. Okafor and Dev ':'奥卡福奶奶和德夫',
-  'Overnight, the crew may ':'夜里，施工队可以','We will check by ':'我们会这样跟进：',
+  'Overnight, the crew may ':'夜里，施工队可以','We will check by ':'我们会这样检查：',
   'I recommend the Bowl Park with shade sails because…':'我建议建带遮阳帆的碗池公园，因为……','Names the design':'写明了选哪个设计',
   'Includes what the neighbors care about':'写到了邻居们在意的事','Architect {0}':'建筑师 {0}','the flood lot design':'被淹空地的设计',
   'Night':'夜',
@@ -299,7 +297,7 @@ I18N.add('zh','lot',{strings:{
   'I didn’t know it floods':'我不知道这里会被淹','I didn’t know who it’s for':'我不知道是给谁用的','I guessed the budget':'预算是我猜的','I guessed the deadline':'截止时间是我猜的',
   'I guessed steps, not a ramp':'我猜的是台阶，没做坡道','I guessed a gentle bowl':'我猜的是一个很浅的碗池','I guessed no shade':'我猜的是不要遮阴','I guessed how you’d judge it':'评判标准是我猜的',
   'fancy finishes for 90 more coins':'多花90金币做豪华装修','an extra finishing night':'多一个晚上做收尾','steps instead of a ramp':'用台阶，不用坡道','a gentle bowl, too tame to skate':'很浅的碗池，滑起来没劲',
-  '{0} coins':'{0}个金币','{0} night':'{0}个晚上','{0} nights':'{0}个晚上','Street dry {0} in 10':'10次里{0}次街道不淹','Guess: {0}':'猜的：{0}','Why:':'理由：','Risk:':'风险：','Second Look AI:':'复查AI：',
+  '{0} coins':'{0}金币','{0} night':'{0}个晚上','{0} nights':'{0}个晚上','Street dry {0} in 10':'10次里{0}次街道不淹','Guess: {0}':'猜的：{0}','Why:':'理由：','Risk:':'风险：','Second Look AI:':'复查AI：',
   'The bowl is the lowest spot, so street water flows in on its own, and Dev gets his bowl.':'碗池是最低的地方，街上的水会自己流进去，德夫也有了他的碗池。',
   'Plants and soil soak up water, and it’s the quickest to build: 2 nights.':'植物和泥土能吸水，而且它建得最快：只要2个晚上。',
   'A tank holds the water out of sight, so the plaza stays dry for skating.':'水存在看不见的水箱里，广场一直是干的，可以玩滑板。',
@@ -426,7 +424,7 @@ I18N.add('zh','lot',{strings:{
   '9:12 PM, Arroyo: “Gate open.” Street water rushes in.':'晚上9:12，旱溪：“闸门已打开。”街上的水冲了进来。',
 
   // ---------- picture labels (src/viz/lot.js, src/viz/lot_art.js) and props ----------
-  'phx_bottle':'水壶','phx_bot':'小机器人','phx_board':'滑板','phx_quail':'鹌鹑','KEEP OUT':'禁止入内','{0} model':'{0}模型',
+  'KEEP OUT':'禁止入内','{0} model':'{0}模型',
   'Rain from 140 homes…':'140户人家的雨水……','The lot':'空地','the lot':'空地','Rain running downhill from 140 homes to the lot':'140户人家的雨水顺着坡流向空地',
   '1.5 inches of rain':'1.5英寸的雨','in about an hour':'大约一小时内','A rain gauge filling to 1.5 inches in about an hour':'雨量计大约一小时就积到了1.5英寸',
   'Drain: 1.4 inches':'排水口：1.4英寸','The rest: 23 homes flood':'多出来的：淹23户','One drain takes 1.4 inches; the rest floods 23 homes':'一个排水口能排走1.4英寸的雨，多出来的水淹了23户人家',
