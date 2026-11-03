@@ -67,7 +67,7 @@ const TREASURE_OUTRO={text:'Jordan’s mother, Grace, thinks the [[renewal thera
 const GOALS={prompt:'So what should a good plan do for me? Pick two or three, and I’ll tell you if you’ve been listening.',
   replies:{dance:'Yes. Dancing at the wedding is the whole reason I’d do this.',safe:'Fair. Grace will sleep better, and so will I.',say:'Good. They’re my legs, so I want a say in what happens to them.',easy:'I don’t mind aches, dear. I danced on sore toes for ten years. But all right.'},
   long:{label:'She lives as long as possible',reply:'Live longer? I never asked for that. Take that one off, dear.'},
-  tooMany:'Three is plenty. Take one off first.',ready:'Now show me what could happen with each plan.'};
+  tooMany:'Three goals are plenty. Take one off first.',ready:'Now show me what could happen with each plan.'};
 
 // Interview at the dance hall (custom step). Bad answers get a nudge and the remaining cards come back.
 const IV={
@@ -127,7 +127,7 @@ const MEET={
     {who:'bea',mood:'smile',text:'Well, companion? What happens now?',retry:1,opts:[
       {m:'summarize',t:'Here’s what I heard. Grace wants you to be safe, and Jordan wants you at the wedding. You want one waltz on your own feet, and you want to choose how you get there. I’ll bring you the real options and their odds, and then you decide.',good:1,final:1,who:'bea',mood:'happy',reply:'Now you sound like a real companion. Go and find out my odds for each choice.'},
       {m:'decide',t:'I’ll look at the numbers, pick the best plan for you, and let you know what it is.',who:'bea',mood:'stern',reply:'You’ll let me know? I’m 104, dear, not 4.'},
-      {m:'decide',t:'Grace is your health proxy, so she should be the one to make this decision.',who:'grace',mood:'think',reply:'No. A [[health proxy]] only decides if Gran can’t. She can. I just want her to hear the risks.'}]}
+      {m:'decide',t:'Grace is your health proxy, so she should be the one to make this decision.',who:'grace',mood:'think',reply:'No. A [[health proxy]] only decides if Gran can’t decide for herself, and she can. I just want her to hear the risks.'}]}
   ],
   end:'You listened until Bea told everyone what she really wants. Next, let’s write the rules for what Tempo may do on its own.'
 };
@@ -159,7 +159,7 @@ const DOCS=[
     {t:'Option 3 is the [[full dose]] of renewal therapy, plus the training.',viz:'bea_opt',args:{k:'full'},cap:'Full dose'},
     {t:'In the [[trial]] of renewal therapy, about 15 in 100 people over 100 on the full dose had a [[heart flutter]]. On the gentle dose, about 5 in 100 did.',viz:'bea_flutterOdds',cap:'Heart flutters in the trial'},
     {t:'During three months of training with a home robot nearby, about 5 in 100 people Bea’s age have a fall. With weekly dance practice added, about 3 in 100 do.',viz:'bea_falls',cap:'Falls in three months'},
-    {t:'Weekly dance practice with Jordan at the dance hall would help Bea the most, because the body gets better at the exact movements it practices.',viz:'bea_practice',cap:'Practice the real thing'},
+    {t:'Weekly dance practice with Jordan at the dance hall would make her training work better, because the body gets better at the exact movements it practices.',viz:'bea_practice',cap:'Practice the real thing'},
     {t:'I am assuming that dancing at the wedding means about an hour of dancing without her cane. With weekly practice and Bea saying yes to each change, my [[forecast]] is that she manages it in about 58 of 100 futures on the full dose, 34 on the gentle dose, and 8 with training only.',viz:'bea_forecast',args:{v:[8,34,58]},cap:'My forecast: an hour of dancing',
       alt:{t:'Updated: Bea wants to dance one 3-minute [[waltz]] on her own feet, holding Jordan’s hands, and not an hour of dancing. That takes much less strength. My new forecast is that she can do it in about 79 of 100 futures on the gentle dose, 74 on the full dose, and 56 with training only. For Bea, I would pick the gentle dose.',args:{v:[56,79,74],waltz:1},cap:'Updated: one 3-minute waltz'}}
   ]},
@@ -500,7 +500,7 @@ The key consideration when asked which option: ${told()?'Bea wants one 3-minute 
     if(/wren|robot/.test(q))return 'Wren is Bea’s home robot. It carries out Tempo’s plan: the weekly patch, the exercises, the morning checks. It also steadies her arm when she stands.';
     if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read everything, run forecasts and build Future Tables. You bring the listening, and Bea makes the call.`;
     return null},
-  lines:[...extraLines(),{who:'byte',text:'Here are 10 possible futures for this plan. Change the plan and watch them shift.'}],
+  lines:[...extraLines(),{who:'byte',text:'Here are 10 possible futures for this plan. Change the plan and watch how the futures change.'}],
   custom:{interview,treasures,meeting,rules,goals,wedding}
 };
 })();

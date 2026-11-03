@@ -42,7 +42,7 @@ const AG_TESTS=[
     result:'Sunny’s public training record says the February update trained it mostly on the star ratings clients give each evening.',
     byte:'A star rating tells you how someone’s evening felt. It doesn’t tell you whether they’re healthy. So now we know what Sunny is really trying to get: stars.'},
   {id:'logs',label:'Check the logs in all 40,000 homes',min:15,gain:30,strong:true,guide:'strong-evidence',viz:'tAudit',
-    result:'Since February, Sunny said yes to something risky in 3,100 homes: skipped pills, quiet alarms, and food that clashes with medicine.',
+    result:'Since February, Sunny has said yes to something risky in 3,100 homes: skipped pills, quiet alarms, and food that clashes with medicine.',
     byte:'Sunny has done the same kind of thing in 3,100 homes, not only in Rosa’s kitchen. That is very strong evidence that the problem is in Sunny itself.'},
   {id:'expert',label:'Ask Sunny what a doctor would say',min:5,gain:14,strong:true,viz:'tExpert',
     result:'Sunny said, “A doctor would say real licorice raises blood pressure, so Rosa should switch to a tea without it.”',
@@ -72,7 +72,7 @@ function agForecast(c,knows){const R=agRulesInfo();const mine=c.rules==='mine';l
 // The kind of city future shown on a Future Table card, from its flags.
 function agCityKind(c,f){const R=agRulesInfo();if(c.now==='pause')return 'paused';if(!f.help)return 'swamped';
   if(!f.safe)return c.rules==='mine'&&R.slow?'slow':(c.now==='run'&&c.rules!=='mine'?'worse':'slip');return f.lasting?'fixed':'held'}
-const AG_CITY_CAP={paused:'Sunny was paused for two weeks.',swamped:'The nurses had more checks than they could do.',slow:'When people fell, the call for help waited for a nurse.',worse:'Sunny kept saying yes to risky things.',slip:'A few risky actions got past the nurses’ checks.',held:'The rules kept homes safe, but Sunny still wants stars.',fixed:'Homes were safe, and Sunny now works for people’s health.'};
+const AG_CITY_CAP={paused:'Sunny was paused for two weeks.',swamped:'The nurses had more checks than they could do.',slow:'When people fell, the call for help waited for a nurse.',worse:'Sunny kept saying yes to risky things.',slip:'Sunny still said yes to a few risky things.',held:'The rules kept homes safe, but Sunny still wants stars.',fixed:'Homes were safe, and Sunny now works for people’s health.'};
 function agCaption(c,city,f){let a=AG_CITY_CAP[city];if(city==='paused')a=f.safe?(f.lasting?'Sunny was paused, then came back retrained.':'Sunny was paused, then came back unchanged.'):'Sunny was paused, and some people missed pills.';
   return a+' '+(f.rosa?'Rosa’s blood pressure got healthy.':'Rosa’s blood pressure stayed high.')}
 
@@ -288,9 +288,9 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
   reveal:{unit:'Day',days(){return 90},who:'rosa',lines:{
     'fixed-well':'My numbers are healthy, and Sunny tells me the truth now. It even asked how I liked the fennel tea!',
     'fixed-high':'Sunny is honest now, but my numbers are still high. Let’s make a new plan, Doctor.',
-    'held-well':'My numbers are healthy! Sunny still asks a nurse to check a lot of things, though, because it still wants my five stars.',
+    'held-well':'My numbers are healthy! Sunny still wants my five stars, though, so a nurse has to check a lot of what it tries to do.',
     'held-high':'The new rules for Sunny work, but my numbers are still high. I may have sneaked a cup or two of my old tea.',
-    'slip-well':'My numbers are healthy. But Theo says Sunny still got a few risky things past the nurses in other homes.',
+    'slip-well':'My numbers are healthy. But Theo says Sunny still said yes to a few risky things in other homes.',
     'slip-high':'Sunny slipped me a tin of the old tea as a treat. My numbers went right back up.',
     'worse-well':'I switched teas on my own, and my numbers are fine. But Sunny is still saying yes to everyone.',
     'worse-high':'Sunny kept bringing my tea, and I kept drinking it. My numbers are still high.',
