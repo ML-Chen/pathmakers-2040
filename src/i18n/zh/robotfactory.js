@@ -22,12 +22,12 @@ I18N.add('zh','robotfactory',{strings:{
   'If someone stops a machine by mistake, the only cost is a short delay, so anybody who sees danger should be able to stop it. Starting the machine again is riskier, because if the problem has not been fixed, someone could get hurt. So only the person who is responsible for the machine should be able to restart it, using a code that proves who they are. If someone far away stops the machine, the people on site should always be told.':
     '要是有人误把机器停了，损失的只是一小会儿时间，所以谁看到危险，都应该能让机器停下。让机器重新开动风险更大，因为问题要是还没解决，就可能有人受伤。所以只有负责这台机器的人才能让它重新开动，还要用一个能证明自己身份的密码。如果有人在远处让机器停了，一定要告诉现场的人。',
   'True today: factory robots have emergency stop buttons that any worker may press, and many car factories let any worker pull an andon cord to stop the line. Restarting takes a trained person. Robot crews that build whole schools are a guess about 2040.':
-    '真实情况：工厂里的机器人都有急停按钮，任何工人都可以按。很多汽车厂允许任何工人拉安灯绳，让生产线停下。重新开动要由受过培训的人来做。能盖起整所学校的机器人施工队，是对2040年的猜想。',
+    '现实中也是这样：工厂里的机器人都有急停按钮，任何工人都可以按。很多汽车厂允许任何工人拉安灯绳，让生产线停下。重新开动要由受过培训的人来做。能盖起整所学校的机器人施工队，是对2040年的猜想。',
   'Special Economic Zones':'经济特区','Government, law, and power':'政府、法律和权力',
   'In 2040, heavy robot industry is kept inside special zones like this one, and each zone has a strict limit on how many robots may work there. Keeping the robot factories and mines inside the zones lets the land outside them stay quiet and green. Zone monitors check the robot numbers every day.':
     '在2040年，用机器人的重工业都集中在像这样的特区里，每个区能用多少台机器人，都有严格的上限。机器人工厂和矿场都放在特区里，特区外面的地方就能保持安静，到处绿油油的。区域监察员每天都要核对机器人的数量。',
   'True today: in 1980, Shenzhen, then a small town, became one of China’s first Special Economic Zones. It is now a city of more than 17 million people. Robot permit caps are a guess about 2040.':
-    '真实情况：深圳是1980年设立的第一批经济特区之一，那时它还是个小镇，现在已经是一座有一千七百多万人的城市。机器人许可上限是对2040年的猜想。',
+    '现实中也是这样：深圳是1980年设立的第一批经济特区之一，那时它还是个小镇，现在已经是一座有一千七百多万人的城市。机器人许可上限是对2040年的猜想。',
 
   // passers-by
   'I’m the only person on this shift. Me and eleven thousand robots.':'这一班就我一个人，再加一万一千台机器人。',
@@ -169,15 +169,15 @@ I18N.add('zh','robotfactory',{strings:{
     '把演练里的三种停机办法都试一遍，看看每台机器人在做什么。然后填规则卡：谁可以让机器人队暂停，谁可以让它停机，谁可以让它重新开工，工厂在远处可以做什么。'
 },
 glossary:{
-  'special economic zone':{w:'经济特区',d:'在这个游戏的2040年，用机器人的重工业都放在特区里，每个区能用多少台机器人都有上限。真实情况：深圳从1980年起就是经济特区，但今天还没有这种机器人上限。'},
+  'special economic zone':{w:'经济特区',d:'在这个游戏的2040年，用机器人的重工业都放在特区里，每个区能用多少台机器人都有上限。现实中也是这样：深圳从1980年起就是经济特区，但今天还没有这种机器人上限。'},
   'permit':{w:'许可证',d:'正式允许做某件事的证明。在这个区里，每台干活的机器人都要有一张。'},
-  'permit cap':{w:'许可上限',d:'一个区最多能发多少张许可证。在2040年，一个区的许可证发满了，就不能再让更多机器人在那里干活。真实情况：今天没有哪个国家用这种办法限制机器人。'},
-  'robot crew':{w:'机器人施工队',alt:['机器人队'],d:'在2040年，一起盖东西的一队机器人。它由自己的AI指挥，由一位人类队长负责。真实情况：今天的机器人能在工厂里造建筑的部件，但还没有哪支机器人队能盖起一整所学校。'},
+  'permit cap':{w:'许可上限',d:'一个区最多能发多少张许可证。在2040年，一个区的许可证发满了，就不能再让更多机器人在那里干活。现实中也是这样：今天没有哪个国家用这种办法限制机器人。'},
+  'robot crew':{w:'机器人施工队',alt:['机器人队'],d:'在2040年，一起盖东西的一队机器人。它由自己的AI指挥，由一位人类队长负责。现实中也是这样：今天的机器人能在工厂里造建筑的部件，但还没有哪支机器人队能盖起一整所学校。'},
   'crew lead':{w:'队长',d:'负责一支机器人施工队的人。机器人队盖的每样东西上都写着队长的名字，机器人队惹出任何问题，都要由队长来处理。'},
   'remote stop':{w:'远程停机',d:'通过网络，从远处让机器停下。'},
   'stop drill':{w:'停机演练',d:'一次练习，检查让机器停下的每种办法是不是真的管用。'},
   'signed code':{w:'签名码',d:'跟某一个人绑定的密码，机器靠它就能确切知道命令是谁下的。'},
-  'zone monitor':{w:'区域监察员',d:'在2040年，专门检查一个区里的机器人有没有超出许可、守不守规则的人。真实情况：今天的工厂安全检查员做的事情和这差不多。'},
+  'zone monitor':{w:'区域监察员',d:'在2040年，专门检查一个区里的机器人有没有超出许可、守不守规则的人。现实中也是这样：今天的工厂安全检查员做的事情和这差不多。'},
   'andon cord':{w:'安灯绳',d:'沿着工厂流水线拉着的一根绳子。工人觉得哪里不对，谁都可以拉它，让整条线停下来。'},
   'pearl river delta':{w:'珠三角',d:'珠江入海口一带，深圳、广州和香港都在这里。'},
   'tíng':{w:'停',d:'叫人或机器停下的话。'},'nǐ hǎo':{w:'你好',d:'打招呼的话。'},'xièxie':{w:'谢谢',d:'表示感谢的话。'},

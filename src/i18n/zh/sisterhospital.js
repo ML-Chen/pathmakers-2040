@@ -23,12 +23,12 @@ I18N.add('zh','sisterhospital',{strings:{
   'Boston’s hospital AI, Halo, knew Ellie well, and Riverside’s AI knew a lot about Kawasaki disease. Neither AI had every fact it needed to judge Ellie’s case by itself. When two teams each know something the other does not, they get a better answer by sharing the medical facts than by trusting either team’s first guess.':
     '波士顿医院的AI叫Halo，它很了解艾莉；滨江的AI很了解川崎病。可是哪个AI都没有掌握判断艾莉病情所需的全部事实。两个团队各知道一些对方不知道的事时，把医学事实拿出来一起看，得出的答案会比只相信任何一方的第一判断更好。',
   'True today: Kawasaki disease is much more common in Japan, Korea and China than in the United States, and doctors there noticed that a red BCG scar can be an early clue. The hospital AIs in this story are a guess about 2040.':
-    '真实情况：川崎病在日本、韩国和中国比在美国常见得多，这些国家的医生发现，卡介苗疤发红可能是一条早期线索。故事里的医院AI是对2040年的猜想。',
+    '现实中也是这样：川崎病在日本、韩国和中国比在美国常见得多，这些国家的医生发现，卡介苗疤发红可能是一条早期线索。故事里的医院AI是对2040年的猜想。',
   'Share what’s needed':'只分享需要的','People skills':'与人相处',
   'Ellie’s mother agreed to share Ellie’s medical facts, but not her name. Doctors can compare a child with other children without knowing who the child is. When you ask a family first, and then share only the facts the doctors really need, the family can keep trusting you with their information.':
     '艾莉的妈妈同意分享艾莉的医学情况，但不同意分享她的名字。医生不用知道孩子是谁，也能把这个孩子和别的孩子作比较。先征得家人同意，再只分享医生真正需要的事实，这家人以后才会放心把自己的信息交给你。',
   'True today: hospitals often take out names, addresses and photos before they share records for research. This is called de-identifying the data.':
-    '真实情况：医院把病历拿去做研究之前，常常会先去掉名字、住址和照片。这叫作数据去标识化。',
+    '现实中也是这样：医院把病历拿去做研究之前，常常会先去掉名字、住址和照片。这叫作数据去标识化。',
 
   // passers-by
   'Every morning I walk the Bund before work. The river looks different every day.':'我每天上班前都来外滩走一圈。这江每天看着都不一样。',
@@ -216,7 +216,7 @@ glossary:{
   'ivig':{w:'丙种球蛋白',d:'从献血者的血液里提取的抗体，通过输液打进身体。得川崎病时，身体会攻击自己的血管，它能让这种攻击平息下来。'},
   'bcg':{w:'卡介苗',d:'预防结核病的疫苗，打完会在胳膊上留一个小圆疤。'},
   'heart scan':{w:'心脏彩超',d:'用超声波给心脏拍的图像，不疼。医生也叫它超声心动图。'},
-  'qingtai':{w:'青台',d:'在2040年，上海江对岸一座一次建成的新城，住房、商店和花园层层叠在宽大的台地上。真实情况：青台是这个游戏编出来的。'},
+  'qingtai':{w:'青台',d:'在2040年，上海江对岸一座一次建成的新城，住房、商店和花园层层叠在宽大的台地上。现实中也是这样：青台是这个游戏编出来的。'},
   'de-identified':{w:'去标识化',d:'把名字、住址和照片都去掉，谁也看不出这个人是谁。'},
   'case conference':{w:'病例讨论会',d:'医生们聚在一起，讨论一个病人病情的会。'},
   'the bund':{w:'外滩',d:'上海黄浦江边的一排老建筑。'},'bund':{w:'外滩',d:'上海黄浦江边的一排老建筑。'},
