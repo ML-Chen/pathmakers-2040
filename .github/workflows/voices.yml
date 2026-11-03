@@ -2,10 +2,9 @@ name: Record voices
 # Records every new or changed spoken line with Kokoro (tools/make_audio.py) on GitHub's machines, commits the
 # generated src/audio.js and src/audio/*.js to main, then rebuilds the Android app so it gets the new voices.
 # Clips are cached between runs, so only new or changed lines are synthesized.
+# Runs only when started by hand (Actions → Record voices → Run workflow): with the ElevenLabs key it can use a lot of
+# credits, since every new or changed line is recorded.
 on:
-  push:
-    branches: [main]
-    paths: ['src/**', 'tools/make_audio.py']
   workflow_dispatch:
 permissions:
   contents: write
