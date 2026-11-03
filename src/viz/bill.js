@@ -198,7 +198,7 @@ Object.assign(VIZ,{
       <path class="ig-wave" d="M0 84 q15 -8 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="#fff" stroke-width="3" fill="none"/>
       <path d="M0 100 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#8ec6e4" stroke-width="5" fill="none" class="ig-wave" style="animation-duration:2s"/>
       ${[[50,30,'Robot accident??'],[226,24,'Is it unsafe?'],[220,58,'!!!']].map(([x,y,t],i)=>`<g class="ig-rise" style="--d:${i*.7}s"><rect x="${x-46}" y="${y-13}" width="92" height="20" rx="10" fill="#fff" stroke="${BV.red}" stroke-width="1.2"/>${bvT(x,y+1,t,{s:9,c:BV.red,w:800})}</g>`).join('')}
-      ${bvT(150,124,'Public reports before the facts are known can start rumors that hurt a small company',{s:9.5,c:'#3a5a7a'})}`,'Rumors rocking a small robot company like waves'),
+      ${bvT(150,124,'Reports made public too soon can start harmful rumors',{s:9.5,c:'#3a5a7a'})}`,'Rumors rocking a small robot company like waves'),
   splitReport:()=>igFrame(300,140,`<g transform="translate(40 66)"><rect x="-16" y="-20" width="32" height="40" rx="3" fill="#fff" stroke="${BV.navy}" stroke-width="1.6"/><path d="M-10 -12 h20 M-10 -5 h20 M-10 2 h14 M-10 9 h18" stroke="#c8cde0" stroke-width="2"/>${bvT(0,34,'report',{s:9,c:BV.soft})}</g>
       <path d="M62 60 C120 60 140 30 196 30" stroke="${BV.line}" stroke-width="4" fill="none"/><path d="M62 72 C120 72 140 104 196 104" stroke="${BV.line}" stroke-width="4" fill="none"/>
       <g class="bv-up"><rect x="-8" y="-10" width="16" height="20" rx="2" fill="#fff" stroke="${BV.navy}" stroke-width="1.4"/></g><g class="bv-down"><rect x="-8" y="-6" width="16" height="12" rx="2" fill="#fff4d6" stroke="${BV.gold}" stroke-width="1.4"/></g>
