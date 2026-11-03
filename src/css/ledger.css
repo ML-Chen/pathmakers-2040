@@ -62,6 +62,13 @@
 .lg-hint{min-height:0;font-weight:800;color:var(--violet);margin:6px 4px 2px;font-size:.92rem}.lg-hint:empty{display:none}
 .lg-check .byte-note.lg-hop{animation:hop .6s}
 .finding .lg-part{cursor:zoom-in;outline:2px dashed rgba(108,92,231,.38);outline-offset:3px;border-radius:10px}
+/* The tap outlines (5px outside each part) and a sentence's highlight (8px past its text) reach past the text column. The sheet
+   body gets 8px of room on each side for them (the sheet's own padding shrinks by as much, so the text stays where it was);
+   otherwise the body's clip edge cut them off and the body could be scrolled sideways. */
+.sheet.ledger .sheet-in{padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+.sheet.ledger .sheet-body{padding-left:8px;padding-right:8px}
+.sheet.ledger .sheet-top{margin-left:8px;margin-right:8px}
+.finding .sent.lg-part{outline-offset:-2px}
 .finding .lg-part:hover{outline-color:var(--violet);background:rgba(108,92,231,.06)}
 .lg-part.lg-wrong{animation:lgshake .4s}
 @keyframes lgshake{20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}

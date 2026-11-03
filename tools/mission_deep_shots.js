@@ -27,7 +27,7 @@ const uiChecks=require('./ui_checks.js');const issues=[];
     continue}
   if(f.k==='bench'){const docs=await E(()=>M().docs.map(d=>d.id));for(const d of docs){await E(d=>{curDoc=d;renderWorkbench()},d);await shot('bench-'+d,900,true)}
     if(await E(()=>!!M().tell)){await E(()=>{S.told=true;renderWorkbench()});await shot('bench-told',700,true)}
-    if(await E(()=>!!M().lesson)){await E(()=>openLesson(M().lesson.id));await shot('lesson',1200,true);await E(()=>document.querySelectorAll('.sheet').forEach(x=>x.remove()))}
+    if(await E(()=>!!M().lesson)){await E(()=>openLesson(M().lesson.id));await shot('lesson',1200);/* the lesson sheet is fixed to the window, so a full-page shot would show the bench below it, which the player never sees */await E(()=>document.querySelectorAll('.sheet').forEach(x=>x.remove()))}
     await E(()=>{S.read=Object.fromEntries(M().docs.map(d=>[d.id,1]))});continue}
   if(f.k==='criteria'){await shot('criteria',600);const cs=await E(()=>M().criteria.length);for(let j=1;j<=Math.min(3,cs);j++)await p.click('.critb:nth-child('+j+')').catch(()=>{});await shot('criteria-picked',300);continue}
   if(f.k==='table'){await shot('table-start',1300,true);await p.click('#why').catch(()=>{});await shot('table-why',500,true);
