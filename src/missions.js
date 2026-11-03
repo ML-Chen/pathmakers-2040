@@ -59,9 +59,9 @@ MISSIONS.maya={id:'maya',title:'The Violinist’s Wrist',career:'doctor',day:1,b
     {name:'workbench',k:'bench'},{name:'criteria',k:'criteria'},{name:'table',k:'table'},{name:'consent',k:'consent'},{name:'memo',k:'memo'},{name:'reveal',k:'reveal'},{name:'debrief',k:'debrief'},{name:'evening',k:'evening'}],
   get talks(){return TALKS},get docs(){return DOCS},get react(){return REACT_MAYA},
   lesson:{id:'bones',label:'Learn it fast: how a broken bone heals'},
-  tell:{clue:'rash',label:'Tell Byte about Maya’s rash',note:'Thanks! I updated my forecast: if Maya is sensitive to HX-2, BoneMend has about a 60% chance of a skin reaction.',guide:'only-you-know',doc:'memo'},
+  tell:{clue:'rash',label:'Tell Byte about Maya’s rash',note:'Thanks! I updated my forecast. Because Maya once got a rash from an HX-2 cooling patch, I now think BoneMend has about a 60% chance of giving her a skin reaction.',guide:'only-you-know',doc:'memo'},
   get criteria(){return CRITERIA},criteriaHint:'Not sure what one means? <button class="gw" data-w="heals straight">Heals straight</button> means the bone grows back in its normal shape.',
-  criteriaNote:'Deciding what “good” means first keeps a flashy option from fooling you.',
+  criteriaNote:'Choose what matters to Maya before you look at the futures, so that an exciting new option like BoneMend doesn’t distract you from her goals.',
   controls:[{key:'tx',label:'Treatment',opts:[['pins','Surgery with pins'],['cast','Cast'],['gel','BoneMend gel']]},{key:'pt',label:'Physical therapy',opts:[[false,'No'],[true,'Yes']]},{key:'date',label:'Recital',opts:[['fri','Keep Friday'],['moved','Move it']]}],
   start:{tx:'gel',pt:false,date:'fri'},
   planName(c){return T({pins:'Surgery with pins',cast:'Cast',gel:'BoneMend gel'}[c.tx])+T(c.pt?' + therapy':'')+T(c.date==='moved'?', move the recital':', keep Friday')},
@@ -72,14 +72,14 @@ MISSIONS.maya={id:'maya',title:'The Violinist’s Wrist',career:'doctor',day:1,b
     const r=c.tx==='gel'?(sens?.6:.05):0,mv=c.date==='moved',q=1-r;
     const F=(s,p,k)=>({straight:s,plays:p,quick:p,skin:k,agree:1});
     return [{kind:'rash',p:r*.8*(mv?.5:0),cap:'Skin reaction, but played at the moved recital.',flags:F(1,1,0)},
-      {kind:'rash',p:r*.8*(mv?.5:1),cap:'Skin reaction. Switched to a cast.',flags:F(1,0,0)},
+      {kind:'rash',p:r*.8*(mv?.5:1),cap:'Skin reaction, so she switched to a cast.',flags:F(1,0,0)},
       {kind:'rash',p:r*.2,cap:'Skin reaction, then healed crooked.',flags:F(0,0,0)},
       {kind:mv?'moved':'recital',p:q*ps*ready,cap:mv?'Played at the moved recital!':'Played Bach on Friday!',flags:F(1,1,1)},
-      {kind:'healed',p:q*ps*(1-ready),cap:'Healed straight. Missed the recital.',flags:F(1,0,1)},
-      {kind:'crooked',p:q*(1-ps),cap:'Healed crooked. Needs another fix.',flags:F(0,0,1)}].filter(o=>o.p>1e-9)},
+      {kind:'healed',p:q*ps*(1-ready),cap:'Healed straight but missed the recital.',flags:F(1,0,1)},
+      {kind:'crooked',p:q*(1-ps),cap:'Healed crooked and needs another fix.',flags:F(0,0,1)}].filter(o=>o.p>1e-9)},
   truth(){return true},knows(){return !!S.told},
   why(c){const o=this.outcomes(c,this.knows());const st=Math.round(100*o.reduce((a,x)=>a+x.p*x.flags.straight,0)),pl=Math.round(100*o.reduce((a,x)=>a+x.p*x.flags.plays,0));
-    return T('<b>{plan}:</b> the bone grows back straight about {st}% of the time, and she plays at her recital about {pl}% of the time. ',{plan:this.planName(c),st,pl})+(c.tx==='gel'?T(S.told?'Because of Maya’s rash, a skin reaction is likely: about 60%. ':'I see no allergy in her record, so I forecast a skin reaction at about 5%. ')+T('Only 40 kids have tried BoneMend, so I’m less sure about these numbers.'):'')},
+    return T('<b>{plan}:</b> the bone grows back straight about {st}% of the time, and she plays at her recital about {pl}% of the time. ',{plan:this.planName(c),st,pl})+(c.tx==='gel'?T(S.told?'Because of Maya’s old rash, a skin reaction from BoneMend is likely, at about 60%. ':'I see no allergy in her record, so I forecast a skin reaction at about 5%. ')+T('Only 40 kids have tried BoneMend, so I’m less sure about these numbers.'):'')},
   whyGuide(c){return c.tx==='gel'?'sample-size':null},
   consent:{left:'dad',right:'maya',title:'Maya and Wei Lin',role:'Patient and parent',prompt:'So, what do you suggest? And will I get to play?',replyWho:'maya',heart:'maya',
     opts(c,M){const o=M.outcomes(c,M.knows());const st=Math.round(100*o.reduce((a,x)=>a+x.p*x.flags.straight,0)),pl=o.reduce((a,x)=>a+x.p*x.flags.plays,0);const tx=T(c.tx==='gel'?'BoneMend gel':c.tx==='pins'?'surgery with pins':'a cast')+T(c.pt?' plus physical therapy':'');
@@ -87,16 +87,16 @@ MISSIONS.maya={id:'maya',title:'The Violinist’s Wrist',career:'doctor',day:1,b
       const heal=st>=93?T('Almost every kid heals straight with it.'):st>=85?T('Nearly 9 in 10 kids heal straight with it.'):T('About 8 in 10 kids heal straight with it.');
       return [{t:T('{play} I’d suggest {tx}. {heal} {rash}What do you two think?',{play,tx,heal,rash:T(c.tx==='gel'&&S.told?'Because of your rash last summer, the gel could give you another one, so we’d watch for that. ':'')}),good:true,mood:'smile',reply:pl<.05?'So I’ll miss Friday... but I want my arm to work for a long time. Okay. I agree.':'Thank you for explaining. I understand. Let’s do it.'},
         {t:T('Trust me, {tx} is the best choice for you. I’ve looked at all the numbers, so you and your dad don’t need to worry about the details.',{tx}),good:false,mood:'worried',reply:'Um... okay. But I don’t really understand what will happen.'},
-        {t:'You’ll definitely play on Friday, Maya! Kids your age heal really fast, so there’s nothing to worry about.',good:false,mood:'surprised',reply:'Definitely? Are you sure? The futures didn’t say that.'}]}},
+        {t:'You’ll definitely play on Friday, Maya! Kids your age heal really fast, so there’s nothing to worry about.',good:false,mood:'surprised',reply:'Definitely? Are you sure? The Future Table showed some futures where I don’t get to play.'}]}},
   memo:{starters:['I recommend ','because ','The chance it heals straight is about ','Maya cares about ','We will check by '],placeholder:'I recommend a cast with physical therapy because…',
     plan:/pin|surg|cast|gel|bonemend|therap/,careLabel:'Includes what Maya cares about',care:/maya|she |her |recital|violin|family|dad/,signAs:'Dr. ',topic:'Maya’s treatment'},
   reveal:{days(c){return c.date==='moved'?30:9},who:'maya',lines:REVEAL_LINES,mood(k){return k==='recital'||k==='moved'?'happy':k==='healed'?'smile':'sad'}},
-  trap(c){return {ok:S.told||c.tx!=='gel',text:T(S.told?'You told {byte} about the rash, so the forecast was accurate.':c.tx!=='gel'?'You avoided BoneMend. Did you notice why it was risky for Maya? Her dad mentioned a rash.':'You didn’t tell {byte} about Maya’s rash. BoneMend looked safer than it really was for her.',{byte:S.byte.name})}},
-  byteGood:'Nice work, Doctor. You listened, you explained, and Maya trusted you.',
+  trap(c){return {ok:S.told||c.tx!=='gel',text:T(S.told?'You told {byte} about Maya’s old rash, so the forecast was accurate.':c.tx!=='gel'?'You avoided BoneMend. Did you notice why it was risky for Maya? Her dad mentioned a rash.':'You didn’t tell {byte} about Maya’s rash. BoneMend looked safer than it really was for her.',{byte:S.byte.name})}},
+  byteGood:'Nice work, Doctor. You listened to Maya and her dad, you explained the choices honestly, and Maya trusted you.',
   evening(){return [T('<b>{byte}:</b> “Maya’s dad sent a message tonight. Maya wants to know if you can come to her recital, whichever day it ends up being.”',{byte:esc(S.byte.name)}),
-    T('“The Ledger had a story about Calder Bay tonight. A new building went up there, and it uses as much power as a small city. Nobody has a permit for it, so inspectors are going to visit.”')]},
+    T('“Tonight the Ledger, the news app, had a story about Calder Bay. A new building there uses as much electricity as a small city, and nobody has a permit for it, so inspectors are going to visit.”')]},
   brief(){return `Current case: Maya Lin, 11, a violinist, broke her left radius (a clean fracture straight across the bone, with the two pieces slightly out of line, which is why pins are an option and why a cast can let it heal crooked). Her recital is Friday, in 9 days; it could be moved about 3 weeks later if they ask. Options: (1) surgery with pins: heals straight about 95 in 100 (studied in 12,000 kids), no violin for about 6 weeks; (2) cast: about 80 in 100 heal straight, 88 with physical therapy (21,000 kids), violin in about 3 weeks; (3) BoneMend hydrogel, a newer treatment that came out last year: about 90 in 100, violin in about 8 days for many kids, but tested on only 40 kids (error bar roughly 76 to 97); its main ingredient is HX-2, the cooling gel in sunburn patches; in kids who once got a rash from an HX-2 patch, about 60 in 100 got a rash from BoneMend and had to switch to a cast.
 What you know: ${S.told?'The player told you Maya once got a rash from a cooling patch, so you now estimate about a 60% chance of a BoneMend skin reaction for her.':'Maya’s Boston record shows no allergies, but records from other countries are often not synced, so you do not actually know her history.'}
 The key consideration when asked which option: ${S.told?'Maya’s rash and BoneMend’s HX-2':'ask whether the family mentioned any allergies or reactions, especially from care abroad'}.`}
 };
-const REACT_MAYA={memo6:'Nine days until the recital. That’s tight!',memo7:'Only 40 kids. I could be wrong about BoneMend.',record3:'Hmm, a record can be missing things.',sheet2:'HX-2... where have I heard that?',sheet3:'This one could really matter for Maya.',ledger2:'Calder Bay again. Who builds a secret datacenter?'};
+const REACT_MAYA={memo6:'Maya’s recital is only nine days away, so there isn’t much time.',memo7:'BoneMend was tested on only 40 kids, so my numbers for it could be wrong.',record3:'Hmm, Maya’s record might be missing care she got in another country.',sheet2:'HX-2 is also in sunburn cooling patches. I wonder if Maya has ever used one.',sheet3:'If Maya is sensitive to HX-2, this rash risk could really matter for her.',ledger2:'Someone built a datacenter in secret near Calder Bay. I wonder who built it, and why they hid it.'};

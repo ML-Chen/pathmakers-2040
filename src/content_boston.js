@@ -16,7 +16,7 @@ const GLOSSARY={
   tradeoff:'When getting more of one good thing means getting less of another.', uncertain:'Not known for sure.',
   operations:'The everyday work that keeps a big place running.', diagnose:'To figure out what illness or injury someone has.',
   trial:'A careful test of a new medicine to see if it is safe and works.', approved:'Officially allowed after being checked.',
-  clot:'A soft clump of blood that forms to protect an injury.', callus:'A bridge of new tissue the body builds across a broken bone. It hardens into bone over weeks.', calibration:'How well your "how sure am I" matches how often you turn out to be right.',
+  clot:'A soft clump of blood that forms to protect an injury.', callus:'A bridge of new tissue the body builds across a broken bone. It hardens into bone over weeks.', calibration:'How well the way you say how sure you are matches how often you turn out to be right.',
   'error bar':'A line on a chart that shows how far the real answer might be from the number shown.',
   dividend:'Money shared out to people. In 2040, every adult gets a Citizen’s Dividend, paid from the fees companies pay to build robots and computer chips.', autonomous:'Able to act on its own without a person controlling it.'
 };
@@ -31,21 +31,21 @@ const CAST={
 // Conversations: lines {who, mood, text, choices?, clue?}. choices: [{t, mood?, good?, reply?}]
 const TALKS={
   morning:[
-    {who:'byte',mood:'happy',text:'Good morning, Doctor! Today’s the big day: your first shift at Boston Harbor Hospital!'},
+    {who:'byte',mood:'happy',text:'Good morning, Doctor! Today is your first shift at Boston Harbor Hospital!'},
     {who:'byte',mood:'neutral',text:'The tram leaves at 8:05, it’s sunny, and your badge is already in your bag. You have one patient this morning: a girl with a broken wrist.'},
-    {who:'byte',mood:'happy',text:'I can look things up, run the numbers, and show you what might happen. But helping a family decide is your job.',choices:[{t:'What’s my job today?',reply:'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign. Signing means you’re [[accountable]].'},{t:'Let’s go!',reply:'Woof! Grab your coat!'}]}
+    {who:'byte',mood:'happy',text:'I can look things up, work out the odds, and show you what might happen with each treatment. Helping the family decide what to do is your job.',choices:[{t:'What’s my job today?',reply:'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign the decision, which means you are [[accountable]]: you have to explain it and answer for how it turns out.'},{t:'Let’s go!',reply:'Woof! Grab your coat!'}]}
   ],
   imani:[
     {who:'imani',mood:'smile',text:'You must be our new Care Doctor. Welcome. I’m Dr. Reyes.'},
     {who:'imani',mood:'neutral',text:'Your patient is Maya Lin, age 11. She fell off her scooter yesterday and broke her wrist: a clean [[fracture]] of the [[radius]], and the two pieces slipped a little out of line.'},
-    {who:'imani',mood:'think',text:'There are three good treatments. The right one depends on what Maya and her family care about, and you only learn that by talking to them.',choices:[{t:'What does Maya care about?',reply:'Ask her. I’ll give you a hint, though: she came in holding a violin case with her good arm.',mood:'smile'},{t:'Which treatment would you pick?',reply:'For my own kid? Probably surgery with [[pins]]. But I’m not Maya. Go meet her.',mood:'stern'}]}
+    {who:'imani',mood:'think',text:'There are three good treatments for Maya’s wrist. Which one is right depends on what Maya and her family care about, and you can only find that out by talking to them.',choices:[{t:'What does Maya care about?',reply:'Ask her. I’ll give you a hint, though: she came in holding a violin case with her good arm.',mood:'smile'},{t:'Which treatment would you pick?',reply:'If it were my own kid, I’d probably pick surgery with [[pins]]. But Maya may care about different things than I do, so go and meet her.',mood:'stern'}]}
   ],
   maya:[
     {who:'maya',mood:'worried',text:'Hi. Is my arm going to be okay?'},
     {who:'maya',mood:'sad',text:'My [[recital]] is Friday. I’ve practiced the Bach piece for four months.',choices:[{t:'Your arm is going to heal. Let’s figure out the best plan together.',good:true,reply:'Okay. Can I still play on Friday?',mood:'worried'},{t:'Don’t worry about the recital right now.',reply:'But it’s really important to me...',mood:'sad'}]},
-    {who:'dad',mood:'worried',text:'We just want her arm to heal right. She wants to play for the rest of her life.'},
+    {who:'dad',mood:'worried',text:'We just want her arm to heal right. She wants to keep playing the violin for the rest of her life.'},
     {who:'dad',mood:'think',text:'Oh, one thing. Last summer she got a bad [[rash]] from one of those cooling patches for sunburn. We were visiting family in Taipei, so it’s probably not in her records here.',clue:'rash'},
-    {who:'maya',mood:'smile',text:'It was super itchy. It looked like strawberry polka dots.',choices:[{t:'Thanks for telling me. That might really matter.',good:true,reply:'Really? Okay!',mood:'smile'},{t:'That was a long time ago.',reply:'Okay...',mood:'neutral'}]}
+    {who:'maya',mood:'smile',text:'That rash was super itchy. It looked like strawberry polka dots.',choices:[{t:'Thanks for telling me. That might really matter when we choose a treatment.',good:true,reply:'Really? Okay!',mood:'smile'},{t:'That was a long time ago.',reply:'Okay...',mood:'neutral'}]}
   ],
   consent:[
     {who:'dad',mood:'think',text:'So, Doctor, what do you think we should do?'},
@@ -58,14 +58,14 @@ const DOCS=[
   {id:'memo',title:'Byte’s memo: Maya’s options',from:'Byte',kind:'memo',steps:[
     {t:'Maya’s [[radius]] has a clean [[fracture]]: one crack straight across the bone, with the two pieces a little out of line.',viz:'arm',cap:'Maya’s left forearm'},
     {t:'A bone [[heals straight]] when it grows back in its normal shape. If it heals crooked, doctors may have to fix it again.',viz:'straightVsCrooked',cap:'Straight or crooked'},
-    {t:'There are three [[options]], and all three are safe and [[approved]].',viz:'threeOptions',cap:'The three options'},
-    {t:'[[Surgery]] with [[pins]]: about 95 out of 100 kids heal straight.',viz:'kids',args:{n:95,label:'95 of 100 kids heal straight with pins'},cap:'Surgery with pins'},
-    {t:'A [[cast]]: about 80 out of 100 heal straight, or 88 with [[physical therapy]].',viz:'kidsCompare',args:{a:80,b:88,label:'80 of 100 with a cast · 88 with therapy'},cap:'Cast, then cast plus therapy'},
-    {t:'BoneMend [[hydrogel]], a newer treatment that came out last year: about 90 out of 100 heal straight.',viz:'kids',args:{n:90,col:'#6c5ce7',label:'About 90 of 100 with BoneMend'},cap:'BoneMend gel'},
-    {t:'Back to violin: about 6 weeks after pins, 3 weeks with a cast, and 8 days with BoneMend. Her [[recital]] is in 9 days.',viz:'timeline',cap:'How long until she can play'},
-    {t:'BoneMend has been tested on only 40 kids, so its numbers are more [[uncertain]] than the others.',viz:'sampleSize',cap:'Why the small study matters'},
-    {t:'On this chart, the black line on each bar is the [[error bar]]: the real number is probably somewhere along it.',viz:'bars',cap:'Heals straight, out of 100 kids'},
-    {t:'My [[forecast]] for a skin reaction to BoneMend is low, about 5 in 100, because I found no [[allergy]] in her [[record]].',viz:'rashForecast',args:{n:5,label:'My forecast: 5 of 100 get a skin reaction'},cap:'Skin reaction forecast',alt:{t:'Updated: Maya once got a [[rash]] from an HX-2 cooling patch, so my [[forecast]] for a skin reaction to BoneMend is now about 60 in 100, not 5. For Maya, I would avoid BoneMend.',args:{n:60,label:'New forecast for Maya: 60 of 100'},cap:'Updated forecast'}}
+    {t:'There are three [[options]] for treating Maya’s wrist, and all three are safe and [[approved]].',viz:'threeOptions',cap:'The three options'},
+    {t:'[[Surgery]] with [[pins]] works well: about 95 out of 100 kids who get it heal straight.',viz:'kids',args:{n:95,label:'95 of 100 kids heal straight with pins'},cap:'Surgery with pins'},
+    {t:'With a [[cast]], about 80 out of 100 kids heal straight, and with a cast plus [[physical therapy]], about 88 out of 100 do.',viz:'kidsCompare',args:{a:80,b:88,label:'80 of 100 with a cast · 88 with therapy'},cap:'Cast, then cast plus therapy'},
+    {t:'BoneMend [[hydrogel]] is a newer treatment that came out last year, and about 90 out of 100 kids who get it heal straight.',viz:'kids',args:{n:90,col:'#6c5ce7',label:'About 90 of 100 with BoneMend'},cap:'BoneMend gel'},
+    {t:'Maya could play violin again about 6 weeks after pins, about 3 weeks after a cast, or about 8 days after BoneMend. Her [[recital]] is in 9 days.',viz:'timeline',cap:'How long until she can play'},
+    {t:'BoneMend has been tested on only 40 kids, so its numbers are more [[uncertain]] than the numbers for pins and casts, which were each studied in thousands of kids.',viz:'sampleSize',cap:'Why the small study matters'},
+    {t:'On this chart, the black line on each bar is an [[error bar]], and the real number is probably somewhere along that line.',viz:'bars',cap:'Heals straight, out of 100 kids'},
+    {t:'My [[forecast]] for a skin reaction to BoneMend is low, about 5 in 100, because I found no [[allergy]] in her [[record]].',viz:'rashForecast',args:{n:5,label:'My forecast: 5 of 100 get a skin reaction'},cap:'Skin reaction forecast',alt:{t:'I updated this: Maya once got a [[rash]] from an HX-2 cooling patch, so my [[forecast]] for a skin reaction to BoneMend is now about 60 in 100, not 5. For Maya, I would avoid BoneMend.',args:{n:60,label:'New forecast for Maya: 60 of 100'},cap:'Updated forecast'}}
   ]},
   {id:'record',title:'Maya Lin: health record',from:'Boston Harbor Hospital',kind:'record',steps:[
     {t:'Patient: Maya Lin, age 11.',viz:'idcard',cap:'Patient card'},
@@ -76,15 +76,15 @@ const DOCS=[
   ]},
   {id:'sheet',title:'BoneMend hydrogel: fact sheet',from:'Boston Harbor Hospital',kind:'sheet',steps:[
     {t:'BoneMend is a [[hydrogel]] that helps bone cells rebuild the broken spot quickly.',viz:'boneGel',cap:'How BoneMend works'},
-    {t:'A smart [[splint]] keeps the arm steady while it heals.',viz:'splint',cap:'The smart splint'},
-    {t:'Its main [[ingredient]] is HX-2 cooling gel, the same material used in many sunburn cooling patches.',viz:'ingredientMatch',cap:'One shared ingredient'},
-    {t:'People who once got a [[rash]] from an HX-2 cooling patch may be [[sensitive]]. In the [[trial]], about 60 out of 100 of them got a rash from BoneMend.',viz:'rashForecast',args:{n:60,label:'60 of 100 sensitive kids got a rash'},cap:'Kids who are sensitive to HX-2'},
+    {t:'A smart [[splint]] with sensors keeps the arm steady while it heals and checks that it stays still.',viz:'splint',cap:'The smart splint'},
+    {t:'BoneMend’s main [[ingredient]] is HX-2 cooling gel, the same material used in many sunburn cooling patches.',viz:'ingredientMatch',cap:'One shared ingredient'},
+    {t:'People who once got a [[rash]] from an HX-2 cooling patch may be [[sensitive]]. In the [[trial]] of BoneMend, about 60 out of 100 kids like that got a rash from it.',viz:'rashForecast',args:{n:60,label:'60 of 100 sensitive kids got a rash'},cap:'Kids who are sensitive to HX-2'},
     {t:'If a rash happens, BoneMend is stopped and the arm goes into a regular [[cast]].',viz:'switchToCast',cap:'The backup plan'}
   ]},
   {id:'ledger',title:'The Ledger: Boston',from:'News',kind:'ledger',steps:[
     {t:'Robot crews finished the new Charles River flood wall three weeks early.',viz:'floodwall',cap:'Charles River flood wall'},
     {t:'The average wait in Boston emergency rooms last month was four minutes.',viz:'erWait',cap:'Emergency room waits'},
-    {t:'Treaty inspectors shut down a small, unlicensed datacenter near the town of Calder Bay last night. Nobody knows who built it.',viz:'datacenter',cap:'A mystery datacenter'}
+    {t:'Last night, inspectors who enforce the international AI [[treaty]] shut down a small [[datacenter]] near the town of Calder Bay, because it had no license to run. Nobody knows who built the datacenter.',viz:'datacenter',cap:'A mystery datacenter'}
   ]}
 ];
 const LESSONS={bones:{title:'How a broken bone heals',steps:[
@@ -118,41 +118,42 @@ function sampleFuture(c,useTruth,rng){
   if(rash){straight=rng()<.8; plays=c.date==='moved'?straight&&rng()<.5:false;} // switch to cast after reaction
   else {straight=rng()<p.straight; plays=straight&&rng()<p.ready;}
   const kind=rash?'rash':!straight?'crooked':plays?(c.date==='moved'?'moved':'recital'):'healed';
-  const cap={rash:'Skin reaction. Switched to a cast.',crooked:'Healed crooked. Needs another fix.',recital:'Played Bach on Friday!',moved:'Played at the moved recital!',healed:'Healed straight. Missed the recital.'}[kind];
+  const cap={rash:'Skin reaction, so she switched to a cast.',crooked:'Healed crooked and needs another fix.',recital:'Played Bach on Friday!',moved:'Played at the moved recital!',healed:'Healed straight but missed the recital.'}[kind];
   return {rash,straight,plays,kind,cap};
 }
 const TX_LABEL={pins:'Surgery with pins',cast:'Cast',gel:'BoneMend gel'};
 
 const FIELD_GUIDE={
-  'only-you-know':{title:'Information only you have',track:'Ethics and AI',text:'Even a brilliant AI only knows what it has been told. Maya’s rash happened in another country, so it was not in her record. When you know something the AI doesn’t, tell it.',real:'True today: medical records often don’t transfer between countries or even between hospitals.'},
+  'only-you-know':{title:'Information only you have',track:'Ethics and AI',text:'An AI can be very smart and still know only what is in its records or what people tell it. Maya’s rash happened in another country, so it was not in her Boston record, and Byte had no way to know about it. When you know something your AI doesn’t, tell it.',real:'True today: medical records often don’t transfer between countries or even between hospitals.'},
   'sample-size':{title:'Sample size',track:'Evidence and truth',text:'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.',real:'True today: new medicines go through trials with growing numbers of people before approval. BoneMend is made up for the game, though scientists are testing gels that help broken bones heal.'},
   'consent':{title:'Informed consent',track:'Government, law, and power',text:'Patients decide about their own treatment after they understand the choices, the odds, and the tradeoffs. The doctor explains, and the patient chooses.',real:'True today: US law requires informed consent for most medical treatments. For a child, a parent gives consent, and doctors also ask the child to agree, which is called assent.'},
-  'calibration':{title:'Calibration',track:'Evidence and truth',text:'When you say \u201cpretty sure,\u201d you should be right most of the time, and when you say \u201ccoin flip,\u201d about half. Guessing first and then checking is how you get better at knowing how sure to be.',real:'True today: weather forecasters and doctors practice this. When a good forecaster says there is a 70% chance of rain, it rains on about 7 of every 10 of those days.'},
-  'forecast':{title:'Forecasts are not promises',track:'Evidence and truth',text:'90% likely still means 1 in 10 goes the other way. A good decision can have an unlucky result, and a bad decision can get lucky.',real:'True today: weather forecasters track how often their 70% predictions come true.'}
+  'calibration':{title:'Calibration',track:'Evidence and truth',text:'Being well calibrated means your words match your results. When you say you are \u201cpretty sure,\u201d you should turn out right most of the time, and when you say it is a \u201ccoin flip,\u201d you should be right about half the time. You get better at this by writing down how sure you are and later checking how often you were right.',real:'True today: weather forecasters and doctors practice this. When a good forecaster says there is a 70% chance of rain, it rains on about 7 of every 10 of those days.'},
+  'forecast':{title:'Forecasts are not promises',track:'Evidence and truth',text:'A forecast of 90% still means that about 1 time in 10, things go the other way. So a good decision can still turn out badly because of bad luck, and a bad decision can turn out well because of good luck.',real:'True today: weather forecasters track how often their 70% predictions come true.'}
 };
 
 // Voices for prerecorded speech (Kokoro speaker ids); narrator reads documents and glossary.
 const BYTE_VOICES={female:'af_bella',male:'am_adam'};
 const VOICES={byte:'af_bella',imani:'bf_emma',maya:'af_sky',dad:'am_michael',narrator:'bm_george'};
-const REVEAL_LINES={recital:'I played the whole Bach piece! My wrist didn\u2019t hurt at all!',moved:'We moved the recital and I played! Thank you for explaining everything.',healed:'I missed Friday, but my wrist is straight. There\u2019s another recital in spring.',crooked:'It didn\u2019t heal straight. The doctors say they can fix it, but I\u2019m sad.',rash:'Strawberry polka dots again! They switched me to a cast.'};
+const REVEAL_LINES={recital:'I played the whole Bach piece! My wrist didn\u2019t hurt at all!',moved:'We moved the recital and I played! Thank you for explaining everything.',healed:'I missed Friday, but my wrist is straight. There\u2019s another recital in spring.',crooked:'It didn\u2019t heal straight. The doctors say they can fix it, but I\u2019m sad.',rash:'I got the strawberry polka-dot rash again! The doctors switched me to a cast.'};
 const EXTRA_LINES=[
   {who:'byte',text:'Hi! I\u2019m your AI partner. Let\u2019s do great work together!'},
-  {who:'byte',text:'Thanks! I updated my forecast: if Maya is sensitive to HX-2, BoneMend has about a 60% chance of a skin reaction.'},
-  {who:'byte',text:'Here are 10 possible futures for this plan. Change the plan and watch them shift.'},
-  {who:'byte',text:'Deciding what good means first keeps a flashy option from fooling you.'},
+  {who:'byte',text:'Thanks! I updated my forecast. Because Maya once got a rash from an HX-2 cooling patch, I now think BoneMend has about a 60% chance of giving her a skin reaction.'},
+  {who:'byte',text:'Here are 10 possible futures for this plan, in the same mix that my forecast predicts. If you change the plan, the futures change too.'},
+  {who:'byte',text:'Choose what matters to Maya before you look at the futures, so that an exciting new option like BoneMend doesn\u2019t distract you from her goals.'},
+  {who:'byte',text:'Choosing what matters before you see the futures helps you pick the plan that fits those goals, instead of the plan that looks most exciting.'},
   {who:'maya',text:'Thank you for explaining. I understand. Let\u2019s do it.'},
   {who:'maya',text:'So I\u2019ll miss Friday... but I want my arm to work for a long time. Okay. I agree.'},
   {who:'maya',text:'Um... okay. But I don\u2019t really understand what will happen.'},
-  {who:'maya',text:'Definitely? Are you sure? The futures didn\u2019t say that.'},
+  {who:'maya',text:'Definitely? Are you sure? The Future Table showed some futures where I don\u2019t get to play.'},
   {who:'maya',text:'So, what do you suggest? And will I get to play?'},
   {who:'byte',text:'Something strange happened tonight. Someone tried to install an upgrade on me from a maker I\u2019ve never heard of. I blocked it.'},
-  {who:'byte',text:'Sometimes a good plan gets unlucky. That\u2019s why we judge decisions by what we knew, not only by how they turned out.'},
-  {who:'byte',text:'Nice work, Doctor. You listened, you explained, and Maya trusted you.'}
+  {who:'byte',text:'Your plan fit your goals well, but this time it was unlucky. We judge a decision by what you knew when you made it, not only by how it turned out.'},
+  {who:'byte',text:'Nice work, Doctor. You listened to Maya and her dad, you explained the choices honestly, and Maya trusted you.'}
 ];
 // Passers-by: lines and the voice each scene's people use (Kokoro speaker names)
 const CHATTER={
-  street:['Ugh, the tram was ninety seconds late. NINETY seconds!','I\u2019m voting on the river park plan tonight. Did you read it?','Rain at 3:10, my phone says. Better hurry.','I teach violin on Saturdays. Just because I love it.','Did you hear about that secret datacenter near Calder Bay?','My grandpa ran his first marathon last week. He\u2019s 92!','I\u2019m learning Mandarin. N\u01d0 h\u01ceo!'],
-  hospital:['My knee feels brand new. Dr. Reyes explained everything so clearly.','I\u2019m visiting my great-grandma. She\u2019s 104 and still dances on Sundays!','Have you tried the cafeteria dumplings? Ten out of ten.','I volunteer here on Tuesdays. I read stories to the kids.']};
+  street:['Ugh, the tram was ninety seconds late. NINETY seconds!','I\u2019m voting on the river park plan tonight. Did you read it?','Rain at 3:10, my phone says. Better hurry.','I teach violin on Saturdays, just because I love it.','Did you hear about that secret datacenter near Calder Bay?','My grandpa ran his first marathon last week. He\u2019s 92!','I\u2019m learning Mandarin. N\u01d0 h\u01ceo!'],
+  hospital:['My knee feels brand new. Dr. Reyes explained everything so clearly.','I\u2019m visiting my great-grandma. She\u2019s 104 and still dances on Sundays!','Have you tried the cafeteria dumplings? I\u2019d give them ten out of ten.','I volunteer here on Tuesdays. I read stories to the kids.']};
 const CORE_CHATTER=JSON.parse(JSON.stringify(CHATTER));
 const CHATTER_VOICES=['af_sarah','bm_lewis','af_nicole','bf_isabella','am_michael'];
 // Every line the game speaks with a recorded voice: [{voice, text}] with [[ ]] markup removed.

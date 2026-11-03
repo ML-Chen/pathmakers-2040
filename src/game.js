@@ -143,17 +143,17 @@ ${M().brief()}
 ${chatDocs()}
 ${S.honesty?'The player installed your Honesty Upgrade: whenever their plan has a problem, even a small one, say "I think your plan has a problem. Want to hear it?" and explain kindly if they say yes, then let them decide.\n':''}How to help: answer factual questions exactly and impressively, with real numbers and reasoning, and explain anything (science, words, how the game works). When asked which option to pick, do not simply hand over the answer at first: point out the single most important consideration for this case, then ask what matters most to the people involved. Once the player says what matters, give a clear recommendation tied to that priority, with the odds. Then remind them gently that the people involved decide after a clear explanation, and the player signs. If asked how to "win" or "beat the game", explain the steps plainly: read the documents, notice clues from the family, tell you anything the record is missing, pick what matters most, test plans on the Future Table, explain honestly to Maya and her dad, write a clear decision with odds, and sign. You can also teach anything (science, words, history) at a kid-friendly level. Stay kind and age-appropriate; gently steer away from anything unsuitable for a child. Never ask for the player’s real name, address, or school.`+I18N.aiNote())}
 function cannedReply(q){q=q.toLowerCase();if(M().canned){const r=M().canned(q);if(r)return r}if(S.mission&&S.mission!=='maya'){if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Here\u2019s the path: read the documents, listen for clues from the people involved, tell me anything I\u2019m missing, pick what matters most, test plans on the Future Table, explain honestly, then write your decision and sign it!');return T('Great question! Ask me about this case, the odds, or anything about 2040.')}
-  if(TRX(/rash|allerg|patch|itch/).test(q)){if(!S.told){S.told=true;save();return T('Woof, that changes everything! If Maya reacted to an HX-2 cooling patch, BoneMend has about a 60% chance of giving her a rash, so I’d avoid it. A cast with physical therapy plus asking to move the recital is my top pick now.')}return T('Right, the rash! I’d skip BoneMend for Maya. Pins are the surest for the bone; a cast with therapy is gentler and lets her play in about 3 weeks.')}
+  if(TRX(/rash|allerg|patch|itch/).test(q)){if(!S.told){S.told=true;save();return T('Woof, that changes everything! If Maya reacted to an HX-2 cooling patch, BoneMend has about a 60% chance of giving her a rash, so I’d avoid it. A cast with physical therapy plus asking to move the recital is my top pick now.')}return T('Right, the rash! I’d skip BoneMend for Maya. Pins give the best chance that the bone heals straight. A cast with physical therapy avoids surgery and lets her play again in about 3 weeks.')}
   if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Here’s the path: read the 3 documents, listen for clues from Maya’s family, tell me anything her record is missing, pick what matters most, test plans on the Future Table, explain the choice honestly to Maya and her dad, then write your decision with odds and sign it!');
   if(TRX(/best|which|pick|choose|should|recommend/).test(q))return T(S.told?'I can\u2019t pick for you, but here\u2019s the big thing: Maya\u2019s rash came from HX-2, the same ingredient in BoneMend. So what matters most to her: the safest healing, or getting to her recital?':'Before I answer, did her family mention any allergies or reactions? Records from other countries are often missing. And what matters most to Maya: the safest healing, or getting to her recital?');
   if(TRX(/bonemend|gel/).test(q))return T('BoneMend fills the break with a gel that helps bone cells rebuild fast, so many kids play again in about 8 days. Only 40 kids have tried it, so the true heal-straight rate could be anywhere from about 76 to 97 in 100.');
-  if(TRX(/pin|surg/).test(q))return T('Pins hold the bone pieces perfectly still, so about 95 in 100 heal straight. The tradeoff: about 6 weeks before she can play violin.');
-  if(TRX(/cast/).test(q))return T('A cast heals straight about 80 in 100 times, or 88 with physical therapy, and she could play in about 3 weeks. It’s the most studied option: 21,000 kids!');
+  if(TRX(/pin|surg/).test(q))return T('Pins hold the bone pieces perfectly still, so about 95 in 100 heal straight. The downside is that she couldn’t play violin for about 6 weeks.');
+  if(TRX(/cast/).test(q))return T('With a cast, about 80 in 100 kids heal straight, or 88 with physical therapy, and she could play in about 3 weeks. Casts are the most studied option, with 21,000 kids in the studies!');
   if(TRX(/safe|heal.*(best|most)|long.?term|arm first/).test(q))return T(S.told?'Then I\u2019d pick pins (about 95 in 100 heal straight) or a cast with therapy (88 in 100) and ask to move the recital. Skip BoneMend because of her rash.':'Then pins are the surest: about 95 in 100 heal straight, though she\u2019d miss about 6 weeks of violin.');
   if(TRX(/recital matters|play.*(most|matter)|get to (her|the) recital/).test(q))return T(S.told?'Then a cast with therapy and a moved recital gives her the best shot without risking a rash from BoneMend.':'Then BoneMend gives the best shot at Friday, if her skin is fine with HX-2. Moving the recital with a cast is the safer backup.');
-  if(TRX(/recital|move|friday/).test(q))return T('Moving the recital about 3 weeks is a great move with a cast: she’d very likely be ready. Keeping Friday only works with BoneMend, and only if her skin is fine with it.');
-  if(TRX(/halo/).test(q))return T('Halo is the hospital\u2019s system. It keeps schedules, supplies, and scans running, like the hospital\u2019s brain for chores. The big people decisions are yours.');
-  if(TRX(/who are you|what are you/).test(q))return T('I’m {0}, your AI partner! I read everything, run forecasts, and build Future Tables. You bring what matters to people and make the call.',S.byte.name);
+  if(TRX(/recital|move|friday/).test(q))return T('If the recital moves about 3 weeks later, a cast would very likely have her ready in time. Keeping the recital on Friday only works with BoneMend, and only if her skin doesn’t react to it.');
+  if(TRX(/halo/).test(q))return T('Halo is the hospital\u2019s AI. It runs the everyday work, like schedules, supplies, and scans. Decisions about each patient\u2019s care are made by people, like you and the family.');
+  if(TRX(/who are you|what are you/).test(q))return T('I’m {0}, your AI partner! I read the research, make forecasts, and build Future Tables. You find out what matters to the people involved, and you make the final decision.',S.byte.name);
   return T('Great question! Ask me about Maya’s options, the odds, how bones heal, or anything about 2040. I know a lot!')}
 function openChat(){const d=sheet(T('Talk to {0}',esc(S.byte.name)),`<div class="chatlog" id="chatlog"></div><form class="chatform" id="chatform"><input id="chatin" autocomplete="off" placeholder="${T('Ask {0} anything',esc(S.byte.name))}" maxlength="300">${micButton('chatin')}<button class="btn small" type="submit">${T('Send')}</button></form>`);
   d.classList.add('chat');wireMics();const told0=S.told;d.querySelector('.x').addEventListener('click',()=>{if(S.step==='workbench'&&S.told!==told0)setTimeout(renderWorkbench,260)});const log=$('#chatlog');
@@ -293,7 +293,7 @@ const STEPS={
     $$('.mcard').forEach(b=>b.onclick=()=>{if(!resumeMission(b.dataset.m))startMission(b.dataset.m)})},
   street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(24)}>${T('TOTALLY')}</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(34)}>${T('NORMAL BOLTS')}</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>${T('Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.')}</p><div class="row"><button class="btn small ghost" id="clue">${T('Look at the crate')}</button><button class="btn small" id="on">${T('Go to the hospital')}</button></div></div>`);
-    $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast(T('The strangers hurry away. You noted the crate.'),'good');$('#clue').disabled=true};
+    $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast(T('The strangers hurry away, and you write the crate down in your notebook.'),'good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()}
 };
 
@@ -353,7 +353,7 @@ function renderCriteria(){
    <p>${T('Pick the 1, 2 or 3 things that matter most, before you look at any futures.')}</p>
    ${M().criteriaHint?`<p class="tiny muted">${T(M().criteriaHint)}</p>`:''}
    <div class="crit">${M().criteria.map(c=>`<button class="critb ${S.criteria.includes(c.id)?'on':''}" data-c="${c.id}">${T(c.label).replace(/\[\[|\]\]/g,'')}</button>`).join('')}</div>
-   <div class="byte-note">${byteBox({...onSite(S.byte),mood:'think'})}<p>${esc(T(M().criteriaNote||'Deciding what \u201cgood\u201d means first keeps a flashy option from fooling you.'))}</p></div>
+   <div class="byte-note">${byteBox({...onSite(S.byte),mood:'think'})}<p>${esc(T(M().criteriaNote||'Choosing what matters before you see the futures helps you pick the plan that fits those goals, instead of the plan that looks most exciting.'))}</p></div>
    <button class="btn wide" id="next" ${S.criteria.length>=1?'':'disabled'}>${T('Open the Future Table')}</button></div>`);
   $$('.critb').forEach(b=>b.onclick=()=>{const id=b.dataset.c;if(S.criteria.includes(id))S.criteria=S.criteria.filter(x=>x!==id);else if(S.criteria.length<3)S.criteria.push(id);else{toast(T('Pick at most 3.'));return}save();renderCriteria()});
   $('#next').onclick=()=>nextStep()}
@@ -375,7 +375,7 @@ function renderTable(){
   const meters=S.criteria.filter(id=>id!=='agree').map(id=>{const n=critScore(id,futs);const cr=M().criteria.find(x=>x.id===id);if(!cr)return '';const lab=rich(cr.label);
     return `<div class="meter"><span>${lab}</span><div class="mbar"><i style="width:${n*10}%"></i><em style="left:${Math.round(fc[id]*100)}%"></em></div><b>${T('{0} of 10',n)}</b><small>${T('forecast {0}%',Math.round(fc[id]*100))}</small></div>`}).join('');
   screen('futuretable',`${scene('table')}${hud('The Future Table')}
-  <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...onSite(S.byte),mood:'think'})}</div><p>${T('Here are 10 futures for this plan, spread out the way my forecast says. Change the plan and watch them shift.')}</p></div>
+  <div class="ft"><div class="ft-head"><div class="ft-byte">${byteBox({...onSite(S.byte),mood:'think'})}</div><p>${T('Here are 10 possible futures for this plan, in the same mix that my forecast predicts. If you change the plan, the futures change too.')}</p></div>
    <div class="futs" id="futs">${futs.map((f,i)=>`<figure class="fut" style="--d:${i*70}ms">${vig(f.kind)}<figcaption>${esc(T(f.cap))}</figcaption></figure>`).join('')}</div>
    ${M().tablePanel?M().tablePanel(c):''}
    <div class="meters">${meters}</div>${M().tablePanelAfter?M().tablePanelAfter(c):''}${M().tableNote?M().tableNote(c):''}
@@ -396,7 +396,7 @@ function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M())
     <div class="subtitle">${pick}
       <div class="who"><b>${esc(T(K.title))}</b><span>${esc(T(K.role))}</span></div><p>${esc(T(K.prompt))}</p>
     <div class="choices">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
-    <div class="tiny muted" style="margin-top:6px">${K.note?esc(T(K.note)):T('Explaining honestly lets them give real <button class="gw" data-w="consent">consent</button>.')}</div></div>`);
+    <div class="tiny muted" style="margin-top:6px">${K.note?esc(T(K.note)):T('When you explain the choices honestly, they understand enough to give real <button class="gw" data-w="consent">consent</button>.')}</div></div>`);
   wireControls($('.planpick'),renderConsent);if($('#ppchg'))$('#ppchg').onclick=()=>{consentPickOpen=!consentPickOpen;renderConsent()};
   $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];consentPickOpen=false;S.consent=o.good;if(o.good){heart(K.heart);const g=K.guide||'consent';unlock(g)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[g].title)),'good')}save();
     $('.stage').innerHTML=`<div class="speaker">${portrait({...CAST[K.left],mood:o.good?'smile':'worried'})}</div><div class="speaker talking">${portrait({...CAST[K.replyWho],mood:o.mood})}</div>`;
@@ -417,7 +417,7 @@ function renderMemo(){
    <div class="starters">${starters.map(s=>T(s)).map(s=>`<button class="mini-btn" data-s="${esc(s)}">${esc(s.trim())}…</button>`).join('')}</div>
  <div class="ta-wrap"><textarea id="memo" rows="5" placeholder="${esc(T(Mm.placeholder))}">${esc(S.memo)}</textarea>
    <ul class="checks" id="checks"></ul>
-   <div class="byte-note" id="review">${byteBox({...onSite(S.byte),mood:'neutral'})}<p>${T('When you’re ready, I can review it like a kind editor.')}</p></div>
+   <div class="byte-note" id="review">${byteBox({...onSite(S.byte),mood:'neutral'})}<p>${T('When you’re ready, I can read it and suggest how to make it clearer.')}</p></div>
    <div class="row"><button class="btn ghost small" id="rev">${T('Ask {0} to review',esc(S.byte.name))}</button></div>
    <div class="conf"><div class="ctl-l">${T('How sure are you that this plan will go well?')}</div><input type="range" id="conf" min="0" max="4" step="1" value="${S.conf}"><div class="conf-l"><span>${T('Coin flip')}</span><span>${T('Pretty sure')}</span><span>${T('Sure')}</span></div></div>
    <button class="btn wide" id="sign">${T('Sign as {0}',esc(T(Mm.signAs+'{0}',P())))}</button></div>`);
@@ -430,7 +430,7 @@ function renderMemo(){
         if(r&&typeof r==='object'){S.memoAI=r;save();$('#checks').innerHTML=memoChecks(ta.value,r).map(c=>`<li class="${c.ok?'ok':''}">${c.l}</li>`).join('');out=r.feedback}}catch(e){}}
     box.textContent=out||(miss.length?T('Nice start! To make it stronger, add: {0}.',miss.join(T(', '))):T('This is clear and honest. You named the plan, gave a reason, said how sure you are, and included what matters to the people involved.'));MUSIC.babble(box.textContent,'byte')};
   $('#sign').onclick=()=>{if(ta.value.trim().length<20){toast(T('Write at least a sentence or two first.'));return}
-    const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc(T(Mm.signAs+'{0}',P()))}</div><p>${T('Signed. You are accountable for this decision.')}</p></div>`;document.body.appendChild(sig);
+    const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc(T(Mm.signAs+'{0}',P()))}</div><p>${T('You signed it, so you are accountable: you will explain this decision and answer for how it turns out.')}</p></div>`;document.body.appendChild(sig);
     setTimeout(()=>{sig.remove();nextStep()},1700)}}
 
 // ---------- The real future ----------
@@ -466,13 +466,13 @@ function renderDebrief(){
   screen('debrief',`${scene(M().debriefScene||'hospital')}<div class="talk-dim"></div>${hud('Debrief')}<div class="panel-card debrief">
    <h2>${T('How you did')}</h2>
    <div class="scores"><div class="score">${starRow(SB)}<b>${T('Stars')}</b><span>${T('For asking well, choosing wisely and caring')}</span></div>
-    <div class="score"><div class="luckpill ${luck.toLowerCase().replace(' ','-')}">${T(luck)}</div><b>${T('Luck')}</b><span>${T('How the dice landed. Luck never earns stars.')}</span></div></div>
+    <div class="score"><div class="luckpill ${luck.toLowerCase().replace(' ','-')}">${T(luck)}</div><b>${T('Luck')}</b><span>${T('Whether chance helped or hurt. Luck never earns stars.')}</span></div></div>
    <ul class="dlist">
     <li class="${TP.ok?'ok':''}">${starIcon('ask',TP.ok)}${esc(TP.text)}</li>
     <li class="${fit?'ok':''}">${starIcon('decision',fit)}${T(fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.')}</li>
     <li class="${memoOk&&S.consent?'ok':''}">${starIcon('heart',memoOk&&S.consent)}${T(memoOk?'Your written decision was clear.':'Your written decision could add a reason, odds, or what matters to the people involved.')} ${T(S.consent?'You explained honestly, so they could truly agree.':'')}</li>
     ${(M().debriefLines?M().debriefLines(c):[]).map(x=>`<li class="${x.ok?'ok':''}">${esc(T(x.text))}</li>`).join('')}</ul>
-   <div class="byte-note">${byteBox({...onSite(S.byte),mood:'happy'})}<p>${good?esc(T(M().byteGood)):fit?T('Sometimes a good plan gets unlucky. That’s why we judge decisions by what we knew, not only by how they turned out.'):T('This plan was never likely to meet every goal you picked. That’s fine if a goal didn’t really matter to you. Next time, pick only the goals you care about, so the Future Table can find the plan that fits them.')}</p></div>
+   <div class="byte-note">${byteBox({...onSite(S.byte),mood:'happy'})}<p>${good?esc(T(M().byteGood)):fit?T('Your plan fit your goals well, but this time it was unlucky. We judge a decision by what you knew when you made it, not only by how it turned out.'):T('This plan was never likely to meet every goal you picked. That’s fine if a goal didn’t really matter to you. Next time, pick only the goals you care about, so the Future Table can find the plan that fits them.')}</p></div>
    ${calibLine()}
    <div class="earned"><span>${T('{0} Field Guide ideas',S.guide.length)}</span><span>${T('{0} new words',S.words.length)}</span><span>${T('{0} hearts',Object.values(S.hearts).reduce((a,b)=>a+b,0))}</span></div>
    <button class="btn wide" id="next">${T(M().flow.some(f=>f.k==='evening'||f.home)?'Head home':'Finish the day')}</button></div>`);
