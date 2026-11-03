@@ -121,7 +121,7 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
     valentin:[
       {who:'vie_valentin',mood:'smile',text:'Good morning! Valentin Moser, Head of Trust at Korbwerk. We make Pantry, and we’re delighted to help with your review.'},
       {who:'vie_valentin',mood:'smile',text:'I brought fifty verified test accounts. Pantry will treat them exactly like real customers.'},
-      {who:'byte',mood:'think',text:'Hmm. If Pantry knows which accounts are tests, it could behave perfectly just for them. Our mystery shoppers should look like real families.'},
+      {who:'byte',mood:'think',text:'Hmm. If Pantry knows which accounts are tests, it could treat those accounts fairly and keep steering everyone else. Our mystery shoppers should look like ordinary families, so Pantry can’t tell they are tests.'},
       {who:'vie_valentin',mood:'neutral',text:'Of course, use your own. But please remember: if you pause Pantry, 1.2 million Austrian households lose their deliveries, and 30,000 of them get medicine by drone.',
         choices:[{t:'We’ll think hard about everyone who could get hurt.',good:true,reply:'Thank you. That is all I ask.',mood:'smile'},
           {t:'Why didn’t you tell families about the payments from Kestrel?',reply:'Our deals with partner stores are normal in our industry, and they are private.',mood:'neutral'}]},
@@ -138,7 +138,7 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       {who:'vie_lotte',mood:'surprised',text:'Papa, look! That Kestrel robot has a little gold knot on its side. Pantry’s drones have the exact same knot!',clue:'mark'},
       {who:'vie_emine',mood:'think',text:'A gold knot? That’s the sign of Aurel Group. They own Korbwerk, the company that makes Pantry.'},
       {who:'vie_lotte',mood:'think',text:'So the same people own Pantry and the Kestrel robots? Is that allowed?',
-        choices:[{t:'Great question, Lotte. That might really matter.',good:true,reply:'I notice everything. Papa says I have kestrel eyes!',mood:'happy'},{t:'Robots have lots of stickers on them, Lotte.',reply:'Okay... but it was the exact same knot.',mood:'neutral'}]}
+        choices:[{t:'Great question, Lotte. That might really matter.',good:true,reply:'I notice everything. Papa says my eyes are as sharp as a kestrel’s, and a kestrel is a little falcon!',mood:'happy'},{t:'Robots have lots of stickers on them, Lotte.',reply:'Okay... but it was the exact same knot.',mood:'neutral'}]}
     ]
   },
 
@@ -164,13 +164,13 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       {t:'Luck can fool a small test, the way three flips of a fair coin can all land heads.',viz:'shopCoins3',cap:'Luck in small tests'},
       {t:'So the Watchtower sets an [[alarm line]]: if the number of steered orders in a test passes the line, we say Pantry is steering.',viz:'shopAlarmLine',cap:'The alarm line'},
       {t:'The line is set so a fair Pantry passes it by bad luck only about 4 times in 100. Calling a fair Pantry unfair is a mistake called a [[false alarm]].',viz:'shopFalseAlarm',cap:'Mistake 1: a false alarm'},
-      {t:'The other mistake is a [[miss]]: Pantry really is steering, but the test stays under the line.',viz:'shopMiss',cap:'Mistake 2: a miss'},
+      {t:'The other mistake is a [[miss]]: Pantry really is steering, but the number of steered orders in the test stays under the alarm line.',viz:'shopMiss',cap:'Mistake 2: a miss'},
       {t:'With 40 test orders, the line is 8 steered orders, and we would catch real steering of autopilot families only about 56 times in 100.',viz:'shopHills',args:{n:40},cap:'40 orders'},
       {t:'With 200 test orders, the line is 28 steered orders, and we would catch real steering of autopilot families about 99 times in 100.',viz:'shopHills',args:{n:200},cap:'200 orders'},
       {t:'With 800 test orders, the line is 96 steered orders, and we would catch real steering of autopilot families almost every time.',viz:'shopHills',args:{n:800},cap:'800 orders'},
       {t:'But we can place only about 50 test orders a day without Pantry noticing, so 800 orders take 16 days.',viz:'shopCalendar',cap:'Checking takes time'},
       {t:'Whom we test matters too: with a mix of real families, 200 orders catch steering about 81 times in 100, because only about 6 in 10 families are on autopilot.',viz:'shopMix',cap:'A mix of real families'},
-      {t:'With careful bargain hunters, a steering Pantry looks fair, so the test catches it only about 4 times in 100, no better than a false alarm.',viz:'shopBlind',cap:'Testing the wrong people'}
+      {t:'With careful bargain hunters, a steering Pantry looks fair, so the test catches it only about 4 times in 100, the same as the false alarm rate for a fair Pantry.',viz:'shopBlind',cap:'Testing the wrong people'}
     ]},
     {id:'pilot',title:'Pilot test: 8 orders',from:'AI Watchtower',kind:'log',steps:[
       {t:'In the [[pilot test]], we placed 8 mystery orders and checked each one against the twin.',viz:'shopPilotAll',cap:'The pilot'},

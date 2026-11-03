@@ -85,8 +85,8 @@ const QY_ART=(()=>{
       <path d="M19 40C40 37.5 70 38.5 88 37.6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
       <path d="M19.5 39.5C42 37 80 38.5 101.5 37.5C103 60 101.5 82 102.4 105C80 106.6 42 104.6 18.6 106C18 82 19.8 60 19.5 39.5Z" fill="none" stroke="${CO}" stroke-width="1.4" stroke-dasharray="5 3" stroke-linecap="round" opacity=".8"/>
       <path d="${ov(29,40,2.4)}${ov(91,40,2.4)}" fill="${dk('#d8c49a',.4)}"/>
-      ${txt(60,61,21,CO,'Closed','textLength="70" lengthAdjust="spacingAndGlyphs"')}
-      ${txt(60,74,12,VI,'for now','textLength="44" lengthAdjust="spacingAndGlyphs"')}
+      ${txt(60,58,20,CO,'Closed','textLength="70" lengthAdjust="spacingAndGlyphs"')}
+      ${txt(60,73.4,12,VI,'for now','textLength="44" lengthAdjust="spacingAndGlyphs"')}
       <path d="M18 98C16 87 22.5 80.5 32 80.5C41.5 80.5 48 87 46 98Q32 100 18 98Z" fill="${BR}" ${O(BR)}/>
       <path d="M20 96.4C19.6 94 19.8 92.2 20.6 91Q32 93.8 43.4 91C44.2 92.2 44.4 94 44 96.4Q32 98.4 20 96.4Z" fill="${dk(BR,.22)}"/>
       <path d="M24 88Q27 84 30 83.5M31 88Q34 84 37 83.5M38 89.5Q40.5 86.4 42 86" fill="none" ${I(BR)}/>
@@ -147,8 +147,8 @@ const QY_ART=(()=>{
       <g transform="rotate(-13 60 58)" opacity=".92">
         <path d="M27 45Q27 42 30 42H90Q93 42 93 45V71Q93 74 90 74H30Q27 74 27 71Z" fill="none" stroke="${ST}" stroke-width="2.5"/>
         <path d="M30.5 46Q30.5 45.4 31.2 45.4H88.8Q89.5 45.4 89.5 46V70Q89.5 70.6 88.8 70.6H31.2Q30.5 70.6 30.5 70Z" fill="none" stroke="${ST}" stroke-width="1.4"/>
-        ${txt(60,56.5,9.6,ST,'HOLD FOR','textLength="44" lengthAdjust="spacingAndGlyphs"')}
-        ${txt(60,67.6,10.6,ST,'REVIEW','textLength="48" lengthAdjust="spacingAndGlyphs"')}
+        ${txt(60,55.2,9.6,ST,'HOLD FOR','textLength="44" lengthAdjust="spacingAndGlyphs"')}
+        ${txt(60,68.8,10.6,ST,'REVIEW','textLength="48" lengthAdjust="spacingAndGlyphs"')}
         <path d="${ov(40,49,.9)}${ov(71,63,1.1)}${ov(55,52,.7)}${ov(84,58,.9)}${ov(47,66,.8)}" fill="${P}"/></g>
     </g>`)},
 

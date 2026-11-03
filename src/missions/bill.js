@@ -182,7 +182,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       {t:'Nine members have promised yes and nine have promised no, so the three undecided members will decide whether the bill passes.',viz:'seats21',args:{split:1},cap:'9 yes, 9 no, 3 undecided'},
       {t:'If only one of the three votes yes, the bill loses 10 to 11, so we need at least two of the three undecided members to vote yes.',viz:'tieScale',cap:'10 to 11 loses'},
       {t:'Rep. Gunderson is worried about how long the upgrade will take. Chip [[permit]]s are capped, so in the first year only about 1 in 3 older farm robots could get a [[security chip]], and the rest would have to stop taking orders from the internet until they got one.',viz:'chipLine',cap:'1 in 3 farm robots get a chip in year 1'},
-      {t:`For Rep. Hollis’s first draft, I forecast that Rep. Gunderson votes yes about ${bill_pct(v0.gunderson)} times in 100. With a [[phase in]] that gives older robots 3 years and puts farms first in line for chips, I forecast about ${bill_pct(ph.gunderson)} times in 100.`,viz:'voteDial',args:{a:bill_pct(v0.gunderson),b:bill_pct(ph.gunderson)},cap:'Rep. Gunderson’s yes, my forecast',
+      {t:`For Rep. Hollis’s first draft, I forecast that Rep. Gunderson votes yes about ${bill_pct(v0.gunderson)} times in 100. With a [[phase in]] that gives older robots 3 years and puts farms first in line for chips, I forecast about ${bill_pct(ph.gunderson)} times in 100.`,viz:'voteDial',args:{a:bill_pct(v0.gunderson),b:bill_pct(ph.gunderson)},cap:'My forecast of Rep. Gunderson’s vote',
         alt:{t:`Updated forecast: a stranger once used a phone to take over Rep. Gunderson’s own barn robot, so he wants robots protected from fake orders. With a [[phase in]] that puts farms first in line, I now forecast that he votes yes about ${bill_pct(ph1.gunderson)} times in 100, not ${bill_pct(ph.gunderson)}.`,args:{a:bill_pct(v1.gunderson),b:bill_pct(ph1.gunderson),goat:1},cap:'Updated forecast'}},
       {t:`Rep. Ibarra wants accident reports that her workers can read within 24 hours, and a person in charge of each crew who has the power to pause the robots. For the first draft, I forecast that she votes yes about ${bill_pct(v0.ibarra)} times in 100.`,viz:'pauseCrew',cap:'Workers read the reports and can pause the crew'},
       {t:`Rep. Sethi worries that making accident reports public within 24 hours, before anyone knows what really happened, could start rumors that ruin a small robot company. For the first draft, I forecast that he votes yes about ${bill_pct(v0.sethi)} times in 100.`,viz:'rumorWave',cap:'Rumors can ruin a small company'},
@@ -290,7 +290,7 @@ When asked what to choose: name the key tradeoff (how fast and how completely re
     opts:[{t:'Real fire departments sign their orders, so the robot can check them in a second. Firefighters at the door can also just ask it in person.',good:true,
         say:'Good question. A real fire department signs its orders, so the robot can check one in about a second and let the firefighters in. And when firefighters are standing at the door, they can simply ask the robot, the same as anyone in the room can.',back:'So the bill only stops orders from strangers far away who can’t prove who they are. That makes sense. Thank you, I yield back.',mood:'smile'},
       {t:'Emergencies like that are very rare, so it isn’t worth worrying about. This bill is about stopping fake orders.',say:'Well... emergencies are rare.',back:'Even a rare fire can hurt someone. I’ll want a better answer before the vote.',mood:'stern'},
-      {t:'Families can switch off the checking whenever they need to, so firefighters would never be kept out.',say:'Families could switch off the checking whenever they need to.',back:'Then a fake order would just say “switch off your checking” first.',mood:'stern'}],
+      {t:'Families can switch off the checking whenever they need to, so firefighters would never be kept out.',say:'Families could switch off the checking whenever they need to.',back:'Then someone sending fake orders would just tell the robots to switch off their checking first.',mood:'stern'}],
     whisper:'Psst. People standing next to a robot can always give it orders by talking to it. Only orders from far away need a digital signature, and real fire departments sign their orders.'},
   // Whip count: two questions per member; the open question reveals what each really needs (and Rep. Gunderson's story).
   whipQ:{
@@ -308,7 +308,7 @@ When asked what to choose: name the key tradeoff (how fast and how completely re
     sethi:{district:'Robot makers and startups on the West Coast',qs:[
       {t:'What worries the robot makers in your district?',good:true,learn:1,reply:'Paperwork, mostly. A twelve-person company can’t survive a public report every time a robot bumps a shelf. If every report goes public within 24 hours, before anyone knows what really happened, a rumor could put a small company out of business.',mood:'think'},
       {t:'Isn’t safety more important than profits?',reply:'That’s a trick question, and you know it. Safety matters, and so do the jobs of the people who build safe robots.',mood:'stern'},
-      {t:'Did the note answer your emergency question?',reply:'It did. People in the room can still talk to their robots, and only orders from far away get checked. I can explain that to my companies.',replyBad:'Not really. I’ll need to see how the bill text handles emergencies.',mood:'smile'}]}},
+      {t:'Did the note answer your emergency question?',reply:'It did. People standing next to their robots can still give them orders by talking, and only orders from far away get checked. I can explain that to my companies.',replyBad:'Not really. I’ll need to see how the bill text handles emergencies.',mood:'smile'}]}},
   lines:[
     {who:'byte',text:'Thanks for telling me. I’ll keep Rep. Gunderson’s story private. It changes my forecast, though: with a phase-in that puts farms first in line for chips, I now think he votes yes about 85 times in 100, not 40.'},
     {who:'byte',text:'Psst. People standing next to a robot can always give it orders by talking to it. Only orders from far away need a digital signature, and real fire departments sign their orders.'},
@@ -328,7 +328,7 @@ When asked what to choose: name the key tradeoff (how fast and how completely re
     {who:'hollis',text:'Families could switch off the checking whenever they need to.'},
     {who:'sethi',text:'So the bill only stops orders from strangers far away who can’t prove who they are. That makes sense. Thank you, I yield back.'},
     {who:'sethi',text:'Even a rare fire can hurt someone. I’ll want a better answer before the vote.'},
-    {who:'sethi',text:'Then a fake order would just say “switch off your checking” first.'},
+    {who:'sethi',text:'Then someone sending fake orders would just tell the robots to switch off their checking first.'},
     {who:'sethi',text:'Not really. I’ll need to see how the bill text handles emergencies.'}]
 };
 // every whip-count line, recorded in each member's voice
@@ -418,9 +418,9 @@ const BILL_SEC={
     name:{legal:'Each robot crew shall have a named individual who is accountable for the crew.',plain:'Each crew has a named person in charge, but the law doesn’t say they can stop it.'}}}};
 // what each member would say about a version, once you know what they need (no numbers before the criteria step)
 function bill_react(id,c){const v=bill_votes(c,!!S.told)[id],mood=v>=.7?'smile':v>=.4?'think':'worried';
-  const say={gunderson:c.cmd==='all'?'One year? Then my farm robots stop taking phone orders at harvest. No.':c.cmd==='phase'?(S.told?'Farms go first in line for chips. I can explain that to folks back home.':'Three years is better, but I’m still not sure.'):(S.told?'That’s easy for my farms. But my own barn robot got fooled once.':'My farm robots keep working. I like it.'),
-    ibarra:c.human==='name'?'A name on a form can’t stop a crew.':c.report==='private'?'Secret reports? My workers deserve better.':c.report==='split'?'A public summary in seven days is slow, but I can live with it.':'My workers will read every report, and the crew boss can pause the robots.',
-    sethi:c.report==='public'?'Public reports in 24 hours could ruin my small companies.':c.cmd==='all'?'One year is a tight deadline for small robot makers.':c.report==='split'?'The regulator gets the facts first, then the public. That’s fair.':'Private reports are easy for my companies.'}[id];
+  const say={gunderson:c.cmd==='all'?'One year? Most farm robots won’t have chips by harvest. No.':c.cmd==='phase'?(S.told?'Farms go first in line for chips. My voters will like that.':'Three years is better, but I’m still not sure.'):(S.told?'Easy for my farms. But my own barn robot got fooled once.':'My farm robots keep working. I like it.'),
+    ibarra:c.human==='name'?'A name on a form can’t stop a crew.':c.report==='private'?'Secret reports? My workers deserve better.':c.report==='split'?'A summary in seven days is slow, but I can live with it.':'Workers read every report, and the crew boss can pause.',
+    sethi:c.report==='public'?'Public reports in 24 hours could ruin my small companies.':c.cmd==='all'?'One year is a tight deadline for small robot makers.':c.report==='split'?'The regulator gets facts first, then the public. Fair.':'Private reports are easy for my companies.'}[id];
   return {mood,say}}
 function bill_draftStrip(){const st=bill_st(),c=S.choice;
   return BILL_WHO.map(id=>{const L=st.learned[id],r=bill_react(id,c);return `<div class="bd-m ${L?'':'unknown'}">${bill_face(id,L?r.mood:'neutral')}<span>${L?esc(r.say):'You didn’t learn what this member needs.'}</span></div>`}).join('')}
