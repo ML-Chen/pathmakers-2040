@@ -107,7 +107,7 @@ function openMenu(){const d=sheet(T('Menu'),`<div class="menu">
 function wireHud(){const mm=$('#hud-menu');if(mm)mm.onclick=openMenu;const m=$('#hud-mute');if(m)m.onclick=()=>{S.mute=!S.mute;save();stopVoice();MUSIC.mute(S.mute);m.innerHTML=S.mute?ICON.off:ICON.on};const c=$('#hud-chat');if(c)c.onclick=openChat;const g=$('#hud-guide');if(g)g.onclick=openGuide;const w=$('#hud-words');if(w)w.onclick=openWords}
 function sheet(title,html){const d=document.createElement('div');d.className='sheet';d.innerHTML=`<div class="sheet-in"><div class="sheet-top"><h2>${title}</h2><button class="x" aria-label="${T('Close')}">×</button></div><div class="sheet-body">${html}</div></div>`;document.body.appendChild(d);
   requestAnimationFrame(()=>d.classList.add('on'));d.querySelector('.x').onclick=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),250)};return d}
-function openGuide(){const items=Object.entries(FIELD_GUIDE);hook('guide',sheet(T('Field Guide'),`<p class="muted">${T('{0} of {1} found in Boston',S.guide.length,items.length)}</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${T(g.track)}</div><h3>${T(g.title)}</h3><p>${T(g.text)}</p><div class="realcard"><span>${T('True today')}</span>${T(g.real).replace(/^True today: /,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>${T('Keep playing to discover this idea.')}</p></div>`).join('')))}
+function openGuide(){const items=Object.entries(FIELD_GUIDE);hook('guide',sheet(T('Field Guide'),`<p class="muted">${T('{0} of {1} found in Boston',S.guide.length,items.length)}</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${T(g.track)}</div><h3>${T(g.title)}</h3><p>${T(g.text)}</p><div class="realcard"><span>${T('True today')}</span>${T(g.real).replace(/^True today: |^现实中(也是这样)?[：:]\s*/,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>${T('Keep playing to discover this idea.')}</p></div>`).join('')))}
 function openWords(){sheet(T('Word Book'),S.words.length?`<div class="wordlist">${S.words.map(k=>`<div class="wb"><button class="gw" data-w="${esc(k)}">${esc(TW(k))}</button><p>${esc(TD(k))}</p></div>`).join('')}</div>`:`<p class="muted">${T('Tap any underlined word to learn it. It will be saved here.')}</p>`)}
 
 // ---------- chat with Byte ----------
@@ -367,7 +367,7 @@ function critScore(id,futs){return futs.filter(f=>(f.flags[id]??1)>0).length}
 function sampleReal(c,rng){const o=M().outcomes(c,M().truth());const tot=o.reduce((a,x)=>a+x.p,0);let u=rng()*tot;for(const x of o){u-=x.p;if(u<=0)return {...x}}return {...o.at(-1)}}
 function allPlans(){let plans=[{}];for(const ct of M().controls)plans=plans.flatMap(p=>ct.opts.map(([v])=>({...p,[ct.key]:v})));return plans}
 function vig(kind){return (M().vignette||vignette)(kind)}
-function controlsHTML(c,cls=''){return M().controls.map(ct=>`<div class="ctl"><div class="ctl-l">${esc(T(ct.label))}</div><div class="seg">${ct.opts.map(([v,l])=>`<button class="segb ${c[ct.key]===v?'on':''}" data-k="${ct.key}" data-v="${esc(JSON.stringify(v))}">${esc(T(l))}</button>`).join('')}</div></div>`).join('')}
+function controlsHTML(c,cls=''){return M().controls.map(ct=>`<div class="ctl"><div class="ctl-l">${esc(T(ct.label))}</div><div class="seg">${ct.opts.map(([v,l])=>`<button class="segb ${c[ct.key]===v?'on':''}" data-k="${ct.key}" data-v="${esc(JSON.stringify(v))}">${esc(TK(ct.label,l))}</button>`).join('')}</div></div>`).join('')}
 function wireControls(root,rerender){$$('[data-k]',root).forEach(b=>b.onclick=e=>{e.stopPropagation();S.choice[b.dataset.k]=JSON.parse(b.dataset.v);save();rerender()})}
 function renderTable(){
   const c=S.choice;const rng=rngFrom(S.seed*7919+JSON.stringify(c).length*31+Object.values(c).join('').length);
@@ -395,7 +395,7 @@ function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M())
   screen('talk',`${scene(K.scene||'hospital')}<div class="talk-dim"></div>${hud(K.place||M().place)}<div class="stage duo"><div class="speaker">${portrait({...CAST[K.left],mood:'think'})}</div><div class="speaker">${portrait({...CAST[K.right],mood:'worried'})}</div></div>
     <div class="subtitle">${pick}
       <div class="who"><b>${esc(T(K.title))}</b><span>${esc(T(K.role))}</span></div><p>${esc(T(K.prompt))}</p>
-    <div class="choices">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
+    <div class="choices">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(T(o.t))}</button>`).join('')}</div>
     <div class="tiny muted" style="margin-top:6px">${K.note?esc(T(K.note)):T('When you explain the choices honestly, they understand enough to give real <button class="gw" data-w="consent">consent</button>.')}</div></div>`);
   wireControls($('.planpick'),renderConsent);if($('#ppchg'))$('#ppchg').onclick=()=>{consentPickOpen=!consentPickOpen;renderConsent()};
   $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];consentPickOpen=false;S.consent=o.good;if(o.good){heart(K.heart);const g=K.guide||'consent';unlock(g)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[g].title)),'good')}save();

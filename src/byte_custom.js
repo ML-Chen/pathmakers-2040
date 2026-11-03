@@ -203,7 +203,9 @@ function byteSVG(o){const K=byteLook(o);
 // so byteRefresh() can redraw it in place after a change in the closet.
 function byteBox(o,cls,vb){o=o||{};const K=byteLook(o);const s=(typeof S!=='undefined'&&S&&S.byte)||{};
   const live=!vb&&['color','ears','tail','eyes'].every(k=>o[k]===undefined||o[k]===byteLook({})[k])&&(o.wear===undefined||o.wear===s.wear);
-  return `<svg class="byteart ${cls||''}" viewBox="${vb||'14 0 136 150'}"${live?` data-live="${K.mood}"`:''} aria-label="${typeof T==='function'?T('{0}, your robot puppy',esc_b(K.name)):esc_b(K.name)+', your robot puppy'}">${byteSVG(o)}</svg>`}
+  return `<svg class="byteart ${cls||''}" viewBox="${vb||'14 0 136 150'}"${live?` data-live="${K.mood}"`:''} aria-label="${esc_b(bT('{0}, your robot puppy',K.name))}">${byteSVG(o)}</svg>`}
+// T() when the page has it (src/i18n.js); this file also runs in node for the tools
+function bT(s,...a){return typeof T==='function'?T(s,...a):String(s).replace(/\{(\d+)\}/g,(m,k)=>k in a?a[k]:m)}
 function esc_b(t){return String(t).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]))}
 // Byte inside another SVG (vignettes, scenes): paws centred on (x,y), s=1 is about 140 units tall
 function byteAt(x,y,s,o){s=s||1;return `<g transform="translate(${ch_n(x)} ${ch_n(y)}) scale(${s}) translate(-80 -142)">${byteSVG(o)}</g>`}
@@ -345,10 +347,11 @@ const bytePoss=()=>{const n=byteName();return /s$/i.test(n)?n+'’':n+'’s'};
 
 // ---------- setup screen rows and the Menu button ----------
 function byteLookRows(){const K=byteLook({});return [['ears','Ears','e'],['tail','Tail','tail'],['eyes','Eyes','eyes']].map(([k,l,a])=>
-  `<div class="lbl">${l}</div><div class="seg">${BYTE_STYLES[k].map(([v,n])=>`<button class="segb ${K[k]===v?'on':''}" data-${a}="${v}">${n}</button>`).join('')}</div>`).join('')}
+  `<div class="lbl">${bT(l)}</div><div class="seg">${BYTE_STYLES[k].map(([v,n])=>`<button class="segb ${K[k]===v?'on':''}" data-${a}="${v}">${bT(n)}</button>`).join('')}</div>`).join('')}
 function wireByteLook(root,redraw){root=root||document;[['e','ears'],['tail','tail'],['eyes','eyes']].forEach(([a,k])=>{const bs=[...root.querySelectorAll(`[data-${a}]`)];
   bs.forEach(btn=>btn.onclick=()=>{S.byte[k]=btn.dataset[a];bs.forEach(x=>x.classList.toggle('on',x===btn));redraw()})})}
-function byteClosetButton(){const n=byteGifts().length;return `<button class="btn wide ghost bc-menu" id="m-closet">${esc_b(bytePoss())} closet${n?`<i class="bc-badge">${n}</i>`:''}</button>`}
+const byteCloset=()=>typeof LANG==='function'&&LANG()!=='en'?bT('{0}’s closet',byteName()):bytePoss()+' closet';
+function byteClosetButton(){const n=byteGifts().length;return `<button class="btn wide ghost bc-menu" id="m-closet">${esc_b(byteCloset())}${n?`<i class="bc-badge">${n}</i>`:''}</button>`}
 
 // ---------- Byte's closet ----------
 const BC_VB={full:'4 -18 152 168',body:'12 4 140 144',head:'14 -2 132 100',eyes:'34 36 92 42'};
@@ -359,20 +362,20 @@ const BC_GIFT=`<svg class="bc-giftart" viewBox="0 0 100 100"><ellipse cx="50" cy
 const BC_LOCK='<svg class="bc-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.6" fill="#8b90b0"/><path d="M8 10.5 V8 a4 4 0 0 1 8 0 V10.5" stroke="#8b90b0" stroke-width="2.6" fill="none"/><circle cx="12" cy="15.4" r="1.7" fill="#fff"/></svg>';
 let BC_TAB='look';
 function openCloset(tab){const b=byteState();if(!b)return;BC_TAB=tab||(byteGifts().length?'gear':BC_TAB);$$('.bc-gift').forEach(x=>x.remove());
-  const d=sheet(`${esc_b(bytePoss())} closet`,`<div class="bc-closet"><div class="bc-stage" id="bc-stage">${byteBox({mood:'happy'},'bc-star wag')}</div>
-    <div class="seg bc-tabs"><button class="segb" data-tab="look">Look</button><button class="segb" data-tab="gear">Gear<i class="bc-badge" id="bc-tabn" hidden></i></button></div><div id="bc-pane"></div></div>`);
+  const d=sheet(esc_b(byteCloset()),`<div class="bc-closet"><div class="bc-stage" id="bc-stage">${byteBox({mood:'happy'},'bc-star wag')}</div>
+    <div class="seg bc-tabs"><button class="segb" data-tab="look">${bT('Look')}</button><button class="segb" data-tab="gear">${bT('Gear')}<i class="bc-badge" id="bc-tabn" hidden></i></button></div><div id="bc-pane"></div></div>`);
   d.classList.add('bc-sheet');const pane=$('#bc-pane',d),stage=$('#bc-stage',d);
   const cheer=()=>{stage.classList.remove('bc-hop');void stage.offsetWidth;stage.classList.add('bc-hop');MUSIC.sfx('pop');byteRefresh()};
   const tile=(on,art,label,attrs,extra)=>`<button class="bc-tile ${on?'on':''} ${extra||''}" ${attrs}><span class="bc-art">${art}</span><span class="bc-tl">${label}</span></button>`;
   const draw=()=>{const K=byteLook({}),gifts=byteGifts();$$('[data-tab]',d).forEach(x=>x.classList.toggle('on',x.dataset.tab===BC_TAB));
     const tn=$('#bc-tabn',d);tn.hidden=!gifts.length;tn.textContent=gifts.length;
     if(BC_TAB==='look'){const base={...K,wear:[],mood:'happy'};
-      pane.innerHTML=`<div class="lbl">Color</div><div class="swatches bc-sw">${BYTE_COLORS.map(c=>`<button class="sw ${K.color===c?'on':''}" data-c="${c}" style="background:${c}" aria-label="Color ${c}"></button>`).join('')}</div>`+
-        [['ears','Ears','head'],['tail','Tail','body'],['eyes','Eyes','eyes']].map(([k,l,vb])=>`<div class="lbl">${l}</div><div class="bc-grid">${BYTE_STYLES[k].map(([v,n])=>tile(K[k]===v,byteBox({...base,[k]:v},'',BC_VB[vb]),n,`data-k="${k}" data-v="${v}"`)).join('')}</div>`).join('')}
+      pane.innerHTML=`<div class="lbl">${bT('Color')}</div><div class="swatches bc-sw">${BYTE_COLORS.map(c=>`<button class="sw ${K.color===c?'on':''}" data-c="${c}" style="background:${c}" aria-label="${bT('Color {0}',c)}"></button>`).join('')}</div>`+
+        [['ears','Ears','head'],['tail','Tail','body'],['eyes','Eyes','eyes']].map(([k,l,vb])=>`<div class="lbl">${bT(l)}</div><div class="bc-grid">${BYTE_STYLES[k].map(([v,n])=>tile(K[k]===v,byteBox({...base,[k]:v},'',BC_VB[vb]),bT(n),`data-k="${k}" data-v="${v}"`)).join('')}</div>`).join('')}
     else{const b2=byteState();pane.innerHTML=`<div class="bc-grid three">${BYTE_GEAR.map(g=>{const has=b2.unlocked.includes(g.id),gift=has&&!b2.opened.includes(g.id),on=K.wear.includes(g.id);
-        if(gift)return tile(false,BC_GIFT,'New!',`data-gift="${g.id}"`,'bc-new');
-        if(!has)return tile(false,byteBox({...K,color:'#e4e6f0',eyes:'button',wear:[g.id],mood:'neutral'},'',BC_VB.full)+BC_LOCK,`<small>${esc_b(g.hint)}</small>`,`data-locked="${g.id}"`,'bc-locked');
-        return tile(on,byteBox({...K,wear:[g.id],mood:'happy'},'',BC_VB.full),esc_b(g.name),`data-g="${g.id}" aria-pressed="${on}"`)}).join('')}</div>`}
+        if(gift)return tile(false,BC_GIFT,bT('New!'),`data-gift="${g.id}"`,'bc-new');
+        if(!has)return tile(false,byteBox({...K,color:'#e4e6f0',eyes:'button',wear:[g.id],mood:'neutral'},'',BC_VB.full)+BC_LOCK,`<small>${esc_b(bT(g.hint))}</small>`,`data-locked="${g.id}"`,'bc-locked');
+        return tile(on,byteBox({...K,wear:[g.id],mood:'happy'},'',BC_VB.full),esc_b(bT(g.name)),`data-g="${g.id}" aria-pressed="${on}"`)}).join('')}</div>`}
     $$('.sw',pane).forEach(x=>x.onclick=()=>{S.byte.color=x.dataset.c;save();cheer();draw()});
     $$('[data-k]',pane).forEach(x=>x.onclick=()=>{S.byte[x.dataset.k]=x.dataset.v;save();cheer();draw()});
     $$('[data-g]',pane).forEach(x=>x.onclick=()=>{byteWear(x.dataset.g);cheer();draw()});
@@ -388,7 +391,7 @@ function byteGiftUpdate(){const app=document.getElementById('app');if(!app||type
   const calm=/\b(hub|map|planner|world)\b/.test(app.className)&&!document.querySelector('.bc-reveal');
   if(!n||!calm){if(el)el.remove();return}
   if(!el){el=document.createElement('button');el.id='bc-gift';el.className='bc-gift';el.onclick=()=>byteReveal(byteGifts()[0]);document.body.appendChild(el);try{MUSIC.sfx('chime')}catch(e){}}
-  el.setAttribute('aria-label',`A present for ${byteName()}`);el.innerHTML=BC_GIFT+(n>1?`<i class="bc-badge">${n}</i>`:'')}
+  el.setAttribute('aria-label',bT('A present for {0}',byteName()));el.innerHTML=BC_GIFT+(n>1?`<i class="bc-badge">${n}</i>`:'')}
 function byteConfetti(x,y){const cols=['#ffd45c','#ff7a6b','#7ff7e4','#8f86ff','#ff9bb0','#c4ee3a'];
   for(let i=0;i<26;i++){const c=document.createElement('i');c.className='bc-conf';c.style.left=x+'px';c.style.top=y+'px';c.style.background=cols[i%cols.length];
     const a=Math.PI*(1.05+i/25*.9)+(Math.random()-.5)*.3,v=110+Math.random()*120;c.style.setProperty('--dx',Math.cos(a)*v+'px');c.style.setProperty('--dy',Math.sin(a)*v+'px');c.style.setProperty('--r',(Math.random()*720-360)+'deg');
@@ -400,9 +403,9 @@ function bc_sparkles(g){const [x,y,r]=g.at||[80,80,40];return `<svg class="bc-sp
 function byteReveal(id,done){const g=byteGear(id),b=byteState();if(!g||!b){if(done)done();return}
   $$('.bc-reveal').forEach(x=>x.remove());const old=document.getElementById('bc-gift');if(old)old.remove();
   const tryOn=byteWearFix([...b.wear,id]),quick=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const d=document.createElement('div');d.className='bc-reveal'+(quick?' quick':'');d.setAttribute('role','dialog');d.setAttribute('aria-label',`New for ${byteName()}: ${g.name}`);
-  d.innerHTML=`<div class="bc-rays"></div><div class="bc-r-stage"><div class="bc-r-byte">${byteBox({mood:'happy',wear:tryOn},'big')}${bc_sparkles(g)}</div><div class="bc-r-box">${BC_GIFT}</div><div class="bc-r-say">${esc_b(g.line||'I love it!')}</div></div>
-    <div class="bc-r-card"><h2>New for ${esc_b(byteName())}!</h2><div class="bc-r-name">${esc_b(g.name)}</div><div class="bc-r-btns"><button class="btn" id="bc-wear">Wear it</button><button class="btn ghost" id="bc-later">Not now</button></div></div>`;
+  const d=document.createElement('div');d.className='bc-reveal'+(quick?' quick':'');d.setAttribute('role','dialog');d.setAttribute('aria-label',bT('New for {0}: {1}',byteName(),bT(g.name)));
+  d.innerHTML=`<div class="bc-rays"></div><div class="bc-r-stage"><div class="bc-r-byte">${byteBox({mood:'happy',wear:tryOn},'big')}${bc_sparkles(g)}</div><div class="bc-r-box">${BC_GIFT}</div><div class="bc-r-say">${esc_b(bT(g.line||'I love it!'))}</div></div>
+    <div class="bc-r-card"><h2>${esc_b(bT('New for {0}!',byteName()))}</h2><div class="bc-r-name">${esc_b(bT(g.name))}</div><div class="bc-r-btns"><button class="btn" id="bc-wear">${bT('Wear it')}</button><button class="btn ghost" id="bc-later">${bT('Not now')}</button></div></div>`;
   document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));
   const T=[];const at=(ms,f)=>T.push(setTimeout(f,quick?0:ms));
   const pop=()=>{if(d.classList.contains('open'))return;d.classList.add('open');T.forEach(clearTimeout);try{MUSIC.unlock();MUSIC.sfx('pop');MUSIC.sfx('chime')}catch(e){}

@@ -39,7 +39,7 @@ function placeColor(k){return PLACE_TINT[k]||PLACE_COLOR[PLACES[k].kind]||'#6c5c
 const STAR_ICON={ask:'<path d="M12 2.6l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.6l-5.4 2.9 1-6.1L3.2 9.1l6.1-.9z" fill="currentColor"/><path d="M10.2 9.6c0-1.2.9-2 1.9-2s1.9.7 1.9 1.7c0 1.4-1.9 1.4-1.9 2.8M12.1 13.8v.4" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/>',
   decision:'<path d="M12 2.6l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.6l-5.4 2.9 1-6.1L3.2 9.1l6.1-.9z" fill="currentColor"/><path d="M9.2 11.2l2 2 3.6-3.8" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   heart:'<path d="M12 2.6l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.6l-5.4 2.9 1-6.1L3.2 9.1l6.1-.9z" fill="currentColor"/><path d="M12 14.2c-2.2-1.5-3-2.8-2.7-3.9.3-1 1.6-1.4 2.7-.3 1.1-1.1 2.4-.7 2.7.3.3 1.1-.5 2.4-2.7 3.9z" fill="#fff"/>'};
-function starIcon(type,on){return `<svg class="cm-star t-${type} ${on?'on':''}" viewBox="0 0 24 24" aria-label="${T(on?'{0} star':'{0} star (not earned)',T(type))}">${STAR_ICON[type]}</svg>`}
+function starIcon(type,on){const l=(STAR_TYPES.find(x=>x[0]===type)||[type,type])[1];return `<svg class="cm-star t-${type} ${on?'on':''}" viewBox="0 0 24 24" aria-label="${esc(T(on?'{0} star':'{0} star (not earned)',LANG()==='en'?type:T(l)))}">${STAR_ICON[type]}</svg>`}
 // three labeled stars (debrief, big talk): sb = starsFrom(...) or a S.completed entry
 function starRow(sb){return `<div class="cm-stars">${STAR_TYPES.map(([k,l])=>`<span class="cm-st ${sb&&sb[k]?'on':''}">${starIcon(k,sb&&sb[k])}<small>${T(l)}</small></span>`).join('')}</div>`}
 // small stars for a mission card: typed when known, plain gold for saves from before star types
@@ -48,7 +48,9 @@ function cardStars(c){if(!c)return '';const typed=STAR_TYPES.some(([k])=>k in c)
   return `<span class="cm-cstars">${[0,1,2].map(i=>`<svg class="cm-star t-plain ${i<(c.stars||0)?'on':''}" viewBox="0 0 24 24">${CM_ICON.star}</svg>`).join('')}</span>`}
 
 // ---------- hearts: a small floating "+1" near the top of the screen ----------
-function heartFx(who,n){if(typeof document==='undefined'||!n||n<0)return;const name=who==='byte'?S.byte.name:(CAST[who]&&CAST[who].name||'').split(' ').filter(w=>!/^(Dr|Mr|Mrs|Ms)\.?$/.test(w))[0]||'';
+// a character's short name: the first name in English; in Chinese the translated name without 医生 or the family name after ·
+function castShort(id){const n=CAST[id]&&CAST[id].name||'';if(LANG()!=='en'){const z=T(n);if(z!==n)return z.replace(/(医生|博士)$/,'').split('·')[0]}return n.split(' ').filter(w=>!/^(Dr|Mr|Mrs|Ms)\.?$/.test(w))[0]||''}
+function heartFx(who,n){if(typeof document==='undefined'||!n||n<0)return;const name=who==='byte'?S.byte.name:castShort(who);
   const d=document.createElement('div');d.className='cm-heartfx';d.innerHTML=`${cmSvg('heart')}<b>+${n}</b>${name?`<span>${esc(name)}</span>`:''}`;
   document.body.appendChild(d);
   // sit below any toast and any earlier "+1" still floating, so they never cover each other
@@ -61,7 +63,7 @@ function campaignScreen(cls){if(typeof document==='undefined')return;
   if(S.mission&&MISSIONS[S.mission]){const m=M();
     if(m.stages){const i=m.stages.findIndex(s=>s.at===S.step);if(i>=0){const C=camp();if((C.jp[m.id]||0)<i){C.jp[m.id]=i;save()}}}
     if(m.days&&!/\b(worldmap|placeplan|title|setup)\b/.test(cls)){const d=daysLeft();const h=APP.querySelector('.hud .place');
-      if(h&&d!=null)h.insertAdjacentHTML('afterend',`<div class="cm-days" title="Days left"><b>${d}</b><span>${d===1?'day':'days'}</span></div>`)}}}
+      if(h&&d!=null)h.insertAdjacentHTML('afterend',`<div class="cm-days" title="${T('Days left')}"><b>${d}</b><span>${T(d===1?'day':'days')}</span></div>`)}}}
 
 // ---------- the world map ----------
 function wmLayout(){const cv=document.querySelector('canvas.bgcanvas');const r=cv&&cv.style.display!=='none'?cv.getBoundingClientRect():{left:0,top:0,width:innerWidth,height:innerHeight};
@@ -71,12 +73,12 @@ function wmPos(key,L){const P=PLACES[key];if(key==='moon')return {x:L.moon.x,y:L
   const dot=window.WMAP?WMAP.project(P.lat,P.lon,L):{x:L.cx,y:L.cy};return {x:L.cx+P.mark[0]*L.R,y:L.cy+P.mark[1]*L.R,dot}}
 function wmSceneKey(){const ch=camp().ch;return window.WMAP?WMAP.key(ch):'night'}
 function worldHub(){campaignSync();const C=camp(),ch=C.ch,news=takeNews();const nx=nextUp();
-  const T=starTotals();
+  const ST=starTotals();
   screen('hub worldmap',`${scene(wmSceneKey())}${hud(chapterLabel(ch))}<div class="wm" id="wm"><svg class="wm-lines" id="wmlines"></svg><div class="wm-pins" id="wmpins"></div></div>
     <div class="wm-foot">
-      <div class="wm-res"><span class="wm-chip c-heart" title="Hearts">${cmSvg('heart')}<b>${heartsTotal()}</b></span><span class="wm-chip c-coin" title="Coins">${cmSvg('coin')}<b>${coins()}</b></span><span class="wm-chip c-star" title="Stars">${cmSvg('star')}<b>${T.stars}</b></span></div>
-      ${nx?`<button class="wm-next" id="wm-go" data-m="${nx.id}"><span class="wm-next-byte">${byteBox({...S.byte,mood:'happy'})}</span><span class="wm-next-t"><b>${esc(nx.title)}</b><span>${esc(PLACES[missionMeta(nx).district].name)} · ${esc(cardLabel(nx))}</span></span><span class="wm-play">Play</span></button>`
-        :`<div class="wm-next done"><span class="wm-next-byte">${byteBox({...S.byte,mood:'happy'})}</span><span class="wm-next-t"><b>All caught up!</b><span>New places open as the seasons turn.</span></span></div>`}
+      <div class="wm-res"><span class="wm-chip c-heart" title="${T('Hearts')}">${cmSvg('heart')}<b>${heartsTotal()}</b></span><span class="wm-chip c-coin" title="${T('Coins')}">${cmSvg('coin')}<b>${coins()}</b></span><span class="wm-chip c-star" title="${T('Stars')}">${cmSvg('star')}<b>${ST.stars}</b></span></div>
+      ${nx?`<button class="wm-next" id="wm-go" data-m="${nx.id}"><span class="wm-next-byte">${byteBox({...S.byte,mood:'happy'})}</span><span class="wm-next-t"><b>${esc(T(nx.title))}</b><span>${esc(T(PLACES[missionMeta(nx).district].name))} · ${esc(cardLabel(nx))}</span></span><span class="wm-play">${T('Play')}</span></button>`
+        :`<div class="wm-next done"><span class="wm-next-byte">${byteBox({...S.byte,mood:'happy'})}</span><span class="wm-next-t"><b>${T('All caught up!')}</b><span>${T('New places open as the seasons turn.')}</span></span></div>`}
     </div><div class="wm-pop" id="wmpop" hidden></div>`);
   const pl=$('.hud .place');if(pl)pl.insertAdjacentHTML('afterbegin',cmSvg(SEASONS[ch%4],'wm-season'));
   wmDrawPins();const go=$('#wm-go');if(go)go.onclick=()=>playMission(MISSIONS[go.dataset.m]);
@@ -86,7 +88,7 @@ function wmDrawPins(){const box=$('#wmpins'),lines=$('#wmlines');if(!box)return;
   for(const k of keys){const P=PLACES[k],p=wmPos(k,L),open=placeOpen(k),n=open?placeNew(k):0,done=open&&placeMissions(k).length&&placeMissions(k).every(m=>isDone(m.id));
     const x=p.x+L.ox,y=p.y+L.oy;
     if(p.dot){const dx=p.dot.x+L.ox,dy=p.dot.y+L.oy;svg+=`<line x1="${dx.toFixed(1)}" y1="${dy.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" class="${open?'on':''}"/><circle cx="${dx.toFixed(1)}" cy="${dy.toFixed(1)}" r="${open?3.2:2.4}" class="wm-dot ${open?'on':''}"/>`}
-    html+=`<button class="wm-pin k-${P.kind} ${open?'open':'locked'} ${done?'done':''} ${n?'has-new':''}" data-p="${k}" style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;--c:${placeColor(k)}" aria-label="${esc(T(P.name))}${open?'':' (locked)'}">
+    html+=`<button class="wm-pin k-${P.kind} ${open?'open':'locked'} ${done?'done':''} ${n?'has-new':''}" data-p="${k}" style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;--c:${placeColor(k)}" aria-label="${esc(open?T(P.name):T('{0} (locked)',T(P.name)))}">
       <span class="wm-medal"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg>${open?'':`<i class="wm-lock">${cmSvg('lock')}</i>`}${n?`<i class="wm-new">${n}</i>`:''}</span><span class="wm-name">${esc(T(P.name))}</span></button>`}
   lines.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);lines.innerHTML=svg;box.innerHTML=html;
   $$('.wm-pin',box).forEach(b=>b.onclick=e=>{e.stopPropagation();const k=b.dataset.p;if(placeOpen(k)){wmZoom(b,()=>{S.place=k;go('place')})}else wmTease(k,b)});
@@ -95,19 +97,19 @@ function wmZoom(b,then){const wm=$('#wm');if(!wm||matchMedia('(prefers-reduced-m
   b.classList.add('pick');document.body.style.setProperty('--zx',(r.left+r.width/2)+'px');document.body.style.setProperty('--zy',(r.top+r.height/2)+'px');document.body.classList.add('wm-zooming');
   setTimeout(()=>{document.body.classList.remove('wm-zooming');then()},280)}
 function wmTease(k,b){const P=PLACES[k],pop=$('#wmpop');if(!pop)return;const r=b.getBoundingClientRect();
-  pop.innerHTML=`<div class="wm-pop-h" style="--c:${placeColor(k)}"><span class="wm-medal"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg></span><div><b>${esc(T(P.name))}</b>${P.game?`<span>${esc(P.game)}</span>`:''}</div></div><p>${esc(P.teaser)}</p><div class="wm-pop-when">${cmSvg('lock')}${esc(placeOpensLabel(k))}</div>`;
+  pop.innerHTML=`<div class="wm-pop-h" style="--c:${placeColor(k)}"><span class="wm-medal"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg></span><div><b>${esc(T(P.name))}</b>${P.game?`<span>${esc(T(P.game))}</span>`:''}</div></div><p>${esc(T(P.teaser))}</p><div class="wm-pop-when">${cmSvg('lock')}${esc(placeOpensLabel(k))}</div>`;
   pop.hidden=false;const w=Math.min(280,innerWidth-24);pop.style.width=w+'px';pop.style.left=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2))+'px';
   const top=r.bottom+8+pop.offsetHeight>innerHeight-8?r.top-pop.offsetHeight-8:r.bottom+8;pop.style.top=Math.max(8,top)+'px'}
 function wmNews(news){if(!news.length)return;const coinsWon=news.filter(n=>n.coins).reduce((a,n)=>a+n.coins,0);const season=news.filter(n=>n.season!=null).pop();
-  if(coinsWon)setTimeout(()=>toast(`${cmSvg('coin','t-coin')} +${coinsWon} coins`,'good'),season?2600:300);
+  if(coinsWon)setTimeout(()=>toast(`${cmSvg('coin','t-coin')} ${T('+{0} coins',coinsWon)}`,'good'),season?2600:300);
   if(season){const ch=season.season,d=document.createElement('div');d.className='wm-season-card';
     const fresh=PLACE_ORDER.filter(k=>PLACES[k].year&&chapterOf(PLACES[k].year,PLACES[k].season)===ch&&placeOpen(k));
-    d.innerHTML=`<div class="wm-season-in s-${SEASONS[ch%4]}">${cmSvg(SEASONS[ch%4],'big')}<b>${chapterLabel(ch)}</b>${fresh.length?`<span>New: ${fresh.map(k=>esc(PLACES[k].name)).join(', ')}</span>`:''}</div>`;
+    d.innerHTML=`<div class="wm-season-in s-${SEASONS[ch%4]}">${cmSvg(SEASONS[ch%4],'big')}<b>${chapterLabel(ch)}</b>${fresh.length?`<span>${T('New: {0}',fresh.map(k=>esc(T(PLACES[k].name))).join(T(', ')))}</span>`:''}</div>`;
     document.body.appendChild(d);d.onclick=()=>d.remove();setTimeout(()=>d.classList.add('out'),2200);setTimeout(()=>d.remove(),2700)}}
 addEventListener('resize',()=>{if(S&&S.step==='hub'&&$('#wmpins'))requestAnimationFrame(wmDrawPins)});
 
 // ---------- starting a mission from the map: journeys resume at the furthest stage ----------
-function cardLabel(m){const me=missionMeta(m);return m.dayLabel||(me.kind==='workday'&&m.day?'Day '+m.day:KIND_NAME[me.kind]||'Day '+m.day)}
+function cardLabel(m){const me=missionMeta(m);return m.dayLabel?T(m.dayLabel):me.kind==='workday'&&m.day?T('Day {0}',m.day):KIND_NAME[me.kind]?T(KIND_NAME[me.kind]):T('Day {0}',m.day)}
 function journeyResume(m){if(!m.stages||isDone(m.id))return null;const i=camp().jp[m.id]||0;return i>0&&m.stages[i]?m.stages[i].at:null}
 function playMission(m){if(!m)return;if(resumeMission(m.id))return;startMission(m.id,journeyResume(m)||undefined)}
 
@@ -120,10 +122,10 @@ function placeScene(key){const P=PLACES[key];const k=(PLACE_VIEW[key]||[]).conca
   return wmSceneKey()}
 function missionCard(m){const done=S.completed[m.id],open=missionOpen(m),why=open?'':lockReason(m),res=open&&journeyResume(m);const me=missionMeta(m);
   return `<button class="mcard cm-card k-${me.kind} ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">${esc(cardLabel(m))}</div>
-    <div class="mtxt"><b>${esc(m.title)}</b><span>${esc(open?(res?'Continue where you left off':m.blurb||''):why)}</span></div><div class="mstar">${done?cardStars(done):open?'<span class="cm-go">▶</span>':cmSvg('lock','cm-lk')}</div></button>`}
-function trackHTML(career){const T=careerTrack(career);if(!T)return '';
-  return `<ol class="cm-track">${T.map(s=>`<li class="${s.state}" title="${esc(s.label)}"><i>${s.state==='done'?'✓':''}</i><span>${esc(s.label)}${s.note?` <em>${esc(s.note)}</em>`:''}</span></li>`).join('')}</ol>`}
-function rankChip(career){const r=rankOf(career);if(!r)return '<span class="cm-rank r-none">New</span>';return `<span class="cm-rank r-${r}">${'★'.repeat(RANKS.indexOf(r)+1)} ${RANK_NAME[r]}</span>`}
+    <div class="mtxt"><b>${esc(T(m.title))}</b><span>${esc(open?(res?T('Continue where you left off'):T(m.blurb||'')):why)}</span></div><div class="mstar">${done?cardStars(done):open?'<span class="cm-go">▶</span>':cmSvg('lock','cm-lk')}</div></button>`}
+function trackHTML(career){const TR=careerTrack(career);if(!TR)return '';
+  return `<ol class="cm-track">${TR.map(s=>`<li class="${s.state}" title="${esc(T(s.label))}"><i>${s.state==='done'?'✓':''}</i><span>${esc(T(s.label))}${s.note?` <em>${esc(T(s.note))}</em>`:''}</span></li>`).join('')}</ol>`}
+function rankChip(career){const r=rankOf(career);if(!r)return `<span class="cm-rank r-none">${T('New')}</span>`;return `<span class="cm-rank r-${r}">${'★'.repeat(RANKS.indexOf(r)+1)} ${T(RANK_NAME[r])}</span>`}
 function placePeople(key){const ids=new Set();if(key==='boston')['imani','maya','dad'].forEach(x=>ids.add(x));
   placeMissions(key).forEach(m=>Object.keys(m.cast||{}).forEach(x=>ids.add(x)));
   return [...ids].filter(id=>CAST[id]&&heartsOf(id)>0&&!CAST[id].art).sort((a,b)=>heartsOf(b)-heartsOf(a))}
@@ -133,18 +135,18 @@ function placePlanner(){const key=PLACES[S.place]?S.place:'boston',P=PLACES[key]
   const travel=ms.filter(m=>!story.includes(m)&&missionMeta(m).kind==='travel');
   const own=ms.filter(m=>!story.includes(m)&&!travel.includes(m));
   const careers=[...new Set(own.map(m=>m.career))];const here=Object.keys(CAREER_INFO).filter(c=>careerInfo(c).district===key&&!careers.includes(c));
-  const sec=(t,list)=>list.length?`<section class="cm-sec"><h3>${t}</h3>${list.map(missionCard).join('')}</section>`:'';
+  const sec=(t,list)=>list.length?`<section class="cm-sec"><h3>${T(t)}</h3>${list.map(missionCard).join('')}</section>`:'';
   const people=placePeople(key);
-  screen('placeplan',`${scene(placeScene(key))}<div class="cm-dim"></div>${hud(P.full)}<div class="cm-plan" style="--c:${placeColor(key)}">
-    <div class="cm-plan-h"><button class="cm-back" id="back" aria-label="Back to the world map">${cmSvg('back')}</button><span class="wm-medal big"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg></span>
-      <div><h2>${esc(T(P.name))}</h2>${P.game?`<span class="cm-game">${esc(P.game)}</span>`:''}</div><span class="cm-when">${cmSvg(SEASONS[camp().ch%4],'wm-season')}${esc(chapterLabel(camp().ch))}</span></div>
+  screen('placeplan',`${scene(placeScene(key))}<div class="cm-dim"></div>${hud(T(P.full))}<div class="cm-plan" style="--c:${placeColor(key)}">
+    <div class="cm-plan-h"><button class="cm-back" id="back" aria-label="${T('Back to the world map')}">${cmSvg('back')}</button><span class="wm-medal big"><svg viewBox="0 0 24 24">${CM_ICON[P.icon]}</svg></span>
+      <div><h2>${esc(T(P.name))}</h2>${P.game?`<span class="cm-game">${esc(T(P.game))}</span>`:''}</div><span class="cm-when">${cmSvg(SEASONS[camp().ch%4],'wm-season')}${esc(chapterLabel(camp().ch))}</span></div>
     ${careers.map(c=>{const I=careerInfo(c);const list=own.filter(m=>m.career===c);return `<section class="cm-career">
-      <div class="cm-career-h"><b>${esc(I.name)}</b>${rankChip(c)}</div>${!rankOf(c)&&I.why?`<p class="cm-why">${esc(I.why)}</p>`:''}${trackHTML(c)}
+      <div class="cm-career-h"><b>${esc(T(I.name))}</b>${rankChip(c)}</div>${!rankOf(c)&&I.why?`<p class="cm-why">${esc(T(I.why))}</p>`:''}${trackHTML(c)}
       ${list.map(missionCard).join('')}</section>`}).join('')}
     ${sec(key==='marrowpoint'||key==='calderbay'?'Ruins':'Story',story)}${sec('Travel',travel)}
-    ${!ms.length?`<p class="cm-empty">${esc(P.teaser)}</p>`:''}
-    ${here.length?`<div class="cm-soon">${here.map(c=>`<span>${esc(careerInfo(c).name)}</span>`).join('')}<em>coming soon</em></div>`:''}
-    ${people.length?`<section class="cm-sec cm-people"><h3>Friends here</h3><div>${people.map(id=>`<div class="cm-pal"><svg viewBox="62 20 176 176" preserveAspectRatio="xMidYMid slice">${personSVG({...CAST[id],mood:'smile'})}</svg><b>${esc(CAST[id].name.replace(/^Dr\. /,'').split(' ')[0])}</b><span>${cmSvg('heart')}${heartsOf(id)}</span></div>`).join('')}</div></section>`:''}
+    ${!ms.length?`<p class="cm-empty">${esc(T(P.teaser))}</p>`:''}
+    ${here.length?`<div class="cm-soon">${here.map(c=>`<span>${esc(T(careerInfo(c).name))}</span>`).join('')}<em>${T('coming soon')}</em></div>`:''}
+    ${people.length?`<section class="cm-sec cm-people"><h3>${T('Friends here')}</h3><div>${people.map(id=>`<div class="cm-pal"><svg viewBox="62 20 176 176" preserveAspectRatio="xMidYMid slice">${personSVG({...CAST[id],mood:'smile'})}</svg><b>${esc(castShort(id))}</b><span>${cmSvg('heart')}${heartsOf(id)}</span></div>`).join('')}</div></section>`:''}
   </div>`);
   $('#back').onclick=()=>go('hub');
   $$('.cm-plan .mcard').forEach(b=>b.onclick=()=>playMission(MISSIONS[b.dataset.m]))}

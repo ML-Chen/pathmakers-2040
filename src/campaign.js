@@ -25,6 +25,8 @@ const WEEKS_PER_SEASON=4;                 // first completions per season before
 const PAY={workday:{trainee:20,pro:35,legend:50},journey:15,bigtalk:30,other:15};
 // extra flow step kinds, registered by career.js and later modules: FLOW_KINDS[kind]=()=>render the step
 const FLOW_KINDS={};
+// T() when the page has it (src/i18n.js); tools that evaluate this file in node get the English with its {placeholders} filled.
+const CT=(s,...a)=>typeof T==='function'?T(s,...a):s.replace(/\{(\w+)\}/g,(m,k)=>{const v=a.length===1&&a[0]!==null&&typeof a[0]==='object'?a[0]:a;return k in v?v[k]:m});
 
 // ---------- places on the world map ----------
 // lat/lon place the true dot on the painted globe; mark is where the medallion sits, in globe radii from the
@@ -92,7 +94,7 @@ const PLACE_WORDS=[['boston','boston'],['nome','nome'],['alaska','nome'],['phoen
   ['new york','nyc'],['broadway','nyc'],['washington','dc'],['capitol','dc'],['vienna','vienna'],['shanghai','shanghai'],['beijing','beijing'],['shenzhen','shenzhen'],['varrow','varrow'],['marrow point','marrowpoint'],['calder bay','calderbay'],['pacific ocean','ocean'],['international waters','ocean']];
 function placeFromLabel(t){t=String(t||'').toLowerCase();const w=PLACE_WORDS.find(([k])=>t.includes(k));return w?w[1]:null}
 function chapterOf(year,season){return (Math.max(1,Math.min(3,year||1))-1)*4+Math.max(0,SEASONS.indexOf(season))}
-function chapterLabel(ch){ch=Math.max(0,Math.min(11,ch|0));return SEASON_NAME[SEASONS[ch%4]]+' '+CAMPAIGN_YEARS[ch/4|0]}
+function chapterLabel(ch){ch=Math.max(0,Math.min(11,ch|0));return CT('{season} {year}',{season:CT(SEASON_NAME[SEASONS[ch%4]]),year:CAMPAIGN_YEARS[ch/4|0]})}
 function missionMeta(m){
   const kind=m.kind||(m.journey?'journey':m.bigtalk?'bigtalk':'workday');
   const ci=careerInfo(m.career),cd=PLACES[ci.district]?ci.district:null;
@@ -135,10 +137,10 @@ function missionNeeds(m){const me=missionMeta(m);let need=(m.after||[]).filter(i
 // why a mission is locked, or '' when it can be played (ignores Play anything)
 function lockReason(m){const me=missionMeta(m),C=camp();
   const need=missionNeeds(m).filter(id=>!isDone(id));
-  if(need.length){const n=MISSIONS[need[0]];return 'Finish “'+(n.title||need[0])+'” first'}
-  if(m.career&&me.kind!=='journey'){const j=careerJourney(m.career);if(j&&!isDone(j.id))return 'Finish “'+j.title+'” first'}
-  if(m.career&&me.rank!=='trainee'&&!rankAtLeast(m.career,me.rank))return 'Needs '+RANK_NAME[me.rank]+' rank';
-  if(me.chapter>C.ch)return 'Opens in '+chapterLabel(me.chapter);
+  if(need.length){const n=MISSIONS[need[0]];return CT('Finish “{0}” first',CT(n.title||need[0]))}
+  if(m.career&&me.kind!=='journey'){const j=careerJourney(m.career);if(j&&!isDone(j.id))return CT('Finish “{0}” first',CT(j.title))}
+  if(m.career&&me.rank!=='trainee'&&!rankAtLeast(m.career,me.rank))return CT('Needs {0} rank',CT(RANK_NAME[me.rank]));
+  if(me.chapter>C.ch)return CT('Opens in {0}',chapterLabel(me.chapter));
   return ''}
 function missionOpen(m){return !!(S.playAll||!lockReason(m))}
 const KIND_ORDER={journey:0,workday:1,bigtalk:2,memorial:3,plot:4,travel:5,ruin:6,finale:7};
@@ -150,8 +152,8 @@ function placeMissions(key){return Object.values(MISSIONS).filter(m=>missionMeta
 function placeOpen(key){if(S.playAll)return placeMissions(key).length>0;const P=PLACES[key];const ms=placeMissions(key);
   if(ms.some(m=>isDone(m.id)||!lockReason(m)))return true;
   return !!(P.year&&ms.length&&chapterOf(P.year,P.season)<=camp().ch)}
-function placeOpensLabel(key){const P=PLACES[key],ms=placeMissions(key);if(!ms.length)return 'Coming soon';
-  const ch=Math.min(...ms.map(m=>missionMeta(m).chapter));return ch>camp().ch?'Opens in '+chapterLabel(ch):'Coming soon'}
+function placeOpensLabel(key){const P=PLACES[key],ms=placeMissions(key);if(!ms.length)return CT('Coming soon');
+  const ch=Math.min(...ms.map(m=>missionMeta(m).chapter));return ch>camp().ch?CT('Opens in {0}',chapterLabel(ch)):CT('Coming soon')}
 function placeNew(key){return placeMissions(key).filter(m=>!isDone(m.id)&&missionOpen(m)).length}
 
 // ---------- the calendar: finishing missions moves the date ----------
