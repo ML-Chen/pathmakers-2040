@@ -3,6 +3,14 @@
 // Every picture loops calmly with CSS classes from css/bill.css (bv-*) and infog's ig-* classes.
 const BV={ink:'#1f2340',soft:'#8a90b0',line:'#dfe3f3',navy:'#26346a',gold:'#e0b04a',marble:'#f4f1ea',cherry:'#f4a6c0',oak:'#8a5a3a',teal:'#16b3a6',coral:'#ff7a6b',red:'#e5484d',green:'#1fa774',violet:'#6c5ce7',paper:'#fffdf6',night:'#1e2450',sky:'#bfe3ff'};
 const bvT=(x,y,t,o)=>igT(x,y,t,o||{});
+// the width of a line of text in a CSS font, for pictures that must decide whether a translated line still fits
+const bvWidth=(font,t)=>{const c=bvWidth.c||(bvWidth.c=document.createElement('canvas').getContext('2d'));c.font=font;return c.measureText(t).width};
+// The YES card and the NO card take turns in one spot (flipVote). With reduced motion, NO (drawn on top) stays.
+document.head.insertAdjacentHTML('beforeend',`<style id="bv-css">
+.bv-flipA{animation:bvflipa 4s ease-in-out infinite}@keyframes bvflipa{0%,40%{opacity:1}50%,90%{opacity:0}100%{opacity:1}}
+.bv-flipB{animation:bvflipb 4s ease-in-out infinite}@keyframes bvflipb{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.bv-flipA,.bv-flipB{animation:none}}
+</style>`);
 // ---------- small drawing kit ----------
 // a home robot: soft white, faceless dark visor, one navy stripe (DC). Feet at (x,y); about 58 tall at s=1.
 // o: {arm:'down'|'up'|'reach'|'carry'|'wave', stripe, chip (show the signing chip), tag (tracking chip ping), cls, old (boxy older model), stop}
@@ -130,10 +138,15 @@ Object.assign(VIZ,{
       ${[64,72,80,88,96].map((y,i)=>`<rect x="14" y="${y}" width="${[130,110,140,96,120][i]}" height="2.2" rx="1.1" fill="#d8d2bc"/>`).join('')}</g>
       <path d="M196 64 h22" stroke="${BV.soft}" stroke-width="3" class="ig-dash"/><path d="M214 56 l8 8 l-8 8" stroke="${BV.soft}" stroke-width="3" fill="none"/>
       <g class="bv-stamp" style="--d:1s"><circle cx="256" cy="64" r="28" fill="${BV.navy}"/><circle cx="256" cy="64" r="23" fill="none" stroke="${BV.gold}" stroke-width="1.6" stroke-dasharray="2 2"/>${bvT(256,62,'LAW',{s:14,c:'#fff',w:900})}${bvT(256,75,'if it passes',{s:7,c:'#cfd8ff'})}</g>`,'The enacting clause turns words into law'),
-  defCrew:()=>igFrame(300,140,`<g transform="translate(150 22)"><rect x="-140" y="-16" width="280" height="30" rx="10" fill="#f6f0de"/><text x="-130" y="4" font-family="Georgia,serif" font-size="11" fill="${BV.ink}"><tspan font-weight="700">${T('robot crew')}</tspan><tspan font-style="italic">${T(' (n.)')}</tspan><tspan>${T(' two or more robots doing one job')}</tspan></text></g>
+  defCrew:()=>{const term=T('robot crew'),pos=T(' (n.)'),def=T(' two or more robots doing one job');
+    // the dictionary line stays on one line when it fits in the box (English); a longer translation puts the meaning on a second line
+    const one=bvWidth('700 11px Georgia,serif',term)+bvWidth('italic 11px Georgia,serif',pos)+bvWidth('11px Georgia,serif',def)<=256;
+    const lead=/^[\s:：,，]*/.exec(def)[0]; // a colon that opens the meaning stays at the end of the first line
+    const tx=(y,inner)=>`<text x="-130" y="${y}" font-family="Georgia,serif" font-size="11" fill="${BV.ink}">${inner}</text>`;
+    return igFrame(300,140,`<g transform="translate(150 ${one?22:24})"><rect x="-140" y="${one?-16:-20}" width="280" height="${one?30:38}" rx="10" fill="#f6f0de"/>${one?tx(4,`<tspan font-weight="700">${term}</tspan><tspan font-style="italic">${pos}</tspan><tspan>${def}</tspan>`):tx(-4,`<tspan font-weight="700">${term}</tspan><tspan font-style="italic">${pos}</tspan>${lead.trim()}`)+tx(12,def.slice(lead.length))}</g>
       <g transform="translate(60 0)">${bvBot(0,124,1,{arm:'down'})}<g transform="translate(0 66)"><circle r="12" fill="#fde6e4"/><path d="M-5 -5 l10 10 M5 -5 l-10 10" stroke="${BV.red}" stroke-width="3" stroke-linecap="round"/></g>${bvT(0,138,'one robot',{s:9,c:BV.soft})}</g>
       <g class="bv-bob"><rect x="150" y="76" width="122" height="7" rx="3" fill="#c8a06a" stroke="#8a6a3a"/>${bvBot(162,124,.95,{arm:'up'})}${bvBot(211,124,.95,{arm:'up'})}${bvBot(260,124,.95,{arm:'up'})}</g>
-      <g transform="translate(211 58)"><circle r="12" fill="#e4f7ee"/><path d="M-6 0 l4 4 l8 -8" stroke="${BV.green}" stroke-width="3" fill="none" stroke-linecap="round"/></g>${bvT(211,138,'a crew',{s:9,c:BV.soft})}`,'One robot alone is not a crew, but three robots carrying a beam together are a crew'),
+      <g transform="translate(211 58)"><circle r="12" fill="#e4f7ee"/><path d="M-6 0 l4 4 l8 -8" stroke="${BV.green}" stroke-width="3" fill="none" stroke-linecap="round"/></g>${bvT(211,138,'a crew',{s:9,c:BV.soft})}`,'One robot alone is not a crew, but three robots carrying a beam together are a crew')},
   shallMay:()=>igFrame(300,130,`<g transform="translate(76 0)"><rect x="-68" y="6" width="136" height="26" rx="13" fill="${BV.navy}"/>${bvT(0,24,'SHALL = must',{s:12,c:'#fff',w:900})}
       <path d="M-50 92 H40" stroke="${BV.line}" stroke-width="10" stroke-linecap="round"/><path d="M-50 92 H40" stroke="${BV.navy}" stroke-width="3" stroke-dasharray="6 5" class="ig-dash"/><path d="M36 84 l10 8 l-10 8" fill="${BV.navy}"/>
       <g class="bv-roll">${bvBot(-36,92,.6,{})}</g>${bvT(0,120,'always',{s:10,c:BV.soft})}</g>
