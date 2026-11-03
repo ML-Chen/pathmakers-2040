@@ -52,7 +52,8 @@ for(const f of files){const rel=path.relative(SRC,f),src=fs.readFileSync(f,'utf8
       const ch=src[i];if(ch==='('||ch==='['||ch==='{')depth++;else if(ch===')'||ch===']'||ch==='}')depth--;else if(ch===','&&depth===1&&firstEnd<0)firstEnd=i;i++}
     const lone=inArg.length===1&&src.slice(m.index+m[0].length,(firstEnd>0?firstEnd:i-1)).trim().length===inArg[0].body.length+2;
     for(const l of inArg){if(l.dyn)continue;const s=unesc(l.body);if(lone||looksText(s))(SOURCE_KEYS[s]=SOURCE_KEYS[s]||new Set()).add(b)}}}
-function literalBucket(s){for(const rel in SRC_TEXT)if(SRC_TEXT[rel].includes(s))return bucketOf(rel);return null}
+// The file whose source holds the string: an exact quoted literal first, then any file containing it.
+function literalBucket(s){const qs=["'"+s+"'",'"'+s+'"','`'+s+'`'];for(const rel in SRC_TEXT)if(qs.some(q=>SRC_TEXT[rel].includes(q)))return bucketOf(rel);for(const rel in SRC_TEXT)if(SRC_TEXT[rel].includes(s))return bucketOf(rel);return null}
 
 // ---------- 2 and 3: in the page ----------
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844}});const errs=[];
@@ -99,14 +100,14 @@ function literalBucket(s){for(const rel in SRC_TEXT)if(SRC_TEXT[rel].includes(s)
       for(const k in (m.glossary||{}))owned.glossary[k]=id;
       if(typeof CAREERS!=='undefined'&&CAREERS[m.career])W(CAREERS[m.career].name);
       // career journeys and big talks (src/career.js): every text in m.journey, m.bigtalk and m.promotion, and the lines built for each case
-      {const SK=new Set(['scene','who','mood','art','viz','if','key','k','judge','check','heur','career','to','at','boss','guide','notes','people','id','rank','kind']);
+      {const SK=new Set(['scene','who','mood','art','viz','if','key','k','judge','check','heur','career','to','at','boss','guide','notes','people','id','rank','kind','heart']);
         const walkW=(o,dp=0)=>{if(dp>7||o==null)return;if(typeof o==='string'){W(o);return}if(Array.isArray(o)){o.forEach(x=>walkW(x,dp+1));return}
           if(typeof o==='object')for(const k in o){if(SK.has(k))continue;let v;try{v=o[k]}catch(e){continue}if(typeof v!=='function')walkW(v,dp+1)}};
         ['journey','bigtalk','promotion'].forEach(k=>{try{walkW(m[k])}catch(e){}});
-        const B=m.bigtalk;if(B){for(const c of Object.values(B.cases||{}).concat(B.fallback?[B.fallback]:[]))for(const memo of ['','I chose this plan.']){const ctx={...c,plan:'',memo,byte:'Byte'};
+        const B=m.bigtalk;if(B){for(const c of Object.values(B.cases||{}).concat(B.fallback?[B.fallback]:[]))for(const memo of ['','I chose this plan.']){const ctx={...c,plan:'',memo:memo&&(LG==='en'?memo:'我选了这个方案。'),byte:'Byte'};
           for(const b of B.beats||[])for(const o of b.opts||[])if(typeof o.t==='function')try{leakText('big talk option',o.t(ctx))}catch(e){}
           for(const o of (B.question&&B.question.opts)||[])if(typeof o.t==='function')try{leakText('big talk answer',o.t(ctx))}catch(e){}}}
-        const J=m.journey;if(J&&J.interview){const ctxs=[J.interview.context?J.interview.context():{},{bad:true},{bad:false}];
+        const J=m.journey;if(J&&J.interview){const c0=J.interview.context?J.interview.context():{},ctxs=[c0,{...c0,bad:true},{...c0,bad:false,told:true}];
           for(const ctx of ctxs)for(const Q of J.interview.questions||[])for(const o of Q.opts||[])if(typeof o.t==='function')try{leakText('interview option',o.t(ctx))}catch(e){}
           if(J.firstday&&J.firstday.end&&typeof J.firstday.end.text==='function')try{leakText('first day',J.firstday.end.text({remembered:2}))}catch(e){}}}
       // text built by the mission's functions, for every plan, with and without each clue
