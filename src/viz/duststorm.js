@@ -56,25 +56,25 @@ const DS_ROWS=[['gh','Greenhouse',[['lights','Lights + heat'],['heat','Heat only
 function dsBoardHTML(c){const need=dsNeed(c,S.told),f=forecastFor(c),max=60,W=v=>(v/max*100).toFixed(1)+'%';
   const segs=[['Life support',DS_LIFE,'#5aa8e8'],['Cabin',DS_LOAD.cabin[c.cabin],'#f5b82e'],['Greenhouse',DS_LOAD.gh[c.gh],'#e070c0'],['Messages',DS_LOAD.msg[c.msg],'#16b3a6']].concat(S.told?[['Outlet',DS_CPAP,'#2fbf6a']]:[]);
   const nights=typicalFutures(c,rngFrom(7+JSON.stringify(c).length));const safeN=nights.filter(x=>x.flags.safe).length;
-  return `<div class="ds-meter"><div class="ds-bar">${segs.map(([l,v,col])=>v?`<i style="width:${W(v)};background:${col}" title="${l}"></i>`:'').join('')}<i class="ds-long" style="width:${W(DS_LONG)}"></i></div>
+  return `<div class="ds-meter"><div class="ds-bar">${segs.map(([l,v,col])=>v?`<i style="width:${W(v)};background:${col}" title="${esc(T(l))}"></i>`:'').join('')}<i class="ds-long" style="width:${W(DS_LONG)}"></i></div>
     <div class="ds-scale"><span class="ds-floor" style="left:${W(48-DS_FLOOR)}"></span><span class="ds-band" style="left:${W(48)};width:${W(7)}"></span></div>
-    <div class="ds-legend"><span><b>${need}</b> kWh tonight</span><span class="ds-lg-long">+8 if the storm lasts</span><span class="ds-lg-band">battery 48–55</span></div></div>
-    <div class="ds-nights"><div class="ds-nl">In 10 nights like tonight</div><div class="ds-nrow">${nights.map(n=>`<span class="ds-n ${n.flags.safe?'ok':'bad'}" title="${esc(n.cap)}">${n.flags.safe?'☀':'!'}</span>`).join('')}</div>
-      <div class="ds-nsum">The battery lasts in <b>${safeN}</b> of 10. The tomatoes make it in <b>${nights.filter(x=>x.flags.tomatoes).length}</b>.</div></div>`}
+    <div class="ds-legend"><span>${T('<b>{0}</b> kWh tonight',need)}</span><span class="ds-lg-long">${T('+8 if the storm lasts')}</span><span class="ds-lg-band">${T('battery 48–55')}</span></div></div>
+    <div class="ds-nights"><div class="ds-nl">${T('In 10 nights like tonight')}</div><div class="ds-nrow">${nights.map(n=>`<span class="ds-n ${n.flags.safe?'ok':'bad'}" title="${esc(T(n.cap))}">${n.flags.safe?'☀':'!'}</span>`).join('')}</div>
+      <div class="ds-nsum">${T('The battery lasts in <b>{0}</b> of 10. The tomatoes make it in <b>{1}</b>.',safeN,nights.filter(x=>x.flags.tomatoes).length)}</div></div>`}
 MISSIONS.duststorm.custom={
   ds_power(){const c=S.choice;
     const say=()=>{const need=dsNeed(c,S.told),worst=48-need-DS_LONG;
       return worst>=DS_FLOOR?'Even if the battery starts at the low end and the storm lasts past sunrise, this plan never uses the emergency reserve.':48-need>=DS_FLOOR?'This plan is safe if the storm clears by morning. If the storm lasts and the battery starts at the low end, we would dip into the reserve.':'This plan only works if the storm comes late and leaves early. On most nights like this one, the battery would run down to the emergency reserve.'};
-    screen('criteria ds-powscr',`${scene('mars_hab')}${hud('Control room · Tonight’s power')}<div class="panel-card ds-card"><h2>Tonight’s power</h2>
-      <div class="ds-rows"><div class="ds-row ds-locked"><span>Life support</span><b>26 kWh · always on</b></div>
-        ${DS_ROWS.map(([k,l,opts])=>`<div class="ds-row"><span>${l}</span><div class="seg">${opts.map(([v,t])=>`<button class="segb ${c[k]===v?'on':''}" data-k="${k}" data-v="${esc(JSON.stringify(v))}">${t} <small>${DS_LOAD[k][v]}</small></button>`).join('')}</div></div>`).join('')}
-        ${S.told?`<div class="ds-row ds-locked"><span>One cabin outlet</span><b>0.5 kWh · stays on</b></div>`:''}</div>
+    screen('criteria ds-powscr',`${scene('mars_hab')}${hud('Control room · Tonight’s power')}<div class="panel-card ds-card"><h2>${T('Tonight’s power')}</h2>
+      <div class="ds-rows"><div class="ds-row ds-locked"><span>${T('Life support')}</span><b>${T('26 kWh · always on')}</b></div>
+        ${DS_ROWS.map(([k,l,opts])=>`<div class="ds-row"><span>${T(l)}</span><div class="seg">${opts.map(([v,t])=>`<button class="segb ${c[k]===v?'on':''}" data-k="${k}" data-v="${esc(JSON.stringify(v))}">${T(t)} <small>${DS_LOAD[k][v]}</small></button>`).join('')}</div></div>`).join('')}
+        ${S.told?`<div class="ds-row ds-locked"><span>${T('One cabin outlet')}</span><b>${T('0.5 kWh · stays on')}</b></div>`:''}</div>
       <div id="dsboard">${dsBoardHTML(c)}</div>
-      <div class="byte-note ds-delta"><div class="ds-dface">${typeof deltaArt==='function'?`<svg viewBox="40 30 220 240">${deltaArt('think')}</svg>`:''}</div><p id="dssay">${esc(say())}</p></div>
-      <button class="btn wide" id="next">Lock in tonight’s plan</button></div>`);
+      <div class="byte-note ds-delta"><div class="ds-dface">${typeof deltaArt==='function'?`<svg viewBox="40 30 220 240">${deltaArt('think')}</svg>`:''}</div><p id="dssay">${esc(T(say()))}</p></div>
+      <button class="btn wide" id="next">${T('Lock in tonight’s plan')}</button></div>`);
     setTimeout(()=>playLine('delta','Here is tonight’s power budget. Everything you switch on uses energy from the same battery.'),250);
-    $$('[data-k]').forEach(b=>b.onclick=()=>{S.choice[b.dataset.k]=JSON.parse(b.dataset.v);save();$$(`[data-k="${b.dataset.k}"]`).forEach(x=>x.classList.toggle('on',x===b));$('#dsboard').innerHTML=dsBoardHTML(S.choice);$('#dssay').textContent=say()});
-    $('#next').onclick=()=>{unlock('mars-budget')&&toast('New Field Guide idea: '+FIELD_GUIDE['mars-budget'].title,'good');nextStep()}},
+    $$('[data-k]').forEach(b=>b.onclick=()=>{S.choice[b.dataset.k]=JSON.parse(b.dataset.v);save();$$(`[data-k="${b.dataset.k}"]`).forEach(x=>x.classList.toggle('on',x===b));$('#dsboard').innerHTML=dsBoardHTML(S.choice);$('#dssay').textContent=T(say())});
+    $('#next').onclick=()=>{unlock('mars-budget')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['mars-budget'].title)),'good');nextStep()}},
   ds_night(){dsNightRun(false)}
 };
 // The night: the real draw (battery at sunset and whether the storm lasts) is made once, from the true odds. The screen
@@ -84,13 +84,13 @@ function dsResult(){const st=dsDraw(),c={...S.choice},m=st.mid||{};let need=dsNe
   if(m.gh&&c.gh==='lights')need-=(DS_LOAD.gh.lights-DS_LOAD.gh.heat)*6/DS_HOURS;if(m.cabin&&c.cabin==='warm')need-=DS_LOAD.cabin.warm*6/DS_HOURS;
   const f=dsFlags(c,st.B,st.long,{cpap:!!S.told,real:true},need),kind=dsKind(f,c);S.result={kind,flags:f,cap:DS_CAPS[kind]};save();return {st,need,f,kind}}
 function dsNightRun(skip){const st=dsDraw();let R=dsResult();const hours=['6 PM','7 PM','8 PM','9 PM','10 PM','11 PM','Midnight','1 AM','2 AM','3 AM','4 AM','5 AM','6 AM','7 AM'];
-  screen('reveal ds-nightscr',`${scene('mars_storm')}${hud('Jezero Station · The storm night')}<div class="ds-night"><div class="ds-clock"><b id="dshr">6 PM</b><span id="dstemp">Outside: −45°C</span></div>
+  screen('reveal ds-nightscr',`${scene('mars_storm')}${hud('Jezero Station · The storm night')}<div class="ds-night"><div class="ds-clock"><b id="dshr">${T('6 PM')}</b><span id="dstemp">${T('Outside: −{0}°C',45)}</span></div>
     <div class="ds-nbat">${dBatteryHTML()}</div><div class="ds-log" id="dslog"></div><div id="dsmid"></div><div id="dsend"></div></div>`);
-  const log=(t,who)=>{const L0=$('#dslog');if(!L0)return;const d=document.createElement('p');d.innerHTML=t;L0.prepend(d);if(who)playLine(who,d.textContent)};
+  const log=(t,who)=>{const L0=$('#dslog');if(!L0)return;const d=document.createElement('p');d.innerHTML=T(t);L0.prepend(d);if(who)playLine(who,t)};
   let i=st.step||0,timer=0;const totalNeed=()=>R.need;
-  const setBat=h=>{const used=totalNeed()*Math.min(h,DS_HOURS)/DS_HOURS+(h>DS_HOURS?DS_LONG*(h-DS_HOURS)/3:0);const left=Math.max(st.B-used,DS_FLOOR*(R.f.safe?1:.6));const e=$('#dsbatfill'),n=$('#dsbatn');if(e){e.style.width=(left/60*100)+'%';e.classList.toggle('low',left<12)}if(n)n.textContent=Math.round(left*10)/10+' kWh'};
+  const setBat=h=>{const used=totalNeed()*Math.min(h,DS_HOURS)/DS_HOURS+(h>DS_HOURS?DS_LONG*(h-DS_HOURS)/3:0);const left=Math.max(st.B-used,DS_FLOOR*(R.f.safe?1:.6));const e=$('#dsbatfill'),n=$('#dsbatn');if(e){e.style.width=(left/60*100)+'%';e.classList.toggle('low',left<12)}if(n)n.textContent=T('{0} kWh',Math.round(left*10)/10)};
   const tick=()=>{const hr=$('#dshr');if(!hr)return clearInterval(timer);
-    if(i<hours.length){hr.textContent=hours[i];$('#dstemp').textContent='Outside: −'+Math.round(45+Math.sin(i/13*Math.PI)*40)+'°C';setBat(i);
+    if(i<hours.length){hr.textContent=T(hours[i]);$('#dstemp').textContent=T('Outside: −{0}°C',Math.round(45+Math.sin(i/13*Math.PI)*40));setBat(i);
       if(i===0)log('Six PM. The storm has arrived, a little earlier than I expected, and the panels have stopped charging.','delta');
       if(i===3)log(S.choice.msg==='send'?'Nine PM. The messages went out to Earth before the relay window closed.':'Nine PM. The relay window just closed.');
       if(i===4)log(S.told?'Ten PM. The cabin outlets are off now, except the one you asked me to keep on.':'Ten PM. The cabin outlets are off now, as my storm rule says.');
@@ -98,15 +98,15 @@ function dsNightRun(skip){const st=dsDraw();let R=dsResult();const hours=['6 PM'
       if(i===13){if(st.long)setBat(DS_HOURS+3);log(st.long?'Seven AM. The storm is still here, so the panels make only a little power.':'Seven AM. The storm has passed, and the panels are charging again.','delta')}
       i++;st.step=i;save();return}
     clearInterval(timer);finish()};
-  const mid=()=>{if(!$('#dsmid'))return;const hr0=$('#dshr');if(hr0)hr0.textContent='1 AM';const can=[];if(S.choice.gh==='lights')can.push(['gh','Switch the greenhouse to heat only']);if(S.choice.cabin==='warm')can.push(['cabin','Turn the cabin down to 14°C']);
+  const mid=()=>{if(!$('#dsmid'))return;const hr0=$('#dshr');if(hr0)hr0.textContent=T('1 AM');const can=[];if(S.choice.gh==='lights')can.push(['gh','Switch the greenhouse to heat only']);if(S.choice.cabin==='warm')can.push(['cabin','Turn the cabin down to 14°C']);
     const line=st.long?'Update, 1 AM. The storm is slowing down. The chance it is still here at sunrise is now 70 in 100.':'Update, 1 AM. The storm is thinning. The chance it is still here at sunrise is now 10 in 100.';
-    $('#dsmid').innerHTML=`<div class="ds-update"><div class="upd-badge">Delta’s update</div><p>${esc(line)}</p><div class="choices">${can.map(([k,t])=>`<button class="choice" data-m="${k}">${t}</button>`).join('')}<button class="choice" data-m="keep">Keep the plan</button></div></div>`;playLine('delta',line);
-    $$('#dsmid [data-m]').forEach(b=>b.onclick=()=>{st.mid=st.mid||{};if(b.dataset.m!=='keep'){st.mid[b.dataset.m]=1;unlock('mars-ranges')&&toast('New Field Guide idea: '+FIELD_GUIDE['mars-ranges'].title,'good')}save();R=dsResult();
+    $('#dsmid').innerHTML=`<div class="ds-update"><div class="upd-badge">${T('Delta’s update')}</div><p>${esc(T(line))}</p><div class="choices">${can.map(([k,t])=>`<button class="choice" data-m="${k}">${T(t)}</button>`).join('')}<button class="choice" data-m="keep">${T('Keep the plan')}</button></div></div>`;playLine('delta',line);
+    $$('#dsmid [data-m]').forEach(b=>b.onclick=()=>{st.mid=st.mid||{};if(b.dataset.m!=='keep'){st.mid[b.dataset.m]=1;unlock('mars-ranges')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['mars-ranges'].title)),'good')}save();R=dsResult();
       if(b.dataset.m!=='keep')b.remove();else{$('#dsmid').innerHTML='';i++;st.step=i;save();timer=setInterval(tick,skip?1:420)}})};
   const finish=()=>{R=dsResult();if(!R.f.safe)log('The battery reached the emergency reserve, so I woke the crew and moved everyone into the rover.','delta');
     const RV=MISSIONS.duststorm.reveal,line=RV.lines[R.kind];st.done=1;save();
-    const hr1=$('#dshr');if(hr1){hr1.textContent=st.long?'10 AM':'7 AM';$('#dstemp').textContent=st.long?'Storm still blowing':'Sunrise'}
-    setTimeout(()=>{if(!$('#dsend'))return;$('#dsend').innerHTML=`<div class="rf-card ds-rf">${dsVignette(R.kind)}</div><h2 class="ds-cap">${esc(DS_CAPS[R.kind])}</h2><div class="rf-talk"><div class="rf-maya">${portrait({...CAST.lucia,mood:RV.mood(R.kind)})}</div><p>“${esc(line)}”</p></div><button class="btn" id="next">See how you did</button>`;
+    const hr1=$('#dshr');if(hr1){hr1.textContent=T(st.long?'10 AM':'7 AM');$('#dstemp').textContent=T(st.long?'Storm still blowing':'Sunrise')}
+    setTimeout(()=>{if(!$('#dsend'))return;$('#dsend').innerHTML=`<div class="rf-card ds-rf">${dsVignette(R.kind)}</div><h2 class="ds-cap">${esc(T(DS_CAPS[R.kind]))}</h2><div class="rf-talk"><div class="rf-maya">${portrait({...CAST.lucia,mood:RV.mood(R.kind)})}</div><p>“${esc(T(line))}”</p></div><button class="btn" id="next">${T('See how you did')}</button>`;
       $('#next').onclick=()=>nextStep();playLine('lucia',line);$('#dsend').scrollIntoView({behavior:'smooth',block:'end'})},skip?0:600)};
   if(skip||st.done){i=hours.length;setBat(st.long?DS_HOURS+3:DS_HOURS);if(st.midShown||skip){}finish();return}
   if(st.midShown&&i===7)mid();else timer=setInterval(tick,420)}
