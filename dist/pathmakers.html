@@ -31254,9 +31254,10 @@ function calfPortrait(mood){mood=mood||'smile';const C=NM_FUR.calf,L=C.line,id='
       ${nmPart([chest].concat(chestLocks),C.skirt,L,chestCoat+nmFurStrokes(84,200,216,300,30,Math.PI/2+.3,C.sh2,99,12,.3))}${collar}</g>
     <g class="p-head"><rect x="56" y="10" width="188" height="220" fill="none"/>${ear(-1)}${ear(1)}${nmPart([head].concat(tuft,cheeks,sideHair),C.base,L,headSh)}
       <ellipse cx="106" cy="172" rx="14" ry="8" fill="#ff8a8a" opacity=".4"/><ellipse cx="194" cy="172" rx="14" ry="8" fill="#ff8a8a" opacity=".4"/>
-      <g class="p-eyes">${eye(112,-1)}${eye(188,1)}</g>${browTufts}${corner(-1)}${corner(1)}${nub(-1)}${nub(1)}
-      <g class="p-mouth">${nmPart([trunk],C.base,L,`<path d="${nmRib(tp,nmTap(w0*.34,w1*.34))}" fill="${C.sh}" opacity=".8" transform="translate(-7 0)"/><path d="${nmRib(tp,nmTap(w0*.14,w1*.12))}" fill="${C.hi}" opacity=".45" transform="translate(9 0)"/>${rings}`,3)}${tipD}
-        <path d="M128 168 C136 158 164 158 172 168" stroke="${C.cape}" stroke-width="7" fill="none" stroke-linecap="round"/></g>${fx}</g></g>`}
+      <g class="p-eyes">${eye(112,-1)}${eye(188,1)}</g>${browTufts}
+      <g class="nm-trunkfix">${nmPart([trunk],C.base,L,`<path d="${nmRib(tp,nmTap(w0*.34,w1*.34))}" fill="${C.sh}" opacity=".8" transform="translate(-7 0)"/><path d="${nmRib(tp,nmTap(w0*.14,w1*.12))}" fill="${C.hi}" opacity=".45" transform="translate(9 0)"/>${rings}`,3)}${tipD}
+        <path d="M128 168 C136 158 164 158 172 168" stroke="${C.cape}" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+      ${nub(-1)}${nub(1)}<g class="p-mouth">${corner(-1)}${corner(1)}</g>${fx}</g></g>`}
 
 // ---------- Nome outfits on the shared anime bust ----------
 // Ruth: a calico atikłuk (hooded overshirt with a front pocket and rickrack trim) over a fleece; beaded earrings.
