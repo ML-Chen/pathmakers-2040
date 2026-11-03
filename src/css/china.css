@@ -41,6 +41,7 @@
 .sh-card .sh-lock{position:absolute;right:6px;top:4px;font-style:normal;font-size:.5rem;color:#9a8ab8}
 .sh-card.sent{opacity:.45;border-color:#7fd8c8;background:#effbf8}
 .sh-card.sent::after{content:'✓ sent';position:absolute;right:6px;bottom:3px;font-size:.62rem;color:#1a9a8a}
+.pm-zh .sh-card.sent::after{content:'✓';bottom:2px}.pm-zh .sh-card.private .sh-t{padding-right:9px}
 .sh-card.noted{border-color:#f5b82e;box-shadow:0 0 0 2px rgba(245,184,46,.28)}
 .sh-card .sh-nb{position:absolute;right:6px;top:-7px;font-style:normal;font-size:.58rem;background:#f5b82e;color:#4a3410;border-radius:999px;padding:1px 6px}
 .sh-card.sh-fly{transform:translateX(110%) scale(.9);opacity:0}

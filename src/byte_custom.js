@@ -203,7 +203,7 @@ function byteSVG(o){const K=byteLook(o);
 // so byteRefresh() can redraw it in place after a change in the closet.
 function byteBox(o,cls,vb){o=o||{};const K=byteLook(o);const s=(typeof S!=='undefined'&&S&&S.byte)||{};
   const live=!vb&&['color','ears','tail','eyes'].every(k=>o[k]===undefined||o[k]===byteLook({})[k])&&(o.wear===undefined||o.wear===s.wear);
-  return `<svg class="byteart ${cls||''}" viewBox="${vb||'14 0 136 150'}"${live?` data-live="${K.mood}"`:''} aria-label="${esc_b(K.name)}, your robot puppy">${byteSVG(o)}</svg>`}
+  return `<svg class="byteart ${cls||''}" viewBox="${vb||'14 0 136 150'}"${live?` data-live="${K.mood}"`:''} aria-label="${typeof T==='function'?T('{0}, your robot puppy',esc_b(K.name)):esc_b(K.name)+', your robot puppy'}">${byteSVG(o)}</svg>`}
 function esc_b(t){return String(t).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]))}
 // Byte inside another SVG (vignettes, scenes): paws centred on (x,y), s=1 is about 140 units tall
 function byteAt(x,y,s,o){s=s||1;return `<g transform="translate(${ch_n(x)} ${ch_n(y)}) scale(${s}) translate(-80 -142)">${byteSVG(o)}</g>`}

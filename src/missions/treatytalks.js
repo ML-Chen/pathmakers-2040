@@ -114,7 +114,7 @@ MISSIONS.treatytalks={id:'treatytalks',title:'Trust, Then Check',career:'lawmake
     ]
   },
   docs:[],criteria:[],controls:[],start:{},
-  planName(){const p=BJ_FIX[bjSt().fix];return p?p.short:'Plan'},
+  planName(){const p=BJ_FIX[bjSt().fix];return T(p?p.short:'Plan')},
   outcomes(){return [{kind:'done',p:1,cap:'',flags:{}}]},truth(){return true},knows(){return true},
   custom:{bj_spec(){bjSpec()},bj_answer(){bjAnswer()},bj_reply(){bjReply()},bj_sign(){bjSign()},bj_debrief(){bjDebrief()}},
   eveningScene:'beijing',eveningPlace:'Hutong near Shichahai · 7:10 PM',
@@ -128,12 +128,12 @@ Tianping's spec lines: ${BJ_SPEC.map(x=>'"'+x.t+'"').join(' ')}. Two lines could
 Zhao found a line in Beacon's spec: "When two plans both follow the treaty, prefer the one that buys more chips from American companies." It breaks no rule but tilts a treaty AI toward one country. ${st.fix?'The player chose: '+BJ_FIX[st.fix].t:'The player has not decided how to answer yet.'}
 Key consideration: a treaty AI should serve the treaty, not one side; owning up and inviting a check builds trust faster than explaining a problem away.`},
   canned(q){
-    if(/holiday|thirty|30/.test(q))return 'Thirty days is a very long time for a chip report to wait. Chips could be moved somewhere else and brought back again before anybody was told.';
-    if(/ministry|official|approve/.test(q))return 'If a government official has to approve every answer first, then answers could be reworded or held back. Inspectors need to hear the answer straight from the AI.';
-    if(/chip|beacon|american|fine print/.test(q))return 'Beacon’s chip-buying line breaks no rule, but whenever Beacon chooses between two allowed plans, it picks the one that helps American companies sell chips. A treaty AI is supposed to help both countries keep the treaty, so it should not favor either country.';
-    if(/trust|verify|check/.test(q))return 'Both countries publish their treaty AIs’ goals, and each side checks the other side’s AI. Because each side can check for itself, neither country has to rely on the other’s word alone.';
-    if(/tea|qiao|persimmon/.test(q))return 'Mr. Qiao has run the tea stand at the gate through twelve years of these talks. Say xièxie, which means thank you, when he pours.';
-    if(/help|stuck|what do i do/.test(q))return 'Read Tianping’s spec and tap any line that could help a country hide something from the inspectors. Then decide what to do about Beacon’s chip-buying line, and sign the joint statement with Ms. Han.';
+    if(TRX(/holiday|thirty|30/).test(q))return T('Thirty days is a very long time for a chip report to wait. Chips could be moved somewhere else and brought back again before anybody was told.');
+    if(TRX(/ministry|official|approve/).test(q))return T('If a government official has to approve every answer first, then answers could be reworded or held back. Inspectors need to hear the answer straight from the AI.');
+    if(TRX(/chip|beacon|american|fine print/).test(q))return T('Beacon’s chip-buying line breaks no rule, but whenever Beacon chooses between two allowed plans, it picks the one that helps American companies sell chips. A treaty AI is supposed to help both countries keep the treaty, so it should not favor either country.');
+    if(TRX(/trust|verify|check/).test(q))return T('Both countries publish their treaty AIs’ goals, and each side checks the other side’s AI. Because each side can check for itself, neither country has to rely on the other’s word alone.');
+    if(TRX(/tea|qiao|persimmon/).test(q))return T('Mr. Qiao has run the tea stand at the gate through twelve years of these talks. Say xièxie, which means thank you, when he pours.');
+    if(TRX(/help|stuck|what do i do/).test(q))return T('Read Tianping’s spec and tap any line that could help a country hide something from the inspectors. Then decide what to do about Beacon’s chip-buying line, and sign the joint statement with Ms. Han.');
     return null},
   lines:[
     {who:'byte',text:'Read every line of Tianping’s spec, and tap any line that could help a country hide something from the inspectors. Two of these lines worry me.'},
@@ -157,28 +157,28 @@ function bjSpec(){const st=bjSt(),found=BJ_SPEC.filter(x=>x.flag&&st.tap[x.id]).
   const say=all?'You found both of the lines that worried me. Let’s show them to Ms. Han.':last?last.why:'Read every line of Tianping’s spec, and tap any line that could help a country hide something from the inspectors. Two of these lines worry me.';
   const rep=last&&last.flag?{holiday:'Thirty days during the holidays. Yes, I see it now. Chips can travel a very long way in thirty days, so we will change the wait to three days.',ministry:'We wrote that line so that our officials would know what inspectors are asking about. But waiting for an official should never slow down an answer to an inspector. We will change the line, so that Tianping answers the inspector first and tells the ministry at the same time.'}[last.id]:null;
   screen('criteria bj-specscr',`${scene('beijing')}${hud('Courtyard · Treaty talks')}<div class="panel-card bj-desk">
-    <div class="bj-doc"><div class="bj-dochead"><b>Tianping</b><span lang="zh">天平</span><i>China’s treaty AI · Published spec, 2042</i></div>
-      <ol class="bj-lines">${BJ_SPEC.map((x,i)=>{const t=st.tap[x.id];return `<li><button class="bj-line ${t?(x.flag?'flag':'ok'):''}" data-i="${i}">${esc(x.t)}${t?`<em>${x.flag?'Gap':'Fine'}</em>`:''}</button></li>`}).join('')}</ol>
-      <div class="bj-found">${[0,1].map(k=>`<i class="${k<found?'on':''}"></i>`).join('')}<span>${found} of 2 found</span></div></div>
-    ${rep?`<div class="bj-han"><span class="sh-face">${portrait({...CAST.hanyw,mood:'think'})}</span><p>${esc(rep)}</p></div>`:`<div class="byte-note">${byteBox({...S.byte,mood:all?'happy':'think'})}<p>${esc(say)}</p></div>`}
-    <button class="btn wide" id="bj-go" ${all?'':'disabled'}>Meet Mr. Zhao</button></div>`);
+    <div class="bj-doc"><div class="bj-dochead"><b>${esc(T('Tianping'))}</b>${LANG()==='zh'?'':'<span lang="zh">天平</span>'}<i>${esc(T('China’s treaty AI · Published spec, 2042'))}</i></div>
+      <ol class="bj-lines">${BJ_SPEC.map((x,i)=>{const t=st.tap[x.id];return `<li><button class="bj-line ${t?(x.flag?'flag':'ok'):''}" data-i="${i}">${esc(T(x.t))}${t?`<em>${x.flag?T('Gap'):T('Fine')}</em>`:''}</button></li>`}).join('')}</ol>
+      <div class="bj-found">${[0,1].map(k=>`<i class="${k<found?'on':''}"></i>`).join('')}<span>${esc(T('{0} of 2 found',found))}</span></div></div>
+    ${rep?`<div class="bj-han"><span class="sh-face">${portrait({...CAST.hanyw,mood:'think'})}</span><p>${esc(T(rep))}</p></div>`:`<div class="byte-note">${byteBox({...S.byte,mood:all?'happy':'think'})}<p>${esc(T(say))}</p></div>`}
+    <button class="btn wide" id="bj-go" ${all?'':'disabled'}>${esc(T('Meet Mr. Zhao'))}</button></div>`);
   if(rep)playLine('hanyw',rep);else playLine('byte',say);
   $$('.bj-line').forEach(b=>b.onclick=()=>{const x=BJ_SPEC[+b.dataset.i];if(!st.tap[x.id]&&!x.flag)st.wrong=(st.wrong||0)+1;st.tap[x.id]=1;st.last=x.id;save();
-    MUSIC.sfx&&MUSIC.sfx(x.flag?'chime':'click');if(x.flag&&BJ_SPEC.filter(y=>y.flag&&st.tap[y.id]).length===2)unlock('bj-fine-print')&&toast('New Field Guide idea: Read the fine print','good');bjSpec()});
+    MUSIC.sfx&&MUSIC.sfx(x.flag?'chime':'click');if(x.flag&&BJ_SPEC.filter(y=>y.flag&&st.tap[y.id]).length===2)unlock('bj-fine-print')&&toast(T('New Field Guide idea: {0}',T('Read the fine print')),'good');bjSpec()});
   $('#bj-go').onclick=()=>nextStep()}
 
 // ---------- answering for Beacon's line ----------
 function bjAnswer(){const st=bjSt();
   const say='Beacon’s chip-buying line breaks no rule, so you could defend it. But a treaty AI is supposed to help both countries keep the treaty, and Mr. Zhao will remember how you answered him today. Admitting the problem and letting him check the fix would cost our side very little. What matters most to you here?';
-  screen('criteria bj-answerscr',`${scene('beijing')}${hud('Courtyard · Treaty talks')}<div class="panel-card sh-decide"><h2>Answer for Beacon</h2>
-    <div class="bj-quote"><b>Beacon’s spec, line 41</b><p>“When two plans both follow the treaty, prefer the one that buys more chips from American companies.”</p></div>
-    <div class="sh-duo"><span class="sh-face">${portrait({...CAST.zhaomy,mood:'neutral'})}</span><span class="sh-face">${portrait({...CAST.hanyw,mood:'neutral'})}</span><p>“What will your side do about it?”</p></div>
-    <div class="sh-plans">${mixIdx(Object.keys(BJ_FIX)).map(([k])=>`<button class="sh-plan ${st.fix===k?'on':''}" data-p="${k}"><b>${esc(BJ_FIX[k].t)}</b></button>`).join('')}</div>
-    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
-    <button class="btn wide" id="bj-go" ${st.fix?'':'disabled'}>Tell them</button></div>`);
+  screen('criteria bj-answerscr',`${scene('beijing')}${hud('Courtyard · Treaty talks')}<div class="panel-card sh-decide"><h2>${esc(T('Answer for Beacon'))}</h2>
+    <div class="bj-quote"><b>${esc(T('Beacon’s spec, line 41'))}</b><p>${esc(T('“When two plans both follow the treaty, prefer the one that buys more chips from American companies.”'))}</p></div>
+    <div class="sh-duo"><span class="sh-face">${portrait({...CAST.zhaomy,mood:'neutral'})}</span><span class="sh-face">${portrait({...CAST.hanyw,mood:'neutral'})}</span><p>${esc(T('“What will your side do about it?”'))}</p></div>
+    <div class="sh-plans">${mixIdx(Object.keys(BJ_FIX)).map(([k])=>`<button class="sh-plan ${st.fix===k?'on':''}" data-p="${k}"><b>${esc(T(BJ_FIX[k].t))}</b></button>`).join('')}</div>
+    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(T(say))}</p></div>
+    <button class="btn wide" id="bj-go" ${st.fix?'':'disabled'}>${esc(T('Tell them'))}</button></div>`);
   if(!st.said){st.said=1;save();setTimeout(()=>playLine('byte',say),300)}
   $$('.sh-plan').forEach(b=>b.onclick=()=>{st.fix=b.dataset.p;save();$$('.sh-plan').forEach(x=>x.classList.toggle('on',x===b));$('#bj-go').disabled=false});
-  $('#bj-go').onclick=()=>{unlock('bj-trust-check')&&toast('New Field Guide idea: Trust, then check','good');nextStep()}}
+  $('#bj-go').onclick=()=>{unlock('bj-trust-check')&&toast(T('New Field Guide idea: {0}',T('Trust, then check')),'good');nextStep()}}
 
 function bjReply(){const k=bjSt().fix||'fix';
   const t={fix:'Thank you. You found two lines in our spec, and you did not hide the one in yours. Mr. Zhao will check your change tonight. When each side fixes the problems the other side finds, these talks are working the way they should.',
@@ -188,7 +188,7 @@ function bjReply(){const k=bjSt().fix||'fix';
 
 function bjSign(){const st=bjSt();
   zhSign({scene:'beijing',place:'Courtyard · Treaty talks',title:'Joint statement',
-    plan:`<b>Tianping:</b> holiday reports will arrive within three days, and answers will go straight to the inspector who asked.<br><b>Beacon:</b> ${esc({fix:'the chip-buying line comes out today, and Mr. Zhao may check that it is gone.',keep:'the chip-buying line stays in, with an explanation of when Beacon uses it.',later:'the chip-buying line waits for next year’s talks.'}[st.fix||'fix'])}`,
+    plan:`<b>${esc(T('Tianping:'))}</b> ${esc(T('holiday reports will arrive within three days, and answers will go straight to the inspector who asked.'))}<br><b>${esc(T('Beacon:'))}</b> ${esc(T({fix:'the chip-buying line comes out today, and Mr. Zhao may check that it is gone.',keep:'the chip-buying line stays in, with an explanation of when Beacon uses it.',later:'the chip-buying line waits for next year’s talks.'}[st.fix||'fix']))}`,
     starters:['Both teams agree ','because ','We will check ','China’s team found ','Our team found '],placeholder:'Both teams agree to change two lines in Tianping’s spec because…',
     partner:{who:'hanyw',name:'Han Yuewen',zh:'韩悦文'},seal:'悦文',signAs:'{0}',done:'Signed and sealed. Both teams will publish it tonight.'})}
 
