@@ -19,7 +19,7 @@ module.exports = [
     setup: `S.playAll=true;go('hub')`, hide: ['.wm-next', '.wm-news', '.cm-hud', '.wm-pop']},
   // 3. AI does the work (Byte's memo scrolls past), people sign.
   {id: 'bench', place: '工作台 · AI写的备忘录', min: 5,
-    vo: '在那个世界里，AI做大部分工作，但重要的决定还是由人来签字。',
+    vo: '在那个设想里，AI撑起了社会的方方面面，但名义上还只是顾问，最后拍板的是人。',
     setup: `startMission('maya','workbench')`,
     taps: [[250, `prFlick(560, 650)`], [1500, `prFlick(700, 760)`], [2900, `prFlick(520, 600)`], [3900, `prFlick(760, 800)`]], hide: ['.tabs', '.doc-tools', '.bench-foot', '#next', '.companion']},
   // 4. The game.
