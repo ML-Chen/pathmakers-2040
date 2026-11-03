@@ -218,9 +218,9 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
         :'That I can live with. You block those orders, my lights stay on, and I will call you the second anything looks like that again.';
       return [
         {t:T('{week} {sure}{share} Does that work for you?',{week:T(c.block==='all'?'I am sorry, Tomás. We are pausing every order in this harbor for about nine days, and that includes yours. It is nine days of honest work lost, and I am not going to pretend otherwise.':c.block==='watch'?'Your week goes on as normal, Tomás. For now we are only watching, and nothing of yours is stopped.':'Your week mostly goes on as normal, Tomás. We are blocking only the orders we found, and your other orders keep running.'),sure:T(ev>=90?'I am fairly sure that catches every piece.':ev>=60?'I think it probably catches every piece, though I am not certain.':'I should be honest with you. There is a real chance that a piece gets past us.'),share:c.share==='no'?'':T(' We are also telling the other shops what to look for.')}),good:true,mood:'smile',reply},
-        {t:'I cannot explain all of it right now, Tomás. Some of it is secret, so you will have to trust me and stop everything until we are finished.',good:false,mood:'worried',
+        {t:T('I cannot explain all of it right now, Tomás. Some of it is secret, so you will have to trust me and stop everything until we are finished.'),good:false,mood:'worried',
          reply:'Trust you? I have forty people working here. If you cannot tell me why, I will be calling my lawyer, not the council.'},
-        {t:'Don’t worry, Tomás. This will not cost you anything at all. Your shop will be back to normal before you even notice, and nobody here will lose a single hour of work.',good:false,mood:'surprised',
+        {t:T('Don’t worry, Tomás. This will not cost you anything at all. Your shop will be back to normal before you even notice, and nobody here will lose a single hour of work.'),good:false,mood:'surprised',
          reply:'That is not true, and you know it. If you are not honest with me about that, how can I believe anything else you tell me?'}]}},
 
   memo:{starters:['I am blocking ','because ','The chance we catch every piece is about ','Honest labs ','We will know who sent them by '],

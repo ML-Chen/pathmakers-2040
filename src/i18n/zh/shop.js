@@ -349,7 +349,8 @@ I18N.add('zh','shop',{strings:{
   '100 flips land between 40 and 60 heads about 96 times in 100':'抛100次，100回里约有96回正面在40到60次之间','heads in 100 flips':'100次里的正面次数','40 to 60 heads: about 96 times in 100':'40到60次正面：100回里约96回',
   'More tries make the range of possible results narrower':'试得越多，可能结果的范围越窄','10 tries':'10次','50 tries':'50次','400 tries':'400次','the truth':'真相',
   'Results for a fair and a steering Pantry overlap with 40 orders and separate with 800':'40份订单时，公平和偏袒的粮仓结果会重叠；800份时就分开了',
-  'NOTICE':'说明','2 wk':'2周','PASS':'通过','ORDER':'命令'
+  'NOTICE':'说明','2 wk':'2周','PASS':'通过','ORDER':'命令',
+  'Kestrel robot':'红隼机器人','Pantry drone':'粮仓无人机','TOTALLY':'绝对是','NORMAL COOLING':'普通散热','FANS':'风扇'
 },
 glossary:{
   'audit':{w:'审计',d:'由独立的人来仔细检查，看一样东西是不是真的像它说的那样运作。'},
