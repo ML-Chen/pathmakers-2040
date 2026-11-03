@@ -41,6 +41,7 @@
 .bd-enact{font-size:.88rem;margin:6px 0 10px;padding:8px 10px;background:#f6f0de;border-radius:10px}
 .bd-h{font-weight:700;font-size:.82rem;letter-spacing:.04em;margin:12px 0 4px}
 .bd-small{font-size:.84rem;margin:0 0 4px}
+.bd-note{margin:10px 0}.bd-note .byteart{width:48px}
 .bd-sec{border-top:1px solid #ece4cc;padding-top:4px;margin-top:8px}
 .bd-vers{margin:4px 0 8px;font-family:var(--body)}
 .bd-vers .segb{font-size:.8rem;padding:7px 6px}

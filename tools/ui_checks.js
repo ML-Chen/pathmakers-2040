@@ -13,7 +13,9 @@ module.exports = function uiChecks() {
   const clear = el => { for (let n = el; n && n !== document.body; n = n.parentElement) { const s = getComputedStyle(n); const m = s.backgroundColor.match(/[\d.]+/g);
       if (s.backgroundImage !== 'none' || (m && (m[3] === undefined || +m[3] > .3))) return false; if (n.tagName === 'MAIN') break } return true };
   // is this element actually on top at its own middle (not hidden under a card)?
-  const onTop = (el, r) => { const x = r.left + r.width / 2, y = r.top + r.height / 2; if (x < 0 || y < 0 || x >= W || y >= H) return true;
+  // Test the middle of the part that is inside the window: a paragraph that starts just above the bottom edge has its middle
+  // below the window, and a sheet covering its visible top must still count as covering it.
+  const onTop = (el, r) => { const x = (Math.max(r.left, 0) + Math.min(r.right, W)) / 2, y = (Math.max(r.top, 0) + Math.min(r.bottom, H)) / 2; if (x < 0 || y < 0 || x >= W || y >= H) return true;
     const hit = document.elementFromPoint(x, y); if (!hit) return true; if (el.contains(hit) || hit.contains(el)) return true;
     if (el.closest('svg') && hit.closest('svg') === el.closest('svg')) return true; return getComputedStyle(hit).pointerEvents === 'none' || clear(hit) };
   const name = el => (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 40);

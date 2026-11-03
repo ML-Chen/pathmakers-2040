@@ -166,11 +166,20 @@ textarea{resize:vertical;line-height:1.5}
 .gpop .mini-btn{margin-top:4px}
 
 /* toasts */
-.toast{position:fixed;left:50%;top:calc(62px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:10px 16px;border-radius:14px;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:drop .35s cubic-bezier(.2,1.4,.4,1);width:max-content;max-width:min(90vw,420px);text-align:center}
+/* A toast is a banner laid over the HUD row for a moment (game.js shows one at a time), so it never lands on the text the
+   player is reading. The column's HUD row runs 12-54px from the top (24-66px from 700px up); the banner covers it. */
+.toast{--tx:-50%;position:fixed;left:50%;top:calc(8px + env(safe-area-inset-top,0px));transform:translateX(var(--tx));z-index:60;width:min(calc(100vw - 24px),496px);min-height:50px;
+  display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;padding:6px 14px;border-radius:14px;font-weight:800;font-size:.95rem;line-height:1.25;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);animation:toastin .35s cubic-bezier(.2,1.4,.4,1);text-align:center;cursor:pointer}
+.toast.wait{display:none}
 .toast.good{background:var(--good)}
-/* toasts drop in just below the HUD row so they never cover the place name or the HUD buttons */
-@media (min-width:700px){.toast{top:calc(82px + env(safe-area-inset-top,0px))}}
-.toast.out{opacity:0;transform:translate(-50%,-10px);transition:.4s}
+@media (min-width:700px){.toast{top:calc(20px + env(safe-area-inset-top,0px))}}
+/* a wide window has empty space beside the 520px column: the toast sits there, next to the column's top right corner */
+@media (min-width:1100px){body:not(.cm-wide) .toast{--tx:0px;left:calc(50% + 276px);width:max-content;max-width:min(360px,calc(50vw - 300px));justify-content:flex-start;text-align:left}}
+/* the world map fills the window with its HUD across the top; the middle of that row is empty */
+@media (min-aspect-ratio:1/1) and (min-width:820px){body.cm-wide .toast{width:max-content;max-width:min(480px,calc(100vw - 560px));top:calc(16px + env(safe-area-inset-top,0px))}}
+.toast.out{opacity:0;transform:translate(var(--tx),-10px);transition:.4s}
+@keyframes toastin{from{transform:translate(var(--tx),-30px);opacity:0}}
 @keyframes drop{from{transform:translate(-50%,-30px);opacity:0}}
 
 /* walking scene */

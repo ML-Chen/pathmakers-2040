@@ -432,6 +432,7 @@ function bill_draftSecs(){const c=S.choice,lines=t=>T(t).split('\n').map(l=>`<sp
 function bill_draft(){unlock('signed-commands');
   screen('bench',`${scene('workbench')}${hud('Drafting desk · H.R. 6120')}<div class="bench bill-desk">
     <div class="bd-strip" id="bdstrip">${bill_draftStrip()}</div>
+    <div class="byte-note bd-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(T('Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.'))}</p></div>
     <article class="doc doc-bill bd-paper"><div class="doc-from">${T('127th Congress · 2nd Session')}</div><h2>H.R. 6120</h2>
       <p class="bd-title">${T('A BILL to require that home and work robots check who sent any order that reaches them over the internet, and for other purposes.')}</p>
       <p class="bd-enact"><i>${T('Be it enacted by the Senate and House of Representatives of the United States of America in Congress assembled,')}</i></p>
@@ -439,7 +440,8 @@ function bill_draft(){unlock('signed-commands');
       <div class="bd-h">${T('SEC. 2. DEFINITIONS.')}</div><p class="bd-small">${T('(1) COVERED ROBOT.—The term “covered robot” means a machine that moves in the physical world and acts on its own in a home or workplace. (2) ROBOT CREW.—The term “robot crew” means two or more covered robots doing one job together. (3) REMOTE ORDER.—The term “remote order” means an instruction that reaches a covered robot over a network rather than from a person beside it. (4) SECRETARY.—The term “Secretary” means the Secretary of Commerce.')}</p>
       <div id="bdsecs">${bill_draftSecs()}</div></article>
     ${companion()}<div class="bench-foot"><button class="btn" id="next">${T('Set my criteria')}</button></div></div>`);
-  wireCompanion();setTimeout(()=>byteSays('Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.','happy'),500);
+  // Byte's pointer sits in the page above the bill: as a floating bubble it covered the bill's two-column sections
+  wireCompanion();
   const wire=()=>$$('.bd-vers .segb').forEach(b=>b.onclick=()=>{S.choice={...S.choice,[b.dataset.k]:b.dataset.v};save();MUSIC.sfx('click');
     $('#bdsecs').innerHTML=bill_draftSecs();$('#bdstrip').innerHTML=bill_draftStrip();$$('.bd-m').forEach(m=>m.classList.add('bump'));wire()});
   wire();$('#next').onclick=()=>nextStep()}
