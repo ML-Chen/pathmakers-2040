@@ -44,10 +44,10 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
   voices:{linxm:'af_river',huangjg:'am_onyx',tangyf:'af_alloy'},
   glossary:{
     'special economic zone':'An area with its own rules for business and building. In 2040, heavy robot industry is kept inside zones like this one. True today: Shenzhen really is a Special Economic Zone, and has been since 1980.',
-    'permit':'Official permission to do something. Here, every working robot needs one.',
+    'permit':'Official permission to do something. In this zone, every working robot needs one.',
     'permit cap':'The most permits a zone may hand out. In 2040, when a zone reaches its cap, no more robots may work there. True today: no country caps robots this way.',
     'robot crew':'In 2040, a team of robots that builds things together. Its own AI runs it, and a named human crew lead answers for it. True today: robots build parts of buildings in factories, but no robot crew builds a whole school.',
-    'crew lead':'The named human who is responsible for a robot crew and signs for its work.',
+    'crew lead':'The named person who is responsible for a robot crew and signs for everything it builds.',
     'remote stop':'A way to stop a machine from far away, over a network.',
     'stop drill':'A practice run to check that every way of stopping a machine really works.',
     'signed code':'A secret code tied to one person, so a machine knows exactly who gave the order.',
@@ -61,7 +61,7 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
     'andon cord':'A cord along a factory line that any worker can pull to stop the line when something looks wrong.'
   },
   guide:{
-    'sz-anyone-stops':{title:'Anyone can stop it, only some can restart',track:'Engineering and systems',
+    'sz-anyone-stops':{title:'Who may stop a crew, and who may start it again',track:'Engineering and systems',
       text:'Stopping a machine is easy to undo, so anybody who sees danger should be able to do it. Starting the machine again is much harder to undo, so only the named person who is responsible should be able to do that, using a code that proves who they are. And a stop ordered from far away should always tell the people on site.',
       real:'True today: factory robots have emergency stop buttons that any worker may press, and many car factories let any worker pull an andon cord to stop the line. Restarting takes a trained person. Robot crews that build whole schools are a guess about 2040.'},
     'sz-zone':{title:'Special Economic Zones',track:'Government, law, and power',
@@ -125,7 +125,7 @@ Key consideration: stopping is cheap and easy to undo, so anyone on site should 
   lines:[
     {who:'byte',text:'Pick one of the three ways to stop the crew, and I’ll time how long it takes.'},
     {who:'byte',text:'You’ve tried all three now. The remote stop is the one we need to talk about.'},
-    {who:'byte',text:'Here is how I would think about it. Stopping a crew is cheap, and it is easy to undo, so the more people who can do it, the safer the site is. Starting a crew again is much harder to undo, so that should take one named person. And anything done from far away should be told to the people on site. What matters most to you?'},
+    {who:'byte',text:'Stopping a crew is cheap and easy to undo, so the more people who can do it, the safer the site is. Starting one again is much harder to undo, so I would keep that with one named person.'},
     {who:'linxm',text:'We put your card on the test crew and then tried to restart it from the tower. The crew refused, and it sent you a message about it. Then I said “Tíng,” and it stopped for me. That is exactly what we wanted.'},
     {who:'linxm',text:'We put your card on the test crew, and it works. But the tower can still restart crews without telling anybody, so Tang Yifan wants to talk about that again next month.'},
     {who:'linxm',text:'We put your card on the test crew. Now only the crew lead can stop it, so when I said “Tíng,” the crew kept working. Mr. Huang did not like that one bit.'},
@@ -169,14 +169,14 @@ function szDrill(){const st=szSt(),last=st.last&&SZ_TESTS[st.last],all=Object.ke
 
 // ---------- the crew's rule card ----------
 function szRules(){const st=szSt(),r=st.rule,done=SZ_RULES.every(x=>r[x.key]);
-  const say='Here is how I would think about it. Stopping a crew is cheap, and it is easy to undo, so the more people who can do it, the safer the site is. Starting a crew again is much harder to undo, so that should take one named person. And anything done from far away should be told to the people on site. What matters most to you?';
+  const say='Stopping a crew is cheap and easy to undo, so the more people who can do it, the safer the site is. Starting one again is much harder to undo, so I would keep that with one named person.';
   screen('criteria sz-rulesscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Rule card')}<div class="panel-card sz-card"><div class="sz-cardhead"><b>Crew rule card</b><span>All 212 crews · version 7</span></div>
     ${SZ_RULES.map(x=>`<div class="sz-rule"><div class="sz-q">${esc(x.q)}</div><div class="sz-opts">${mixIdx(x.opts).map(([o])=>`<button class="critb sz-opt ${r[x.key]===o[0]?'on':''}" data-k="${x.key}" data-v="${o[0]}">${esc(o[1])}</button>`).join('')}</div></div>`).join('')}
     <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
     <button class="btn wide" id="sz-go" ${done?'':'disabled'}>Sign the card</button></div>`);
   if(!st.said){st.said=1;save();setTimeout(()=>playLine('byte',say),300)}
   $$('.sz-opt').forEach(b=>b.onclick=()=>{r[b.dataset.k]=b.dataset.v;save();const y=window.scrollY;szRules();window.scrollTo(0,y)});
-  $('#sz-go').onclick=()=>{unlock('sz-anyone-stops')&&toast('New Field Guide idea: Anyone can stop it, only some can restart','good');nextStep()}}
+  $('#sz-go').onclick=()=>{unlock('sz-anyone-stops')&&toast('New Field Guide idea: Who may stop a crew, and who may start it again','good');nextStep()}}
 
 function szSign(){zhSign({scene:'shenzhen',place:'Zone 3 test yard · Rule card',title:'Sign the rule card',plan:`<b>Rules:</b> ${esc(MISSIONS.robotfactory.planName())}`,
   starters:['Anyone on site ','because ','The factory may ','Only the crew lead ','We will test '],placeholder:'Anyone on site may stop a crew because…',

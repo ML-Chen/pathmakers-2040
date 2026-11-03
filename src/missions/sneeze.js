@@ -119,7 +119,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     'far-UVC':'A kind of light that is safe for people and hard on germs. In 2040, lamps like these run all day in stations and schools. True today: far-UVC lamps exist and are being tested, but very few buildings have them.',
     'shelter':'A room or building with its own clean air, kept ready in case people ever need it. In 2040, every city has enough of them for everybody. True today: clean-air shelters like that have not been built yet.',
     'traced':'Followed back to whoever really sent it.',
-    'evidence':'Something you can show other people, instead of a feeling.',
+    'evidence':'Something you can show other people, so they can see it for themselves. A strong feeling is not evidence.',
     'appeal':'To ask a person to look again at a decision you think is wrong.',
     'least privilege':'Giving a person or a machine only the power it needs for its job, and no more.',
     'the Quiet Year':'In this story, the year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it. True today: Varrow and the Quiet Year are made up for this game.'
@@ -155,8 +155,8 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   chatter:{
     harbor:['My cousin runs the label printer at shop three. She says nobody slept last night.',
       'I print posters. People hear “print shop” and back away from me at parties.',
-      'Eleven years Lena Park has sat at that desk. Eleven.',
-      'The ferry comes every eight minutes now. Eight!',
+      'Lena Park has worked at that desk for eleven years, and she still reads every flagged order herself.',
+      'The ferry comes every eight minutes now. I remember waiting half an hour for one.',
       'My daughter wants to be a screener when she grows up. I did not see that one coming.'],
     screening:['Coffee is in the corner. The machine argues with you if you take two cups.',
       'Most orders here are boring, and boring is the best news I get all day.',
@@ -360,16 +360,16 @@ MISSIONS.sneeze.talks={
   ]
 };
 MISSIONS.sneeze.react={
-  alert3:'They are sitting on a shelf instead of in a machine. That is the whole job, in one sentence.',
+  alert3:'Those orders are sitting on a shelf instead of in a machine, and that is the whole point of Lena’s job.',
   alert4:'Sending an order at three in the morning is a choice. Somebody decided that nobody would be reading.',
   alert5:'No order history at all. A real lab leaves years of orders behind it.',
   alert6:'Each piece looks boring on its own, and that is exactly what it was built to look like.',
   alert7:'The same words, in the same order, three times. People do not write the same sentence by accident.',
-  alert8:'Six checks, run by six different groups of people. That was designed on purpose.',
+  alert8:'There are six checks here, and six different groups of people run them. The city built it that way on purpose.',
   checks0:'Not one of these three orders is signed. A real lab signs in a second and never thinks about it again.',
   checks4:'I should be honest about that one. My guesses are pretty good, and they are still only guesses.',
   checks6:'Blocking an order costs somebody a week of work. I would keep that decision with a person.',
-  checks7:'Prime would beat me in a thinking contest. It cannot beat a check.',
+  checks7:'Prime would beat me in a contest of cleverness. A check does not care how clever the sender is, which is why we rely on checks instead.',
   ready1:'The warning reaches every phone within minutes. That part was built after a year of finding out how slow a warning can be.',
   ready4:'Three weeks for a new vaccine. In 2020 it took a year, and the world called that a miracle.',
   ready5:'Almost every rule in this building was written after somebody had a very bad year.'};
@@ -433,7 +433,7 @@ MISSIONS.sneeze.custom={
     const label=t=>t.t.replace('{B}',S.byte.name);
     screen('tests',`${scene('screening')}${hud('Checks · Health Harbor')}
      <div class="panel-card sn-tests"><h2>Which checks are worth a day?</h2>
-      <p>${rich('Every check costs one day, and you have only six days, so you cannot run them all. A check that gives you [[evidence]] is worth more than one that only makes you feel sure.')}</p>
+      <p>${rich('Each check costs one day out of your six, so pick the ones that give you [[evidence]] you can show other people.')}</p>
       ${snStrip()}
       <div class="sn-testlist">${SN_TESTS.map(t=>{const ran=s.tests.includes(t.id);
         return `<button class="sn-test ${ran?'ran':''}" data-t="${t.id}" ${ran||s.days<t.cost?'disabled':''}>
@@ -458,13 +458,12 @@ MISSIONS.sneeze.custom={
       .filter(([k])=>k==='lena'||(S.hearts&&S.hearts[k]));
     const bench=`<div class="sn-bench">${allies.map(([,n])=>`<span>${esc(n)}</span>`).join('')}</div>`;
     if(s.vote===null){
-      screen('townhall',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
+      screen('townhall talk',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
        <div class="stage"><div class="speaker">${portrait({...CAST.osei,mood:'neutral'})}</div></div>
        <div class="subtitle"><div class="who"><b>Councilor Amara Osei</b><span>Boston City Council</span></div>
         ${bench}
-        <p>You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep.</p>
-        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(x.t)}</button>`).join('')}</div>
-        <div class="tiny muted" style="margin-top:6px">Pick three.</div></div>`);
+        <p>You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep. Pick three things to say.</p>
+        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(x.t)}</button>`).join('')}</div></div>`);
       const chosen=[];
       $$('#say .choice').forEach(b=>b.onclick=()=>{if(b.classList.contains('on'))return;
         const x=SN_SAY[b.dataset.j];b.classList.add('on',x.good?'good':'bad');chosen.push(x);
@@ -477,7 +476,7 @@ MISSIONS.sneeze.custom={
         save();setTimeout(()=>MISSIONS.sneeze.custom.townhall(),700)});
       return}
     const line=!s.rule?SN_VOTE.norule:s.adopted?SN_VOTE.adopted:SN_VOTE.rejected;
-    screen('townhall',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
+    screen('townhall talk',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
      <div class="stage"><div class="speaker">${portrait({...CAST.osei,mood:s.adopted?'happy':'think'})}</div></div>
      <div class="subtitle"><div class="who"><b>Councilor Amara Osei</b><span>Boston City Council</span></div>
       ${s.rule?`<div class="sn-tally">The vote: <b>${esc(s.vote)}</b></div>`:''}

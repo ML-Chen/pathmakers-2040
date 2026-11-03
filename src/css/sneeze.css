@@ -35,8 +35,8 @@
 .sn-link p{margin:0;font-size:.9rem;line-height:1.35}
 .sn-link.in{animation:reveal .4s ease-out}
 
-/* ---- the checks ---- */
-.sn-testlist{display:flex;flex-direction:column;gap:9px;margin:12px 0}
+/* ---- the checks (tight enough that all five fit a phone without scrolling) ---- */
+.sn-testlist{display:flex;flex-direction:column;gap:7px;margin:9px 0}
 .sn-test{display:flex;align-items:center;gap:10px;text-align:left;width:100%;border:2px solid var(--line);background:#fff;
   border-radius:16px;padding:11px 12px;box-shadow:0 3px 0 #e7ebfa}
 .sn-test:active{transform:translateY(2px)}
