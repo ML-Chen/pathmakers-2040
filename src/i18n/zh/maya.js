@@ -54,6 +54,7 @@ I18N.add('zh','maya',{strings:{
   'Surgery with pins':'手术打钢钉',
   'Cast':'打石膏',
   'BoneMend gel':'骨愈凝胶',
+  'Physical therapy · Yes':'要做','Physical therapy · No':'不做',
   'Keep Friday':'周五照常',
   'Move it':'改期',
   '[[Heals straight]]':'骨头[[长正]]',

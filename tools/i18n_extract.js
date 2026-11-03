@@ -119,7 +119,8 @@ function literalBucket(s){for(const rel in SRC_TEXT)if(SRC_TEXT[rel].includes(s)
     // [[markers]] in translations must open a glossary entry
     const broken=[];for(const [en,zh] of Object.entries(TAB)){const mk=String(zh).match(/\[\[([^\]]+)\]\]/g)||[];for(const x of mk){const w=x.slice(2,-2);if(!GLOSSARY[gkey(w)])broken.push({en,marker:w})}}
     // ----- screens: play every mission in the target language -----
-    const shots=async(where,f,ms=40)=>{WHERE=where;try{await f()}catch(e){}await sleep(ms);scan()};
+    // a screen whose render waits for taps never resolves, so each screen gets at most 4 seconds
+    const shots=async(where,f,ms=40)=>{WHERE=where;try{await Promise.race([Promise.resolve().then(f),sleep(4000)])}catch(e){}await sleep(ms);scan()};
     CTX='core';
     RESUME={...NEW(),step:'hub',lang:LG};await shots('title',()=>STEPS.title());await shots('setup',()=>STEPS.setup());
     for(const id of Object.keys(MISSIONS)){CTX=id;const m=MISSIONS[id];S.completed={};startMission(id);
