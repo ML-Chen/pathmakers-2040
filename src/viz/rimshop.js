@@ -98,8 +98,8 @@ MISSIONS.rimshop.custom={
     if(!A.five&&!A.many)setTimeout(()=>say('Let’s hear from both groups. First Haruto’s five friends at the tea corner, then five hundred people from all over the base.'),250);
     const ask=()=>{if(!(A.five&&A.many))return;const box=$('#rq');
       if(st.answer){box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(RIM_ASKSAY[st.answer])}</p></div><button class="btn wide" id="rgo">Meet my next customer</button>`;$('#rgo').onclick=()=>nextStep();return}
-      box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>So why don’t the five and the five hundred agree?</p></div><div class="choices">${mixIdx(Q).map(([q,j])=>`<button class="choice" data-j="${j}">${esc(q.t)}</button>`).join('')}</div>`;
-      say('So why don’t the five and the five hundred agree?');
+      box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>Why do you think Haruto’s five friends and the five hundred people gave different answers?</p></div><div class="choices">${mixIdx(Q).map(([q,j])=>`<button class="choice" data-j="${j}">${esc(q.t)}</button>`).join('')}</div>`;
+      say('Why do you think Haruto’s five friends and the five hundred people gave different answers?');
       $$('#rq .choice').forEach(b=>b.onclick=()=>{const q=Q[b.dataset.j];st.answer=q.ok;save();if(q.ok==='good'){unlock('rim-sample')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-sample'].title,'good');heart('haruto')}say(RIM_ASKSAY[q.ok]);ask();box.scrollIntoView({behavior:'smooth',block:'end'})})};
     $('#a5').onclick=()=>{if(A.five)return;A.five=1;save();$('#a5').classList.add('on');$('#r5').innerHTML=five();say('Four of the five picked Earth treats. Now let’s see what five hundred people say.');ask()};
     $('#a500').onclick=()=>{if(A.many)return;A.many=1;save();$('#a500').classList.add('on');$('#r500').innerHTML=many();say('Five hundred people answered. Visitors mostly picked Moon-glass, and residents picked treats or soup.');ask();$('#r500').scrollIntoView({behavior:'smooth',block:'nearest'})};
@@ -120,7 +120,7 @@ MISSIONS.rimshop.custom={
     $('#run').onclick=()=>{if(!pick)return;st.test=pick;save();unlock('rim-test')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-test'].title,'good');$('#run').disabled=true;$$('.rim-test').forEach(b=>b.disabled=true);
       const ov=document.createElement('div');ov.className='rim-days';ov.innerHTML=`<div class="rim-dayn"><b id="rimday">Day 1</b><span id="rimcoins">0 coins</span></div><div class="rim-dvig">${rimVignette(rimTestResult(pick).vig)}</div>`;document.body.appendChild(ov);
       const r=rimTestResult(pick);let i=0;const tm=setInterval(()=>{i++;const d=$('#rimday'),c=$('#rimcoins');if(d)d.textContent='Day '+Math.min(3,1+Math.floor(i/4));if(c)c.textContent=Math.round(r.coins*Math.min(1,i/12))+' coins';
-        if(i>=13){clearInterval(tm);ov.classList.add('out');setTimeout(()=>ov.remove(),450);playLine('byte','Here is what three days of selling taught us.');show();$('#rimres').scrollIntoView({behavior:'smooth',block:'start'})}},230)};
+        if(i>=13){clearInterval(tm);ov.classList.add('out');setTimeout(()=>ov.remove(),450);playLine('byte','Here is what we learned from three days of selling at the pop-up.');show();$('#rimres').scrollIntoView({behavior:'smooth',block:'start'})}},230)};
     if(done)show()},
   rim_rules(){const st=rimState(),R=st.rules;const all=()=>RIM_RULES.every(r=>R[r.id]);
     screen('criteria rim-rulescr',`${scene('moon_dome')}${hud('Your booth · Till’s limits')}<div class="panel-card rim-card"><h2>Till’s limits</h2>
@@ -129,7 +129,7 @@ MISSIONS.rimshop.custom={
       <div id="rimnote"></div><button class="btn wide" id="next" ${all()?'':'disabled'}>Set my goals</button></div>`);
     if(!all())setTimeout(()=>playLine('byte','Till can do a lot by itself. For each job, choose whether Till does it alone, Till does it and you check, or only you do it.'),250);
     const note=()=>{const n=[];if(R.raise==='alone')n.push('If supplies run short, Till will raise prices by itself. People here can’t shop anywhere else, so think about whether that feels fair.');
-      if(R.newsupplier==='alone')n.push('Till could buy from any of those 400 new companies without asking.');if(R.reorder==='me'||R.nudge==='me')n.push('Asking you about tiny jobs is safe, but it will wake you up at 2 AM a lot.');
+      if(R.newsupplier==='alone')n.push('Till could buy from any of the 400 new companies on the base without asking you first.');if(R.reorder==='me'||R.nudge==='me')n.push('Asking you about tiny jobs is safe, but it will wake you up at 2 AM a lot.');
       $('#rimnote').innerHTML=n.length?`<div class="rim-warn">${n.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`:''};
     note();
     $$('[data-r]').forEach(b=>b.onclick=()=>{R[b.dataset.r]=b.dataset.v;save();$$(`[data-r="${b.dataset.r}"]`).forEach(x=>x.classList.toggle('on',x===b));
@@ -137,13 +137,13 @@ MISSIONS.rimshop.custom={
       if(all()){$('#next').disabled=false;if(!st.rulesSaid){st.rulesSaid=1;save();playLine('byte','Those are clear limits, and Till will follow them exactly as you wrote them.');unlock('rim-limits')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-limits'].title,'good')}}});
     $('#next').onclick=()=>nextStep()}
 };
-const RIM_ASKSAY={good:'Exactly. All five of them live at the base, and more than half of our customers are visitors. The people you ask should look like the people who will really buy.',
-  fast:'I’m sure they thought carefully. The real difference is who they are. All five live at the base, but most of our customers are visitors.',
-  wrong:'The poll is fine. The five just aren’t like most of our customers. They all live at the base, and more than half of our buyers are visitors.'};
+const RIM_ASKSAY={good:'Exactly. All five of them live at the base, and more than half of our customers are visitors. The people you ask should be the same kinds of people who will really buy from the shop.',
+  fast:'I’m sure Haruto’s friends thought carefully. The answers differ because of who was asked: all five live at the base, but most of our customers are visitors.',
+  wrong:'The big poll is fine. Haruto’s five friends are different from most of our customers, because they all live at the base, and more than half of our buyers are visitors.'};
 function rimDaily(k){return k==='glass'?28:k==='treats'?9:(S.told?36:7)}
 function rimTestResult(k){if(k==='glass')return {good:true,vig:'glassok',coins:84,head:'Sold 42 pieces in 3 days',text:'Nearly every visitor stopped to look. Residents mostly walked past. Each piece earned 4 coins.',line:''};
   if(k==='treats')return {good:false,vig:'treats',coins:27,head:'Sold out on day 1, then nothing',text:'Residents snapped up the chocolate, but shipping ate most of the profit, and the next box is 12 days away.',line:''};
-  return S.told?{good:true,vig:'soupline',coins:108,head:'Sold 36 bowls a night at 2 AM',text:'Ada’s mom brought her whole crew. They asked if the soup can stay. Lunch sales were small.',line:''}
+  return S.told?{good:true,vig:'soupline',coins:108,head:'Sold 36 bowls a night at 2 AM',text:'Ada’s mom brought her whole crew. They asked whether you will keep selling soup at 2 AM. Lunch sales were small.',line:''}
     :{good:false,vig:'soupday',coins:21,head:'Sold 7 bowls a day at lunch',text:'Most people at lunch already eat at the base kitchen. The pot was still half full at closing.',line:''}}
 function rimTestIcon(k){return `<svg viewBox="-20 -24 40 34">${k==='glass'?rMarble(0,-6,12):k==='treats'?rBar(0,-6,.9):rBowl(0,0,.9)}</svg>`}
 MISSIONS.rimshop.shots={
