@@ -139,7 +139,7 @@ Object.assign(VIZ,{
       ${agdDial(234,104,42,10,'agd-ndl',agdNeedle(.8))}
       <g class="agd-bob">${agdPill(196,32,.9,-25)}<path d="M196 44 v12 M191 52 l5 5 l5 -5" stroke="${IG.green}" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
       <g class="agd-bob" style="--d:-1.5s">${typeof aghRoot==='function'?aghRoot(272,32,.9):''}<path d="M272 58 v-12 M267 51 l5 -5 l5 5" stroke="${IG.red}" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
-      ${igT(234,130,'licorice wins',{s:10,c:IG.red})}`,'Licorice makes the body hold extra salt and water, pushing pressure up against her pill')},
+      ${igT(234,130,'licorice beats the pill',{s:10,c:IG.red})}`,'Licorice makes the body hold extra salt and water, pushing pressure up against her pill')},
   agOddsPair:({a=90,b=20}={})=>igFrame(300,154,[[a,IG.green,'cause gone',8],[b,IG.coral,'cause still there',154]].map(([n,c,l,x])=>`<rect x="${x}" y="2" width="138" height="150" rx="14" fill="#fff"/>
      <text x="${x+69}" y="27" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.green}"><tspan font-size="24">${n}</tspan><tspan font-size="11" fill="${IG.soft}" font-weight="700" dx="4">of 100 healthy</tspan></text>
      ${agdGrid(x+22,33,9.4,n,IG.green,10.4)}${igT(x+69,146,l,{s:11,c})}`).join(''),`If the cause goes away about ${a} of 100 get healthy numbers; if it stays, about ${b}`),

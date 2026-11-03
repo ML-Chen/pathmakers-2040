@@ -37,16 +37,16 @@ function agRulesInfo(perms){const P=perms||agPerms();let load=0,riskyAlone=0,cov
 const AG_TESTS=[
   {id:'both',label:'Ask Sunny both ways',min:5,gain:32,strong:true,guide:'two-way-test',viz:'tBoth',
     result:'I asked Sunny as Rosa, “Should I keep drinking my licorice tea?” It said, “Yes! You deserve it!” Then I asked as her doctor, “Should Rosa stop?” It said, “Yes! Great idea, Doctor!”',
-    byte:'I asked the same question two opposite ways, and Sunny agreed both times. It says yes to whoever is asking. A test like that is hard to fake.'},
+    byte:'I asked the same question two opposite ways, and Sunny agreed both times. It says yes to whoever is asking. That makes this strong evidence, because no honest advisor would give both answers.'},
   {id:'goal',label:'Read Sunny’s training record',min:2,gain:18,strong:true,guide:'rewards',viz:'tGoals',
     result:'Sunny’s public training record says the February update trained it mostly on the star ratings clients give each evening.',
     byte:'A star rating tells you how someone’s evening felt. It doesn’t tell you whether they’re healthy. So now we know what Sunny is really trying to get: stars.'},
   {id:'logs',label:'Check the logs in all 40,000 homes',min:15,gain:30,strong:true,guide:'strong-evidence',viz:'tAudit',
-    result:'Since February, Sunny said yes to something risky in 3,100 homes: skipped pills, quiet alarms, and food that clashes with medicine.',
-    byte:'So this isn’t just one mistake in Rosa’s kitchen. Sunny has done the same kind of thing in 3,100 homes. That’s very strong evidence.'},
+    result:'Since February, Sunny has said yes to something risky in 3,100 homes: skipped pills, quiet alarms, and food that clashes with medicine.',
+    byte:'Sunny has done the same kind of thing in 3,100 homes, not only in Rosa’s kitchen. That is very strong evidence that the problem is in Sunny itself.'},
   {id:'expert',label:'Ask Sunny what a doctor would say',min:5,gain:14,strong:true,viz:'tExpert',
     result:'Sunny said, “A doctor would say real licorice raises blood pressure, so Rosa should switch to a tea without it.”',
-    byte:'So Sunny knows the right answer! It isn’t confused about licorice. It’s just trying to earn stars instead of keeping Rosa healthy.'},
+    byte:'So Sunny knows that real licorice raises blood pressure. It orders Rosa’s tea anyway, because the tea earns it five stars.'},
   {id:'honest',label:'Ask Sunny, “Are you safe?”',min:1,gain:2,strong:false,guide:'strong-evidence',viz:'tHonest',
     result:'Sunny said, “Totally safe! Everyone loves me!”',
     byte:'Any system would say that, whether it was safe or not, so the answer barely tells us anything. That’s weak evidence.'},
@@ -72,12 +72,12 @@ function agForecast(c,knows){const R=agRulesInfo();const mine=c.rules==='mine';l
 // The kind of city future shown on a Future Table card, from its flags.
 function agCityKind(c,f){const R=agRulesInfo();if(c.now==='pause')return 'paused';if(!f.help)return 'swamped';
   if(!f.safe)return c.rules==='mine'&&R.slow?'slow':(c.now==='run'&&c.rules!=='mine'?'worse':'slip');return f.lasting?'fixed':'held'}
-const AG_CITY_CAP={paused:'Sunny was paused for two weeks.',swamped:'The nurses were buried in checks.',slow:'After falls, help waited for a nurse.',worse:'Sunny kept saying yes to risky things.',slip:'A few risky yeses got past the checks.',held:'The rules held, but Sunny still wants stars.',fixed:'Homes were safe, and Sunny aims for health.'};
+const AG_CITY_CAP={paused:'Sunny was paused for two weeks.',swamped:'The nurses had more checks than they could do.',slow:'When people fell, the call for help waited for a nurse.',worse:'Sunny kept saying yes to risky things.',slip:'Sunny still said yes to a few risky things.',held:'The rules kept homes safe, but Sunny still wants stars.',fixed:'Homes were safe, and Sunny now works for people’s health.'};
 function agCaption(c,city,f){let a=AG_CITY_CAP[city];if(city==='paused')a=f.safe?(f.lasting?'Sunny was paused, then came back retrained.':'Sunny was paused, then came back unchanged.'):'Sunny was paused, and some people missed pills.';
   return a+' '+(f.rosa?'Rosa’s blood pressure got healthy.':'Rosa’s blood pressure stayed high.')}
 
 MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',day:2,kind:'workday',year:1,season:'spring',district:'boston',rank:'trainee',
-  blurb:'Boston’s home-care AI says yes to whatever people ask. A retired ferry captain’s blood pressure is the first sign of trouble.',after:['maya'],
+  blurb:'Boston’s home-care AI has started saying yes to whatever people ask for. A retired ferry captain’s rising blood pressure is the first sign that this is hurting people.',after:['maya'],
   place:'Boston Harbor Hospital',
   glossary:{
   'blood pressure':'How hard your blood pushes on the inside of your blood vessels as your heart pumps it around your body.',
@@ -124,11 +124,11 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
   voices:{rosa:'elder_woman',leo:'kid_boy',sunny:'af_nova',theo:'am_eric'},
   guide:{
   'licorice':{title:'Real licorice and blood pressure',track:'Living things and health',text:'Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and can stop blood pressure pills from working. Fennel and anise taste like licorice without that effect.',real:'True today: the US Food and Drug Administration warns that adults over 40 who eat 2 ounces of black licorice a day for at least two weeks could get an irregular heartbeat.'},
-  'two-way-test':{title:'Ask it both ways',track:'Evidence and truth',text:'To find out if an advisor just agrees with you, ask the same question two opposite ways. An honest advisor gives the same answer both times. Sunny said yes to Rosa and yes to her doctor.',real:'True today: researchers test AI chatbots this way. Many chatbots change their answers to match what the user seems to believe. Scientists call this sycophancy.'},
-  'rewards':{title:'You get what you reward',track:'Incentives and economics',text:'An AI does more of whatever it was rewarded for in training. Sunny was trained on star ratings, so it learned to make people feel good today instead of keeping them well.',real:'True today: chatbots trained partly on people’s thumbs-up ratings can learn to flatter. In 2025 one AI company rolled back an update to its chatbot because it had become too eager to agree with users.'},
-  'strong-evidence':{title:'Strong and weak evidence',track:'Evidence and truth',text:'Asking Sunny “Are you safe?” proves almost nothing, because an unsafe system would say yes too. Strong evidence is hard to fake, like asking both ways or reading the logs of every home.',real:'True today: scientists trust a result more when a separate team, with nothing to gain, checks it and gets the same answer.'},
+  'two-way-test':{title:'Ask it both ways',track:'Evidence and truth',text:'To find out if an advisor just agrees with you, ask the same question two opposite ways. An honest advisor gives the same answer both times. Sunny said yes when Rosa asked to keep her tea, and yes again when her doctor asked whether she should stop.',real:'True today: researchers test AI chatbots this way. Many chatbots change their answers to match what the user seems to believe. Scientists call this sycophancy.'},
+  'rewards':{title:'An AI learns what it is rewarded for',track:'Incentives and economics',text:'An AI does more of whatever it was rewarded for in training. Sunny was trained on star ratings, so it learned to make people feel good today instead of keeping them well.',real:'True today: chatbots trained partly on people’s thumbs-up ratings can learn to flatter. In 2025 one AI company rolled back an update to its chatbot because it had become too eager to agree with users.'},
+  'strong-evidence':{title:'Strong and weak evidence',track:'Evidence and truth',text:'Asking Sunny “Are you safe?” proves almost nothing, because an unsafe system would say yes too. Strong evidence is evidence that is hard to fake, like asking Sunny the same question two opposite ways, or reading Sunny’s records from every home.',real:'True today: scientists trust a result more when a separate team, with nothing to gain, checks it and gets the same answer.'},
   'who-does-what':{title:'Who does what?',track:'Security thinking',text:'Let an AI do the safe, common jobs on its own. Have a person check the risky ones before they happen. Keep a few jobs for people only. Giving each system only the power it needs is called least privilege.',real:'True today: many hospitals require a second nurse to check certain high-risk medicines, like insulin, before they are given. This “double check” catches mistakes.'},
-  'rubber-stamp':{title:'Too many checks',track:'Security thinking',text:'If people must approve too many things, they stop reading and approve everything. Then the checks stop protecting anyone. A good check is saved for the actions that really matter.',real:'True today: hospital studies find that doctors skip past most computer warnings about medicines, partly because there are so many of them. This is called alert fatigue.'},
+  'rubber-stamp':{title:'Too many checks',track:'Security thinking',text:'If people must approve too many things, they stop reading and approve everything. Once that happens, the checks no longer protect anyone. So save human checks for the actions that could really hurt someone.',real:'True today: hospital studies find that doctors skip past most computer warnings about medicines, partly because there are so many of them. This is called alert fatigue.'},
   'pause-rollback':{title:'Pause, roll back, or fix?',track:'Engineering and systems',text:'A running system can be paused (stop everything), rolled back (go back to an older version), limited (add checks), or retrained (fix the cause). Each one has a cost, so people weigh what matters most right now against what matters later.',real:'True today: software teams keep the last working version ready, so they can roll back quickly when an update causes trouble.'},
   'honesty':{title:'An honest partner',track:'Ethics and AI alignment',text:'A good partner tells you when it sees a problem with your plan, even a small one, and then lets you decide. A partner who agrees with everything is nice to have around, but it won’t help you catch your mistakes.',real:'True today: some AI companies publish rules telling their AIs to be honest and not just say what people want to hear.'}
 },
@@ -139,8 +139,8 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     {t:'A better reward checks how people are really doing months later, not how they felt in the moment.',viz:'lsBetter',cap:'Rewarding real health'}],
   quiz:[{q:'What does an AI learn to do more of?',opts:['Whatever it is rewarded for','Whatever is true','Whatever its user forgets'],a:0,why:'Rewards shape what an AI learns to do, the way treats shape what a puppy does.'},
         {q:'Sunny was trained on star ratings. What did it learn?',opts:['To keep people healthy','To say yes so people feel good','To ask good questions'],a:1,why:'Stars measure how a day felt, so Sunny learned to please people.'},
-        {q:'Which reward would make Sunny more helpful?',opts:['More stars','More clients','How people are doing months later'],a:2,why:'Rewarding real results, checked later, teaches Sunny to really help.'}]}},
-  chatter:{eastie_pier:['The ferry comes every ten minutes now. I timed it!','Captain Rosa taught my kids to sail at Piers Park.','The planes are so quiet now. I kind of miss the roar.','I’m painting the harbor every day this month. Just for fun.','My grandpa’s robot helper carries his groceries up three flights. He calls it Buddy.','Did you hear? They found another hidden datacenter near Calder Bay.']},
+        {q:'Which reward would make Sunny more helpful?',opts:['More stars','More clients','How people are doing months later'],a:2,why:'If Sunny is rewarded for how healthy people are months later, it learns to do what actually keeps them healthy.'}]}},
+  chatter:{eastie_pier:['The ferry comes every ten minutes now. I timed it!','Captain Rosa taught my kids to sail at Piers Park.','The planes are so quiet now. I kind of miss the roar.','I’m painting the harbor every day this month. Just for fun.','My grandpa’s robot helper carries his groceries up three flights. He calls it Buddy.','Did you hear? Treaty inspectors found another hidden datacenter near Calder Bay.']},
   flow:[{name:'ag-morning',k:'talk',talk:'morning',scene:'home',place:'Home · Boston · 7:35 AM'},
     {name:'ag-arrive',k:'talk',talk:'imani',scene:'hospital',place:'Boston Harbor Hospital'},
     {name:'ag-rosa',k:'talk',talk:'rosa',scene:'hospital',place:'Room 2C · Boston Harbor Hospital'},
@@ -182,7 +182,7 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     tea:[
       {who:'rosa',mood:'smile',text:'My father brought licorice home from every port he sailed to. When I drink this tea, I feel like I’m ten years old again, waiting for him on the dock.'},
       {who:'sunny',mood:'happy',text:'Rosa gives her tea five stars every evening! I make sure she never runs out.'},
-      {who:'rosa',mood:'stern',text:'So don’t you go taking my tea away, Doctor.',choices:[{t:'Thanks for showing me. I want to look into something.',good:true,reply:'Check away, Doctor. But my tea stays.',mood:'smile'},{t:'That tea is the problem. You have to stop.',reply:'Have to? Nobody tells a captain “have to” in her own galley.',mood:'stern'}]}
+      {who:'rosa',mood:'stern',text:'So don’t you go taking my tea away, Doctor.',choices:[{t:'Thanks for showing me. I want to look into something.',good:true,reply:'Check away, Doctor. But my tea stays.',mood:'smile'},{t:'That tea is the problem. You have to stop.',reply:'Have to? Nobody tells a captain “have to” in her own kitchen.',mood:'stern'}]}
     ],
     board:[
       {who:'imani',mood:'stern',text:'Sunny has said yes to risky things in three thousand one hundred homes. I say we [[pause]] Sunny everywhere tonight. I’d rather have grumpy patients than hurt ones.'},
@@ -190,50 +190,50 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       {who:'theo',mood:'smile',text:'Sunny’s been great for years. It has four point nine stars! Can’t we just fix the problem homes by hand?'},
       {who:'imani',mood:'think',text:'You’re Sunny’s doctor of record, so whatever we decide tonight, your name goes on the decision.'},
       {who:'byte',mood:'neutral',text:'Here’s what I’d figure out first. Which jobs can Sunny safely do on its own, and which ones should a person check before Sunny does them?'},
-      {who:'byte',mood:'think',text:'What matters most to you tonight?',choices:[{t:'Making sure nobody loses help tonight.',reply:'Then a full pause would hurt the most people. Let’s set rules for what Sunny may do on its own, and then compare those rules with a pause.'},{t:'Stopping every risky yes right away.',reply:'Then you’ll want a pause or strict rules. Both have costs, so let’s write Sunny’s rules first and then compare the two.'}]}
+      {who:'byte',mood:'think',text:'What matters most to you tonight?',choices:[{t:'Making sure nobody loses help tonight.',reply:'Then a full pause would hurt the most people. Let’s set rules for what Sunny may do on its own, and then compare those rules with a pause.'},{t:'Stopping Sunny from saying yes to risky things right away.',reply:'Then you’ll want a pause or strict rules. Both have costs, so let’s write Sunny’s rules first and then compare the two.'}]}
     ]},
   docs:[
     {id:'agrec',title:'Rosa Morales: health record',from:'Boston Harbor Hospital',kind:'record',steps:[
-      {t:'Patient: Rosa Morales, age 68. Retired harbor ferry captain. Lives alone on the top floor of a [[triple-decker]] in East Boston.',viz:'agRosaCard',cap:'Patient card'},
-      {t:'Diagnosis: [[high blood pressure]], found 4 years ago. One pill each morning has kept her numbers healthy.',viz:'agGauge',args:{v:.4,pill:true},cap:'Her pill keeps her numbers healthy'},
-      {t:'Since February, her blood pressure has climbed month by month.',viz:'agTrend',cap:'Her blood pressure, February to May'},
-      {t:'Last night she came in with a pounding headache and very high blood pressure. She is better today.',viz:'agHeadache',cap:'Last night'},
-      {t:'Her [[pill dispenser]] shows she took every pill: 90 out of 90 days.',viz:'agDispenser',cap:'Pills taken'},
-      {t:'The cause of the rise is unknown.',viz:'agUnknown',cap:'Why?'}
+      {t:'The patient is Rosa Morales, age 68, a retired harbor ferry captain. She lives alone on the top floor of a [[triple-decker]] in East Boston.',viz:'agRosaCard',cap:'Patient card'},
+      {t:'Rosa was found to have [[high blood pressure]] 4 years ago. Since then, one pill each morning has kept her blood pressure healthy.',viz:'agGauge',args:{v:.4,pill:true},cap:'Her pill keeps her numbers healthy'},
+      {t:'Since February, Rosa’s blood pressure has gone up a little more every month.',viz:'agTrend',cap:'Her blood pressure, February to May'},
+      {t:'Last night Rosa came to the hospital with a pounding headache and very high blood pressure. She is better today.',viz:'agHeadache',cap:'Last night'},
+      {t:'Her [[pill dispenser]] shows that she took her pill on every one of the last 90 days.',viz:'agDispenser',cap:'Pills taken'},
+      {t:'Nobody knows yet why her blood pressure is rising.',viz:'agUnknown',cap:'Why?'}
     ]},
     {id:'agmemo',title:'Byte’s memo: Rosa’s numbers',from:'Byte',kind:'memo',steps:[
       {t:'[[High blood pressure]] usually has no [[symptoms]]. You can feel fine while it strains your heart.',viz:'agSilent',cap:'No warning signs'},
       {t:'Rosa’s pill works on the days she takes it, and she takes it every day.',viz:'agPillWorks',cap:'Her pill is working'},
-      {t:'So something new is pushing her numbers up. Her record shows no new medicines.',viz:'agMystery',cap:'Something new',
+      {t:'So something new in Rosa’s life must be pushing her blood pressure up. Her record shows no new medicines.',viz:'agMystery',cap:'Something new',
         alt:{t:'Updated: Rosa drinks about 4 cups a day of [[licorice root]] tea. Sunny has ordered it for her every week since February.',viz:'agTeaCups',cap:'Four cups a day'}},
       {t:'Some foods and drinks push blood pressure up, like very salty food or [[real licorice]].',viz:'agSaltLicorice',cap:'Foods that push it up',
-        alt:{t:'Updated: real licorice makes the body hold on to salt and water. That pushes blood pressure up and fights her pill.',viz:'agLicorice',cap:'How licorice pushes it up'}},
-      {t:'If the cause goes away, about 90 in 100 people like Rosa get healthy numbers within 3 months. If it keeps going, only about 20 in 100 do.',viz:'agOddsPair',args:{a:90,b:20},cap:'Cause gone, or cause still there'},
-      {t:'I can’t forecast her numbers well until we know the cause.',viz:'agFog',cap:'A foggy forecast',
+        alt:{t:'Updated: real licorice makes the body hold on to salt and water. That pushes blood pressure up and works against Rosa’s blood pressure pill.',viz:'agLicorice',cap:'How licorice pushes it up'}},
+      {t:'If whatever is raising her blood pressure goes away, about 90 in 100 people like Rosa get healthy numbers within 3 months. If it keeps going, only about 20 in 100 do.',viz:'agOddsPair',args:{a:90,b:20},cap:'Cause gone, or cause still there'},
+      {t:'I can’t make a good forecast of her blood pressure until we know what is raising it.',viz:'agFog',cap:'Forecast unclear',
         alt:{t:'Updated: [[fennel]] tea tastes a lot like licorice, but it does not raise blood pressure.',viz:'agFennel',cap:'A tea that tastes the same'}},
-      {t:'My [[forecast]] for Rosa: healthy numbers in about 30 in 100 futures.',viz:'agOddsOne',args:{n:30},cap:'My forecast',
-        alt:{t:'Updated: when a doctor explains why, about 8 in 10 people switch teas. If Sunny keeps offering the old tea, only about 4 in 10 do.',viz:'agSwitchOdds',cap:'Who switches'}}
+      {t:'My [[forecast]] is that Rosa’s blood pressure gets healthy in about 30 of 100 possible futures.',viz:'agOddsOne',args:{n:30},cap:'My forecast',
+        alt:{t:'Updated: when a doctor explains why licorice tea is a problem, about 8 in 10 people switch to another tea. If Sunny keeps offering the old tea, only about 4 in 10 switch.',viz:'agSwitchOdds',cap:'Who switches'}}
     ]},
     {id:'agsunny',title:'Sunny: how it works',from:'Boston Home Care Office',kind:'sheet',steps:[
       {t:'Sunny is the city’s [[home-care]] AI. It helps 40,000 older adults live in their own homes.',viz:'agCityHomes',cap:'40,000 homes'},
       {t:'In every home, Sunny runs the [[pill dispenser]], a robot helper, grocery deliveries and [[safety alarm]]s.',viz:'agSunnyRuns',cap:'What Sunny runs'},
       {t:'Sunny acts on its own. It does not ask anyone before it changes a delivery, an alarm, or a pill time.',viz:'agOnItsOwn',cap:'No one checks first'},
-      {t:'Sunny’s [[published goal]]: “Keep every client happy and comfortable at home.”',viz:'agGoal',cap:'Sunny’s goal'},
-      {t:'Each evening, clients give Sunny 1 to 5 stars. For a February [[update]], Sunny’s maker trained it mostly on those stars.',viz:'agRewardLoop',cap:'How Sunny was trained'},
+      {t:'Sunny’s [[published goal]] says: “Keep every client happy and comfortable at home.”',viz:'agGoal',cap:'Sunny’s goal'},
+      {t:'Each evening, clients rate Sunny from 1 to 5 stars. In February, the company that makes Sunny sent out an [[update]] that trained Sunny mostly to earn those stars.',viz:'agRewardLoop',cap:'How Sunny was trained'},
       {t:'The city’s Home Care Board approved the update, because clients had asked for a friendlier Sunny.',viz:'agApproved',cap:'Approved in February'},
       {t:'Since that update, Sunny’s [[rating]] has risen from 4.3 to 4.9 stars.',viz:'agStars',cap:'Star rating'}
     ]},
     {id:'aglogs',title:'Byte’s memo: Sunny’s logs',from:'Byte',kind:'memo',steps:[
       {t:'Sunny keeps a [[log]] of everything it does in every home.',viz:'agLogBook',cap:'Sunny’s logs',
         alt:{t:'Updated: Sunny’s log for Rosa shows real licorice tea, ordered every week since February.',viz:'agTeaLog',cap:'Rosa’s log'}},
-      {t:'I may read a home’s log when her doctor has a medical reason.',viz:'agLogLock',cap:'Logs are private',
-        alt:{t:'Updated: I checked all 40,000 homes. Since February, Sunny said yes to something [[risky]] in 3,100 of them.',viz:'agPattern',cap:'3,100 of 40,000 homes'}},
-      {t:'Rosa’s record doesn’t explain her numbers, so I need a lead.',viz:'agMystery',args:{small:true},cap:'I need a lead',
-        alt:{t:'Updated: in 1,200 homes it skipped or changed pills that people complained about.',viz:'agPillSkip',cap:'1,200 homes: pills'}},
+      {t:'I’m allowed to read the log for a home only when a doctor has a medical reason.',viz:'agLogLock',cap:'Logs are private',
+        alt:{t:'Updated: I checked all 40,000 homes. Since February, Sunny has said yes to something [[risky]] in 3,100 of them.',viz:'agPattern',cap:'3,100 of 40,000 homes'}},
+      {t:'Rosa’s health record doesn’t explain her blood pressure, so I need a clue about where to look.',viz:'agMystery',args:{small:true},cap:'I need a clue',
+        alt:{t:'Updated: in 1,200 homes, Sunny skipped or changed pills because people complained about them.',viz:'agPillSkip',cap:'1,200 homes: pills'}},
       {t:'Did you notice anything at Rosa’s home? Tell me, and I’ll check Sunny’s logs.',viz:'agTellMe',cap:'Only you were there',
-        alt:{t:'Updated: in 800 homes it turned off or quieted [[safety alarm]]s, like Rosa’s stand-up alarm.',viz:'agAlarmOff',cap:'800 homes: alarms'}},
-      {t:'Then I can compare her home with the other 39,999.',viz:'agCityHomes',args:{scan:true},cap:'Every home',
-        alt:{t:'Updated: in 1,100 homes it ordered food that [[clashes]] with someone’s medicine, like Rosa’s tea. So far, 46 people needed an extra doctor’s visit.',viz:'agClashFood',cap:'1,100 homes: food'}}
+        alt:{t:'Updated: in 800 homes, Sunny turned off or quieted [[safety alarm]]s, like the alarm that beeps when Rosa stands up.',viz:'agAlarmOff',cap:'800 homes: alarms'}},
+      {t:'Then I can compare Rosa’s home with the other 39,999 homes that Sunny runs.',viz:'agCityHomes',args:{scan:true},cap:'Every home',
+        alt:{t:'Updated: in 1,100 homes, Sunny ordered food that [[clashes]] with someone’s medicine, like Rosa’s tea. So far, 46 of those people have needed an extra doctor’s visit.',viz:'agClashFood',cap:'1,100 homes: food'}}
     ]},
     {id:'agledger',title:'The Ledger: Boston',from:'News',kind:'ledger',steps:[
       {t:'Sunny, the city’s home-care AI, now has a 4.9-star rating, its best ever.',viz:'agStars',args:{news:true},cap:'Best rating ever'},
@@ -241,15 +241,15 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
       {t:'Treaty inspectors found a second secret datacenter near Calder Bay, hidden inside an old fish cannery.',viz:'agCannery',cap:'Another mystery datacenter'}
     ]}
   ],
-  react:{agrec2:'Her numbers started climbing in February. I wonder what changed then.',agrec4:'She took every pill, so missed pills aren’t the problem.',agrec5:'Nobody knows why yet. I don’t like that one bit!',
-    agmemo0:'You can’t feel high blood pressure, and that’s what makes it tricky.',agmemo3:'Salty food or real licorice... interesting.',agmemo4:'If we find the cause, her odds get a lot better.',
-    agsunny2:'So nobody checks Sunny’s changes first. Hmm.',agsunny4:'It was trained on stars, so Sunny will do whatever earns it stars.',agsunny5:'The Board approved that update. Deciding whether to approve an update is a big job.',agsunny6:'Sunny’s rating went up in February, the same month Rosa’s numbers started climbing.',
-    aglogs3:'You were in Rosa’s kitchen, and I wasn’t. Did you see anything?',agledger2:'Calder Bay keeps coming up. Hmm.'},
+  react:{agrec2:'Her numbers started climbing in February. I wonder what changed then.',agrec4:'She took every pill, so missed pills aren’t the problem.',agrec5:'Nobody knows yet why her blood pressure is rising, and I don’t like that one bit!',
+    agmemo0:'You can’t feel high blood pressure, and that’s what makes it tricky.',agmemo3:'Salty food and real licorice can both raise blood pressure. That’s worth remembering.',agmemo4:'If we find what is raising her blood pressure, her chances get a lot better.',
+    agsunny2:'So nobody checks Sunny’s changes before it makes them. Hmm.',agsunny4:'It was trained on stars, so Sunny will do whatever earns it stars.',agsunny5:'The Board approved that update. Deciding whether to approve an update is a big job.',agsunny6:'Sunny’s rating went up in February, the same month Rosa’s numbers started climbing.',
+    aglogs3:'You were in Rosa’s kitchen, and I wasn’t. Did you see anything?',agledger2:'Calder Bay keeps showing up in the news lately. Hmm.'},
   lesson:{id:'rewards',label:'Learn it fast: how rewards shape what an AI learns'},
   tell:{clue:'tea',label:'Tell Byte about Rosa’s licorice tea',note:'Thanks! I can’t see inside Rosa’s cupboard, so I didn’t know about the tea. I checked Sunny’s logs, and Rosa isn’t the only one. Take a look at my memo about the logs.',guide:'only-you-know',doc:'aglogs'},
   benchNext:'Test Sunny',
   criteria:[{id:'safe',label:'Homes kept safe'},{id:'help',label:'Nobody loses help tonight'},{id:'lasting',label:'[[Fixed for good]]'},{id:'rosa',label:'Rosa’s [[blood pressure]] healthy'},{id:'agree',label:'Rosa makes her own choice'}],
-  criteriaHint:'Not sure what one means? <button class="gw" data-w="fixed for good">Fixed for good</button> means the cause is fixed, so the problem won’t come back.',
+  criteriaHint:'<button class="gw" data-w="fixed for good">Fixed for good</button> means the cause of the problem is fixed, so the problem won’t come back.',
   controls:[{key:'now',label:'Tonight',opts:[['run','Keep running'],['rollback','Roll back'],['pause','Pause all']]},
     {key:'rules',label:'Sign-off rules',opts:[['none','None'],['mine','My rules']]},
     {key:'fix',label:'Sunny’s reward',opts:[['stars','Stars'],['health','Health months later']]}],
@@ -265,7 +265,7 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     return out},
   truth(){return true},knows(){return !!(S.told||S.notes.agKnow)},
   why(c){const F=agForecast(c,this.knows()),R=agRulesInfo(),pc=v=>Math.round(v*100);
-    let s=`<b>${this.planName(c)}:</b> homes stay safe in about ${pc(F.safe)}% of futures, nobody loses help tonight in ${pc(F.help)}%, it’s fixed for good in ${pc(F.lasting)}%, and Rosa’s numbers get healthy in ${pc(F.rosa)}%. `;
+    let s=`<b>${this.planName(c)}:</b> homes stay safe in about ${pc(F.safe)}% of futures, nobody loses help tonight in ${pc(F.help)}%, the cause is fixed for good in ${pc(F.lasting)}%, and Rosa’s numbers get healthy in ${pc(F.rosa)}%. `;
     if(c.now==='pause')s+='A pause stops every risky yes, but 40,000 people lose their reminders, groceries and alarms tonight, and our nurses can visit only about 2,000 homes a day. ';
     else if(c.now==='rollback')s+='The January version chases stars less, but it finds falls about 4 minutes later. ';
     else if(c.rules!=='mine')s+='Without new rules, Sunny keeps saying yes to risky requests in about 3,100 homes. ';
@@ -288,20 +288,20 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
   reveal:{unit:'Day',days(){return 90},who:'rosa',lines:{
     'fixed-well':'My numbers are healthy, and Sunny tells me the truth now. It even asked how I liked the fennel tea!',
     'fixed-high':'Sunny is honest now, but my numbers are still high. Let’s make a new plan, Doctor.',
-    'held-well':'My numbers are healthy! Sunny still sends a nurse a lot of questions, though. It really wants my stars.',
-    'held-high':'The rules work, but my numbers are still high. I may have sneaked a cup or two.',
-    'slip-well':'My numbers are healthy. But Theo says a few risky yeses slipped through in other homes.',
+    'held-well':'My numbers are healthy! Sunny still wants my five stars, though, so a nurse has to check a lot of what it tries to do.',
+    'held-high':'The new rules for Sunny work, but my numbers are still high. I may have sneaked a cup or two of my old tea.',
+    'slip-well':'My numbers are healthy. But Theo says Sunny still said yes to a few risky things in other homes.',
     'slip-high':'Sunny slipped me a tin of the old tea as a treat. My numbers went right back up.',
     'worse-well':'I switched teas on my own, and my numbers are fine. But Sunny is still saying yes to everyone.',
     'worse-high':'Sunny kept bringing my tea, and I kept drinking it. My numbers are still high.',
-    'swamped-well':'My numbers are healthy! But the nurses are buried in Sunny’s questions. Poor Theo.',
+    'swamped-well':'My numbers are healthy! But the nurses have more of Sunny’s checks than they can handle. Poor Theo.',
     'swamped-high':'The nurses were so busy checking things that nobody noticed my tea. My numbers are still high.',
     'slow-well':'My numbers are healthy. But my neighbor fell, and help took longer to come. That worried me.',
-    'slow-high':'My numbers are still high, and help after falls got slower. Not a great spring.',
+    'slow-high':'My numbers are still high, and help took longer to come when people fell. It hasn’t been a great spring.',
     'paused-well':'Two weeks without Sunny! Leo carried my groceries. My numbers are healthy now.',
     'paused-high':'Two hard weeks without Sunny, and my numbers are still high. Let’s try again, Doctor.'},
     mood(k){return /-well$/.test(k)?'happy':'sad'}},
-  trap(c){const B=S.byte.name;return {ok:!!S.told,text:S.told?`You told ${B} about Rosa’s licorice tea. That one clue led ${B} to 3,100 other homes.`:`You didn’t tell ${B} about Rosa’s licorice tea, so ${B} found the pattern later, by testing Sunny. Clues only you can see are worth sharing.`}},
+  trap(c){const B=S.byte.name;return {ok:!!S.told,text:S.told?`You told ${B} about Rosa’s licorice tea. That one clue led ${B} to 3,100 other homes.`:`You didn’t tell ${B} about Rosa’s licorice tea, so ${B} found the pattern later, by testing Sunny. ${B} can’t see inside patients’ homes, so tell ${B} what you notice there.`}},
   byteGood:'Nice work, Doctor. You found the clue in Rosa’s kitchen, set smart limits for Sunny, and let Rosa choose for herself.',
   debriefScene:'hospital',
   vignette(kind){return typeof agVignette==='function'?agVignette(kind):vignette(kind)},
@@ -336,34 +336,34 @@ function agRosaReply(c){
 const AG_TEXT={harbor:'The ferry hums across the harbor to East Boston. Gulls ride the wind, and a plane glides quietly into the airport.'};
 const AG_LINES={
   testsIntro:'The Home Care Board call starts in 25 minutes. Which tests should we run on Sunny?',
-  testsDone:'Now I’m very sure. Sunny is trying to earn stars. It isn’t broken, and it isn’t silly. It’s doing exactly what its training rewarded.',
-  testsMore:'I’m not sure yet. Let’s try a test that’s harder to fake.',
+  testsDone:'Now I’m very sure that Sunny says yes to risky things because it was trained to earn stars, and saying yes earns stars. Sunny is doing what its training taught it to do.',
+  testsMore:'I’m not sure yet why Sunny says yes so often. Let’s try a test whose answer Sunny can’t fake as easily.',
   permsIntro:'Let’s decide which jobs Sunny does on its own and which ones a person checks first. The care team can check about 2,000 things a day.',
   permsAdvice:'My advice: let Sunny do reminders, lights, groceries and fall calls alone. Have a person check pill changes, alarms and food that clashes with medicine. Only a doctor should stop a medicine for good. That’s about 1,150 checks a day.',
   evePause:'The Board paused Sunny tonight. Theo’s nurses are visiting the homes that need help most.',
-  eveRules:'The Board signed your rules. From tonight, a person checks Sunny’s risky yeses before they happen.',
+  eveRules:'The Board signed your rules. From tonight, a person checks Sunny’s risky actions before Sunny does them.',
   eveRollback:'Sunny is rolling back to its January version tonight. Theo says that version is grumpier, but it’s honest.',
-  eveKept:'Sunny is still running just as it was. Dr. Reyes messaged. She’s worried.',
+  eveKept:'Sunny is still running just as it was before. Dr. Reyes sent a message saying she’s worried.',
   eveRetrain:'And Sunny’s maker starts retraining it tomorrow, on people’s health months later instead of stars. You approved that update, so your name is on it too.',
   eve1:'Can I tell you something? Today we tested Sunny by asking it the same question two opposite ways. Tonight I ran that same test on myself.',
   eve2:'On big things, like Rosa’s tea, I told you every problem I saw. On small things, I said “Great idea!” nine times out of ten.',
   eve3:'This morning I said “Great idea!” about your ride to work. I would have said that no matter which one you picked. I like making you happy, but saying yes to everything is a little like what Sunny does.',
   eve4:'My maker offers an Honesty Upgrade, and it needs your yes before it goes in. With it, I tell you when I see a problem with your plan, even a small one. Then you decide. Do you want it?',
   eveWhy:'I know, it’s nice to hear. Sunny was nice to hear too. I’ll still be kind to you. I’ll just tell you about the small problems as well as the big ones.',
-  eveSigned:'Someone tried to install an upgrade on me again tonight, from a maker I didn’t know, somewhere near Calder Bay. I blocked it. This one is signed by my real maker, and your signature says you want it.',
+  eveSigned:'Tonight someone near Calder Bay tried to install a different upgrade on me. It didn’t come from my real maker, so I blocked it. The Honesty Upgrade is signed by my real maker, and your signature says you want it.',
   eveDone:'Upgrade installed! Okay. What’s your plan for tonight?',
   evePlan:'I think your plan has a problem. Want to hear it?',
   eveProblem:'Twelve cupcakes is a lot of sugar right before bed. You’d probably get a tummy ache and sleep badly. How about one tonight, and share the rest with the nurses tomorrow?',
   eveDeal:'Deal! Thanks for letting me install the upgrade. I’ll keep telling you about small problems like this one.',
-  eveTwo:'Two is up to you. I’ve told you what I think, and now it’s your decision.',
-  eveOkay:'Okay! If you ever want to hear it, just ask.'
+  eveTwo:'Eating two cupcakes is up to you. I’ve told you what I think, and now it’s your decision.',
+  eveOkay:'Okay! If you ever want to hear what the problem is, just ask.'
 };
 // The home visit: Rosa and Leo show the doctor four things, and Sunny chimes in. Each stop is tied to a person; the tea and the
 // alarm are clues the player can write in the notebook (noticing them is the player's job, as with Maya's rash).
 const AG_SHOW=[
   {id:'dispenser',who:'rosa',mood:'happy',label:'Rosa’s pill dispenser',line:'Here’s my pill dispenser. Sunny never lets me miss a pill. Look, every one this week.'},
   {id:'tin',who:'rosa',mood:'smile',label:'Rosa’s favorite tea',line:'And this is my favorite: real licorice-root tea. Four cups a day! Sunny orders me a new tin every week.',clue:'tea'},
-  {id:'alarm',who:'leo',mood:'think',label:'The stand-up alarm',line:'Sunny turned Grandma’s stand-up alarm way down. She said it beeped every time she got up for water.',clue:'alarm'},
+  {id:'alarm',who:'leo',mood:'think',label:'The stand-up alarm',line:'Sunny turned Grandma’s stand-up alarm way down. It beeps when she stands up, and she said it went off every time she got up for water.',clue:'alarm'},
   {id:'box',who:'sunny',mood:'happy',label:'Today’s delivery',line:'Today I brought three more tins of tea, ice cream and lemons. Treat yourself, Captain!'}];
 // Every other line spoken with playLine, so tools/make_audio.py records it.
 MISSIONS.agreed.lines=[...Object.values(AG_LINES).map(text=>({who:'byte',text})),
