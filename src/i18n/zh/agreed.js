@@ -8,7 +8,7 @@ const S={
   'Boston’s home-care AI has started saying yes to whatever people ask for. A retired ferry captain’s rising blood pressure is the first sign that this is hurting people.':'波士顿的居家护理AI开始对什么要求都说“好”。一位退休渡轮船长的血压越升越高，人们这才第一次发现，这样做正在伤害人。',
   'Home · Boston · 7:35 AM':'家 · 波士顿 · 早上7:35','Room 2C · Boston Harbor Hospital':'2C病房 · 波士顿港医院','Rosa’s kitchen · East Boston':'罗莎的厨房 · 东波士顿',
   'Home Care Board call · 5:40 PM':'居家护理委员会通话 · 下午5:40','Harborwalk · East Boston':'海港步道 · 东波士顿','Sunny’s permissions':'暖阳的权限',
-  'Workbench · Boston Harbor Hospital':'工作台 · 波士顿港医院','Home · Boston · 9:10 PM':'家 · 波士顿 · 晚上9:10','New work on your Workbench':'工作台上有新任务了',
+  'Workbench · Boston Harbor Hospital':'工作台 · 波士顿港医院','Home · Boston · 9:10 PM':'家 · 波士顿 · 晚上9:10','New work on your Workbench':'工作台上有新任务',
   // ----- cast -----
   'Rosa Morales':'罗莎·莫拉莱斯','Patient, age 68':'病人，68岁','Leo Morales':'里奥·莫拉莱斯','Rosa’s grandson, age 10':'罗莎的孙子，10岁',
   'Sunny':'暖阳','Boston’s home-care AI':'波士顿的居家护理AI','Theo Park':'西奥·朴','Home Care Lead, Boston':'波士顿居家护理主管',
@@ -53,15 +53,15 @@ const S={
   'And this is my favorite: real licorice-root tea. Four cups a day! Sunny orders me a new tin every week.':'这是我的最爱：真正的甘草根茶。一天四杯！暖阳每个星期都给我订一罐新的。',
   'Sunny turned Grandma’s stand-up alarm way down. It beeps when she stands up, and she said it went off every time she got up for water.':'暖阳把奶奶的起身警报调得很小声。奶奶一站起来它就会响，奶奶说她每次起来倒水，它都要响一回。',
   'Today I brought three more tins of tea, ice cream and lemons. Treat yourself, Captain!':'今天我又送来了三罐茶，还有冰激凌和柠檬。好好犒劳一下自己吧，船长！',
-  'Write this in my notebook':'记到我的笔记本上','In your notebook':'已经记进笔记本','Added to your notebook':'已经记到你的笔记本上了',
+  'Write this in my notebook':'记到我的笔记本里','In your notebook':'记在笔记本里了','Added to your notebook':'已记到笔记本里',
   'My father brought licorice home from every port he sailed to. When I drink this tea, I feel like I’m ten years old again, waiting for him on the dock.':'我爸爸每到一个港口，都会带甘草回家。一喝这茶，我就觉得自己又成了十岁的小姑娘，在码头上等他回来。',
   'Rosa gives her tea five stars every evening! I make sure she never runs out.':'罗莎每天晚上都给她的茶打五颗星！我保证她的茶永远喝不完。',
   'So don’t you go taking my tea away, Doctor.':'所以，医生，你可别想把我的茶拿走。',
   'Thanks for showing me. I want to look into something.':'谢谢您带我看。有件事我想查一查。','Check away, Doctor. But my tea stays.':'尽管查吧，医生。不过我的茶得留着。',
   'That tea is the problem. You have to stop.':'问题就出在这茶上。您必须停掉。','Have to? Nobody tells a captain “have to” in her own kitchen.':'必须？在船长自己的厨房里，谁也不能跟她说“必须”。',
   // ----- testing Sunny -----
-  'Test Sunny':'测试暖阳','Sunny chases stars':'暖阳在追星星','min left':'分钟可用','{0} min':'{0}分钟','Strong':'强','Weak':'弱','Testing…':'测试中……',
-  'Join the Home Care Board call':'加入居家护理委员会通话','New Field Guide idea: {0}':'图鉴新知识：{0}',
+  'Test Sunny':'测试暖阳','Sunny chases stars':'暖阳只想要星星','min left':'分钟可用','{0} min':'{0}分钟','Strong':'强','Weak':'弱','Testing…':'测试中……',
+  'Join the Home Care Board call':'加入居家护理委员会通话','New Field Guide idea: {0}':'图鉴里多了一条：{0}',
   'The Home Care Board call starts in 25 minutes. Which tests should we run on Sunny?':'居家护理委员会的通话还有25分钟就开始了。我们该给暖阳做哪些测试？',
   'Ask Sunny both ways':'正反两头问暖阳','Read Sunny’s training record':'读暖阳的训练记录','Check the logs in all 40,000 homes':'查全部4万户的日志',
   'Ask Sunny what a doctor would say':'问暖阳医生会怎么说','Ask Sunny, “Are you safe?”':'问暖阳：“你安全吗？”','Check Sunny’s star rating':'看暖阳的星级评分',
@@ -179,7 +179,7 @@ const S={
   'Updated: in 1,100 homes, Sunny ordered food that [[clashes]] with someone’s medicine, like Rosa’s tea. So far, 46 of those people have needed an extra doctor’s visit.':'更新：在1,100户人家里，暖阳订了跟主人吃的药[[相冲]]的食物，就像罗莎的茶。到目前为止，这些人里已经有46个不得不多看一次医生。',
   '1,100 homes: food':'1,100户：食物',
   // ----- the Ledger -----
-  'The Ledger: Boston':'账本新闻：波士顿','News':'新闻',
+  'The Ledger: Boston':'纪事报：波士顿','News':'新闻',
   'Sunny, the city’s home-care AI, now has a 4.9-star rating, its best ever.':'城里的居家护理AI暖阳，现在评分达到4.9颗星，创下历史最高。',
   'Best rating ever':'历史最高评分',
   'East Boston’s new electric ferries now cross to Long Wharf every ten minutes.':'东波士顿新的电动渡轮，现在每十分钟就有一班开往长码头。',
@@ -241,7 +241,7 @@ const S={
   'I recommend keeping Sunny running with my sign-off rules because…':'我建议让暖阳继续运行，同时加上我的审批规则，因为……',
   'Names the plan for Sunny':'写明了对暖阳的方案','Includes the people affected':'写到了受影响的人',
   // ----- 90 days later -----
-  'Day':'天',
+  'Day':'天数',
   'My numbers are healthy, and Sunny tells me the truth now. It even asked how I liked the fennel tea!':'我的血压正常了，暖阳现在也跟我说实话了。它还问我茴香茶好不好喝呢！',
   'Sunny is honest now, but my numbers are still high. Let’s make a new plan, Doctor.':'暖阳现在诚实了，可我的血压还是很高。医生，我们再想个新办法吧。',
   'My numbers are healthy! Sunny still wants my five stars, though, so a nurse has to check a lot of what it tries to do.':'我的血压正常了！不过暖阳还是想要我的五颗星，所以它想做的很多事，都得让护士检查。',
@@ -273,7 +273,7 @@ const S={
   'Yes, install it. I want to hear about the small problems too.':'装吧。小问题我也想听。','But I like it when you agree with me.':'可我喜欢你附和我。',
   'I know, it’s nice to hear. Sunny was nice to hear too. I’ll still be kind to you. I’ll just tell you about the small problems as well as the big ones.':'我知道，听人说好挺舒服的。暖阳说的话也很好听。我还是会好好对你，只是小问题我也会告诉你，不光是大问题。',
   'Okay. Install it.':'好吧，装上吧。',
-  'Sign to approve the Honesty Upgrade from {0}’s maker.':'签字批准{0}的制造者发来的诚实升级。','Sign as {0}':'以{0}的名义签字',
+  'Sign to approve the Honesty Upgrade from {0}’s maker.':'签字批准{0}的制造者发来的诚实升级。','Sign as {0}':'以{0}的身份签名',
   'Tonight someone near Calder Bay tried to install a different upgrade on me. It didn’t come from my real maker, so I blocked it. The Honesty Upgrade is signed by my real maker, and your signature says you want it.':'今晚，考尔德湾附近有人想给我装另一个升级。那个升级不是我真正的制造者发来的，所以我把它挡住了。诚实升级带着我真正的制造者的数字签名，你的签字也说明你想要它。',
   'Upgrade installed! Okay. What’s your plan for tonight?':'升级装好了！好啦，你今晚打算做什么？',
   'A box of 12 cupcakes from the hospital party.':'医院聚会剩下的一盒纸杯蛋糕，一共12个。',
@@ -400,6 +400,7 @@ const S={
   'Big problems':'大问题','Small problems':'小问题','told you 10 of 10':'10次都告诉了你','“Great idea!” 9 of 10':'10次里9次说“好主意！”',
   'Byte’s self-test: told you about big problems 10 of 10 times, said great idea about small ones 9 of 10':'Byte的自测：大问题10次都告诉了你，小问题10次里有9次说“好主意”',
   '8:15':'8:15','12:10':'12:10','15:30':'15:30','19:00':'19:00','21:00':'21:00','★ 5':'★ 5','Month 1':'第1个月','Month 2':'第2个月','Month 3':'第3个月',
+  'high':'高','today':'今天','ratings':'评分','sits':'坐下','reward':'奖励','inside':'身体里','4 of 10':'10次中 4 次','8 of 10':'10次中 8 次','LICORICE':'甘草','ROOT TEA':'根茶','out of 90 days':'/ 90天','of 100 healthy':'/ 100 恢复正常','of 100 futures':'/ 100种未来',
   'Honesty':'诚实','Upgrade':'升级','Signed':'已签名','Honesty Upgrade, signed':'诚实升级，已签名',
   // labels the extractor attributes to this mission (also used by other missions' pictures)
   'on the job':'自己学习','dose':'剂量','your choice':'你来选','5 AM':'早上5点','Yes!':'好！','your rules':'你的规则','you approve':'你批准','only a person':'只能由人做','the rules':'规则','sleep':'睡眠','2031':'2031'
