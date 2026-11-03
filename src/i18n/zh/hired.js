@@ -23,7 +23,7 @@ I18N.add('zh','hired',{strings:{
   '11:00 AM. We try out plans on the Future Table to see how each one might turn out.':'上午11:00。我们在未来之桌上试几个方案，看看每个方案可能会怎样。',
   '2:00 PM. You explain the choices, the family decides, and you sign the decision.':'下午2:00。你把几种选择讲清楚，家人做决定，你在决定上签字。',
   '5:00 PM. You call to check on your patient, who is doing great!':'下午5:00。你打电话问问病人的情况，他恢复得很好！',
-  'Ask {0}':'问问{0}','Ask me anything about the job!':'关于这份工作，什么都可以问我！','Ask my own question':'问我自己的问题','Watch again':'再看一遍','Go to the open house':'去开放日',
+  'Ask {0}':'问问{0}','Ask my own question':'问我自己的问题','Watch again':'再看一遍','Go to the open house':'去开放日',
   'What does Halo do, and what do I do?':'Halo做什么，我做什么？',
   'Halo is the hospital’s AI, and it runs everyday jobs like scans, schedules, and medicine deliveries. I read the research and write forecasts. You talk with patients, find out what matters to them, and sign the decision.':
     'Halo是医院的AI，管着日常的活儿，比如做扫描、排班、送药。我读研究资料，写预测。你和病人聊天，弄清他们在乎什么，然后在决定上签字。',
@@ -45,7 +45,7 @@ I18N.add('zh','hired',{strings:{
   'Gabi Santos':'嘉比·桑托斯','Charge nurse':'护士长','Gabi':'嘉比','Kofi Asante':'科菲·阿桑特','Robot crew lead':'机器人小队队长','Kofi':'科菲',
   'Ruth Abrams':'露丝·艾布拉姆斯','Volunteer, age 88':'志愿者，88岁','Volunteer':'志愿者','Ruth':'露丝',
   'Ari Mensah':'阿里·门萨','Patient, age 10':'病人，10岁','Abena Mensah':'阿贝娜·门萨','Ari’s grandma':'阿里的奶奶',
-  'Met':'认识了','In your notebook':'记在本子上了','Helped':'帮过忙','{0}: “{1}”':'{0}：“{1}”',
+  '{0}: “{1}”':'{0}：“{1}”',
   'Say hi to everyone. Try to remember one thing about each person.':'和每个人打个招呼。试着记住每个人的一件事。',
   'You met everyone! Let’s find Dr. Reyes.':'大家你都见过了！我们去找雷耶斯医生吧。','Everyone’s talking about how helpful you were. Let’s find Dr. Reyes!':'大家都在说你帮了好多忙。我们去找雷耶斯医生吧！',
   'Find Dr. Reyes':'去找雷耶斯医生',
@@ -133,7 +133,8 @@ I18N.add('zh','hired',{strings:{
   'Healthy for the [[playoff]] game':'健健康康打[[季后赛]]','Plays in Saturday’s game':'能参加星期六的比赛','No heavy [[walking boot]]':'不用穿笨重的[[固定靴]]',
   'Not sure what one means? Tap a word: <button class="gw" data-w="playoff">playoff</button>, <button class="gw" data-w="walking boot">walking boot</button>.':
     '不确定意思？点一下词语：<button class="gw" data-w="playoff">季后赛</button>、<button class="gw" data-w="walking boot">固定靴</button>。',
-  'Protect the ankle':'保护脚踝','Brace':'护踝','Tape':'胶布','Walking boot':'固定靴','Saturday':'星期六','Play':'上场','Sit out':'不上场',
+  'Protect the ankle':'保护脚踝','Brace':'护踝','Tape':'胶布','Walking boot':'固定靴','Saturday':'星期六','hired|Play':'上场',  // see TM() in src/i18n.js
+  'Sit out':'不上场',
   'Brace, play Saturday':'护踝，星期六上场','Brace, sit out Saturday':'护踝，星期六不上场','Tape, play Saturday':'胶布，星期六上场','Tape, sit out Saturday':'胶布，星期六不上场',
   'Walking boot, sit out Saturday':'固定靴，星期六不上场',
   'He played Saturday, and his ankle stayed fine!':'他星期六上场了，脚踝没出问题！','He rolled it again Saturday and misses the playoffs.':'他星期六又崴了脚，只能错过季后赛。',
@@ -195,13 +196,12 @@ I18N.add('zh','hired',{strings:{
   'Ruth has volunteered here for twenty years. She plays “Fly Me to the Moon” on the lobby piano on Fridays.':'露丝在这里当了二十年志愿者。每个星期五，她都在大厅的钢琴上弹《带我飞向月球》。',
   'Your Portfolio Book holds your signed decisions: what you chose, why, how sure you were, and what happened. Employers in 2040 love seeing real work.':
     '你的作品集里存着你签过字的决定：你选了什么、为什么、有多大把握、结果怎样。2040年的雇主都喜欢看真实的工作成果。',
-  'I’m {0}, your AI partner! I read the research, make forecasts, and build Future Tables. You find out what matters to the people involved, and you make the final decision.':
-    '我是{0}，你的AI搭档！我读研究资料、做预测、搭未来之桌。你去弄清楚当事人在乎什么，最后由你来做决定。',
+  
 
   // ----- the Portfolio Book -----
   'Home · Boston · 8:30 PM':'家 · 波士顿 · 晚上8:30','Portfolio Book':'作品集','Save to my Portfolio Book':'存进我的作品集','Saved to your Portfolio Book':'已存进你的作品集',
-  'Your signed decisions will be saved here.':'你签过字的决定会存在这里。','How sure':'把握','What happened':'结果','Stars':'星星','A decision':'一个决定',
-  'A coin flip':'一半一半','A little sure':'有一点把握','Pretty sure':'比较有把握','Very sure':'很有把握','Sure':'确定',
+  'Stars':'星星','A decision':'一个决定',
+  'A coin flip':'一半一半','A little sure':'有一点把握',
   'You did real work on Ari’s case. Do you want to save it in your Portfolio Book?':'你在阿里的病例上做了真正的工作。要把它存进你的作品集吗？',
   'Saved! Tomorrow, at your interview, Dr. Reyes will want to hear about this case.':'存好了！明天面试时，雷耶斯医生会想听你讲讲这个病例。','Get ready for the interview':'准备面试',
 
@@ -271,12 +271,12 @@ I18N.add('zh','hired',{strings:{
     '这次面试太棒了。你给我讲了真实的故事，回答得很诚实，还问了一个很好的问题。欢迎来到波士顿港医院。你被录用了！',
   'I can tell you care about people, and that is what matters most to me in a Care Doctor. You’re hired! Next time, try to tell more real stories, like the ones in your Portfolio Book.':
     '我看得出你很在乎别人，这是我最看重的照护医生的品质。你被录用了！下次试着多讲些真实的故事，就像你作品集里的那些。',
-  'Hired!':'被录用了！','You’re hired!':'你被录用了！','You nailed it! ':'你表现得太棒了！','Your first day is tomorrow. You’ll meet the team.':'明天是你上班的第一天，你会认识团队里的人。',
-  'Start my first day':'开始我的第一天','Trainee':'见习','Pro':'专业','Legend':'传奇',
+  'You’re hired!':'你被录用了！','Your first day is tomorrow. You’ll meet the team.':'明天是你上班的第一天，你会认识团队里的人。',
+  'Start my first day':'开始我的第一天',
 
   // ----- the first day -----
   'Kids’ floor · Boston Harbor Hospital · 8:30 AM':'儿童病房 · 波士顿港医院 · 早上8:30','Open my world map':'打开我的世界地图',
-  'Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.':'欢迎来上第一天班，{P}医生！你先从[[见习生]]做起。我来给你介绍一下团队。',
+  'Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.':'欢迎来上第一天班，{P}医生！你先从[[实习生]]做起。我来给你介绍一下团队。',
   'Thank you again for finding my glasses, dear. I can read the sheet music now!':'再次谢谢你帮我找到眼镜，孩子。现在我能看清乐谱了！',
   'Welcome back! Sorry, I’m a little sleepy. Someone at home knocked the whole first-aid box off the shelf at 3 a.m. and then fell asleep inside it...':
     '欢迎回来！不好意思，我有点困。凌晨三点，家里有个小家伙把整个急救箱从架子上碰了下来，然后就睡在里面了……',
@@ -352,7 +352,7 @@ glossary:{
   'interview':{w:'面试',d:'有人问你一些问题，来决定要不要录用你。'},
   'referral':{w:'推荐',d:'认识你的人把你介绍给别人。'},
   'rehearse':{w:'预演',d:'在真正上场之前，先练一遍。'},
-  'trainee':{w:'见习生',alt:['见习'],d:'刚开始做一份工作、还在边做边学的人。'},
+  'trainee':{w:'实习生',d:'刚开始做一份工作、还在边做边学的人。'},
   'house rule':{w:'院规',d:'一个家庭、一个团队或一个单位自己定下、大家都遵守的规矩。医院里的这种规矩就叫院规。'}
 },
 regex:{

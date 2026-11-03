@@ -367,7 +367,7 @@ function critScore(id,futs){return futs.filter(f=>(f.flags[id]??1)>0).length}
 function sampleReal(c,rng){const o=M().outcomes(c,M().truth());const tot=o.reduce((a,x)=>a+x.p,0);let u=rng()*tot;for(const x of o){u-=x.p;if(u<=0)return {...x}}return {...o.at(-1)}}
 function allPlans(){let plans=[{}];for(const ct of M().controls)plans=plans.flatMap(p=>ct.opts.map(([v])=>({...p,[ct.key]:v})));return plans}
 function vig(kind){return (M().vignette||vignette)(kind)}
-function controlsHTML(c,cls=''){return M().controls.map(ct=>`<div class="ctl"><div class="ctl-l">${esc(T(ct.label))}</div><div class="seg">${ct.opts.map(([v,l])=>`<button class="segb ${c[ct.key]===v?'on':''}" data-k="${ct.key}" data-v="${esc(JSON.stringify(v))}">${esc(T(l))}</button>`).join('')}</div></div>`).join('')}
+function controlsHTML(c,cls=''){return M().controls.map(ct=>`<div class="ctl"><div class="ctl-l">${esc(T(ct.label))}</div><div class="seg">${ct.opts.map(([v,l])=>`<button class="segb ${c[ct.key]===v?'on':''}" data-k="${ct.key}" data-v="${esc(JSON.stringify(v))}">${esc(TM(l))}</button>`).join('')}</div></div>`).join('')}
 function wireControls(root,rerender){$$('[data-k]',root).forEach(b=>b.onclick=e=>{e.stopPropagation();S.choice[b.dataset.k]=JSON.parse(b.dataset.v);save();rerender()})}
 function renderTable(){
   const c=S.choice;const rng=rngFrom(S.seed*7919+JSON.stringify(c).length*31+Object.values(c).join('').length);

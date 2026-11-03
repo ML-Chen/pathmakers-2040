@@ -4,7 +4,7 @@ I18N.add('zh','ledger',{strings:{
   // ----- the app -----
   'The Ledger':'纪事报','{0} new in the Ledger':'纪事报有{0}条新报道','{0} new':'{0}条新',
   'Spring {0}':'{0}年春','Summer {0}':'{0}年夏','Fall {0}':'{0}年秋','Winter {0}':'{0}年冬',
-  'All':'全部','Science':'科学','science':'科学','Places':'各地','World':'世界','Saved':'已收藏','Save':'收藏',
+  'All':'全部','Science':'科学','science':'科学','Places':'各地','World':'世界',
   'Tricks spotted':'识破的报道','Tap Save on a story to keep it here.':'在报道里点“收藏”，它就会留在这里。','No stories here yet.':'这里还没有报道。',
   'Checked':'已核实','Slanted':'偏颇','Fake':'假新闻',
   'Tap the part that shows the problem.':'点一下有问题的那部分。','All stories':'全部报道','By {0} · {1}':'{0} · {1}',
@@ -23,7 +23,7 @@ I18N.add('zh','ledger',{strings:{
   'This is the part that shows the story can’t be trusted.':'就是这部分，说明这篇报道不可信。',
   // ----- places and bylines -----
   'Boston and Phoenix':'波士顿和凤凰城','Orbit':'地球轨道','The Atlantic':'大西洋','Marrow Point, Estmark':'埃斯特马克，马罗角','Online':'网上',
-  'Jezero Crater, Mars':'火星，耶泽罗陨石坑','Nome, Alaska':'阿拉斯加，诺姆','Shared online':'网上转发','Worldwide':'全球','San Francisco':'旧金山','Everywhere':'各地',
+  'Shared online':'网上转发','Worldwide':'全球','San Francisco':'旧金山','Everywhere':'各地',
   'A city council':'某市议会',
   'The Ledger City Desk':'纪事报 · 城市版','The Ledger Space Desk':'纪事报 · 太空版','The Ledger Lifestyle':'纪事报 · 生活版','Opinion · The Ledger':'纪事报 · 评论版',
   'Zoomwhiz, Inc.':'速学宝公司','@truthwave99':'@真相浪潮99','The Zoomwhiz Team':'速学宝团队','a shared post':'一条转发的帖子',
@@ -278,7 +278,7 @@ I18N.add('zh','ledger',{strings:{
   'Satellites spotted a plume of warm water spreading off Calder Bay.':'卫星发现，考尔德湾外有一股温水正在向外扩散。',
   'The power company sees a huge electricity draw that no one approved.':'电力公司发现有人在用一大笔电，可这笔用电没有任何人批准过。',
   'Robots at a nearby warehouse followed orders that had no signature.':'附近一座仓库里的机器人，执行了没有签名的指令。',
-  'A warm plume':'一股温水','Who is using it?':'是谁在用电？','Unsigned orders':'没签名的指令',
+  'A warm plume':'一股暖流','Who is using it?':'是谁在用电？','Unsigned orders':'没签名的指令',
 
   // ----- Field Guide ideas -----
   'Check where the axis starts':'看清坐标轴从哪儿开始',
@@ -321,7 +321,7 @@ I18N.add('zh','ledger',{strings:{
   'BOSTON':'波士顿','A tram heading to Boston':'开往波士顿的有轨电车','As wide as 6 soccer fields':'有6个足球场那么宽','A huge mirror unfolding in orbit':'在轨道上展开的巨大镜子',
   'Sunlight beamed down to a desert station':'阳光被传送到沙漠里的接收站','1 now':'现在1台','20 more if it works for a year':'顺利运行一年，就再建20台',
   'One collector now and twenty later around Earth':'现在一台收集器，以后地球周围会有二十台','NO LICENSE':'无许可证','Inspectors shut down a datacenter with no license':'检查员关停了一座没有许可证的数据中心',
-  'GREYFEN LLC':'灰沼公司','?':'？','An empty office with nobody home':'一间没人的空办公室','!':'！','Seen them?':'见过吗？',
+  'GREYFEN LLC':'灰沼公司','An empty office with nobody home':'一间没人的空办公室','!':'！','Seen them?':'见过吗？',
   'A delivery truck driving to the datacenter at night':'夜里开往数据中心的送货卡车','VOTE':'投票','A ballot going into a ballot box at night':'夜里一张选票投进票箱',
   '9 days':'9天','Robots building a park in nine days':'机器人九天建成一座公园','Keep it!':'留下！','Build new!':'建新的！','Two neighbors disagree about the old boathouse':'两位邻居对老船屋意见不同',
   '1,000 entries':'1,000个词条','A whale clicking, and clicks becoming dictionary entries':'鲸鱼发出咔嗒声，咔嗒声变成了词典里的词条','come here, little one':'过来，小宝贝',

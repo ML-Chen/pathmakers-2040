@@ -29,6 +29,9 @@ function T(s,...a){if(typeof s!=='string'||!s)return s;let out=s;const L=LANG();
   if(L!=='en'){const v=I18N.tab[L]&&I18N.tab[L][s];if(v!=null)out=v;if(I18N.trace&&!I18N_HAN.test(s))I18N.trace(s,v!=null,'text')}
   if(a.length){const v=a.length===1&&a[0]!==null&&typeof a[0]==='object'?a[0]:a;out=String(out).replace(/\{(\w+)\}/g,(m,k)=>k in v?v[k]:m)}
   return out}
+// A word that one mission translates differently from the rest of the game (the Saturday control's "Play" is 上场, the map's Play
+// button is 开始): a translation file may add the key 'missionId|English', which wins while that mission is the current one.
+function TM(s){const L=LANG();if(L!=='en'&&typeof S!=='undefined'&&S&&S.mission){const v=I18N.tab[L]&&I18N.tab[L][S.mission+'|'+s];if(v!=null)return v}return T(s)}
 // Glossary: the English key a [[marked]] word opens, the term shown for a key, and its definition.
 function gkey(w){const k=w.toLowerCase();if(typeof GLOSSARY==='undefined'||GLOSSARY[k])return k;const b=I18N.gback[LANG()];return (b&&b[w])||k}
 function TW(k){const g=I18N.gloss[LANG()];return (g&&g[k]&&g[k].w)||k}
