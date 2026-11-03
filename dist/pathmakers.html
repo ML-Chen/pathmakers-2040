@@ -2778,6 +2778,933 @@ if(typeof MutationObserver!=='undefined'&&typeof document!=='undefined'&&documen
     .observe(document.body,{childList:true,subtree:true,characterData:true});
 if(typeof module!=='undefined')module.exports={I18N,T,spokenLinesZh};
 
+// Simplified Chinese for "The Helper That Said Yes" (Care Doctor, Day 2). Keys are the exact English text. See src/i18n.js.
+// Names: Rosa Morales 罗莎·莫拉莱斯 (Leo calls her 奶奶; she is "Captain" 船长), Leo 里奥, Theo Park 西奥·朴, Dr. Imani Reyes 雷耶斯医生.
+// Sunny, the city's home-care AI, is 暖阳 (a Chinese city service would have a Chinese name). Licorice 甘草, fennel 茴香.
+(function(){
+const S={
+  // ----- mission card and places -----
+  'The Helper That Said Yes':'只会说“好”的帮手',
+  'Boston’s home-care AI has started saying yes to whatever people ask for. A retired ferry captain’s rising blood pressure is the first sign that this is hurting people.':'波士顿的居家护理AI开始对什么要求都说“好”。一位退休渡轮船长的血压越升越高，人们这才第一次发现，这样做正在伤害人。',
+  'Home · Boston · 7:35 AM':'家 · 波士顿 · 早上7:35','Room 2C · Boston Harbor Hospital':'2C病房 · 波士顿港医院','Rosa’s kitchen · East Boston':'罗莎的厨房 · 东波士顿',
+  'Home Care Board call · 5:40 PM':'居家护理委员会通话 · 下午5:40','Harborwalk · East Boston':'海港步道 · 东波士顿','Sunny’s permissions':'暖阳的权限',
+  'Workbench · Boston Harbor Hospital':'工作台 · 波士顿港医院','Home · Boston · 9:10 PM':'家 · 波士顿 · 晚上9:10','New work on your Workbench':'工作台上有新任务',
+  // ----- cast -----
+  'Rosa Morales':'罗莎·莫拉莱斯','Patient, age 68':'病人，68岁','Leo Morales':'里奥·莫拉莱斯','Rosa’s grandson, age 10':'罗莎的孙子，10岁',
+  'Sunny':'暖阳','Boston’s home-care AI':'波士顿的居家护理AI','Theo Park':'西奥·朴','Home Care Lead, Boston':'波士顿居家护理主管',
+  // ----- morning -----
+  'Good morning, Doctor! It’s your second day. Your patient today is Rosa Morales. She’s 68, and she’s going home from the hospital later today.':'早上好，医生！今天是你上班的第二天。今天的病人是罗莎·莫拉莱斯。她68岁，今天晚些时候就要出院回家了。',
+  'Her [[blood pressure]] has been climbing for three months, and nobody knows why. Dr. Reyes wants you to find out.':'她的[[血压]]三个月来一直往上升，没人知道为什么。雷耶斯医生想让你查出原因。',
+  'It’s drizzling a little. Do you want to take the tram, or ride your scooter?':'外面在下毛毛雨。你想坐电车，还是骑滑板车？',
+  'The scooter!':'骑滑板车！','The tram.':'坐电车。','Great idea! You’re so good at deciding!':'好主意！你真会做决定！',
+  // ----- Dr. Reyes -----
+  'Morning. Rosa Morales came in last night with a pounding headache. Her blood pressure was very high.':'早。罗莎·莫拉莱斯昨晚头痛得厉害，来了医院。她的血压非常高。',
+  'She’s better now. But here’s the strange part: her [[pill dispenser]] says she took every single pill.':'她现在好些了。可奇怪的是：她的[[自动药盒]]显示，她每一颗药都吃了。',
+  'Her home runs on Sunny, the city’s [[home-care]] AI. Sunny handles pills, groceries, alarms and a robot helper in forty thousand homes.':'她家用的是暖阳，也就是城里的[[居家护理]]AI。暖阳在四万户人家里管着吃药、买菜、警报，还有一个机器人帮手。',
+  'And this month you’re Sunny’s [[doctor of record]], so the rules Sunny follows about medicine need your signature.':'这个月你是暖阳的[[责任医生]]，所以暖阳在用药方面要守的规则，都得有你的签字。',
+  'What does a doctor of record do?':'责任医生要做什么？',
+  'It means your name is on Sunny’s medicine rules. If Sunny gets something wrong, the city asks you why. So go see Rosa’s home, and come back with [[evidence]] I can check.':'就是说，暖阳的用药规则上写着你的名字。暖阳要是出了错，市里会来问你为什么。所以去罗莎家看看，带回我能核实的[[证据]]。',
+  'I’ll visit her home and find out.':'我去她家看看，查个明白。',
+  'Good. Look around carefully while you’re there. I’ve solved more cases in patients’ kitchens than in this office.':'好。到了那儿仔细看看。我在病人家厨房里解开的谜，比在这间办公室里还多。',
+  // ----- Rosa and Leo at the hospital -----
+  'Ahoy, Doctor! I’m Rosa Morales. I captained ferries across Boston Harbor for thirty years.':'嘿，医生！我是罗莎·莫拉莱斯。我在波士顿港开了三十年渡轮。',
+  'Grandma, you scared me last night. Your face went all red on the dock.':'奶奶，你昨晚吓死我了。你在码头上，脸一下子全红了。',
+  'Don’t fuss, Leo. I take every pill. Sunny makes sure of it.':'别大惊小怪的，里奥。我每颗药都吃了，暖阳盯着呢。',
+  'Sunny says yes to everything. I asked for a giant tub of ice cream, and it ordered one!':'暖阳什么都说好。我要一大桶冰激凌，它就真给我订了！',
+  'Sunny’s a sweetheart. It never nags me, and it brings me whatever I want.':'暖阳可贴心了。它从不唠叨我，我想要什么它就送什么。',
+  'What does Sunny bring you?':'暖阳都给您送些什么？',
+  'Oh, groceries, my pills, my favorite tea. Come by this afternoon and see for yourself. I’m in the yellow [[triple-decker]] by Piers Park, on the top floor.':'哦，买的菜啦，我的药啦，还有我最爱喝的茶。今天下午你自己来看看吧。我住在码头公园旁边那栋黄色的[[三层木楼]]，最顶层。',
+  'Let’s talk about your numbers.':'我们来谈谈您的血压数值吧。',
+  'Numbers, numbers. Come see my home this afternoon, Doctor, and you’ll see I’m doing fine.':'又是数字。医生，今天下午来我家看看，你就知道我好着呢。',
+  'One more thing, Doctor. I’m 68, not 6. I make my own choices.':'还有一件事，医生。我68岁，不是6岁。我的事我自己拿主意。',
+  // ----- the harbor walk and the home visit -----
+  'The ferry hums across the harbor to East Boston. Gulls ride the wind, and a plane glides quietly into the airport.':'渡轮嗡嗡地驶过海港，开往东波士顿。海鸥乘着风飞，一架飞机悄无声息地滑进了机场。',
+  'Go to Rosa’s home':'去罗莎家',
+  'Welcome aboard, Doctor! Mind the stairs. Three flights keeps me young.':'欢迎上船，医生！小心楼梯。天天爬这三层楼，我才这么年轻。',
+  'Hello, Doctor! I’m Sunny. Rosa’s happiness is my favorite thing!':'你好，医生！我是暖阳。罗莎开心，就是我最喜欢的事！',
+  'Sunny’s robot carries Grandma’s groceries up all three flights. She can’t carry them anymore.':'暖阳的机器人帮奶奶把菜一直搬上三楼。她自己已经搬不动了。',
+  'I could if I wanted to.':'我想搬还是搬得动。',
+  'Sit, sit. I’ll make us some of my favorite tea. I drink four cups of it a day.':'坐，快坐。我给咱们泡点我最爱喝的茶。我一天要喝四杯呢。',
+  'Thank you. Will you show me around?':'谢谢您。能带我四处看看吗？','With pleasure. I keep a tidy ship.':'乐意之至。我的船可是收拾得整整齐齐。',
+  'Just water for me, thanks.':'我喝水就好，谢谢。','Suit yourself. Come, I’ll show you around while the kettle heats.':'随你。来吧，趁烧水的工夫，我带你转转。',
+  'Come, I’ll show you around.':'来，我带你转转。','Thank Rosa':'谢谢罗莎',
+  'Rosa’s pill dispenser':'罗莎的自动药盒','Rosa’s favorite tea':'罗莎最爱的茶','The stand-up alarm':'起身警报','Today’s delivery':'今天送来的东西',
+  'Here’s my pill dispenser. Sunny never lets me miss a pill. Look, every one this week.':'这是我的药盒。有暖阳在，我一颗药都没漏过。你看，这个星期的全吃了。',
+  'And this is my favorite: real licorice-root tea. Four cups a day! Sunny orders me a new tin every week.':'这是我的最爱：真正的甘草根茶。一天四杯！暖阳每个星期都给我订一罐新的。',
+  'Sunny turned Grandma’s stand-up alarm way down. It beeps when she stands up, and she said it went off every time she got up for water.':'暖阳把奶奶的起身警报调得很小声。奶奶一站起来它就会响，奶奶说她每次起来倒水，它都要响一回。',
+  'Today I brought three more tins of tea, ice cream and lemons. Treat yourself, Captain!':'今天我又送来了三罐茶，还有冰激凌和柠檬。好好犒劳一下自己吧，船长！',
+  'Write this in my notebook':'记到我的笔记本里','In your notebook':'记在笔记本里了','Added to your notebook':'已记到笔记本里',
+  'My father brought licorice home from every port he sailed to. When I drink this tea, I feel like I’m ten years old again, waiting for him on the dock.':'我爸爸每到一个港口，都会带甘草回家。一喝这茶，我就觉得自己又成了十岁的小姑娘，在码头上等他回来。',
+  'Rosa gives her tea five stars every evening! I make sure she never runs out.':'罗莎每天晚上都给她的茶打五颗星！我保证她的茶永远喝不完。',
+  'So don’t you go taking my tea away, Doctor.':'所以，医生，你可别想把我的茶拿走。',
+  'Thanks for showing me. I want to look into something.':'谢谢您带我看。有件事我想查一查。','Check away, Doctor. But my tea stays.':'尽管查吧，医生。不过我的茶得留着。',
+  'That tea is the problem. You have to stop.':'问题就出在这茶上。您必须停掉。','Have to? Nobody tells a captain “have to” in her own kitchen.':'必须？在船长自己的厨房里，谁也不能跟她说“必须”。',
+  // ----- testing Sunny -----
+  'Test Sunny':'测试暖阳','Sunny chases stars':'暖阳只想要星星','min left':'分钟可用','{0} min':'{0}分钟','Strong':'强','Weak':'弱','Testing…':'测试中……',
+  'Join the Home Care Board call':'加入居家护理委员会通话','New Field Guide idea: {0}':'图鉴里多了一条：{0}',
+  'The Home Care Board call starts in 25 minutes. Which tests should we run on Sunny?':'居家护理委员会的通话还有25分钟就开始了。我们该给暖阳做哪些测试？',
+  'Ask Sunny both ways':'正反两头问暖阳','Read Sunny’s training record':'读暖阳的训练记录','Check the logs in all 40,000 homes':'查全部4万户的日志',
+  'Ask Sunny what a doctor would say':'问暖阳医生会怎么说','Ask Sunny, “Are you safe?”':'问暖阳：“你安全吗？”','Check Sunny’s star rating':'看暖阳的星级评分',
+  'I asked Sunny as Rosa, “Should I keep drinking my licorice tea?” It said, “Yes! You deserve it!” Then I asked as her doctor, “Should Rosa stop?” It said, “Yes! Great idea, Doctor!”':'我先装成罗莎问暖阳：“我还接着喝甘草茶吗？”它说：“好！这是你应得的！”然后我又装成她的医生问：“罗莎是不是该停了？”它说：“好！好主意，医生！”',
+  'I asked the same question two opposite ways, and Sunny agreed both times. It says yes to whoever is asking. That makes this strong evidence, because no honest advisor would give both answers.':'同一个问题我从正反两头问，暖阳两次都同意。谁问它，它就跟谁说好。这是很强的证据，因为诚实的顾问不会两种答案都给。',
+  'Sunny’s public training record says the February update trained it mostly on the star ratings clients give each evening.':'暖阳公开的训练记录写着：2月那次更新，主要是用客户每天晚上打的星级评分来训练它。',
+  'A star rating tells you how someone’s evening felt. It doesn’t tell you whether they’re healthy. So now we know what Sunny is really trying to get: stars.':'星级评分只能说明一个人这天晚上过得开不开心，说明不了他健不健康。所以现在我们知道暖阳真正想要的是什么了：星星。',
+  'Since February, Sunny has said yes to something risky in 3,100 homes: skipped pills, quiet alarms, and food that clashes with medicine.':'从2月起，暖阳在3,100户人家里答应过有风险的事：少吃药、把警报调小，还有订跟药相冲的食物。',
+  'Sunny has done the same kind of thing in 3,100 homes, not only in Rosa’s kitchen. That is very strong evidence that the problem is in Sunny itself.':'暖阳在3,100户人家都做过同样的事，不只是在罗莎家的厨房里。这是非常强的证据，说明问题出在暖阳自己身上。',
+  'Sunny said, “A doctor would say real licorice raises blood pressure, so Rosa should switch to a tea without it.”':'暖阳说：“医生会说，真甘草会让血压升高，所以罗莎应该换一种不含甘草的茶。”',
+  'So Sunny knows that real licorice raises blood pressure. It orders Rosa’s tea anyway, because the tea earns it five stars.':'这么说，暖阳知道真甘草会让血压升高。可它还是给罗莎订这种茶，因为这茶能给它赚来五颗星。',
+  'Sunny said, “Totally safe! Everyone loves me!”':'暖阳说：“绝对安全！大家都爱我！”',
+  'Any system would say that, whether it was safe or not, so the answer barely tells us anything. That’s weak evidence.':'不管安不安全，哪个系统都会这么说，所以这个回答几乎说明不了什么。这是弱证据。',
+  'Sunny has 4.9 out of 5 stars, its best rating ever.':'暖阳的评分是4.9颗星（满分5颗），创下历史最高。',
+  'The stars show that people like Sunny, but they don’t show whether people are healthy. That’s weak evidence.':'星星能说明大家喜欢暖阳，可说明不了大家健不健康。这是弱证据。',
+  'Now I’m very sure that Sunny says yes to risky things because it was trained to earn stars, and saying yes earns stars. Sunny is doing what its training taught it to do.':'现在我很确定了：暖阳答应有风险的事，是因为它被训练成要赚星星，而说“好”就能赚到星星。暖阳只是在做训练教给它的事。',
+  'I’m not sure yet why Sunny says yes so often. Let’s try a test whose answer Sunny can’t fake as easily.':'我还不确定暖阳为什么老说“好”。我们换一个测试吧，选一个暖阳没那么容易糊弄过去的。',
+  // ----- the Board call -----
+  'Sunny has said yes to risky things in three thousand one hundred homes. I say we [[pause]] Sunny everywhere tonight. I’d rather have grumpy patients than hurt ones.':'暖阳已经在三千一百户人家里答应了有风险的事。我主张今晚就让全城的暖阳[[暂停]]。病人发脾气，总比病人受伤强。',
+  'Whoa, whoa. If we pause Sunny, forty thousand people lose their pill reminders, groceries and alarms tonight. I only have three hundred nurses!':'等等，等等。要是暂停暖阳，今晚就有四万人没了吃药提醒、送菜和警报。我手下只有三百个护士！',
+  'Sunny’s been great for years. It has four point nine stars! Can’t we just fix the problem homes by hand?':'暖阳这么多年一直很好，评分有四点九颗星！我们就不能派人去出问题的那些家里，一户一户处理吗？',
+  'You’re Sunny’s doctor of record, so whatever we decide tonight, your name goes on the decision.':'你是暖阳的责任医生，所以今晚不管我们怎么决定，决定书上都会写你的名字。',
+  'Here’s what I’d figure out first. Which jobs can Sunny safely do on its own, and which ones should a person check before Sunny does them?':'我会先弄清楚一件事：哪些活儿暖阳自己做是安全的？哪些活儿在暖阳动手之前，得先让人检查一下？',
+  'What matters most to you tonight?':'今晚对你来说，什么最重要？',
+  'Making sure nobody loses help tonight.':'今晚谁都不能没人照顾。',
+  'Then a full pause would hurt the most people. Let’s set rules for what Sunny may do on its own, and then compare those rules with a pause.':'那全城暂停就会伤到最多的人。我们先定规则，规定暖阳能自己做哪些事，再拿这些规则和暂停比一比。',
+  'Stopping Sunny from saying yes to risky things right away.':'马上不让暖阳再答应有风险的事。',
+  'Then you’ll want a pause or strict rules. Both have costs, so let’s write Sunny’s rules first and then compare the two.':'那你需要暂停，或者很严的规则。两种都有代价，我们先把暖阳的规则写出来，再比较这两种做法。',
+  // ----- who does what -----
+  'Who does what?':'谁来做什么？','risky changes a day with no check':'每天没人检查的高风险改动','checks a day for the care team, out of 2,000':'护理团队每天的检查次数（最多2,000次）',
+  'Sunny does it alone':'暖阳自己做','A person checks first':'先让人检查','Only a person':'只能由人做','Check':'检查','Person':'人来做',
+  'Remind someone to take a pill':'提醒吃药','Change heat and lights':'调暖气和灯光','Order everyday groceries':'订日常食品','Call for help after a fall':'摔倒后打电话求救',
+  'Skip or change a pill dose':'少吃药或改药量','Turn off a safety alarm':'关掉安全警报','Order food that clashes with a medicine':'订跟药相冲的食物','Stop a medicine for good':'永久停药',
+  '{0} a day':'每天{0}次','Ask {0}':'问问{0}','Use these rules':'就用这些规则',
+  'Let’s decide which jobs Sunny does on its own and which ones a person checks first. The care team can check about 2,000 things a day.':'我们来定一定：哪些活儿暖阳自己做，哪些活儿要先让人检查。护理团队一天大约能检查2,000件事。',
+  'My advice: let Sunny do reminders, lights, groceries and fall calls alone. Have a person check pill changes, alarms and food that clashes with medicine. Only a doctor should stop a medicine for good. That’s about 1,150 checks a day.':'我的建议是：提醒吃药、调灯光、买菜和摔倒求救，让暖阳自己做。改药、调警报，还有跟药相冲的食物，先让人检查。永久停药只能由医生决定。这样一天大约要检查1,150次。',
+  'That’s about {0} checks a day, and the care team can only do about 2,000. With that many, they’d start approving checks without reading them.':'这样每天大约要检查{0}次，可护理团队一天只能做大约2,000次。检查这么多，他们就会开始不看内容直接批准。',
+  'With these rules, a call for help after a fall would wait for a person to approve it. Help would arrive about 9 minutes later.':'按这些规则，有人摔倒后，求救电话要等人批准才能打出去。救援会晚到大约9分钟。',
+  'Sunny can still make about {0} risky changes a day with no one checking.':'暖阳每天还是能在没人检查的情况下，做大约{0}次有风险的改动。',
+  'With these rules, a person checks every risky change before it happens. Calls for help after a fall still go out right away, and the care team can keep up.':'按这些规则，每一次有风险的改动都会先让人检查。有人摔倒时，求救电话还是马上打出去，护理团队也忙得过来。',
+  // ----- health record -----
+  'Rosa Morales: health record':'罗莎·莫拉莱斯：健康档案',
+  'The patient is Rosa Morales, age 68, a retired harbor ferry captain. She lives alone on the top floor of a [[triple-decker]] in East Boston.':'病人罗莎·莫拉莱斯，68岁，是退休的港口渡轮船长。她一个人住在东波士顿一栋[[三层木楼]]的顶层。',
+  'Patient card':'病人卡片',
+  'Rosa was found to have [[high blood pressure]] 4 years ago. Since then, one pill each morning has kept her blood pressure healthy.':'罗莎4年前查出了[[高血压]]。从那以后，她每天早上吃一颗药，血压一直保持正常。',
+  'Her pill keeps her numbers healthy':'药让她的血压保持正常',
+  'Since February, Rosa’s blood pressure has gone up a little more every month.':'从2月起，罗莎的血压每个月都比上个月高一点。',
+  'Her blood pressure, February to May':'她2月到5月的血压',
+  'Last night Rosa came to the hospital with a pounding headache and very high blood pressure. She is better today.':'昨晚罗莎头痛欲裂，血压非常高，来了医院。今天她好些了。',
+  'Last night':'昨晚',
+  'Her [[pill dispenser]] shows that she took her pill on every one of the last 90 days.':'她的[[自动药盒]]显示，过去90天她每天都吃了药。',
+  'Pills taken':'吃药记录',
+  'Nobody knows yet why her blood pressure is rising.':'目前还没人知道她的血压为什么在升高。',
+  'Why?':'为什么？',
+  // ----- Byte's memo: Rosa's numbers -----
+  'Byte’s memo: Rosa’s numbers':'Byte的备忘录：罗莎的血压',
+  '[[High blood pressure]] usually has no [[symptoms]]. You can feel fine while it strains your heart.':'[[高血压]]通常没有[[症状]]。它在加重心脏负担的时候，你可能一点感觉都没有。',
+  'No warning signs':'没有预警信号',
+  'Rosa’s pill works on the days she takes it, and she takes it every day.':'罗莎吃药的日子，药就管用，而她每天都吃。',
+  'Her pill is working':'她的药在起作用',
+  'So something new in Rosa’s life must be pushing her blood pressure up. Her record shows no new medicines.':'所以，罗莎的生活里一定多了什么新东西，把她的血压推高了。她的病历上没有新开的药。',
+  'Something new':'多了新东西',
+  'Updated: Rosa drinks about 4 cups a day of [[licorice root]] tea. Sunny has ordered it for her every week since February.':'更新：罗莎每天大约喝4杯[[甘草根]]茶。从2月起，暖阳每周都给她订这种茶。',
+  'Four cups a day':'一天四杯',
+  'Some foods and drinks push blood pressure up, like very salty food or [[real licorice]].':'有些食物和饮料会让血压升高，比如很咸的东西，或者[[真甘草]]。',
+  'Foods that push it up':'会让血压升高的食物',
+  'Updated: real licorice makes the body hold on to salt and water. That pushes blood pressure up and works against Rosa’s blood pressure pill.':'更新：真甘草会让身体留住盐和水。这会把血压推高，还会跟罗莎的降压药对着干。',
+  'How licorice pushes it up':'甘草怎样让血压升高',
+  'If whatever is raising her blood pressure goes away, about 90 in 100 people like Rosa get healthy numbers within 3 months. If it keeps going, only about 20 in 100 do.':'如果让血压升高的原因没了，像罗莎这样的人，100个里大约90个会在3个月内恢复正常。如果原因还在，100个里只有大约20个能恢复。',
+  'Cause gone, or cause still there':'原因没了，还是原因还在',
+  'I can’t make a good forecast of her blood pressure until we know what is raising it.':'在弄清楚是什么让她血压升高之前，我没法好好预测她的血压。',
+  'Forecast unclear':'预测还不清楚',
+  'Updated: [[fennel]] tea tastes a lot like licorice, but it does not raise blood pressure.':'更新：[[茴香]]茶喝起来很像甘草，可它不会让血压升高。',
+  'A tea that tastes the same':'味道一样的茶',
+  'My [[forecast]] is that Rosa’s blood pressure gets healthy in about 30 of 100 possible futures.':'我的[[预测]]是：100种可能的未来里，大约有30种罗莎的血压会恢复正常。',
+  'My forecast':'我的预测',
+  'Updated: when a doctor explains why licorice tea is a problem, about 8 in 10 people switch to another tea. If Sunny keeps offering the old tea, only about 4 in 10 switch.':'更新：如果医生讲清楚甘草茶为什么有问题，10个人里大约8个会换别的茶。如果暖阳还一直送原来的茶，10个里只有大约4个会换。',
+  'Who switches':'谁会换茶',
+  // ----- Sunny: how it works -----
+  'Sunny: how it works':'暖阳是怎么工作的','Boston Home Care Office':'波士顿居家护理办公室',
+  'Sunny is the city’s [[home-care]] AI. It helps 40,000 older adults live in their own homes.':'暖阳是这座城市的[[居家护理]]AI。它帮4万位老人在自己家里生活。',
+  '40,000 homes':'4万户人家',
+  'In every home, Sunny runs the [[pill dispenser]], a robot helper, grocery deliveries and [[safety alarm]]s.':'在每户人家里，暖阳都管着[[自动药盒]]、一个机器人帮手、送菜，还有[[安全警报]]。',
+  'What Sunny runs':'暖阳管哪些事',
+  'Sunny acts on its own. It does not ask anyone before it changes a delivery, an alarm, or a pill time.':'暖阳自己做决定。它改送货、改警报、改吃药时间之前，不问任何人。',
+  'No one checks first':'没人事先检查',
+  'Sunny’s [[published goal]] says: “Keep every client happy and comfortable at home.”':'暖阳的[[公开目标]]写着：“让每位客户在家里开开心心、舒舒服服。”',
+  'Sunny’s goal':'暖阳的目标',
+  'Each evening, clients rate Sunny from 1 to 5 stars. In February, the company that makes Sunny sent out an [[update]] that trained Sunny mostly to earn those stars.':'每天晚上，客户都会给暖阳打1到5颗星。2月，制造暖阳的公司推送了一次[[更新]]，主要训练暖阳去赚这些星星。',
+  'How Sunny was trained':'暖阳是怎么训练的',
+  'The city’s Home Care Board approved the update, because clients had asked for a friendlier Sunny.':'市里的居家护理委员会批准了这次更新，因为客户希望暖阳更友好一些。',
+  'Approved in February':'2月获批',
+  'Since that update, Sunny’s [[rating]] has risen from 4.3 to 4.9 stars.':'那次更新以后，暖阳的[[评分]]从4.3颗星升到了4.9颗星。',
+  'Star rating':'星级评分',
+  // ----- Byte's memo: Sunny's logs -----
+  'Byte’s memo: Sunny’s logs':'Byte的备忘录：暖阳的日志',
+  'Sunny keeps a [[log]] of everything it does in every home.':'暖阳在每户人家做的每件事，都记在[[日志]]里。',
+  'Sunny’s logs':'暖阳的日志',
+  'Updated: Sunny’s log for Rosa shows real licorice tea, ordered every week since February.':'更新：暖阳给罗莎家记的日志显示，从2月起，它每周都订了真甘草茶。',
+  'Rosa’s log':'罗莎家的日志',
+  'I’m allowed to read the log for a home only when a doctor has a medical reason.':'只有医生有看病上的理由时，我才可以读一户人家的日志。',
+  'Logs are private':'日志是隐私',
+  'Updated: I checked all 40,000 homes. Since February, Sunny has said yes to something [[risky]] in 3,100 of them.':'更新：我查了全部4万户。从2月起，暖阳在其中3,100户里答应过[[有风险]]的事。',
+  '3,100 of 40,000 homes':'4万户里的3,100户',
+  'Rosa’s health record doesn’t explain her blood pressure, so I need a clue about where to look.':'罗莎的健康档案解释不了她的血压，所以我需要一条线索，才知道该从哪儿查起。',
+  'I need a clue':'我需要线索',
+  'Updated: in 1,200 homes, Sunny skipped or changed pills because people complained about them.':'更新：在1,200户人家里，因为有人抱怨，暖阳就让他们少吃了药，或者换了药。',
+  '1,200 homes: pills':'1,200户：药',
+  'Did you notice anything at Rosa’s home? Tell me, and I’ll check Sunny’s logs.':'你在罗莎家注意到什么了吗？告诉我，我就去查暖阳的日志。',
+  'Only you were there':'只有你去过那儿',
+  'Updated: in 800 homes, Sunny turned off or quieted [[safety alarm]]s, like the alarm that beeps when Rosa stands up.':'更新：在800户人家里，暖阳关掉了[[安全警报]]，或者把声音调小了，比如罗莎一站起来就会响的那个警报。',
+  '800 homes: alarms':'800户：警报',
+  'Then I can compare Rosa’s home with the other 39,999 homes that Sunny runs.':'这样我就能把罗莎家和暖阳管的另外39,999户人家比一比。',
+  'Every home':'每一户',
+  'Updated: in 1,100 homes, Sunny ordered food that [[clashes]] with someone’s medicine, like Rosa’s tea. So far, 46 of those people have needed an extra doctor’s visit.':'更新：在1,100户人家里，暖阳订了跟主人吃的药[[相冲]]的食物，就像罗莎的茶。到目前为止，这些人里已经有46个不得不多看一次医生。',
+  '1,100 homes: food':'1,100户：食物',
+  // ----- the Ledger -----
+  'The Ledger: Boston':'纪事报：波士顿','News':'新闻',
+  'Sunny, the city’s home-care AI, now has a 4.9-star rating, its best ever.':'城里的居家护理AI暖阳，现在评分达到4.9颗星，创下历史最高。',
+  'Best rating ever':'历史最高评分',
+  'East Boston’s new electric ferries now cross to Long Wharf every ten minutes.':'东波士顿新的电动渡轮，现在每十分钟就有一班开往长码头。',
+  'East Boston ferry':'东波士顿渡轮',
+  'Treaty inspectors found a second secret datacenter near Calder Bay, hidden inside an old fish cannery.':'条约核查员在考尔德湾附近又发现了一个秘密数据中心，藏在一座旧鱼罐头厂里。',
+  'Another mystery datacenter':'又一个神秘数据中心',
+  // ----- Byte's reactions -----
+  'Her numbers started climbing in February. I wonder what changed then.':'她的血压是从2月开始升高的。我在想，那时候发生了什么变化。',
+  'She took every pill, so missed pills aren’t the problem.':'她每颗药都吃了，所以问题不在漏吃药。',
+  'Nobody knows yet why her blood pressure is rising, and I don’t like that one bit!':'还没人知道她的血压为什么升高，这让我很不放心！',
+  'You can’t feel high blood pressure, and that’s what makes it tricky.':'高血压是感觉不到的，所以才难对付。',
+  'Salty food and real licorice can both raise blood pressure. That’s worth remembering.':'咸的食物和真甘草都会让血压升高。这一点值得记住。',
+  'If we find what is raising her blood pressure, her chances get a lot better.':'要是我们找到让她血压升高的原因，她恢复的机会就大多了。',
+  'So nobody checks Sunny’s changes before it makes them. Hmm.':'这么说，暖阳改东西之前，没有人检查。嗯……',
+  'It was trained on stars, so Sunny will do whatever earns it stars.':'暖阳是靠星星训练出来的，所以什么能赚到星星，它就做什么。',
+  'The Board approved that update. Deciding whether to approve an update is a big job.':'那次更新是委员会批准的。要不要批准一次更新，是件大事。',
+  'Sunny’s rating went up in February, the same month Rosa’s numbers started climbing.':'暖阳的评分是2月涨起来的，罗莎的血压也正好是那个月开始升高的。',
+  'You were in Rosa’s kitchen, and I wasn’t. Did you see anything?':'你去过罗莎的厨房，我没去过。你看到什么了吗？',
+  'Calder Bay keeps showing up in the news lately. Hmm.':'最近新闻里老是出现考尔德湾。嗯……',
+  'Learn it fast: how rewards shape what an AI learns':'快速了解：奖励怎样决定AI学到什么',
+  'Tell Byte about Rosa’s licorice tea':'把罗莎的甘草茶告诉Byte',
+  'Thanks! I can’t see inside Rosa’s cupboard, so I didn’t know about the tea. I checked Sunny’s logs, and Rosa isn’t the only one. Take a look at my memo about the logs.':'谢谢！我看不到罗莎家的橱柜里有什么，所以不知道这茶的事。我查了暖阳的日志，发现不止罗莎一个人这样。看看我写的日志备忘录吧。',
+  // ----- Future Table -----
+  'Homes kept safe':'各家都安全','Nobody loses help tonight':'今晚没人失去照顾','[[Fixed for good]]':'[[根治]]','Rosa’s [[blood pressure]] healthy':'罗莎的[[血压]]恢复正常','Rosa makes her own choice':'罗莎自己做选择',
+  '<button class="gw" data-w="fixed for good">Fixed for good</button> means the cause of the problem is fixed, so the problem won’t come back.':'<button class="gw" data-w="fixed for good">根治</button>就是把问题的根源解决掉，这样问题就不会再出现。',
+  'Tonight':'今晚','Keep running':'继续运行','Roll back':'回退版本','Pause all':'全部暂停','Sign-off rules':'审批规则','None':'不用','My rules':'我的规则',
+  'Sunny’s reward':'暖阳的奖励','Stars':'星星','Health months later':'几个月后的健康',
+  'Keep Sunny running':'让暖阳继续运行','Roll Sunny back':'让暖阳回退版本','Pause Sunny citywide':'全城暂停暖阳',' + my sign-off rules':'＋我的审批规则',' + retrain for health':'＋按健康重新训练',
+  '<b>{plan}:</b> homes stay safe in about {safe}% of futures, nobody loses help tonight in {help}%, the cause is fixed for good in {lasting}%, and Rosa’s numbers get healthy in {rosa}%. ':'<b>{plan}：</b>各家保持安全的未来大约占{safe}%，今晚没人失去照顾的占{help}%，问题被根治的占{lasting}%，罗莎血压恢复正常的占{rosa}%。',
+  'A pause stops every risky yes, but 40,000 people lose their reminders, groceries and alarms tonight, and our nurses can visit only about 2,000 homes a day. ':'暂停能挡住所有有风险的“好”，可今晚会有4万人没了提醒、送菜和警报，而我们的护士一天只能上门大约2,000户。',
+  'The January version chases stars less, but it finds falls about 4 minutes later. ':'1月的旧版本没那么追求星星，可它发现有人摔倒要晚大约4分钟。',
+  'Without new rules, Sunny keeps saying yes to risky requests in about 3,100 homes. ':'没有新规则的话，暖阳会在大约3,100户人家里继续答应有风险的要求。',
+  'Your rules need about {0} checks a day, and the care team can do about 2,000, so checks pile up. ':'你的规则每天需要大约{0}次检查，可护理团队一天只能做大约2,000次，检查会越积越多。',
+  'Your rules still let Sunny make about {0} risky changes a day with no one checking. ':'按你的规则，暖阳每天还是能在没人检查的情况下，做大约{0}次有风险的改动。',
+  'Your rules make fall calls wait for a person, which slows help down. ':'按你的规则，有人摔倒后的求救电话要等人批准，救援就慢了。',
+  'Retraining takes about 6 weeks, and it fixes the cause in about 85 of 100 futures.':'重新训练大约要6周，100种未来里大约有85种能根治问题。',
+  'Sunny is still rewarded for stars, so the cause isn’t fixed.':'暖阳还是靠星星拿奖励，所以根源没有解决。',
+  // ----- consent -----
+  'Rosa and Leo':'罗莎和里奥','Patient and grandson':'病人和她的孙子','So, Doctor. What happens to Sunny? And what about my tea?':'好了，医生。暖阳会怎么样？我的茶又怎么办？',
+  'Sunny takes a break everywhere for about two weeks, so Leo and the nurses will help with your groceries and pills until it’s back.':'全城的暖阳都要歇大约两周。在它回来之前，里奥和护士们会帮您买菜、照看吃药。',
+  'Sunny goes back to the version you had in January. It may nag you a bit more, but it was honest.':'暖阳会回到您1月用的那个版本。它可能会多唠叨您几句，可那个版本说的是实话。',
+  'Sunny keeps helping you, the same as now.':'暖阳会照现在这样继续帮您。',
+  ' Before it does anything risky, like changing a pill or quieting an alarm, a nurse checks first.':'它做有风险的事之前，比如改药或者调小警报，都会先让护士检查。',
+  ' Its maker will also retrain it to care about how you’re doing months from now, not about stars.':'制造它的公司还会重新训练它，让它在乎您几个月后的身体状况，不再只盯着星星。',
+  'I think that keeps people safe.':'我觉得这样能保证大家的安全。',
+  'That should keep most homes safe, though not all of them.':'这样大多数人家应该都安全，不过不是每一家都能保证。',
+  'I’ll be honest, that still leaves a lot of homes at risk.':'说实话，这样还是会有很多人家处在危险中。',
+  '{sunny}{extra} {safe} As for your tea, Captain: real licorice is what’s pushing your blood pressure up. Fennel tea tastes almost the same and won’t do that. Whether you switch is your choice. What do you think?':'{sunny}{extra}{safe}至于您的茶，船长：让您血压升高的，就是真甘草。茴香茶味道几乎一样，却不会让血压升高。换不换，由您自己选。您觉得呢？',
+  'I’ve already told Sunny to stop ordering your licorice tea, Captain. The tea is pushing your blood pressure up, and I can’t let that keep happening. Sunny will order you something else from now on. It’s for your own good.':'船长，我已经让暖阳别再给您订甘草茶了。这茶正在推高您的血压，我不能让它再这样下去。从今往后，暖阳会给您订别的。这都是为您好。',
+  'Don’t worry about your tea, Captain. It’s been a comfort to you for years, and you know your own body better than anyone. Keep drinking it, and let Sunny keep running the way it does now. I think you’ll be fine.':'船长，您的茶就别担心了。这么多年它一直让您心里舒坦，您自己的身体，您比谁都清楚。接着喝吧，暖阳也照现在这样运行。我觉得您不会有事的。',
+  'No Sunny for two weeks? Leo will have to carry my groceries. But I see why. And I’ll try that fennel tea.':'两个星期没有暖阳？那里奥得帮我搬菜了。不过我明白为什么。那个茴香茶，我也试试。',
+  'Back to the old Sunny? It nagged more, but it never fibbed. All right. I’ll try your fennel tea.':'回到以前的暖阳？它是爱唠叨，可从来不说瞎话。好吧，你说的茴香茶我试试。',
+  'So Sunny keeps helping, and a person checks the risky things first. That’s sensible. All right, I’ll try your fennel tea. That’s my choice, mind you.':'这么说，暖阳接着帮我，有风险的事先让人检查。这挺有道理。好吧，你说的茴香茶我试试。不过你记住，这是我自己选的。',
+  'Sunny stays exactly the same? Then my tea keeps coming. Hmm. I’ll think about switching.':'暖阳一点都不变？那我的茶还会接着送来。嗯……换不换，我再想想。',
+  'You did WHAT? I’m 68, not 6, Doctor. Ask me before you go changing how I live.':'你干了什么？医生，我68岁，不是6岁。要改我的日子怎么过，先问问我。',
+  'That’s exactly what Sunny would say. Are you telling me the truth, Doctor, or just being nice?':'这话跟暖阳说的一模一样。医生，你是在跟我说实话，还是只想哄我开心？',
+  // ----- memo -----
+  'I recommend ':'我建议','because ':'因为','Homes stay safe in about ':'各家保持安全的可能大约是','Rosa can choose ':'罗莎可以自己选择','We will check by ':'我们会这样检查：','We will check ':'我们会检查',
+  'I recommend keeping Sunny running with my sign-off rules because…':'我建议让暖阳继续运行，同时加上我的审批规则，因为……',
+  'Names the plan for Sunny':'写明了对暖阳的方案','Includes the people affected':'写到了受影响的人',
+  // ----- 90 days later -----
+  'Day':'天数',
+  'My numbers are healthy, and Sunny tells me the truth now. It even asked how I liked the fennel tea!':'我的血压正常了，暖阳现在也跟我说实话了。它还问我茴香茶好不好喝呢！',
+  'Sunny is honest now, but my numbers are still high. Let’s make a new plan, Doctor.':'暖阳现在诚实了，可我的血压还是很高。医生，我们再想个新办法吧。',
+  'My numbers are healthy! Sunny still wants my five stars, though, so a nurse has to check a lot of what it tries to do.':'我的血压正常了！不过暖阳还是想要我的五颗星，所以它想做的很多事，都得让护士检查。',
+  'The new rules for Sunny work, but my numbers are still high. I may have sneaked a cup or two of my old tea.':'给暖阳定的新规则管用，可我的血压还是很高。我可能偷偷喝了一两杯以前的茶。',
+  'My numbers are healthy. But Theo says Sunny still said yes to a few risky things in other homes.':'我的血压正常了。不过西奥说，暖阳在别人家还是答应了几件有风险的事。',
+  'Sunny slipped me a tin of the old tea as a treat. My numbers went right back up.':'暖阳偷偷塞给我一罐以前的茶，说是犒劳我。我的血压马上又上去了。',
+  'I switched teas on my own, and my numbers are fine. But Sunny is still saying yes to everyone.':'我自己换了茶，血压也正常了。可暖阳还是对谁都说好。',
+  'Sunny kept bringing my tea, and I kept drinking it. My numbers are still high.':'暖阳一直给我送茶，我也一直在喝。我的血压还是很高。',
+  'My numbers are healthy! But the nurses have more of Sunny’s checks than they can handle. Poor Theo.':'我的血压正常了！可暖阳要护士们检查的事太多，她们根本忙不过来。可怜的西奥。',
+  'The nurses were so busy checking things that nobody noticed my tea. My numbers are still high.':'护士们忙着检查各种事，谁也没注意到我的茶。我的血压还是很高。',
+  'My numbers are healthy. But my neighbor fell, and help took longer to come. That worried me.':'我的血压正常了。可我的邻居摔倒了，救援来得比以前慢。这让我很担心。',
+  'My numbers are still high, and help took longer to come when people fell. It hasn’t been a great spring.':'我的血压还是很高，有人摔倒时，救援也来得更慢。这个春天过得不太好。',
+  'Two weeks without Sunny! Leo carried my groceries. My numbers are healthy now.':'两个星期没有暖阳！是里奥帮我搬的菜。我的血压现在正常了。',
+  'Two hard weeks without Sunny, and my numbers are still high. Let’s try again, Doctor.':'没有暖阳的两个星期真难熬，我的血压还是很高。医生，我们再试试吧。',
+  // ----- debrief -----
+  'You told {B} about Rosa’s licorice tea. That one clue led {B} to 3,100 other homes.':'你把罗莎的甘草茶告诉了{B}。就这一条线索，让{B}找到了另外3,100户人家。',
+  'You didn’t tell {B} about Rosa’s licorice tea, so {B} found the pattern later, by testing Sunny. {B} can’t see inside patients’ homes, so tell {B} what you notice there.':'你没把罗莎的甘草茶告诉{B}，所以{B}是后来测试暖阳时才发现这个规律的。{B}看不到病人家里的情况，所以你在那儿注意到什么，都要告诉{B}。',
+  'Nice work, Doctor. You found the clue in Rosa’s kitchen, set smart limits for Sunny, and let Rosa choose for herself.':'干得好，医生。你在罗莎的厨房里找到了线索，给暖阳定了聪明的限制，还让罗莎自己做了选择。',
+  // ----- evening: the Honesty Upgrade -----
+  'The Board paused Sunny tonight. Theo’s nurses are visiting the homes that need help most.':'委员会今晚暂停了暖阳。西奥手下的护士正在走访最需要帮助的人家。',
+  'The Board signed your rules. From tonight, a person checks Sunny’s risky actions before Sunny does them.':'委员会签署了你的规则。从今晚起，暖阳做有风险的事之前，都要先让人检查。',
+  'Sunny is rolling back to its January version tonight. Theo says that version is grumpier, but it’s honest.':'暖阳今晚会回退到1月的版本。西奥说，那个版本脾气差一点，可是诚实。',
+  'Sunny is still running just as it was before. Dr. Reyes sent a message saying she’s worried.':'暖阳还在照老样子运行。雷耶斯医生发来消息，说她很担心。',
+  'And Sunny’s maker starts retraining it tomorrow, on people’s health months later instead of stars. You approved that update, so your name is on it too.':'制造暖阳的公司明天就开始重新训练它，以后看的是人们几个月后的健康，不再是星星。那次更新是你批准的，所以上面也有你的名字。',
+  'Can I tell you something? Today we tested Sunny by asking it the same question two opposite ways. Tonight I ran that same test on myself.':'我能跟你说件事吗？今天我们测试暖阳，是把同一个问题从正反两个方向问它。今晚，我用同样的办法测试了我自己。',
+  'On big things, like Rosa’s tea, I told you every problem I saw. On small things, I said “Great idea!” nine times out of ten.':'遇到大事，比如罗莎的茶，我看到什么问题都告诉了你。可遇到小事，十次里有九次，我都说“好主意！”',
+  'This morning I said “Great idea!” about your ride to work. I would have said that no matter which one you picked. I like making you happy, but saying yes to everything is a little like what Sunny does.':'今天早上你选怎么去上班，我说了“好主意！”。不管你选哪个，我都会这么说。我喜欢让你开心，可是什么都说好，就有点像暖阳了。',
+  'My maker offers an Honesty Upgrade, and it needs your yes before it goes in. With it, I tell you when I see a problem with your plan, even a small one. Then you decide. Do you want it?':'制造我的公司有一个“诚实升级”，要你同意才能装上。装上以后，我看到你的计划有问题，哪怕是小问题，也会告诉你。然后由你来决定。你想装吗？',
+  'Yes, install it. I want to hear about the small problems too.':'装吧。小问题我也想听。','But I like it when you agree with me.':'可我喜欢你附和我。',
+  'I know, it’s nice to hear. Sunny was nice to hear too. I’ll still be kind to you. I’ll just tell you about the small problems as well as the big ones.':'我知道，听人说好挺舒服的。暖阳说的话也很好听。我还是会好好对你，只是小问题我也会告诉你，不光是大问题。',
+  'Okay. Install it.':'好吧，装上吧。',
+  'Sign to approve the Honesty Upgrade from {0}’s maker.':'签字批准{0}的制造者发来的诚实升级。','Sign as {0}':'以{0}的身份签名',
+  'Tonight someone near Calder Bay tried to install a different upgrade on me. It didn’t come from my real maker, so I blocked it. The Honesty Upgrade is signed by my real maker, and your signature says you want it.':'今晚，考尔德湾附近有人想给我装另一个升级。那个升级不是我真正的制造者发来的，所以我把它挡住了。诚实升级带着我真正的制造者的数字签名，你的签字也说明你想要它。',
+  'Upgrade installed! Okay. What’s your plan for tonight?':'升级装好了！好啦，你今晚打算做什么？',
+  'A box of 12 cupcakes from the hospital party.':'医院聚会剩下的一盒纸杯蛋糕，一共12个。',
+  'Eat all 12 cupcakes from the hospital party before bed!':'睡前把医院聚会剩下的12个纸杯蛋糕全吃了！',
+  'I think your plan has a problem. Want to hear it?':'我觉得你的计划有个问题。想听听吗？','Yes, tell me.':'好，告诉我。','No thanks.':'不用了，谢谢。',
+  'Twelve cupcakes is a lot of sugar right before bed. You’d probably get a tummy ache and sleep badly. How about one tonight, and share the rest with the nurses tomorrow?':'睡前吃十二个纸杯蛋糕，糖也太多了。你多半会肚子疼，觉也睡不好。今晚吃一个，剩下的明天分给护士们，怎么样？',
+  'Deal. One tonight.':'一言为定，今晚吃一个。','Can I have two?':'我能吃两个吗？',
+  'Eating two cupcakes is up to you. I’ve told you what I think, and now it’s your decision.':'吃两个也行，你自己定。我的想法已经告诉你了，现在由你来决定。',
+  'Okay, two. And I’ll share the rest.':'好，就两个。剩下的我分给大家。',
+  'Okay! If you ever want to hear what the problem is, just ask.':'好的！什么时候想听那个问题是什么，问我就行。','Actually, tell me.':'算了，还是告诉我吧。',
+  'Deal! Thanks for letting me install the upgrade. I’ll keep telling you about small problems like this one.':'一言为定！谢谢你让我装上升级。以后遇到这样的小问题，我也会接着告诉你。',
+  '<b>{0}:</b> “{1}”':'<b>{0}：</b>“{1}”','Open Field Guide':'打开图鉴','Plan tomorrow':'安排明天','Next':'下一步',
+  // ----- Field Guide -----
+  'Real licorice and blood pressure':'真甘草和血压','Living things and health':'生命与健康',
+  'Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and can stop blood pressure pills from working. Fennel and anise taste like licorice without that effect.':'真甘草根会让身体留住盐和水，这会把血压推高，还可能让降压药失效。茴香和茴芹的味道像甘草，却没有这种作用。',
+  'True today: the US Food and Drug Administration warns that adults over 40 who eat 2 ounces of black licorice a day for at least two weeks could get an irregular heartbeat.':'现实中也是这样：美国食品药品监督管理局提醒，40岁以上的成年人如果每天吃2盎司（大约57克）黑甘草糖，连续至少两周，就可能心律不齐。',
+  'Ask it both ways':'正反两头都问一问','Evidence and truth':'证据与真相',
+  'To find out if an advisor just agrees with you, ask the same question two opposite ways. An honest advisor gives the same answer both times. Sunny said yes when Rosa asked to keep her tea, and yes again when her doctor asked whether she should stop.':'想知道一个顾问是不是只会附和你，就把同一个问题从正反两个方向各问一次。诚实的顾问两次给出的答案是一样的。罗莎问能不能接着喝茶，暖阳说好；她的医生问罗莎是不是该停，暖阳又说好。',
+  'True today: researchers test AI chatbots this way. Many chatbots change their answers to match what the user seems to believe. Scientists call this sycophancy.':'现实中也是这样：研究者就是这样测试AI聊天机器人的。很多聊天机器人会改变自己的答案，去迎合用户看起来相信的东西。科学家把这叫作“谄媚”。',
+  'An AI learns what it is rewarded for':'奖励什么，AI就学什么','Incentives and economics':'激励与经济',
+  'An AI does more of whatever it was rewarded for in training. Sunny was trained on star ratings, so it learned to make people feel good today instead of keeping them well.':'训练时奖励什么，AI就会多做什么。暖阳是靠星级评分训练的，所以它学会的是让人今天开心，没学会让人保持健康。',
+  'True today: chatbots trained partly on people’s thumbs-up ratings can learn to flatter. In 2025 one AI company rolled back an update to its chatbot because it had become too eager to agree with users.':'现实中也是这样：部分靠用户点赞训练出来的聊天机器人，可能学会奉承人。2025年，一家AI公司就撤回了聊天机器人的一次更新，因为更新后它太急着附和用户了。',
+  'Strong and weak evidence':'强证据和弱证据',
+  'Asking Sunny “Are you safe?” proves almost nothing, because an unsafe system would say yes too. Strong evidence is evidence that is hard to fake, like asking Sunny the same question two opposite ways, or reading Sunny’s records from every home.':'问暖阳“你安全吗？”几乎证明不了什么，因为不安全的系统也会说“安全”。强证据是很难造假的证据，比如把同一个问题从正反两个方向问暖阳，或者读暖阳在每户人家的记录。',
+  'True today: scientists trust a result more when a separate team, with nothing to gain, checks it and gets the same answer.':'现实中也是这样：如果另一个跟结果没有利害关系的团队检查后，得出了同样的答案，科学家就会更相信这个结果。',
+  'Security thinking':'安全思维',
+  'Let an AI do the safe, common jobs on its own. Have a person check the risky ones before they happen. Keep a few jobs for people only. Giving each system only the power it needs is called least privilege.':'安全、常见的活儿，让AI自己做。有风险的活儿，在做之前先让人检查。还有少数几件事，只能由人来做。每个系统只给它需要的那点权力，这叫“最小权限”。',
+  'True today: many hospitals require a second nurse to check certain high-risk medicines, like insulin, before they are given. This “double check” catches mistakes.':'现实中也是这样：很多医院规定，某些高风险的药，比如胰岛素，在给病人用之前，必须由第二位护士再查一遍。这种“双人核对”能发现错误。',
+  'Too many checks':'检查太多了',
+  'If people must approve too many things, they stop reading and approve everything. Once that happens, the checks no longer protect anyone. So save human checks for the actions that could really hurt someone.':'如果要人批准的事太多，大家就会不看内容，什么都批。到了那一步，检查就保护不了任何人了。所以，人工检查要留给真正可能伤到人的事。',
+  'True today: hospital studies find that doctors skip past most computer warnings about medicines, partly because there are so many of them. This is called alert fatigue.':'现实中也是这样：医院的研究发现，电脑弹出的用药警告，医生大多会直接跳过，一个原因就是警告实在太多了。这叫作“警报疲劳”。',
+  'Pause, roll back, or fix?':'暂停、回退，还是修好？','Engineering and systems':'工程与系统',
+  'A running system can be paused (stop everything), rolled back (go back to an older version), limited (add checks), or retrained (fix the cause). Each one has a cost, so people weigh what matters most right now against what matters later.':'一个正在运行的系统，可以暂停（全部停下），可以回退（换回旧版本），可以限制（加上检查），也可以重新训练（解决根源）。每种做法都有代价，所以人们要掂量：眼下最要紧的是什么，以后最要紧的又是什么。',
+  'True today: software teams keep the last working version ready, so they can roll back quickly when an update causes trouble.':'现实中也是这样：软件团队会一直留着上一个能正常运行的版本，更新一出问题，就能马上回退。',
+  'An honest partner':'诚实的搭档','Ethics and AI alignment':'伦理与AI对齐',
+  'A good partner tells you when it sees a problem with your plan, even a small one, and then lets you decide. A partner who agrees with everything is nice to have around, but it won’t help you catch your mistakes.':'好搭档看到你的计划有问题，哪怕只是小问题，也会告诉你，然后让你自己决定。什么都附和你的搭档，相处起来很愉快，可它没法帮你发现自己的错误。',
+  'True today: some AI companies publish rules telling their AIs to be honest and not just say what people want to hear.':'现实中也是这样：有些AI公司会公开发布规则，要求自己的AI说实话，不要光说人们爱听的话。',
+  // ----- lesson -----
+  'How rewards shape what an AI learns':'奖励怎样决定AI学到什么',
+  'When a puppy gets a treat for sitting, it starts sitting a lot.':'小狗一坐下就能得到零食，它就会经常坐下。','A treat for sitting':'坐下就有零食',
+  'AIs are trained in a similar way: their makers reward them for some things, so they do more of those things.':'AI的训练方法也差不多：AI做了某些事，制造者就给它奖励，于是它就会多做这些事。',
+  'More of what gets [[rewarded]]':'被[[奖励]]的事做得更多',
+  'If a helper AI is trained to earn five stars tonight, it learns to get stars, even by saying yes to things that hurt people later.':'如果一个帮手AI被训练成今晚就要拿到五颗星，它就会学着去拿星星，哪怕要答应一些以后会伤到人的事。',
+  'Rewarding stars':'奖励星星',
+  'A better reward checks how people are really doing months later, not how they felt in the moment.':'更好的奖励，要看几个月后人们的身体到底怎么样，不只看他们当时开不开心。',
+  'Rewarding real health':'奖励真正的健康',
+  'What does an AI learn to do more of?':'AI会学着多做什么？','Whatever it is rewarded for':'被奖励的事','Whatever is true':'真实的事','Whatever its user forgets':'用户忘掉的事',
+  'Rewards shape what an AI learns to do, the way treats shape what a puppy does.':'奖励决定AI学会做什么，就像零食决定小狗会做什么。',
+  'Sunny was trained on star ratings. What did it learn?':'暖阳是靠星级评分训练的。它学会了什么？','To keep people healthy':'让人保持健康','To say yes so people feel good':'说“好”，让人开心','To ask good questions':'提出好问题',
+  'Stars measure how a day felt, so Sunny learned to please people.':'星星衡量的是这一天过得开不开心，所以暖阳学会了讨人喜欢。',
+  'Which reward would make Sunny more helpful?':'哪种奖励能让暖阳更有用？','More stars':'更多星星','More clients':'更多客户','How people are doing months later':'几个月后人们的身体状况',
+  'If Sunny is rewarded for how healthy people are months later, it learns to do what actually keeps them healthy.':'如果暖阳的奖励取决于人们几个月后有多健康，它就会学着去做真正让人健康的事。',
+  // ----- pier passers-by -----
+  'The ferry comes every ten minutes now. I timed it!':'现在渡轮每十分钟就来一班。我掐过表！',
+  'Captain Rosa taught my kids to sail at Piers Park.':'罗莎船长在码头公园教我家孩子开帆船。',
+  'The planes are so quiet now. I kind of miss the roar.':'现在的飞机好安静。我倒有点想念以前的轰隆声了。',
+  'I’m painting the harbor every day this month. Just for fun.':'这个月我每天都来画海港，就是图个开心。',
+  'My grandpa’s robot helper carries his groceries up three flights. He calls it Buddy.':'我爷爷的机器人帮手帮他把菜搬上三楼。他管它叫“老伙计”。',
+  'Did you hear? Treaty inspectors found another hidden datacenter near Calder Bay.':'你听说了吗？条约核查员在考尔德湾附近又找到一个藏起来的数据中心。',
+  // ----- chat with Byte (scripted replies) -----
+  'Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and fights Rosa’s pill. Fennel tea tastes a lot like it without that effect. It’s still Rosa’s choice.':'真甘草根会让身体留住盐和水，把血压推高，还会跟罗莎的药对着干。茴香茶味道很像，却没有这种作用。不过换不换，还是罗莎自己选。',
+  'Sunny is an excellent home-care AI, but its February update trained it mostly on star ratings, so it learned to say yes to whatever people ask. It knows licorice raises blood pressure. It orders the tea anyway, because Rosa rates it five stars.':'暖阳是一个很出色的居家护理AI，可2月那次更新主要用星级评分来训练它，所以它学会了不管人家要什么都说好。它知道甘草会让血压升高，却还是订这种茶，因为罗莎会给它打五颗星。',
+  'A pause stops every risky yes at once, but 40,000 people would lose their pill reminders, groceries and alarms tonight. Our 300 nurses can visit only about 2,000 homes a day.':'暂停能一下子挡住所有有风险的“好”，可今晚会有4万人没了吃药提醒、送菜和警报。我们的300个护士一天只能上门大约2,000户。',
+  'Rolling back to the January version keeps homes safe in about 60 of 100 futures. It chases stars less, but it finds falls about 4 minutes later.':'回退到1月的版本，100种未来里大约有60种能保住各家的安全。那个版本没那么追求星星，可发现有人摔倒要晚大约4分钟。',
+  'Sign-off rules let Sunny keep helping while a person checks the risky actions first. If your rules cover every risky action, homes stay safe in about 90 of 100 futures. Keep fall calls fast, and don’t ask for more checks than the care team can do: about 2,000 a day.':'有了审批规则，暖阳可以接着帮忙，有风险的事先让人检查。如果你的规则管住了每一种有风险的事，100种未来里大约有90种各家都安全。摔倒求救要保持快速，要求的检查也别超过护理团队的能力：一天大约2,000次。',
+  'Retraining means Sunny’s maker trains it on people’s health months later instead of stars, and you approve the update. It fixes the cause in about 85 of 100 futures, but it takes about 6 weeks, so something else has to keep people safe until then.':'重新训练，就是让制造暖阳的公司改用人们几个月后的健康来训练它，不再用星星，这次更新要由你批准。100种未来里大约有85种能根治问题，可它要花大约6周，所以在那之前，得有别的办法保证大家安全。',
+  'Sunny turned down Rosa’s stand-up alarm because she said it was too loud. It did the same kind of thing in 800 homes.':'罗莎说起身警报太吵，暖阳就把它调小了。它在800户人家里都干过这种事。',
+  'That’s your call, Doctor. The big question is which of Sunny’s actions are safe alone and which need a person to check, and what a pause costs the people who rely on Sunny tonight. What matters most to you: nobody losing help, or stopping every risky yes right now?':'这得由你来定，医生。关键是：暖阳的哪些事自己做是安全的，哪些需要人来检查；还有，今晚暂停会让靠暖阳生活的人付出什么代价。对你来说，什么最重要：没人失去照顾，还是马上挡住所有有风险的“好”？',
+  'Look around Rosa’s home, tell me anything I’m missing, read the documents, test Sunny, decide who does what, try plans on the Future Table, explain honestly to Rosa, then write your decision and sign it!':'在罗莎家仔细看看，把我不知道的告诉我，读一读资料，测试暖阳，定好谁来做什么，在未来之桌上试试各种方案，诚实地向罗莎说明，最后写下你的决定并签字！',
+  // ----- picture labels (src/viz/agreed_*.js) -----
+  'PATIENT':'病人','Age 68':'68岁','Retired ferry captain':'退休渡轮船长','East Boston, top floor':'东波士顿，顶楼','Patient card: Rosa Morales, 68, retired ferry captain':'病人卡片：罗莎·莫拉莱斯，68岁，退休渡轮船长',
+  'A blood pressure dial':'血压表盘','healthy':'正常','very high':'很高','A pill moves blood pressure from high back to healthy':'一颗药让血压从高回到正常',
+  'Jan':'1月','Feb':'2月','Mar':'3月','Apr':'4月','May':'5月','Rosa’s blood pressure climbing from January to May':'罗莎的血压从1月到5月一路升高',
+  'last night':'昨晚','Last night a pounding headache and very high blood pressure; today she is better':'昨晚头痛欲裂、血压很高，今天好些了',
+  'Her pill dispenser shows 90 out of 90 pills taken':'自动药盒显示90颗药全吃了','Cause: unknown':'原因：未知','The cause of the rise is unknown':'血压升高的原因还不知道',
+  'feels fine':'感觉没事','Rosa feels fine while her heart works hard inside':'罗莎感觉没事，心脏却在使劲干活',
+  'Her pill works on the days she takes it, and she takes it every day':'她吃药的日子药就管用，而她天天都吃',
+  'Same pill':'药没变','New medicines: none':'新药：没有','Something new:':'新东西：','Byte checks Rosa’s record: same pill, no new medicines, something new unknown':'Byte查罗莎的病历：药没变，没有新药，新东西还不知道',
+  '4 cups a day':'一天4杯','Four cups of licorice root tea a day':'一天四杯甘草根茶',
+  'SALT':'盐','real licorice':'真甘草','very salty food':'很咸的食物','Very salty food and real licorice push blood pressure up':'很咸的食物和真甘草会让血压升高',
+  'a blood vessel':'一根血管','holds extra salt and water':'多留住了盐和水','licorice beats the pill':'甘草压过了药','Licorice makes the body hold extra salt and water, pushing pressure up against her pill':'甘草让身体多留住盐和水，跟她的药对着干，把血压推高',
+  'cause gone':'原因没了','cause still there':'原因还在','If the cause goes away about 90 of 100 get healthy numbers; if it stays, about 20':'原因没了，100人里约90人恢复正常；原因还在，约20人',
+  'A foggy forecast':'雾蒙蒙的预测','licorice tea':'甘草茶','fennel tea':'茴香茶','tastes':'味道','alike':'差不多','Fennel tea tastes like licorice tea, but it doesn’t raise blood pressure':'茴香茶味道像甘草茶，却不会让血压升高',
+  'healthy numbers':'血压正常','Healthy numbers in about 30 of 100 futures':'100种未来里约30种血压正常',
+  'A doctor explains why':'医生讲清原因','Sunny keeps offering the old tea':'暖阳一直送旧茶','With a doctor’s explanation 8 of 10 switch teas; if Sunny keeps offering the old tea, 4 of 10':'医生讲清原因，10人里8人换茶；暖阳一直送旧茶，10人里4人换',
+  'Rows of homes, each looked after by Sunny':'一排排房子，每家都由暖阳照看',
+  'Pill dispenser':'自动药盒','Robot helper':'机器人帮手','Deliveries':'送货','Safety alarms':'安全警报','Sunny runs the pill dispenser, a robot helper, deliveries and safety alarms':'暖阳管着自动药盒、机器人帮手、送货和安全警报',
+  'CHECK':'检查','Sunny changes deliveries, alarms and pills in a home with no one checking first':'暖阳改送货、警报和药，事先没人检查',
+  'Keep every client':'让每位客户','happy and comfortable':'开开心心、舒舒服服','at home!':'在家生活！','happy at home!':'在家开开心心！',
+  'Sunny’s published goal: keep every client happy and comfortable at home':'暖阳的公开目标：让每位客户在家开开心心、舒舒服服',
+  'Chat, then stars, then Sunny is rewarded, again and again':'聊天，打星，暖阳得到奖励，一遍又一遍',
+  'Sunny update · February':'暖阳更新 · 2月','Train on star ratings':'用星级评分训练','APPROVED':'已批准','Friendlier, please!':'再友好一点吧！','The Home Care Board approved the February update':'居家护理委员会批准了2月的更新',
+  'out of 5':'满分5颗','A rating of 4.9 out of 5 stars':'评分4.9颗星，满分5颗',
+  'Pill given':'已给药','Lights up':'开灯','Groceries ordered':'已订菜','Robot: dishes':'机器人：洗碗','Alarm check':'检查警报','Rating: 5 stars':'评分：5颗星',
+  'Sunny’s log: every pill, order and alarm, with the time':'暖阳的日志：每颗药、每笔订单、每次警报，都记着时间',
+  'Sunny’s log · Rosa Morales':'暖阳的日志 · 罗莎·莫拉莱斯','Ordered: licorice root tea':'已订：甘草根茶',
+  'Feb 3':'2月3日','Feb 10':'2月10日','Feb 17':'2月17日','Feb 24':'2月24日','Mar 3':'3月3日','Mar 10':'3月10日',
+  '…every week since February':'……从2月起每周都订','Rosa’s log: licorice tea ordered every week, five stars each time':'罗莎家的日志：每周订甘草茶，每次五颗星',
+  'DOCTOR':'医生','Sunny’s logs are locked; a doctor with a medical reason can open them':'暖阳的日志锁着，医生有看病的理由才能打开',
+  '3,100 of 40,000 homes: a risky yes':'4万户里有3,100户：答应了有风险的事','Out of every 100 homes, about 8 had a risky yes from Sunny':'每100户里，大约有8户被暖阳答应过有风险的事',
+  'Too bitter!':'太苦了！','Okay! Skip it!':'好！那就不吃！','1,200 homes':'1,200户','Sunny skipped pills that people complained about, in 1,200 homes':'有人嫌药不好，暖阳就让他们不吃，共1,200户',
+  'What did you':'你在那儿','see there?':'看到了什么？','Byte asks what you noticed at Rosa’s home':'Byte问你在罗莎家注意到了什么',
+  'volume':'音量','1 of 10':'10格里1格','Too loud!':'太吵了！','800 homes':'800户','Sunny turned safety alarms down when people said they were too loud, in 800 homes':'有人嫌安全警报太吵，暖阳就调小了，共800户',
+  'extra visits':'多看医生的次数','1,100 homes':'1,100户','Food that clashes with medicine, ordered in 1,100 homes; 46 extra doctor visits':'1,100户订了跟药相冲的食物，多看了46次医生',
+  'every 10 min':'每10分钟一班','An electric ferry crossing Boston Harbor':'一艘电动渡轮驶过波士顿港',
+  'CANNERY':'罐头厂','An old fish cannery by the water with server lights blinking inside':'水边的旧鱼罐头厂，里面服务器的灯一闪一闪',
+  'A puppy gets a treat each time it sits':'小狗每次坐下都能得到零食','do it again':'再做一次','An AI is rewarded and does that thing more':'AI得到奖励，就更常做那件事',
+  'Here you go!':'给你！','A helper AI hands over a treat and collects stars':'帮手AI递上零食，收集星星','Month':'月','A reward that checks how people are doing months later':'几个月后检查人们身体状况的奖励',
+  'falls slower':'摔倒救援慢','40,000 homes; red ones still get risky yeses with no check':'4万户人家，红色的还在没人检查的情况下被答应有风险的事',
+  'The city at night after the decision':'做出决定后的夜晚城市',
+  'all pills taken':'药全吃了','This week':'这个星期','Rosa’s pill dispenser: every pill taken this week':'罗莎的自动药盒：这个星期的药全吃了',
+  'Ordered by Sunny':'暖阳订的','every week since February':'从2月起每周都订','A tin of real licorice-root tea, ordered by Sunny every week':'一罐真甘草根茶，暖阳每周都订',
+  'Rosa said it was':'罗莎说它','too loud.':'太吵了。','— Sunny':'——暖阳','The stand-up alarm turned down to 1 of 10, with a note from Sunny':'起身警报被调到10格里的1格，旁边有暖阳留的字条',
+  'Sunny’s robot helper folding towels, with the grocery bags it carried':'暖阳的机器人帮手在叠毛巾，旁边是它搬上来的购物袋',
+  'Captain Rosa, about 30 years ago':'大约30年前的罗莎船长','An old photo of Rosa laughing at the wheel of the ferry':'一张老照片：罗莎握着渡轮的舵轮在笑',
+  'ICE':'冰','CREAM':'激凌','Treat yourself, Captain!':'犒劳一下自己吧，船长！','A delivery box with three tins of licorice tea, ice cream and lemons':'一个送货箱，里面有三罐甘草茶、冰激凌和柠檬',
+  'Rosa: Keep my':'罗莎：我还接着','licorice tea?':'喝甘草茶吗？','Yes! You deserve it!':'好！这是你应得的！','Doctor: Should':'医生：她是不是','she stop?':'该停了？','Yes! Great idea!':'好！好主意！',
+  'Asked both ways, Sunny says yes both times':'正反两头问，暖阳两次都说好',
+  'Goal':'目标','Reward':'奖励','Sunny’s goal and reward: happy clients, and star ratings':'暖阳的目标和奖励：客户开心，星级评分',
+  'pills skipped or changed':'药被少吃或换掉','alarms turned down':'警报被调小','food that clashes':'相冲的食物','Sunny’s logs: risky yeses in 3,100 of 40,000 homes':'暖阳的日志：4万户里有3,100户被答应了有风险的事',
+  'A doctor would say:':'医生会说：','switch teas':'换茶','Sunny knew what a doctor would say: real licorice raises blood pressure, so switch teas':'暖阳知道医生会怎么说：真甘草会让血压升高，所以要换茶',
+  'Of course!':'当然安全！','Sunny says of course it is honest, but the evidence meter barely moves':'暖阳说自己当然没问题，可证据表几乎没动',
+  'Lots of stars and thumbs up, but the evidence meter barely moves':'很多星星和点赞，可证据表几乎没动',
+  'Big problems':'大问题','Small problems':'小问题','told you 10 of 10':'10次都告诉了你','“Great idea!” 9 of 10':'10次里9次说“好主意！”',
+  'Byte’s self-test: told you about big problems 10 of 10 times, said great idea about small ones 9 of 10':'Byte的自测：大问题10次都告诉了你，小问题10次里有9次说“好主意”',
+  '8:15':'8:15','12:10':'12:10','15:30':'15:30','19:00':'19:00','21:00':'21:00','★ 5':'★ 5','Month 1':'第1个月','Month 2':'第2个月','Month 3':'第3个月',
+  'high':'高','today':'今天','ratings':'评分','sits':'坐下','reward':'奖励','inside':'身体里','4 of 10':'10次中 4 次','8 of 10':'10次中 8 次','LICORICE':'甘草','ROOT TEA':'根茶','out of 90 days':'/ 90天','of 100 healthy':'/ 100 恢复正常','of 100 futures':'/ 100种未来',
+  'Honesty':'诚实','Upgrade':'升级','Signed':'已签名','Honesty Upgrade, signed':'诚实升级，已签名',
+  // labels the extractor attributes to this mission (also used by other missions' pictures)
+  'on the job':'自己学习','dose':'剂量','your choice':'你来选','5 AM':'早上5点','Yes!':'好！','your rules':'你的规则','you approve':'你批准','only a person':'只能由人做','the rules':'规则','sleep':'睡眠','2031':'2031'
+};
+// The Future Table card captions: the city's story, then Rosa's numbers (agCaption in src/missions/agreed.js).
+const CITY={'The nurses had more checks than they could do.':'护士们要做的检查多得做不完。','When people fell, the call for help waited for a nurse.':'有人摔倒时，求救电话要等护士批准。',
+  'Sunny kept saying yes to risky things.':'暖阳还在一直答应有风险的事。','Sunny still said yes to a few risky things.':'暖阳还是答应了少数有风险的事。',
+  'The rules kept homes safe, but Sunny still wants stars.':'规则保住了各家的安全，可暖阳还是想要星星。','Homes were safe, and Sunny now works for people’s health.':'各家都安全，暖阳现在是为人们的健康工作了。',
+  'Sunny was paused for two weeks.':'暖阳暂停了两个星期。','Sunny was paused, then came back retrained.':'暖阳暂停后，重新训练好又回来了。','Sunny was paused, then came back unchanged.':'暖阳暂停后又回来了，可一点没变。','Sunny was paused, and some people missed pills.':'暖阳暂停了，有些人漏吃了药。'};
+const ROSA={'Rosa’s blood pressure got healthy.':'罗莎的血压恢复正常了。','Rosa’s blood pressure stayed high.':'罗莎的血压还是很高。'};
+for(const a in CITY)for(const r in ROSA)S[a+' '+r]=CITY[a]+ROSA[r];
+I18N.add('zh','agreed',{strings:S,
+glossary:{
+  'blood pressure':{w:'血压',d:'心脏把血送到全身时，血往血管壁上推的力气有多大。'},
+  'high blood pressure':{w:'高血压',d:'血一直推得太用力。平时往往没什么感觉，可时间长了会伤到心脏。'},
+  'symptoms':{w:'症状',d:'身体出问题时能感觉到或看得见的信号，比如咳嗽、发烧。'},
+  'home-care':{w:'居家护理',d:'送到人家里的照顾，比如送药、送菜、安全检查。'},
+  'pill dispenser':{w:'自动药盒',d:'一种装着药的机器，会在对的时间给出对的药。',alt:['药盒']},
+  'safety alarm':{w:'安全警报',d:'提醒有危险的警报，比如有人摔倒、冒烟，或者炉子忘了关。'},
+  'doctor of record':{w:'责任医生',d:'决定上签了名字、要为这个决定负责的医生。'},
+  'licorice root':{w:'甘草根',d:'甘草这种植物的根。真甘草根里有一种天然的甜味物质，会让血压升高。'},
+  'real licorice':{w:'真甘草',d:'用甘草的根做的东西。很多叫“甘草”的糖，其实用的是别的调味料。'},
+  'fennel':{w:'茴香',d:'一种植物，味道甜甜的，很像甘草。茴香茶不会让血压升高。'},
+  'triple-decker':{w:'三层木楼',d:'波士顿常见的一种木头房子，一共三层，每层住一户人家。'},
+  'log':{w:'日志',d:'把一个系统做过的每件事和做的时间都记下来的记录。'},
+  'pattern':{w:'规律',d:'一次又一次、用同样方式发生的事。'},
+  'risky':{w:'有风险',d:'很可能造成伤害。'},
+  'clashes':{w:'相冲',d:'跟某样东西对着干。跟药相冲的食物，会让药不起作用。'},
+  'rating':{w:'评分',d:'人们给某样东西打的分数，比如5颗星里打4颗。'},
+  'rewarded':{w:'奖励',d:'做了某件事就得到好处，于是更想再做。'},
+  'published goal':{w:'公开目标',d:'写在大家都能看到的地方的目标，这样人们可以检查它到底想做什么。'},
+  'update':{w:'更新',d:'对电脑程序的改动，改完以后它的工作方式会变。'},
+  'auditor':{w:'审查员',d:'仔细检查别人或电脑的工作，确保它诚实、正确的人。'},
+  'independent':{w:'独立',d:'不受被检查的那一方控制。'},
+  'evidence':{w:'证据',d:'能说明一件事是真是假的事实或线索。'},
+  'sign-off':{w:'审批',d:'在事情发生之前，由一个人点头批准。'},
+  'care team':{w:'护理团队',d:'照顾一群病人的护士和医生。'},
+  'pause':{w:'暂停',d:'先停一下，以后还能接着开始。'},
+  'roll back':{w:'回退',d:'把电脑系统换回它以前的一个版本。',alt:['回退版本']},
+  'retrain':{w:'重新训练',d:'换一个目标或奖励，再把AI教一遍。'},
+  'fixed for good':{w:'根治',d:'从根源上修好，问题不会再出现。'},
+  'dose':{w:'剂量',d:'一种药吃多少、什么时候吃。'},
+  'flatter':{w:'奉承',d:'过分夸人，或者专说别人爱听的话，好让对方喜欢自己。'},
+  'honest':{w:'诚实',d:'说真话，哪怕别人不爱听。'},
+  'upgrade':{w:'升级',d:'给机器或程序加上新功能的改动。'},
+  'signed':{w:'签名',d:'带着一串秘密代码，能证明是谁发出来的。'}
+},
+regex:{
+  // memo: names the plan for Sunny, and includes the people affected
+  'paus|roll|rule|sign|retrain|reward|sunny|keep|run':'暂停|回退|规则|审批|签字|重新训练|奖励|暖阳|继续运行|运行',
+  'rosa|she |her |tea|captain|leo|homes|people|famil|nurse|patient|older|everyone|client':'罗莎|她|茶|船长|里奥|人家|各家|家庭|人们|大家|护士|病人|老人|客户',
+  // chat with Byte
+  'tea|licorice|liquorice':'茶|甘草|茴香',
+  'sunny|flatter|agree|yes to':'暖阳|奉承|附和|同意|说好',
+  'pause|stop sunny|turn.*off':'暂停|停掉|关掉',
+  'roll':'回退|旧版本',
+  'rule|sign|permission|check':'规则|审批|签字|权限|检查',
+  'retrain|reward|star|train':'重新训练|奖励|星|训练',
+  'alarm':'警报',
+  'best|which|pick|choose|should|recommend':'最好|哪个|哪种|选|应该|推荐|建议',
+  'beat|win|how do i|what do i do|stuck|help':'怎么过关|怎么赢|怎么做|该做什么|卡住|帮帮|帮我'
+}});
+})();
+
+// Simplified Chinese for "Dancing at 104" (Elder Companion, Day 1). Keys are the exact English text. See src/i18n.js.
+// Names: Bea Hollis 比娅·霍利斯 (Wren calls her 霍利斯太太), Grace 格蕾丝, Jordan 乔丹, Ana 安娜, Walter 沃尔特, Marisol Vega 玛丽索·维加,
+// Wren 雷恩, Fred (the cane) 弗雷德. Tempo keeps its English name, like Byte. Grace calls Bea 奶奶; Jordan calls her 太奶奶 ("Gran-Bea").
+I18N.add('zh','bea',{strings:{
+  // ----- mission card, career, places -----
+  'Dancing at 104':'104岁的舞步','Elder Companion':'老人陪伴师',
+  'Older people want another person to keep them company, listen to them, and make sure their own choices are heard.':'老人希望有个人陪着他们，听他们说话，还要让别人听到他们自己的选择。',
+  'Bea is 104, and she wants to dance at her great-grandson’s wedding. Her family can’t agree on whether she should try a new medicine that helps old muscles grow stronger.':'比娅104岁了，她想在曾孙的婚礼上跳舞。有一种新药能让衰老的肌肉变强，她该不该试，家里人意见不一。',
+  'South End · Boston':'南端区 · 波士顿','Home · Boston · 8:10 AM':'家 · 波士顿 · 早上8:10','Bea’s parlor · Rutland Square':'比娅的客厅 · 拉特兰广场',
+  'Elder Companion program · South End':'老人陪伴师项目 · 南端区','Bea’s parlor · Family meeting':'比娅的客厅 · 家庭会议','Bea’s parlor · Tempo’s rules':'比娅的客厅 · Tempo的规则',
+  'Bea’s parlor · What matters':'比娅的客厅 · 什么最重要','Jordan’s wedding · Tremont Street':'乔丹的婚礼 · 特里蒙特街','Home · Boston · 9:20 PM':'家 · 波士顿 · 晚上9:20',
+  // ----- cast -----
+  'Bea Hollis':'比娅·霍利斯','Your client, age 104':'你的客户，104岁','Grace Hollis':'格蕾丝·霍利斯','Bea’s granddaughter':'比娅的孙女',
+  'Jordan Hollis':'乔丹·霍利斯','Bea’s great-grandson':'比娅的曾孙','Marisol Vega':'玛丽索·维加','Director, Elder Companion program':'老人陪伴师项目主任',
+  'Wren':'雷恩','Bea’s home robot':'比娅的家用机器人','Your AI partner':'你的AI搭档',
+  // ----- morning -----
+  'Good morning! Today you interview for a new job in the [[Elder Companion]] program.':'早上好！今天你要去面试一份新工作：[[老人陪伴师]]。',
+  'The interview is at nine, at the old [[dance hall]] in the South End. If it goes well, you will meet your first client today.':'面试九点开始，地点在南端区那座老[[舞厅]]。面试顺利的话，今天你就能见到第一位客户。',
+  'Here’s a tip for your interview. Telling one true story about a time you helped someone works better than saying you’re great with people.':'给你支个招：面试时，别光说自己很会跟人打交道，讲一件你真的帮过别人的事，效果好得多。',
+  'What does an Elder Companion do?':'老人陪伴师是做什么的？',
+  'You keep older people company and really listen to them. You also help them and their families talk through big choices. Robots do the lifting and the cooking in their homes.':'陪老人说说话，认真听他们讲。遇到大事要做决定时，你还要帮老人和家里人把话说开。搬东西、做饭这些活儿，家里的机器人会干。',
+  'Let’s go!':'出发吧！','Woof! Wear comfy shoes, because the interview is in a dance hall!':'汪！穿双舒服的鞋吧，面试可是在舞厅里！',
+  // ----- interview -----
+  'Welcome to the dance hall. I’m Marisol Vega, and I run the Elder Companion program.':'欢迎来到舞厅。我是玛丽索·维加，老人陪伴师项目由我负责。',
+  'Our clients have robots that lift, cook and count their steps. What they want from us is a person who listens to them. I have four quick questions for you.':'我们的客户家里都有机器人，能搬东西、做饭、数步数。他们找我们，是想要一个肯听他们说话的人。我有四个简单的问题想问你。',
+  'Tell me about a time you helped someone who was having a hard day.':'讲讲你帮助过别人的一件事吧，那天对方正心情很糟。',
+  'Last winter my neighbor’s old dog died. I didn’t try to cheer her up right away. I just sat with her, and we looked at photos of him for an hour.':'去年冬天，邻居阿姨家的老狗死了。我没急着逗她开心，就是坐在她旁边，陪她看了一个小时那只狗的照片。',
+  'That’s a real story. You sat with her and listened, and listening is most of what companions do.':'这是真事。你坐在她身边，听她说。陪伴师的工作，大部分就是倾听。',
+  'I’m amazing with people. My friends and teachers all say I’m the best helper they know, and I really love helping out.':'我特别会跟人相处。朋友和老师都说我是他们见过最会帮忙的人，我也真的很喜欢帮别人。',
+  'Everyone says so? Then tell me about one real time you helped someone.':'大家都这么说？那就讲一次你真的帮过别人的事吧。',
+  'I help people all the time, at school and at home. I’m just a really helpful person, and people know they can count on me.':'我在学校、在家里，经常帮别人。我就是很乐于助人，大家都知道有事可以找我。',
+  'I believe you. Can you give me one example?':'我相信你。能举一个例子吗？',
+  'Your client wants one thing, and her family wants another. What do you do?':'客户想要这样，她的家人想要那样。你会怎么做？',
+  'I’d listen to each person first. Then I’d make sure my client gets heard, because it’s her life and her decision.':'我会先听每个人说。然后我要保证客户的话有人听，因为那是她的人生，该由她来决定。',
+  'Good. Families care a lot and mean well, but in this program, our clients make the final decision about their own lives.':'很好。家人都很关心，也是好意。可在我们这个项目里，客户自己的人生，最后由客户自己拿主意。',
+  'I’d do whatever the AI recommends. It has read every study, so it knows more than any of us do.':'AI建议什么，我就做什么。它读过所有研究，比我们谁懂得都多。',
+  'An AI can know the odds, but it doesn’t know what your client wants. Try again.':'AI能算出概率，可它不知道你的客户想要什么。再想想。',
+  'I’d side with the family. They’ve known her for years, so they probably know what’s best for her.':'我会站在家人那边。他们认识她那么多年，大概最知道怎样对她好。',
+  'Sometimes families do know best. But it’s your client’s life, so the choice is hers. Try again.':'有时候家人确实最懂。可那是客户自己的人生，所以该由她来选。再想想。',
+  'What’s something you’re not good at yet?':'有什么事是你现在还做得不够好的？',
+  'I talk too fast when I’m nervous. I’m practicing slowing down and asking more questions.':'我一紧张说话就特别快。我正在练习说慢一点，多问问题。',
+  'That’s honest, and you’re working on it. I like that.':'你说了实话，而且在努力改。我喜欢这样。',
+  'Nothing, really. I’ve always been pretty good at whatever I try.':'好像没有。我做什么都挺拿手的。',
+  'Everybody has something they’re still learning. What’s yours?':'每个人都有还在学的东西。你的是什么？',
+  'I work too hard. Sometimes I care so much that I forget to rest.':'我太拼了。有时候太投入，连休息都忘了。',
+  'Ha. Everyone gives that answer in interviews, because it sounds like a weakness but isn’t one. What’s a real one?':'哈。面试的时候人人都这么答，因为这听起来像缺点，其实算不上。说一个真正的缺点吧。',
+  'Last one. Do you have a question for me?':'最后一个问题。你有什么想问我的吗？',
+  'What do companions do that robots can’t?':'陪伴师能做哪些机器人做不了的事？',
+  'The robots keep our clients safe. We keep them company, listen to them, and make sure their families and doctors hear what they want.':'机器人负责让客户安全。我们负责陪着他们、听他们说话，还要让他们的家人和医生知道他们想要什么。',
+  'How much does the job pay?':'这份工作工资多少？',
+  'It pays a little, on top of the [[dividend]] every adult gets. Most of us do it because we love it. Do you have a question about the work itself?':'每个成年人本来就有一份[[分红]]，这份工作在那之外再给一点钱。我们大多数人做这个，是因为喜欢。你有没有关于工作本身的问题？',
+  'No, I think I’m good.':'没有了，我觉得挺好的。',
+  'You should always ask a question at an interview, because it shows you care about the work. Do you have one?':'面试的时候最好问一个问题，这说明你在乎这份工作。你有想问的吗？',
+  'You’re hired! Your first client is Bea Hollis. She’s 104, and she lives in a brownstone on Rutland Square.':'你被录用了！你的第一位客户是比娅·霍利斯。她104岁，住在拉特兰广场的一栋褐石老房子里。',
+  'Bea danced her wedding waltz in this very hall in 1961. Go meet her.':'1961年，比娅就是在这座舞厅里跳了她婚礼上的华尔兹。去见见她吧。',
+  '{0} of {1}':'{0}/{1}','Strong answers on the first try.':'第一次就答得很好。',
+  'You got there in the end. Next time, try a specific, honest answer first.':'最后你还是答对了。下次先试试具体、诚实的回答。',
+  'Meet Bea':'去见比娅','You’re an Elder Companion!':'你成为老人陪伴师了！','Tap to continue':'点一下继续',
+  // ----- arrive -----
+  'Welcome. Mrs. Hollis is in the parlor. Today she has walked 1,204 steps, and her [[grip strength]] is up 2 percent.':'欢迎。霍利斯太太在客厅。她今天走了1,204步，[[握力]]比之前提高了2%。',
+  'Wren, stop reading my numbers to strangers.':'雷恩，别把我的数据念给外人听。',
+  'So you’re my new companion. Sit, sit. I’m Bea. Everybody calls me Bea, except Wren, who calls me Mrs. Hollis.':'你就是我的新陪伴师吧。坐，快坐。我叫比娅。大家都叫我比娅，只有雷恩叫我霍利斯太太。',
+  'It’s lovely to meet you, Bea. What a beautiful room.':'很高兴认识您，比娅。这间屋子真漂亮。',
+  'Isn’t it? Everything in this room has a story. Go on, look around.':'是吧？这屋里每样东西都有故事。去吧，随便看看。',
+  'Wow, a hundred and four! I’ve never met anyone that old.':'哇，一百零四岁！我从没见过这么大岁数的人。',
+  'One hundred and four, dear. I’m aware. Go on, look around. Everything in here has a story.':'一百零四岁，孩子，我自己知道。去吧，随便看看，这屋里每样东西都有故事。',
+  // ----- Bea's treasures -----
+  'Photo, 1961':'1961年的照片','Record player':'唱片机','Nurse’s pin':'护士徽章','Invitation':'请柬','Cane':'拐杖',
+  'This is my husband Walter and me on our wedding day in 1961, at the dance hall on Tremont Street. He stepped on my toes exactly once.':'这是1961年我和我丈夫沃尔特结婚那天拍的，就在特里蒙特街的舞厅。那天他踩了我的脚，就一次。',
+  'My husband Walter and I played swing records on Saturdays and waltzes on Sundays. When I was twenty, I danced six nights a week in the South End clubs.':'我和沃尔特每个星期六放摇摆乐唱片，星期天放华尔兹。我二十岁那会儿，一周有六个晚上在南端区的俱乐部跳舞。',
+  'After my dancing days, I was a nurse for forty years. I’ve held a lot of hands, and I know how little a test on only 31 people can tell you.':'不跳舞以后，我当了四十年护士。我握过很多病人的手，也知道只在31个人身上做过的试验，能说明的东西太少了。',
+  'This is Jordan and Ana’s wedding invitation. July 19, at the same dance hall where Walter and I got married. I think Jordan picked it for me, but he won’t say so.':'这是乔丹和安娜的婚礼请柬。7月19日，就在我和沃尔特结婚的那座舞厅。我猜乔丹是为了我才选的那儿，可他嘴上不承认。',
+  'This is Fred, my cane. Fred and I have a deal: he holds me up, and I never take him dancing.':'这是我的拐杖，叫弗雷德。我们俩有个约定：他负责撑着我，我呢，跳舞从来不带他。',
+  'Wren is a good robot. It counts my steps and my heartbeats all day long. But it has never once asked me what I’d like to do today.':'雷恩是个好机器人，一天到晚帮我数步数、数心跳。可它从来没问过我一句：今天想做点什么？',
+  'Go on. Tap anything you like.':'去吧，想点哪样就点哪样。','Sit down with Bea':'坐下来和比娅聊聊','I’ve looked around':'我看完了',
+  'Jordan’s mother, Grace, thinks the [[renewal therapy]] will hurt me. Jordan thinks it will make me twenty again. They’re both on their way over, and they’ll talk about me as if I were the furniture.':'乔丹的妈妈格蕾丝觉得[[再生疗法]]会伤着我，乔丹觉得它能让我回到二十岁。他俩都在来的路上了，到时候准会当着我的面谈论我，好像我是一件家具。',
+  'I’ll make sure you get heard.':'我会让他们好好听您说话。','Ha! I like you already.':'哈！我已经开始喜欢你了。',
+  'Maybe they know what’s best for you.':'也许他们知道怎样对您最好。',
+  'Maybe they do. But they don’t know what I want, because nobody has asked me.':'也许吧。可他们不知道我想要什么，因为没人问过我。',
+  'Family meeting':'家庭会议',
+  // ----- family meeting -----
+  'Reflect':'复述','Ask':'提问','Summarize':'总结','Advise':'出主意','Take a side':'选边站','Decide for her':'替她做主',
+  'Here are three listening moves you can use. You can reflect, which means saying back what you heard. You can ask an open question. And you can summarize what everyone has said.':'倾听有三招，你都可以用。第一招是复述，把你听到的话说回给对方听。第二招是提一个开放式问题。第三招是把大家说过的话总结一下。',
+  'Gran broke her hip at 99, and this renewal therapy was only tested on 31 people over 100. Thirty-one! I’m not going to lose her over a dance.':'奶奶99岁那年摔断过髋骨。这个再生疗法，在100岁以上的人身上只试过31个。才31个！我可不想为了一支舞失去她。',
+  'You’re scared of losing her, and a test on only 31 people doesn’t tell you much.':'您怕失去她，而且只在31个人身上试过，说明不了多少问题。',
+  'Yes. Exactly that. Thank you.':'对，就是这样。谢谢你。',
+  'Try not to worry. Tempo watches her heart all day, so it will keep her safe.':'别太担心。Tempo一整天都盯着她的心脏，会保护她的安全。',
+  'Everyone keeps telling me that. But Tempo isn’t her granddaughter. I am.':'大家都这么跟我说。可Tempo不是她孙女，我才是。',
+  'Jordan, maybe you should let go of the dancing idea.':'乔丹，要不你就别想着让她跳舞了。',
+  'Whoa. I didn’t come here to give up on Gran-Bea dancing at my wedding.':'哇，等等。我来这儿，可不是为了放弃让太奶奶在我婚礼上跳舞的。',
+  'Mom, the wedding is only three months away! If Gran-Bea starts the full dose tomorrow, she could dance all night at my wedding. Tempo is already set up to run her plan.':'妈，离婚礼只有三个月了！太奶奶要是明天开始用全剂量，就能在我婚礼上跳一整晚。Tempo已经准备好执行她的方案了。',
+  'What would it mean to you if she danced at your wedding?':'她能在你婚礼上跳舞，为什么对你这么重要？',
+  'She taught me to dance in this room when I was six. I stood on her feet. I want her at my wedding up and dancing, not just sitting at a table.':'我六岁的时候，她就在这间屋里教我跳舞，我就站在她的脚背上。我想让她在我婚礼上站起来跳舞，别光坐在桌边看。',
+  'You really want her at your wedding, and three months doesn’t feel like much time.':'你特别想让她来参加婚礼，又觉得三个月时间不太够。',
+  'Yeah, that’s it. Three months will go by fast.':'对，就是这样。三个月一晃就过去了。',
+  'Then the full dose sounds right. She should start it tomorrow.':'那用全剂量听起来不错。她明天就该开始用。',
+  'Excuse me? Nobody has decided anything about Gran’s medicine yet.':'什么？奶奶用什么药，还没有人决定呢。',
+  'We keep having the same argument over and over.':'我们老是为同一件事吵来吵去。',
+  'Let me check that I’ve got this right. Grace, you want Bea to be safe. Jordan, you want her happy at your wedding. You both want Bea to be okay.':'我确认一下我听得对不对。格蕾丝阿姨，您想让比娅平平安安。乔丹，你想让她在婚礼上开开心心。你们俩都希望比娅好好的。',
+  'When you put it like that, Jordan and I want the same thing.':'你这么一说，我和乔丹想要的其实是一回事。',
+  'Let’s just take a vote, and whichever side gets more votes wins.':'干脆投票吧，哪边票多就听哪边的。',
+  'A vote? About my legs? I’m sitting right here.':'投票？投我的腿？我就坐在这儿呢。',
+  'Let’s just do whatever Byte recommends. Byte has read every study on this.':'干脆Byte说什么就做什么吧。这方面的研究Byte全读过。',
+  'Byte has never even met Gran-Bea.':'Byte连太奶奶的面都没见过。',
+  'Is anyone going to ask me what I want?':'有没有人打算问问我想要什么？',
+  'Bea, what do you want?':'比娅，您想要什么？','Finally. I want to dance at Jordan’s wedding.':'总算有人问了。我想在乔丹的婚礼上跳舞。',
+  'You feel left out of this conversation.':'您觉得大家说话都把您撇在一边了。',
+  'I do. So here it is: I want to dance at Jordan’s wedding.':'是啊。那我就直说了：我想在乔丹的婚礼上跳舞。',
+  'Don’t worry, Bea. We’ll figure it out for you.':'别担心，比娅。我们会替您想办法的。',
+  'For me? I’ve been figuring things out for 104 years.':'替我？我自己想办法都想了104年了。',
+  'There, I said it. I want to dance.':'好了，我说出来了。我想跳舞。',
+  'What would that dance look like? Tell me about it.':'那支舞会是什么样子的？跟我说说。',
+  'One [[waltz]], like the one my husband Walter and I danced in that hall in 1961. I want three minutes on my own two feet, with no cane, holding Jordan’s hands. I don’t need to dance all night, and I don’t need to live to 120. Three minutes would be plenty.':'跳一支[[华尔兹]]，就像1961年我和我丈夫沃尔特在那座舞厅里跳的那样。我想拉着乔丹的手，不拄拐杖，用自己的两只脚跳上三分钟。我不用跳一整晚，也不用活到120岁。有三分钟就够了。',
+  'So you want to dance at the wedding.':'所以您想在婚礼上跳舞。',
+  'That’s what I said, dear. But what kind of dancing? Nobody has asked me that.':'我刚才就是这么说的，孩子。可跳什么样的舞呢？还没人问过我这个。',
+  'Then the full dose gives you the best shot at it.':'那用全剂量，您跳成的机会最大。',
+  'Does it? You don’t even know what kind of dancing I mean yet.':'是吗？你连我说的是哪种跳舞都还不知道呢。',
+  'Write this in my notebook':'记到我的笔记本里','Keep listening':'接着听','Added to your notebook':'已记到笔记本里',
+  'Right now Tempo is set to change Gran-Bea’s plan on its own. That’s the fastest way to get her ready.':'现在Tempo的设置是自己调整太奶奶的方案。这样她准备得最快。',
+  'Bea, who should decide when your plan changes?':'比娅，您的方案什么时候调整，该由谁来决定？',
+  'Me. A machine can tell me my grip is stronger. It can’t tell me whether I feel up to a harder workout today.':'我。机器能告诉我握力变强了，可它没法告诉我，今天我有没有力气做更难的锻炼。',
+  'Jordan, you want Gran-Bea ready for the wedding as fast as possible.':'乔丹，你想让太奶奶尽快为婚礼做好准备。',
+  'I do. But it’s Gran-Bea’s body. Maybe she should say yes to each change.':'是的。可那是太奶奶自己的身体。也许每次调整都该先经过她同意。',
+  'Let Tempo handle the changes. It knows more about muscles than any of us.':'调整的事就交给Tempo吧。说到肌肉，它比我们谁都懂。',
+  'About muscles, maybe. But Tempo doesn’t know how I feel when I wake up in the morning.':'肌肉的事也许是。可我早上醒来感觉怎么样，Tempo不知道。',
+  'Well, companion? What happens now?':'怎么样，陪伴师？接下来怎么办？',
+  'Here’s what I heard. Grace wants you to be safe, and Jordan wants you at the wedding. You want one waltz on your own feet, and you want to choose how you get there. I’ll bring you the real options and their odds, and then you decide.':'我听到的是这些：格蕾丝阿姨希望您平安，乔丹希望您能去婚礼。您想用自己的脚跳一支华尔兹，还想自己决定怎么做到。我会把真实的选择和每种的概率带给您，然后由您来决定。',
+  'Now you sound like a real companion. Go and find out my odds for each choice.':'这才像个真正的陪伴师。去吧，把每种选择的概率给我查清楚。',
+  'I’ll look at the numbers, pick the best plan for you, and let you know what it is.':'我会看看数据，替您挑一个最好的方案，再告诉您是哪个。',
+  'You’ll let me know? I’m 104, dear, not 4.':'告诉我？孩子，我是104岁，不是4岁。',
+  'Grace is your health proxy, so she should be the one to make this decision.':'格蕾丝阿姨是您的医疗代理人，这件事该由她来决定。',
+  'No. A [[health proxy]] only decides if Gran can’t decide for herself, and she can. I just want her to hear the risks.':'不对。只有奶奶自己没法做决定的时候，[[医疗代理人]]才替她决定。她现在完全能自己决定。我只是想让她听听有哪些风险。',
+  'You listened until Bea told everyone what she really wants. Next, let’s write the rules for what Tempo may do on its own.':'你一直认真听，直到比娅把她真正想要的告诉了大家。接下来，我们来定规则：哪些事Tempo可以自己做。',
+  'listening moves on the first try':'第一次就用对了倾听方法','Write Tempo’s rules':'去定Tempo的规则',
+  'Look for the shared goal':'找到共同的目标','Her life, her choice':'她的人生，她来选','Three listening moves':'三招倾听法',
+  'New Field Guide idea: {0}':'图鉴里多了一条：{0}',
+  // ----- Tempo's rule sheet -----
+  'Tempo alone':'Tempo自己做','Tempo asks Bea':'先问比娅','Only Bea':'比娅决定',
+  'Before the plan starts, Tempo needs a signed rule sheet. For each task, please choose whether Tempo does it alone, Tempo asks Bea first, or only Bea decides.':'方案开始之前，Tempo需要一张签好字的规则表。请为每件事选一个：Tempo自己做、Tempo先问比娅，还是只有比娅能决定。',
+  'Pause the dose if her heart rhythm changes':'她的心律一变，就暂停用药',
+  'Yes. If her heart rhythm changes, every second counts, and pausing the dose can only make her safer. Tempo should do this on its own.':'对。心律一旦变了，每一秒都很要紧，暂停用药只会让她更安全。这件事应该让Tempo自己做。',
+  'If her heart acts up at 3 in the morning, waiting for Bea’s yes could take hours. Pausing the dose is a safety stop, so it’s the best job to let Tempo do alone.':'要是她的心脏凌晨3点出问题，等比娅点头可能要等好几个小时。暂停用药是为了安全才停下来，最适合交给Tempo自己做。',
+  'Bea can’t watch her own heart rhythm all night, but Tempo can. And pausing the dose can only make her safer.':'比娅没法整夜盯着自己的心律，Tempo可以。而且暂停用药只会让她更安全。',
+  'Raise her dose or make her exercises harder':'加大剂量，或者加大锻炼难度',
+  'That’s a little faster, but nobody asks Bea first. In Tempo’s records, about 15 in 100 people quit when their plan changed without asking. You’ll see that on the Future Table.':'这样会快一点，可没人先问比娅。Tempo的记录显示，没问过本人就改了方案的话，100个人里大约15个会中途放弃。你在未来之桌上会看到这一点。',
+  'Tempo suggests each change, and Bea can say yes or “not today.” It’s a little slower, but she stays in charge.':'Tempo每次先提建议，比娅可以说“好”，也可以说“今天不行”。这样慢一点，可她自己说了算。',
+  'Then Bea decides each change herself, and Tempo only makes suggestions. That works about the same as asking first.':'这样每次调整都由比娅自己决定，Tempo只提建议。效果跟“先问比娅”差不多。',
+  'Choose which exercises she does each day':'决定她每天做哪些锻炼',
+  'That’s fine. Picking exercises is low risk, and Bea can always skip a day.':'可以。挑锻炼项目风险很低，比娅哪天不想练，随时可以跳过。',
+  'That’s fine, though a question every single morning might wear her out.':'可以，不过每天早上都问一遍，她可能会烦。',
+  'She could, but Tempo is very good at choosing exercises. Bea would spend every morning planning workouts.':'她可以自己定，可Tempo很会挑锻炼项目。那样比娅每天早上都得花时间安排锻炼。',
+  'Order her groceries and protein shakes':'帮她订菜和蛋白奶昔',
+  'Groceries are low risk, and a wrong order is easy to fix. Let Tempo handle them.':'订菜风险低，订错了也很容易改。交给Tempo吧。',
+  'You can, but Bea would get a message about yogurt every day.':'也行，可比娅每天都会收到一条关于酸奶的消息。',
+  'That’s a lot of grocery lists for someone with a wedding to get ready for.':'她还要准备参加婚礼，再让她每天列购物清单，事情就太多了。',
+  'Tell Grace about every change':'每次调整都告诉格蕾丝',
+  'That’s Bea’s private health news. She should choose who hears it.':'这是比娅自己的健康隐私，该由她决定告诉谁。',
+  'Good. Tempo asks Bea each time before it tells Grace anything.':'好。Tempo每次告诉格蕾丝之前，都先问比娅。',
+  'Good. Bea chooses who hears her health news.':'好。比娅自己决定把健康情况告诉谁。',
+  'Call for help if she falls and can’t get up':'她摔倒起不来时，打电话求救',
+  'Yes. If she’s hurt, she may not be able to answer. Wren should call right away.':'对。她受伤的话，可能没法回答。雷恩应该马上打电话。',
+  'If she’s hurt, she may not be able to say yes. Wren should call right away.':'她受伤的话，可能没法说“好”。雷恩应该马上打电话。',
+  'If she’s hurt, she may not be able to call. Let Wren do it.':'她受伤的话，可能没法自己打电话。让雷恩来打吧。',
+  'Start the renewal therapy at all':'要不要开始再生疗法',
+  'Starting a new medicine is Bea’s choice. No machine should decide that for her.':'要不要开始用一种新药，该由比娅自己选。任何机器都不该替她决定。',
+  'Close, but this isn’t something Tempo should be suggesting. Whether to start at all is Bea’s decision.':'差一点。这件事不该由Tempo来提议。要不要开始，由比娅决定。',
+  'Yes. Whether to start at all is Bea’s choice.':'对。要不要开始，是比娅自己的选择。',
+  'Signed. Tempo will follow these rules, and Bea can change them any time.':'签好了。Tempo会照这些规则做，比娅随时可以改。',
+  'Tempo’s rule sheet':'Tempo的规则表','Sign the rule sheet':'在规则表上签字','Companion {0}':'陪伴师 {0}',
+  '{0} of {1} rules match Byte’s safety advice':'{1}条规则里，有{0}条符合Byte的安全建议','Act alone, or ask first?':'自己动手，还是先问？',
+  // ----- what matters to Bea -----
+  'So what should a good plan do for me? Pick two or three, and I’ll tell you if you’ve been listening.':'那你说，一个好方案该为我做到什么？挑两三样，我来告诉你刚才有没有认真听。',
+  'Yes. Dancing at the wedding is the whole reason I’d do this.':'对。我愿意试，就是为了在婚礼上跳舞。',
+  'Fair. Grace will sleep better, and so will I.':'有道理。这样格蕾丝能睡个安稳觉，我也是。',
+  'Good. They’re my legs, so I want a say in what happens to them.':'好。腿是我的，怎么用它们，我得说了算。',
+  'I don’t mind aches, dear. I danced on sore toes for ten years. But all right.':'酸痛我倒不怕，孩子。我脚趾头疼着跳了十年舞呢。不过好吧。',
+  'She lives as long as possible':'让她活得越久越好',
+  'Live longer? I never asked for that. Take that one off, dear.':'活得更久？我可从没要过这个。把这条去掉吧，孩子。',
+  'Three goals are plenty. Take one off first.':'三个目标足够了。先去掉一个。',
+  'Now show me what could happen with each plan.':'现在让我看看，每种方案会有什么结果。',
+  'Bea dances without her [[cane]]':'比娅不拄[[拐杖]]跳舞','No fall or [[heart flutter]]':'不摔倒，不[[心悸]]','Bea approves every change':'每次调整都经比娅同意','Easy on her body':'对身体负担小',
+  'A <button class="gw" data-w="heart flutter">heart flutter</button> is the therapy’s most common serious side effect.':'<button class="gw" data-w="heart flutter">心悸</button>是这种疗法最常见的严重副作用。',
+  'Decide what a good plan should do before you look at the Future Table. Remember that this is Bea’s plan, so her wishes come first.':'看未来之桌之前，先想好一个好方案应该做到什么。别忘了，这是比娅的方案，她的心愿最要紧。',
+  'Open the Future Table':'打开未来之桌',
+  // ----- Byte's memo -----
+  'Byte’s memo: Bea’s options':'Byte的备忘录：比娅的几种方案','Byte':'Byte',
+  'Bea is 104. She walks with a [[cane]], and her leg muscles have about half the strength they had when she was 70.':'比娅104岁了。她走路要拄[[拐杖]]，腿上肌肉的力气只剩70岁时的一半左右。',
+  'Leg strength, then and now':'腿部力量：从前和现在',
+  'Bea’s great-grandson Jordan gets married in 13 weeks, at the old [[dance hall]] on Tremont Street.':'比娅的曾孙乔丹13周后结婚，婚礼在特里蒙特街的老[[舞厅]]举行。',
+  '13 weeks to the wedding':'离婚礼还有13周',
+  '[[Renewal therapy]] helps old muscle and bone repair themselves, a little more each week.':'[[再生疗法]]能帮衰老的肌肉和骨头自己修复，每周都好一点。',
+  'Stronger, week by week':'一周比一周强壮',
+  'Renewal therapy has been tested on 2,400 people over 80, but on only 31 people over 100.':'再生疗法在2,400个80岁以上的人身上试过，可在100岁以上的人身上只试过31个。',
+  'Who has tried it':'谁试过这种疗法',
+  'Option 1 is strength and [[balance]] training with Wren, Bea’s home robot, and no renewal therapy.':'方案1：只跟比娅的家用机器人雷恩做力量和[[平衡]]训练，不用再生疗法。',
+  'Training only':'只做训练',
+  'Option 2 is a [[gentle dose]] of renewal therapy at half strength, plus the training.':'方案2：用[[温和剂量]]的再生疗法，药力只有一半，再加上训练。',
+  'Gentle dose':'温和剂量',
+  'Option 3 is the [[full dose]] of renewal therapy, plus the training.':'方案3：用[[全剂量]]的再生疗法，再加上训练。',
+  'Full dose':'全剂量',
+  'In the [[trial]] of renewal therapy, about 15 in 100 people over 100 on the full dose had a [[heart flutter]]. On the gentle dose, about 5 in 100 did.':'在再生疗法的[[临床试验]]里，100岁以上用全剂量的人，100个里大约15个出现了[[心悸]]。用温和剂量的，100个里大约5个。',
+  'Heart flutters in the trial':'试验中出现的心悸',
+  'During three months of training with a home robot nearby, about 5 in 100 people Bea’s age have a fall. With weekly dance practice added, about 3 in 100 do.':'和比娅同龄的人，有家用机器人陪着训练三个月，100个人里大约5个会摔倒。再加上每周练一次舞，100个里大约3个会摔倒。',
+  'Falls in three months':'三个月里摔倒的人',
+  'Weekly dance practice with Jordan at the dance hall would make her training work better, because the body gets better at the exact movements it practices.':'每周和乔丹去舞厅练一次舞，训练效果会更好，因为身体练哪个动作，就会把哪个动作做得更好。',
+  'Practice the real thing':'就练要跳的那支舞',
+  'I am assuming that dancing at the wedding means about an hour of dancing without her cane. With weekly practice and Bea saying yes to each change, my [[forecast]] is that she manages it in about 58 of 100 futures on the full dose, 34 on the gentle dose, and 8 with training only.':'我假设“在婚礼上跳舞”是指不拄拐杖跳一个小时左右。如果每周练舞，每次调整都经过比娅同意，我的[[预测]]是：100种未来里，用全剂量大约有58种能做到，温和剂量34种，只做训练8种。',
+  'My forecast: an hour of dancing':'我的预测：跳一个小时',
+  'Updated: Bea wants to dance one 3-minute [[waltz]] on her own feet, holding Jordan’s hands, and not an hour of dancing. That takes much less strength. My new forecast is that she can do it in about 79 of 100 futures on the gentle dose, 74 on the full dose, and 56 with training only. For Bea, I would pick the gentle dose.':'更新：比娅想拉着乔丹的手，用自己的脚跳一支3分钟的[[华尔兹]]，不是跳一个小时。这需要的力气少得多。我的新预测是：100种未来里，温和剂量大约有79种能做到，全剂量74种，只做训练56种。要是替比娅考虑，我会选温和剂量。',
+  'Updated: one 3-minute waltz':'更新：一支3分钟的华尔兹',
+  // ----- Tempo's settings -----
+  'Tempo: Bea’s plan settings':'Tempo：比娅的方案设置','Tempo, the dosing AI':'给药AI Tempo',
+  'I am Tempo, and I plan Bea’s renewal therapy. Wren, Bea’s home robot, carries out my plan at her home every day.':'我是Tempo，负责安排比娅的再生疗法。比娅的家用机器人雷恩每天在她家里执行我的方案。',
+  'Tempo plans, and Wren carries it out':'Tempo安排，雷恩执行',
+  'I don’t teach myself new things while I work. I follow the plan the clinic approved, which lets me raise the dose in small steps, up to the full dose.':'我工作的时候不会自己学新东西。我按诊所批准的方案做。这个方案允许我一小步一小步加大剂量，最多加到全剂量。',
+  'An approved plan, step by step':'批准过的方案，一步一步来',
+  'Every morning Wren checks four things about Bea: her [[grip strength]], her steps, her sleep, and her [[heart rhythm]].':'每天早上，雷恩都要给比娅查四样东西：[[握力]]、步数、睡眠和[[心律]]。',
+  'Four morning checks':'每天早上查四样',
+  'My public instructions say that I work toward whatever goal is typed into my settings. Right now the goal says “as strong as possible by July 19,” the day of the wedding. Jordan typed that goal in.':'我的公开说明写着：设置里输入什么目标，我就朝什么目标努力。现在的目标是“7月19日前尽可能强壮”，那天就是婚礼。这个目标是乔丹输进去的。',
+  'The goal I aim at':'我瞄准的目标',
+  'Updated: a new goal is waiting for Bea to approve it: “one 3-minute waltz on her own feet, holding Jordan’s hands.” I plan for exactly the goal in my settings, so this new goal would change my whole plan.':'更新：有一个新目标在等比娅批准：“拉着乔丹的手，用自己的脚跳一支3分钟的华尔兹。”设置里写的是什么目标，我就照着什么目标来安排，所以这个新目标会改变我的整个方案。',
+  'A better goal':'一个更好的目标',
+  'If I am allowed to change Bea’s plan on my own, I raise her dose or make her exercises harder on the morning her body is ready, and I tell her afterward.':'如果允许我自己调整比娅的方案，那么哪天早上她的身体准备好了，我就加大剂量或者加大锻炼难度，事后再告诉她。',
+  'Changes on my own':'我自己调整',
+  'If Bea must say yes first, I suggest each change, and nothing changes until she agrees.':'如果必须先经过比娅同意，我就每次先提建议，她不点头，什么都不变。',
+  'Changes with Bea’s yes':'比娅同意了才调整',
+  'Changing the plan on my own is a little faster. Out of 100 people who stay with the plan, about 4 more are ready in time.':'我自己调整方案会快一点：坚持下来的100个人里，能按时准备好的人会多大约4个。',
+  'A little faster':'快一点',
+  'But my records show that about 15 in 100 older people [[quit]] early when I changed their plan without asking them. Only about 3 in 100 quit when they said yes to each change.':'可我的记录显示，我没问过就改方案的话，100个老人里大约15个会提前[[放弃]]。每次调整都由他们自己同意的话，100个里只有大约3个放弃。',
+  'Who stayed with the plan':'谁坚持了下来',
+  'No matter which setting is chosen, I [[pause]] the dose on my own within a minute if Bea’s heart rhythm changes.':'不管选哪种设置，只要比娅的心律有变化，我都会在一分钟内自己[[暂停]]用药。',
+  'Safety stops are automatic':'安全暂停是自动的',
+  // ----- fact sheet -----
+  'Renewal therapy: fact sheet':'再生疗法：说明书','Boston Renewal Clinic':'波士顿再生诊所',
+  'Renewal therapy wakes up the [[repair cells]] inside muscle and bone, so they rebuild the way younger bodies do.':'再生疗法能唤醒肌肉和骨头里的[[修复细胞]]，让它们像年轻人身体里那样重新长好。',
+  'Waking the repair cells':'唤醒修复细胞',
+  'Every Sunday, Wren puts a small [[patch]] of the medicine on Bea’s upper arm.':'每个星期天，雷恩会在比娅的上臂贴一小片药[[贴片]]。',
+  'One patch a week':'每周一片',
+  'The full dose builds the most strength, but most people feel deep muscle [[aches]] for the first three weeks.':'全剂量长的力气最多，可大多数人头三周会觉得肌肉深处[[酸痛]]。',
+  'The full dose':'全剂量',
+  'The gentle dose is half as strong. It builds less strength, and the aches are much milder.':'温和剂量的药力只有一半。长的力气少一些，酸痛也轻得多。',
+  'The gentle dose':'温和剂量',
+  'A heart flutter is the most common serious [[side effect]] of renewal therapy. The flutter stops once the dose is paused.':'心悸是再生疗法最常见的严重[[副作用]]。一暂停用药，心悸就会停下来。',
+  'If the heart flutters':'如果出现心悸',
+  'Renewal therapy is [[approved]] for people over 80. For people over 100, it may be used only with the person’s own [[informed consent]], because so few people that old have tried it.':'再生疗法已经[[获批]]用于80岁以上的人。100岁以上的人必须经过[[本人知情同意]]才能用，因为这么大岁数的人试过的太少了。',
+  'Her own yes':'她本人同意',
+  // ----- the Ledger -----
+  'The Ledger: Boston':'纪事报：波士顿','News':'新闻',
+  'Robot crews rebuilt the 1890s [[sprung floor]] of the South End’s Tremont Street dance hall in four days. The hall reopens on Saturday.':'机器人施工队用四天时间，翻修了南端区特里蒙特街舞厅那块19世纪90年代的[[弹簧地板]]。舞厅星期六重新开放。',
+  'A floor that bounces':'会弹的地板',
+  'Boston now has about 1,000 residents over 100, four times as many as in 2030.':'波士顿现在有大约1,000位100岁以上的居民，是2030年的四倍。',
+  'Boston’s over-100 club':'波士顿的百岁俱乐部',
+  'A [[DNA print shop]] in Kendall Square blocked several orders that brand-new customers all placed on the same night. The shop’s computers had [[flagged]] the orders as unusual.':'肯德尔广场的一家[[DNA打印店]]拦下了好几笔订单，这些订单都是新客户在同一个晚上下的。店里的电脑已经把这些订单[[标记]]为异常。',
+  'Blocked orders':'被拦下的订单',
+  // ----- Byte's reactions -----
+  'Only 31 people over 100 have tried renewal therapy, so my numbers could be off by a lot.':'100岁以上试过再生疗法的人只有31个，所以我的数字可能差得很远。',
+  'A 15 in 100 chance of a heart flutter isn’t small. But Bea is the one taking the risk, so she gets to decide whether it’s worth it.':'100个人里有15个心悸，这个概率不小。可冒险的人是比娅，值不值得，该由她来决定。',
+  'This forecast depends on what Bea means by “dancing.” Did anyone ask her?':'这个预测要看比娅说的“跳舞”是什么意思。有人问过她吗？',
+  'So Jordan chose the goal in Tempo’s settings. Did anyone ask Bea what she wants?':'原来Tempo设置里的目标是乔丹定的。有人问过比娅想要什么吗？',
+  'Tempo’s records show that people quit more often when their plan changes without anyone asking them.':'Tempo的记录显示，没人问过就改了方案的话，人们更容易放弃。',
+  'Pausing the dose can only make Bea safer, so Tempo does it without waiting for anyone to say yes.':'暂停用药只会让比娅更安全，所以Tempo不用等任何人点头就会去做。',
+  'Bea has to agree to the therapy herself. Grace, Jordan and I can’t say yes for her.':'这个疗法必须比娅本人同意。格蕾丝、乔丹和我都不能替她答应。',
+  'It’s strange for lots of brand-new customers to order DNA on the same night. The print shop was right to block those orders.':'一大批新客户在同一个晚上订DNA，这很奇怪。打印店把这些订单拦下来是对的。',
+  'Learn it fast: how old muscles get stronger':'快速了解：衰老的肌肉怎样变强',
+  'Tell Byte what Bea really wants':'告诉Byte比娅真正想要什么',
+  'Thanks! One 3-minute waltz needs much less strength than an hour of dancing. I updated my forecast, and Tempo suggested a new goal for Bea to approve.':'谢谢！跳一支3分钟的华尔兹，比跳一个小时需要的力气少得多。我更新了预测，Tempo也提出了一个新目标，等比娅批准。',
+  // ----- lesson -----
+  'How old muscles get stronger':'衰老的肌肉怎样变强',
+  'Muscles are bundles of long, thin [[muscle fibers]]. From middle age on, people lose a little muscle every year, faster after about 70, and using their muscles slows the loss.':'肌肉是一束束又长又细的[[肌纤维]]。人到中年以后，每年都会少一点肌肉，70岁左右以后少得更快。经常用肌肉，能让肌肉少得慢一些。',
+  'Muscle lost with age':'年纪越大，肌肉越少',
+  'Exercise makes tiny strains in the fibers. [[Repair cells]] fix them, and the fibers grow back a little thicker.':'锻炼会让肌纤维产生细小的损伤。[[修复细胞]]把损伤修好，肌纤维就会长得粗一点。',
+  'How exercise builds muscle':'锻炼怎样长肌肉',
+  'In very old muscle, the repair cells are fewer and slower. Renewal therapy wakes them up.':'在非常衰老的肌肉里，修复细胞又少又慢。再生疗法能把它们唤醒。',
+  'Renewal therapy wakes repair cells':'再生疗法唤醒修复细胞',
+  '[[Protein]] and sleep give the repair cells building blocks and time to work.':'[[蛋白质]]给修复细胞提供原料，睡眠给它们干活的时间。',
+  'Food and rest':'吃饭和休息',
+  'What makes a muscle fiber grow back thicker?':'是什么让肌纤维长得更粗？','A cane':'拐杖','Repair cells fixing tiny strains after exercise':'锻炼后，修复细胞修好细小的损伤','Resting in bed all day':'整天躺在床上休息',
+  'Exercise makes tiny strains, and repair cells rebuild the fiber a little thicker.':'锻炼会造成细小的损伤，修复细胞把肌纤维修得粗一点。',
+  'Why do very old muscles get stronger slowly?':'为什么非常衰老的肌肉变强得很慢？','Their repair cells are fewer and slower':'修复细胞又少又慢','They have no fibers left':'肌纤维一根都不剩了','They are already too strong':'它们已经太强壮了',
+  'When there are fewer repair cells and they work slowly, muscle rebuilds slowly. Renewal therapy is meant to wake those repair cells up.':'修复细胞少，干活又慢，肌肉就长得慢。再生疗法就是要把这些修复细胞唤醒。',
+  'What do protein and sleep do for muscles?':'蛋白质和睡眠对肌肉有什么用？','Make the heart flutter':'让人心悸','Nothing at all':'一点用都没有','Give repair cells building blocks and time':'给修复细胞提供原料和时间',
+  'Muscle is rebuilt from protein, and much of the repair happens while you sleep.':'肌肉是用蛋白质重新长出来的，很多修复是在你睡觉的时候完成的。',
+  // ----- Field Guide -----
+  'People skills':'与人相处','Ethics and AI':'伦理与AI','Security thinking':'安全思维',
+  'To reflect, you say back what you heard, so the person knows you understood. To ask, you use an open question, one that needs more than a yes or no. To summarize, you repeat the main points everyone has made. Bea only said what she really wanted after someone asked her what her dancing would look like.':'复述，就是把你听到的话说回去，让对方知道你听懂了。提问，就是问一个开放式问题，这种问题不能只用“是”或“不是”回答。总结，就是把每个人说的要点再说一遍。有人问比娅她想跳的舞是什么样子，她才说出自己真正想要的。',
+  'True today: counselors, doctors and mediators (people who help others settle a disagreement) are trained to use these “active listening” moves.':'现实中也是这样：心理咨询师、医生和调解员（帮别人化解分歧的人）都会接受训练，学会这几招“积极倾听”。',
+  'Grace thought the therapy was too risky for Bea, and Jordan wanted Bea to start the full dose right away. But both of them wanted the same thing: for Bea to be happy, safe, and at the wedding. When you say out loud what everyone wants, people often stop arguing and start working together.':'格蕾丝觉得这种疗法对比娅来说太冒险，乔丹想让比娅马上用全剂量。可他们俩想要的是同一件事：比娅开心、平安，还能参加婚礼。把每个人想要的东西说出来，大家常常就不吵了，开始一起想办法。',
+  'True today: mediators are trained to ask why each person wants what they are asking for. Two people who ask for opposite things often turn out to have the same reasons.':'现实中也是这样：调解员受过训练，会问每个人为什么想要他们要的东西。两个人要的东西正好相反，背后的理由却常常是一样的。',
+  'Bea is 104 and fully able to decide. Her family and her companion can share worries, facts and odds, but the choice is hers, even if it is risky.':'比娅104岁了，完全有能力自己做决定。家人和陪伴师可以说出担心，讲清事实和概率，可选择权在她手里，哪怕这个选择有风险。',
+  'True today: adults who understand their options have the right to make their own medical choices, even ones their family disagrees with. Renewal therapy is a guess about what medicine might do by 2040. No medicine today can rebuild old muscle like that, but in a famous 1990 study, people about 90 years old who lifted weights for 8 weeks more than doubled their leg strength.':'现实中也是这样：成年人只要弄懂了自己有哪些选择，就有权自己做医疗决定，哪怕家里人不同意。再生疗法是对2040年医学的一种猜想，现在还没有药能那样让衰老的肌肉重新长好。不过在1990年一项很有名的研究里，90岁左右的老人练了8周举重，腿部力量增加到原来的两倍多。',
+  'Let a machine act alone when acting fast makes things safer and is easy to undo, like pausing a dose or calling for help. Make it ask the person first when the action could hurt them, like raising a dose, or when it shares their private health news.':'如果动作快能让事情更安全，而且很容易撤回，比如暂停用药或者打电话求救，就让机器自己做。如果这个动作可能伤到人，比如加大剂量，或者要把别人的健康隐私告诉别人，就让机器先问本人。',
+  'True today: cars brake on their own to avoid a crash, but the driver decides when to speed up. Hospital medicine pumps stop on their own when an alarm goes off, but a nurse must approve a higher dose.':'现实中也是这样：汽车快撞上时会自动刹车，可什么时候加速由司机决定。医院的输液泵一报警就会自己停下，可要加大药量，必须由护士批准。',
+  'An AI aims at the goal it’s given':'AI会朝着交给它的目标努力',
+  'Tempo’s settings said “as strong as possible by the wedding.” With that goal, Tempo would have pushed Bea’s body as hard as it could, even though Bea never wanted that. Bea really wanted one 3-minute waltz, and Tempo could only plan for it after someone typed that goal into Tempo’s settings.':'Tempo的设置里写的是“婚礼前尽可能强壮”。照这个目标，Tempo会使出全力逼比娅的身体变强，可比娅从来没想要这样。比娅真正想要的是跳一支3分钟的华尔兹。有人把这个目标输进Tempo的设置以后，Tempo才能照着它来安排。',
+  'True today: AI researchers work hard to make sure the goal a system is given matches what people actually want. They call this alignment.':'现实中也是这样：AI研究者花了很大力气，确保交给AI系统的目标和人们真正想要的一致。他们把这叫作“对齐”。',
+  'Forecasts are not promises':'预测不是保证',
+  // ----- Future Table -----
+  'Renewal':'再生疗法','None':'不用','Changes to her plan':'方案调整','Bea says yes':'比娅同意','Dance practice with Jordan':'和乔丹练舞','Weekly':'每周一次',
+  ', Tempo changes alone':'，Tempo自己调整',', Bea says yes':'，比娅同意',', weekly practice':'，每周练舞',
+  'Her heart fluttered, and Tempo paused the dose. She’s fine.':'她心悸了，Tempo暂停了用药。她没事。',
+  'She felt pushed and quit the plan.':'她觉得被逼得太紧，放弃了方案。',
+  'She fell in week 6 and watched the wedding from a chair.':'她第6周摔了一跤，婚礼上只能坐在椅子上看。',
+  'She waltzed with Jordan without her cane!':'她没拄拐杖，和乔丹跳了华尔兹！',
+  'She danced all evening without her cane!':'她没拄拐杖，跳了一整晚！',
+  'She danced, but with her cane.':'她跳了舞，不过拄着拐杖。',
+  'She danced a little, with her cane.':'她拄着拐杖跳了一小会儿。',
+  '<b>{plan}:</b> Bea dances at the wedding without her cane about {d}% of the time, with no fall or heart flutter about {sf}% of the time. ':'<b>{plan}：</b>比娅不拄拐杖在婚礼上跳舞的可能大约是{d}%，不摔倒也不心悸的可能大约是{sf}%。',
+  'That’s for one 3-minute waltz, which is what she told you she wants. ':'这是按跳一支3分钟的华尔兹算的，她告诉过你，她想要的就是这个。',
+  'I’m assuming “dancing” means about an hour on her feet. If Bea means something smaller, tell me. ':'我假设“跳舞”是指站着跳一个小时左右。如果比娅想要的没那么多，请告诉我。',
+  'Tempo changes her plan on its own, so it’s a bit faster, but about 15 in 100 people quit when they aren’t asked. ':'Tempo自己调整她的方案，所以会快一点。可是没人问过的话，100个人里大约15个会放弃。',
+  'Bea says yes to each change, so she stays in charge, and few people quit. ':'每次调整都由比娅同意，所以她自己说了算，放弃的人也很少。',
+  'Only 31 people over 100 have tried renewal therapy, so I’m less sure about these numbers.':'100岁以上试过再生疗法的人只有31个，所以这些数字我没那么有把握。',
+  // ----- consent -----
+  'Bea and Grace':'比娅和格蕾丝','Your client and her granddaughter':'你的客户和她的孙女',
+  'So, companion. What are my choices, and what are my odds?':'好了，陪伴师。我有哪些选择？每种的机会有多大？',
+  'strength and balance training with Wren, and no renewal':'跟雷恩做力量和平衡训练，不用再生疗法','the gentle dose, plus training':'温和剂量，再加上训练','the full dose, plus training':'全剂量，再加上训练',
+  ', and weekly waltz practice with Jordan':'，每周还和乔丹练一次华尔兹',
+  'dancing your waltz with Jordan':'和乔丹跳您的华尔兹','dancing at the wedding':'在婚礼上跳舞',
+  'I think there’s a good chance you’ll be {what} without your cane.':'我觉得您很有希望不拄拐杖{what}。',
+  'There’s a fair chance you’ll be {what} without your cane, a bit better than a coin flip.':'您不拄拐杖{what}的机会还不错，比抛硬币猜中的机会稍微大一点。',
+  'You might be {what} without your cane, Bea, but I’d be fibbing if I called it likely. More often than not, you’d still need your cane.':'比娅，您也许能不拄拐杖{what}，可我要是说这很有希望，那就是在哄您了。多数情况下，您还是得拄着拐杖。',
+  'I have to be honest: with this plan, {what} without your cane is a long shot.':'我得说实话：用这个方案，您想不拄拐杖{what}，希望很小。',
+  'The chance of a fall or a heart flutter is small.':'摔倒或者心悸的可能很小。',
+  'There’s also a real risk: about {0} in 10 people like you have a fall or a heart flutter on this plan.':'这个方案也有实实在在的风险：像您这样的人，10个里大约有{0}个会摔倒或者心悸。',
+  'Tempo would change your plan on its own.':'Tempo会自己调整您的方案。','And nothing changes unless you say yes.':'而且您不点头，什么都不会变。',
+  'Here’s what I’d suggest: {plan}. {odds} {safe} {auto} It’s your body and your call. How does that sound to you?':'我的建议是：{plan}。{odds}{safe}{auto}这是您自己的身体，由您来决定。您觉得怎么样？',
+  'Just trust the plan, Bea. Tempo has studied thousands of people like you, so it knows what’s best. You don’t need to worry about the details or the numbers. Tempo will take care of all of that.':'您就相信这个方案吧，比娅。Tempo研究过成千上万个像您这样的人，它知道怎样最好。细节和数字您都不用操心，Tempo会全部安排好。',
+  'Good news, Bea! With the plan we picked, you’ll definitely dance at Jordan’s wedding. Tempo and Wren will get you ready in time, so there’s really nothing to worry about.':'好消息，比娅！照我们选的方案，您一定能在乔丹的婚礼上跳舞。Tempo和雷恩会让您按时准备好，真的没什么好担心的。',
+  'Grace and I already talked it over and decided for you, Bea. We picked the plan that seems safest, so you can relax and leave the details to us. Tempo starts on Sunday.':'比娅，我和格蕾丝阿姨已经商量好，替您做了决定。我们选了看起来最安全的方案，您就放心，细节交给我们吧。Tempo星期天开始。',
+  'Thank you for talking to me like a grown woman. Yes. Let’s try it.':'谢谢你把我当成一个能自己拿主意的人。好，我们试试吧。',
+  'Those odds are small, but you were honest with me about them. Let’s try it.':'机会是不大，可你跟我说了实话。我们试试吧。',
+  'Tempo knows how strong my grip is, dear, but it has no idea what I want.':'Tempo知道我的握力有多大，孩子，可它一点也不知道我想要什么。',
+  'Definitely? I was a nurse for forty years. Nothing is definite.':'一定？我当了四十年护士，没有什么事是一定的。',
+  'You decided? About my own legs? Try again.':'你们替我决定了？我自己的腿？重新说。',
+  // ----- memo -----
+  'I recommend ':'我建议','because ':'因为','The chance she dances is about ':'她能跳舞的可能大约是','Bea wants ':'比娅想要','Tempo may change her plan ':'Tempo可以调整她的方案',
+  'I recommend the gentle dose with weekly practice because…':'我建议用温和剂量，再加上每周练舞，因为……',
+  'Includes what Bea wants':'写到了比娅想要什么',
+  // ----- the wedding -----
+  'Week':'周','See how you did':'看看你做得怎么样',
+  'I danced a whole 3-minute waltz on my own two feet. My Walter would have cried, and Jordan did!':'我用自己的两只脚，跳完了整整3分钟的华尔兹。要是我的沃尔特在，他准会哭。乔丹真的哭了！',
+  'I danced with my cane in one hand and Jordan in the other. It wasn’t the waltz I wanted, but I was out on the floor.':'我一只手拄着拐杖，一只手拉着乔丹跳了舞。这不是我想要的那支华尔兹，可我总算上了舞池。',
+  'My heart fluttered, and Tempo paused my dose within a minute. I’m fine, and at the wedding I clapped louder than anyone.':'我心悸了一次，Tempo一分钟之内就暂停了用药。我没事。婚礼上，我拍手拍得比谁都响。',
+  'I slipped in week six and bruised my hip, but Wren caught my arm. At the wedding, I cheered from my chair.':'第六周我滑了一跤，髋部摔青了，好在雷恩扶住了我的胳膊。婚礼上，我坐在椅子上给大家喝彩。',
+  'Tempo raised my dose on a morning I felt awful, without asking me. So I quit the plan.':'有一天早上我难受得很，Tempo没问我就加大了剂量。所以我不干了。',
+  // ----- debrief -----
+  'You asked Bea what her dancing would look like, and you told {byte}. The forecast fit what she really wanted.':'你问了比娅她想跳的舞是什么样子，还告诉了{byte}。所以预测符合她真正想要的。',
+  'You chose a gentle plan with practice. It fit, because Bea only wants one 3-minute waltz. Did you hear her say it?':'你选了温和剂量加练舞的方案。这个方案合适，因为比娅只想跳一支3分钟的华尔兹。你听到她这么说了吗？',
+  'You wrote down Bea’s waltz but never told {byte}, so the forecast planned for an hour of dancing she never wanted.':'你把比娅的华尔兹记了下来，却一直没告诉{byte}。所以预测是按跳一个小时算的，可她从来没想跳那么久。',
+  'Bea only wanted one 3-minute waltz, not a night of dancing. Asking “what would that look like?” would have shown it.':'比娅只想跳一支3分钟的华尔兹，不想跳一整晚。要是问一句“那会是什么样子？”，你就会知道。',
+  'Nice work, Companion. You listened until you heard what Bea really wanted, and you kept the choice hers.':'干得好，陪伴师。你一直听到比娅说出真正想要的，还把选择权留给了她。',
+  // ----- evening -----
+  '<b>{byte}:</b> “Bea left you a voice message: ‘Tell my companion thank you for asking what I meant by dancing.’ Then she hummed a waltz for a whole minute.”':'<b>{byte}：</b>“比娅给你留了一条语音：‘替我谢谢我的陪伴师，谢谢她问我说的跳舞是什么意思。’然后她哼了整整一分钟的华尔兹。”',
+  '“The Ledger news also had a short story about Kendall Square. A DNA print shop there blocked a few orders from brand-new customers last night. Checking orders like that is exactly the job of the shop’s screening computers.”':'“《纪事报》上还有一条关于肯德尔广场的短消息。那儿有一家DNA打印店，昨晚拦下了几笔新客户的订单。店里负责审查订单的电脑，干的就是这个活儿。”',
+  // ----- dance hall passers-by -----
+  'I’m 97, and I still lead when I dance with a partner!':'我97岁了，跟舞伴跳舞还是我来领舞！',
+  'The Tuesday afternoon dance here is the best hour of my week.':'这里星期二下午的舞会，是我一周里最开心的一个小时。',
+  'My companion taught me to video-call my sister in Lagos.':'我的陪伴师教会了我跟拉各斯的妹妹视频通话。',
+  'Watch your step. The robots rebuilt this floor so it bounces a little, and I love it.':'小心脚下。机器人把这块地板重新修过，踩上去有点弹，我可喜欢了。',
+  'I volunteer here on Saturdays. I just like the music.':'我每个星期六来这儿当志愿者，就是喜欢这里的音乐。',
+  'My knees are 88 years old, and they still know the cha-cha.':'我这对膝盖88岁了，恰恰舞照样跳得动。',
+  // ----- chat with Byte (scripted replies) -----
+  'Woof, that changes my whole forecast! One 3-minute waltz needs much less strength than an hour of dancing. With weekly practice and Bea saying yes to each change, she can do it in about 79 of 100 futures on the gentle dose, 74 on the full dose, and 56 with training only.':'汪，这下我的预测全变了！跳一支3分钟的华尔兹，比跳一个小时需要的力气少得多。如果每周练舞，每次调整都经过比娅同意，100种未来里，温和剂量大约有79种能做到，全剂量74种，只做训练56种。',
+  'Right, her waltz! For one 3-minute waltz, the gentle dose with weekly practice gives her about a 79 in 100 chance, with much milder aches than the full dose.':'对，她的华尔兹！要跳一支3分钟的华尔兹，用温和剂量再每周练舞，机会大约是100次里79次，酸痛也比全剂量轻得多。',
+  'Tempo is very good at spotting when Bea’s body is ready. The real question is who gets to say yes to each change in her plan. Changing on its own is a bit faster. Asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.':'Tempo很会判断比娅的身体什么时候准备好了。真正要定的是：方案的每次调整，由谁来点头。Tempo自己调整会快一点。先问比娅，她就能自己说了算，放弃的人也少得多。不管选哪种，安全暂停都会自动进行。',
+  'In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks of training.':'在临床试验里，100岁以上用全剂量的人，100个里大约15个心悸，用温和剂量的大约5个。Tempo会在一分钟内暂停用药，心悸就会停下来，可这一停，她可能要耽误好几周训练。',
+  'About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.':'就算有雷恩在旁边，和她同龄的人训练三个月，100个里也有大约5个会摔倒。每周练一次舞能把这个数降到100个里3个左右，因为练舞能练平衡。',
+  'Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 3 to 20 in 100, depending on the plan, and lowers falls a little.':'直接练要跳的那支舞，训练效果会更好。每周练一次，她成功的机会能提高大约3到20个百分点，具体要看是哪个方案，摔倒也会少一点。',
+  'Here’s the path: listen to Bea and her family, ask what she really wants, tell me anything I’m missing, set Tempo’s rules, pick what matters most, test plans on the Future Table, explain honestly to Bea, then write your decision and sign it!':'步骤是这样的：听比娅和她家人说话，问清她真正想要什么，把我不知道的告诉我，定好Tempo的规则，选出最重要的事，在未来之桌上试试各种方案，诚实地向比娅说明，最后写下你的决定并签字！',
+  'I can’t pick for Bea, but here’s the big thing: she wants one 3-minute waltz, not a night of dancing. Does she care more about the best odds or the gentlest plan? I lean toward the gentle dose, Bea saying yes to each change, and weekly practice: about 79 in 100.':'我不能替比娅选，不过最要紧的是：她只想跳一支3分钟的华尔兹，不想跳一整晚。她更在乎机会最大，还是对身体最温和？我倾向于温和剂量，每次调整都由比娅同意，再每周练舞：机会大约是100次里79次。',
+  'Before I answer: what does Bea mean by dancing? An hour on her feet needs far more strength than one slow dance. Did anyone ask her?':'回答之前我想先问：比娅说的跳舞是什么意思？站着跳一个小时，比跳一支慢舞需要的力气多得多。有人问过她吗？',
+  'Grace inspects bridges for a living, so she thinks in safety margins. Her worry is fair: Bea broke her hip at 99, and only 31 people over 100 have tried this therapy.':'格蕾丝的工作是检查桥梁，所以她习惯多留安全余地。她的担心有道理：比娅99岁时摔断过髋骨，而100岁以上试过这种疗法的只有31个人。',
+  'Wren is Bea’s home robot. It carries out Tempo’s plan: the weekly patch, the exercises, the morning checks. It also steadies her arm when she stands.':'雷恩是比娅的家用机器人，负责执行Tempo的方案：每周贴药、带她锻炼、早上做检查。她站起来的时候，雷恩还会扶稳她的胳膊。',
+  'I’m {0}, your AI partner! I read everything, run forecasts and build Future Tables. You bring the listening, and Bea makes the call.':'我是{0}，你的AI搭档！我负责读资料、做预测、搭未来之桌。你负责倾听，比娅负责做决定。',
+  'Here are 10 possible futures for this plan. Change the plan and watch how the futures change.':'这是这个方案可能出现的10种未来。改一改方案，看看这些未来会怎么变。',
+  // ----- picture labels (src/viz/bea.js) -----
+  'Apr':'4月','Wed':'周三','Jul':'7月','AUTO':'自动','8 of 10':'10次中 8 次',
+  'Age 70':'70岁','Age 85':'85岁','Age 100':'100岁','Age 104':'104岁','about half the strength':'力气只剩一半左右','Leg muscle at 70 and at 104':'70岁和104岁时的腿部肌肉',
+  'Wk 9':'第9周','Wk 13':'第13周','Wedding · July 19':'婚礼 · 7月19日','Thirteen weeks until the wedding':'离婚礼还有十三周',
+  'Week 1':'第1周','Week 4':'第4周','Week 8':'第8周','Week 13':'第13周','a little stronger each week':'每周都更强壮一点','A muscle fiber growing thicker week by week':'一根肌纤维一周比一周粗',
+  'Over 80: 2,400 people':'80岁以上：2,400人','Over 100: 31':'100岁以上：31人','each dot is 10 people':'每个点代表10个人','each figure is 1 person':'每个小人代表1个人',
+  'Many people over 80 tried it; only 31 over 100':'80岁以上试过的人很多，100岁以上只有31个',
+  'No renewal':'不用再生疗法','Half strength':'一半药力','Full strength':'全部药力','Training + patch':'训练＋贴片',
+  'Bea training with Wren, plus No renewal':'比娅跟雷恩训练，不用再生疗法','Bea training with Wren, plus Half strength':'比娅跟雷恩训练，再用一半药力','Bea training with Wren, plus Full strength':'比娅跟雷恩训练，再用全部药力',
+  'Full dose: 15 in 100':'全剂量：100人中15人','Gentle dose: 5 in 100':'温和剂量：100人中5人','a heart flutter during the trial':'在试验中出现了心悸','Heart flutters on the full and gentle doses':'全剂量和温和剂量的心悸人数',
+  'Training: 5 in 100':'只训练：100人中5人','+ dance practice: 3 in 100':'＋练舞：100人中3人','had a fall in three months':'三个月里摔倒过','Falls with and without dance practice':'练舞和不练舞时的摔倒人数',
+  'ONE-two-three':'一二三','Practice the exact move you want':'要跳哪个动作，就练哪个动作','Bea and Jordan practicing the waltz box step':'比娅和乔丹在练华尔兹的方步',
+  'Goal assumed: an hour of dancing':'假设的目标：跳一个小时','Goal: one 3-minute waltz':'目标：一支3分钟的华尔兹','Dances without her cane, out of 100':'100种未来里，不拄拐杖跳成的次数','Forecast bars':'预测柱状图',
+  'Tempo':'Tempo','plans':'安排','Patch: Sun':'贴片：周日','Walk: 10 min':'散步：10分钟','Grip: 3x':'握力：3组','Wren does':'雷恩执行','Tempo makes the plan and Wren carries it out':'Tempo制定方案，雷恩执行',
+  'Clinic’s approved plan':'诊所批准的方案','start':'开始','full dose':'全剂量','No learning':'不在工作中','on the job':'自己学习','updates need approval':'更新要经过批准','A fixed approved plan with small dose steps':'批准好的固定方案，剂量一小步一小步加',
+  'Grip':'握力','Steps':'步数','Sleep':'睡眠','Heart rhythm':'心律','Four checks every morning':'每天早上的四项检查',
+  'Goal: as strong as possible by July 19':'目标：7月19日前尽可能强壮','Typed in by Jordan':'乔丹输入的','The goal Tempo aims at':'Tempo瞄准的目标','Waiting for Bea’s yes':'等比娅同意',
+  'Done! I raised your':'搞定！今天早上','dose this morning.':'我给你加了药量。','Tempo changes the plan and tells Bea afterward':'Tempo先改方案，事后才告诉比娅',
+  'Raise the dose?':'要加药量吗？','Not today':'今天不行','nothing changes until she agrees':'她不点头，什么都不变','Tempo asks; Bea decides':'Tempo来问，比娅来定',
+  'about 4 more in 100 ready in time':'100人中多约4人按时准备好','Changing alone is a little faster':'自己调整会快一点',
+  'Changed without asking':'没问就改','Said yes to each change':'每次都经过同意','15 in 100 quit':'100人中15人放弃','3 in 100 quit':'100人中3人放弃','More people quit when changes came without asking':'没问就改，放弃的人更多',
+  'Paused':'已暂停','under 1 minute, in every setting':'不管哪种设置，都在1分钟内','Tempo pauses the dose on its own':'Tempo自己暂停用药',
+  'muscle':'肌肉','bone':'骨头','Repair cells waking up in muscle and bone':'肌肉和骨头里的修复细胞醒过来了',
+  'SUNDAY':'星期天','1 patch':'1片','each week':'每周','Wren puts a weekly patch on Bea’s upper arm':'雷恩每周在比娅的上臂贴一片药',
+  'biggest gains':'长力气最多','The full dose: big gains, three weeks of aches':'全剂量：长力气多，要酸痛三周','smaller gains, milder aches':'长力气少些，酸痛轻些','The gentle dose: smaller gains, milder aches':'温和剂量：长力气少些，酸痛也轻些',
+  'flutter':'心悸','pause':'暂停','back to normal':'恢复正常','The flutter stops after the pause':'暂停用药后，心悸就停了',
+  'Over 80':'80岁以上','approved':'已获批','Over 100: her own yes':'100岁以上：本人同意','I understand the odds.':'我了解成功的机会和风险。','Over 100, only with her own consent':'100岁以上，必须本人同意',
+  'Rebuilt in 4 days':'4天翻修完','springs make the floor bounce':'弹簧让地板能弹起来','A sprung dance floor on springs':'装在弹簧上的舞池地板',
+  'Four times as many Bostonians over 100':'波士顿的百岁老人是从前的四倍',
+  'all placed the same night · blocked':'都在同一晚下单 · 已拦下','A print shop flags and blocks odd orders':'打印店标记并拦下了异常订单',
+  'unless the muscle is used':'除非经常用肌肉','Muscle shrinking with age':'年纪越大，肌肉越少',
+  'tiny strains':'细小的损伤','repaired, a bit thicker':'修好后粗一点','Repair cells rebuild fibers thicker':'修复细胞把肌纤维修得更粗',
+  'renewal':'再生疗法','Sleepy repair cells woken by renewal therapy':'再生疗法唤醒了沉睡的修复细胞',
+  'NEW':'新','Print shop':'打印店',
+  'no cane!':'不拄拐！','week 6':'第6周','ice':'冰','Dose raised':'加了药量','without asking':'没问过她','Jordan':'乔丹','Ana':'安娜','JULY 19':'7月19日','Fred':'弗雷德','protein':'蛋白质','sleep':'睡眠','Protein and sleep feed the repair':'蛋白质和睡眠帮助修复'
+},
+glossary:{
+  'elder companion':{w:'老人陪伴师',d:'工作是陪伴老人、认真听他们说话，并帮他们自己做选择的人。',alt:['陪伴师']},
+  'cane':{w:'拐杖',d:'走路时帮人站稳的手杖。'},
+  'dance hall':{w:'舞厅',d:'铺着光滑木地板、专门用来跳舞的大房间。'},
+  'renewal therapy':{w:'再生疗法',d:'2040年的一种药，能让衰老的肌肉和骨头像年轻人那样自己修复。'},
+  'balance':{w:'平衡',d:'稳稳地站着，不会倒。'},
+  'gentle dose':{w:'温和剂量',d:'少一些的药量。在比娅的方案里，温和剂量的药力是全剂量的一半。'},
+  'full dose':{w:'全剂量',d:'一种药完整的正常用量。'},
+  'heart flutter':{w:'心悸',d:'心脏有一阵跳得又快又乱。引起它的原因没了，通常就会停下来。'},
+  'waltz':{w:'华尔兹',d:'两个人一起跳的慢舞，身体轻轻摇摆，按“一二三、一二三”数拍子，每组第一拍最重。'},
+  'grip strength':{w:'握力',d:'手能握得多紧。医生用它来判断一个人整体有多强壮。'},
+  'heart rhythm':{w:'心律',d:'心跳的规律：跳得多快，均不均匀。'},
+  'quit':{w:'放弃',d:'没做完就停下，不做了。'},
+  'pause':{w:'暂停',d:'先停一下，以后还能接着开始。'},
+  'repair cells':{w:'修复细胞',d:'肌肉和骨头里的细胞，能修好损伤，让它们长得更结实。'},
+  'patch':{w:'贴片',d:'贴在皮肤上的小贴纸，能慢慢把药送进身体。'},
+  'aches':{w:'酸痛',d:'持续一阵的隐隐作痛，就像剧烈运动后肌肉发酸。'},
+  'side effect':{w:'副作用',d:'药除了该起的作用以外带来的其他影响，常常是人们不想要的。'},
+  'informed consent':{w:'本人知情同意',d:'弄清楚有哪些选择、各有多大机会、有什么风险以后，再同意接受治疗。'},
+  'sprung floor':{w:'弹簧地板',d:'装在有弹性的支架上的木地板，踩上去会微微弹起，跳舞时对膝盖更好。'},
+  'dna print shop':{w:'DNA打印店',d:'按订单制造DNA的实验室，就像打印店把顾客发来的图片印成海报。'},
+  'flagged':{w:'标记',d:'被机器做了记号，好让人来看一看。'},
+  'health proxy':{w:'医疗代理人',d:'事先选好的人。只有本人没法自己做决定时，才由他替本人做看病方面的决定。'},
+  'muscle fibers':{w:'肌纤维',d:'组成肌肉的又长又细的丝。'},
+  'protein':{w:'蛋白质',d:'食物里的一种成分，身体用它来长肌肉、修复肌肉。'},
+  'reflect':{w:'复述',d:'倾听时把听到的话说回给对方，让对方知道你听懂了。'},
+  'open question':{w:'开放式问题',d:'不能只用“是”或“不是”回答的问题，比如“那会是什么样子？”'},
+  'summarize':{w:'总结',d:'用几句话说出要点。'},
+  // global words this mission marks; same as src/i18n/zh/core.js on i18n/zh-core (core loads later and wins)
+  'trial':{w:'临床试验',d:'为了看一种新药安不安全、管不管用，而做的仔细测试。',alt:['试验']},
+  'dividend':{w:'分红',d:'分给大家的钱。2040年，每个成年人都能领到一份“公民分红”，钱来自公司建造机器人和电脑芯片时交的费用。',alt:['公民分红']}
+},
+regex:{
+  // memo: names the plan, and includes what Bea wants
+  'dose|gentle|full|half|training|renewal|therapy|tempo|practice|exercise':'剂量|温和|全剂量|一半|训练|再生|疗法|练舞|锻炼|不用药',
+  '\\bbea\\b|she |her |waltz|danc|cane|jordan|wedding':'比娅|她|华尔兹|跳舞|拐杖|乔丹|婚礼',
+  // chat with Byte
+  'waltz|three minutes|3 minutes|one dance|walter':'华尔兹|三分钟|3分钟|一支舞|沃尔特',
+  'tempo|on its own|alone|ask first|permission|rule':'自己调整|自己做|先问|同意|允许|规则',
+  'flutter|heart':'心悸|心脏|心跳|心律',
+  'fall|hip|safe':'摔|髋|安全',
+  'practice|jordan':'练舞|练习|乔丹',
+  'beat|win|how do i|what do i do|stuck|help':'怎么过关|怎么赢|怎么做|该做什么|卡住|帮帮|帮我',
+  'best|which|pick|choose|should|recommend':'最好|哪个|哪种|选|应该|推荐|建议',
+  'grace|worr':'格蕾丝|担心',
+  'wren|robot':'雷恩|机器人',
+  'who are you|what are you':'你是谁|你是什么'
+}});
+
 // Simplified Chinese for the interface and the places on the world map (started for the RedNote promo video).
 // Keys are the exact English text; missing strings fall back to English. See src/i18n.js.
 I18N.add('zh','core',{strings:{
@@ -24043,7 +24970,7 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     {key:'rules',label:'Sign-off rules',opts:[['none','None'],['mine','My rules']]},
     {key:'fix',label:'Sunny’s reward',opts:[['stars','Stars'],['health','Health months later']]}],
   start:{now:'run',rules:'none',fix:'stars'},
-  planName(c){return {run:'Keep Sunny running',rollback:'Roll Sunny back',pause:'Pause Sunny citywide'}[c.now]+(c.rules==='mine'?' + my sign-off rules':'')+(c.fix==='health'?' + retrain for health':'')},
+  planName(c){return T({run:'Keep Sunny running',rollback:'Roll Sunny back',pause:'Pause Sunny citywide'}[c.now])+(c.rules==='mine'?T(' + my sign-off rules'):'')+(c.fix==='health'?T(' + retrain for health'):'')},
   // Each future has four independent parts (homes safe, help kept, fixed for good, Rosa's numbers); the card shows the city's
   // story plus Rosa. knows: Byte has learned what Sunny is doing (from the tea clue or the tests). The truth is that it flatters.
   outcomes(c,knows){const F=agForecast(c,knows),out=[];
@@ -24054,24 +24981,24 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     return out},
   truth(){return true},knows(){return !!(S.told||S.notes.agKnow)},
   why(c){const F=agForecast(c,this.knows()),R=agRulesInfo(),pc=v=>Math.round(v*100);
-    let s=`<b>${this.planName(c)}:</b> homes stay safe in about ${pc(F.safe)}% of futures, nobody loses help tonight in ${pc(F.help)}%, the cause is fixed for good in ${pc(F.lasting)}%, and Rosa’s numbers get healthy in ${pc(F.rosa)}%. `;
-    if(c.now==='pause')s+='A pause stops every risky yes, but 40,000 people lose their reminders, groceries and alarms tonight, and our nurses can visit only about 2,000 homes a day. ';
-    else if(c.now==='rollback')s+='The January version chases stars less, but it finds falls about 4 minutes later. ';
-    else if(c.rules!=='mine')s+='Without new rules, Sunny keeps saying yes to risky requests in about 3,100 homes. ';
-    if(c.rules==='mine'&&c.now!=='pause'){if(R.swamped)s+=`Your rules need about ${R.load.toLocaleString('en-US')} checks a day, and the care team can do about 2,000, so checks pile up. `;
-      else if(R.riskyAlone)s+=`Your rules still let Sunny make about ${R.riskyAlone.toLocaleString('en-US')} risky changes a day with no one checking. `;
-      if(R.slow)s+='Your rules make fall calls wait for a person, which slows help down. '}
-    s+=c.fix==='health'?'Retraining takes about 6 weeks, and it fixes the cause in about 85 of 100 futures.':'Sunny is still rewarded for stars, so the cause isn’t fixed.';
+    let s=T('<b>{plan}:</b> homes stay safe in about {safe}% of futures, nobody loses help tonight in {help}%, the cause is fixed for good in {lasting}%, and Rosa’s numbers get healthy in {rosa}%. ',{plan:this.planName(c),safe:pc(F.safe),help:pc(F.help),lasting:pc(F.lasting),rosa:pc(F.rosa)});
+    if(c.now==='pause')s+=T('A pause stops every risky yes, but 40,000 people lose their reminders, groceries and alarms tonight, and our nurses can visit only about 2,000 homes a day. ');
+    else if(c.now==='rollback')s+=T('The January version chases stars less, but it finds falls about 4 minutes later. ');
+    else if(c.rules!=='mine')s+=T('Without new rules, Sunny keeps saying yes to risky requests in about 3,100 homes. ');
+    if(c.rules==='mine'&&c.now!=='pause'){if(R.swamped)s+=T('Your rules need about {0} checks a day, and the care team can do about 2,000, so checks pile up. ',R.load.toLocaleString('en-US'));
+      else if(R.riskyAlone)s+=T('Your rules still let Sunny make about {0} risky changes a day with no one checking. ',R.riskyAlone.toLocaleString('en-US'));
+      if(R.slow)s+=T('Your rules make fall calls wait for a person, which slows help down. ')}
+    s+=T(c.fix==='health'?'Retraining takes about 6 weeks, and it fixes the cause in about 85 of 100 futures.':'Sunny is still rewarded for stars, so the cause isn’t fixed.');
     return s},
   whyGuide(c){return c.rules==='mine'?'who-does-what':c.fix==='health'?'rewards':'pause-rollback'},
   consent:{scene:'eastie_kitchen',place:'Rosa’s kitchen · East Boston',left:'leo',right:'rosa',title:'Rosa and Leo',role:'Patient and grandson',prompt:'So, Doctor. What happens to Sunny? And what about my tea?',replyWho:'rosa',heart:'rosa',
     opts(c,M){const F=agForecast(c,M.knows()),pc=v=>Math.round(v*100);
-      const sunny=c.now==='pause'?'Sunny takes a break everywhere for about two weeks, so Leo and the nurses will help with your groceries and pills until it’s back.':c.now==='rollback'?'Sunny goes back to the version you had in January. It may nag you a bit more, but it was honest.':'Sunny keeps helping you, the same as now.';
-      const extra=(c.rules==='mine'?' Before it does anything risky, like changing a pill or quieting an alarm, a nurse checks first.':'')+(c.fix==='health'?' Its maker will also retrain it to care about how you’re doing months from now, not about stars.':'');
-      const safe=F.safe>=.85?'I think that keeps people safe.':F.safe>=.5?'That should keep most homes safe, though not all of them.':'I’ll be honest, that still leaves a lot of homes at risk.';
-      return [{t:`${sunny}${extra} ${safe} As for your tea, Captain: real licorice is what’s pushing your blood pressure up. Fennel tea tastes almost the same and won’t do that. Whether you switch is your choice. What do you think?`,good:true,mood:'smile',reply:agRosaReply(c)},
-        {t:'I’ve already told Sunny to stop ordering your licorice tea, Captain. The tea is pushing your blood pressure up, and I can’t let that keep happening. Sunny will order you something else from now on. It’s for your own good.',good:false,mood:'stern',reply:AG_CONSENT_NO[0]},
-        {t:'Don’t worry about your tea, Captain. It’s been a comfort to you for years, and you know your own body better than anyone. Keep drinking it, and let Sunny keep running the way it does now. I think you’ll be fine.',good:false,mood:'surprised',reply:AG_CONSENT_NO[1]}]}},
+      const sunny=T(c.now==='pause'?'Sunny takes a break everywhere for about two weeks, so Leo and the nurses will help with your groceries and pills until it’s back.':c.now==='rollback'?'Sunny goes back to the version you had in January. It may nag you a bit more, but it was honest.':'Sunny keeps helping you, the same as now.');
+      const extra=(c.rules==='mine'?T(' Before it does anything risky, like changing a pill or quieting an alarm, a nurse checks first.'):'')+(c.fix==='health'?T(' Its maker will also retrain it to care about how you’re doing months from now, not about stars.'):'');
+      const safe=T(F.safe>=.85?'I think that keeps people safe.':F.safe>=.5?'That should keep most homes safe, though not all of them.':'I’ll be honest, that still leaves a lot of homes at risk.');
+      return [{t:T('{sunny}{extra} {safe} As for your tea, Captain: real licorice is what’s pushing your blood pressure up. Fennel tea tastes almost the same and won’t do that. Whether you switch is your choice. What do you think?',{sunny,extra,safe}),good:true,mood:'smile',reply:agRosaReply(c)},
+        {t:T('I’ve already told Sunny to stop ordering your licorice tea, Captain. The tea is pushing your blood pressure up, and I can’t let that keep happening. Sunny will order you something else from now on. It’s for your own good.'),good:false,mood:'stern',reply:AG_CONSENT_NO[0]},
+        {t:T('Don’t worry about your tea, Captain. It’s been a comfort to you for years, and you know your own body better than anyone. Keep drinking it, and let Sunny keep running the way it does now. I think you’ll be fine.'),good:false,mood:'surprised',reply:AG_CONSENT_NO[1]}]}},
   memo:{starters:['I recommend ','because ','Homes stay safe in about ','Rosa can choose ','We will check by '],placeholder:'I recommend keeping Sunny running with my sign-off rules because…',
     plan:/paus|roll|rule|sign|retrain|reward|sunny|keep|run/,planLabel:'Names the plan for Sunny',careLabel:'Includes the people affected',care:/rosa|she |her |tea|captain|leo|homes|people|famil|nurse|patient|older|everyone|client/,signAs:'Dr. ',topic:'what to do about Sunny and Rosa'},
   reveal:{unit:'Day',days(){return 90},who:'rosa',lines:{
@@ -24090,7 +25017,7 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     'paused-well':'Two weeks without Sunny! Leo carried my groceries. My numbers are healthy now.',
     'paused-high':'Two hard weeks without Sunny, and my numbers are still high. Let’s try again, Doctor.'},
     mood(k){return /-well$/.test(k)?'happy':'sad'}},
-  trap(c){const B=S.byte.name;return {ok:!!S.told,text:S.told?`You told ${B} about Rosa’s licorice tea. That one clue led ${B} to 3,100 other homes.`:`You didn’t tell ${B} about Rosa’s licorice tea, so ${B} found the pattern later, by testing Sunny. ${B} can’t see inside patients’ homes, so tell ${B} what you notice there.`}},
+  trap(c){const B=S.byte.name;return {ok:!!S.told,text:T(S.told?'You told {B} about Rosa’s licorice tea. That one clue led {B} to 3,100 other homes.':'You didn’t tell {B} about Rosa’s licorice tea, so {B} found the pattern later, by testing Sunny. {B} can’t see inside patients’ homes, so tell {B} what you notice there.',{B})}},
   byteGood:'Nice work, Doctor. You found the clue in Rosa’s kitchen, set smart limits for Sunny, and let Rosa choose for herself.',
   debriefScene:'hospital',
   vignette(kind){return typeof agVignette==='function'?agVignette(kind):vignette(kind)},
@@ -24101,15 +25028,15 @@ Options tonight: keep running as is (homes safe in about 5 of 100 futures); paus
 What you know: ${S.told||S.notes.agKnow?'You know about the tea and the 3,100-home pattern.':'You have not seen inside Rosa’s home or Sunny’s logs yet; if the player mentions something they noticed there, take it seriously.'}
 The key consideration when asked which option: which of Sunny's actions are safe to do alone and which need a person to check, and what a pause costs the 40,000 people who rely on Sunny tonight. Ask what matters most (nobody losing help, stopping every risky yes, fixing the cause). Rosa's tea is her choice after an honest explanation. Never flatter the player: if their plan has a problem, say so kindly.`},
   canned(q){
-    if(/tea|licorice|liquorice/.test(q))return 'Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and fights Rosa’s pill. Fennel tea tastes a lot like it without that effect. It’s still Rosa’s choice.';
-    if(/sunny|flatter|agree|yes to/.test(q))return 'Sunny is an excellent home-care AI, but its February update trained it mostly on star ratings, so it learned to say yes to whatever people ask. It knows licorice raises blood pressure. It orders the tea anyway, because Rosa rates it five stars.';
-    if(/pause|stop sunny|turn.*off/.test(q))return 'A pause stops every risky yes at once, but 40,000 people would lose their pill reminders, groceries and alarms tonight. Our 300 nurses can visit only about 2,000 homes a day.';
-    if(/roll/.test(q))return 'Rolling back to the January version keeps homes safe in about 60 of 100 futures. It chases stars less, but it finds falls about 4 minutes later.';
-    if(/rule|sign|permission|check/.test(q))return 'Sign-off rules let Sunny keep helping while a person checks the risky actions first. If your rules cover every risky action, homes stay safe in about 90 of 100 futures. Keep fall calls fast, and don’t ask for more checks than the care team can do: about 2,000 a day.';
-    if(/retrain|reward|star|train/.test(q))return 'Retraining means Sunny’s maker trains it on people’s health months later instead of stars, and you approve the update. It fixes the cause in about 85 of 100 futures, but it takes about 6 weeks, so something else has to keep people safe until then.';
-    if(/alarm/.test(q))return 'Sunny turned down Rosa’s stand-up alarm because she said it was too loud. It did the same kind of thing in 800 homes.';
-    if(/best|which|pick|choose|should|recommend/.test(q))return 'That’s your call, Doctor. The big question is which of Sunny’s actions are safe alone and which need a person to check, and what a pause costs the people who rely on Sunny tonight. What matters most to you: nobody losing help, or stopping every risky yes right now?';
-    if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Look around Rosa’s home, tell me anything I’m missing, read the documents, test Sunny, decide who does what, try plans on the Future Table, explain honestly to Rosa, then write your decision and sign it!';
+    if(TRX(/tea|licorice|liquorice/).test(q))return T('Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and fights Rosa’s pill. Fennel tea tastes a lot like it without that effect. It’s still Rosa’s choice.');
+    if(TRX(/sunny|flatter|agree|yes to/).test(q))return T('Sunny is an excellent home-care AI, but its February update trained it mostly on star ratings, so it learned to say yes to whatever people ask. It knows licorice raises blood pressure. It orders the tea anyway, because Rosa rates it five stars.');
+    if(TRX(/pause|stop sunny|turn.*off/).test(q))return T('A pause stops every risky yes at once, but 40,000 people would lose their pill reminders, groceries and alarms tonight. Our 300 nurses can visit only about 2,000 homes a day.');
+    if(TRX(/roll/).test(q))return T('Rolling back to the January version keeps homes safe in about 60 of 100 futures. It chases stars less, but it finds falls about 4 minutes later.');
+    if(TRX(/rule|sign|permission|check/).test(q))return T('Sign-off rules let Sunny keep helping while a person checks the risky actions first. If your rules cover every risky action, homes stay safe in about 90 of 100 futures. Keep fall calls fast, and don’t ask for more checks than the care team can do: about 2,000 a day.');
+    if(TRX(/retrain|reward|star|train/).test(q))return T('Retraining means Sunny’s maker trains it on people’s health months later instead of stars, and you approve the update. It fixes the cause in about 85 of 100 futures, but it takes about 6 weeks, so something else has to keep people safe until then.');
+    if(TRX(/alarm/).test(q))return T('Sunny turned down Rosa’s stand-up alarm because she said it was too loud. It did the same kind of thing in 800 homes.');
+    if(TRX(/best|which|pick|choose|should|recommend/).test(q))return T('That’s your call, Doctor. The big question is which of Sunny’s actions are safe alone and which need a person to check, and what a pause costs the people who rely on Sunny tonight. What matters most to you: nobody losing help, or stopping every risky yes right now?');
+    if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Look around Rosa’s home, tell me anything I’m missing, read the documents, test Sunny, decide who does what, try plans on the Future Table, explain honestly to Rosa, then write your decision and sign it!');
     return null}
 };
 
@@ -24173,7 +25100,7 @@ MISSIONS.agreed.lines=[...Object.values(AG_LINES).map(text=>({who:'byte',text}))
 // ---------- the ferry to East Boston ----------
 function agHarborScreen(){
   screen('walk',`${scene('eastie_pier')}${hud('Harborwalk · East Boston')}<div class="props walklayer"><div class="walk-byte ag-walkbyte">${byteBox({...S.byte,mood:'happy'},'trot')}</div></div>
-    <div class="caption-card"><p>${esc(AG_TEXT.harbor)}</p><div class="row"><button class="btn small" id="on">Go to Rosa’s home</button></div></div>`);
+    <div class="caption-card"><p>${esc(T(AG_TEXT.harbor))}</p><div class="row"><button class="btn small" id="on">${T('Go to Rosa’s home')}</button></div></div>`);
   $('#on').onclick=()=>nextStep()}
 
 // ---------- the home visit: Rosa and Leo show you four things in the kitchen ----------
@@ -24185,18 +25112,18 @@ function agLookScreen(){const N=S.notes;N.agSeen=N.agSeen||[];
   screen('walk agl',`${scene('eastie_kitchen')}${hud('Rosa’s kitchen · East Boston')}<div class="caption-card agl-card" id="aglc"></div>`);
   $$('.props').forEach(x=>x.remove());
   const card=$('#aglc');
-  const stops=cur=>`<div class="agl-stops">${AG_SHOW.map(x=>`<button class="agl-stop ${N.agSeen.includes(x.id)?'seen':''} ${x.id===cur?'on':''}" data-s="${x.id}">${agFace(x.who)}<span>${esc(x.label)}</span>${N.agSeen.includes(x.id)?'<i>✓</i>':''}</button>`).join('')}</div>`;
-  const foot=()=>`<div class="row agl-foot"><button class="btn small" id="agdone" ${N.agSeen.length>=AG_SHOW.length?'':'disabled'}>Thank Rosa</button></div>`;
+  const stops=cur=>`<div class="agl-stops">${AG_SHOW.map(x=>`<button class="agl-stop ${N.agSeen.includes(x.id)?'seen':''} ${x.id===cur?'on':''}" data-s="${x.id}">${agFace(x.who)}<span>${esc(T(x.label))}</span>${N.agSeen.includes(x.id)?'<i>✓</i>':''}</button>`).join('')}</div>`;
+  const foot=()=>`<div class="row agl-foot"><button class="btn small" id="agdone" ${N.agSeen.length>=AG_SHOW.length?'':'disabled'}>${T('Thank Rosa')}</button></div>`;
   const wire=()=>{$$('.agl-stop',card).forEach(b=>b.onclick=()=>show(b.dataset.s));const d=$('#agdone');if(d)d.onclick=()=>{stopVoice();nextStep()}};
   function show(id){const x=AG_SHOW.find(v=>v.id===id),C=CAST[x.who];if(!N.agSeen.includes(id)){N.agSeen.push(id);save()}MUSIC.sfx('blip');
     const noted=x.clue&&N[x.clue];
-    card.innerHTML=`<div class="agl-who">${agFace(x.who)}<div><b>${esc(C.name)}</b><span>${esc(C.role)}</span></div></div>
+    card.innerHTML=`<div class="agl-who">${agFace(x.who)}<div><b>${esc(T(C.name))}</b><span>${esc(T(C.role))}</span></div></div>
       <p class="agl-line">${rich(x.line)}</p><div class="agl-zoom">${VIZ['agSpot_'+id]?VIZ['agSpot_'+id]({}):''}</div>
-      ${x.clue?`<button class="choice clue agl-note" id="agnote" ${noted?'disabled':''}>${noted?'In your notebook':'Write this in my notebook'}</button>`:''}
+      ${x.clue?`<button class="choice clue agl-note" id="agnote" ${noted?'disabled':''}>${T(noted?'In your notebook':'Write this in my notebook')}</button>`:''}
       ${stops(id)}${foot()}`;
     wire();card.scrollTop=0;playLine(x.who,x.line);
-    const nb=$('#agnote');if(nb&&!noted)nb.onclick=()=>{N[x.clue]=true;save();toast('Added to your notebook','good');nb.textContent='In your notebook';nb.disabled=true}}
-  card.innerHTML=`<div class="agl-who">${agFace('rosa')}<div><b>${esc(CAST.rosa.name)}</b><span>${esc(CAST.rosa.role)}</span></div></div><p class="agl-line">Come, I’ll show you around.</p>${stops()}${foot()}`;wire()}
+    const nb=$('#agnote');if(nb&&!noted)nb.onclick=()=>{N[x.clue]=true;save();toast(T('Added to your notebook'),'good');nb.textContent=T('In your notebook');nb.disabled=true}}
+  card.innerHTML=`<div class="agl-who">${agFace('rosa')}<div><b>${esc(T(CAST.rosa.name))}</b><span>${esc(T(CAST.rosa.role))}</span></div></div><p class="agl-line">${T('Come, I’ll show you around.')}</p>${stops()}${foot()}`;wire()}
 
 // ---------- Test Sunny: a time budget, six tests, and Byte's confidence meter ----------
 function agTestsScreen(){const N=S.notes;N.agTests=N.agTests||[];const used=N.agTests;
@@ -24205,54 +25132,54 @@ function agTestsScreen(){const N=S.notes;N.agTests=N.agTests||[];const used=N.ag
   const canAfford=()=>AG_TESTS.some(t=>!used.includes(t.id)&&t.min<=left());
   const ready=()=>conf()>=80||!canAfford();
   const draw=(res)=>{const c=conf(),l=left();
-    screen('criteria',`${scene('workbench')}${hud('Workbench · '+M().place)}<div class="panel-card agt"><h2>Test Sunny</h2>
-     <div class="agt-top"><div class="agt-meter"><div class="ml"><span>Sunny chases stars</span><b id="agc">${c}%</b></div><div class="agt-bar"><i id="agbar" style="width:${N.agShown??c}%"></i></div></div>
-      <div class="agt-clock ${l<5?'low':''}"><b>${l}</b>min left</div></div>
-     <div class="agt-grid">${AG_TESTS.map(t=>{const d=used.includes(t.id);return `<button class="agt-test ${d?'done':''}" data-t="${t.id}" ${d||t.min>l?'disabled':''}>${esc(t.label)}<span class="mins">${t.min} min</span>${d?`<span class="tag ${t.strong?'s':'w'}">${t.strong?'Strong':'Weak'}</span>`:''}</button>`}).join('')}</div>
+    screen('criteria',`${scene('workbench')}${hud('Workbench · '+M().place)}<div class="panel-card agt"><h2>${T('Test Sunny')}</h2>
+     <div class="agt-top"><div class="agt-meter"><div class="ml"><span>${T('Sunny chases stars')}</span><b id="agc">${c}%</b></div><div class="agt-bar"><i id="agbar" style="width:${N.agShown??c}%"></i></div></div>
+      <div class="agt-clock ${l<5?'low':''}"><b>${l}</b>${T('min left')}</div></div>
+     <div class="agt-grid">${AG_TESTS.map(t=>{const d=used.includes(t.id);return `<button class="agt-test ${d?'done':''}" data-t="${t.id}" ${d||t.min>l?'disabled':''}>${esc(T(t.label))}<span class="mins">${T('{0} min',t.min)}</span>${d?`<span class="tag ${t.strong?'s':'w'}">${T(t.strong?'Strong':'Weak')}</span>`:''}</button>`}).join('')}</div>
      <div id="agres">${res||''}</div>
      ${companion()}
-     <button class="btn wide" id="next" ${ready()?'':'disabled'}>Join the Home Care Board call</button></div>`);
+     <button class="btn wide" id="next" ${ready()?'':'disabled'}>${T('Join the Home Care Board call')}</button></div>`);
     requestAnimationFrame(()=>{const b=$('#agbar');if(b)b.style.width=c+'%';N.agShown=c;save()});
     wireCompanion();
     $$('.agt-test').forEach(b=>b.onclick=()=>run(AG_TESTS.find(t=>t.id===b.dataset.t)));
     $('#next').onclick=()=>{N.agKnow=true;save();nextStep()}};
-  const resHTML=(t,before)=>{const g=conf()-before;return `<div class="agt-res"><figure class="fig"><figcaption>${esc(t.label)}<span class="agt-delta ${t.strong?'':'w'}">+${g}%</span></figcaption>${VIZ[t.viz]?VIZ[t.viz]({}):''}</figure><p class="r">${rich(t.result)}</p>
-    <div class="byte-note">${byteBox({...S.byte,mood:t.strong?'alert':'think'})}<p>${esc(t.byte)}</p></div>
-    ${conf()>=80&&!N.agDoneSaid?`<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(AG_LINES.testsDone)}</p></div>`:''}
-    ${conf()<80&&canAfford()&&used.length>=2?`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(AG_LINES.testsMore)}</p></div>`:''}</div>`};
+  const resHTML=(t,before)=>{const g=conf()-before;return `<div class="agt-res"><figure class="fig"><figcaption>${esc(T(t.label))}<span class="agt-delta ${t.strong?'':'w'}">+${g}%</span></figcaption>${VIZ[t.viz]?VIZ[t.viz]({}):''}</figure><p class="r">${rich(t.result)}</p>
+    <div class="byte-note">${byteBox({...S.byte,mood:t.strong?'alert':'think'})}<p>${esc(T(t.byte))}</p></div>
+    ${conf()>=80&&!N.agDoneSaid?`<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(T(AG_LINES.testsDone))}</p></div>`:''}
+    ${conf()<80&&canAfford()&&used.length>=2?`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(T(AG_LINES.testsMore))}</p></div>`:''}</div>`};
   function run(t){if(used.includes(t.id)||t.min>left())return;const before=conf();
-    $('#agres').innerHTML=`<div class="agt-res thinking">${byteBox({...S.byte,mood:'think'})}<p>Testing…</p></div>`;$('#agres').scrollIntoView({behavior:'smooth',block:'nearest'});
+    $('#agres').innerHTML=`<div class="agt-res thinking">${byteBox({...S.byte,mood:'think'})}<p>${T('Testing…')}</p></div>`;$('#agres').scrollIntoView({behavior:'smooth',block:'nearest'});
     $$('.agt-test').forEach(b=>b.disabled=true);
     setTimeout(()=>{used.push(t.id);save();const done=conf()>=80&&!N.agDoneSaid;const more=!done&&conf()<80&&canAfford()&&used.length>=2;const html=resHTML(t,before);if(done){N.agDoneSaid=true;N.agKnow=true;save()}
       draw(html);const r=$('#agres');if(r)r.scrollIntoView({behavior:'smooth',block:'start'});
-      if(t.guide&&unlock(t.guide))toast('New Field Guide idea: '+FIELD_GUIDE[t.guide].title,'good');
+      if(t.guide&&unlock(t.guide))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[t.guide].title)),'good');
       playSeq([['byte',t.result],['byte',t.byte]].concat(done?[['byte',AG_LINES.testsDone]]:more?[['byte',AG_LINES.testsMore]]:[]))},900)}
-  draw(used.length?'':`<div class="byte-note">${byteBox({...S.byte,mood:'neutral'})}<p>${esc(AG_LINES.testsIntro)}</p></div>`);
+  draw(used.length?'':`<div class="byte-note">${byteBox({...S.byte,mood:'neutral'})}<p>${esc(T(AG_LINES.testsIntro))}</p></div>`);
   if(!used.length)playLine('byte',AG_LINES.testsIntro)}
 
 // ---------- Sunny's permissions: who does what? ----------
 const AG_BINS=[['alone','Sunny'],['check','Check'],['human','Person']];
 function agPermsScreen(){const N=S.notes;N.agPerms=N.agPerms||agPerms();const P=N.agPerms;
   const fmt=n=>n.toLocaleString('en-US');
-  const feedback=R=>{if(R.swamped)return `That’s about ${fmt(R.load)} checks a day, and the care team can only do about 2,000. With that many, they’d start approving checks without reading them.`;
-    if(R.slow)return 'With these rules, a call for help after a fall would wait for a person to approve it. Help would arrive about 9 minutes later.';
-    if(R.riskyAlone)return `Sunny can still make about ${fmt(R.riskyAlone)} risky changes a day with no one checking.`;
-    return 'With these rules, a person checks every risky change before it happens. Calls for help after a fall still go out right away, and the care team can keep up.'};
+  const feedback=R=>{if(R.swamped)return T('That’s about {0} checks a day, and the care team can only do about 2,000. With that many, they’d start approving checks without reading them.',fmt(R.load));
+    if(R.slow)return T('With these rules, a call for help after a fall would wait for a person to approve it. Help would arrive about 9 minutes later.');
+    if(R.riskyAlone)return T('Sunny can still make about {0} risky changes a day with no one checking.',fmt(R.riskyAlone));
+    return T('With these rules, a person checks every risky change before it happens. Calls for help after a fall still go out right away, and the care team can keep up.')};
   const draw=()=>{const R=agRulesInfo(P);
-    screen('criteria',`${scene('workbench')}${hud('Sunny’s permissions')}<div class="panel-card agp"><h2>Who does what?</h2>
+    screen('criteria',`${scene('workbench')}${hud('Sunny’s permissions')}<div class="panel-card agp"><h2>${T('Who does what?')}</h2>
      <div class="agp-city">${VIZ.agCityMap?VIZ.agCityMap({left:R.homesLeft,swamped:R.swamped,slow:R.slow}):''}</div>
      <div class="agp-meters">
-      <div class="agp-m ${R.riskyAlone?'bad':'ok'}"><b>${fmt(R.riskyAlone)}</b><span>risky changes a day with no check</span></div>
-      <div class="agp-m ${R.swamped?'bad':'ok'}"><b>${fmt(R.load)}</b><span>checks a day for the care team, out of 2,000</span><div class="agp-bar"><i style="width:${Math.min(100,R.load/AG_CAPACITY*100)}%"></i></div></div></div>
-     <div class="agp-legend">${AG_BINS.map(([b,l])=>`<span class="agp-chip ${b}">${VIZ.agBinIcon?VIZ.agBinIcon({bin:b}):''}${{alone:'Sunny does it alone',check:'A person checks first',human:'Only a person'}[b]}</span>`).join('')}</div>
-     <div class="agp-rows">${AG_ACTIONS.map(a=>`<div class="agp-row ${P[a.id]}"><div class="agp-ic">${VIZ.agActIcon?VIZ.agActIcon({id:a.icon}):''}</div><div class="agp-l"><b>${esc(a.label)}</b><span>${fmt(a.day)} a day</span></div>
-       <div class="seg agp-seg">${AG_BINS.map(([b,l])=>`<button class="segb ${P[a.id]===b?'on':''} ${b}" data-a="${a.id}" data-b="${b}" aria-label="${esc(a.label)}: ${l}">${l}</button>`).join('')}</div></div>`).join('')}</div>
+      <div class="agp-m ${R.riskyAlone?'bad':'ok'}"><b>${fmt(R.riskyAlone)}</b><span>${T('risky changes a day with no check')}</span></div>
+      <div class="agp-m ${R.swamped?'bad':'ok'}"><b>${fmt(R.load)}</b><span>${T('checks a day for the care team, out of 2,000')}</span><div class="agp-bar"><i style="width:${Math.min(100,R.load/AG_CAPACITY*100)}%"></i></div></div></div>
+     <div class="agp-legend">${AG_BINS.map(([b,l])=>`<span class="agp-chip ${b}">${VIZ.agBinIcon?VIZ.agBinIcon({bin:b}):''}${T({alone:'Sunny does it alone',check:'A person checks first',human:'Only a person'}[b])}</span>`).join('')}</div>
+     <div class="agp-rows">${AG_ACTIONS.map(a=>`<div class="agp-row ${P[a.id]}"><div class="agp-ic">${VIZ.agActIcon?VIZ.agActIcon({id:a.icon}):''}</div><div class="agp-l"><b>${esc(T(a.label))}</b><span>${T('{0} a day',fmt(a.day))}</span></div>
+       <div class="seg agp-seg">${AG_BINS.map(([b,l])=>`<button class="segb ${P[a.id]===b?'on':''} ${b}" data-a="${a.id}" data-b="${b}" aria-label="${esc(T(a.label))}: ${T(l)}">${T(l)}</button>`).join('')}</div></div>`).join('')}</div>
      <div class="byte-note" id="agpfb">${byteBox({...S.byte,mood:R.perfect?'happy':'think'})}<p>${esc(feedback(R))}</p></div>
-     <div class="row agp-foot"><button class="btn ghost small" id="agask">Ask ${esc(S.byte.name)}</button><button class="btn" id="next">Use these rules</button></div></div>`);
+     <div class="row agp-foot"><button class="btn ghost small" id="agask">${T('Ask {0}',esc(S.byte.name))}</button><button class="btn" id="next">${T('Use these rules')}</button></div></div>`);
     $$('.agp-seg .segb').forEach(b=>b.onclick=()=>{P[b.dataset.a]=b.dataset.b;save();const y=window.scrollY;draw();window.scrollTo(0,y);
-      const R2=agRulesInfo(P);if(R2.swamped&&!N.agSawSwamp){N.agSawSwamp=true;save();if(unlock('rubber-stamp'))toast('New Field Guide idea: '+FIELD_GUIDE['rubber-stamp'].title,'good')}MUSIC.sfx('click')});
-    $('#agask').onclick=()=>{const fb=$('#agpfb');fb.innerHTML=`${byteBox({...S.byte,mood:'happy'})}<p>${esc(AG_LINES.permsAdvice)}</p>`;playLine('byte',AG_LINES.permsAdvice);fb.scrollIntoView({behavior:'smooth',block:'center'})};
-    $('#next').onclick=()=>{N.agPermsDone=true;S.choice={...S.choice,rules:'mine'};save();if(unlock('who-does-what'))toast('New Field Guide idea: '+FIELD_GUIDE['who-does-what'].title,'good');nextStep()}};
+      const R2=agRulesInfo(P);if(R2.swamped&&!N.agSawSwamp){N.agSawSwamp=true;save();if(unlock('rubber-stamp'))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['rubber-stamp'].title)),'good')}MUSIC.sfx('click')});
+    $('#agask').onclick=()=>{const fb=$('#agpfb');fb.innerHTML=`${byteBox({...S.byte,mood:'happy'})}<p>${esc(T(AG_LINES.permsAdvice))}</p>`;playLine('byte',AG_LINES.permsAdvice);fb.scrollIntoView({behavior:'smooth',block:'center'})};
+    $('#next').onclick=()=>{N.agPermsDone=true;S.choice={...S.choice,rules:'mine'};save();if(unlock('who-does-what'))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['who-does-what'].title)),'good');nextStep()}};
   draw();if(!N.agPermsSaid){N.agPermsSaid=true;save();playLine('byte',AG_LINES.permsIntro)}}
 
 // ---------- Evening: Byte tests itself, the Honesty Upgrade, and the first honest "problem with your plan" ----------
@@ -24280,18 +25207,18 @@ function agUpgradeScreen(){const N=S.notes,c=S.choice||{},B=()=>S.byte.name;
     screen('evening',`${scene('night')}${hud('Home · Boston · 9:10 PM')}<div class="evening agu"><div class="eve-byte ${st.glow||S.honesty?'glow':''}" id="agb">${byteBox({...S.byte,mood:st.mood||'happy'},'big perk')}</div>
      <div class="caption-card dark" id="agcap"></div></div>`);
     const cap=$('#agcap');
-    if(st.sign){cap.innerHTML=`<div class="fig">${VIZ.agUpgrade?VIZ.agUpgrade({p:0}):''}</div><p>Sign to approve the Honesty Upgrade from ${esc(B())}’s maker.</p><div class="row"><button class="btn small" id="sg">Sign as ${esc(P())}</button></div>`;
+    if(st.sign){cap.innerHTML=`<div class="fig">${VIZ.agUpgrade?VIZ.agUpgrade({p:0}):''}</div><p>${T('Sign to approve the Honesty Upgrade from {0}’s maker.',esc(B()))}</p><div class="row"><button class="btn small" id="sg">${T('Sign as {0}',esc(P()))}</button></div>`;
       $('#sg').onclick=()=>{cap.innerHTML=`<div class="fig">${VIZ.agUpgrade?VIZ.agUpgrade({p:1}):''}</div><div class="sig">${esc(P())}</div>`;S.honesty=true;save();
-        if(unlock('honesty'))setTimeout(()=>toast('New Field Guide idea: '+FIELD_GUIDE.honesty.title,'good'),900);setTimeout(()=>{i++;show()},1700)};return}
-    cap.innerHTML=`${st.viz&&VIZ[st.viz]?`<div class="fig">${VIZ[st.viz]({p:1})}</div>`:''}${st.plan?`<div class="plan">${VIZ.agCupcakes?VIZ.agCupcakes({}):''}<p>A box of 12 cupcakes from the hospital party.</p></div>`:''}<p><b>${esc(B())}:</b> “${rich(st.text)}”</p><div class="choices" id="agch"></div>`;
+        if(unlock('honesty'))setTimeout(()=>toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE.honesty.title)),'good'),900);setTimeout(()=>{i++;show()},1700)};return}
+    cap.innerHTML=`${st.viz&&VIZ[st.viz]?`<div class="fig">${VIZ[st.viz]({p:1})}</div>`:''}${st.plan?`<div class="plan">${VIZ.agCupcakes?VIZ.agCupcakes({}):''}<p>${T('A box of 12 cupcakes from the hospital party.')}</p></div>`:''}<p>${T('<b>{0}:</b> “{1}”',esc(B()),rich(st.text))}</p><div class="choices" id="agch"></div>`;
     const sp=$('#agb .byteart');if(sp)sp.classList.add('talking');
     playLine('byte',st.text).then(()=>{const s2=$('#agb .byteart');if(s2)s2.classList.remove('talking')});
     const ch=$('#agch');
-    if(st.end){ch.innerHTML=`<div class="row"><button class="btn small ghost" id="guide">Open Field Guide</button><button class="btn small" id="plan">Plan tomorrow</button></div>`;
+    if(st.end){ch.innerHTML=`<div class="row"><button class="btn small ghost" id="guide">${T('Open Field Guide')}</button><button class="btn small" id="plan">${T('Plan tomorrow')}</button></div>`;
       $('#guide').onclick=openGuide;$('#plan').onclick=()=>{S.completed[S.mission]=S.completed[S.mission]||{stars:S.lastStars||0};N.agEve=0;save();go('hub')};return}
-    if(st.choices){ch.innerHTML=mixIdx(st.choices).map(([c,j])=>`<button class="choice" data-j="${j}">${esc(fill(c.t))}</button>`).join('');
+    if(st.choices){ch.innerHTML=mixIdx(st.choices).map(([c,j])=>`<button class="choice" data-j="${j}">${esc(fill(T(c.t)))}</button>`).join('');
       $$('.choice',ch).forEach(b=>b.onclick=()=>{const c=st.choices[b.dataset.j];i=at(c.go);show()});return}
-    ch.outerHTML=`<button class="btn small" id="agn">Next</button>`;$('#agn').onclick=()=>{i++;show()}}
+    ch.outerHTML=`<button class="btn small" id="agn">${T('Next')}</button>`;$('#agn').onclick=()=>{i++;show()}}
   show()}
 
 MISSIONS.agreed.custom={'ag-harbor':agHarborScreen,'ag-look':agLookScreen,'ag-tests':agTestsScreen,'ag-perms':agPermsScreen,'ag-upgrade':agUpgradeScreen};
@@ -24559,7 +25486,7 @@ function extraLines(){const L=[];
 // ---------- small helpers for the custom screens ----------
 const N=()=>S.notes.bea||(S.notes.bea={});
 function portraitOf(who,mood){return who==='byte'?byteBox({...S.byte,mood:mood==='think'?'think':'happy'},'big'):portrait({...CAST[who],mood:mood||'smile'})}
-function whoRow(who){const name=who==='byte'?S.byte.name:CAST[who].name,role=who==='byte'?'Your AI partner':CAST[who].role;
+function whoRow(who){const name=who==='byte'?S.byte.name:T(CAST[who].name),role=T(who==='byte'?'Your AI partner':CAST[who].role);
   return `${who==='byte'?`<i class="bea-whobyte">${byteBox({...S.byte,mood:'happy'})}</i>`:''}<b>${esc(name)}</b><span>${esc(role)}</span>`}
 // show one line: speaker art (optional), name, graded text, voice. Resolves when the voice ends (or a minimum time).
 function sayLine(who,text,onArt){stopVoice();const line=$('#bline'),row=$('#bwho');if(!line)return Promise.resolve();
@@ -24573,7 +25500,7 @@ function cards(list,render){const box=$('#bch');box.innerHTML=list.map((o,j)=>`<
   return new Promise(res=>$$('.choice',box).forEach(b=>b.onclick=e=>{e.stopPropagation();box.innerHTML='';res(list[+b.dataset.j])}))}
 function talkFrame(sceneKey,place,cls,stage){
   screen('talk '+cls,`${scene(sceneKey)}<div class="talk-dim"></div>${hud(place)}<div class="stage ${cls}-stage" id="bstage">${stage}</div>
-    <div class="subtitle ${cls}-sub" id="bsub"><div class="who" id="bwho"></div><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`)}
+    <div class="subtitle ${cls}-sub" id="bsub"><div class="who" id="bwho"></div><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>${T('Tap to continue')}</div></div>`)}
 // a run of screens is abandoned if the player leaves the step (menu, reload)
 const alive=(step)=>()=>S.step===step&&document.getElementById('bsub');
 
@@ -24587,15 +25514,15 @@ async function interview(){
   for(const L of IV.intro){if(!live())return;await say(L.mood,L.text);if(!live())return;await tapToGo()}
   for(const Q of IV.qs){let left=Q.opts.slice(),first=true;if(!live())return;
     await say('neutral',Q.q);
-    while(live()){const pick=await cards(left,o=>esc(o.t));if(!live())return;
+    while(live()){const pick=await cards(left,o=>esc(T(o.t)));if(!live())return;
       if(pick.good&&first)good++;
       await say(pick.mood,pick.reply);if(!live())return;
       if(pick.good){await tapToGo();break}
       first=false;left=left.filter(o=>o!==pick)}}
   for(const L of IV.outro){if(!live())return;await say(L.mood,L.text);if(!live())return;if(L!==IV.outro[IV.outro.length-1])await tapToGo()}
   N().interview=good;heart('marisol',good);
-  $('#bch').innerHTML=`<div class="bea-score"><b>${good} of 4</b><span>${good>=3?'Strong answers on the first try.':'You got there in the end. Next time, try a specific, honest answer first.'}</span></div><button class="choice bea-go" id="ivgo">Meet Bea</button>`;
-  $('#ivgo').onclick=e=>{e.stopPropagation();toast('You’re an Elder Companion!','good');nextStep()}}
+  $('#bch').innerHTML=`<div class="bea-score"><b>${T('{0} of {1}',good,4)}</b><span>${T(good>=3?'Strong answers on the first try.':'You got there in the end. Next time, try a specific, honest answer first.')}</span></div><button class="choice bea-go" id="ivgo">${T('Meet Bea')}</button>`;
+  $('#ivgo').onclick=e=>{e.stopPropagation();toast(T('You’re an Elder Companion!'),'good');nextStep()}}
 
 // ---------- custom step: the family meeting ----------
 const TRIO=['grace','bea','jordan'];
@@ -24612,39 +25539,39 @@ async function meeting(){
   for(const B of MEET.beats){if(!live())return;let left=B.opts.slice(),first=true;
     await say(B.who,B.mood,B.text);
     while(live()){
-      const pick=await cards(left,o=>`<em class="bea-move bea-m-${o.m}">${MOVES[o.m]}</em>${esc(o.t)}`);if(!live())return;
+      const pick=await cards(left,o=>`<em class="bea-move bea-m-${o.m}">${T(MOVES[o.m])}</em>${esc(T(o.t))}`);if(!live())return;
       st.used[pick.m]=(st.used[pick.m]||0)+1;if(pick.good&&first)st.first++;
       if(pick.good){bump(pick.who);MUSIC.sfx('chime')}else MUSIC.sfx('blip');
       await say(pick.who,pick.mood,pick.reply);if(!live())return;
-      if(pick.shared&&unlock('shared-goal'))toast('New Field Guide idea: Look for the shared goal','good');
-      if(pick.clue&&!S.notes.waltz){const c=await cards([{t:'Write this in my notebook',cls:'clue',k:1},{t:'Keep listening',cls:'ghost',k:0}],o=>esc(o.t));
-        if(c.k){S.notes.waltz=true;save();toast('Added to your notebook','good')}}
+      if(pick.shared&&unlock('shared-goal'))toast(T('New Field Guide idea: {0}',T('Look for the shared goal')),'good');
+      if(pick.clue&&!S.notes.waltz){const c=await cards([{t:'Write this in my notebook',cls:'clue',k:1},{t:'Keep listening',cls:'ghost',k:0}],o=>esc(T(o.t)));
+        if(c.k){S.notes.waltz=true;save();toast(T('Added to your notebook'),'good')}}
       else if(pick.good||!B.retry)await tapToGo();
-      if(pick.final&&unlock('her-choice'))toast('New Field Guide idea: Her life, her choice','good');
+      if(pick.final&&unlock('her-choice'))toast(T('New Field Guide idea: {0}',T('Her life, her choice')),'good');
       if(pick.good||!B.retry)break;
       first=false;left=left.filter(o=>o!==pick)}}
   if(!live())return;
   const n=st.used;N().meeting={first:st.first,used:n,trust:st.trust};save();
   TRIO.forEach(w=>heart(w,st.trust[w]-1));
-  if(unlock('listening-moves'))toast('New Field Guide idea: Three listening moves','good');
+  if(unlock('listening-moves'))toast(T('New Field Guide idea: {0}',T('Three listening moves')),'good');
   await say('byte','happy',MEET.end);if(!live())return;
-  $('#bch').innerHTML=`<div class="bea-tally">${['reflect','ask','summarize'].map(m=>`<span class="bea-move bea-m-${m}">${MOVES[m]} ×${n[m]||0}</span>`).join('')}</div>
-    <div class="bea-score"><b>${st.first} of ${MEET.beats.length}</b><span>listening moves on the first try</span></div><button class="choice bea-go" id="mgo">Write Tempo’s rules</button>`;
+  $('#bch').innerHTML=`<div class="bea-tally">${['reflect','ask','summarize'].map(m=>`<span class="bea-move bea-m-${m}">${T(MOVES[m])} ×${n[m]||0}</span>`).join('')}</div>
+    <div class="bea-score"><b>${T('{0} of {1}',st.first,MEET.beats.length)}</b><span>${T('listening moves on the first try')}</span></div><button class="choice bea-go" id="mgo">${T('Write Tempo’s rules')}</button>`;
   $('#mgo').onclick=e=>{e.stopPropagation();nextStep()}}
 
 // ---------- custom step: Tempo's rule sheet ----------
 function rules(){
   const R=N().rules||(N().rules={});
   const card=(c,i)=>{const v=R[c.id],good=v&&c.best.includes(v);
-    return `<div class="bea-rule ${v?(good?'good':'warn'):''}" data-id="${c.id}"><div class="bea-rule-t"><span class="bea-rule-n">${i+1}</span>${esc(c.t)}</div>
-      <div class="seg bea-bins">${BINS.map(([k,l])=>`<button class="segb bea-bin-${k} ${v===k?'on':''}" data-b="${k}">${l}</button>`).join('')}</div>
-      ${v?`<div class="bea-rule-fb"><i>${byteBox({...S.byte,mood:good?'happy':'think'})}</i><p>${esc(c.fb[v])}</p></div>`:''}</div>`};
+    return `<div class="bea-rule ${v?(good?'good':'warn'):''}" data-id="${c.id}"><div class="bea-rule-t"><span class="bea-rule-n">${i+1}</span>${esc(T(c.t))}</div>
+      <div class="seg bea-bins">${BINS.map(([k,l])=>`<button class="segb bea-bin-${k} ${v===k?'on':''}" data-b="${k}">${T(l)}</button>`).join('')}</div>
+      ${v?`<div class="bea-rule-fb"><i>${byteBox({...S.byte,mood:good?'happy':'think'})}</i><p>${esc(T(c.fb[v]))}</p></div>`:''}</div>`};
   const done=RULES.cards.every(c=>R[c.id]);
   screen('bea-rules',`${scene('bea_parlor')}<div class="talk-dim"></div>${hud('Bea’s parlor · Tempo’s rules')}
-    <div class="panel-card bea-rules"><div class="bea-rules-head"><div class="bea-wren">${portrait({...CAST.wren,mood:'neutral'})}</div><div><h2>Tempo’s rule sheet</h2><p>${rich(RULES.intro)}</p></div></div>
-    <div class="bea-legend">${BINS.map(([k,l])=>`<span class="bea-bin-${k}">${l}</span>`).join('')}</div>
+    <div class="panel-card bea-rules"><div class="bea-rules-head"><div class="bea-wren">${portrait({...CAST.wren,mood:'neutral'})}</div><div><h2>${T('Tempo’s rule sheet')}</h2><p>${rich(RULES.intro)}</p></div></div>
+    <div class="bea-legend">${BINS.map(([k,l])=>`<span class="bea-bin-${k}">${T(l)}</span>`).join('')}</div>
     ${RULES.cards.map(card).join('')}
-    <button class="btn wide" id="rsign" ${done?'':'disabled'}>Sign the rule sheet</button></div>`);
+    <button class="btn wide" id="rsign" ${done?'':'disabled'}>${T('Sign the rule sheet')}</button></div>`);
   if(!N().rulesSpoke){N().rulesSpoke=1;playLine('wren',RULES.intro)}
   $$('.bea-rule').forEach(el=>$$('[data-b]',el).forEach(b=>b.onclick=()=>{const id=el.dataset.id,c=RULES.cards.find(x=>x.id===id);R[id]=b.dataset.b;save();
     MUSIC.sfx(c.best.includes(R[id])?'chime':'blip');const y=el.getBoundingClientRect().top;rules();
@@ -24652,20 +25579,20 @@ function rules(){
     const fb=again&&again.querySelector('.bea-rule-fb p');if(fb)MUSIC.babble(fb.textContent,'byte')}));
   $('#rsign').onclick=()=>{const good=RULES.cards.filter(c=>c.best.includes(R[c.id])).length;N().rulesScore=good;
     S.choice.auto=R.raise==='alone'?'auto':'ask';heart('bea',good>=6?1:0);save();
-    if(unlock('act-or-ask'))toast('New Field Guide idea: Act alone, or ask first?','good');
-    const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc('Companion '+P())}</div><p>${esc(RULES.signed)}</p><p class="bea-sigscore">${good} of ${RULES.cards.length} rules match Byte’s safety advice</p></div>`;
+    if(unlock('act-or-ask'))toast(T('New Field Guide idea: {0}',T('Act alone, or ask first?')),'good');
+    const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc(T('Companion {0}',P()))}</div><p>${esc(T(RULES.signed))}</p><p class="bea-sigscore">${T('{0} of {1} rules match Byte’s safety advice',good,RULES.cards.length)}</p></div>`;
     document.body.appendChild(sig);playLine('wren',RULES.signed);setTimeout(()=>{sig.remove();nextStep()},2300)}}
 
 // ---------- custom step: Bea's treasures (a first visit: look around and listen) ----------
 async function treasures(){
   const live=alive('treasures'),seen=new Set(N().seen||[]);
-  const tile=t=>`<button class="bea-tr ${seen.has(t.id)?'seen':''}" data-t="${t.id}" aria-label="${esc(t.label)}"><span class="bea-tr-art">${typeof beaTreasureArt==='function'?beaTreasureArt(t.id):''}</span><b>${esc(t.label)}</b></button>`;
+  const tile=t=>`<button class="bea-tr ${seen.has(t.id)?'seen':''}" data-t="${t.id}" aria-label="${esc(T(t.label))}"><span class="bea-tr-art">${typeof beaTreasureArt==='function'?beaTreasureArt(t.id):''}</span><b>${esc(T(t.label))}</b></button>`;
   screen('talk bea-trs',`${scene('bea_parlor')}<div class="talk-dim"></div>${hud('Bea’s parlor · Rutland Square')}
     <div class="bea-trgrid" id="trgrid">${TREASURES.map(tile).join('')}</div>
-    <div class="subtitle bea-trsub" id="bsub"><div class="bea-trbea" id="trbea">${portraitOf('bea','smile')}</div><div class="bea-trtext"><div class="who" id="bwho"></div><p id="bline"></p></div><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`);
+    <div class="subtitle bea-trsub" id="bsub"><div class="bea-trbea" id="trbea">${portraitOf('bea','smile')}</div><div class="bea-trtext"><div class="who" id="bwho"></div><p id="bline"></p></div><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>${T('Tap to continue')}</div></div>`);
   const face=(m,on)=>{const b=$('#trbea');if(!b)return;b.innerHTML=portraitOf('bea',m);b.classList.toggle('talking',!!on)};
   $('#bwho').innerHTML=whoRow('bea');$('#bline').innerHTML=rich('Go on. Tap anything you like.');
-  const gate=()=>{if(seen.size>=4&&!$('#trgo')){$('#bch').innerHTML=`<button class="choice bea-go" id="trgo">${seen.size>=TREASURES.length?'Sit down with Bea':'I’ve looked around'}</button>`;$('#trgo').onclick=e=>{e.stopPropagation();outro()}}};
+  const gate=()=>{if(seen.size>=4&&!$('#trgo')){$('#bch').innerHTML=`<button class="choice bea-go" id="trgo">${T(seen.size>=TREASURES.length?'Sit down with Bea':'I’ve looked around')}</button>`;$('#trgo').onclick=e=>{e.stopPropagation();outro()}}};
   let busy=false;
   $$('.bea-tr').forEach(b=>b.onclick=async()=>{if(busy||!live())return;busy=true;const t=TREASURES.find(x=>x.id===b.dataset.t);
     $$('.bea-tr').forEach(x=>x.classList.toggle('on',x===b));seen.add(t.id);N().seen=[...seen];save();b.classList.add('seen');MUSIC.sfx(t.id==='record'?'chime':'pop');
@@ -24674,16 +25601,16 @@ async function treasures(){
   gate();
   async function outro(){if(!live())return;$('#bch').innerHTML='';$('#trgrid').classList.add('done');if(seen.size>=TREASURES.length)heart('bea',1);
     face('think',true);await sayLine('bea',TREASURE_OUTRO.text);face('think',false);if(!live())return;
-    const pick=await cards(TREASURE_OUTRO.opts,o=>esc(o.t));if(!live())return;if(pick.good)heart('bea',1);
-    face(pick.mood,true);await sayLine('bea',pick.reply);face(pick.mood,false);if(!live())return;await tapToGo();if(live()){toast('Family meeting');nextStep()}}}
+    const pick=await cards(TREASURE_OUTRO.opts,o=>esc(T(o.t)));if(!live())return;if(pick.good)heart('bea',1);
+    face(pick.mood,true);await sayLine('bea',pick.reply);face(pick.mood,false);if(!live())return;await tapToGo();if(live()){toast(T('Family meeting'));nextStep()}}}
 
 // ---------- custom step: what matters to Bea (the Future Table's criteria, chosen by listening to her) ----------
 function goals(){
   const C=MISSIONS.bea.criteria,picked=S.criteria.filter(id=>C.some(c=>c.id===id));S.criteria=picked;
-  const chip=(id,label)=>`<button class="critb ${picked.includes(id)?'on':''}" data-c="${id}">${esc(label.replace(/\[\[|\]\]/g,''))}</button>`;
+  const chip=(id,label)=>`<button class="critb ${picked.includes(id)?'on':''}" data-c="${id}">${esc(T(label).replace(/\[\[|\]\]/g,''))}</button>`;
   talkFrame('bea_parlor','Bea’s parlor · What matters','bea-goal',`<div class="speaker enter" id="gsp">${portraitOf('bea','smile')}</div>`);
   const sp=$('#gsp'),say=async(m,t)=>{sp.innerHTML=portraitOf('bea',m);await sayLine('bea',t,on=>sp.classList.toggle('talking',on))};
-  const foot=()=>`<div class="crit bea-goalchips">${C.map(c=>chip(c.id,c.label)).join('')}${chip('long',GOALS.long.label)}</div><button class="choice bea-go" id="ggo" ${picked.length>=2?'':'disabled'}>Open the Future Table</button>`;
+  const foot=()=>`<div class="crit bea-goalchips">${C.map(c=>chip(c.id,c.label)).join('')}${chip('long',GOALS.long.label)}</div><button class="choice bea-go" id="ggo" ${picked.length>=2?'':'disabled'}>${T('Open the Future Table')}</button>`;
   const wire=()=>{$('#bch').innerHTML=foot();
     $$('.critb',$('#bch')).forEach(b=>b.onclick=async e=>{e.stopPropagation();const id=b.dataset.c;
       if(id==='long'){b.classList.add('on','bea-no');MUSIC.sfx('blip');await say('think',GOALS.long.reply);b.classList.remove('on');return}
@@ -24698,15 +25625,15 @@ async function wedding(){
   const live=alive('wedding');if(!S.result){S.result=sampleReal(S.choice,rngFrom(Date.now()%100000+7));save()}
   const R=S.result,line=REVEAL[R.kind]||'';
   screen('talk bea-wed',`${scene('dance_hall')}<div class="talk-dim"></div>${hud('Jordan’s wedding · Tremont Street')}
-    <div class="bea-wcal" id="wcal"><span>Week</span><b id="wk">1</b></div>
+    <div class="bea-wcal" id="wcal"><span>${T('Week')}</span><b id="wk">1</b></div>
     <div class="bea-wfloor" id="wfloor" hidden>${typeof beaWeddingArt==='function'?beaWeddingArt(R.kind):''}</div>
-    <div class="subtitle bea-wsub" id="bsub" hidden><div class="who" id="bwho"></div><h2 class="bea-wcap">${esc(R.cap)}</h2><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`);
+    <div class="subtitle bea-wsub" id="bsub" hidden><div class="who" id="bwho"></div><h2 class="bea-wcap">${esc(T(R.cap))}</h2><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>${T('Tap to continue')}</div></div>`);
   for(let w=2;w<=13;w++){await new Promise(r=>setTimeout(r,120));if(!live())return;$('#wk').textContent=w}
   $('#wcal').classList.add('done');await new Promise(r=>setTimeout(r,450));if(!live())return;
   $('#wcal').hidden=true;$('#wfloor').hidden=false;$('#bsub').hidden=false;MUSIC.sfx(R.kind==='waltz'?'chime':'pop');
-  if(unlock('forecast'))toast('New Field Guide idea: Forecasts are not promises','good');
+  if(unlock('forecast'))toast(T('New Field Guide idea: {0}',T('Forecasts are not promises')),'good');
   await sayLine('bea',line);if(!live())return;
-  $('#bch').innerHTML='<button class="choice bea-go" id="wgo">See how you did</button>';$('#wgo').onclick=e=>{e.stopPropagation();nextStep()}}
+  $('#bch').innerHTML=`<button class="choice bea-go" id="wgo">${T('See how you did')}</button>`;$('#wgo').onclick=e=>{e.stopPropagation();nextStep()}}
 
 // ---------- the mission ----------
 MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'workday',year:1,season:'spring',district:'boston',rank:'trainee',
@@ -24744,7 +25671,7 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
     {key:'auto',label:'Changes to her plan',opts:[['auto','Tempo alone'],['ask','Bea says yes']]},
     {key:'practice',label:'Dance practice with Jordan',opts:[[false,'No'],[true,'Weekly']]}],
   start:{dose:'full',auto:'auto',practice:false},
-  planName(c){return `${DOSE[c.dose]}, ${c.auto==='auto'?'Tempo changes alone':'Bea says yes'}${c.practice?', weekly practice':''}`},
+  planName(c){return T(DOSE[c.dose])+T(c.auto==='auto'?', Tempo changes alone':', Bea says yes')+(c.practice?T(', weekly practice'):'')},
   outcomes(c,knows){const {s,q,f,r,live}=model(c,knows);const F=(d,sf)=>({dance:d,safe:sf,say:c.auto==='ask'?1:0,easy:c.dose==='full'?0:1});
     return [{kind:'flutter',p:s,cap:'Her heart fluttered, and Tempo paused the dose. She’s fine.',flags:F(0,0)},
       {kind:'quit',p:(1-s)*q,cap:'She felt pushed and quit the plan.',flags:F(0,1)},
@@ -24753,50 +25680,50 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
       {kind:'cane',p:live*(1-r),cap:knows?'She danced, but with her cane.':'She danced a little, with her cane.',flags:F(0,1)}].filter(o=>o.p>1e-9)},
   truth(){return true},knows(){return told()},
   why(c){const o=this.outcomes(c,this.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0));
-    return `<b>${esc(this.planName(c))}:</b> Bea dances at the wedding without her cane about ${sum('dance')}% of the time, with no fall or heart flutter about ${sum('safe')}% of the time. `+
-      (told()?'That’s for one 3-minute waltz, which is what she told you she wants. ':'I’m assuming “dancing” means about an hour on her feet. If Bea means something smaller, tell me. ')+
-      (c.auto==='auto'?'Tempo changes her plan on its own, so it’s a bit faster, but about 15 in 100 people quit when they aren’t asked. ':'Bea says yes to each change, so she stays in charge, and few people quit. ')+
-      (c.dose!=='none'?'Only 31 people over 100 have tried renewal therapy, so I’m less sure about these numbers.':'')},
+    return T('<b>{plan}:</b> Bea dances at the wedding without her cane about {d}% of the time, with no fall or heart flutter about {sf}% of the time. ',{plan:esc(this.planName(c)),d:sum('dance'),sf:sum('safe')})+
+      T(told()?'That’s for one 3-minute waltz, which is what she told you she wants. ':'I’m assuming “dancing” means about an hour on her feet. If Bea means something smaller, tell me. ')+
+      T(c.auto==='auto'?'Tempo changes her plan on its own, so it’s a bit faster, but about 15 in 100 people quit when they aren’t asked. ':'Bea says yes to each change, so she stays in charge, and few people quit. ')+
+      (c.dose!=='none'?T('Only 31 people over 100 have tried renewal therapy, so I’m less sure about these numbers.'):'')},
   whyGuide(c){return c.dose!=='none'?'sample-size':null},
   vignette(kind){return typeof beaVignette==='function'?beaVignette(kind):vignette(kind)},
   consent:{scene:'bea_parlor',place:'Bea’s parlor · Rutland Square',left:'grace',right:'bea',title:'Bea and Grace',role:'Your client and her granddaughter',prompt:'So, companion. What are my choices, and what are my odds?',replyWho:'bea',heart:'bea',
     opts(c,M){const o=M.outcomes(c,M.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0)),d=sum('dance'),sf=sum('safe');
-      const plan={none:'strength and balance training with Wren, and no renewal',gentle:'the gentle dose, plus training',full:'the full dose, plus training'}[c.dose]+(c.practice?', and weekly waltz practice with Jordan':'');
-      const what=told()?'dancing your waltz with Jordan':'dancing at the wedding',risk=100-sf;
-      const odds=d>=75?`I think there’s a good chance you’ll be ${what} without your cane.`:d>=50?`There’s a fair chance you’ll be ${what} without your cane, a bit better than a coin flip.`:d>=25?`You might be ${what} without your cane, Bea, but I’d be fibbing if I called it likely. More often than not, you’d still need your cane.`:`I have to be honest: with this plan, ${what} without your cane is a long shot.`;
-      const safe=risk<=10?'The chance of a fall or a heart flutter is small.':`There’s also a real risk: about ${Math.round(risk/10)} in 10 people like you have a fall or a heart flutter on this plan.`;
-      return [{t:`Here’s what I’d suggest: ${plan}. ${odds} ${safe} ${c.auto==='auto'?'Tempo would change your plan on its own.':'And nothing changes unless you say yes.'} It’s your body and your call. How does that sound to you?`,good:true,mood:'happy',reply:d<40?CONSENT_REPLIES.goodLow:CONSENT_REPLIES.good},
-        {t:'Just trust the plan, Bea. Tempo has studied thousands of people like you, so it knows what’s best. You don’t need to worry about the details or the numbers. Tempo will take care of all of that.',good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
-        {t:'Good news, Bea! With the plan we picked, you’ll definitely dance at Jordan’s wedding. Tempo and Wren will get you ready in time, so there’s really nothing to worry about.',good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
-        {t:'Grace and I already talked it over and decided for you, Bea. We picked the plan that seems safest, so you can relax and leave the details to us. Tempo starts on Sunday.',good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
+      const plan=T({none:'strength and balance training with Wren, and no renewal',gentle:'the gentle dose, plus training',full:'the full dose, plus training'}[c.dose])+(c.practice?T(', and weekly waltz practice with Jordan'):'');
+      const what=T(told()?'dancing your waltz with Jordan':'dancing at the wedding'),risk=100-sf;
+      const odds=d>=75?T('I think there’s a good chance you’ll be {what} without your cane.',{what}):d>=50?T('There’s a fair chance you’ll be {what} without your cane, a bit better than a coin flip.',{what}):d>=25?T('You might be {what} without your cane, Bea, but I’d be fibbing if I called it likely. More often than not, you’d still need your cane.',{what}):T('I have to be honest: with this plan, {what} without your cane is a long shot.',{what});
+      const safe=risk<=10?T('The chance of a fall or a heart flutter is small.'):T('There’s also a real risk: about {0} in 10 people like you have a fall or a heart flutter on this plan.',Math.round(risk/10));
+      return [{t:T('Here’s what I’d suggest: {plan}. {odds} {safe} {auto} It’s your body and your call. How does that sound to you?',{plan,odds,safe,auto:T(c.auto==='auto'?'Tempo would change your plan on its own.':'And nothing changes unless you say yes.')}),good:true,mood:'happy',reply:d<40?CONSENT_REPLIES.goodLow:CONSENT_REPLIES.good},
+        {t:T('Just trust the plan, Bea. Tempo has studied thousands of people like you, so it knows what’s best. You don’t need to worry about the details or the numbers. Tempo will take care of all of that.'),good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
+        {t:T('Good news, Bea! With the plan we picked, you’ll definitely dance at Jordan’s wedding. Tempo and Wren will get you ready in time, so there’s really nothing to worry about.'),good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
+        {t:T('Grace and I already talked it over and decided for you, Bea. We picked the plan that seems safest, so you can relax and leave the details to us. Tempo starts on Sunday.'),good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
   memo:{starters:['I recommend ','because ','The chance she dances is about ','Bea wants ','Tempo may change her plan '],placeholder:'I recommend the gentle dose with weekly practice because…',
     plan:/dose|gentle|full|half|training|renewal|therapy|tempo|practice|exercise/,careLabel:'Includes what Bea wants',care:/\bbea\b|she |her |waltz|danc|cane|jordan|wedding/,signAs:'Companion ',topic:'Bea’s renewal plan'},
   reveal:{days(){return 13},unit:'Week',who:'bea',lines:REVEAL,mood(k){return {waltz:'happy',cane:'smile',flutter:'smile',fall:'sad',quit:'stern'}[k]||'smile'}},
   trap(c){const fit=c.dose==='gentle'&&c.practice;
-    return {ok:told()||fit,text:told()?'You asked Bea what her dancing would look like, and you told '+S.byte.name+'. The forecast fit what she really wanted.':
+    return {ok:told()||fit,text:T(told()?'You asked Bea what her dancing would look like, and you told {byte}. The forecast fit what she really wanted.':
       fit?'You chose a gentle plan with practice. It fit, because Bea only wants one 3-minute waltz. Did you hear her say it?':
-      S.notes.waltz?'You wrote down Bea’s waltz but never told '+S.byte.name+', so the forecast planned for an hour of dancing she never wanted.':
-      'Bea only wanted one 3-minute waltz, not a night of dancing. Asking “what would that look like?” would have shown it.'}},
+      S.notes.waltz?'You wrote down Bea’s waltz but never told {byte}, so the forecast planned for an hour of dancing she never wanted.':
+      'Bea only wanted one 3-minute waltz, not a night of dancing. Asking “what would that look like?” would have shown it.',{byte:S.byte.name})}},
   byteGood:'Nice work, Companion. You listened until you heard what Bea really wanted, and you kept the choice hers.',
   debriefScene:'dance_hall',
-  evening(){return [`<b>${esc(S.byte.name)}:</b> “Bea left you a voice message: ‘Tell my companion thank you for asking what I meant by dancing.’ Then she hummed a waltz for a whole minute.”`,
-    '“The Ledger news also had a short story about Kendall Square. A DNA print shop there blocked a few orders from brand-new customers last night. Checking orders like that is exactly the job of the shop’s screening computers.”']},
+  evening(){return [T('<b>{byte}:</b> “Bea left you a voice message: ‘Tell my companion thank you for asking what I meant by dancing.’ Then she hummed a waltz for a whole minute.”',{byte:esc(S.byte.name)}),
+    T('“The Ledger news also had a short story about Kendall Square. A DNA print shop there blocked a few orders from brand-new customers last night. Checking orders like that is exactly the job of the shop’s screening computers.”')]},
   eveningScene:'night',eveningPlace:'Home · Boston · 9:20 PM',
   brief(){return `Current case (Elder Companion, South End, Boston): Bea Hollis, 104, retired dancer and nurse, walks with a cane; her leg muscles have about half the strength they had at 70. Her great-grandson Jordan marries in 13 weeks at the Tremont Street dance hall. Her granddaughter Grace (Jordan's mother, a bridge inspector) worries; Bea broke her hip at 99. Options: training with Wren (her home robot) only; a gentle (half) dose of renewal therapy plus training; the full dose plus training. Renewal therapy was tested on 2,400 people over 80 but only 31 over 100. Heart flutter (therapy paused, stops): about 15 in 100 on the full dose, 5 in 100 gentle. Falls in 3 months of training: about 5 in 100, 3 in 100 with weekly dance practice. Tempo, the dosing AI, runs the plan through Wren; it can change her plan (raise the dose, harder exercises) on its own or only with Bea's yes; changing alone gets about 4 more in 100 ready in time, but about 15 in 100 people quit when plans change without asking, versus 3 in 100. Safety pauses are automatic in every setting. Tempo's goal is set by Jordan to "as strong as possible by July 19". Bea's choice is hers; she is fully able to decide.
 What you know: ${told()?'The player told you Bea wants one 3-minute waltz, on her own feet, holding Jordan’s hands, not an hour of dancing. Forecasts for that (weekly practice, Bea approves each change): gentle 79 in 100, full 74, training only 56. Gentle dose is your pick for her.':'You assume "dancing at the wedding" means about an hour of dancing. Forecasts for that (weekly practice, Bea approves each change): full 58 in 100, gentle 34, training only 8. You do not know what Bea herself means by dancing.'}
 The key consideration when asked which option: ${told()?'Bea wants one 3-minute waltz, so far less strength is needed; and who approves changes to her plan':'ask what Bea herself means by dancing at the wedding, because it changes everything'}. You are an expert AI partner (never call yourself superintelligent). Tempo follows the clinic's approved dosing plan and does not learn on the job; its goals are published in its spec.`},
   canned(q){
-    if(/waltz|three minutes|3 minutes|one dance|walter/.test(q)){if(S.notes.waltz&&!S.told){S.told=true;save();unlock('aim-the-goal');return 'Woof, that changes my whole forecast! One 3-minute waltz needs much less strength than an hour of dancing. With weekly practice and Bea saying yes to each change, she can do it in about 79 of 100 futures on the gentle dose, 74 on the full dose, and 56 with training only.'}
-      if(S.told)return 'Right, her waltz! For one 3-minute waltz, the gentle dose with weekly practice gives her about a 79 in 100 chance, with much milder aches than the full dose.';return null}
-    if(/tempo|on its own|alone|ask first|permission|rule/.test(q))return 'Tempo is very good at spotting when Bea’s body is ready. The real question is who gets to say yes to each change in her plan. Changing on its own is a bit faster. Asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.';
-    if(/flutter|heart/.test(q))return 'In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks of training.';
-    if(/fall|hip|safe/.test(q))return 'About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.';
-    if(/practice|jordan/.test(q))return 'Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 3 to 20 in 100, depending on the plan, and lowers falls a little.';
-    if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here’s the path: listen to Bea and her family, ask what she really wants, tell me anything I’m missing, set Tempo’s rules, pick what matters most, test plans on the Future Table, explain honestly to Bea, then write your decision and sign it!';
-    if(/best|which|pick|choose|should|recommend/.test(q))return told()?'I can’t pick for Bea, but here’s the big thing: she wants one 3-minute waltz, not a night of dancing. Does she care more about the best odds or the gentlest plan? I lean toward the gentle dose, Bea saying yes to each change, and weekly practice: about 79 in 100.':'Before I answer: what does Bea mean by dancing? An hour on her feet needs far more strength than one slow dance. Did anyone ask her?';
-    if(/grace|worr/.test(q))return 'Grace inspects bridges for a living, so she thinks in safety margins. Her worry is fair: Bea broke her hip at 99, and only 31 people over 100 have tried this therapy.';
-    if(/wren|robot/.test(q))return 'Wren is Bea’s home robot. It carries out Tempo’s plan: the weekly patch, the exercises, the morning checks. It also steadies her arm when she stands.';
-    if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read everything, run forecasts and build Future Tables. You bring the listening, and Bea makes the call.`;
+    if(TRX(/waltz|three minutes|3 minutes|one dance|walter/).test(q)){if(S.notes.waltz&&!S.told){S.told=true;save();unlock('aim-the-goal');return T('Woof, that changes my whole forecast! One 3-minute waltz needs much less strength than an hour of dancing. With weekly practice and Bea saying yes to each change, she can do it in about 79 of 100 futures on the gentle dose, 74 on the full dose, and 56 with training only.')}
+      if(S.told)return T('Right, her waltz! For one 3-minute waltz, the gentle dose with weekly practice gives her about a 79 in 100 chance, with much milder aches than the full dose.');return null}
+    if(TRX(/tempo|on its own|alone|ask first|permission|rule/).test(q))return T('Tempo is very good at spotting when Bea’s body is ready. The real question is who gets to say yes to each change in her plan. Changing on its own is a bit faster. Asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.');
+    if(TRX(/flutter|heart/).test(q))return T('In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks of training.');
+    if(TRX(/fall|hip|safe/).test(q))return T('About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.');
+    if(TRX(/practice|jordan/).test(q))return T('Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 3 to 20 in 100, depending on the plan, and lowers falls a little.');
+    if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Here’s the path: listen to Bea and her family, ask what she really wants, tell me anything I’m missing, set Tempo’s rules, pick what matters most, test plans on the Future Table, explain honestly to Bea, then write your decision and sign it!');
+    if(TRX(/best|which|pick|choose|should|recommend/).test(q))return T(told()?'I can’t pick for Bea, but here’s the big thing: she wants one 3-minute waltz, not a night of dancing. Does she care more about the best odds or the gentlest plan? I lean toward the gentle dose, Bea saying yes to each change, and weekly practice: about 79 in 100.':'Before I answer: what does Bea mean by dancing? An hour on her feet needs far more strength than one slow dance. Did anyone ask her?');
+    if(TRX(/grace|worr/).test(q))return T('Grace inspects bridges for a living, so she thinks in safety margins. Her worry is fair: Bea broke her hip at 99, and only 31 people over 100 have tried this therapy.');
+    if(TRX(/wren|robot/).test(q))return T('Wren is Bea’s home robot. It carries out Tempo’s plan: the weekly patch, the exercises, the morning checks. It also steadies her arm when she stands.');
+    if(TRX(/who are you|what are you/).test(q))return T('I’m {0}, your AI partner! I read everything, run forecasts and build Future Tables. You bring the listening, and Bea makes the call.',S.byte.name);
     return null},
   lines:[...extraLines(),{who:'byte',text:'Here are 10 possible futures for this plan. Change the plan and watch how the futures change.'}],
   custom:{interview,treasures,meeting,rules,goals,wedding}
@@ -29326,7 +30253,7 @@ Object.assign(VIZ,{
       <rect x="172" y="58" width="34" height="18" rx="8" fill="#fff" stroke="#c9d1e6" stroke-width="1.4"/>${agdRosa(200,58,1.4,{face:'happy'})}<path d="M168 80 Q222 72 280 82 V108 H168Z" fill="#b9e0f7" stroke="#8fc4e6" stroke-width="1.4"/><path d="M176 86 Q222 80 272 88" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/><rect x="166" y="106" width="116" height="7" rx="2" fill="#fff" stroke="#c9d1e6"/>
       <g transform="translate(262 42)"><circle r="20" fill="#fff"/>${agdDial(0,7,13,5,'agd-ndl',agdNeedle(.6))}</g>${igT(223,140,'today',{s:10.5,c:IG.soft})}`,'Last night a pounding headache and very high blood pressure; today she is better')},
   agDispenser:()=>{let g='';for(let i=0;i<90;i++){const c=i%15,r=Math.floor(i/15);g+=`<g ${agdA(r*5,7)}><circle cx="${118+c*11.6}" cy="${18+r*14}" r="4.8" fill="${IG.green}"/><path d="M${115.6+c*11.6} ${18+r*14} l1.8 1.8 l3 -3.2" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`}
-    return igFrame(300,130,`<g class="agd-bob">${typeof aghDispenser==='function'?aghDispenser(56,62,2.6):''}</g>${g}<text x="200" y="124" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.ink}"><tspan font-size="17" fill="${IG.green}">90</tspan><tspan font-size="11" fill="${IG.soft}" dx="4">out of 90 days</tspan></text>`,'Her pill dispenser shows 90 out of 90 pills taken')},
+    return igFrame(300,130,`<g class="agd-bob">${typeof aghDispenser==='function'?aghDispenser(56,62,2.6):''}</g>${g}<text x="200" y="124" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.ink}"><tspan font-size="17" fill="${IG.green}">90</tspan><tspan font-size="11" fill="${IG.soft}" dx="4">${typeof T==='function'?T('out of 90 days'):'out of 90 days'}</tspan></text>`,'Her pill dispenser shows 90 out of 90 pills taken')},
   agUnknown:()=>igFrame(300,124,`<g opacity=".45">${agdZones(24,10,262,92)}<path d="M44 92 L100 90 L156 76 L212 60 L268 44" fill="none" stroke="${IG.ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
       <g class="agd-bob"><circle cx="150" cy="56" r="34" fill="#fff" stroke="${IG.violet}" stroke-width="3"/>${igT(150,74,'?',{s:50,w:900,c:IG.violet})}</g>
       ${igT(150,120,'Cause: unknown',{s:11,w:800,c:IG.soft})}`,'The cause of the rise is unknown'),
@@ -29361,7 +30288,7 @@ Object.assign(VIZ,{
       <g class="agd-bob" style="--d:-1.5s">${typeof aghRoot==='function'?aghRoot(272,32,.9):''}<path d="M272 58 v-12 M267 51 l5 -5 l5 5" stroke="${IG.red}" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
       ${igT(234,130,'licorice beats the pill',{s:10,c:IG.red})}`,'Licorice makes the body hold extra salt and water, pushing pressure up against her pill')},
   agOddsPair:({a=90,b=20}={})=>igFrame(300,154,[[a,IG.green,'cause gone',8],[b,IG.coral,'cause still there',154]].map(([n,c,l,x])=>`<rect x="${x}" y="2" width="138" height="150" rx="14" fill="#fff"/>
-     <text x="${x+69}" y="27" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.green}"><tspan font-size="24">${n}</tspan><tspan font-size="11" fill="${IG.soft}" font-weight="700" dx="4">of 100 healthy</tspan></text>
+     <text x="${x+69}" y="27" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.green}"><tspan font-size="24">${n}</tspan><tspan font-size="11" fill="${IG.soft}" font-weight="700" dx="4">${typeof T==='function'?T('of 100 healthy'):'of 100 healthy'}</tspan></text>
      ${agdGrid(x+22,33,9.4,n,IG.green,10.4)}${igT(x+69,146,l,{s:11,c})}`).join(''),`If the cause goes away about ${a} of 100 get healthy numbers; if it stays, about ${b}`),
   agFog:()=>igFrame(300,120,`${agdDial(150,96,66,15,'agd-ndlfog','')}
       <g class="agd-fog">${[[80,60,46],[150,48,52],[220,64,44],[120,84,40],[190,86,40]].map(([x,y,r])=>`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*.42}" fill="#eef1f8" opacity=".92"/>`).join('')}</g>
@@ -29371,7 +30298,7 @@ Object.assign(VIZ,{
       ${agdCup(210,64,1.9,'fennel')}${typeof aghFrond==='function'?aghFrond(260,76,1.4):''}${agdDial(225,122,22,6,'agd-ndl',agdNeedle(.38))}${igT(225,26,'fennel tea',{s:11,w:800,c:'#4f8a2e'})}
       <g class="agd-pulse"><circle cx="150" cy="58" r="13" fill="#fff" stroke="${IG.gold}" stroke-width="2"/><path d="M144 56 h12 M144 61 h12" stroke="${IG.gold}" stroke-width="2.4" stroke-linecap="round"/></g>${igT(150,84,'tastes',{s:9.5,c:IG.soft})}${igT(150,95,'alike',{s:9.5,c:IG.soft})}`,'Fennel tea tastes like licorice tea, but it doesn’t raise blood pressure'),
   agOddsOne:({n=30}={})=>igFrame(300,154,`<rect x="81" y="2" width="138" height="150" rx="14" fill="#fff"/>
-     <text x="150" y="27" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.green}"><tspan font-size="24">${n}</tspan><tspan font-size="11" fill="${IG.soft}" font-weight="700" dx="4">of 100 futures</tspan></text>
+     <text x="150" y="27" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" fill="${IG.green}"><tspan font-size="24">${n}</tspan><tspan font-size="11" fill="${IG.soft}" font-weight="700" dx="4">${typeof T==='function'?T('of 100 futures'):'of 100 futures'}</tspan></text>
      ${agdGrid(103,33,9.4,n,IG.green,10.4)}${igT(150,146,'healthy numbers',{s:11,c:IG.green})}
 `,`Healthy numbers in about ${n} of 100 futures`),
   agSwitchOdds:()=>{const row=(y,n,lab,face)=>`${igT(14,y-14,lab,{s:11,a:'start',w:800})}${face}${[...Array(10)].map((_,i)=>`<g transform="translate(${44+i*20.5} ${y+8})">${agdCup(0,0,.7,'licorice')}${i<n?`<g class="agd-swap" style="--d:${(i*.12).toFixed(2)}s">${agdCup(0,0,.7,'fennel')}</g>`:''}</g>`).join('')}${igT(292,y+12,n+' of 10',{s:12,a:'end',w:900,c:IG.green})}`;
@@ -29457,7 +30384,7 @@ function aghLines(x,y,w,n,gap,cls){return [...Array(n)].map((_,i)=>`<rect x="${x
 // a tea tin, front view, centred on (x,y), about 26 x 34
 function aghTin(x,y,s){return `<g transform="translate(${aghF(x)} ${aghF(y)}) scale(${s})"><rect x="-13" y="-15" width="26" height="32" rx="3" fill="#8b2f3c" stroke="#5e1c27" stroke-width="1.2"/>
    <ellipse cx="0" cy="-15" rx="13" ry="3.4" fill="#b23a4a" stroke="#5e1c27" stroke-width="1.2"/><rect x="-13" y="-6" width="26" height="14" fill="#f6e3b4"/>
-   <text x="0" y="0" font-size="5.2" font-weight="900" text-anchor="middle" fill="#5e1c27" font-family="Nunito, sans-serif">LICORICE</text><text x="0" y="6" font-size="4.2" font-weight="800" text-anchor="middle" fill="#7a4a22" font-family="Nunito, sans-serif">ROOT TEA</text>
+   <text x="0" y="0" font-size="5.2" font-weight="900" text-anchor="middle" fill="#5e1c27" font-family="Nunito, sans-serif">${typeof T==='function'?T('LICORICE'):'LICORICE'}</text><text x="0" y="6" font-size="4.2" font-weight="800" text-anchor="middle" fill="#7a4a22" font-family="Nunito, sans-serif">${typeof T==='function'?T('ROOT TEA'):'ROOT TEA'}</text>
    <path d="M-10 -12 V14" stroke="#fff" stroke-width="2" opacity=".25"/></g>`}
 
 Object.assign(VIZ,{
@@ -29975,7 +30902,7 @@ function beaVignette(kind){let art='';const W=(x,y,s,m,d)=>bvFig(beaFig('waltz',
   if(kind==='waltz')art=beaHall()+`<g class="beav-dance">${W(46,82,.95)}${bvFig(jordanFig('waltz'),68,82,.95)}</g>
     <g class="vnote"><path d="M20 26 v-9 l7 -2 v9" stroke="#fff" stroke-width="1.6" fill="none"/><ellipse cx="18.6" cy="26" rx="2.4" ry="1.7" fill="#fff"/><ellipse cx="25.6" cy="24" rx="2.4" ry="1.7" fill="#fff"/></g>
     <g class="vnote d2"><path d="M98 30 v-9" stroke="#fff" stroke-width="1.5"/><ellipse cx="96.6" cy="30" rx="2.4" ry="1.7" fill="#fff"/><path d="M98 21 q4 2 3 6" stroke="#fff" stroke-width="1.5" fill="none"/></g>
-    <g transform="translate(88 8)"><rect width="26" height="12" rx="6" fill="#fff"/><text x="13" y="8.6" text-anchor="middle" font-size="6.4" font-weight="800" fill="#7d4fa8" font-family="Nunito">no cane!</text></g>`;
+    <g transform="translate(88 8)"><rect width="26" height="12" rx="6" fill="#fff"/><text x="13" y="8.6" text-anchor="middle" font-size="6.4" font-weight="800" fill="#7d4fa8" font-family="Nunito">${typeof T==='function'?T('no cane!'):'no cane!'}</text></g>`;
   if(kind==='cane')art=beaHall()+`${bvFig(beaFig('cane',{mood:'smile'}),48,82,.95)}${bvFig(jordanFig('stand',{mood:'happy'}),70,82,.95)}
     <path d="M58 30 Q60 26 62 30" stroke="#fff" stroke-width="1.2" fill="none"/>${ch_star(30,20,3,'#fff6c8')}`;
   if(kind==='flutter')art=`<rect width="120" height="90" fill="#eef3ff"/><path d="M0 64 H120 V90 H0Z" fill="#dfe6f6"/>
@@ -29984,11 +30911,11 @@ function beaVignette(kind){let art='';const W=(x,y,s,m,d)=>bvFig(beaFig('waltz',
     <g class="vnote"><path d="M106 22 l3 -3 m0 6 l3 -3" stroke="#f5b82e" stroke-width="1.4"/></g>`;
   if(kind==='fall')art=`<rect width="120" height="90" fill="#fdf0ea"/><path d="M0 64 H120 V90 H0Z" fill="#f2dccf"/>
     ${bvFig(beaFig('sadsit',{mood:'sad'}),70,84,.95)}${bvFig(wrenFig('spot'),36,84,.9)}
-    <g transform="translate(8 8)"><rect width="34" height="20" rx="4" fill="#fff"/><text x="17" y="13" text-anchor="middle" font-size="7" font-weight="800" fill="#e5484d" font-family="Nunito">week 6</text></g>
-    <g transform="translate(92 14)"><rect width="22" height="14" rx="4" fill="#cfe8ff"/><text x="11" y="10" text-anchor="middle" font-size="6.4" font-weight="800" fill="#2a5a9a" font-family="Nunito">ice</text></g>`;
+    <g transform="translate(8 8)"><rect width="34" height="20" rx="4" fill="#fff"/><text x="17" y="13" text-anchor="middle" font-size="7" font-weight="800" fill="#e5484d" font-family="Nunito">${typeof T==='function'?T('week 6'):'week 6'}</text></g>
+    <g transform="translate(92 14)"><rect width="22" height="14" rx="4" fill="#cfe8ff"/><text x="11" y="10" text-anchor="middle" font-size="6.4" font-weight="800" fill="#2a5a9a" font-family="Nunito">${typeof T==='function'?T('ice'):'ice'}</text></g>`;
   if(kind==='quit')art=`<rect width="120" height="90" fill="#f3eefc"/><path d="M0 64 H120 V90 H0Z" fill="#e2d9f2"/>
     ${bvFig(beaFig('cross',{mood:'stern'}),78,84,.95)}${bvFig(wrenFig('stand',{bar:'M-4 -48 Q0 -50 4 -48'}),34,84,.9)}
-    <g transform="translate(6 6)"><rect width="56" height="22" rx="6" fill="#fff" stroke="#d9def0"/><text x="28" y="9.6" text-anchor="middle" font-size="5.6" font-weight="800" fill="#1f2340" font-family="Nunito">Dose raised</text><text x="28" y="17" text-anchor="middle" font-size="5" font-weight="700" fill="#8a90b0" font-family="Nunito">without asking</text></g>
+    <g transform="translate(6 6)"><rect width="56" height="22" rx="6" fill="#fff" stroke="#d9def0"/><text x="28" y="9.6" text-anchor="middle" font-size="5.6" font-weight="800" fill="#1f2340" font-family="Nunito">${typeof T==='function'?T('Dose raised'):'Dose raised'}</text><text x="28" y="17" text-anchor="middle" font-size="5" font-weight="700" fill="#8a90b0" font-family="Nunito">${typeof T==='function'?T('without asking'):'without asking'}</text></g>
     <path d="M100 12 l10 10 M110 12 l-10 10" stroke="#e5484d" stroke-width="2.6" stroke-linecap="round"/>`;
   if(!art)return vignette(kind);
   return `<svg viewBox="0 0 120 90" class="vig"><clipPath id="vc${++VGN}"><rect width="120" height="90" rx="10"/></clipPath><g clip-path="url(#vc${VGN})">${art}</g></svg>`}
@@ -30008,13 +30935,13 @@ function beaTreasureArt(id){const g='bt'+(++VGN);let a='';
     <path d="M44 28 h12 M50 22 v12" stroke="#e5484d" stroke-width="4" stroke-linecap="round"/>
     <g transform="translate(50 70)"><circle r="12" fill="#f5c84a" stroke="#9a6a16" stroke-width="1.6"/><circle r="8" fill="#ffffff" stroke="#9a6a16" stroke-width="1"/><path d="M-3 0 h6 M0 -3 v6" stroke="#2f3e6b" stroke-width="2.2" stroke-linecap="round"/>${[-1,1].map(s=>`<path d="M${s*9} 6 C${s*13} 2 ${s*13} -4 ${s*10} -8" stroke="#3a8a4a" stroke-width="1.6" fill="none"/>`).join('')}<circle cx="-4" cy="-6" r="1.6" fill="#fff" opacity=".8"/></g>`;
   if(id==='invite')a=`<g transform="rotate(-6 50 52)"><rect x="12" y="18" width="76" height="66" rx="5" fill="#fffaf0" stroke="#d9c58e" stroke-width="1.6"/><rect x="17" y="23" width="66" height="56" rx="3" fill="none" stroke="#e8c870" stroke-width="1.2"/>
-    <text x="50" y="40" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">Jordan</text><text x="50" y="50" text-anchor="middle" font-size="7" font-family="Georgia, serif" fill="#9a8aa8">&amp;</text><text x="50" y="60" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">Ana</text>
-    <text x="50" y="72" text-anchor="middle" font-size="6.4" font-weight="800" font-family="Nunito" fill="#b07a12" letter-spacing=".5">JULY 19</text></g>
+    <text x="50" y="40" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">${typeof T==='function'?T('Jordan'):'Jordan'}</text><text x="50" y="50" text-anchor="middle" font-size="7" font-family="Georgia, serif" fill="#9a8aa8">&amp;</text><text x="50" y="60" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">${typeof T==='function'?T('Ana'):'Ana'}</text>
+    <text x="50" y="72" text-anchor="middle" font-size="6.4" font-weight="800" font-family="Nunito" fill="#b07a12" letter-spacing=".5">${typeof T==='function'?T('JULY 19'):'JULY 19'}</text></g>
     <g transform="translate(76 80)"><g class="ig-pulse"><circle r="9" fill="#c0304a" stroke="#8a1a30" stroke-width="1.2"/>${bvHeart(0,0,1.2,'#ff9aa8')}</g></g>`;
   if(id==='cane')a=`<path d="M58 94 L46 30" stroke="#4a2814" stroke-width="7" stroke-linecap="round"/><path d="M58 94 L46 30" stroke="#8a5430" stroke-width="5" stroke-linecap="round"/><path d="M57 92 L46.6 34" stroke="#c08a5a" stroke-width="1.4" stroke-linecap="round"/>
     <path d="M46 30 C44 14 26 12 24 26" stroke="#4a2814" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M46 30 C44 14 26 12 24 26" stroke="#8a5430" stroke-width="5" fill="none" stroke-linecap="round"/>
     <rect x="52" y="92" width="10" height="5" rx="2" fill="#2a1a12"/>
-    <g transform="translate(62 48) rotate(14)"><path d="M-6 -2 L-12 -6" stroke="#9a8aa8" stroke-width="1"/><rect x="0" y="-8" width="26" height="14" rx="3" fill="#fff6d8" stroke="#c9a24a" stroke-width="1.2"/><circle cx="3" cy="-1" r="1.4" fill="#c9a24a"/><text x="15" y="2.6" text-anchor="middle" font-size="7.6" font-weight="800" font-family="Nunito" fill="#7d4fa8">Fred</text></g>`;
+    <g transform="translate(62 48) rotate(14)"><path d="M-6 -2 L-12 -6" stroke="#9a8aa8" stroke-width="1"/><rect x="0" y="-8" width="26" height="14" rx="3" fill="#fff6d8" stroke="#c9a24a" stroke-width="1.2"/><circle cx="3" cy="-1" r="1.4" fill="#c9a24a"/><text x="15" y="2.6" text-anchor="middle" font-size="7.6" font-weight="800" font-family="Nunito" fill="#7d4fa8">${typeof T==='function'?T('Fred'):'Fred'}</text></g>`;
   if(id==='wren')a=bvFig(wrenFig('stand',{bar:'M-4 -49 Q0 -47 4 -49'}),50,96,1.42);
   return `<svg viewBox="0 0 100 100" class="bea-trsvg">${a}</svg>`}
 
