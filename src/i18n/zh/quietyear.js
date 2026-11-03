@@ -95,7 +95,7 @@ I18N.add('zh','quietyear',{strings:{
   'I drew this when I was seven.':'这是我七岁时画的。',
   'I was scared, so Mom and I put a paper lantern in our window.':'那时候我很害怕，所以妈妈和我在窗口放了一盏纸灯笼。',
   'The next night, the family across the street put a lantern in their window too.':'第二天晚上，街对面那户人家也在窗口放了一盏灯笼。',
-  'By the end of the week, our whole street was glowing.':'还没到周末，我们整条街都亮起来了。',
+  'By the end of the week, our whole street was glowing.':'一个星期还没过完，我们整条街都亮起来了。',
   'The lanterns in Varrow’s windows all started with our one paper lantern.':'瓦罗家家户户窗口的灯笼，都是从我们那一盏纸灯笼开始的。',
   'I didn’t know a little kid could start something that big.':'我以前不知道，一个小孩子也能带出这么大的事。',
   'One lantern in Ivy’s window led to lanterns in windows all over Varrow, because people who see a kind act often copy it.':'艾薇窗口的一盏灯笼，让瓦罗到处的窗口都亮起了灯笼，因为人们看到别人做好事，常常会跟着学。',
@@ -242,7 +242,7 @@ I18N.add('zh','quietyear',{strings:{
   'Weeks of careful tests':'几个星期的仔细测试','WEEK':'周','Every kid who got a shot got a sticker':'每个打了针的孩子都有一张贴纸',
   'One shot protects you and the people around you':'打一针，保护你，也保护你身边的人','“I helped Varrow”':'“我帮助了瓦罗”',
   'Ivy drawing at seven':'七岁的艾薇在画画','Ivy and her mom put a paper lantern in the window':'艾薇和妈妈在窗口放了一盏纸灯笼',
-  'The next night, the house across the street lit one too':'第二天晚上，街对面那家也点了一盏','By the end of the week, the whole street glowed':'不到周末，整条街都亮了',
+  'The next night, the house across the street lit one too':'第二天晚上，街对面那家也点了一盏','By the end of the week, the whole street glowed':'一周之内，整条街都亮了',
   'That is how the lantern garden started':'灯笼花园就是这样开始的','One small lantern led to thousands':'一盏小灯笼，引出了几千盏',
   // words written on the six things people left in the garden
   'for now':'过段时间见','Bread for':'面包送给','nurses':'护士们','back door':'放后门','SNIFFER v1':'嗅嗅 1号',

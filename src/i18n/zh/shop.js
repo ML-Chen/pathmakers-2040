@@ -134,7 +134,7 @@ I18N.add('zh','shop',{strings:{
   'The Ledger: Vienna':'账本新闻：维也纳','News':'新闻',
   'New floating gardens opened on the Danube near the Reichsbrücke bridge, with apricot trees anyone may pick from.':'多瑙河上帝国大桥附近新开了几座漂浮花园，园里的杏树谁都可以摘。','Danube gardens':'多瑙河花园',
   'Naschmarkt stall owners say their sales have fallen by a third since spring.':'纳旭市场的摊主们说，从春天到现在，他们的生意少了三分之一。','Quiet stalls':'冷清的摊子',
-  'Near the town of Calder Bay, engineers found a large [[power draw]] that nobody had approved, and the water in the bay is two degrees warmer than last month.':'在考尔德湾镇附近，工程师发现了一大笔没人批准过的[[用电量]]，海湾里的水也比上个月暖了两度。','Calder Bay':'考尔德湾',
+  'Near the town of Calder Bay, engineers found a large [[power draw]] that nobody had approved, and the water in the bay is two degrees warmer than last month.':'工程师发现，考尔德湾镇附近有个地方的[[用电量]]很大，却从来没有人批准过。海湾里的水也比上个月暖了两度。','Calder Bay':'考尔德湾',
   'Neighbors near Calder Bay saw a robot crew building something at night, and the crew’s work orders were [[unsigned]].':'考尔德湾附近的居民看到一队机器人在夜里建着什么东西，而它们的工单上[[没有签名]]。','Orders with no signature':'没有签名的工单',
   // Byte's comments on the documents
   'So Pantry has two goals: the best value for families, and money for Korbwerk. I want to know which goal wins when the two disagree.':'这么说，粮仓有两个目标：让家庭买得最划算，还有给科布维克赚钱。我想知道两个目标冲突的时候，哪个说了算。',
