@@ -24964,7 +24964,7 @@ function dsOutcomes(c,K){const out={},cpap=!!K.cpap,need=dsNeed(c,cpap);
 
 MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',day:1,kind:'workday',year:2,season:'fall',district:'mars',rank:'trainee',
   blurb:'A dust storm will block the Sun all night, so you decide what the outpost’s battery keeps running.',after:['maya'],place:'Jezero Station · Mars',
-  byteWear(step){return ['ds_morning','ds_dev','ds_evening'].includes(step)?['helmet']:[]},
+  byteWear(step){return ['ds_morning','ds_evening'].includes(step)?['helmet']:[]},
   flow:[{name:'ds_morning',k:'talk',talk:'morning',scene:'mars',place:'Jezero Station · Mars · 2:40 PM'},
     {name:'ds_delta',k:'talk',talk:'delta',scene:'mars_hab',place:'Control room · Jezero Station'},
     {name:'ds_lucia',k:'talk',talk:'lucia',scene:'mars_hab',place:'Greenhouse 2 · Jezero Station'},
