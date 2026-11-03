@@ -21965,50 +21965,61 @@ LATE.push(()=>{const app=document.getElementById('app');if(!app||typeof Mutation
 })();
 
 /* vienna_market.js - the Naschmarkt in Vienna on a summer morning: PAINT.vienna_market (uses window.VIENNA_KIT).
-   We stand in the market lane looking north-east toward Karlsplatz. Two rows of stalls line the lane, with awnings,
-   crates of apricots, peppers and figs, and cones of spice. Above the left row rise Otto Wagner's Majolika House
-   (pink tiles with a painted vine of red roses) and the Medallion House next door (white, with gold medallions and
-   gold palm fronds); ordinary 1890s apartment houses stand in shade on the right. At the far end the golden laurel
-   dome of the Secession gleams. Receding walls are drawn by mapping flat painted textures in thin vertical strips
-   (true perspective). The lower third is the calm lane for subtitles and props. Stall signs are generic German
+   We stand in the market lane looking north-east toward Karlsplatz. Two rows of separate market booths line the lane.
+   Each booth is a solid little building drawn in true perspective: a side wall facing us, a front facing the lane with
+   an open counter, its name on the board above the awning, a flat roof with an overhang, two-step display tables of
+   crates (apricots, peppers, figs, spice, olives, flowers) and a shadow on the paving. Gaps between the booths show
+   the road behind. Set back across the road rise Otto Wagner's Majolika House (pink tiles with a painted vine of red
+   roses) and the Medallion House next door (white, with gold medallions and gold palm fronds); ordinary 1890s
+   apartment houses stand in shade on the right. At the far end the golden laurel dome of the Secession gleams.
+   The world is measured in metres and projected with one focal length for both axes, so the booths keep their shape
+   at every window size. The lower third is the calm lane for subtitles and props. Stall signs are generic German
    words (no brands); "KAYA" is Emine Kaya's fictional stall. */
 (function () {
   'use strict';
   var PAINT = (window.PAINT = window.PAINT || {});
   var K = window.VIENNA_KIT; if (!K) return;
   var PI = K.PI, TAU = K.TAU, rng = K.rng, hash = K.hash, clamp = K.clamp, lerp = K.lerp, mix = K.mix, rgba = K.rgba, lg = K.lg, rg = K.rg,
-    S = K.S, memo = K.memo, poly = K.poly, rrect = K.rrect, glow = K.glow, softGlow = K.softGlow, wisp = K.wisp, haze = K.haze, band = K.band,
-    finish = K.finish, batch = K.batch, dots = K.dots, rects = K.rects, glowSpr = K.glowSpr, cloudForm = K.cloudForm, skyStrokes = K.skyStrokes,
-    clump = K.clump, lens = K.lens, mk = K.mk, drawBird = K.drawBird, mark = K.mark, qcirc = K.qcirc;
+    S = K.S, memo = K.memo, poly = K.poly, rrect = K.rrect, glow = K.glow, softGlow = K.softGlow, haze = K.haze,
+    finish = K.finish, dots = K.dots, glowSpr = K.glowSpr, cloudForm = K.cloudForm, skyStrokes = K.skyStrokes,
+    clump = K.clump, lens = K.lens, mk = K.mk, drawBird = K.drawBird, mark = K.mark;
 
+  /* ---------- camera ----------
+     X across the lane in metres (0 = the middle, + = right), hh = height above the paving, z = distance ahead.
+     One focal length F for both axes; the eye is G metres above the paving. The window shape only changes how
+     wide the view is (and how far back the houses stand), never the shape of a booth. */
   var mkL = memo(function (w, h) {
-    var s = S(w, h);
-    // projection: lateral X and height Y (eye level 0, ground +0.3) at depth g (0 near, 1 = vanishing point)
-    return { s: s, vx: w * 0.5, vy: h * 0.4, ground: 0.25,
-      P: function (X, Y, g) { return [w * 0.5 + X * (1 - g) * w, h * 0.4 + Y * (1 - g) * h]; } };
+    var s = S(w, h), F = Math.max(0.6 * h, 0.6 * w), G = 1.5, vx = w * 0.5, vy = h * 0.4, asp = clamp((w / h - 0.46) / 1.14, 0, 1);
+    // Xf: the booth fronts (half the lane's width); a phone's narrow window gets a slightly narrower lane
+    var L = { s: s, w: w, h: h, F: F, G: G, vx: vx, vy: vy, asp: asp, Xf: 1.6 - 0.3 * (1 - asp), D: 2.6, Xh: 7 + 2 * asp };
+    L.P = function (X, hh, z) { return [vx + X * F / z, vy + (G - hh) * F / z]; };
+    L.edgeZ = function (X) { return Math.abs(X) * F / (w * 0.5); }; // the depth where the plane |X| leaves the frame
+    L.zmin = G * F / (h - vy);
+    // the first booth: its roof inside the frame, and on wide windows its whole side wall too
+    L.zFirst = Math.max(L.edgeZ(L.Xf) * 0.92, (3.5 - G) * F / (0.37 * h), asp * L.edgeZ(L.Xf + L.D) * 0.95);
+    return L;
   });
-  function gz(z) { return 1 - 1 / z; } // world depth z (>=1 in front of us... ) to g
-  function zg(g) { return 1 / (1 - g); }
+  var HZ = '#d3dce4';
+  function hzz(z) { return clamp((z - 9) / 110, 0, 0.62); }
+  function pp(L, pts) { var o = [], i; for (i = 0; i < pts.length; i++) o.push(L.P(pts[i][0], pts[i][1], pts[i][2])); return o; }
+  function face(ctx, L, pts, fill) { poly(ctx, pp(L, pts)); ctx.fillStyle = fill; ctx.fill(); }
 
-  /* Map a flat texture onto a vertical wall at lateral X, between heights Ytop..Ybot, from depth zA to zB, in strips. */
-  function wallMap(ctx, L, tex, X, Ytop, Ybot, zA, zB, w, shade) {
-    var gA = gz(zA), gB = gz(zB), xa = L.P(X, 0, gA)[0], xb = L.P(X, 0, gB)[0], n = Math.max(20, Math.ceil(Math.abs(xb - xa) / 1.5)), i;
+  /* Map a flat texture onto the vertical plane X = const, from depth z1 (u0) to z2 (u1) and heights h1..h2, in thin strips.
+     On the right side (X > 0) the texture is flipped so that it still reads left to right on screen. */
+  function mapX(ctx, L, tex, X, z1, z2, h1, h2, u0, u1) {
+    if (!tex) return; u0 = u0 || 0; u1 = u1 == null ? 1 : u1;
+    var F = L.F, xa = L.vx + X * F / z1, xb = L.vx + X * F / z2, n = Math.max(2, Math.ceil(Math.abs(xb - xa) / 1.2)), i, W = tex.width, H = tex.height, flip = X > 0;
     for (i = 0; i < n; i++) {
       var x0 = lerp(xa, xb, i / n), x1 = lerp(xa, xb, (i + 1) / n);
-      var g0 = 1 - (x0 - L.vx) / (X * w), g1 = 1 - (x1 - L.vx) / (X * w);
-      var z0 = zg(g0), z1 = zg(g1), u0 = (z0 - zA) / (zB - zA), u1 = (z1 - zA) / (zB - zA), gm = (g0 + g1) / 2;
-      var yt = L.vy + Ytop * (1 - gm) * L.H, yb = L.vy + Ybot * (1 - gm) * L.H;
-      var sx = clamp(u0, 0, 1) * tex.width, sw = Math.max(1, Math.abs(u1 - u0) * tex.width);
-      if (sx + sw > tex.width) sw = tex.width - sx; if (sw <= 0) continue;
-      ctx.drawImage(tex, sx, 0, sw, tex.height, Math.min(x0, x1), yt, Math.abs(x1 - x0) + 0.6, yb - yt);
-    }
-    if (shade) { // darken with distance and side: a gradient over the quad
-      var A = L.P(X, Ytop, gA), B = L.P(X, Ytop, gB), C = L.P(X, Ybot, gB), D = L.P(X, Ybot, gA);
-      poly(ctx, [A, B, C, D]); ctx.fillStyle = lg(ctx, A[0], 0, B[0], 0, shade); ctx.fill();
+      if (Math.max(x0, x1) < -2 || Math.min(x0, x1) > L.w + 2) continue;
+      var zz0 = X * F / (x0 - L.vx), zz1 = X * F / (x1 - L.vx), zm = (zz0 + zz1) / 2;
+      var t0 = (zz0 - z1) / (z2 - z1), t1 = (zz1 - z1) / (z2 - z1); if (flip) { t0 = 1 - t0; t1 = 1 - t1; }
+      var ua = lerp(u0, u1, clamp(Math.min(t0, t1), 0, 1)) * W, ub = lerp(u0, u1, clamp(Math.max(t0, t1), 0, 1)) * W;
+      var sw = Math.max(0.5, ub - ua); if (ua + sw > W) sw = W - ua; if (sw <= 0) continue;
+      var yt = L.vy + (L.G - h2) * F / zm, yb = L.vy + (L.G - h1) * F / zm;
+      ctx.drawImage(tex, ua, 0, sw, H, Math.min(x0, x1), yt, Math.abs(x1 - x0) + 0.7, yb - yt);
     }
   }
-  function quad(ctx, L, a, b, c, d, fill) { poly(ctx, [L.P(a[0], a[1], a[2]), L.P(b[0], b[1], b[2]), L.P(c[0], c[1], c[2]), L.P(d[0], d[1], d[2])]); ctx.fillStyle = fill; ctx.fill(); }
-
   /* ---------- textures ---------- */
   function windowAt(g, x, y, ww, wh, lit, r) {
     g.fillStyle = '#f8f4ec'; g.fillRect(x - 1.5, y - 1.5, ww + 3, wh + 3);
@@ -22088,45 +22099,238 @@ LATE.push(()=>{const app=document.getElementById('app');if(!app||typeof Mutation
     });
     return c;
   }
-  // A row of stall fronts: wooden fronts, signs, shelves of jars, crates of produce and cones of spice
-  var SIGNS = [['KAYA', 'GEWÜRZE · TROCKENFRÜCHTE', '#2f6a4a'], ['OBST & GEMÜSE', '', '#3a6a9a'], ['MARILLEN', 'aus der Wachau', '#c8602a'], ['KÄSE', '', '#7a4a2a'], ['OLIVEN', '', '#4a5a2a'], ['BLUMEN', '', '#a83a5a'], ['GEWÜRZE', '', '#8a3a2a'], ['FISCH', '', '#2a5a7a']];
-  function makeStalls(seed, order) {
-    var n = order.length, SW = 300, W = SW * n, H = 220, c = mk(W, H); if (!c) return null; var g = c.getContext('2d'), r = rng(seed), i, k;
-    for (i = 0; i < n; i++) {
-      var x0 = i * SW, sg = SIGNS[order[i]], wood = ['#3e7a56', '#e8dcc0', '#2f6a5a', '#b8543a'][i % 4];
-      g.fillStyle = wood; g.fillRect(x0 + 6, 0, SW - 12, H);
-      g.fillStyle = 'rgba(0,0,0,0.15)'; for (k = 0; k < 12; k++) g.fillRect(x0 + 6 + k * (SW - 12) / 12, 0, 1.2, H);
-      // sign band
-      g.fillStyle = sg[2]; g.fillRect(x0 + 10, 10, SW - 20, 44); g.strokeStyle = '#f2e6c8'; g.lineWidth = 2; g.strokeRect(x0 + 14, 14, SW - 28, 36);
-      g.fillStyle = '#fff6e0'; g.font = '800 ' + (sg[1] ? 20 : 24) + 'px Nunito, sans-serif'; g.textAlign = 'center'; g.fillText(sg[0], x0 + SW / 2, sg[1] ? 33 : 40);
-      if (sg[1]) { g.font = '700 11px Nunito, sans-serif'; g.fillText(sg[1], x0 + SW / 2, 47); }
-      // dark interior with shelves of jars and hanging garlands of peppers
-      g.fillStyle = '#4a3428'; g.fillRect(x0 + 18, 62, SW - 36, 92); g.fillStyle = 'rgba(255,220,160,0.12)'; g.fillRect(x0 + 18, 62, SW - 36, 30);
-      // one shelf of glass jars with lids
-      g.fillStyle = '#7a5236'; g.fillRect(x0 + 22, 92, SW - 44, 4);
-      for (var j = 0; j < 9; j++) { var jx = x0 + 30 + j * (SW - 60) / 9, jw = (SW - 60) / 9 - 8, jc = ['#e8b840', '#c8402a', '#7a3a1a', '#d8682a', '#5a7a2a', '#f2e0b0', '#8a2a4a'][(j + i) % 7];
-        g.fillStyle = 'rgba(230,240,245,0.5)'; g.beginPath(); g.moveTo(jx, 92); g.lineTo(jx, 74); g.quadraticCurveTo(jx, 70, jx + 4, 70); g.lineTo(jx + jw - 4, 70); g.quadraticCurveTo(jx + jw, 70, jx + jw, 74); g.lineTo(jx + jw, 92); g.closePath(); g.fill();
-        g.fillStyle = jc; g.fillRect(jx + 2, 78, jw - 4, 13); g.fillStyle = '#c8a050'; g.fillRect(jx + 1, 67, jw - 2, 4); g.fillStyle = 'rgba(255,255,255,0.6)'; g.fillRect(jx + 3, 73, 2, 16); }
-      // open sacks of spice and dried fruit along the floor of the stall
-      for (j = 0; j < 6; j++) { var bx = x0 + 26 + j * (SW - 52) / 6, bw = (SW - 52) / 6 - 6, bc = ['#c8402a', '#e8b030', '#8a4a2a', '#f2e6c0', '#d87a2a', '#6a8a3a'][(j + i * 2) % 6];
-        g.fillStyle = '#c8aa78'; g.beginPath(); g.moveTo(bx, 154); g.lineTo(bx + 2, 122); g.quadraticCurveTo(bx + bw / 2, 116, bx + bw - 2, 122); g.lineTo(bx + bw, 154); g.closePath(); g.fill();
-        g.strokeStyle = '#9a7a48'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(bx + 4, 130); g.lineTo(bx + bw - 4, 130); g.stroke();
-        g.fillStyle = bc; g.beginPath(); g.ellipse(bx + bw / 2, 122, bw / 2 - 2, 6, 0, 0, TAU); g.fill(); g.beginPath(); g.moveTo(bx + 5, 122); g.quadraticCurveTo(bx + bw / 2, 106, bx + bw - 5, 122); g.fill();
-        g.fillStyle = 'rgba(255,255,255,0.3)'; g.beginPath(); g.ellipse(bx + bw / 2 - 3, 116, 4, 2, 0, 0, TAU); g.fill(); }
-      g.strokeStyle = '#7a4a2a'; g.lineWidth = 1.4; for (k = 0; k < 2; k++) { var gx = x0 + 34 + k * (SW - 68); g.beginPath(); g.moveTo(gx, 62); g.lineTo(gx, 108); g.stroke(); for (j = 0; j < 8; j++) { g.fillStyle = k ? '#f2ecd8' : '#d83a2a'; g.beginPath(); g.ellipse(gx + (j % 2 ? 3.4 : -3.4), 66 + j * 5.4, k ? 4 : 3, k ? 4 : 5.4, j % 2 ? 0.4 : -0.4, 0, TAU); g.fill(); } }
-      // counter of crates with produce, front edge
-      g.fillStyle = '#9a6a3a'; g.fillRect(x0 + 10, 154, SW - 20, 66);
-      for (k = 0; k < 4; k++) { var cx = x0 + 16 + k * (SW - 32) / 4, cwid = (SW - 32) / 4 - 6, produce = [['#f39a2a', '#ffc34a'], ['#d8302a', '#f05a3a'], ['#6a2a5a', '#8a4a7a'], ['#7aa83a', '#a8cc5a'], ['#f2d040', '#ffe880'], ['#c8402a', '#e8783a']][(i * 2 + k) % 6];
-        g.fillStyle = '#c89a5a'; g.fillRect(cx, 160, cwid, 54); g.fillStyle = '#a87a3a'; g.fillRect(cx, 186, cwid, 3);
-        for (j = 0; j < 22; j++) { var px = cx + 6 + (j % 7) * (cwid - 10) / 6, py = 168 - Math.floor(j / 7) * 7 + (j % 2) * 2; g.fillStyle = produce[j % 2]; g.beginPath(); g.arc(px, py, 6.2, 0, TAU); g.fill(); g.fillStyle = 'rgba(255,255,255,0.35)'; g.beginPath(); g.arc(px - 2, py - 2, 2, 0, TAU); g.fill(); }
-        g.fillStyle = '#fff'; g.fillRect(cx + cwid / 2 - 12, 196, 24, 12); g.fillStyle = '#2a2a2a'; g.font = '800 9px Nunito, sans-serif'; g.fillText('€' + (2 + ((i + k) % 5)) + ',' + ['20', '50', '90', '40', '80'][(i + k) % 5], cx + cwid / 2, 205); }
+
+  /* ---------- the booths ---------- */
+  // sign text, small line, board colour, what the booth sells
+  var SIGNS = [['KAYA', 'GEWÜRZE · TROCKENFRÜCHTE', '#2f6a4a', 'spice'], ['OBST & GEMÜSE', '', '#3a6a9a', 'produce'], ['MARILLEN', 'aus der Wachau', '#c8602a', 'produce'],
+    ['KÄSE', '', '#7a4a2a', 'cheese'], ['OLIVEN', '', '#4a5a2a', 'olive'], ['BLUMEN', '', '#a83a5a', 'flower'], ['GEWÜRZE', '', '#8a3a2a', 'spice'], ['FISCH', '', '#2a5a7a', 'fish']];
+  var BODY = [['#5a9470', '#2f5a44'], ['#ece0c4', '#8a6a4a'], ['#3f8274', '#24524a'], ['#c87452', '#7a3a2a'], ['#e8d4a4', '#9a7a48'], ['#78a476', '#3e6a44'], ['#dcd0bc', '#6a5a4a']];
+  var AWN = [['#e8574a', '#fff4dc'], ['#3a8a6a', '#f2ecd8'], ['#f0a83a', '#fff4dc'], ['#4a6ab0', '#eef2f8'], ['#c8384a', '#fbe8e0']];
+  var PROD = { produce: [['#f39a2a', '#ffc04a'], ['#d8302a', '#f2603a'], ['#7aa83a', '#a8cc5a'], ['#5a2a4a', '#8a4a72'], ['#f2d040', '#ffe27a'], ['#e8783a', '#f8a85a']],
+    spice: [['#c8402a', '#e0603a'], ['#e8b030', '#f8d060'], ['#8a4a2a', '#a86a3a'], ['#d87a2a', '#f0a050'], ['#6a8a3a', '#8aaa50'], ['#f2e6c0', '#fff8e0']],
+    cheese: [['#f2d27a', '#ffe8a8'], ['#e8b850', '#f8d888'], ['#f6ecd0', '#fffaf0']], olive: [['#4a5a2a', '#6a7a3a'], ['#2e2e2a', '#4a4a44'], ['#7a8a3a', '#9aaa5a'], ['#c8402a', '#e06a4a']],
+    flower: [['#ff6a8a', '#ffd35a'], ['#ffffff', '#f8a8c8'], ['#e8574a', '#ffb0a0'], ['#a86ad8', '#f0e0ff']], fish: [['#c8d8e4', '#eef6fa'], ['#9ab0c0', '#d8e8f0']] };
+  var ROWS = { '-1': [0, 2, 1, 6, 3, 4, 5, 1, 2, 7], '1': [1, 5, 4, 2, 7, 3, 6, 1, 4, 2] };
+  var mkBooths = memo(function (w, h) {
+    var L = mkL(w, h), out = { '-1': [], '1': [] };
+    [-1, 1].forEach(function (sd) {
+      var r = rng(sd < 0 ? 71011 : 71023), z = L.zFirst + (sd > 0 ? 0.7 : 0), i = 0, order = ROWS[sd];
+      while (z < 150) {
+        var len = (i === 0 ? 4.3 : 3.3 + r() * 1.0), sg = SIGNS[order[i % order.length]], bc = BODY[(i * 3 + (sd > 0 ? 2 : 0)) % BODY.length];
+        out[sd].push({ za: z, zb: z + len, rt: 3.36 + r() * 0.1, sg: sg, kind: sg[3], body: bc[0], trim: bc[1], awn: AWN[(i + (sd > 0 ? 1 : 0)) % AWN.length], seed: (sd + 3) * 1000 + i, i: i });
+        z += len + (i % 5 === 4 ? 2.6 + r() * 0.8 : 0.7 + r() * 0.8); i++;
+      }
+    });
+    return out;
+  });
+
+  var signCache = {};
+  function signTex(sg, lenM) {
+    var key = sg[0] + '|' + Math.round(lenM * 10); if (signCache[key] !== undefined) return signCache[key];
+    var H = 80, W = Math.max(60, Math.round(lenM / 0.5 * H)), c = mk(W, H); signCache[key] = c; if (!c) return null; var g = c.getContext('2d');
+    g.fillStyle = sg[2]; g.fillRect(0, 0, W, H);
+    g.fillStyle = 'rgba(255,255,255,0.13)'; g.fillRect(0, 0, W, H * 0.32); g.fillStyle = 'rgba(0,0,0,0.16)'; g.fillRect(0, H * 0.86, W, H * 0.14);
+    g.strokeStyle = '#f2e6c8'; g.lineWidth = 3.5; g.strokeRect(8, 8, W - 16, H - 16);
+    g.fillStyle = '#fff6e0'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    var fs = sg[1] ? 40 : 56, tw; g.font = '800 ' + fs + 'px Nunito, sans-serif'; tw = g.measureText(sg[0]).width;
+    if (tw > W * 0.84) { fs *= W * 0.84 / tw; g.font = '800 ' + fs + 'px Nunito, sans-serif'; }
+    g.fillText(sg[0], W / 2, sg[1] ? H * 0.42 : H * 0.54);
+    if (sg[1]) { var f2 = 15; g.font = '700 ' + f2 + 'px Nunito, sans-serif'; tw = g.measureText(sg[1]).width; if (tw > W * 0.8) { f2 *= W * 0.8 / tw; g.font = '700 ' + f2 + 'px Nunito, sans-serif'; } g.fillText(sg[1], W / 2, H * 0.74); }
+    return c;
+  }
+  // the far inner wall of a booth, seen through its open front: shelves of goods under a warm lamp (2.6 m wide, 0.5..2.32 m high)
+  var interCache = {};
+  function interiorTex(kind) {
+    if (interCache[kind] !== undefined) return interCache[kind];
+    var W = 260, H = 182, c = mk(W, H); interCache[kind] = c; if (!c) return null; var g = c.getContext('2d'), r = rng(9000 + kind.length * 31 + kind.charCodeAt(0)), i, j, pal = PROD[kind] || PROD.produce;
+    g.fillStyle = lg(g, 0, 0, 0, H, [[0, '#2e221e'], [0.5, '#4a3628'], [1, '#3a2a22']]); g.fillRect(0, 0, W, H);
+    g.fillStyle = rg(g, W * 0.45, 6, 0, 150, [[0, 'rgba(255,214,150,0.5)'], [1, 'rgba(255,214,150,0)']]); g.fillRect(0, 0, W, H);
+    for (j = 0; j < 3; j++) {
+      var sy = 44 + j * 40; g.fillStyle = '#7a5236'; g.fillRect(0, sy, W, 5); g.fillStyle = 'rgba(0,0,0,0.25)'; g.fillRect(0, sy + 5, W, 3);
+      for (i = 0; i < 12; i++) {
+        var jx = 4 + i * 21.5, jw = 16, jh = 24 + (r() * 6 | 0), pc = pal[(i + j * 2) % pal.length];
+        if (kind === 'flower') { g.fillStyle = '#3c6a3a'; g.fillRect(jx + 4, sy - jh * 0.6, 3, jh * 0.6); g.fillStyle = pc[(i + j) % 2]; g.beginPath(); g.arc(jx + 6, sy - jh * 0.65, 6.5, 0, TAU); g.fill(); continue; }
+        if (kind === 'cheese') { g.fillStyle = pc[0]; g.beginPath(); g.ellipse(jx + 8, sy - 9, 10, 9, 0, 0, TAU); g.fill(); g.fillStyle = pc[1]; g.fillRect(jx, sy - 16, 16, 4); continue; }
+        if (kind === 'produce' && j === 2) { g.fillStyle = '#b88a52'; g.fillRect(jx, sy - 14, jw + 3, 14); g.fillStyle = pc[0]; for (var q = 0; q < 3; q++) { g.beginPath(); g.arc(jx + 4 + q * 5.5, sy - 15, 4, 0, TAU); g.fill(); } continue; }
+        g.fillStyle = 'rgba(230,240,245,0.42)'; g.fillRect(jx, sy - jh, jw, jh);
+        g.fillStyle = pc[0]; g.fillRect(jx + 2, sy - jh * 0.72, jw - 4, jh * 0.68);
+        g.fillStyle = '#c8a050'; g.fillRect(jx + 1, sy - jh - 4, jw - 2, 4); g.fillStyle = 'rgba(255,255,255,0.55)'; g.fillRect(jx + 3, sy - jh + 3, 2, jh - 6);
+      }
     }
+    // a garland of dried peppers and one of garlic hanging at the sides
+    for (i = 0; i < 2; i++) { var gx = 14 + i * (W - 28); g.strokeStyle = '#6a4a2a'; g.lineWidth = 1.4; g.beginPath(); g.moveTo(gx, 0); g.lineTo(gx, 74); g.stroke();
+      for (j = 0; j < 10; j++) { g.fillStyle = i ? '#f2ecd8' : '#d83a2a'; g.beginPath(); g.ellipse(gx + (j % 2 ? 3.4 : -3.4), 6 + j * 6.6, i ? 4.4 : 3.2, i ? 4.4 : 5.6, j % 2 ? 0.4 : -0.4, 0, TAU); g.fill(); } }
+    // the stall keeper's back counter
+    g.fillStyle = '#6a4a32'; g.fillRect(0, 150, W, 32); g.fillStyle = '#8a6444'; g.fillRect(0, 150, W, 5);
     return c;
   }
 
+  // fill only the screen box of a set of projected points (inside a clip, so huge canvases stay fast)
+  function boxFill(ctx, pts, style) { var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9, i; for (i = 0; i < pts.length; i++) { x0 = Math.min(x0, pts[i][0]); x1 = Math.max(x1, pts[i][0]); y0 = Math.min(y0, pts[i][1]); y1 = Math.max(y1, pts[i][1]); } ctx.fillStyle = style; ctx.fillRect(x0 - 1, y0 - 1, x1 - x0 + 2, y1 - y0 + 2); }
+  function clipFill(ctx, pts, style) { ctx.save(); poly(ctx, pts); ctx.clip(); boxFill(ctx, pts, style); ctx.restore(); }
+
+  /* One booth on side sd (-1 left, +1 right), in metres:
+       0 .. 0.92   counter front          0.92 .. 2.4  the open front, with the interior behind
+       2.45        the awning's top edge; it slopes out over the tables and down to 2.12 at the front
+       2.4 .. 2.8  a trim band with lamps  2.8 .. rt   the roof box, its lane side carrying the sign
+     The signs sit high enough that no awning, near or far, ever crosses their lettering from where we stand.
+     Draw order: side wall facing us, lane front and interior, tables with crates, awning, roof box with the sign. */
+  function drawBooth(ctx, L, b, sd) {
+    var F = L.F, Xf = L.Xf * sd, Xb = (L.Xf + L.D) * sd, za = b.za, zb = b.zb, hs = 2.8, rt = b.rt, pxm = F / za, hz = hzz((za + zb) / 2), i, k;
+    var lit = sd < 0, shL = lit ? 0 : 0.3, shE = lit ? 0.2 : 0.14;
+    function C(c, sh) { return mix(mix(c, '#34405a', clamp(sh, 0, 1)), HZ, hz); }
+    function at(X, hh, z) { return L.P(X, hh, z); }
+    var Xo = Xf - sd * 0.6, ov = 0.16, Xr = Xf - sd * ov, Xr2 = Xb + sd * 0.12, r0 = za - ov, r1 = zb + ov;
+    var xin = at(Xo, 0, zb)[0]; if ((sd < 0 && xin < 0) || (sd > 0 && xin > L.w)) return;
+    /* --- the side wall facing us (z = za) --- */
+    var EW = [[Xf, 0, za], [Xb, 0, za], [Xb, hs, za], [Xf, hs, za]];
+    face(ctx, L, EW, C(b.body, shE));
+    if (pxm > 18) {
+      var A = at(Xf, hs, za), B = at(Xb, 0, za), pw = Math.abs(B[0] - A[0]), EP = pp(L, EW);
+      ctx.save(); poly(ctx, EP); ctx.clip();
+      ctx.fillStyle = rgba('#000000', 0.08); for (k = 1; k < 11; k++) { var bx = lerp(A[0], B[0], k / 11); ctx.fillRect(bx, A[1], Math.max(0.6, pw * 0.004), B[1] - A[1]); }
+      ctx.fillStyle = lg(ctx, 0, A[1], 0, B[1], [[0, 'rgba(255,240,210,0.10)'], [0.75, 'rgba(0,0,0,0)'], [1, 'rgba(20,10,30,0.22)']]); ctx.fillRect(Math.min(A[0], B[0]), A[1], pw, B[1] - A[1]);
+      ctx.fillStyle = lg(ctx, A[0], 0, B[0], 0, [[0, 'rgba(255,240,220,0.08)'], [1, 'rgba(20,10,40,0.12)']]); ctx.fillRect(Math.min(A[0], B[0]), A[1], pw, B[1] - A[1]);
+      ctx.restore();
+      face(ctx, L, [[Xf, 0, za], [Xb, 0, za], [Xb, 0.28, za], [Xf, 0.28, za]], C(b.trim, shE + 0.1));
+      // a small shuttered window, a chalk price board, and empty crates stacked against the wall
+      var wX0 = Xf + sd * 1.7, wX1 = Xf + sd * 2.35;
+      if (b.i % 2 === 0) { face(ctx, L, [[wX0, 1.25, za - 0.01], [wX1, 1.25, za - 0.01], [wX1, 2.15, za - 0.01], [wX0, 2.15, za - 0.01]], C('#f2ead8', shE));
+        face(ctx, L, [[wX0 + sd * 0.05, 1.3, za - 0.02], [wX1 - sd * 0.05, 1.3, za - 0.02], [wX1 - sd * 0.05, 2.1, za - 0.02], [wX0 + sd * 0.05, 2.1, za - 0.02]], C('#4a5e78', 0.1));
+        face(ctx, L, [[wX0 + sd * 0.07, 1.75, za - 0.025], [wX1 - sd * 0.07, 1.75, za - 0.025], [wX1 - sd * 0.07, 2.08, za - 0.025], [wX0 + sd * 0.07, 2.08, za - 0.025]], C('#7e9ab4', 0.05));
+        // a window box of red geraniums
+        var fr = rng(b.seed + 11), fb0 = at(wX0 - sd * 0.04, 1.24, za - 0.12), fb1 = at(wX1 + sd * 0.04, 1.06, za - 0.12), fR = 0.11 * F / za;
+        for (k = 0; k < 4; k++) clump(ctx, lerp(fb0[0], fb1[0], (k + 0.5) / 4), fb0[1] - fR * 0.2, fR, ['#24401e', '#2f5a2a', '#4a7a3a', '#6a9a48', '#a8c870'], fr, 0.6, -0.8, false, 0.5);
+        dots(ctx, 16, [[C('#e8424a', 0), 1], [C('#ff8a8a', 0), 1]], function () { return [lerp(fb0[0], fb1[0], fr()), fb0[1] - fR * (0.2 + fr() * 0.9), fR * (0.18 + fr() * 0.1), fr() < 0.6 ? 0 : 1]; });
+        face(ctx, L, [[wX0 - sd * 0.04, 1.06, za - 0.12], [wX1 + sd * 0.04, 1.06, za - 0.12], [wX1 + sd * 0.04, 1.24, za - 0.12], [wX0 - sd * 0.04, 1.24, za - 0.12]], C('#8a5a3a', shE)); }
+      var bX0 = Xf + sd * 0.5, bX1 = Xf + sd * 1.35;
+      face(ctx, L, [[bX0, 1.0, za - 0.01], [bX1, 1.0, za - 0.01], [bX1, 1.95, za - 0.01], [bX0, 1.95, za - 0.01]], C(b.trim, 0.2));
+      face(ctx, L, [[bX0 + sd * 0.05, 1.05, za - 0.02], [bX1 - sd * 0.05, 1.05, za - 0.02], [bX1 - sd * 0.05, 1.9, za - 0.02], [bX0 + sd * 0.05, 1.9, za - 0.02]], C('#2e3a34', 0.05));
+      if (pxm > 50) { var q0 = at(bX0, 1.9, za), q1 = at(bX1, 1.05, za), qx = Math.min(q0[0], q1[0]), qw = Math.abs(q1[0] - q0[0]), qh = q1[1] - q0[1];
+        ctx.strokeStyle = rgba('#f4ecd8', 0.6); ctx.lineWidth = Math.max(1, qh * 0.03); ctx.lineCap = 'round'; ctx.beginPath();
+        for (k = 0; k < 4; k++) { var ly = q0[1] + qh * (0.2 + k * 0.2); ctx.moveTo(qx + qw * 0.15, ly); ctx.lineTo(qx + qw * (0.5 + 0.3 * hash(k, b.seed)), ly); } ctx.stroke(); }
+      face(ctx, L, [[Xb - sd * 0.16, 0, za - 0.04], [Xb - sd * 0.08, 0, za - 0.04], [Xb - sd * 0.08, hs, za - 0.04], [Xb - sd * 0.16, hs, za - 0.04]], C('#5a6068', shE)); // a drainpipe
+      var sX = Xf + sd * 1.75;
+      for (k = 0; k < 3; k++) { var cy0 = k * 0.3, cxa = sX + sd * (k === 2 ? 0.12 : 0), cxb = cxa + sd * 0.55;
+        face(ctx, L, [[cxa, cy0, za - 0.35], [cxb, cy0, za - 0.35], [cxb, cy0 + 0.28, za - 0.35], [cxa, cy0 + 0.28, za - 0.35]], C(k % 2 ? '#c8945a' : '#b8844a', shE));
+        face(ctx, L, [[cxa, cy0 + 0.12, za - 0.36], [cxb, cy0 + 0.12, za - 0.36], [cxb, cy0 + 0.16, za - 0.36], [cxa, cy0 + 0.16, za - 0.36]], C('#7a5030', shE)); }
+    }
+    /* --- the lane front --- */
+    var o0 = za + 0.12, o1 = zb - 0.12;
+    face(ctx, L, [[Xf, 0, za], [Xf, 0, zb], [Xf, 0.92, zb], [Xf, 0.92, za]], C(b.body, shL + 0.12));
+    var OP = pp(L, [[Xf, 0.92, o0], [Xf, 0.92, o1], [Xf, 2.4, o1], [Xf, 2.4, o0]]);
+    ctx.save(); poly(ctx, OP); ctx.clip();
+    boxFill(ctx, OP, C('#241a18', 0));
+    var I0 = at(Xf, 2.4, zb - 0.1), I1 = at(Xb, 0.5, zb - 0.1), it = interiorTex(b.kind);
+    if (it) ctx.drawImage(it, Math.min(I0[0], I1[0]), I0[1], Math.abs(I1[0] - I0[0]), I1[1] - I0[1]);
+    var c0 = at(Xf, 2.4, o0), c1 = at(Xf, 2.4, o1);
+    boxFill(ctx, OP, lg(ctx, c0[0], 0, c1[0], 0, [[0, rgba('#1a1214', 0.55)], [0.5, rgba('#1a1214', 0.15)], [1, rgba('#1a1214', 0)]]));
+    boxFill(ctx, OP, lg(ctx, 0, c0[1], 0, at(Xf, 0.92, o0)[1], [[0, rgba('#120c10', 0.5)], [0.35, rgba('#120c10', 0)], [1, rgba('#120c10', 0)]]));
+    if (hz > 0.02) boxFill(ctx, OP, rgba(HZ, hz * 0.9));
+    ctx.restore();
+    face(ctx, L, [[Xf, 0.92, za], [Xf, 0.92, o0], [Xf, 2.4, o0], [Xf, 2.4, za]], C(b.trim, shL));
+    face(ctx, L, [[Xf, 0.92, o1], [Xf, 0.92, zb], [Xf, 2.4, zb], [Xf, 2.4, o1]], C(b.trim, shL));
+    face(ctx, L, [[Xf, 0.92, za], [Xf, 0.92, zb], [Xf - sd * 0.16, 0.92, zb], [Xf - sd * 0.16, 0.92, za]], C('#c8a070', shL * 0.5));
+    // the trim band between the open front and the roof box, with a row of warm lamps
+    face(ctx, L, [[Xf, 2.4, za], [Xf, 2.4, zb], [Xf, hs, zb], [Xf, hs, za]], C(b.trim, shL + 0.15));
+    if (pxm > 22) { var nb = Math.round((zb - za) / 0.45), spr = glowSpr('#ffd890', true);
+      for (k = 0; k < nb; k++) { var lz = lerp(za + 0.25, zb - 0.25, nb > 1 ? k / (nb - 1) : 0.5), LP = at(Xf - sd * 0.02, 2.62, lz), lr = 0.05 * F / lz;
+        ctx.fillStyle = C('#fff0c0', 0); ctx.beginPath(); ctx.arc(LP[0], LP[1], lr, 0, TAU); ctx.fill();
+        if (spr) { ctx.globalAlpha = 0.5 * (1 - hz); ctx.drawImage(spr, LP[0] - lr * 5, LP[1] - lr * 5, lr * 10, lr * 10); ctx.globalAlpha = 1; } } }
+    /* --- display tables in two steps, with crates --- */
+    var t0 = za + 0.22, t1 = zb - 0.22, Xm = Xf - sd * 0.27, Xt = Xf - sd * 0.54, pal = PROD[b.kind] || PROD.produce, pr = rng(b.seed * 7 + 3);
+    if (pxm > 3) {
+      [[Xf, Xm, 1.0], [Xm, Xt, 0.78]].forEach(function (T, ti) {
+        var xi = T[0], xo = T[1], top = T[2];
+        face(ctx, L, [[xi, top, t0], [xi, top, t1], [xo, top, t1], [xo, top, t0]], C('#8a6038', 0.1));
+        var n = Math.max(1, Math.round((t1 - t0) / 0.5)), cl = (t1 - t0) / n, cxI = xi - sd * 0.02, cxO = xo + sd * 0.02, chh = 0.13;
+        for (k = n - 1; k >= 0; k--) {
+          var cz0 = t0 + k * cl + 0.025, cz1 = cz0 + cl - 0.05, P2 = pal[(k + ti * 2 + b.i) % pal.length], ztop = top + chh;
+          face(ctx, L, [[cxI, ztop, cz0], [cxI, ztop, cz1], [cxO, ztop, cz1], [cxO, ztop, cz0]], C(P2[0], shL * 0.6 + 0.12));
+          if (pxm < 11) continue; // far booths: a strip of colour per crate is all that shows
+          if (pxm > 20) {
+            var cnt = pxm > 40 ? clamp(Math.round(pxm * 0.42), 10, 44) : 7;
+            dots(ctx, cnt, [[C(P2[0], shL * 0.5), 1], [C(P2[1], shL * 0.5), 1]], function () { var u = pr(), v = pr(), zp = lerp(cz0 + 0.03, cz1 - 0.03, u), xp = lerp(cxI, cxO, 0.12 + v * 0.76), mound = Math.sin(v * PI) * Math.sin(u * PI) * 0.06, Q = L.P(xp, ztop + 0.025 + mound, zp); return [Q[0], Q[1], Math.max(0.6, 0.042 * F / zp), pr() < 0.5 ? 0 : 1]; });
+            if (b.kind === 'produce' && pxm > 40) dots(ctx, Math.round(cnt * 0.25), [[C('#3c6a2e', shL), 0.9]], function () { var u = pr(), v = pr(), zp = lerp(cz0 + 0.04, cz1 - 0.04, u), Q = L.P(lerp(cxI, cxO, 0.15 + v * 0.7), ztop + 0.07 + Math.sin(v * PI) * Math.sin(u * PI) * 0.06, zp); return [Q[0], Q[1], Math.max(0.4, 0.011 * F / zp), 0]; });
+            if (pxm > 30) dots(ctx, Math.round(cnt * 0.4), [['#ffffff', 0.4]], function () { var u = pr(), v = pr(), zp = lerp(cz0 + 0.05, cz1 - 0.05, u), xp = lerp(cxI, cxO, 0.15 + v * 0.7), Q = L.P(xp, ztop + 0.06 + Math.sin(v * PI) * Math.sin(u * PI) * 0.06, zp); return [Q[0] - 0.012 * F / zp, Q[1], Math.max(0.4, 0.014 * F / zp), 0]; });
+          }
+          face(ctx, L, [[cxO, top, cz0], [cxO, top, cz1], [cxO, ztop, cz1], [cxO, ztop, cz0]], C('#c8945a', shL * 0.8 + 0.05));
+          if (pxm < 24) continue;
+          face(ctx, L, [[cxI, top, cz0], [cxO, top, cz0], [cxO, ztop, cz0], [cxI, ztop, cz0]], C('#b07a44', shE + 0.05));
+          if (pxm > 26) face(ctx, L, [[cxO, top + chh * 0.45, cz0], [cxO, top + chh * 0.45, cz1], [cxO, top + chh * 0.56, cz1], [cxO, top + chh * 0.56, cz0]], C('#8a5a30', shL));
+          if (pxm > 45 && ti === 1 && k % 2 === 0) { var tg = (cz0 + cz1) / 2; face(ctx, L, [[cxO - sd * 0.005, top + 0.02, tg - 0.1], [cxO - sd * 0.005, top + 0.02, tg + 0.1], [cxO - sd * 0.005, top + 0.11, tg + 0.1], [cxO - sd * 0.005, top + 0.11, tg - 0.1]], C('#fbf6ea', shL * 0.5)); }
+          if (b.kind === 'spice' && ti === 0 && pxm > 12 && k % 2 === 1) { var cm = (cz0 + cz1) / 2, cb = L.P(lerp(cxI, cxO, 0.5), ztop + 0.02, cm), cH = 0.26 * F / cm, cW = 0.11 * F / cm;
+            ctx.fillStyle = C(P2[0], shL * 0.4); ctx.beginPath(); ctx.moveTo(cb[0] - cW, cb[1]); ctx.quadraticCurveTo(cb[0] - cW * 0.2, cb[1] - cH * 0.9, cb[0], cb[1] - cH); ctx.quadraticCurveTo(cb[0] + cW * 0.2, cb[1] - cH * 0.9, cb[0] + cW, cb[1]); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = rgba('#ffffff', 0.22); ctx.beginPath(); ctx.moveTo(cb[0] - cW * 0.5, cb[1] - cH * 0.1); ctx.quadraticCurveTo(cb[0] - cW * 0.15, cb[1] - cH * 0.7, cb[0] - cW * 0.02, cb[1] - cH * 0.95); ctx.lineTo(cb[0] - cW * 0.2, cb[1] - cH * 0.1); ctx.closePath(); ctx.fill(); }
+        }
+        var SK = [[xo, ti ? 0 : 0.78, t0], [xo, ti ? 0 : 0.78, t1], [xo, top, t1], [xo, top, t0]];
+        face(ctx, L, SK, C('#9a6a3a', shL + 0.12));
+        if (ti === 1 && pxm > 24) {
+          // the front step's skirt: wooden planks, darker toward the ground, and a striped cloth along the top
+          var SP = pp(L, SK), yT = at(xo, top, t0)[1], yB = at(xo, 0, t0)[1];
+          clipFill(ctx, SP, lg(ctx, 0, yT, 0, yB, [[0, 'rgba(255,230,190,0.10)'], [0.6, 'rgba(0,0,0,0)'], [1, 'rgba(30,15,20,0.28)']]));
+          ctx.strokeStyle = rgba('#4a2a18', 0.35); ctx.lineWidth = Math.max(0.6, 0.01 * F / t0); ctx.beginPath();
+          for (var pz = t0 + 0.22; pz < t1 - 0.05; pz += 0.22) { var pa = at(xo, 0.02, pz), pb = at(xo, top - 0.16, pz); ctx.moveTo(pa[0], pa[1]); ctx.lineTo(pb[0], pb[1]); } ctx.stroke();
+          var nc = Math.max(2, Math.round((t1 - t0) / 0.18)), clc = b.awn;
+          for (var q = 0; q < nc; q++) { var q0 = lerp(t0, t1, q / nc), q1 = lerp(t0, t1, (q + 1) / nc);
+            face(ctx, L, [[xo + sd * 0.004, top - 0.16, q0], [xo + sd * 0.004, top - 0.16, q1], [xo + sd * 0.004, top, q1], [xo + sd * 0.004, top, q0]], C(clc[q % 2], shL + 0.06)); }
+        }
+        face(ctx, L, [[xo, top - 0.05, t0], [xo, top - 0.05, t1], [xo, top, t1], [xo, top, t0]], C('#6a4024', shL));
+        face(ctx, L, [[xi, ti ? 0 : 0.78, t0], [xo, ti ? 0 : 0.78, t0], [xo, top, t0], [xi, top, t0]], C('#7a5030', shE + 0.15));
+      });
+    }
+    /* --- the awning: striped canvas sloping from under the trim band out over the tables; we see its underside --- */
+    var a0 = za + 0.06, a1 = zb - 0.06, ha = 2.47,
+      // the front edge is as high as it can be while staying below the line from the eye to every sign's bottom edge
+      ho = Math.min(2.36, L.G + 0.9 * Math.abs(Xo) * (hs - L.G) / Math.abs(Xr)), ac = b.awn, nS = Math.max(2, Math.round((a1 - a0) / 0.3)), under = lit ? 0.1 : 0.34;
+    for (k = 0; k < nS; k++) { var w0 = lerp(a0, a1, k / nS), w1 = lerp(a0, a1, (k + 1) / nS);
+      face(ctx, L, [[Xf, ha, w0], [Xf, ha, w1], [Xo, ho, w1], [Xo, ho, w0]], C(ac[k % 2], under)); }
+    var AP = pp(L, [[Xf, ha, a0], [Xf, ha, a1], [Xo, ho, a1], [Xo, ho, a0]]), g0 = at(Xf, ha, (a0 + a1) / 2), g1 = at(Xo, ho, (a0 + a1) / 2);
+    clipFill(ctx, AP, lg(ctx, g0[0], g0[1], g1[0], g1[1], [[0, 'rgba(30,20,30,0.38)'], [0.45, 'rgba(30,20,30,0.08)'], [1, lit ? 'rgba(255,240,200,0.2)' : 'rgba(255,240,200,0.06)']]));
+    var vh = 0.16;
+    for (k = 0; k < nS; k++) { var v0 = lerp(a0, a1, k / nS), v1 = lerp(a0, a1, (k + 1) / nS), A1 = at(Xo, ho, v0), B1 = at(Xo, ho, v1), A2 = at(Xo, ho - vh, v0), B2 = at(Xo, ho - vh, v1), M2 = at(Xo, ho - vh * 0.55, (v0 + v1) / 2);
+      ctx.fillStyle = C(ac[k % 2], lit ? 0.02 : 0.26); ctx.beginPath(); ctx.moveTo(A1[0], A1[1]); ctx.lineTo(B1[0], B1[1]); ctx.lineTo(B2[0], B2[1]); ctx.quadraticCurveTo(M2[0], M2[1] + (B2[1] - B1[1]) * 0.5, A2[0], A2[1]); ctx.closePath(); ctx.fill(); }
+    var e1 = at(Xo, ho, a0), e2 = at(Xo, ho, a1); ctx.strokeStyle = C(ac[0], 0.4); ctx.lineWidth = Math.max(0.6, 0.02 * F / za); ctx.beginPath(); ctx.moveTo(e1[0], e1[1]); ctx.lineTo(e2[0], e2[1]); ctx.stroke();
+    var n1 = at(Xf, ha, a0), n2 = at(Xo, ho, a0); ctx.strokeStyle = C('#3a3a40', 0.1); ctx.lineWidth = Math.max(0.6, 0.025 * F / za); ctx.beginPath(); ctx.moveTo(n1[0], n1[1]); ctx.lineTo(n2[0], n2[1]); ctx.stroke();
+    /* --- the roof box, overhanging on every side; the sign is its lane side --- */
+    face(ctx, L, [[Xr, hs, r0], [Xr, hs, r1], [Xf, hs, r1], [Xf, hs, r0]], C('#2a2228', 0.1));
+    face(ctx, L, [[Xr, hs, r0], [Xr2, hs, r0], [Xr2, hs, za], [Xr, hs, za]], C('#2a2228', 0.1));
+    face(ctx, L, [[Xr, hs, r0], [Xr2, hs, r0], [Xr2, rt, r0], [Xr, rt, r0]], C(b.trim, shE + 0.05));
+    face(ctx, L, [[Xr, rt - 0.05, r0], [Xr2, rt - 0.05, r0], [Xr2, rt, r0], [Xr, rt, r0]], C('#f2ead8', shE + 0.15));
+    face(ctx, L, [[Xr, hs, r0], [Xr, hs, r1], [Xr, rt, r1], [Xr, rt, r0]], C(b.trim, shL));
+    var s0 = r0 + 0.08, s1 = r1 - 0.08, ze = L.edgeZ(Xr) * 1.03; if (s0 < ze) s0 = ze;
+    if (s1 - s0 > 1.5) { var st = signTex(b.sg, s1 - s0); mapX(ctx, L, st, Xr, s0, s1, hs + 0.04, rt - 0.07);
+      if (shL + hz > 0.05) face(ctx, L, [[Xr, hs + 0.04, s0], [Xr, hs + 0.04, s1], [Xr, rt - 0.07, s1], [Xr, rt - 0.07, s0]], hz > 0.1 ? rgba(HZ, hz * 0.85) : rgba('#34405a', shL * 0.4)); }
+    else if (s1 - s0 > 0.3) face(ctx, L, [[Xr, hs + 0.04, s0], [Xr, hs + 0.04, s1], [Xr, rt - 0.07, s1], [Xr, rt - 0.07, s0]], C(b.sg[2], shL));
+    face(ctx, L, [[Xr, rt - 0.05, r0], [Xr, rt - 0.05, r1], [Xr, rt, r1], [Xr, rt, r0]], C('#f2ead8', shL + 0.1));
+  }
+  // a booth's shadows on the paving (drawn into one layer that is blurred as a whole): the sun is ahead and to the
+  // right, so every shadow falls back toward us and to the left; plus darker contact shadows right under the solids
+  function hullPoly(ctx, L, pts) {
+    pts = pts.filter(function (p) { return p[1] > 0.6; }).sort(function (a, c) { return a[0] - c[0] || a[1] - c[1]; });
+    function cr(o, a, c) { return (a[0] - o[0]) * (c[1] - o[1]) - (a[1] - o[1]) * (c[0] - o[0]); }
+    var lo = [], up = [], i;
+    for (i = 0; i < pts.length; i++) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], pts[i]) <= 0) lo.pop(); lo.push(pts[i]); }
+    for (i = pts.length - 1; i >= 0; i--) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], pts[i]) <= 0) up.pop(); up.push(pts[i]); }
+    var hull = lo.slice(0, -1).concat(up.slice(0, -1)); if (hull.length < 3) return false;
+    poly(ctx, hull.map(function (p) { return L.P(p[0], 0, p[1]); })); return true;
+  }
+  var SUN = [-0.3, -0.22]; // shadow offset on the ground per metre of height (x, z)
+  function boothShadow(ctx, L, b, sd) {
+    var Xf = L.Xf * sd, Xb = (L.Xf + L.D) * sd, H = b.rt, Xo = Xf - sd * 0.6, Xt = Xf - sd * 0.54, t0 = b.za + 0.22, t1 = b.zb - 0.22, fade = 1 - hzz(b.za) * 0.8;
+    function sh(X, z, hh) { return [X + SUN[0] * hh, z + SUN[1] * hh]; }
+    // the cast shadow of the booth, its roof and its awning
+    if (hullPoly(ctx, L, [[Xf, b.za], [Xb, b.za], [Xb, b.zb], [Xf, b.zb], sh(Xf, b.za, H), sh(Xb, b.za, H), sh(Xb, b.zb, H), sh(Xf, b.zb, H), sh(Xo, b.za, 2.2), sh(Xo, b.zb, 2.2)])) { ctx.fillStyle = rgba('#3a3050', 0.17 * fade); ctx.fill(); }
+    // the display tables: a soft shadow just under and beside them
+    if (hullPoly(ctx, L, [[Xf, t0 - 0.04], [Xt - sd * 0.05, t0 - 0.04], [Xt - sd * 0.05, t1 + 0.04], [Xf, t1 + 0.04], sh(Xt, t0, 0.8), sh(Xt, t1, 0.8)])) { ctx.fillStyle = rgba('#2a2030', 0.3 * fade); ctx.fill(); }
+    // a thin dark line where the walls meet the paving
+    face(ctx, L, [[Xf, 0, b.za - 0.05], [Xb, 0, b.za - 0.05], [Xb, 0, b.za + 0.1], [Xf, 0, b.za + 0.1]], rgba('#1e1624', 0.35 * fade));
+    face(ctx, L, [[Xf - sd * 0.06, 0, b.za], [Xf - sd * 0.06, 0, b.zb], [Xf + sd * 0.05, 0, b.zb], [Xf + sd * 0.05, 0, b.za]], rgba('#1e1624', 0.3 * fade));
+  }
+
   function paintMarket(ctx, w, h) {
-    var L = mkL(w, h), s = L.s, r = rng(70101), i, x; L.H = h;
-    if (!texLeft) { texLeft = makeLeft(); texRight = makeRight(); texStallL = makeStalls(70611, [0, 2, 1, 6, 3, 4, 5, 1, 2, 7]); texStallR = makeStalls(70711, [1, 5, 4, 2, 7, 3, 6, 1, 4, 0]); }
+    var L = mkL(w, h), s = L.s, r = rng(70101), i, F = L.F, G = L.G;
+    if (!texLeft) { texLeft = makeLeft(); texRight = makeRight(); }
     mark('tex', ctx);
     /* ---------- sky ---------- */
     var SKY = [[0, '#4a8fda'], [0.45, '#86bce8'], [0.8, '#c8e2f2'], [1, '#f2ecdc']];
@@ -22137,15 +22341,12 @@ LATE.push(()=>{const app=document.getElementById('app');if(!app||typeof Mutation
     cloudForm(ctx, w * 0.8, h * 0.2, w * 0.3, h * 0.03, r, { lit: '#ffffff', mid: '#eef3f8', shade: '#a8bcd6', top: '#ffffff', al: 0.9, lx: 0.6, ly: -0.8, base: 0.6, seam: 0.12 });
     mark('sky', ctx);
     /* ---------- far end: Karlsplatz, the Secession's golden dome, the Karlskirche ---------- */
-    var fe = L.P(0, 0, 0.88);
     ctx.fillStyle = '#d8d2c4'; ctx.fillRect(w * 0.3, L.vy - h * 0.06, w * 0.4, h * 0.08);
-    // Karlskirche: green dome on a drum with two columns, behind and to the right
     var kx = w * 0.62, ky = L.vy - h * 0.055;
     ctx.fillStyle = '#e8e0cc'; ctx.fillRect(kx - 14 * s, ky, 28 * s, 16 * s);
     ctx.fillStyle = '#6aa898'; ctx.beginPath(); ctx.ellipse(kx, ky, 12 * s, 13 * s, 0, PI, TAU); ctx.fill(); ctx.fillStyle = '#8ac0b0'; ctx.beginPath(); ctx.ellipse(kx - 4 * s, ky - 5 * s, 3 * s, 6 * s, 0, 0, TAU); ctx.fill();
     ctx.fillStyle = '#6aa898'; ctx.fillRect(kx - 1 * s, ky - 19 * s, 2 * s, 6 * s);
     ctx.fillStyle = '#e8e0cc'; ctx.fillRect(kx - 26 * s, ky - 4 * s, 4 * s, 22 * s); ctx.fillRect(kx + 22 * s, ky - 4 * s, 4 * s, 22 * s);
-    // Secession: white cube with the golden laurel dome (3000 gilded leaves)
     var sx = w * 0.47, sy = L.vy - h * 0.035, sr = 13 * s;
     ctx.fillStyle = '#f4f0e6'; ctx.fillRect(sx - 20 * s, sy, 40 * s, 22 * s); ctx.fillStyle = '#e2dccc'; ctx.fillRect(sx - 20 * s, sy, 6 * s, 22 * s); ctx.fillRect(sx + 14 * s, sy, 6 * s, 22 * s);
     ctx.fillStyle = '#2a2a2a'; ctx.fillRect(sx - 4 * s, sy + 10 * s, 8 * s, 12 * s);
@@ -22155,83 +22356,62 @@ LATE.push(()=>{const app=document.getElementById('app');if(!app||typeof Mutation
     ctx.fillStyle = '#f4f0e6'; ctx.fillRect(sx - 15 * s, sy - 3 * s, 30 * s, 3.4 * s);
     haze(ctx, w * 0.25, L.vy - h * 0.08, w * 0.75, L.vy + h * 0.03, '#e8eef2', 0.35);
     mark('far', ctx);
-    /* ---------- the two walls of houses ---------- */
-    wallMap(ctx, L, texRight, 0.62, -0.9, 0.25, 0.95, 7.5, w, [[0, 'rgba(40,40,80,0.38)'], [1, 'rgba(120,140,170,0.35)']]);
-    wallMap(ctx, L, texLeft, -0.62, -0.9, 0.25, 0.95, 7.5, w, [[0, 'rgba(255,220,170,0.08)'], [1, 'rgba(200,215,230,0.4)']]);
-    // morning sun on the left facades
-    ctx.save(); ctx.globalCompositeOperation = 'soft-light'; poly(ctx, [L.P(-0.62, -0.9, gz(0.95)), L.P(-0.62, -0.9, gz(7.5)), L.P(-0.62, 0.25, gz(7.5)), L.P(-0.62, 0.25, gz(0.95))]); ctx.fillStyle = 'rgba(255,220,160,0.5)'; ctx.fill(); ctx.restore();
+    /* ---------- the houses across the road, set well back behind the booths ---------- */
+    var Xh = L.Xh, Ht = 21, zW0 = L.edgeZ(Xh) * 0.85, zW1 = 175, zMaj = Math.max(zW0, 30 * F / h);
+    // left: a plain house first where needed, then the Majolika House, the Medallion House and two more
+    if (zMaj > zW0 + 0.5) mapX(ctx, L, texLeft, -Xh, zW0, zMaj, 0, Ht, 0.8, 1);
+    mapX(ctx, L, texLeft, -Xh, zMaj, Math.min(zW1, zMaj + 1600 / 17.1), 0, Ht, 0, 1);
+    mapX(ctx, L, texRight, Xh, zW0, zW0 + 1400 / 15.5, 0, Ht, 0, 1);
+    if (zW0 + 1400 / 15.5 < zW1) mapX(ctx, L, texRight, Xh, zW0 + 1400 / 15.5, zW1, 0, Ht, 0, 1);
+    // light: morning sun on the left facades, the right side in shade; both fade into the haze with distance
+    [[-Xh, 'rgba(255,220,170,0.10)', 'rgba(200,215,230,0.45)'], [Xh, 'rgba(40,40,80,0.36)', 'rgba(150,165,190,0.45)']].forEach(function (S2) {
+      var A = L.P(S2[0], Ht, zW0), B = L.P(S2[0], Ht, zW1), C2 = L.P(S2[0], 0, zW1), D = L.P(S2[0], 0, zW0);
+      poly(ctx, [A, B, C2, D]); ctx.fillStyle = lg(ctx, A[0], 0, B[0], 0, [[0, S2[1]], [1, S2[2]]]); ctx.fill(); });
+    ctx.save(); ctx.globalCompositeOperation = 'soft-light'; poly(ctx, pp(L, [[-Xh, Ht, zW0], [-Xh, Ht, zW1], [-Xh, 0, zW1], [-Xh, 0, zW0]])); ctx.fillStyle = 'rgba(255,220,160,0.5)'; ctx.fill(); ctx.restore();
     mark('walls', ctx);
-    /* ---------- the lane ---------- */
-    var gy0 = L.P(0, 0.25, 0)[1];
-    ctx.fillStyle = lg(ctx, 0, L.vy, 0, h, [[0, '#c8c2b8'], [0.4, '#b8b0a4'], [1, '#a49a8c']]); poly(ctx, [L.P(-0.62, 0.25, 0.995), L.P(0.62, 0.25, 0.995), [w * 1.6, h], [-w * 0.6, h]]); ctx.fill();
-    // paving joints in perspective
-    ctx.strokeStyle = 'rgba(90,80,70,0.22)'; ctx.lineWidth = Math.max(0.6, 0.7 * s); ctx.beginPath();
-    for (i = -14; i <= 14; i++) { var a = L.P(i * 0.05, 0.25, 0.97), b = L.P(i * 0.05, 0.25, -1.2); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); }
-    for (var zz = 1.05; zz < 12; zz *= 1.14) { var gg = gz(zz) - 0.0, p1 = L.P(-1.5, 0.25, gg), p2 = L.P(1.5, 0.25, gg); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); }
-    for (zz = 0.9; zz > 0.45; zz *= 0.9) { var g2 = gz(zz), q1 = L.P(-1.5, 0.25, g2), q2 = L.P(1.5, 0.25, g2); ctx.moveTo(q1[0], q1[1]); ctx.lineTo(q2[0], q2[1]); }
+    /* ---------- the ground: the lane, the strips behind the booths, the road and pavements ---------- */
+    ctx.fillStyle = lg(ctx, 0, L.vy, 0, h, [[0, '#c8c2b8'], [0.4, '#b8b0a4'], [1, '#a49a8c']]); ctx.fillRect(0, L.vy, w, h - L.vy);
+    [-1, 1].forEach(function (sd) {
+      var zA = 0.8, zB = 200, Xb = (L.Xf + L.D) * sd;
+      face(ctx, L, [[Xb, 0, zA], [Xb, 0, zB], [sd * (Xh - 2.1), 0, zB], [sd * (Xh - 2.1), 0, zA]], '#8e8a86'); // the road
+      face(ctx, L, [[sd * (Xh - 2.1), 0, zA], [sd * (Xh - 2.1), 0, zB], [sd * Xh, 0, zB], [sd * Xh, 0, zA]], '#bdb4a6'); // the pavement
+      face(ctx, L, [[sd * (Xh - 2.1), 0.02, zA], [sd * (Xh - 2.1), 0.02, zB], [sd * (Xh - 2.2), 0.02, zB], [sd * (Xh - 2.2), 0.02, zA]], '#d8d0c4'); // kerb
+      face(ctx, L, [[sd * (L.Xf + L.D + 0.3), 0, zA], [sd * (L.Xf + L.D + 0.3), 0, zB], [sd * (L.Xf + L.D + 0.42), 0, zB], [sd * (L.Xf + L.D + 0.42), 0, zA]], '#a8a49e');
+    });
+    // the paving: stones a little lighter or darker than their neighbours, and patches of morning sun
+    for (var pz2 = L.zmin * 0.95, row = 0; pz2 < 30; pz2 += 0.75, row++) for (i = -9; i < 9; i++) { if (i === -1) continue; var tv = hash(i * 31 + row, 7071), sx0 = i ? i * 0.5 : -0.5; // the middle stone spans the lane's centre, so no seam runs down it
+      if (tv > 0.3 && tv < 0.7) continue; face(ctx, L, [[sx0, 0, pz2], [(i + 1) * 0.5, 0, pz2], [(i + 1) * 0.5, 0, pz2 + 0.75], [sx0, 0, pz2 + 0.75]], tv < 0.3 ? 'rgba(90,80,70,0.06)' : 'rgba(255,250,240,0.10)'); }
+    K.dabs(ctx, 700, [['#fff8ec', 0.07], ['#7a6e62', 0.06], ['#d8c8b0', 0.08]], function () { var zq = L.zmin * 0.95 + Math.pow(r(), 1.6) * 28, Q = L.P((r() - 0.5) * 9, 0, zq), sc2 = F / zq; return [Q[0], Q[1], (0.12 + r() * 0.3) * sc2, (0.02 + r() * 0.03) * sc2, (r() * 3) | 0, (r() - 0.5) * 0.3]; });
+    ctx.save(); ctx.globalCompositeOperation = 'soft-light';
+    for (i = 0; i < 9; i++) { var sz = L.zmin * 1.2 + Math.pow(hash(i, 7101), 1.5) * 26, sxp = (hash(i, 7103) - 0.5) * 2.4, SP2 = L.P(sxp, 0, sz), rr3 = (0.8 + hash(i, 7105) * 1.2) * F / sz;
+      ctx.save(); ctx.translate(SP2[0], SP2[1]); ctx.scale(1, 0.32); glow(ctx, 0, 0, rr3, '#fff0c8', 0.55); ctx.restore(); }
+    ctx.restore();
+    // paving joints in the lane, in perspective
+    ctx.strokeStyle = 'rgba(90,80,70,0.2)'; ctx.lineWidth = Math.max(0.6, 0.7 * s); ctx.beginPath();
+    for (i = -9; i <= 9; i++) { if (!i) continue; var a = L.P(i * 0.5, 0, L.zmin * 0.9), b2 = L.P(i * 0.5, 0, 200); ctx.moveTo(a[0], a[1]); ctx.lineTo(b2[0], b2[1]); }
+    for (var zz = L.zmin * 0.95; zz < 120; zz += 0.75) { var p1 = L.P(-4.5, 0, zz), p2 = L.P(4.5, 0, zz); if (p2[1] - L.vy < 2.5 * s) break; ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); }
     ctx.stroke();
-    // a stone gutter down the middle, puddle sheen
-    ctx.fillStyle = 'rgba(120,110,100,0.3)'; poly(ctx, [L.P(-0.012, 0.25, 0.97), L.P(0.012, 0.25, 0.97), L.P(0.012, 0.25, -1.2), L.P(-0.012, 0.25, -1.2)]); ctx.fill();
     dots(ctx, 1500, [['#f4ece0', 0.35], ['#6a6058', 0.3]], function () { var yy = lerp(L.vy + h * 0.02, h, Math.pow(r(), 0.8)); return [r() * w, yy, (0.3 + r() * 0.6) * s * (0.4 + (yy - L.vy) / h * 2.6), r() < 0.5 ? 0 : 1]; });
     mark('lane', ctx);
-    /* ---------- stalls: back to front on both sides ---------- */
-    function stallSide(side, tex, z0, z1) {
-      var X = side * 0.27, n = 10, dz = (z1 - z0) / n, k, tint = side > 0 ? [[0, 'rgba(30,30,70,0.3)'], [1, 'rgba(120,140,170,0.35)']] : [[0, 'rgba(255,230,190,0.04)'], [1, 'rgba(190,205,220,0.38)']];
-      // the ground between the stall row and the houses, and the stall backs/roof slabs
-      quad(ctx, L, [X, 0.25, gz(z0)], [X, 0.25, gz(z1)], [side * 0.62, 0.25, gz(z1)], [side * 0.62, 0.25, gz(z0)], '#a89e90');
-      quad(ctx, L, [X, -0.12, gz(z0)], [X, -0.12, gz(z1)], [side * 0.5, -0.13, gz(z1)], [side * 0.5, -0.13, gz(z0)], side > 0 ? '#3a5248' : '#4a6a58');
-      wallMap(ctx, L, tex, X, -0.12, 0.25, z0, z1, w, tint);
-      // dark fascia along the roof edge
-      quad(ctx, L, [X, -0.135, gz(z0)], [X, -0.135, gz(z1)], [X, -0.12, gz(z1)], [X, -0.12, gz(z0)], side > 0 ? '#2a3a34' : '#2f4a3c');
-      // awnings, striped canvas sloping toward the lane
-      for (k = n - 1; k >= 0; k--) { var zc = z0 + k * dz + 0.03, zd = zc + dz - 0.08, ac = [['#e8574a', '#fff4dc'], ['#3a8a6a', '#f2ecd8'], ['#f0a83a', '#fff4dc'], ['#4a6ab0', '#eef2f8']][(k + (side > 0 ? 1 : 0)) % 4];
-        var st = 6, q;
-        for (q = 0; q < st; q++) { var zq0 = lerp(zc, zd, q / st), zq1 = lerp(zc, zd, (q + 1) / st);
-          quad(ctx, L, [X, -0.075, gz(zq0)], [X, -0.075, gz(zq1)], [X - side * 0.08, -0.025, gz(zq1)], [X - side * 0.08, -0.025, gz(zq0)], ac[q % 2]); }
-        var v0 = L.P(X - side * 0.08, -0.025, gz(zc)), v1 = L.P(X - side * 0.08, -0.025, gz(zd)), vh = 0.02 * (1 - gz((zc + zd) / 2)) * h;
-        ctx.fillStyle = ac[0]; ctx.beginPath(); ctx.moveTo(v0[0], v0[1]); var m = 6; for (q = 0; q <= m; q++) { ctx.lineTo(lerp(v0[0], v1[0], q / m), lerp(v0[1], v1[1], q / m) + vh); if (q < m) ctx.lineTo(lerp(v0[0], v1[0], (q + 0.5) / m), lerp(v0[1], v1[1], (q + 0.5) / m) + vh * 0.45); } ctx.lineTo(v1[0], v1[1]); ctx.closePath(); ctx.fill();
-        quad(ctx, L, [X, -0.07, gz(zc)], [X, -0.07, gz(zd)], [X, 0.08, gz(zd)], [X, 0.08, gz(zc)], 'rgba(30,20,30,0.16)');
-      }
-      // display tables in front: sloped crates of apricots, peppers, figs; cones of spice
-      for (k = 0; k < n; k++) { var ze = z0 + k * dz + 0.06, zf = ze + dz - 0.14, near = 1 - gz((ze + zf) / 2);
-        quad(ctx, L, [X, 0.12, gz(ze)], [X, 0.12, gz(zf)], [X - side * 0.06, 0.15, gz(zf)], [X - side * 0.06, 0.15, gz(ze)], '#c8995a');
-        quad(ctx, L, [X - side * 0.06, 0.15, gz(ze)], [X - side * 0.06, 0.15, gz(zf)], [X - side * 0.06, 0.25, gz(zf)], [X - side * 0.06, 0.25, gz(ze)], '#8a5a32');
-        quad(ctx, L, [X - side * 0.06, 0.15, gz(ze)], [X - side * 0.06, 0.15, gz(zf)], [X - side * 0.06, 0.165, gz(zf)], [X - side * 0.06, 0.165, gz(ze)], '#6a4024');
-        var pr = rng(70800 + k * 13 + (side > 0 ? 500 : 0)), pal = [['#f39a2a', '#ffc04a'], ['#d8302a', '#f2603a'], ['#5a2a4a', '#8a4a72'], ['#7aa83a', '#a8cc5a'], ['#f2d040', '#ffe27a']][(k + (side > 0 ? 2 : 0)) % 5];
-        var cnt = Math.round(46 * Math.min(1.8, near) + 8);
-        dots(ctx, cnt, [[pal[0], 1], [pal[1], 1]], function () { var t = pr(), u = pr(), zp = lerp(ze, zf, t), P2 = L.P(X - side * (0.008 + u * 0.05), 0.12 + u * 0.03 - 0.005, gz(zp)); return [P2[0], P2[1], Math.max(0.6, 0.0085 * (1 - gz(zp)) * h), pr() < 0.5 ? 0 : 1]; });
-        dots(ctx, Math.round(cnt * 0.3), [['#ffffff', 0.45]], function () { var t = pr(), u = pr(), zp = lerp(ze, zf, t), P2 = L.P(X - side * (0.008 + u * 0.05), 0.12 + u * 0.03 - 0.009, gz(zp)); return [P2[0] - 0.002 * w, P2[1], Math.max(0.3, 0.003 * (1 - gz(zp)) * h), 0]; });
-        if (k % 3 === 1) { var cz = lerp(ze, zf, 0.7), cb = L.P(X - side * 0.03, 0.12, gz(cz)), ch = 0.045 * (1 - gz(cz)) * h, cwd = 0.014 * (1 - gz(cz)) * w;
-          [['#c8402a', 0], ['#e8b030', 1.3], ['#7a4a2a', 2.6]].forEach(function (C2) { var cxp = cb[0] + (C2[1] - 1.3) * cwd * 1.6 * side; ctx.fillStyle = '#d8c8a8'; ctx.fillRect(cxp - cwd * 1.1, cb[1] - ch * 0.15, cwd * 2.2, ch * 0.3); ctx.fillStyle = C2[0]; ctx.beginPath(); ctx.moveTo(cxp - cwd, cb[1]); ctx.quadraticCurveTo(cxp - cwd * 0.2, cb[1] - ch * 0.9, cxp, cb[1] - ch); ctx.quadraticCurveTo(cxp + cwd * 0.2, cb[1] - ch * 0.9, cxp + cwd, cb[1]); ctx.closePath(); ctx.fill(); }); }
-      }
-    }
-    stallSide(1, texStallR, 0.6, 8.5);
-    stallSide(-1, texStallL, 0.6, 8.5);
+    /* ---------- the booths: shadows first, then each row far to near ---------- */
+    var BT = mkBooths(w, h);
+    var shc = mk(w, h);
+    if (shc) { var sx2 = shc.getContext('2d'); [-1, 1].forEach(function (sd) { BT[sd].forEach(function (b) { boothShadow(sx2, L, b, sd); }); });
+      ctx.save(); ctx.filter = 'blur(' + Math.round(3 * s) + 'px)'; ctx.drawImage(shc, 0, 0); ctx.restore(); }
+    [-1, 1].forEach(function (sd) { for (var k = BT[sd].length - 1; k >= 0; k--) drawBooth(ctx, L, BT[sd][k], sd); });
     mark('stalls', ctx);
-    /* ---------- foreground: shadows and crates at the edges ---------- */
-    ctx.fillStyle = lg(ctx, 0, gy0 - h * 0.1, 0, h, [[0, 'rgba(40,30,50,0)'], [1, 'rgba(40,30,50,0.18)']]); ctx.fillRect(0, gy0 - h * 0.1, w, h);
-    // awning shadows on the lane, soft
-    for (i = 0; i < 6; i++) { var sp = L.P(-0.16, 0.25, gz(1.1 + i * 0.6)); ctx.save(); ctx.translate(sp[0], sp[1]); ctx.scale(1, 0.25); glow(ctx, 0, 0, 50 * s * (1 - gz(1.1 + i * 0.6)) * 2, '#2a2030', 0.12); ctx.restore(); }
-    // sunlight across the lane
-    ctx.save(); ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = lg(ctx, 0, h * 0.62, w, h, [[0, 'rgba(255,230,180,0.5)'], [1, 'rgba(255,230,180,0)']]); ctx.fillRect(0, h * 0.6, w, h * 0.4); ctx.restore();
-    // crates at the bottom corners
-    function crate(x0, y0, cw, chh, pal) { ctx.fillStyle = '#b8864a'; ctx.fillRect(x0, y0, cw, chh); ctx.fillStyle = '#8a5a2a'; ctx.fillRect(x0, y0 + chh * 0.45, cw, chh * 0.08); ctx.fillRect(x0, y0, cw * 0.06, chh); ctx.fillRect(x0 + cw * 0.94, y0, cw * 0.06, chh);
-      var cr2 = rng((x0 * 7) | 0); dots(ctx, 26, [[pal[0], 1], [pal[1], 1]], function () { return [x0 + cw * (0.1 + cr2() * 0.8), y0 - chh * 0.05 + cr2() * chh * 0.12, cw * 0.075, cr2() < 0.5 ? 0 : 1]; });
-      dots(ctx, 12, [['#ffffff', 0.4]], function () { return [x0 + cw * (0.1 + cr2() * 0.8), y0 - chh * 0.08 + cr2() * chh * 0.1, cw * 0.025, 0]; }); }
-    crate(-w * 0.03, h * 0.9, w * 0.2, h * 0.07, ['#f39a2a', '#ffc04a']); crate(w * 0.12, h * 0.93, w * 0.16, h * 0.06, ['#d8302a', '#f05a3a']);
-    crate(w * 0.83, h * 0.9, w * 0.2, h * 0.07, ['#7aa83a', '#a8cc5a']); crate(w * 0.72, h * 0.935, w * 0.15, h * 0.06, ['#5a2a4a', '#8a4a72']);
-    // a flower bucket on the right
-    var fx = w * 0.95, fy = h * 0.88; ctx.fillStyle = '#7a8a9a'; ctx.beginPath(); ctx.moveTo(fx - 12 * s, fy); ctx.lineTo(fx + 12 * s, fy); ctx.lineTo(fx + 9 * s, fy + 20 * s); ctx.lineTo(fx - 9 * s, fy + 20 * s); ctx.closePath(); ctx.fill();
-    clump(ctx, fx, fy - 6 * s, 14 * s, ['#2a4a2e', '#3c6a3a', '#5a8a48', '#9ac070', '#dceaa8'], r, 0.5, -0.8, false, 0.6);
-    dots(ctx, 30, [['#ff6a8a', 1], ['#ffd35a', 1], ['#ffffff', 1]], function () { return [fx + (r() - 0.5) * 24 * s, fy - 6 * s + (r() - 0.6) * 22 * s, (1.6 + r() * 1.4) * s, (r() * 3) | 0]; });
+    /* ---------- foreground light ---------- */
+    // the near paving darkens a little toward the bottom edge, with warm sun across it; both gradients start from nothing
+    ctx.fillStyle = lg(ctx, 0, h * 0.55, 0, h, [[0, 'rgba(40,30,50,0)'], [1, 'rgba(40,30,50,0.14)']]); ctx.fillRect(0, h * 0.55, w, h * 0.45);
+    ctx.save(); ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = lg(ctx, 0, h * 0.5, 0, h, [[0, 'rgba(255,230,180,0)'], [0.5, 'rgba(255,230,180,0.35)'], [1, 'rgba(255,230,180,0.2)']]); ctx.fillRect(0, h * 0.5, w, h * 0.5); ctx.restore();
     mark('fore', ctx);
     finish(ctx, w, h, '#ffe0b8', 0.12, 0.2, 0.04, '#2a1a20', 0.42);
     mark('finish', ctx);
   }
 
   function overlayMarket(ctx, w, h, t) {
-    var L = mkL(w, h), s = L.s, i; L.H = h;
-    // drones crossing above the market, one Pantry lane and one Kestrel robot rolling up the lane
+    var L = mkL(w, h), s = L.s, i;
+    // drones crossing above the market
     for (i = 0; i < 4; i++) {
       var sp = (10 + i * 3) * s, dir = i % 2 ? 1 : -1, ph = hash(i, 61) * w * 1.5, dx = dir > 0 ? ((t * sp + ph) % (w * 1.3)) - w * 0.15 : w * 1.15 - ((t * sp + ph) % (w * 1.3)), dy = h * (0.06 + i * 0.03) + Math.sin(t * 1.4 + i) * 2 * s, ds = (2.6 + (i % 2)) * s;
       ctx.fillStyle = '#f8f8fa'; ctx.beginPath(); ctx.ellipse(dx, dy, ds, ds * 0.45, 0, 0, TAU); ctx.fill(); ctx.fillStyle = '#f29a2e'; ctx.fillRect(dx - ds, dy - ds * 0.05, ds * 2, ds * 0.3);
@@ -22242,8 +22422,8 @@ LATE.push(()=>{const app=document.getElementById('app');if(!app||typeof Mutation
     // pigeons wheeling high up
     ctx.strokeStyle = 'rgba(70,70,90,0.7)'; ctx.lineWidth = Math.max(0.8, 0.9 * s); ctx.lineCap = 'round';
     for (i = 0; i < 3; i++) { var bx = w * (0.3 + 0.2 * Math.sin(t * 0.2 + i * 2)), by = h * (0.16 + i * 0.02) + Math.cos(t * 0.3 + i) * 8 * s; drawBird(ctx, bx, by, 3.2 * s, t * 7 + i); }
-    // a Kestrel sidewalk robot rolling between the stalls, far to near and back
-    var ph2 = (t * 0.035) % 2, u = ph2 < 1 ? ph2 : 2 - ph2, z = lerp(6.5, 1.6, u), g = gz(z), P2 = L.P(-0.12, 0.3, g), sc = (1 - g) * 0.11 * h;
+    // a Kestrel sidewalk robot rolling down the lane, far to near and back
+    var ph2 = (t * 0.035) % 2, u = ph2 < 1 ? ph2 : 2 - ph2, z = lerp(34, 9, u), P2 = L.P(-0.5, 0, z), sc = 0.62 * L.F / z;
     ctx.fillStyle = 'rgba(20,20,40,0.22)'; ctx.beginPath(); ctx.ellipse(P2[0], P2[1], sc * 0.5, sc * 0.08, 0, 0, TAU); ctx.fill();
     ctx.fillStyle = '#2a2e40'; [-0.3, 0, 0.3].forEach(function (k) { ctx.beginPath(); ctx.arc(P2[0] + k * sc, P2[1] - sc * 0.09, sc * 0.09, 0, TAU); ctx.fill(); });
     ctx.fillStyle = '#fbfbfd'; ctx.beginPath(); rrect(ctx, P2[0] - sc * 0.45, P2[1] - sc * 0.62, sc * 0.9, sc * 0.48, sc * 0.12); ctx.fill();
@@ -22256,7 +22436,7 @@ LATE.push(()=>{const app=document.getElementById('app');if(!app||typeof Mutation
 
   PAINT.vienna_market = {
     focus: { x: 0.47, y: 0.33 }, track: 'morning',
-    // the lane's lower third is open paving (y 0.72..0.95); stalls line both sides above it
+    // the lane's lower third is open paving (y 0.72..0.95); booths line both sides above it
     anchors: { lane: { y0: 0.72, y1: 0.95 }, secession: { x: 0.47, y: 0.33 } },
     paint: function (ctx, w, h) { ctx.save(); try { paintMarket(ctx, w, h); } catch (e) { PAINT._err = 'vienna_market: ' + String(e && e.stack || e); } finally { ctx.restore(); } },
     overlay: function (ctx, w, h, t) { ctx.save(); try { overlayMarket(ctx, w, h, t); } catch (e) { PAINT._err = 'vienna_market overlay: ' + String(e && e.stack || e); } finally { ctx.restore(); } }
