@@ -78,6 +78,16 @@ Do not run the TTS yourself. Pick a voice for each cast member in `voices:{}` an
 
 Read the header of `src/paint_boston.js`: seeded painting utilities, a static `paint` that the game caches, and a calm `overlay` animation. A new scene file wraps its code in an IIFE, can copy the utilities it needs, and must paint identically every time. Leave the lower third calm enough for subtitles and the middle clear for a character portrait. Set `track` to one of `title morning hospital work table win night`. Tappable props for a scene go in a `LATE.push(()=>{PROPS.<key>=[…]})` hook in the scene file (see `src/props.js` for the prop format).
 
+## Chinese mode
+
+Every mission and the interface have Simplified Chinese translations in `src/i18n/zh/<id>.js`, one file per mission plus `core.js` (interface, menus, places, careers, the global glossary) and `maya.js`. Keys are the exact English text, so **changing an English string drops its translation** until the matching key in the zh file is updated too.
+- Route every player-visible string through `T()` (and `TRX()` for keyword patterns, `TK('<control> · <option>')` when a short word needs a different translation in one control). Text glued together from English pieces needs a `T()` template with placeholders instead.
+- Files load alphabetically and the last one wins for a shared key, so interface strings live only in `core.js`; mission files don't redefine them. The first file to claim a glossary term owns its tap.
+- Shared wording: the Ledger is 纪事报 (《纪事报》 inside sentences), "True today:" is 现实中：, auditor is 审查员, spec is 规范, the Quiet Year is 静默之年. The logo stays the English "Pathmakers".
+- The China missions are written for Chinese readers: the player is still an American visitor, but nothing explains everyday Chinese words, food, places or customs, and those glossary taps are dropped in Chinese.
+- Pinyin: `.github/workflows/pinyin.yml` runs `tools/i18n_pinyin.js` (pinyin-pro, readings taken in sentence context) whenever a zh file changes, and commits `src/i18n/zh_pinyin/`. Don't edit those files by hand.
+- Check with `node tools/i18n_extract.js dist/pathmakers.html OUT --lang zh` (OUT/i18n_report.md; OUT/missing/ has stubs to fill in) and `PM_LANG=zh node tools/mission_deep_shots.js dist/pathmakers.html OUT <id>`. The full extract is slow; a build without mission voices (`PM_VOICES=` ) makes it faster.
+
 ## Check your work
 
 ```sh

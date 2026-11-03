@@ -32,7 +32,7 @@ function zhSign(o){const st=zhSt('sign');st.text=st.text||'';const signed=!!st.s
       <div class="zh-sig them ${signed?'on':''}"><i>${signed?`<b lang="zh">${esc(pt.zh||'')}</b>`:''}</i><span>${esc(T(pt.name||pc.name||''))}</span>${o.seal&&signed?`<em class="zh-seal" lang="zh">${esc(o.seal)}</em>`:''}</div></div>
     <button class="btn wide" id="zh-signbtn">${signed?esc(T('Continue')):esc(T('Sign together'))}</button></div>`);
   wireMics&&wireMics();const ta=$('#zh-note');ta.oninput=()=>{st.text=ta.value;save()};
-  $$('[data-s]').forEach(b=>b.onclick=()=>{ta.value=(ta.value&&!/\s$/.test(ta.value)?ta.value+' ':ta.value)+b.dataset.s;st.text=ta.value;save();ta.focus()});
+  $$('[data-s]').forEach(b=>b.onclick=()=>{ta.value=(ta.value&&!/\s$/.test(ta.value)&&!(LANG()==='zh'&&/[\u3000-\u9fff\uff00-\uffef]$/.test(ta.value))?ta.value+' ':ta.value)+b.dataset.s;st.text=ta.value;save();ta.focus()});
   $('#zh-signbtn').onclick=()=>{if(st.signed){nextStep();return}
     if(ta.value.trim().length<12){toast(T('Write a sentence or two in your own words first.'));return}
     st.text=ta.value.trim();st.signed=1;S.memo=st.text;S.consent=true;save();o.onSign&&o.onSign(st.text);MUSIC.sfx&&MUSIC.sfx('chime');

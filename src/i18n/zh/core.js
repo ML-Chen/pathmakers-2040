@@ -89,7 +89,7 @@ I18N.add('zh','core',{strings:{
   // Field Guide tracks shared by every mission (the same words the other translators use)
   'Ethics and AI':'伦理与AI','Evidence and truth':'证据与真相','Government, law, and power':'政府、法律与权力','Ethics and AI alignment':'伦理与AI对齐',
   'Living things and health':'生命与健康','Incentives and economics':'激励与经济','Security thinking':'安全思维','Engineering and systems':'工程与系统','People skills':'与人相处','Math and science':'数学与科学',
-  '{0} of {1} found in Boston':'在波士顿发现了{0}条，一共{1}条','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
+  '{0} of {1} ideas found':'已经发现{0}条，一共{1}条','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
   'Tap any underlined word to learn it. It will be saved here.':'点一下带下划线的词，就能看到它的意思。看过的词会存在这里。',
   'Learn It Fast':'快速了解','Got it? Try 3 quick questions.':'学会了吗？来做3道小题。','Perfect! You learned it fast.':'全对！你学得真快。',
   'Nice work. You can read the steps again anytime.':'做得不错。这些步骤你随时可以再看。','{0} of 3':'第{0}题，共3题','{0} of {1}':'{0}/{1}',

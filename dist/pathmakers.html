@@ -4710,7 +4710,7 @@ I18N.add('zh','core',{strings:{
   // Field Guide tracks shared by every mission (the same words the other translators use)
   'Ethics and AI':'伦理与AI','Evidence and truth':'证据与真相','Government, law, and power':'政府、法律与权力','Ethics and AI alignment':'伦理与AI对齐',
   'Living things and health':'生命与健康','Incentives and economics':'激励与经济','Security thinking':'安全思维','Engineering and systems':'工程与系统','People skills':'与人相处','Math and science':'数学与科学',
-  '{0} of {1} found in Boston':'在波士顿发现了{0}条，一共{1}条','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
+  '{0} of {1} ideas found':'已经发现{0}条，一共{1}条','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
   'Tap any underlined word to learn it. It will be saved here.':'点一下带下划线的词，就能看到它的意思。看过的词会存在这里。',
   'Learn It Fast':'快速了解','Got it? Try 3 quick questions.':'学会了吗？来做3道小题。','Perfect! You learned it fast.':'全对！你学得真快。',
   'Nice work. You can read the steps again anytime.':'做得不错。这些步骤你随时可以再看。','{0} of 3':'第{0}题，共3题','{0} of {1}':'{0}/{1}',
@@ -31798,7 +31798,7 @@ function zhSign(o){const st=zhSt('sign');st.text=st.text||'';const signed=!!st.s
       <div class="zh-sig them ${signed?'on':''}"><i>${signed?`<b lang="zh">${esc(pt.zh||'')}</b>`:''}</i><span>${esc(T(pt.name||pc.name||''))}</span>${o.seal&&signed?`<em class="zh-seal" lang="zh">${esc(o.seal)}</em>`:''}</div></div>
     <button class="btn wide" id="zh-signbtn">${signed?esc(T('Continue')):esc(T('Sign together'))}</button></div>`);
   wireMics&&wireMics();const ta=$('#zh-note');ta.oninput=()=>{st.text=ta.value;save()};
-  $$('[data-s]').forEach(b=>b.onclick=()=>{ta.value=(ta.value&&!/\s$/.test(ta.value)?ta.value+' ':ta.value)+b.dataset.s;st.text=ta.value;save();ta.focus()});
+  $$('[data-s]').forEach(b=>b.onclick=()=>{ta.value=(ta.value&&!/\s$/.test(ta.value)&&!(LANG()==='zh'&&/[\u3000-\u9fff\uff00-\uffef]$/.test(ta.value))?ta.value+' ':ta.value)+b.dataset.s;st.text=ta.value;save();ta.focus()});
   $('#zh-signbtn').onclick=()=>{if(st.signed){nextStep();return}
     if(ta.value.trim().length<12){toast(T('Write a sentence or two in your own words first.'));return}
     st.text=ta.value.trim();st.signed=1;S.memo=st.text;S.consent=true;save();o.onSign&&o.onSign(st.text);MUSIC.sfx&&MUSIC.sfx('chime');
@@ -40607,7 +40607,7 @@ function careerTrack(career){const jm=careerJourney(career),C=camp();
   if(!jm&&!talk)return null;const out=[];
   JOURNEY_STAGES.slice(0,5).forEach(([k,l])=>{if(!jm)return;const i=(jm.stages||[]).findIndex(s=>s.key===k);if(i<0)return;const reached=C.jp[jm.id]||0;
     out.push({key:k,label:l,state:isDone(jm.id)||i<reached?'done':i===reached?'now':'todo',go:{id:jm.id,at:jm.stages[i].at}})});
-  const wd=work.filter(m=>isDone(m.id)).length;out.push({key:'workdays',label:'Workdays',state:work.length&&wd===work.length?'done':'todo',note:work.length?wd+' of '+work.length:''});
+  const wd=work.filter(m=>isDone(m.id)).length;out.push({key:'workdays',label:'Workdays',state:work.length&&wd===work.length?'done':'todo',note:work.length?T('{0} of {1}',wd,work.length):''});
   if(talk)out.push({key:'bigtalk',label:'Big talk',state:isDone(talk.id)?'done':'todo',go:{id:talk.id}});
   out.push({key:'promotion',label:'Promotion',state:rankAtLeast(career,'pro')?'done':'todo'});
   const first=out.findIndex(x=>x.state!=='done');if(first>=0&&!out.some(x=>x.state==='now'))out[first].state='now';
@@ -41187,7 +41187,7 @@ function openMenu(){const d=sheet(T('Menu'),`<div class="menu">
 function wireHud(){const mm=$('#hud-menu');if(mm)mm.onclick=openMenu;const m=$('#hud-mute');if(m)m.onclick=()=>{S.mute=!S.mute;save();stopVoice();MUSIC.mute(S.mute);m.innerHTML=S.mute?ICON.off:ICON.on};const c=$('#hud-chat');if(c)c.onclick=openChat;const g=$('#hud-guide');if(g)g.onclick=openGuide;const w=$('#hud-words');if(w)w.onclick=openWords}
 function sheet(title,html){const d=document.createElement('div');d.className='sheet';d.innerHTML=`<div class="sheet-in"><div class="sheet-top"><h2>${title}</h2><button class="x" aria-label="${T('Close')}">×</button></div><div class="sheet-body">${html}</div></div>`;document.body.appendChild(d);i18nSvg(d);
   requestAnimationFrame(()=>d.classList.add('on'));d.querySelector('.x').onclick=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),250)};return d}
-function openGuide(){const items=Object.entries(FIELD_GUIDE);hook('guide',sheet(T('Field Guide'),`<p class="muted">${T('{0} of {1} found in Boston',S.guide.length,items.length)}</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${T(g.track)}</div><h3>${T(g.title)}</h3><p>${T(g.text)}</p><div class="realcard"><span>${T('True today')}</span>${T(g.real).replace(/^True today: |^现实中(也是这样)?[：:]\s*/,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>${T('Keep playing to discover this idea.')}</p></div>`).join('')))}
+function openGuide(){const items=Object.entries(FIELD_GUIDE);hook('guide',sheet(T('Field Guide'),`<p class="muted">${T('{0} of {1} ideas found',S.guide.length,items.length)}</p>`+items.map(([id,g])=>S.guide.includes(id)?`<div class="fg"><div class="fg-track">${T(g.track)}</div><h3>${T(g.title)}</h3><p>${T(g.text)}</p><div class="realcard"><span>${T('True today')}</span>${T(g.real).replace(/^True today: |^现实中(也是这样)?[：:]\s*/,'')}</div></div>`:`<div class="fg locked"><h3>?</h3><p>${T('Keep playing to discover this idea.')}</p></div>`).join('')))}
 function openWords(){sheet(T('Word Book'),S.words.length?`<div class="wordlist">${S.words.map(k=>`<div class="wb"><button class="gw" data-w="${esc(k)}">${esc(TW(k))}</button><p>${esc(TD(k))}</p></div>`).join('')}</div>`:`<p class="muted">${T('Tap any underlined word to learn it. It will be saved here.')}</p>`)}
 
 // ---------- chat with Byte ----------

@@ -278,7 +278,7 @@ function careerTrack(career){const jm=careerJourney(career),C=camp();
   if(!jm&&!talk)return null;const out=[];
   JOURNEY_STAGES.slice(0,5).forEach(([k,l])=>{if(!jm)return;const i=(jm.stages||[]).findIndex(s=>s.key===k);if(i<0)return;const reached=C.jp[jm.id]||0;
     out.push({key:k,label:l,state:isDone(jm.id)||i<reached?'done':i===reached?'now':'todo',go:{id:jm.id,at:jm.stages[i].at}})});
-  const wd=work.filter(m=>isDone(m.id)).length;out.push({key:'workdays',label:'Workdays',state:work.length&&wd===work.length?'done':'todo',note:work.length?wd+' of '+work.length:''});
+  const wd=work.filter(m=>isDone(m.id)).length;out.push({key:'workdays',label:'Workdays',state:work.length&&wd===work.length?'done':'todo',note:work.length?T('{0} of {1}',wd,work.length):''});
   if(talk)out.push({key:'bigtalk',label:'Big talk',state:isDone(talk.id)?'done':'todo',go:{id:talk.id}});
   out.push({key:'promotion',label:'Promotion',state:rankAtLeast(career,'pro')?'done':'todo'});
   const first=out.findIndex(x=>x.state!=='done');if(first>=0&&!out.some(x=>x.state==='now'))out[first].state='now';
