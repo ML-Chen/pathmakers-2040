@@ -395,7 +395,7 @@ function renderConsent(){const K=M().consent,c=S.choice;const opts=K.opts(c,M())
   screen('talk',`${scene(K.scene||'hospital')}<div class="talk-dim"></div>${hud(K.place||M().place)}<div class="stage duo"><div class="speaker">${portrait({...CAST[K.left],mood:'think'})}</div><div class="speaker">${portrait({...CAST[K.right],mood:'worried'})}</div></div>
     <div class="subtitle">${pick}
       <div class="who"><b>${esc(T(K.title))}</b><span>${esc(T(K.role))}</span></div><p>${esc(T(K.prompt))}</p>
-    <div class="choices">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(o.t)}</button>`).join('')}</div>
+    <div class="choices">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-j="${j}">${esc(T(o.t))}</button>`).join('')}</div>
     <div class="tiny muted" style="margin-top:6px">${K.note?esc(T(K.note)):T('When you explain the choices honestly, they understand enough to give real <button class="gw" data-w="consent">consent</button>.')}</div></div>`);
   wireControls($('.planpick'),renderConsent);if($('#ppchg'))$('#ppchg').onclick=()=>{consentPickOpen=!consentPickOpen;renderConsent()};
   $$('.choice').forEach(b=>b.onclick=()=>{const o=opts[b.dataset.j];consentPickOpen=false;S.consent=o.good;if(o.good){heart(K.heart);const g=K.guide||'consent';unlock(g)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[g].title)),'good')}save();

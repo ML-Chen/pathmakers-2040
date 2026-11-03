@@ -62,48 +62,48 @@ const MODES=(()=>{
   function setLevel(L){if(!LEVEL_NAMES[L]||L===S.level)return;S.level=L;if(S.mission&&MISSIONS[S.mission]){md().lv[L]=1;const v=M();
       for(const ct of v.controls||[])if(!ct.opts.some(([x])=>JSON.stringify(x)===JSON.stringify(S.choice[ct.key])))S.choice[ct.key]=v.start[ct.key]}
     save()}
-  const segHTML=(id,cur)=>`<div class="seg md-seg" id="${id}">${Object.entries(LEVEL_NAMES).map(([k,l])=>`<button class="segb ${cur===k?'on':''}" data-lv="${k}">${l}</button>`).join('')}</div>`;
+  const segHTML=(id,cur)=>`<div class="seg md-seg" id="${id}">${Object.entries(LEVEL_NAMES).map(([k,l])=>`<button class="segb ${cur===k?'on':''}" data-lv="${k}">${T(l)}</button>`).join('')}</div>`;
   function setup(){const pn=document.querySelector('.setup label[for="pname"]');if(!pn)return;
-    pn.insertAdjacentHTML('beforebegin',`<div class="lbl">Challenge</div>${segHTML('md-lv',MODE())}`);
+    pn.insertAdjacentHTML('beforebegin',`<div class="lbl">${T('Challenge')}</div>${segHTML('md-lv',MODE())}`);
     $$('#md-lv .segb').forEach(b=>b.onclick=()=>{setLevel(b.dataset.lv);$$('#md-lv .segb').forEach(x=>x.classList.toggle('on',x===b))})}
   function menu(d){const hub=$('#m-hub',d);if(!hub)return;
-    hub.insertAdjacentHTML('afterend',`<div class="lbl">Challenge</div>${segHTML('md-mlv',MODE())}
-      <div class="lbl">Family play</div><div class="md-fam"><span>A grown-up asks follow-up questions in conversations</span><button class="pp-tog ${S.family?'on':''}" id="md-fam" role="switch" aria-checked="${!!S.family}" aria-label="Family play"><i></i></button></div>`);
+    hub.insertAdjacentHTML('afterend',`<div class="lbl">${T('Challenge')}</div>${segHTML('md-mlv',MODE())}
+      <div class="lbl">${T('Family play')}</div><div class="md-fam"><span>${T('A grown-up asks follow-up questions in conversations')}</span><button class="pp-tog ${S.family?'on':''}" id="md-fam" role="switch" aria-checked="${!!S.family}" aria-label="${T('Family play')}"><i></i></button></div>`);
     $$('#md-mlv .segb',d).forEach(b=>b.onclick=()=>{const was=MODE();setLevel(b.dataset.lv);$$('#md-mlv .segb',d).forEach(x=>x.classList.toggle('on',x===b));
-      if(was!==MODE()){toast('Challenge: '+LEVEL_NAMES[MODE()],'good');const f=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);
+      if(was!==MODE()){toast(T('Challenge: {0}',T(LEVEL_NAMES[MODE()])),'good');const f=S.mission&&MISSIONS[S.mission]&&M().flow.find(x=>x.name===S.step);
         if(f&&['bench','criteria','table','consent','memo'].includes(f.k)){d.remove();render()}}});
     const t=$('#md-fam',d);t.onclick=()=>{S.family=!S.family;save();t.classList.toggle('on',!!S.family);t.setAttribute('aria-checked',!!S.family)}}
 
   // ---------- Workbench: Grown-up tells Byte in words, Byte's take, dossiers ----------
   function bench(doc){const L=MODE();if(L==='kid')return;
     for(const st of docSteps(doc.steps,doc))if(st.dossier)dossier(st.dossier);
-    if(L!=='grownup')return;const foot=$('.bench-foot'),next=$('#next');if(!foot||!next)return;const T=M().tell;let h='';
-    if(T&&T.match&&!S.told)h+=`<button class="btn ghost small" data-md="tell">Tell ${esc(S.byte.name)} something</button>`;
+    if(L!=='grownup')return;const foot=$('.bench-foot'),next=$('#next');if(!foot||!next)return;const TL=M().tell;let h='';
+    if(TL&&TL.match&&!S.told)h+=`<button class="btn ghost small" data-md="tell">${T('Tell {0} something',esc(S.byte.name))}</button>`;
     if(M().take)h+=takeBtn();next.insertAdjacentHTML('beforebegin',h)}
-  function openTell(){const T=M().tell;const d=sheet(`Tell ${esc(S.byte.name)}`,`<form class="md-tell" id="md-tellf"><textarea id="md-tellin" rows="3" maxlength="300" placeholder="What did you notice?"></textarea>${micButton('md-tellin')}
-      <button class="btn small" type="submit">Tell ${esc(S.byte.name)}</button></form><div class="byte-note" id="md-tellr" hidden>${byteBox({...S.byte,mood:'think'})}<p></p></div>`);
+  function openTell(){const TL=M().tell;const d=sheet(T('Tell {0}',esc(S.byte.name)),`<form class="md-tell" id="md-tellf"><textarea id="md-tellin" rows="3" maxlength="300" placeholder="${T('What did you notice?')}"></textarea>${micButton('md-tellin')}
+      <button class="btn small" type="submit">${T('Tell {0}',esc(S.byte.name))}</button></form><div class="byte-note" id="md-tellr" hidden>${byteBox({...S.byte,mood:'think'})}<p></p></div>`);
     wireMics();setTimeout(()=>{const i=$('#md-tellin',d);i&&i.focus()},300);
     $('#md-tellf',d).onsubmit=e=>{e.preventDefault();const q=$('#md-tellin',d).value.trim();if(!q)return;window.PARENT&&PARENT.noteChat(q);
-      if(T.match.test(q)){S.told=true;save();d.remove();unlock(T.guide)&&toast('New Field Guide idea: '+FIELD_GUIDE[T.guide].title,'good');curDoc=T.doc||curDoc;renderWorkbench();
+      if(TRX(TL.match).test(q)){S.told=true;save();d.remove();unlock(TL.guide)&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[TL.guide].title)),'good');curDoc=TL.doc||curDoc;renderWorkbench();
         setTimeout(()=>{const u=$('#upd');if(u){u.scrollIntoView({behavior:'smooth',block:'center'});u.classList.add('flash')}},350);return}
-      const r=$('#md-tellr',d);r.hidden=false;r.querySelector('p').textContent='Thanks, noted. That doesn’t change my forecast.';$('#md-tellin',d).value='';MUSIC.babble('Thanks, noted.','byte')}}
-  const takeBtn=()=>`<button class="btn ghost small md-take" data-md="take">${esc(S.byte.name)}’s take${md().take?'':` <span class="md-cost">−1★</span>`}</button>`;
-  function openTake(){const show=()=>{const d=sheet(`${esc(S.byte.name)}’s take`,`<div class="byte-note md-takebox">${byteBox({...S.byte,mood:'happy'})}<p>${M().take()}</p></div>`);return d};
+      const r=$('#md-tellr',d);r.hidden=false;r.querySelector('p').textContent=T('Thanks, noted. That doesn’t change my forecast.');$('#md-tellin',d).value='';MUSIC.babble(T('Thanks, noted.'),'byte')}}
+  const takeBtn=()=>`<button class="btn ghost small md-take" data-md="take">${T('{0}’s take',esc(S.byte.name))}${md().take?'':` <span class="md-cost">−1★</span>`}</button>`;
+  function openTake(){const show=()=>{const d=sheet(T('{0}’s take',esc(S.byte.name)),`<div class="byte-note md-takebox">${byteBox({...S.byte,mood:'happy'})}<p>${M().take()}</p></div>`);return d};
     if(md().take){show();return}
-    const d=sheet(`${esc(S.byte.name)}’s take`,`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>My key consideration and my recommendation cost one Decision star today. The best you can earn becomes ${3-CAP} stars.</p></div>
-      <div class="row md-row"><button class="btn small" id="md-pay">Ask anyway</button><button class="btn small ghost" id="md-no">Not now</button></div>`);
+    const d=sheet(T('{0}’s take',esc(S.byte.name)),`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${T('My key consideration and my recommendation cost one Decision star today. The best you can earn becomes {0} stars.',3-CAP)}</p></div>
+      <div class="row md-row"><button class="btn small" id="md-pay">${T('Ask anyway')}</button><button class="btn small ghost" id="md-no">${T('Not now')}</button></div>`);
     $('#md-no',d).onclick=()=>d.remove();$('#md-pay',d).onclick=()=>{md().take=1;save();d.remove();show();$$('.md-take .md-cost').forEach(x=>x.remove())}}
 
   // ---------- Future Table: predict first (Grown-up) ----------
   function table(c){if(MODE()!=='grownup')return;const k=planKey(c),P=md().pred[k],head=$('.ft-head p');
     if(!P){['#futs','.meters','#why','#whybox'].forEach(s=>{const e=$(s);if(e)e.hidden=true});const nx=$('#next');if(nx)nx.disabled=true;
-      if(head)head.textContent='Your odds first. Then I’ll show you mine.';
+      if(head)head.textContent=T('Your odds first. Then I’ll show you mine.');
       $('.ft-head').insertAdjacentHTML('afterend',`<div class="md-gate"><div class="md-gate-plan">${esc(M().planName(c))}</div>
-        <div class="md-gate-q">Chance it meets all your goals: ${goalLabels().map(esc).join(' + ')}</div>
-        <div class="md-odds"><input type="range" id="md-p" min="0" max="100" step="1" value="50" aria-label="Your odds"><output id="md-pv">50%</output></div>
-        <button class="btn wide" data-md="lock">Show ${esc(S.byte.name)}’s futures</button></div>`);
+        <div class="md-gate-q">${T('Chance it meets all your goals: {0}',goalLabels().map(esc).join(' + '))}</div>
+        <div class="md-odds"><input type="range" id="md-p" min="0" max="100" step="1" value="50" aria-label="${T('Your odds')}"><output id="md-pv">50%</output></div>
+        <button class="btn wide" data-md="lock">${T('Show {0}’s futures',esc(S.byte.name))}</button></div>`);
       const r=$('#md-p'),o=$('#md-pv');r.oninput=()=>{o.textContent=r.value+'%'};r.onkeydown=e=>{if(e.key==='Enter')lock(c,+r.value)};return}
-    const f=joint(c,M().knows());$('#futs').insertAdjacentHTML('afterend',`<div class="md-vs"><span>All your goals</span>${vsBar('You',P.p/100,'you')}${vsBar(S.byte.name,f,'byte')}</div>`);
+    const f=joint(c,M().knows());$('#futs').insertAdjacentHTML('afterend',`<div class="md-vs"><span>${T('All your goals')}</span>${vsBar(T('You'),P.p/100,'you')}${vsBar(S.byte.name,f,'byte')}</div>`);
     if(M().take){const nx=$('#next');nx&&nx.insertAdjacentHTML('beforebegin',takeBtn())}}
   const vsBar=(who,v,cls)=>`<div class="md-vsrow ${cls}"><b>${esc(who)}</b><i><em style="width:${pct(v)}%"></em></i><strong>${pct(v)}%</strong></div>`;
   function lock(c,p){md().pred[planKey(c)]={p,f:joint(c,M().knows()),q:joint(c,M().truth()),plan:M().planName(c),told:!!S.told};save();renderTable()}
@@ -113,37 +113,37 @@ const MODES=(()=>{
     const rng=rngFrom((S.seed||1)*131+planKey(S.choice).length*17+JSON.stringify(S.choice).split('').reduce((a,ch)=>a+ch.charCodeAt(0),0));
     for(let i=bs.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[bs[i],bs[j]]=[bs[j],bs[i]]}bs.forEach(b=>box.appendChild(b))}
   function consentReply(o){const K=M().consent;if(!S.family||!o.good||!K.ask)return;const cont=$('#cont');if(!cont)return;
-    cont.insertAdjacentHTML('beforebegin',`<button class="choice md-ask" data-md="ask">A grown-up asks a follow-up</button>`);
+    cont.insertAdjacentHTML('beforebegin',`<button class="choice md-ask" data-md="ask">${T('A grown-up asks a follow-up')}</button>`);
     const box=cont.parentElement;box.querySelector('[data-md="ask"]').onclick=e=>{e.stopPropagation();family(box,K.ask,()=>nextStep(),'Write my decision')}}
 
   // ---------- family play: a second player asks a tough follow-up, the kid answers ----------
   function afterLine(v,L,ctx){if(v||!S.family||!L.ask||L._asked||(L.choices&&!ctx.isReply))return v;
-    ctx.choices.innerHTML=`<button class="choice md-ask">A grown-up asks a question</button><button class="choice ghost">Keep going</button>`;
+    ctx.choices.innerHTML=`<button class="choice md-ask">${T('A grown-up asks a question')}</button><button class="choice ghost">${T('Keep going')}</button>`;
     const [a,k]=ctx.choices.children;k.onclick=e=>{e.stopPropagation();L._asked=1;ctx.advance()};
     a.onclick=e=>{e.stopPropagation();L._asked=1;family(ctx.choices,L.ask,()=>ctx.advance(),'Keep going')};return true}
   function family(box,ask,done,doneLabel){const sub=box.closest('.subtitle'),who=sub.querySelector('.who'),line=sub.querySelector('#line')||sub.querySelector(':scope > p'),C=CAST[ask.as]||{},stage=$('.stage');
     const face=mood=>{if(!stage||!C.name)return;const sps=stage.querySelectorAll('.speaker'),sp=sps.length>1&&M().consent&&ask.as===M().consent.left?sps[0]:sps[sps.length-1];if(sp)sp.innerHTML=portrait({...C,mood})};
-    const askStep=()=>{box.innerHTML=`<div class="md-turn">Grown-up’s turn · you are ${esc(C.name||'the skeptic')}</div>${ask.qs.map((q,i)=>`<button class="choice md-q" data-i="${i}">${esc(fill(q))}</button>`).join('')}
-        <form class="md-own" id="md-own"><input id="md-ownq" maxlength="200" autocomplete="off" placeholder="Or type your own question">${micButton('md-ownq')}<button class="btn small" type="submit">Ask</button></form>`;
-      wireMics();$$('.md-q',box).forEach(b=>b.onclick=e=>{e.stopPropagation();answerStep(fill(ask.qs[b.dataset.i]))});
+    const askStep=()=>{box.innerHTML=`<div class="md-turn">${T('Grown-up’s turn · you are {0}',esc(C.name?T(C.name):T('the skeptic')))}</div>${ask.qs.map((q,i)=>`<button class="choice md-q" data-i="${i}">${esc(fill(T(q)))}</button>`).join('')}
+        <form class="md-own" id="md-own"><input id="md-ownq" maxlength="200" autocomplete="off" placeholder="${T('Or type your own question')}">${micButton('md-ownq')}<button class="btn small" type="submit">${T('Ask')}</button></form>`;
+      wireMics();$$('.md-q',box).forEach(b=>b.onclick=e=>{e.stopPropagation();answerStep(fill(T(ask.qs[b.dataset.i])))});
       $('#md-own',box).onsubmit=e=>{e.preventDefault();const q=$('#md-ownq',box).value.trim();if(q)answerStep(q)};$('#md-own',box).onclick=e=>e.stopPropagation()};
-    const answerStep=q=>{if(who)who.innerHTML=`<b>${esc(C.name||'Grown-up')}</b><span>${esc(C.role||'Asked by a grown-up')}</span>`;if(line)line.textContent=q;face('think');
-      box.innerHTML=`<div class="md-turn kid">Your answer, ${esc(fill(M().memo&&M().memo.signAs||''))}${esc(P())}: say it out loud or type it</div>
-        <form class="md-own" id="md-ans"><textarea id="md-ansin" rows="2" maxlength="400" placeholder="Answer here, or out loud"></textarea>${micButton('md-ansin')}<button class="btn small" type="submit">Done</button></form>`;
+    const answerStep=q=>{if(who)who.innerHTML=`<b>${esc(T(C.name||'Grown-up'))}</b><span>${esc(T(C.role||'Asked by a grown-up'))}</span>`;if(line)line.textContent=q;face('think');
+      box.innerHTML=`<div class="md-turn kid">${T('Your answer, {0}: say it out loud or type it',esc(M().memo&&M().memo.signAs?T(M().memo.signAs+'{0}',P()):P()))}</div>
+        <form class="md-own" id="md-ans"><textarea id="md-ansin" rows="2" maxlength="400" placeholder="${T('Answer here, or out loud')}"></textarea>${micButton('md-ansin')}<button class="btn small" type="submit">${T('Done')}</button></form>`;
       wireMics();$('#md-ans',box).onclick=e=>e.stopPropagation();$('#md-ans',box).onsubmit=e=>{e.preventDefault();judgeStep(q,$('#md-ansin',box).value.trim())}};
-    const judgeStep=(q,a)=>{box.innerHTML=`<div class="md-turn">Grown-up: how was that answer?</div><button class="choice md-good">Convincing</button><button class="choice ghost md-again">Ask another</button><button class="choice ghost md-done">${esc(doneLabel)}</button>`;
+    const judgeStep=(q,a)=>{box.innerHTML=`<div class="md-turn">${T('Grown-up: how was that answer?')}</div><button class="choice md-good">${T('Convincing')}</button><button class="choice ghost md-again">${T('Ask another')}</button><button class="choice ghost md-done">${esc(T(doneLabel))}</button>`;
       const log=ok=>{const F=S.familyLog=S.familyLog||[];F.unshift({m:S.mission,as:C.name||'',q:q.slice(0,200),a:a.slice(0,400),ok:!!ok,lv:MODE(),t:Date.now()});F.length=Math.min(F.length,30);save()};
-      box.querySelector('.md-good').onclick=e=>{e.stopPropagation();log(1);heart(ask.as);face('smile');toast('+1 heart from '+esc(C.name||'your grown-up'),'good');box.querySelector('.md-good').disabled=true};
+      box.querySelector('.md-good').onclick=e=>{e.stopPropagation();log(1);heart(ask.as);face('smile');toast(T('+1 heart from {0}',esc(C.name?T(C.name):T('your grown-up'))),'good');box.querySelector('.md-good').disabled=true};
       box.querySelector('.md-again').onclick=e=>{e.stopPropagation();if(!box.querySelector('.md-good').disabled)log(0);askStep()};
       box.querySelector('.md-done').onclick=e=>{e.stopPropagation();if(!box.querySelector('.md-good').disabled)log(0);done()}};
     askStep()}
 
   // ---------- memo (Grown-up): odds as a number, the main risk named, a 0 to 100% slider ----------
-  function checks(cs,s,A){if(MODE()!=='grownup')return cs;const Mm=M().memo;return cs.map(c=>c.k!=='odds'?c:{...c,ok:A.odds??/\d|percent|half|one in|out of/.test(s),l:'Gives odds as a number'})
-    .concat([{k:'risk',ok:A.risk??(Mm.risk||/risk|could go wrong|might not|chance of|side effect|uncertain|fail|crooked|rash|infection/).test(s),l:'Names the main risk'}])}
+  function checks(cs,s,A){if(MODE()!=='grownup')return cs;const Mm=M().memo;return cs.map(c=>c.k!=='odds'?c:{...c,ok:A.odds??TRX(/\d|percent|half|one in|out of/).test(s),l:T('Gives odds as a number')})
+    .concat([{k:'risk',ok:A.risk??TRX(Mm.risk||/risk|could go wrong|might not|chance of|side effect|uncertain|fail|crooked|rash|infection/).test(s),l:T('Names the main risk')}])}
   function memo(){if(MODE()!=='grownup')return;const st=$('.starters');if(st&&!st.children.length)st.hidden=true;const cf=$('.conf');if(!cf)return;
     const P=md().pred[planKey(S.choice)],v=md().final??(P?P.p:50);
-    cf.outerHTML=`<div class="conf md-conf"><div class="ctl-l">Your odds this plan meets all your goals</div><div class="md-odds"><input type="range" id="md-fin" min="0" max="100" step="1" value="${v}" aria-label="Your odds"><output id="md-finv">${v}%</output></div></div>`;
+    cf.outerHTML=`<div class="conf md-conf"><div class="ctl-l">${T('Your odds this plan meets all your goals')}</div><div class="md-odds"><input type="range" id="md-fin" min="0" max="100" step="1" value="${v}" aria-label="${T('Your odds')}"><output id="md-finv">${v}%</output></div></div>`;
     const r=$('#md-fin');r.oninput=()=>{md().final=+r.value;$('#md-finv').textContent=r.value+'%';save()};if(md().final==null){md().final=v;save()}}
 
   // ---------- debrief ----------
@@ -151,24 +151,24 @@ const MODES=(()=>{
     const cs=memoChecks(S.memo,S.memoAI);return {...sc,fit:joint(c,M().truth(),ids)>=best-.08,memoOk:cs.filter(x=>x.ok).length>=cs.length-1,max:md().take?3-CAP:3}}
   function debrief(){const L=MODE();if(L==='kid')return;const card=$('.debrief');if(!card)return;const old=$('.debrief .calib'),earned=$('.debrief .earned');
     if(L==='teen'){const html=teenCalib();if(old)old.outerHTML=html;else if(earned)earned.insertAdjacentHTML('beforebegin',html)}
-    else{if(old)old.remove();earned.insertAdjacentHTML('beforebegin',forecastCard());if(md().take)$('.debrief .dlist').insertAdjacentHTML('beforeend',`<li>You asked for ${esc(S.byte.name)}’s take, so ${3-CAP} stars was the most you could earn today.</li>`)}
+    else{if(old)old.remove();earned.insertAdjacentHTML('beforebegin',forecastCard());if(md().take)$('.debrief .dlist').insertAdjacentHTML('beforeend',`<li>${T('You asked for {0}’s take, so {1} stars was the most you could earn today.',esc(S.byte.name),3-CAP)}</li>`)}
     finishRun()}
   // Teen keeps the 5-step slider, scored against the joint chance that every goal is met
   function teenCalib(){const ids=goals();if(!ids.length)return '';const p=[50,62,75,87,97][S.conf??2],w=['a coin flip','a little sure','pretty sure','very sure','sure'][S.conf??2],f=pct(joint(S.choice,M().knows(),ids));
     const close=Math.abs(p-f)<=15;if(close)unlock('calibration');
-    return `<div class="calib"><b>${f}%</b><span>${esc(S.byte.name)}’s forecast that your plan meets all your goals at once. You said you felt ${w} (about ${p}%). ${close?'Nicely <button class="gw" data-w="calibration">calibrated</button>!':p>f?'You were more sure than the odds. That’s called overconfidence.':'You were less sure than the odds. You can trust good evidence a bit more.'}</span></div>`}
+    return `<div class="calib"><b>${f}%</b><span>${T('{0}’s forecast that your plan meets all your goals at once. You said you felt {1} (about {2}%). ',esc(S.byte.name),T(w),p)}${T(close?'Nicely <button class="gw" data-w="calibration">calibrated</button>!':p>f?'You were more sure than the odds. That’s called overconfidence.':'You were less sure than the odds. You can trust good evidence a bit more.')}</span></div>`}
   const outcomeOk=()=>{const R=S.result;return R?goals().every(id=>(R.flags[id]??1)>0)?1:0:null};
   function forecastCard(){const c=S.choice,P=md().pred[planKey(c)],y=outcomeOk(),fin=md().final,f=joint(c,M().knows()),q=joint(c,M().truth());
     const row=(l,v,b)=>v==null?'':`<tr><th>${l}</th><td>${pct(v)}%</td><td>${y==null?'':fmtB(brier(v,y))}</td>${b||''}</tr>`;
     const all=Object.values(md().pred);const gap=all.length?all.reduce((a,x)=>a+Math.abs(x.p/100-x.q),0)/all.length:null,bgap=all.length?all.reduce((a,x)=>a+Math.abs(x.f-x.q),0)/all.length:null;
     const eb=all.length?all.reduce((a,x)=>a+expBrier(x.p/100,x.q),0)/all.length:null,ebB=all.length?all.reduce((a,x)=>a+expBrier(x.f,x.q),0)/all.length:null;
-    return `<div class="md-fc"><h3>Your forecast</h3><div class="md-fc-plan">${esc(M().planName(c))} · ${goalLabels().map(esc).join(' + ')}</div>
-      <table class="md-fct"><thead><tr><th></th><th>Odds</th><th>Brier</th></tr></thead><tbody>
-      ${row('You, before '+esc(S.byte.name),P?P.p/100:null)}${row('You, when you signed',fin==null?null:fin/100)}${row(esc(S.byte.name),f)}${Math.abs(q-f)>.005?row('With everything known',q):''}</tbody></table>
-      <div class="md-fc-out ${y?'ok':'no'}">${y?'It happened: every goal was met.':'It did not happen: at least one goal was missed.'}</div>
-      <p class="md-fc-note">Brier score = (odds − outcome)², where the outcome is 1 or 0. 0 is perfect; always saying 50% scores .25.</p>
-      ${all.length?`<p class="md-fc-note">You priced ${all.length} plan${all.length>1?'s':''}. Your odds were ${pct(gap)} points from the true odds on average; ${esc(S.byte.name)}’s were ${pct(bgap)}. Expected Brier: you ${fmtB(eb)}, ${esc(S.byte.name)} ${fmtB(ebB)}.</p>`:''}
-      <div class="md-sub">Calibration across your missions</div>${calChart(logAll())}</div>`}
+    return `<div class="md-fc"><h3>${T('Your forecast')}</h3><div class="md-fc-plan">${esc(M().planName(c))} · ${goalLabels().map(esc).join(' + ')}</div>
+      <table class="md-fct"><thead><tr><th></th><th>${T('Odds')}</th><th>${T('Brier')}</th></tr></thead><tbody>
+      ${row(T('You, before {0}',esc(S.byte.name)),P?P.p/100:null)}${row(T('You, when you signed'),fin==null?null:fin/100)}${row(esc(S.byte.name),f)}${Math.abs(q-f)>.005?row(T('With everything known'),q):''}</tbody></table>
+      <div class="md-fc-out ${y?'ok':'no'}">${T(y?'It happened: every goal was met.':'It did not happen: at least one goal was missed.')}</div>
+      <p class="md-fc-note">${T('Brier score = (odds − outcome)², where the outcome is 1 or 0. 0 is perfect; always saying 50% scores .25.')}</p>
+      ${all.length?`<p class="md-fc-note">${T(all.length>1?'You priced {n} plans. Your odds were {gap} points from the true odds on average; {b}’s were {bgap}. Expected Brier: you {eb}, {b} {ebB}.':'You priced {n} plan. Your odds were {gap} points from the true odds on average; {b}’s were {bgap}. Expected Brier: you {eb}, {b} {ebB}.',{n:all.length,gap:pct(gap),b:esc(S.byte.name),bgap:pct(bgap),eb:fmtB(eb),ebB:fmtB(ebB)})}</p>`:''}
+      <div class="md-sub">${T('Calibration across your missions')}</div>${calChart(logAll())}</div>`}
   // every priced plan from earlier runs plus this one (this run's entries are added to S.calib by finishRun)
   function logAll(){const cur=md().logged?[]:runEntries();return (S.calib||[]).concat(cur)}
   function runEntries(){const c=S.choice,k=planKey(c),y=outcomeOk(),fin=md().final;
@@ -176,40 +176,40 @@ const MODES=(()=>{
   function finishRun(){const r=md();if(r.logged||!S.result)return;if(MODE()==='grownup'){S.calib=(S.calib||[]).concat(runEntries());if(S.calib.length>400)S.calib=S.calib.slice(-400)}
     r.logged=1;const lvs=Object.keys(r.lv);if(lvs.some(x=>x!=='kid')){const next=Object.keys(DOSSIERS).find(id=>!(S.dossiers||[]).includes(id));if(next)dossier(next)}save()}
   // x = your odds (bins of 10 points); ring = average true odds in that bin; dot = how often it happened (plans you chose)
-  function calChart(E){if(!E.length)return '<p class="md-fc-note">Appears after your first priced plan.</p>';const W=300,H=200,l=34,r=10,t=10,b=34,X=v=>l+v/100*(W-l-r),Y=v=>t+(1-v/100)*(H-t-b);
+  function calChart(E){if(!E.length)return `<p class="md-fc-note">${T('Appears after your first priced plan.')}</p>`;const W=300,H=200,l=34,r=10,t=10,b=34,X=v=>l+v/100*(W-l-r),Y=v=>t+(1-v/100)*(H-t-b);
     const bins=[...Array(10)].map((_,i)=>{const g=E.filter(e=>Math.min(9,Math.floor(e.p/10))===i);if(!g.length)return null;const res=g.filter(e=>e.y!=null);
       return {x:g.reduce((a,e)=>a+e.p,0)/g.length,q:100*g.reduce((a,e)=>a+e.q,0)/g.length,n:g.length,obs:res.length?100*res.reduce((a,e)=>a+e.y,0)/res.length:null,nr:res.length}}).filter(Boolean);
     const grid=[0,50,100].map(v=>`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" class="md-grid"/><text x="${l-5}" y="${Y(v)+4}" text-anchor="end">${v}%</text><text x="${X(v)}" y="${H-b+15}" text-anchor="middle">${v}%</text>`).join('');
-    const marks=bins.map(g=>`<circle cx="${X(g.x)}" cy="${Y(g.q)}" r="${4+Math.min(5,Math.sqrt(g.n))}" class="md-ring"><title>${g.n} priced: true odds averaged ${Math.round(g.q)}%</title></circle>`+(g.obs!=null?`<circle cx="${X(g.x)}" cy="${Y(g.obs)}" r="4.5" class="md-dot"><title>${g.nr} chosen: happened ${Math.round(g.obs)}%</title></circle>`:'')).join('');
-    return `<svg class="md-cal" viewBox="0 0 ${W} ${H}" role="img" aria-label="Calibration chart">${grid}<line x1="${X(0)}" y1="${Y(0)}" x2="${X(100)}" y2="${Y(100)}" class="md-diag"/>${marks}
-      <text x="${(l+W-r)/2}" y="${H-4}" text-anchor="middle" class="md-ax">Your odds</text></svg>
-      <div class="md-legend"><span><i class="md-k ring"></i>True odds</span><span><i class="md-k dot"></i>What happened</span><span><i class="md-k diag"></i>Perfect</span></div>`}
+    const marks=bins.map(g=>`<circle cx="${X(g.x)}" cy="${Y(g.q)}" r="${4+Math.min(5,Math.sqrt(g.n))}" class="md-ring"><title>${T('{0} priced: true odds averaged {1}%',g.n,Math.round(g.q))}</title></circle>`+(g.obs!=null?`<circle cx="${X(g.x)}" cy="${Y(g.obs)}" r="4.5" class="md-dot"><title>${T('{0} chosen: happened {1}%',g.nr,Math.round(g.obs))}</title></circle>`:'')).join('');
+    return `<svg class="md-cal" viewBox="0 0 ${W} ${H}" role="img" aria-label="${T('Calibration chart')}">${grid}<line x1="${X(0)}" y1="${Y(0)}" x2="${X(100)}" y2="${Y(100)}" class="md-diag"/>${marks}
+      <text x="${(l+W-r)/2}" y="${H-4}" text-anchor="middle" class="md-ax">${T('Your odds')}</text></svg>
+      <div class="md-legend"><span><i class="md-k ring"></i>${T('True odds')}</span><span><i class="md-k dot"></i>${T('What happened')}</span><span><i class="md-k diag"></i>${T('Perfect')}</span></div>`}
 
   // ---------- grown-ups' page ----------
-  function record(e){const r=md(),lvs=Object.keys(r.lv),L=MODE();e.level=L;if(L!=='kid'||lvs.length>1)e.levelName=LEVEL_NAMES[L]+(lvs.length>1?' (switched during the day)':'');
+  function record(e){const r=md(),lvs=Object.keys(r.lv),L=MODE();e.level=L;if(L!=='kid'||lvs.length>1)e.levelName=T(lvs.length>1?'{0} (switched during the day)':'{0}',T(LEVEL_NAMES[L]));
     if(L==='grownup'){const c=S.choice,P=r.pred[planKey(c)];e.conf=null;e.odds={before:P?P.p:null,final:r.final,byte:pct(joint(c,M().knows())),truth:pct(joint(c,M().truth())),y:outcomeOk(),take:!!r.take}}}
   function parent(d){const H=S.history||[],E=S.calib||[],F=S.familyLog||[];if(!H.some(x=>x.level&&x.level!=='kid')&&!E.length&&!F.length)return;
-    const lv=H.slice().sort((a,b)=>b.t-a.t).slice(0,8).map(x=>`<li><div><b>${esc(x.title)}</b><span>Day ${x.day}</span></div><em class="md-lvl ${x.level||'kid'}">${esc(x.levelName||LEVEL_NAMES[x.level||'kid'])}</em></li>`).join('');
+    const lv=H.slice().sort((a,b)=>b.t-a.t).slice(0,8).map(x=>`<li><div><b>${esc(T(x.title))}</b><span>${T('Day {0}',x.day)}</span></div><em class="md-lvl ${x.level||'kid'}">${esc(T(x.levelName||LEVEL_NAMES[x.level||'kid']))}</em></li>`).join('');
     const res=E.filter(e=>e.y!=null);const avg=(A,f)=>A.reduce((a,x)=>a+f(x),0)/A.length;
-    const fc=E.length?`<div class="pp-sub">Forecasting (Grown-up)</div><p class="pp-note">${E.length} plans priced before seeing ${esc(S.byte.name)}’s odds.${res.length?` On the ${res.length} chosen plan${res.length>1?'s':''}: Brier ${fmtB(avg(res,x=>brier(x.p/100,x.y)))}, ${esc(S.byte.name)} ${fmtB(avg(res,x=>brier(x.f,x.y)))}.`:''} Expected Brier on every priced plan: ${fmtB(avg(E,x=>expBrier(x.p/100,x.q)))}, ${esc(S.byte.name)} ${fmtB(avg(E,x=>expBrier(x.f,x.q)))}. Lower is better.</p>${calChart(E)}`:'';
-    const fam=F.length?`<div class="pp-sub">Family questions</div><ul class="md-famlog">${F.slice(0,6).map(x=>`<li><p><b>${esc(x.as||'Grown-up')}:</b> ${esc(x.q)}</p>${x.a?`<p class="md-a">${esc(x.a)}</p>`:''}${x.ok?'<span class="md-ok">Convincing</span>':''}</li>`).join('')}</ul>`:'';
-    const card=`<section class="pp-card" id="pp-modes"><div class="pp-h"><h3>Challenge</h3></div><ul class="pp-list">${lv}</ul>${fc}${fam}</section>`;
+    const fc=E.length?`<div class="pp-sub">${T('Forecasting (Grown-up)')}</div><p class="pp-note">${T('{0} plans priced before seeing {1}’s odds.',E.length,esc(S.byte.name))}${res.length?T(res.length>1?' On the {n} chosen plans: Brier {a}, {b} {c}.':' On the {n} chosen plan: Brier {a}, {b} {c}.',{n:res.length,a:fmtB(avg(res,x=>brier(x.p/100,x.y))),b:esc(S.byte.name),c:fmtB(avg(res,x=>brier(x.f,x.y)))}):''}${T(' Expected Brier on every priced plan: {0}, {1} {2}. Lower is better.',fmtB(avg(E,x=>expBrier(x.p/100,x.q))),esc(S.byte.name),fmtB(avg(E,x=>expBrier(x.f,x.q))))}</p>${calChart(E)}`:'';
+    const fam=F.length?`<div class="pp-sub">${T('Family questions')}</div><ul class="md-famlog">${F.slice(0,6).map(x=>`<li><p>${T('<b>{0}:</b> {1}',esc(T(x.as||'Grown-up')),esc(x.q))}</p>${x.a?`<p class="md-a">${esc(x.a)}</p>`:''}${x.ok?`<span class="md-ok">${T('Convincing')}</span>`:''}</li>`).join('')}</ul>`:'';
+    const card=`<section class="pp-card" id="pp-modes"><div class="pp-h"><h3>${T('Challenge')}</h3></div><ul class="pp-list">${lv}</ul>${fc}${fam}</section>`;
     const at=$('#pp-portfolio',d)||$('#pp-chat',d);if(at)at.insertAdjacentHTML('beforebegin',card)}
 
   // ---------- chat ----------
   function context(t){const L=MODE();if(L==='kid')return t;
     if(L==='teen')return t+`\nChallenge level: Teen. The player may be a teenager. Give a bit more detail and real statistics, still in plain words.`;
     return t+`\nChallenge level: Grown-up. The player is probably an adult, often one who knows AI well. Write for an adult: precise, concise, with real numbers, base rates and uncertainty. Call 2040's AIs expert AIs, not superintelligent. Give evidence and numbers freely when asked.${M().take?` Do not volunteer the key consideration or recommend an option. If asked which option to choose or what matters most, say that your take costs one Decision star and they can tap "${S.byte.name}'s take". The player has ${md().take?'already paid, so answer fully.':'not paid.'}`:' When asked which option to choose, first ask what they think and why, then give the key consideration; recommend only if they ask again.'}`}
-  function canned(r,q){if(MODE()!=='grownup'||!M().take||md().take)return r;return GREC.test(String(q).toLowerCase())?`My take costs a Decision star today. Tap “${S.byte.name}’s take” on the Workbench or the Future Table, or ask me for any number you need.`:r}
+  function canned(r,q){if(MODE()!=='grownup'||!M().take||md().take)return r;return TRX(GREC).test(String(q).toLowerCase())?T('My take costs a Decision star today. Tap “{0}’s take” on the Workbench or the Future Table, or ask me for any number you need.',S.byte.name):r}
 
   // ---------- dossiers (Teen and Grown-up): DOSSIERS is defined below ----------
-  function dossier(id){if(MODE()==='kid'||!DOSSIERS[id])return false;const D=S.dossiers=S.dossiers||[];if(D.includes(id))return false;D.push(id);save();toast('New dossier: '+DOSSIERS[id].title,'good');return true}
+  function dossier(id){if(MODE()==='kid'||!DOSSIERS[id])return false;const D=S.dossiers=S.dossiers||[];if(D.includes(id))return false;D.push(id);save();toast(T('New dossier: {0}',T(DOSSIERS[id].title)),'good');return true}
   function guide(d){if(MODE()==='kid')return;const body=$('.sheet-body',d);if(!body)return;const got=S.dossiers||[],all=Object.entries(DOSSIERS);
-    body.insertAdjacentHTML('beforeend',`<div class="md-dos-h"><h3>Dossiers</h3><span>${got.length} of ${all.length}</span></div>`+all.map(([id,x],i)=>got.includes(id)?dossierHTML(id,x,i):`<div class="md-dos locked"><div class="md-dos-tab">Dossier ${String(i+1).padStart(2,'0')}</div><h4>Sealed</h4><p>Unlocked by finishing a day at Teen or Grown-up, or by reading closely.</p></div>`).join(''))}
-  function dossierHTML(id,x,i){return `<details class="md-dos"><summary><div class="md-dos-tab">Dossier ${String(i+1).padStart(2,'0')}</div><h4>${esc(x.title)}</h4><p>${esc(x.tag)}</p></summary>
-    <figure class="md-dos-art">${x.art()}</figure><div class="md-stamp">Forecast</div>${x.forecast.map(p=>`<p>${p}</p>`).join('')}
-    ${x.game?`<div class="md-gamecard"><span>In the game</span>${x.game}</div>`:''}<div class="realcard"><span>True today</span>${x.today}</div>
-    <p class="md-src">Source: “AI 2040: Plan A” by the AI Futures Project, a scenario its authors call a recommendation, not a prediction. The game’s 2040 matches about 2037 in Plan A.</p></details>`}
+    body.insertAdjacentHTML('beforeend',`<div class="md-dos-h"><h3>${T('Dossiers')}</h3><span>${T('{0} of {1}',got.length,all.length)}</span></div>`+all.map(([id,x],i)=>got.includes(id)?dossierHTML(id,x,i):`<div class="md-dos locked"><div class="md-dos-tab">${T('Dossier {0}',String(i+1).padStart(2,'0'))}</div><h4>${T('Sealed')}</h4><p>${T('Unlocked by finishing a day at Teen or Grown-up, or by reading closely.')}</p></div>`).join(''))}
+  function dossierHTML(id,x,i){return `<details class="md-dos"><summary><div class="md-dos-tab">${T('Dossier {0}',String(i+1).padStart(2,'0'))}</div><h4>${esc(T(x.title))}</h4><p>${esc(T(x.tag))}</p></summary>
+    <figure class="md-dos-art">${x.art()}</figure><div class="md-stamp">${T('Forecast')}</div>${x.forecast.map(p=>`<p>${T(p)}</p>`).join('')}
+    ${x.game?`<div class="md-gamecard"><span>${T('In the game')}</span>${T(x.game)}</div>`:''}<div class="realcard"><span>${T('True today')}</span>${T(x.today)}</div>
+    <p class="md-src">${T('Source: “AI 2040: Plan A” by the AI Futures Project, a scenario its authors call a recommendation, not a prediction. The game’s 2040 matches about 2037 in Plan A.')}</p></details>`}
 
   // delegated clicks for buttons this file adds to engine screens
   document.addEventListener('click',e=>{const b=e.target.closest('[data-md]');if(!b)return;const a=b.dataset.md;

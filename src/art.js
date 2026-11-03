@@ -54,7 +54,7 @@ function byteSVG(o={}){
   </g>
 </g>`;
 }
-function byteBox(o={},cls=''){return `<svg class="byteart ${cls}" viewBox="14 0 136 150" aria-label="${o.name||'Byte'}, your robot puppy">${byteSVG(o)}</svg>`}
+function byteBox(o={},cls=''){return `<svg class="byteart ${cls}" viewBox="14 0 136 150" aria-label="${typeof T==='function'?T('{0}, your robot puppy',o.name||'Byte'):(o.name||'Byte')+', your robot puppy'}">${byteSVG(o)}</svg>`}
 
 // ---------- Anime-style portraits for face-to-face conversations (viewBox 0 0 300 380) ----------
 // o: {skin, hair, hairStyle, eye, shirt, coat, glasses, age, mood, clip}
@@ -114,7 +114,7 @@ function personSVG(o){
     ${o.hairStyle==='braids'?`<path d="M196 72 l14 -10 l4 14z" fill="${o.clip||'#ff7a6b'}"/><circle cx="208" cy="70" r="4" fill="#fff" opacity=".7"/>`:''}
   </g>
 </g>`;}
-function portrait(o,cls=''){return `<svg class="portrait ${cls}" viewBox="20 6 260 374" aria-label="${o.name}">${personSVG(o)}</svg>`}
+function portrait(o,cls=''){return `<svg class="portrait ${cls}" viewBox="20 6 260 374" aria-label="${typeof T==='function'?T(o.name||''):o.name}">${personSVG(o)}</svg>`}
 
 // ---------- small scene people (walkers, crowds, futures) ----------
 function mini(x,y,o={}){const s=o.s||1,sk=o.skin||SKIN[(x*7|0)%6],sh=o.shirt||PAL.teal,h=o.hair||PAL.ink;

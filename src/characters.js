@@ -1194,7 +1194,7 @@ function personSVG(o){const K=ch_personKit(o);
     ${K.head2}
   </g></g></g>`}
 // A cast entry may draw itself instead of using personSVG (animals, robots, holograms): art(mood) returns SVG content in the same 30 0 240 360 box.
-function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${(o&&o.name)||''}">${o&&typeof o.art==='function'?o.art(o.mood||'smile'):personSVG(o||{})}</svg>`}
+function portrait(o,cls){return `<svg class="portrait ${cls||''}" viewBox="30 0 240 360" preserveAspectRatio="xMidYMax meet" aria-label="${typeof T==='function'?T((o&&o.name)||''):(o&&o.name)||''}">${o&&typeof o.art==='function'?o.art(o.mood||'smile'):personSVG(o||{})}</svg>`}
 
 // ---------- Maya, full body and posed (Future Table cards, reveal) ----------
 // posedGirl(kind,o) -> SVG <g>. Feet on (0,0); about 70 units tall (ahoge tip ~y=-71, hair top ~-68); body about ±10 wide
@@ -1405,7 +1405,7 @@ function byteSVG(o){o=o||{};
     ${fx}
   </g>
 </g>`}
-function byteBox(o,cls){o=o||{};return `<svg class="byteart ${cls||''}" viewBox="14 0 136 150" aria-label="${o.name||'Byte'}, your robot puppy">${byteSVG(o)}</svg>`}
+function byteBox(o,cls){o=o||{};return `<svg class="byteart ${cls||''}" viewBox="14 0 136 150" aria-label="${typeof T==='function'?T('{0}, your robot puppy',o.name||'Byte'):(o.name||'Byte')+', your robot puppy'}">${byteSVG(o)}</svg>`}
 
 // ---------- small full-body scene people (crowds, walkers, villains, Future Table vignettes) ----------
 // Anchor: (x,y) + local (0,34) is the ground point between the feet (same as the old mini). Natural height at s=1:
