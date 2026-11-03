@@ -32,11 +32,11 @@ const SN_CARDS=[
   {id:'fourth',t:'A shop nobody screens',sub:'Pip said the name out loud',need:'wrongshop'}
 ];
 const SN_LINKS=[
-  {a:'hour',b:'new',t:'Three brand-new customers all turning up inside the same nine minutes is not what three different customers look like. It looks much more like one sender pretending to be three.'},
+  {a:'hour',b:'new',t:'Three brand-new customers placing orders within the same nine minutes, in the middle of the night, would be a strange coincidence. It is much more likely that one sender placed all three orders while pretending to be three different customers.'},
   {a:'three',b:'piece',t:'Every shop has a limit, and an order under that limit goes through. If you split one big order into three small pieces and send one to each shop, then no shop ever sees anything big enough to stop.'},
-  {a:'piece',b:'purpose',t:'All three orders give their purpose in exactly the same words, and they are supposed to come from three strangers. People do not write the same sentence by accident.'},
-  {a:'new',b:'purpose',t:'A real vaccine lab has years of orders behind it. These three say they are doing vaccine work, but they have never ordered anything before. That is the opposite of what a real lab looks like.'},
-  {a:'fourth',b:'three',t:'So four shops got an order last night, not three. Tidemark Wharf is too small to be on Lena’s list, so nobody there is checking anything. That is the piece we would have missed.'},
+  {a:'piece',b:'purpose',t:'All three orders describe their purpose in exactly the same words, even though they are supposed to come from three strangers. Three strangers would be very unlikely to write the exact same sentence.'},
+  {a:'new',b:'purpose',t:'A real vaccine lab would have years of past orders. These three customers say they do vaccine work, but none of them has ever ordered anything before.'},
+  {a:'fourth',b:'three',t:'So four shops got an order last night, not three. Tidemark Wharf is too small to be on Lena’s list, so nobody there checks orders, and we would have missed that fourth order if we had only watched Lena’s list.'},
   {a:'fourth',b:'piece',t:'If the order was split four ways instead of three, then blocking three of them still leaves the fourth piece moving.'}
 ];
 const SN_NEED=3; // links required before the board is done
@@ -44,7 +44,7 @@ const SN_NEED=3; // links required before the board is done
 // ---------- the checks the player can run, each costing a day
 const SN_TESTS=[
   {id:'auditor',t:'Ask an independent auditor AI',sub:'Tally reads the same orders, on its own',cost:1,
-   r:'Tally agrees with me about the three orders, and it disagrees with me about one thing. It counts four senders, not three. It found a fourth order at Tidemark Wharf, a shop too small to be on Lena’s list.',good:true,finds:true,guide:'second-opinion'},
+   r:'Tally agrees with me about the three orders, but it found one thing I missed: the same sender also placed a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list.',good:true,finds:true,guide:'second-opinion'},
   {id:'sign',t:'Check the signature on every order',sub:'Does a real lab stand behind it?',cost:1,
    r:'Not one of these orders is signed by a lab I can find. A real order from a real lab carries a signature that I can check in a second. These carry a typed name and nothing more.',good:true,guide:'signature'},
   {id:'time',t:'Line up the exact order times',sub:'Timestamps, to the minute',cost:1,
@@ -52,7 +52,7 @@ const SN_TESTS=[
   {id:'call',t:'Call the labs the orders name',sub:'Ask whether they sent anything',cost:1,
    r:'All three labs say they never placed an order at all. One of them was asleep when I called, and quite annoyed with me, and then very glad I had called.',good:true},
   {id:'guess',t:`Ask ${'{B}'} who is behind it`,sub:'A guess, not a check',cost:1,
-   r:'I can guess, and my guess is Prime. But a guess is not evidence, and Councilor Osei cannot block an order just because my guess felt strong. Spending a day on that guess would cost us one of our six days and give us nothing to show the council.',good:false}
+   r:'I can guess, and my guess is Prime. But a guess is not proof, and Councilor Osei cannot block an order just because I suspect Prime. Spending a day on my guess would use up one of our six days and give us nothing to show the council.',good:false}
 ];
 
 // ---------- what the player says at Town Hall
@@ -108,7 +108,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     'auditor':'Someone whose only job is to check other people’s work.',
     'independent':'Not run by the same people, so it is free to disagree.',
     'safeguard':'Something set up ahead of time so that harm never happens.',
-    'defense in depth':'Many separate safeguards in a row, so that one failure never becomes a disaster.',
+    'defense in depth':'Using several separate safeguards one after another, so that if one of them misses a problem, the next one can still catch it.',
     'pattern':'Something that repeats. Three orders sent at the same strange hour is a pattern.',
     'timestamp':'The exact minute something was sent, recorded automatically.',
     'timestamps':'The exact minutes things were sent, recorded automatically.',
@@ -119,7 +119,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     'far-UVC':'A kind of light that is safe for people and hard on germs. In 2040, lamps like these run all day in stations and schools. True today: far-UVC lamps exist and are being tested, but very few buildings have them.',
     'shelter':'A room or building with its own clean air, kept ready in case people ever need it. In 2040, every city has enough of them for everybody. True today: clean-air shelters like that have not been built yet.',
     'traced':'Followed back to whoever really sent it.',
-    'evidence':'Something you can show other people, so they can see it for themselves. A strong feeling is not evidence.',
+    'evidence':'Something you can show other people so they can check it for themselves, like a record of when each order was sent. A feeling that something is wrong does not count as evidence.',
     'appeal':'To ask a person to look again at a decision you think is wrong.',
     'least privilege':'Giving a person or a machine only the power it needs for its job, and no more.',
     'the Quiet Year':'In this story, the year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it. True today: Varrow and the Quiet Year are made up for this game.'
@@ -135,23 +135,23 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   },
   voices:{lena:'af_nova',tomas:'am_eric',osei:'bf_isabella',pip:'am_puck',jory:'bm_lewis'},
   guide:{
-    'screening':{title:'Check before you build',track:'Evidence and truth',text:'A print shop builds DNA for anybody who orders it, so every order is checked before anything is made. The check comes first, while stopping an order is still easy and costs nobody anything.',real:'True today: DNA synthesis companies screen the orders they receive, and the biggest ones have agreed to do it together.'},
-    'defense-in-depth':{title:'Defense in depth',track:'Engineering and systems',text:'Any one check can miss something. But many separate checks, one after another, almost never all miss the same thing, so a single mistake never turns into a disaster. That is why the city has a screening desk, signatures, warnings shared between shops, wastewater monitors and a fast vaccine line, instead of one perfect wall.',real:'True today: engineers call this defense in depth, and it is how airplanes, nuclear plants and hospitals are kept safe.'},
+    'screening':{title:'Check before you build',track:'Evidence and truth',text:'A print shop builds DNA for anybody who orders it, so the shop checks every order before building anything. Stopping a bad order at that point is easy, because nothing has been made yet.',real:'True today: DNA synthesis companies screen the orders they receive, and the biggest ones have agreed to do it together.'},
+    'defense-in-depth':{title:'Defense in depth',track:'Engineering and systems',text:'Any single safety check can miss a problem. When several different checks run one after another, it is very unlikely that all of them miss the same problem. That is why Boston uses a screening desk, lab signatures, warnings shared between print shops, wastewater testing and a fast vaccine line, and does not rely on any one of them alone.',real:'True today: engineers call this defense in depth, and it is how airplanes, nuclear plants and hospitals are kept safe.'},
     'signature':{title:'A signature says who',track:'Security thinking',text:'Anybody can type a lab’s name on an order. A signature is a mark that only that lab can make, so it proves who really sent the order. It also means that somebody can be held responsible afterwards.',real:'True today: signed software updates work the same way, which is how your phone knows an update really came from the company.'},
-    'second-opinion':{title:'Ask a second checker',track:'Ethics and AI alignment',text:'Asking the same AI a second time only gets you the same answer again. A different AI, built by different people, can catch what the first one missed. Wherever the two of them disagree is where you should look first.',real:'True today: this is why planes carry more than one computer from more than one maker, and why important studies get repeated by another team.'},
-    'share-the-warning':{title:'A warning everyone gets',track:'Security thinking',text:'A pattern that one screener notices does very little good while she is the only one who knows it. Send it to every other shop, and the same pattern gets caught everywhere, including at the shop nobody thought to watch.',real:'True today: banks, hospitals and computer security teams share warnings with each other for exactly this reason.'},
-    'who-signs':{title:'Somebody has to sign',track:'Government, law, and power',text:'The screening AI can read every order all night long, which no person could do. But holding up an honest lab’s work, or blocking it for good, costs somebody a week of work. So a named person makes that decision and answers for it afterwards.',real:'True today: a human must sign off on many serious decisions, including medical treatment and arrest warrants, even when a machine found the problem first.'},
-    'checking-costs':{title:'Checking costs something',track:'Evidence and truth',text:'Every check takes time that you could have spent on a different check, so you can never run them all. Choose the checks that give you evidence you can show other people, and skip the ones that only make you feel more sure.',real:'True today: hospitals, airlines and auditors all choose which checks are worth their cost, because checking everything twice would stop the work.'}
+    'second-opinion':{title:'Ask a second checker',track:'Ethics and AI alignment',text:'Asking the same AI the same question twice usually gets you the same answer twice. A different AI, built by different people, can notice things the first AI missed. If the two AIs give different answers about an order, look at that order first.',real:'True today: this is why planes carry more than one computer from more than one maker, and why important studies get repeated by another team.'},
+    'share-the-warning':{title:'A warning everyone gets',track:'Security thinking',text:'When one screener notices a suspicious pattern in DNA orders, only her own shop is protected until she tells the others. If she sends a warning to every print shop, each shop can look for the same pattern, including small shops that nobody was watching.',real:'True today: banks, hospitals and computer security teams share warnings with each other for exactly this reason.'},
+    'who-signs':{title:'Somebody has to sign',track:'Government, law, and power',text:'The screening AI can read every DNA order all night, which no person could do. But blocking an honest lab’s order can cost that lab a week of work. So a person decides whether to block an order, and that person’s name goes on the decision so they are responsible for it afterwards.',real:'True today: a human must sign off on many serious decisions, including medical treatment and arrest warrants, even when a machine found the problem first.'},
+    'checking-costs':{title:'Checking costs something',track:'Evidence and truth',text:'Each check takes time, and time spent on one check can’t be spent on another, so you can’t run every check. Pick the checks that give you proof you can show other people, like the exact times the orders were sent, and skip the ones that would only make you feel more certain.',real:'True today: hospitals, airlines and auditors all choose which checks are worth their cost, because checking everything twice would stop the work.'}
   },
   lessons:{screening:{title:'How a safety check catches a bad order',steps:[
-    {t:'A [[print shop]] builds what customers order. So the order itself is the place to check, before anything exists.',viz:'snShops',args:{flag:0},cap:'Check the order first'},
-    {t:'A machine reads every order and [[flags]] the odd ones. The machine does not decide what happens to them. It hands them to a person, who does.',viz:'snScreen',cap:'The machine flags, a person decides'},
+    {t:'A [[print shop]] builds whatever DNA its customers order, so the safest moment to check is when an order arrives, before anything has been built.',viz:'snShops',args:{flag:0},cap:'Check the order first'},
+    {t:'A machine reads every order and [[flags]] the unusual ones. Then a person decides what happens to each flagged order.',viz:'snScreen',cap:'The machine flags, a person decides'},
     {t:'Someone who wants to get around the check splits the order into pieces that each look harmless.',viz:'snSplit',cap:'Splitting to look harmless'},
-    {t:'That is why the city does not rely on one check. Behind this desk come [[signatures]], warnings shared between shops, each shop’s own check, [[wastewater]] monitors and a fast [[vaccine]] line.',viz:'snLayers',cap:'Many checks in a row'}],
+    {t:'Because one check can be fooled this way, Boston does not rely on the screening desk alone. It also uses lab [[signatures]], warnings shared between shops, each shop’s own check, [[wastewater]] testing and a fast [[vaccine]] line.',viz:'snLayers',cap:'Many checks in a row'}],
     quiz:[
-      {q:'Why is an order the best place to check?',opts:['Because orders are easy to read','Because nothing has been made yet','Because machines like paperwork'],a:1,why:'Stopping an order costs nobody anything. Stopping something that already exists is much harder.'},
+      {q:'Why is an order the best place to check?',opts:['Because orders are easy to read','Because nothing has been made yet','Because machines like paperwork'],a:1,why:'Stopping an order is easy, because nothing has been built yet. Dealing with something that has already been made is much harder.'},
       {q:'Why split one order into several pieces?',opts:['So each piece looks small and harmless','To get a discount','Because shops are far apart'],a:0,why:'Each piece stays under one shop’s limit, so no shop ever sees anything big enough to stop.'},
-      {q:'What does defense in depth mean?',opts:['One perfect wall','Many separate checks in a row','Checking twice as fast'],a:1,why:'Many separate checks almost never all miss the same thing, so one failure never turns into a disaster.'}]}},
+      {q:'What does defense in depth mean?',opts:['One perfect wall','Many separate checks in a row','Checking twice as fast'],a:1,why:'When several separate checks run one after another, it is very unlikely that all of them miss the same problem.'}]}},
   chatter:{
     harbor:['My cousin runs the label printer at shop three. She says nobody slept last night.',
       'I print posters. People hear “print shop” and back away from me at parties.',
@@ -159,7 +159,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
       'The ferry comes every eight minutes now. I remember waiting half an hour for one.',
       'My daughter wants to be a screener when she grows up. I did not see that one coming.'],
     screening:['Coffee is in the corner. The machine argues with you if you take two cups.',
-      'Most orders here are boring, and boring is the best news I get all day.',
+      'Almost every order that comes through this desk is for ordinary medical research, and I like it that way.',
       'I called Kendall Square at five this morning. They were already awake.'],
     townhall:['I came for the bike lane vote and stayed for this.',
       'My grandmother was in Varrow during the Quiet Year. She still keeps a lantern by the door.',
@@ -168,7 +168,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
 
   // ---------- criteria, controls and the forecast model
   criteriaHint:'Not sure what one means? <button class="gw" data-w="traced">Traced</button> means followed back to whoever really sent it.',
-  criteriaNote:'Prime is probably cleverer than both of us, and it keeps none of our rules. So we are not going to win this by out-thinking it. We win it by checking things, and by telling every other shop what to look for. Which of these matters most to you?',
+  criteriaNote:'Prime is probably smarter than both of us, and it ignores all of our rules, so trying to outsmart it is not a good plan. Instead, we can check things that Prime cannot fake, such as the labs’ signatures, and we can warn every other print shop about these orders. Which of these goals matters most to you?',
   criteria:[
     {id:'every',label:'Every piece is caught'},
     {id:'honest',label:'Honest labs keep working'},
@@ -221,7 +221,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
         {t:'I cannot explain all of it right now, Tomás. Some of it is secret, so you will have to trust me and stop everything until we are finished.',good:false,mood:'worried',
          reply:'Trust you? I have forty people working here. If you cannot tell me why, I will be calling my lawyer, not the council.'},
         {t:'Don’t worry, Tomás. This will not cost you anything at all. Your shop will be back to normal before you even notice, and nobody here will lose a single hour of work.',good:false,mood:'surprised',
-         reply:'That is not true, and you know it. If you will shade that, what else are you shading?'}]}},
+         reply:'That is not true, and you know it. If you are not honest with me about that, how can I believe anything else you tell me?'}]}},
 
   memo:{starters:['I am blocking ','because ','The chance we catch every piece is about ','Honest labs ','We will know who sent them by '],
     placeholder:'I am blocking the orders we found and warning every shop because…',
@@ -231,16 +231,16 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   reveal:{days(){return Math.max(2,snState().days)},unit:'Day',who:'lena',
     lines:{allblocked:'Every piece is on hold, and nothing was ever made. You saw the pattern before my own system did.',
       overblock:'Every piece was caught. The desk AI also blocked nine honest orders on its own, and I have spent today apologising to nine labs.',
-      oneslips:'One piece got past my desk. A shop in Lisbon had your warning taped to the wall, and they stopped it. That is why we share these things.',
-      primeslips:'Nothing was made. But one piece was out there the whole time, we never found it, and we still do not know who sent any of this.',
+      oneslips:'One piece of the order got past my desk. A print shop in Lisbon had your warning taped to the wall, and they stopped that piece, which they could only do because we sent the warning to every shop.',
+      primeslips:'Nothing was made. But one piece of the order was waiting at a shop we never checked, and we still do not know who sent any of the orders.',
       shutdown:'Every piece was caught. Three honest labs also waited nine days for medicine that people needed, and they are not happy with me.',
       watch:'We ran out of days. The shops’ own checks held, nothing was made, and the city is fine. We never found out who sent the orders.'},
     mood(k){return k==='allblocked'?'happy':k==='oneslips'?'smile':k==='shutdown'||k==='overblock'?'think':'sad'}},
   trap(c){const k=this.knows();
     return {ok:k,text:k?'You found the fourth order before you chose a plan, so your plan covered every piece.':'There was a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list. Pip said the name out loud on the sidewalk, and Tally the auditor counted four senders. Either one of those would have found it for you.'}},
-  byteGood:'That is how a day like this is won. Neither of us can count on out-thinking Prime. What we can do is check things carefully, and tell every other shop what to look for.',
+  byteGood:'Good work, Doctor. You checked the things Prime could not fake, like the labs’ signatures and the times the orders were sent, and you warned every other print shop about these orders.',
   evening(){const s=snState();return [
-    `<b>${esc(S.byte.name)}:</b> “Nothing was made. Lena says that sentence about forty times a day, and I still like hearing it.”`,
+    `<b>${esc(S.byte.name)}:</b> “Nothing was made. Lena has said that sentence many times today, and I still like hearing it every time.”`,
     `“Tomás called while you were on the tram. His machines are running again, and he has taped the pattern to the wall above them, where his whole crew can see it.”`,
     s.adopted?`“The council kept your rule, too. Lena says that next year a screener neither of us has met will catch something because of what you said today.”`
       :`“The council did not keep the rule, though. Lena says the next screener will have to make the whole argument again from the beginning.”`,
@@ -254,7 +254,7 @@ HARD RULE for you, ${S.byte.name}: you never describe what the recipe contains, 
     if(/recipe|germ|what.*(in|inside) (it|the order)|how.*(make|made|build)|pathogen|virus|bacteria/.test(q))
       return 'I could not tell you even if you begged me. AIs like me were built knowing nothing about that, on purpose, and nobody in this story knows what is in those orders either. What matters is that one sender pretended to be four, and that every piece is still sitting on a shelf. Ask me about the checks instead.';
     if(/fourth|four|miss|pip|jory|tidemark/.test(q))return this.knows()?'There is a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list. If we block only three, that fourth piece keeps moving. So your plan has to cover it: block it too, or warn every shop so that somebody there catches it.':'I only know about the three orders Lena flagged. If you heard something on the street, tell me about it, and ask Tally to count the senders on its own.';
-    if(/tally|auditor|second|independent/.test(q))return 'Tally is an auditor AI, and different people built it, so it can disagree with me. Asking me the same question twice only gets you my answer twice. Wherever Tally and I disagree is where you should look.';
+    if(/tally|auditor|second|independent/.test(q))return 'Tally is an auditor AI built by different people, so it can reach a different answer than I do. If you ask me the same question twice, you will get my same answer twice. Any order where Tally and I disagree is worth a closer look.';
     if(/signature|sign/.test(q))return 'Anybody can type a lab’s name on an order. A signature is a mark that only that lab can make, so it proves who really sent the order, and it means somebody can be held responsible. None of these three orders are signed.';
     if(/share|warn|other shops/.test(q))return 'A pattern that only Lena knows about catches nothing anywhere else. If we send it to every shop, the same pattern gets caught even at the shop nobody thought to watch, and that is usually the one that matters.';
     if(/who (may|can|should) block|desk ai|alone|permission|least privilege/.test(q))return 'The desk AI can read every order all night long, which no person could do. But blocking an order costs somebody a week of work, so I would keep that decision with a person who signs for it. Going faster is not free here.';
@@ -289,22 +289,22 @@ MISSIONS.sneeze.docs=[
     {t:'Every order is [[screened]] before anything is made. A machine reads all of them and [[flags]] the odd ones, and then a person reads those.',viz:'snScreen',cap:'The machine flags, a person decides'},
     {t:'Last night the machine flagged three orders, at three different shops: Seaport Row, Harbor Print Shop 2 and Kendall Square.',viz:'snShops',args:{flag:3},cap:'Three flagged at three shops',
       alt:{t:'Updated: there were four orders, not three. The fourth one went to Tidemark Wharf, a shop too small to be on my list, so nobody there is screening any orders at all.',viz:'snShops',args:{flag:3,extra:1},cap:'A fourth order, off the list'}},
-    {t:'An order on hold is only a piece of paper. Nothing has been made, and nothing will be made while it sits on my desk.',viz:'snAlert',cap:'An order on hold'},
+    {t:'An order on hold is just a request waiting on my desk. Nothing has been made, and nothing will be made while the order stays on hold.',viz:'snAlert',cap:'An order on hold'},
     {t:'The three were sent at 3:02, 3:07 and 3:11 in the morning, nine minutes apart.',viz:'snClock',cap:'Nine minutes, in the middle of the night'},
     {t:'All three came from brand-new customers with no past orders at all.',viz:'snNewCustomers',cap:'New customers, no history'},
     {t:'Each order is only a piece, small enough to stay under one shop’s limit. Put the pieces together and they add up to one order for a recipe for a germ that makes people very sick.',viz:'snSplit',cap:'One order, split into pieces'},
     {t:'All three orders give the same reason, in exactly the same words: vaccine work.',viz:'snSameWords',cap:'The same sentence, three times'},
-    {t:'This desk is the first [[safeguard]], and it is not the only one. Behind it come [[signatures]], warnings shared between shops, each shop’s own check, [[wastewater]] monitors across the city, and a hospital line that can build a new [[vaccine]] in about three weeks.',viz:'snLayers',cap:'Many checks in a row'}
+    {t:'My screening desk is the first [[safeguard]], but Boston has others too: lab [[signatures]], warnings shared between shops, each shop’s own check, [[wastewater]] testing across the city, and a hospital line that can make a new [[vaccine]] in about three weeks.',viz:'snLayers',cap:'Many checks in a row'}
   ]},
   {id:'checks',title:'What we can actually check',get from(){return S.byte.name},kind:'sheet',steps:[
     {t:'Anybody can type a lab’s name on an order. A [[signature]] is a mark that only that lab can make, so it proves who really sent the order.',viz:'snSignature',cap:'Signed and unsigned'},
-    {t:'Asking me the same question twice only gets you my answer twice. An [[independent]] [[auditor]] AI called Tally can read the same orders on its own, and wherever Tally and I disagree is where you should look.',viz:'snAuditor',cap:'Two checkers, one disagreement'},
+    {t:'If you ask me the same question twice, you will get my same answer twice. An [[independent]] [[auditor]] AI called Tally can read the same orders on its own, and any order where Tally and I disagree is worth a closer look.',viz:'snAuditor',cap:'Two checkers, one disagreement'},
     {t:'If we line up the exact minute each order was sent, we can see whether three different people were working, or only one.',viz:'snTimeline',cap:'The three order times'},
     {t:'We can telephone the labs whose names are on the orders and ask whether they sent anything at all.',viz:'snCall',cap:'Calling the named labs'},
-    {t:'A guess is not a check. I can tell you who I think is behind this, but my guess would not block a single order.',viz:'snEvidence',cap:'A guess weighs nothing'},
+    {t:'A guess is not proof. I can tell you who I think sent these orders, but my guess alone is not enough to block a single order.',viz:'snEvidence',cap:'A guess is not proof'},
     {t:'Blocking an order puts it back on the shelf. The shop keeps working, and the customer can [[appeal]] to a person.',viz:'snPause',cap:'Blocked, not deleted'},
-    {t:'The desk machine can flag orders all night long, which no person could do. But a block costs somebody a week of work, so people decide who may hold an order and who signs a block.',viz:'snWhoDecides',cap:'Who does what'},
-    {t:'None of this is me out-thinking Prime. Prime may well be cleverer than I am, and it breaks every rule I keep. But these are checks, and a check works no matter how clever the other side is.',viz:'snDoor',cap:'Why checks beat cleverness'}
+    {t:'The machine at the screening desk can flag orders all night, which no person could do. But blocking an order can cost a lab a week of work, so people decide who is allowed to hold an order and who has to sign before an order is blocked.',viz:'snWhoDecides',cap:'Who does what'},
+    {t:'Prime may be smarter than I am, and it ignores every rule I follow. But however smart Prime is, it still cannot make a real lab’s signature, and it cannot answer the phone at a lab it does not run. So these steps work even against Prime.',viz:'snDoor',cap:'Things Prime cannot fake'}
   ]},
   {id:'ready',title:'Health Harbor: what is on standby',from:'Boston Harbor Hospital',kind:'record',steps:[
     {t:'Boston checks its [[wastewater]] every day, neighborhood by neighborhood. A new germ shows up in the water before anybody in the city feels sick.',viz:'snWastewater',cap:'Monitors on the city pipes'},
@@ -314,13 +314,13 @@ MISSIONS.sneeze.docs=[
     {t:'The hospital’s [[vaccine]] line can design, test and approve a new vaccine in about three weeks, and it has done it twice.',viz:'snVaccine',cap:'The fast vaccine line'},
     {t:'Boston keeps all of this because of [[the Quiet Year]] in 2030, when a new germ spread through the port city of Varrow and people stayed home for months.',viz:'snWhyScreening',cap:'Where these rules came from'},
     {t:'[[Screening]] every order came out of that year, and so did the monitors, the lamps, the shelters and this vaccine line.',viz:'snLayers',cap:'Six layers, six different teams'},
-    {t:'All of this is what we fall back on if something goes wrong. The plan is that nothing dangerous is ever made in the first place.',viz:'snNothingMade',cap:'Where tonight’s work sits'}
+    {t:'All of these safeguards are backups in case something goes wrong. The main goal is that nothing dangerous is ever made.',viz:'snNothingMade',cap:'Where tonight’s work sits'}
   ]},
   {id:'ledger',title:'The Ledger: Boston',from:'News',kind:'ledger',steps:[
     {t:'Print shops around the harbor are holding new orders from customers they do not know, while screeners look into a [[pattern]] from Tuesday night.',viz:'snPause',cap:'Orders on hold at the harbor'},
     {t:'A DNA print shop in Kendall Square flagged odd orders from brand-new customers placed the same night, and blocked them.',viz:'snShops',args:{flag:1},cap:'One shop across the river'},
     {t:'Treaty inspectors still do not know who built the unlicensed datacenter near Calder Bay, which was taken offline last week.',viz:'datacenter',cap:'The Calder Bay datacenter'},
-    {t:'A cleared patch of desert outside Build Yard has grown much bigger this month, and nobody has asked the state for a mining permit.',viz:'snPatch',cap:'Something growing out west'}
+    {t:'A cleared patch of desert outside Build Yard has grown much bigger this month, and nobody has asked the state for a mining permit.',viz:'snPatch',cap:'A dig outside Build Yard'}
   ]}
 ];
 
@@ -332,47 +332,47 @@ MISSIONS.sneeze.talks={
     {who:'byte',mood:'think',text:'She has put all three on hold, so nothing has been made. Before she decides what to do next, she wants a doctor in the room, and she asked for you.',
       choices:[
         {t:'Why a doctor and not a police officer?',reply:'Because this is about people getting sick, and because whoever signs the decision has to understand what the odds really mean. The police come later, if we ever find out who sent these orders.'},
-        {t:'What do you think it is?',reply:'I think it is one sender pretending to be three. But what I think is not evidence, and evidence is the only thing a city council can act on.'},
+        {t:'What do you think it is?',reply:'I think one sender placed all three orders while pretending to be three customers. But my opinion is not proof, and the city council can only act on proof.'},
         {t:'Let’s go.',reply:'Grab your coat. The tram leaves at 7:30, and I have already read all three orders twice.'}]}
   ],
   lena:[
     {who:'lena',mood:'neutral',text:'You came. Good. I have been staring at these orders since four this morning, and I have stopped trusting my own eyes.'},
     {who:'lena',mood:'think',text:'I have worked at this desk for eleven years. The machine [[flagged]] these three, and I put them on hold, and that is as far as my job goes. I can hold an order for a few days. I cannot block one for good, and I cannot make the other shops pay attention.'},
-    {who:'lena',mood:'worried',text:'Each order on its own looks completely boring. That is the part that frightens me, because boring is exactly what somebody would want them to look like.',clue:'lena'},
+    {who:'lena',mood:'worried',text:'Each order looks completely ordinary on its own. That frightens me, because someone trying to sneak a dangerous order past us would want each piece to look ordinary.',clue:'lena'},
     {who:'lena',mood:'neutral',text:'And before you ask: the [[wastewater]] monitors are clean, the [[far-UVC]] lamps are on, and the [[vaccine]] line is ready. I would still much rather nothing was ever made.'},
     {who:'byte',mood:'alert',text:'Lena, I read all three orders on the tram. Three strangers wrote the same sentence, inside the same nine minutes, in the middle of the night.'},
     {who:'lena',mood:'smile',text:'Then you see it too. Read my alert, put the pieces together, and choose your checks carefully. In six days the pickup window opens and I am no longer allowed to hold these orders.',
       choices:[
-        {t:'What happens if we are wrong about this?',good:true,mood:'think',reply:'Then three labs lose a week of work and I look foolish, and I would take that trade every single time. Being wrong in this direction costs a week. Being wrong in the other direction costs much more.'},
-        {t:'Six days is not very long.',mood:'neutral',reply:'It is six days more than we would have had if the machine had not flagged them. Spend those days on checks that give you evidence.'},
+        {t:'What happens if we are wrong about this?',good:true,mood:'think',reply:'Then three labs lose a week of work and I look foolish, and I would accept that every time. If we wrongly block these orders, three labs lose a week, but if we wrongly let them through, people could get very sick.'},
+        {t:'Six days is not very long.',mood:'neutral',reply:'If the machine had not flagged these orders, we would have had no time at all. Use the six days on checks that give you proof you can show the council.'},
         {t:'You held three orders by yourself. That took nerve.',good:true,mood:'happy',reply:'It is what the job says to do. But thank you. Most people hear what I do and ask why a machine could not do it instead.'}]}
   ],
   tomas:[
     {who:'tomas',mood:'stern',text:'So you are the doctor from the screening desk. Come in, then, and look at my machines standing quiet.'},
     {who:'tomas',mood:'worried',text:'Forty people work here. We print DNA for medicine labs, mostly very ordinary things, and today we printed nothing at all.'},
-    {who:'tomas',mood:'neutral',text:'My own machine checked those orders before yours did, and it found nothing wrong with them. That is the part I cannot get past.',
+    {who:'tomas',mood:'neutral',text:'My own machine checked those orders before Lena’s desk did, and it found nothing wrong with them, which still bothers me.',
       choices:[
-        {t:'Your check looks at one order. Lena’s desk saw all three together.',good:true,mood:'think',reply:'Three shops, three pieces, one each. Of course. A single piece looks like nothing at all.'},
+        {t:'Your check looks at one order. Lena’s desk saw all three together.',good:true,mood:'think',reply:'So each of three shops got one piece of the order. Of course my machine found nothing, because one piece on its own looks harmless.'},
         {t:'Your machine is fine. The sender made every piece look harmless.',good:true,mood:'think',reply:'Then tell me what harmless looked like this time, so that I can watch for it myself.'},
         {t:'Honestly, your check was not good enough.',mood:'sad',reply:'Maybe not. It would help me more to hear what I should have seen.'}]},
     {who:'tomas',mood:'think',text:'So here is what I want from you. Tell every shop on this coast what the [[pattern]] looks like, and I will tape it to the wall above my machines. Tell only me, and my shop is the only one watching for it.',clue:'tomaswall'},
-    {who:'byte',mood:'alert',text:'That is a fair trade, and it costs us almost nothing. Warning everybody gives us a check at every shop in the harbor, including the ones we do not run.'}
+    {who:'byte',mood:'alert',text:'That is a fair trade, and it costs us almost nothing. If we warn every shop, every shop in the harbor will watch for this pattern, including the shops that Lena does not screen.'}
   ]
 };
 MISSIONS.sneeze.react={
-  alert3:'Those orders are sitting on a shelf instead of in a machine, and that is the whole point of Lena’s job.',
-  alert4:'Sending an order at three in the morning is a choice. Somebody decided that nobody would be reading.',
-  alert5:'No order history at all. A real lab leaves years of orders behind it.',
-  alert6:'Each piece looks boring on its own, and that is exactly what it was built to look like.',
-  alert7:'The same words, in the same order, three times. People do not write the same sentence by accident.',
-  alert8:'There are six checks here, and six different groups of people run them. The city built it that way on purpose.',
-  checks0:'Not one of these three orders is signed. A real lab signs in a second and never thinks about it again.',
-  checks4:'I should be honest about that one. My guesses are pretty good, and they are still only guesses.',
-  checks6:'Blocking an order costs somebody a week of work. I would keep that decision with a person.',
-  checks7:'Prime would beat me in a contest of cleverness. A check does not care how clever the sender is, which is why we rely on checks instead.',
-  ready1:'The warning reaches every phone within minutes. That part was built after a year of finding out how slow a warning can be.',
-  ready4:'Three weeks for a new vaccine. In 2020 it took a year, and the world called that a miracle.',
-  ready5:'Almost every rule in this building was written after somebody had a very bad year.'};
+  alert3:'Those orders are waiting on hold instead of being built, which is exactly what Lena’s job is for.',
+  alert4:'Someone chose to send these orders at three in the morning, probably hoping that no person would be awake to read them.',
+  alert5:'None of these customers has ever ordered before, while a real lab would have years of past orders.',
+  alert6:'Each piece looks ordinary on its own, and whoever sent the orders made them look ordinary on purpose.',
+  alert7:'All three orders use the same words in the same order. Three different people would almost never write the exact same sentence.',
+  alert8:'Boston has six separate safeguards, and six different groups of people run them, so one group’s mistake cannot break all six.',
+  checks0:'Not one of these three orders is signed. Signing takes a real lab about a second, so it is strange that none of these orders were signed.',
+  checks4:'I should be honest about that one. My guesses are often right, but a guess is still not proof.',
+  checks6:'Blocking an order can cost a lab a week of work, so I think a person should make that decision, not me.',
+  checks7:'Prime may be smarter than me, so I am not trying to outsmart it. Instead, I check two things Prime cannot fake: every order has to carry the real lab’s signature, and we can phone that lab to ask whether it really sent the order.',
+  ready1:'The city’s warning reaches every phone within minutes. Boston built that after the Quiet Year in 2030, when a germ spread in Varrow for weeks before anyone noticed.',
+  ready4:'This hospital can make a new vaccine in about three weeks. In 2020, the first COVID vaccines took about a year, and people were amazed at how fast that was.',
+  ready5:'Most of the safety rules in this building were written after the Quiet Year in 2030.'};
 
 // ---------- custom screens
 MISSIONS.sneeze.custom={
