@@ -298,51 +298,211 @@
     L.lamps = [];
     for (i = 0; i < 9; i++) { var X3 = -2400 + i * 640 + (r() - 0.5) * 200, Z3 = 1990 + r() * 200, b0 = L.P(X3, 0, Z3), t0 = L.P(X3, 34, Z3); ctx.strokeStyle = '#4a3444'; ctx.lineWidth = Math.max(0.6 * s, 0.8 * L.k(Z3)); ctx.beginPath(); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(t0[0], t0[1]); ctx.stroke(); L.lamps.push(t0); }
   }
-  // the test-yard terrace where we stand: a glass balustrade full of sunset, warm concrete, long shadows toward us
+  /* ---------------- the viewing terrace where we stand ----------------
+     A landscaped forecourt on the factory roof, seen from its upper step (eye 6 m above the paving, a normal lens): big
+     warm stone pavers still wet from a shower, so the puddles hold the golden sky; raised planters with grasses and
+     bougainvillea, two royal palms framing the view, benches, a wayfinding sign, a cargo-tram track set into the paving
+     and the glass balustrade at the far edge. The Sun is ahead, so everything throws a long shadow toward us and every top
+     edge is rimmed with light. The nearest stones (the lower third) stay plain and soft for the dialogue. */
+  var TE = 6; // eye height above the paving
+  function plazaCam(L) {
+    if (L.pz) return L.pz;
+    var w = L.w, h = L.h, f = h * 0.9, cx = w * 0.5, hz = L.hz;
+    var C2 = { f: f, cx: cx, hz: hz };
+    C2.P = function (X, Y, Z) { return [cx + X * f / Z, hz + (TE - Y) * f / Z]; };
+    C2.k = function (Z) { return f / Z; };
+    C2.zr = TE * f / (L.terrace - hz);            // the balustrade (far edge of the plaza)
+    C2.zn = TE * f / (h - hz) * 0.97;             // the bottom of the picture
+    C2.xr = (w * 0.5 + 40 * L.s) / (f / C2.zr);   // half-width of the view at the balustrade, in metres
+    C2.sdx = (L.sun[0] - cx) / L.f;               // shadows run toward us and a little away from the Sun's side
+    L.pz = C2; return C2;
+  }
+  function pq(ctx, C2, pts) { ctx.beginPath(); for (var i = 0; i < pts.length; i++) { var p = C2.P(pts[i][0], pts[i][1], pts[i][2]); if (!i) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); } ctx.closePath(); }
+  // a long ground shadow from a footprint [x0, x1] at depth z, cast toward us by an object of height H
+  function pshadow(ctx, C2, x0, x1, z, H, a) {
+    var len = Math.min(H * 2.4, z - C2.zn + 1), d = C2.sdx * len;
+    pq(ctx, C2, [[x0, 0, z], [x1, 0, z], [x1 - d * 0.5, 0, z - len], [x0 - d * 0.5, 0, z - len]]);
+    var p0 = C2.P(0, 0, z), p1 = C2.P(0, 0, z - len);
+    ctx.fillStyle = lg(ctx, 0, p0[1], 0, p1[1], [[0, 'rgba(70,36,52,' + a + ')'], [1, 'rgba(70,36,52,0)']]); ctx.fill();
+  }
+  function paving(ctx, L, C2) {
+    var w = L.w, h = L.h, s = L.s, r = rng(3606), i, X, Z;
+    var y0 = L.terrace;
+    // the base: warm stone, darker toward us, with a broad sheen in line with the Sun (the stones are wet)
+    ctx.fillStyle = lg(ctx, 0, y0, 0, h, [[0, '#c9a894'], [0.35, '#b08e7c'], [1, '#86685c']]); ctx.fillRect(0, y0, w, h - y0);
+    // big pavers in courses, each a slightly different tone (batched by tone)
+    var tones = ['#c4a28e', '#b89684', '#cdae98', '#ac8a7a'], B = [[], [], [], []], zz = C2.zn, row = 0, xr = C2.xr * 1.1;
+    while (zz < C2.zr) { var dz = 1.2, off = (row % 2) * 0.6;
+      for (X = -xr - off; X < xr; X += 1.2) { if (r() < 0.55) continue; B[(r() * 4) | 0].push([X, X + 1.2, zz, Math.min(C2.zr, zz + dz)]); }
+      zz += dz; row++; }
+    for (i = 0; i < 4; i++) { ctx.fillStyle = tones[i]; ctx.globalAlpha = 0.55; ctx.beginPath(); B[i].forEach(function (q) { var a = C2.P(q[0], 0, q[2]), b = C2.P(q[1], 0, q[2]), c = C2.P(q[1], 0, q[3]), d = C2.P(q[0], 0, q[3]); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(c[0], c[1]); ctx.lineTo(d[0], d[1]); ctx.closePath(); }); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    // joints: lines toward the vanishing point and across
+    ctx.strokeStyle = rgba('#6e5048', 0.28); ctx.lineWidth = 0.6 * s; ctx.beginPath();
+    for (X = -Math.ceil(xr / 1.2) * 1.2; X <= xr; X += 1.2) { var a2 = C2.P(X, 0, C2.zn), b2 = C2.P(X, 0, C2.zr); ctx.moveTo(a2[0], a2[1]); ctx.lineTo(b2[0], b2[1]); }
+    for (Z = C2.zn; Z < C2.zr; Z += 1.2) { var c2 = C2.P(0, 0, Z); ctx.moveTo(0, c2[1]); ctx.lineTo(w, c2[1]); } ctx.stroke();
+    // the wet sheen: a soft streak of reflected glow running from the Sun's direction toward us
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = lg(ctx, 0, y0, 0, h, [[0, 'rgba(255,214,160,0.34)'], [0.5, 'rgba(255,200,150,0.1)'], [1, 'rgba(255,200,150,0)']]);
+    ctx.beginPath(); ctx.moveTo(L.sun[0] - w * 0.12, y0); ctx.lineTo(L.sun[0] + w * 0.12, y0); ctx.lineTo(L.sun[0] + w * 0.34, h); ctx.lineTo(L.sun[0] - w * 0.3, h); ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+  // a puddle: the sky mirrored in it (golden at its far edge, violet nearer), the glare streak and dark reflected posts
+  function puddle(ctx, L, C2, X, Z, rx, rz, seed) {
+    var s = L.s, r = rng(seed), pts = [], i;
+    for (i = 0; i <= 28; i++) { var a = i / 28 * TAU, wob = 1 + 0.1 * Math.sin(a * 2 + seed) + 0.05 * Math.sin(a * 3 + seed * 2); pts.push(C2.P(X + Math.cos(a) * rx * wob, 0, Z + Math.sin(a) * rz * wob)); }
+    var top = C2.P(X, 0, Z + rz)[1], bot = C2.P(X, 0, Z - rz)[1];
+    poly(ctx, pts); ctx.fillStyle = lg(ctx, 0, top, 0, bot, [[0, '#ffe6b0'], [0.3, '#f6bc84'], [0.7, '#c08a98'], [1, '#6e6490']]); ctx.fill();
+    ctx.save(); poly(ctx, pts); ctx.clip();
+    // the glare: a bright vertical streak in line with the Sun
+    var gx = L.sun[0] + (C2.P(X, 0, Z)[0] - L.sun[0]) * 0.15; ctx.fillStyle = lg(ctx, gx - 6 * s, 0, gx + 6 * s, 0, [[0, 'rgba(255,248,224,0)'], [0.5, 'rgba(255,248,224,0.85)'], [1, 'rgba(255,248,224,0)']]); ctx.fillRect(gx - 6 * s, top, 12 * s, bot - top);
+    // reflections of the balustrade posts and its rail
+    ctx.fillStyle = 'rgba(60,40,60,0.35)'; var span = C2.xr * 2; for (var q = -C2.xr; q <= C2.xr; q += 1.8) { var px = C2.P(q, 0, C2.zr)[0]; ctx.fillRect(px - 0.8 * s, top, 1.6 * s, (bot - top) * 0.7); }
+    // ripples
+    ctx.strokeStyle = 'rgba(255,240,210,0.45)'; ctx.lineWidth = 0.5 * s; ctx.beginPath(); for (i = 0; i < 5; i++) { var yy = lerp(top, bot, r()), xx = lerp(pts[21][0], pts[7][0], r()) || pts[0][0]; ctx.moveTo(xx - 6 * s, yy); ctx.lineTo(xx + 6 * s, yy); } ctx.stroke();
+    ctx.restore();
+    // a darker wet rim
+    poly(ctx, pts); ctx.strokeStyle = 'rgba(90,60,64,0.35)'; ctx.lineWidth = 1 * s; ctx.stroke();
+  }
+  // a raised planter of grey stone with grasses and bougainvillea, rimmed with light on top
+  function planter(ctx, L, C2, x0, x1, z0, z1, seed) {
+    var s = L.s, r = rng(seed), H = 0.6, i;
+    pshadow(ctx, C2, x0, x1, z0, H, 0.4);
+    // the side we can see (toward the centre) and the front face
+    var side = x0 > 0 ? x0 : x1;
+    pq(ctx, C2, [[side, 0, z0], [side, H, z0], [side, H, z1], [side, 0, z1]]); ctx.fillStyle = '#9a8478'; ctx.fill();
+    pq(ctx, C2, [[x0, 0, z0], [x0, H, z0], [x1, H, z0], [x1, 0, z0]]); ctx.fillStyle = '#7a6260'; ctx.fill();
+    pq(ctx, C2, [[x0, H, z0], [x1, H, z0], [x1, H, z1], [x0, H, z1]]); ctx.fillStyle = '#5a4a3a'; ctx.fill();
+    var e0 = C2.P(x0, H, z0), e1 = C2.P(x1, H, z0); ctx.strokeStyle = 'rgba(255,230,190,0.8)'; ctx.lineWidth = 0.9 * s; ctx.beginPath(); ctx.moveTo(e0[0], e0[1]); ctx.lineTo(e1[0], e1[1]); ctx.stroke();
+    // planting: tufts of grass (backlit, so their tips glow) and shrubs of bougainvillea
+    var tufts = [];
+    for (i = 0; i < 46; i++) tufts.push([lerp(x0 + 0.15, x1 - 0.15, r()), lerp(z0 + 0.15, z1 - 0.15, r())]);
+    tufts.sort(function (A, B) { return B[1] - A[1]; });
+    tufts.forEach(function (t2, j) {
+      var p = C2.P(t2[0], H, t2[1]), k = C2.k(t2[1]);
+      if (j % 4 === 0) { clump(ctx, p[0], p[1] - 0.35 * k, 0.4 * k, ['#5a1a3e', '#8a2450', '#c83a72', '#ee6a9a', '#ffb4cc'], r, 0.3, -0.9, false, 0.8); return; }
+      batch(ctx, 9, [['#5a6a3a', Math.max(0.6 * s, 0.03 * k), 0.9], ['#e8c070', Math.max(0.5 * s, 0.022 * k), 0.85]], function (q) { var hh = (0.35 + r() * 0.35) * k, lx = (r() - 0.5) * 0.4 * k; return [p[0] + (r() - 0.5) * 0.15 * k, p[1], p[0] + lx, p[1] - hh, q < 6 ? 0 : 1, p[0] + lx * 0.3, p[1] - hh * 0.6]; });
+    });
+  }
+  // a royal palm: a smooth grey trunk and a crown of arching fronds, black against the sunset with rimmed edges
+  function palm(ctx, L, C2, X, Z, H, seed) {
+    var s = L.s, r = rng(seed), k = C2.k(Z), b = C2.P(X, 0, Z), t = C2.P(X + 0.3, H, Z), i;
+    pshadow(ctx, C2, X - 0.3, X + 0.3, Z, H * 0.7, 0.3);
+    var tw0 = 0.42 * k, tw1 = 0.26 * k;
+    ctx.beginPath(); ctx.moveTo(b[0] - tw0, b[1]); ctx.quadraticCurveTo(b[0] - tw0 * 0.6, (b[1] + t[1]) / 2, t[0] - tw1, t[1]); ctx.lineTo(t[0] + tw1, t[1]); ctx.quadraticCurveTo(b[0] + tw0 * 0.7, (b[1] + t[1]) / 2, b[0] + tw0, b[1]); ctx.closePath();
+    ctx.fillStyle = lg(ctx, b[0] - tw0, 0, b[0] + tw0, 0, [[0, '#8a6a6a'], [0.5, '#5a4450'], [1, '#c89a80']]); ctx.fill();
+    ctx.strokeStyle = 'rgba(40,24,36,0.35)'; ctx.lineWidth = 0.5 * s; ctx.beginPath(); for (i = 1; i < 14; i++) { var yy = lerp(b[1], t[1], i / 14); ctx.moveTo(lerp(b[0], t[0], i / 14) - tw0 * 0.8, yy); ctx.lineTo(lerp(b[0], t[0], i / 14) + tw0 * 0.8, yy); } ctx.stroke();
+    // the green crownshaft and the fronds
+    ctx.fillStyle = '#4a5a3a'; ctx.beginPath(); qell(ctx, t[0], t[1] - 0.6 * k, tw1 * 1.1, 0.9 * k, 0); ctx.fill();
+    var cx = t[0], cy = t[1] - 1.3 * k;
+    for (i = 0; i < 15; i++) {
+      var a = -PI * 0.5 + (i / 14 - 0.5) * PI * 1.75 + (r() - 0.5) * 0.2, L2 = (1.8 + r() * 0.8) * k, droop = (0.35 + 0.5 * Math.abs(Math.cos(a))) * L2;
+      var ex = cx + Math.cos(a) * L2, ey = cy + Math.sin(a) * L2 * 0.7 + droop * 0.6, mx = cx + Math.cos(a) * L2 * 0.55, my = cy + Math.sin(a) * L2 * 0.55 - L2 * 0.12;
+      ctx.strokeStyle = '#2e2a2c'; ctx.lineWidth = Math.max(0.8 * s, 0.06 * k); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.quadraticCurveTo(mx, my, ex, ey); ctx.stroke();
+      // leaflets along the rib
+      ctx.fillStyle = i % 2 ? '#2e3a2e' : '#3a4634'; ctx.beginPath();
+      for (var j = 2; j < 22; j++) { var u = j / 22, px = (1 - u) * (1 - u) * cx + 2 * (1 - u) * u * mx + u * u * ex, py = (1 - u) * (1 - u) * cy + 2 * (1 - u) * u * my + u * u * ey, ll = (0.75 - Math.abs(u - 0.45) * 0.9) * k;
+        [1.25, -1.25].forEach(function (da) { var dx = Math.cos(a + da) * ll * 0.55, dy = ll * 0.95, wv = 0.06 * k; ctx.moveTo(px, py); ctx.quadraticCurveTo(px + dx * 0.5 + wv, py + dy * 0.4, px + dx, py + dy); ctx.quadraticCurveTo(px + dx * 0.5 - wv, py + dy * 0.5, px, py); }); }
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,210,150,0.55)'; ctx.lineWidth = Math.max(0.4 * s, 0.02 * k); ctx.beginPath(); ctx.moveTo(cx, cy - 0.04 * k); ctx.quadraticCurveTo(mx, my - 0.04 * k, ex, ey - 0.04 * k); ctx.stroke();
+    }
+  }
+  // a Hong Kong orchid tree in the right planter, pink with flowers and lit from behind
+  function flowerTree(ctx, L, C2, X, Z, seed) {
+    var s = L.s, r = rng(seed), k = C2.k(Z), b = C2.P(X, 0.6, Z), t = C2.P(X - 0.2, 3.2, Z);
+    pshadow(ctx, C2, X - 1, X + 1, Z, 3.5, 0.3);
+    K.trunkPath(ctx, b[0], b[1], t[0], t[1], 0.22 * k, 0.1 * k, 0.3 * k); ctx.fillStyle = '#4a3436'; ctx.fill();
+    var cl = [[0, 0], [-0.9, 0.15], [0.8, 0.1], [-0.45, -0.3], [0.45, -0.35], [-1.3, -0.2], [1.2, -0.25], [0, 0.4]];
+    cl.forEach(function (c) { var p = C2.P(X - 0.2 + c[0], 3.4 + c[1], Z); clump(ctx, p[0], p[1], 0.48 * k, ['#4a2a3a', '#7a3a5a', '#c05a8a', '#ec8ab4', '#ffd0e2'], r, 0.2, -0.95, false, 0.9); });
+  }
+  function bench(ctx, L, C2, x0, x1, Z) {
+    var s = L.s, k = C2.k(Z), i;
+    pshadow(ctx, C2, x0, x1, Z, 0.9, 0.35);
+    [x0 + 0.15, x1 - 0.15].forEach(function (X) { var a = C2.P(X, 0, Z), b = C2.P(X, 0.85, Z); ctx.strokeStyle = '#3a3036'; ctx.lineWidth = Math.max(0.8 * s, 0.05 * k); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
+    // seat seen from behind, then the slatted backrest with glowing top edges
+    pq(ctx, C2, [[x0, 0.42, Z - 0.45], [x1, 0.42, Z - 0.45], [x1, 0.42, Z], [x0, 0.42, Z]]); ctx.fillStyle = '#6a4a3a'; ctx.fill();
+    for (i = 0; i < 3; i++) { var y0 = 0.5 + i * 0.13; pq(ctx, C2, [[x0, y0, Z], [x1, y0, Z], [x1, y0 + 0.09, Z], [x0, y0 + 0.09, Z]]); ctx.fillStyle = '#7a5440'; ctx.fill();
+      var e0 = C2.P(x0, y0 + 0.09, Z), e1 = C2.P(x1, y0 + 0.09, Z); ctx.strokeStyle = 'rgba(255,214,160,0.75)'; ctx.lineWidth = 0.6 * s; ctx.beginPath(); ctx.moveTo(e0[0], e0[1]); ctx.lineTo(e1[0], e1[1]); ctx.stroke(); }
+  }
+  // the wayfinding sign: a slim totem with the zone's name, a robot pictogram and an arrow toward the test yard
+  function signpost(ctx, L, C2, X, Z) {
+    var s = L.s, k = C2.k(Z), b = C2.P(X, 0, Z), t = C2.P(X, 2.3, Z), wd = 0.62 * k, hh = b[1] - t[1];
+    pshadow(ctx, C2, X - 0.3, X + 0.3, Z, 2.3, 0.35);
+    ctx.fillStyle = '#2a2430'; ctx.beginPath(); rrect(ctx, b[0] - wd / 2, t[1], wd, hh, 2 * s); ctx.fill();
+    ctx.fillStyle = '#f0b020'; ctx.fillRect(b[0] - wd / 2, t[1] + hh * 0.06, wd, hh * 0.05);
+    ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '800 ' + (wd * 0.26).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('测试场', b[0], t[1] + hh * 0.2);
+    ctx.font = '800 ' + (wd * 0.17).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('TEST YARD', b[0], t[1] + hh * 0.29);
+    // robot pictogram and an arrow
+    var py = t[1] + hh * 0.45, u = wd * 0.12; ctx.fillStyle = '#7ff7e4'; ctx.beginPath(); rrect(ctx, b[0] - u * 1.5, py - u, u * 3, u * 2, u * 0.5); ctx.fill(); ctx.fillStyle = '#2a2430'; ctx.fillRect(b[0] - u * 0.8, py - u * 0.3, u * 0.4, u * 0.4); ctx.fillRect(b[0] + u * 0.4, py - u * 0.3, u * 0.4, u * 0.4);
+    ctx.strokeStyle = '#7ff7e4'; ctx.lineWidth = Math.max(0.8 * s, u * 0.4); ctx.beginPath(); ctx.moveTo(b[0] - u * 1.5, py + u * 2.6); ctx.lineTo(b[0] + u * 1.4, py + u * 2.6); ctx.moveTo(b[0] + u * 0.6, py + u * 1.9); ctx.lineTo(b[0] + u * 1.5, py + u * 2.6); ctx.lineTo(b[0] + u * 0.6, py + u * 3.3); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,214,150,0.7)'; ctx.fillRect(b[0] + wd / 2 - 0.8 * s, t[1] + 2 * s, 0.8 * s, hh - 4 * s);
+    ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+  }
+  // a figure seen against the light: a worker in a hard hat and orange vest, standing at the balustrade
+  function worker(ctx, x, y, H, s, o) {
+    var u = H / 7; ctx.save(); ctx.translate(x, y);
+    ctx.fillStyle = '#3a2e3a'; ctx.fillRect(-u * 0.7, -u * 3.4, u * 0.6, u * 3.3); ctx.fillRect(u * 0.1, -u * 3.4, u * 0.6, u * 3.3);
+    ctx.fillStyle = o.coat; ctx.beginPath(); ctx.moveTo(-u * 1, -u * 3.2); ctx.quadraticCurveTo(-u * 1.1, -u * 5.4, -u * 0.5, -u * 5.6); ctx.lineTo(u * 0.5, -u * 5.6); ctx.quadraticCurveTo(u * 1.1, -u * 5.4, u * 1, -u * 3.2); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(255,240,200,0.9)'; ctx.fillRect(-u * 0.95, -u * 4.3, u * 1.9, u * 0.22);
+    ctx.fillStyle = o.skin; ctx.beginPath(); qell(ctx, 0, -u * 6.25, u * 0.48, u * 0.55, 0); ctx.fill();
+    ctx.fillStyle = o.hat; ctx.beginPath(); ctx.ellipse(0, -u * 6.5, u * 0.58, u * 0.45, 0, PI, TAU); ctx.fill(); ctx.fillRect(-u * 0.7, -u * 6.52, u * 1.4, u * 0.14);
+    ctx.strokeStyle = 'rgba(255,220,170,0.8)'; ctx.lineWidth = Math.max(0.4 * s, u * 0.1); ctx.beginPath(); ctx.moveTo(-u * 1, -u * 3.3); ctx.quadraticCurveTo(-u * 1.1, -u * 5.4, -u * 0.5, -u * 5.6); ctx.stroke();
+    ctx.restore();
+  }
   function terrace(ctx, L) {
-    var w = L.w, h = L.h, s = L.s, y0 = L.terrace, r = rng(3606), i;
-    // the glass balustrade at the edge: it reflects the glow, posts throw long shadows toward us
+    var w = L.w, h = L.h, s = L.s, y0 = L.terrace, C2 = plazaCam(L), i;
+    paving(ctx, L, C2);
+    // the cargo-tram track set into the paving, running across the terrace
+    L.tramZ = C2.zr - 3.2;
+    [-0.5, 0.5].forEach(function (d) { var a = C2.P(-C2.xr * 1.6, 0, L.tramZ + d), b = C2.P(C2.xr * 1.6, 0, L.tramZ + d); ctx.strokeStyle = '#5a4448'; ctx.lineWidth = 1.2 * s; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,230,190,0.8)'; ctx.lineWidth = 0.5 * s; ctx.beginPath(); ctx.moveTo(a[0], a[1] - 0.6 * s); ctx.lineTo(b[0], b[1] - 0.6 * s); ctx.stroke(); });
+    // puddles left by the afternoon shower
+    puddle(ctx, L, C2, -1.3, C2.zn + 1.9, 0.9, 0.38, 11); puddle(ctx, L, C2, 1.7, C2.zn + 5.2, 0.9, 0.5, 12); puddle(ctx, L, C2, -2.6, C2.zn + 8.6, 0.8, 0.45, 13); puddle(ctx, L, C2, 0.6, C2.zr - 5.2, 1.2, 0.5, 14);
+    // the test-bay markings: yellow corner brackets and a hatched entry strip (the stop pedestal and the test crew stand here)
+    ctx.strokeStyle = 'rgba(240,176,32,0.85)'; ctx.lineWidth = 1.8 * s; ctx.beginPath();
+    var bz0 = C2.zn + 1.3, bz1 = C2.zn + 7, bx = 2.8;
+    [[-bx, bz0, 1, 1], [bx, bz0, -1, 1], [-bx, bz1, 1, -1], [bx, bz1, -1, -1]].forEach(function (c) { var p = C2.P(c[0], 0, c[1]), q = C2.P(c[0] + c[2] * 0.9, 0, c[1]), q2 = C2.P(c[0], 0, c[1] + c[3] * 0.9); ctx.moveTo(q[0], q[1]); ctx.lineTo(p[0], p[1]); ctx.lineTo(q2[0], q2[1]); }); ctx.stroke();
+    ctx.save(); pq(ctx, C2, [[-bx + 0.3, 0, bz1 + 0.3], [bx - 0.3, 0, bz1 + 0.3], [bx - 0.3, 0, bz1 + 0.9], [-bx + 0.3, 0, bz1 + 0.9]]); ctx.clip();
+    ctx.strokeStyle = 'rgba(42,36,48,0.4)'; ctx.lineWidth = 2 * s; ctx.beginPath(); var ha = C2.P(-bx, 0, bz1 + 0.9), hb = C2.P(bx, 0, bz1 + 0.3); for (var x = ha[0]; x < hb[0] + 20 * s; x += 6 * s) { ctx.moveTo(x, hb[1]); ctx.lineTo(x + 8 * s, ha[1]); } ctx.stroke(); ctx.restore();
+    // things on the terrace, from the balustrade toward us
+    var items = [];
+    items.push([C2.zr - 1.6, function () { signpost(ctx, L, C2, -0.9, C2.zr - 1.6); }]);
+    items.push([C2.zr - 0.9, function () { worker(ctx, C2.P(2.2, 0, C2.zr - 0.9)[0], C2.P(2.2, 0, C2.zr - 0.9)[1], 1.72 * C2.k(C2.zr - 0.9), s, { coat: '#ff8a2a', skin: '#e8b890', hat: '#f4f0e6' }); }]);
+    var zp1 = C2.zr - 3.2, zp2 = C2.zr - 6.6, xp1 = (-w * 0.015 - C2.cx) / C2.k(zp1), xp2 = (w * 0.93 - C2.cx) / C2.k(zp2);
+    items.push([zp1, function () { palm(ctx, L, C2, xp1, zp1, 9, 31); }]);
+    items.push([zp2, function () { flowerTree(ctx, L, C2, xp2, zp2, 33); }]);
+    items.push([C2.zr - 6.5, function () { planter(ctx, L, C2, -C2.xr * 1.3, -C2.xr * 0.55, C2.zr - 6.5, C2.zr - 3.6, 41); }]);
+    items.push([C2.zr - 8.2, function () { planter(ctx, L, C2, C2.xr * 0.5, C2.xr * 1.3, C2.zr - 8.2, C2.zr - 5.6, 42); }]);
+    items.push([C2.zr - 7.2, function () { bench(ctx, L, C2, -C2.xr * 0.5, -C2.xr * 0.5 + 1.6, C2.zr - 7.2); }]);
+    items.sort(function (A, B) { return B[0] - A[0]; });
+    // the glass balustrade at the far edge, full of reflected sunset, its posts throwing long shadows toward us
     var gt = y0 - 30 * s;
     ctx.fillStyle = lg(ctx, 0, gt, 0, y0, [[0, 'rgba(255,236,200,0.28)'], [1, 'rgba(255,200,150,0.12)']]); ctx.fillRect(0, gt, w, y0 - gt);
     ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = lg(ctx, L.sun[0] - w * 0.2, 0, L.sun[0] + w * 0.2, 0, [[0, 'rgba(255,220,160,0)'], [0.5, 'rgba(255,230,180,0.22)'], [1, 'rgba(255,220,160,0)']]); ctx.fillRect(0, gt, w, y0 - gt); ctx.restore();
-    // the concrete floor, warm with the low light, a faint sheen in line with the Sun
-    ctx.fillStyle = lg(ctx, 0, y0, 0, h, [[0, '#cdb4a0'], [0.4, '#bca490'], [1, '#9a826e']]); ctx.fillRect(0, y0, w, h - y0);
-    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = lg(ctx, L.sun[0] - w * 0.1, 0, L.sun[0] + w * 0.1, 0, [[0, 'rgba(255,200,140,0)'], [0.5, 'rgba(255,210,150,0.22)'], [1, 'rgba(255,200,140,0)']]); ctx.beginPath(); ctx.moveTo(L.sun[0] - w * 0.06, y0); ctx.lineTo(L.sun[0] + w * 0.06, y0); ctx.lineTo(L.sun[0] + w * 0.16, h); ctx.lineTo(L.sun[0] - w * 0.16, h); ctx.closePath(); ctx.fill(); ctx.restore();
-    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = rg(ctx, L.sun[0], y0, 0, w * 0.7, [[0, 'rgba(255,210,150,0.28)'], [1, 'rgba(255,210,150,0)']]); ctx.fillRect(0, y0, w, h - y0); ctx.restore();
-    var vx = L.sun[0];
-    ctx.strokeStyle = rgba('#7a6a5e', 0.3); ctx.lineWidth = 0.7 * s; ctx.beginPath();
-    for (i = -10; i <= 10; i++) { ctx.moveTo(w / 2 + i * w * 0.07, y0); ctx.lineTo(w / 2 + i * w * 0.26, h); }
-    for (i = 1; i < 8; i++) { var yy = y0 + (h - y0) * Math.pow(i / 8, 1.6); ctx.moveTo(0, yy); ctx.lineTo(w, yy); } ctx.stroke();
-    dabs(ctx, 360, [[C.yard[0], 0.25], [C.yard[2], 0.2]], function () { var p = r(), y = lerp(y0, h, p); return [r() * w, y, (2 + p * 8) * s, (0.6 + p * 1.6) * s, r() < 0.5 ? 0 : 1, 0]; });
-    // shadows of the balustrade posts, fanning out toward us from the Sun's direction
-    var nP = 9;
-    for (i = 0; i <= nP; i++) { var px = i * w / nP; var dx = (px - vx) * 0.9; ctx.fillStyle = lg(ctx, 0, y0, 0, h * 0.9, [[0, 'rgba(70,40,50,0.32)'], [1, 'rgba(70,40,50,0)']]);
-      ctx.beginPath(); ctx.moveTo(px - 1 * s, y0); ctx.lineTo(px + 1 * s, y0); ctx.lineTo(px + dx + 4 * s, h * 0.9); ctx.lineTo(px + dx - 2 * s, h * 0.9); ctx.closePath(); ctx.fill(); }
-    // the balustrade frame and posts
-    ctx.fillStyle = '#5a4e52'; for (i = 0; i <= nP; i++) ctx.fillRect(i * w / nP - 1.1 * s, gt, 2.2 * s, y0 - gt);
+    for (var X = -C2.xr * 1.4; X <= C2.xr * 1.4; X += 1.8) pshadow(ctx, C2, X - 0.05, X + 0.05, C2.zr, 1.1, 0.3);
+    ctx.fillStyle = '#5a4e52'; for (X = -C2.xr * 1.4; X <= C2.xr * 1.4; X += 1.8) { var p = C2.P(X, 0, C2.zr); ctx.fillRect(p[0] - 1.1 * s, gt, 2.2 * s, y0 - gt); }
     ctx.fillStyle = '#4a3e44'; ctx.fillRect(0, gt - 1.6 * s, w, 2.6 * s); ctx.fillStyle = 'rgba(255,230,190,0.8)'; ctx.fillRect(0, gt - 1.6 * s, w, 0.7 * s);
     ctx.fillStyle = '#6a5a58'; ctx.fillRect(0, y0 - 1.5 * s, w, 3 * s);
-    // yellow safety lines marking the test bay, and a hatched zone
-    ctx.strokeStyle = '#f0b020'; ctx.lineWidth = 2.2 * s; ctx.beginPath(); ctx.moveTo(w * 0.18, y0 + 5 * s); ctx.lineTo(w * 0.02, h * 0.98); ctx.moveTo(w * 0.82, y0 + 5 * s); ctx.lineTo(w * 0.98, h * 0.98); ctx.moveTo(w * 0.18, y0 + 5 * s); ctx.lineTo(w * 0.82, y0 + 5 * s); ctx.stroke();
-    ctx.save(); ctx.beginPath(); ctx.moveTo(w * 0.2, y0 + 7 * s); ctx.lineTo(w * 0.8, y0 + 7 * s); ctx.lineTo(w * 0.8, y0 + 16 * s); ctx.lineTo(w * 0.2, y0 + 16 * s); ctx.clip();
-    ctx.strokeStyle = rgba('#2a2a30', 0.5); ctx.lineWidth = 2 * s; ctx.beginPath(); for (i = 0; i < 80; i++) { var x = w * 0.2 + i * 6 * s; ctx.moveTo(x, y0 + 16 * s); ctx.lineTo(x + 9 * s, y0 + 7 * s); } ctx.stroke(); ctx.restore();
+    // a small plaque on the rail
+    var pl = C2.P(0.6, 0, C2.zr); ctx.fillStyle = '#2a2430'; ctx.beginPath(); rrect(ctx, pl[0] - 28 * s, gt + 6 * s, 56 * s, 10 * s, 2 * s); ctx.fill();
+    ctx.fillStyle = '#f2c46a'; ctx.font = '800 ' + (5.2 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('观景台 · VIEW DECK', pl[0], gt + 11.2 * s); ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
     // the public permit board on the left, its back to the Sun
-    var bx = w * 0.04, by = y0 - 86 * s, bw = 92 * s, bh = 52 * s;
-    ctx.fillStyle = 'rgba(70,40,50,0.3)'; ctx.beginPath(); ctx.moveTo(bx + bw * 0.45, y0 + 2 * s); ctx.lineTo(bx + bw * 0.45 + 6 * s, y0 + 2 * s); ctx.lineTo(bx + bw * 0.1, h * 0.8); ctx.lineTo(bx - bw * 0.25, h * 0.8); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#4a4248'; ctx.fillRect(bx + bw * 0.45, by + bh, 4 * s, y0 - by - bh + 2 * s);
-    ctx.beginPath(); rrect(ctx, bx - 2 * s, by - 2 * s, bw + 4 * s, bh + 4 * s, 6 * s); ctx.fillStyle = '#2a2430'; ctx.fill();
-    ctx.beginPath(); rrect(ctx, bx, by, bw, bh, 5 * s); ctx.fillStyle = '#16202e'; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,214,150,0.7)'; ctx.lineWidth = 0.8 * s; ctx.beginPath(); ctx.moveTo(bx + bw, by + 4 * s); ctx.lineTo(bx + bw, by + bh - 4 * s); ctx.stroke();
-    ctx.fillStyle = '#7ff7e4'; ctx.font = '800 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('ROBOT PERMITS IN USE', bx + 6 * s, by + 11 * s);
-    ctx.fillStyle = '#ffffff'; ctx.font = '800 ' + (13 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('41,860', bx + 6 * s, by + 28 * s);
-    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('CAP 42,000', bx + 54 * s, by + 27 * s);
-    ctx.fillStyle = '#34445a'; ctx.fillRect(bx + 6 * s, by + 36 * s, bw - 12 * s, 6 * s); ctx.fillStyle = '#f0b020'; ctx.fillRect(bx + 6 * s, by + 36 * s, (bw - 12 * s) * 0.9967, 6 * s);
-    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (5 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('SHENZHEN ZONE 3 · LIVE', bx + 6 * s, by + 49 * s);
-    L.board = [bx, by, bw, bh];
-    // potted bougainvillea on the right, backlit
-    var rf = rng(3707); ctx.fillStyle = '#6a5048'; ctx.fillRect(w * 0.86, y0 - 14 * s, 32 * s, 14 * s); ctx.fillStyle = 'rgba(255,214,150,0.5)'; ctx.fillRect(w * 0.86, y0 - 14 * s, 32 * s, 1 * s);
-    clump(ctx, w * 0.86 + 16 * s, y0 - 22 * s, 19 * s, ['#6a1a44', '#9a2858', '#d0407a', '#f06a9a', '#ffb0cc'], rf, 0.3, -0.9, false, 1);
-    ctx.fillStyle = lg(ctx, 0, h * 0.8, 0, h, [[0, rgba('#2a1820', 0)], [1, rgba('#2a1820', 0.2)]]); ctx.fillRect(0, h * 0.8, w, h * 0.2);
+    var bx2 = w * 0.04, by = y0 - 86 * s, bw = 92 * s, bh = 52 * s;
+    ctx.fillStyle = 'rgba(70,40,50,0.3)'; ctx.beginPath(); ctx.moveTo(bx2 + bw * 0.45, y0 + 2 * s); ctx.lineTo(bx2 + bw * 0.45 + 6 * s, y0 + 2 * s); ctx.lineTo(bx2 + bw * 0.2, y0 + 40 * s); ctx.lineTo(bx2 + bw * 0.05, y0 + 40 * s); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#4a4248'; ctx.fillRect(bx2 + bw * 0.45, by + bh, 4 * s, y0 - by - bh + 2 * s);
+    ctx.beginPath(); rrect(ctx, bx2 - 2 * s, by - 2 * s, bw + 4 * s, bh + 4 * s, 6 * s); ctx.fillStyle = '#2a2430'; ctx.fill();
+    ctx.beginPath(); rrect(ctx, bx2, by, bw, bh, 5 * s); ctx.fillStyle = '#16202e'; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,214,150,0.7)'; ctx.lineWidth = 0.8 * s; ctx.beginPath(); ctx.moveTo(bx2 + bw, by + 4 * s); ctx.lineTo(bx2 + bw, by + bh - 4 * s); ctx.stroke();
+    ctx.fillStyle = '#7ff7e4'; ctx.font = '800 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('ROBOT PERMITS IN USE', bx2 + 6 * s, by + 11 * s);
+    ctx.fillStyle = '#ffffff'; ctx.font = '800 ' + (13 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('41,860', bx2 + 6 * s, by + 28 * s);
+    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('CAP 42,000', bx2 + 54 * s, by + 27 * s);
+    ctx.fillStyle = '#34445a'; ctx.fillRect(bx2 + 6 * s, by + 36 * s, bw - 12 * s, 6 * s); ctx.fillStyle = '#f0b020'; ctx.fillRect(bx2 + 6 * s, by + 36 * s, (bw - 12 * s) * 0.9967, 6 * s);
+    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (5 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('SHENZHEN ZONE 3 · LIVE', bx2 + 6 * s, by + 49 * s);
+    L.board = [bx2, by, bw, bh];
+    items.forEach(function (it) { it[1](); });
+    // the nearest stones fall into soft shade, calm for the dialogue
+    ctx.fillStyle = lg(ctx, 0, h * 0.76, 0, h, [[0, rgba('#2a1820', 0)], [1, rgba('#2a1820', 0.26)]]); ctx.fillRect(0, h * 0.76, w, h * 0.24);
   }
 
   function paint(ctx, w, h) {
@@ -398,6 +558,26 @@
     ctx.restore();
     // dust drifting off the pit, glowing in the low light
     for (i = 0; i < 6; i++) { var dp = (t * 0.015 + r()) % 1, mp = L.P(L.mine.x + (r() - 0.5) * L.mine.rx, 0, L.mine.z); ctx.globalAlpha = 0.16 * Math.sin(dp * PI); K.puff(ctx, mp[0] + dp * 40 * s, mp[1] - dp * 30 * s, (14 + r() * 10) * s, '#ffd8a8', 0.8); } ctx.globalAlpha = 1;
+    // on the terrace: a cargo tram gliding along its track, delivery robots crossing, two workers walking by the rail
+    var C2 = L.pz;
+    if (C2) {
+      for (i = 0; i < 2; i++) { var wp = ((t * 0.018 + i * 0.55) % 1), wz = C2.zr - 0.6 - i * 0.5, wx = lerp(-C2.xr * 1.1, C2.xr * 1.1, i ? 1 - wp : wp), q4 = C2.P(wx, 0, wz), bob = Math.abs(Math.sin(t * 4 + i)) * 0.03 * C2.k(wz);
+        worker(ctx, q4[0], q4[1] - bob, 1.7 * C2.k(wz), s, { coat: i ? '#f4f0e6' : '#ff8a2a', skin: i ? '#c89a74' : '#eec8a8', hat: i ? '#f0b020' : '#f4f0e6' }); }
+      var tz = L.tramZ, tp2 = ((t * 0.035) % 1.6) - 0.3, txc = lerp(-C2.xr * 1.6, C2.xr * 1.6, tp2), k2 = C2.k(tz);
+      for (i = 0; i < 3; i++) { var x0 = txc - i * 2.1, a3 = C2.P(x0 - 0.9, 0.12, tz), b3 = C2.P(x0 + 0.9, 0.66, tz);
+        ctx.fillStyle = 'rgba(70,36,52,0.35)'; ctx.beginPath(); qell(ctx, (a3[0] + b3[0]) / 2, a3[1] + 0.1 * k2, (b3[0] - a3[0]) * 0.55, 0.12 * k2, 0); ctx.fill();
+        ctx.fillStyle = '#2a2430'; [x0 - 0.55, x0 + 0.55].forEach(function (wx2) { var wq = C2.P(wx2, 0.1, tz); ctx.beginPath(); ctx.arc(wq[0], wq[1], 0.1 * k2, 0, TAU); ctx.fill(); });
+        ctx.fillStyle = i ? '#e8e2d8' : '#f0b020'; ctx.beginPath(); rrect(ctx, a3[0], b3[1], b3[0] - a3[0], a3[1] - b3[1], 0.15 * k2); ctx.fill();
+        ctx.fillStyle = i ? ['#c8402e', '#2a6a9a'][i - 1] : '#2a2430'; ctx.fillRect(a3[0] + 0.15 * k2, b3[1] + 0.15 * k2, b3[0] - a3[0] - 0.3 * k2, (a3[1] - b3[1]) * 0.45);
+        ctx.fillStyle = 'rgba(255,236,200,0.85)'; ctx.fillRect(a3[0], b3[1], b3[0] - a3[0], Math.max(0.6 * s, 0.05 * k2)); }
+      var lamp = glowSpr('#fff0c0', true); if (lamp) { var hp3 = C2.P(txc + 1, 0.5, tz); ctx.globalAlpha = 0.9; ctx.drawImage(lamp, hp3[0] - 3 * s, hp3[1] - 3 * s, 6 * s, 6 * s); ctx.globalAlpha = 1; }
+      for (i = 0; i < 2; i++) { var rp = ((t * (0.04 + i * 0.015) + i * 0.5) % 1), rz = C2.zr - 5.6 - i * 2.4, rx2 = lerp(i ? C2.xr * 1.2 : -C2.xr * 1.2, i ? -C2.xr * 1.2 : C2.xr * 1.2, rp), q3 = C2.P(rx2, 0, rz), k3 = C2.k(rz), u3 = 0.28 * k3;
+        pshadow(ctx, C2, rx2 - 0.3, rx2 + 0.3, rz, 0.7, 0.35);
+        ctx.fillStyle = '#f4f6fb'; ctx.beginPath(); rrect(ctx, q3[0] - u3, q3[1] - u3 * 1.6, u3 * 2, u3 * 1.3, u3 * 0.35); ctx.fill();
+        ctx.fillStyle = '#16b3a6'; ctx.fillRect(q3[0] - u3, q3[1] - u3 * 1.1, u3 * 2, u3 * 0.16); ctx.fillStyle = 'rgba(255,214,150,0.8)'; ctx.fillRect(q3[0] - u3, q3[1] - u3 * 1.6, u3 * 2, Math.max(0.5 * s, u3 * 0.08));
+        ctx.fillStyle = '#2a2a34'; ctx.beginPath(); ctx.arc(q3[0] - u3 * 0.6, q3[1] - u3 * 0.25, u3 * 0.25, 0, TAU); ctx.arc(q3[0] + u3 * 0.6, q3[1] - u3 * 0.25, u3 * 0.25, 0, TAU); ctx.fill();
+        var bl3 = glowSpr('#7ff7e4', true); if (bl3) { ctx.globalAlpha = 0.5 + 0.5 * Math.sin(t * 5 + i); ctx.drawImage(bl3, q3[0] - u3 * 0.4, q3[1] - u3 * 2.1, u3 * 0.8, u3 * 0.8); ctx.globalAlpha = 1; } }
+    }
     // heat shimmer on the terrace edge glass
     ctx.strokeStyle = rgba('#fff4dc', 0.18); ctx.lineWidth = 0.6 * s; ctx.beginPath(); for (i = 0; i < 4; i++) { var y2 = L.terrace - (6 + i * 6) * s, ph2 = t * 0.6 + i; ctx.moveTo(0, y2); for (var x2 = 0; x2 < w; x2 += 8 * s) ctx.lineTo(x2, y2 + Math.sin(x2 * 0.05 / s + ph2) * 0.6 * s); } ctx.stroke();
     ctx.restore();

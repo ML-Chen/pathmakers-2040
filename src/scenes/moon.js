@@ -386,7 +386,7 @@
     var f2 = L.f / q, hz2 = L.hz / q, cx2 = L.cx / q, sunx2 = L.sun[0] / q;
     var ybuf = new Float32Array(W2), pc = new Float32Array(W2 * 3), pv = new Uint8Array(W2);
     for (var i = 0; i < W2; i++) ybuf[i] = H2;
-    var q0 = 1.0135, HZ = new Float32Array(W2), skip = new Uint8Array(W2), yr = new Float32Array(W2), MG = 72, NN = MG + W2, Hr = new Float32Array(NN), Hp = new Float32Array(W2), Lt = new Float32Array(NN);
+    var q0 = 1.0135, HZ = new Float32Array(W2), skip = new Uint8Array(W2), yr = new Float32Array(W2), MG = 44, NN = MG + W2, Hr = new Float32Array(NN), Hp = new Float32Array(W2), Lt = new Float32Array(NN);
     var tanE = night ? -0.0042 : 0.045, dsx = -0.97, dsy = 0.045, dsz = 0.06, dl = Math.sqrt(dsx * dsx + dsy * dsy + dsz * dsz); dsx /= dl; dsy /= dl; dsz /= dl;
     var ex = night ? 0.3 : 0.35, ey = night ? 0.62 : 0.55, ez = night ? 0.55 : -0.75, el = Math.sqrt(ex * ex + ey * ey + ez * ez); ex /= el; ey /= el; ez /= el;
     var Zn = (CAM - 16) * f2 / (H2 - hz2) * 0.96, Zf = 23500, ratio = 1.007, Z = Zn, Zp = 0, dXp = 0, first = true;
@@ -780,17 +780,18 @@
   function paintMoon(variant) {
     return function (ctx, w, h) {
       try {
-        var night = NIGHT = variant === 'night', P = PAL[variant], L = moonLM(w, h), T0 = Date.now(), TM = PAINT._moonT = [];
-        sky(ctx, w, h, L, night); TM.push('sky ' + (Date.now() - T0));
+        var night = NIGHT = variant === 'night', P = PAL[variant], L = moonLM(w, h)
+        sky(ctx, w, h, L, night);
         if (!night) sunDisk(ctx, w, h, L);
         earth(ctx, w, h, L, night);
-        TM.push('earth ' + (Date.now() - T0)); massifs(ctx, w, h, L, night); TM.push('mass ' + (Date.now() - T0)); terrain(ctx, w, h, L, night); TM.push('terrain ' + (Date.now() - T0));
+        massifs(ctx, w, h, L, night);
+        terrain(ctx, w, h, L, night);
         copyWorks(ctx, w, h, L, P, night);
         foreground(ctx, w, h, L, night);
         base(ctx, w, h, L, night);
         if (!night) sunBloom(ctx, w, h, L);
         else { ctx.save(); ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = lg(ctx, w, h * 0.3, 0, h, [[0, 'rgba(140,170,255,0.35)'], [1, 'rgba(20,30,60,0.15)']]); ctx.fillRect(0, h * 0.35, w, h * 0.65); ctx.restore(); }
-        TM.push('base ' + (Date.now() - T0)); finish(ctx, w, h, P.grade, P.gradeA, P.vig, 0.03, '#05050a', 0.4);
+        finish(ctx, w, h, P.grade, P.gradeA, P.vig, 0.03, '#05050a', 0.4);
       } catch (e) { PAINT._err = 'moon_' + variant + ': ' + String(e && e.stack || e); }
     };
   }

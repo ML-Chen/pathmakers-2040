@@ -376,8 +376,9 @@
 
   /* ---------------- trees ---------------- */
   // ginkgo leaf: a little fan with a notch, on a short stalk
-  function fanPath(ctx, x, y, R, a) {
+  function fanPath(ctx, x, y, R, a, sq) {
     var c = Math.cos(a), sn = Math.sin(a), px = -sn, py = c, i;
+    if (sq) { sn *= sq; py *= sq; } // squashed flat, for leaves lying on the paving
     var bx = x - c * R * 0.15, by = y - sn * R * 0.15;
     ctx.moveTo(bx, by);
     var pts = [[-0.62, 0.78], [-0.38, 1.02], [0, 0.92], [0.38, 1.02], [0.62, 0.78]];
@@ -385,6 +386,12 @@
     for (i = 1; i < pts.length; i++) { var p0 = pts[i - 1], p1 = pts[i], mx = (p0[0] + p1[0]) / 2, my = Math.max(p0[1], p1[1]) * 1.06;
       ctx.quadraticCurveTo(x + c * R * my + px * R * mx, y + sn * R * my + py * R * mx, x + c * R * p1[1] + px * R * p1[0], y + sn * R * p1[1] + py * R * p1[0]); }
     ctx.closePath();
+  }
+  // a cheaper fan for the thousands of small leaves in the crown: two straight edges and one curved top
+  function fanLite(ctx, x, y, R, a) {
+    var c = Math.cos(a), sn = Math.sin(a), px = -sn * R, py = c * R, cx = c * R, cy = sn * R;
+    ctx.moveTo(x, y); ctx.lineTo(x + cx * 0.75 - px * 0.62, y + cy * 0.75 - py * 0.62);
+    ctx.quadraticCurveTo(x + cx * 1.25, y + cy * 1.25, x + cx * 0.75 + px * 0.62, y + cy * 0.75 + py * 0.62); ctx.closePath();
   }
   /* the old ginkgo: a thick furrowed trunk on the left, limbs that climb and spread, and a crown built from hundreds of
      leaf clusters on short shoots. The Sun is behind it on the upper left, so the crown's edges glow and its heart is amber. */
@@ -414,13 +421,12 @@
     grow(tx + tw * 0.1, ty + h * 0.06, -PI * 0.02, h * 0.07, tw * 0.22, 2);
     // the crown: leaf clusters around each tip; build them all first, then paint from back to front by tone
     var LV = [[], [], [], [], [], []], MS = [];
-    var nCl = 0; PAINT._bjTips = tips.length;
     tips.forEach(function (t) {
       var R = clamp(t[2] * 0.95, 28 * s, 84 * s);
       for (var c = 0; c < 2; c++) {
-        var cx = t[0] + (r() - 0.5) * R * 0.9, cy = t[1] + (r() - 0.6) * R * 0.7, cr = R * (0.5 + r() * 0.4), n = Math.min(230, Math.round(cr * cr / (s * s) * 0.11));
+        var cx = t[0] + (r() - 0.5) * R * 0.9, cy = t[1] + (r() - 0.6) * R * 0.7, cr = R * (0.5 + r() * 0.4), n = Math.min(180, Math.round(cr * cr / (s * s) * 0.1));
         MS.push([cx, cy + cr * 0.1, cr * 0.62]);
-        nCl++;
+
         for (var q = 0; q < n; q++) {
           var a = r() * TAU, d = Math.sqrt(r()), px = cx + Math.cos(a) * d * cr, py = cy + Math.sin(a) * d * cr * 0.8;
           // tone: edge facing the Sun glows, the underside and heart are deeper amber; some randomness
@@ -445,7 +451,7 @@
     var pal = C.leaf;
     // the dense heart of each cluster, so the crown reads as foliage rather than confetti
     ctx.fillStyle = '#9a6a14'; ctx.globalAlpha = 0.85; ctx.beginPath(); MS.forEach(function (m) { for (var q = 0; q < 4; q++) { var a = q * 1.7 + m[0] * 0.01; qell(ctx, m[0] + Math.cos(a) * m[2] * 0.35, m[1] + Math.sin(a) * m[2] * 0.25, m[2] * 0.55, m[2] * 0.42, a); } }); ctx.fill(); ctx.globalAlpha = 1;
-    for (j = 0; j < 6; j++) { ctx.fillStyle = pal[j]; ctx.beginPath(); for (i = 0; i < LV[j].length; i++) { var q2 = LV[j][i]; fanPath(ctx, q2[0], q2[1], q2[2], q2[3]); } ctx.fill(); }
+    for (j = 0; j < 6; j++) { ctx.fillStyle = pal[j]; ctx.beginPath(); for (i = 0; i < LV[j].length; i++) { var q2 = LV[j][i]; fanLite(ctx, q2[0], q2[1], q2[2], q2[3]); } ctx.fill(); }
     // light through the crown: a warm glow at the Sun-side edge
     ctx.save(); ctx.globalCompositeOperation = 'lighter'; softGlow(ctx, w * 0.05, h * 0.05, w * 0.45, '#ffd860', 0.16); ctx.restore();
     L.crownTips = tips;
@@ -477,7 +483,7 @@
     }
     var pal = C.leaf;
     ctx.save();
-    for (var j = 0; j < 6; j++) { ctx.fillStyle = pal[j]; ctx.globalAlpha = 0.95; ctx.beginPath(); B[j].forEach(function (q) { ctx.save(); ctx.translate(q[0], q[1]); ctx.scale(1, 0.45); fanPath(ctx, 0, 0, q[2], q[3]); ctx.restore(); }); ctx.fill(); }
+    for (var j = 0; j < 6; j++) { ctx.fillStyle = pal[j]; ctx.globalAlpha = 0.95; ctx.beginPath(); B[j].forEach(function (q) { fanPath(ctx, q[0], q[1], q[2], q[3], 0.45); }); ctx.fill(); }
     ctx.restore();
   }
 
