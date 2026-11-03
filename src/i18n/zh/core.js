@@ -86,7 +86,10 @@ I18N.add('zh','core',{strings:{
   'Speak instead of typing':'用说的，不用打字','The microphone isn’t available here. You can type instead.':'这里用不了麦克风，你可以打字。',
 
   // ----- Field Guide and Word Book -----
-  '{0} of {1} found in Boston':'在波士顿找到了{0}个，一共{1}个','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
+  // Field Guide tracks shared by every mission (the same words the other translators use)
+  'Ethics and AI':'伦理与AI','Evidence and truth':'证据与真相','Government, law, and power':'政府、法律与权力','Ethics and AI alignment':'伦理与AI对齐',
+  'Living things and health':'生命与健康','Incentives and economics':'激励与经济','Security thinking':'安全思维','Engineering and systems':'工程与系统','People skills':'与人相处','Math and science':'数学与科学',
+  '{0} of {1} found in Boston':'在波士顿发现了{0}条，一共{1}条','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
   'Tap any underlined word to learn it. It will be saved here.':'点一下带下划线的词，就能看到它的意思。看过的词会存在这里。',
   'Learn It Fast':'快速了解','Got it? Try 3 quick questions.':'学会了吗？来做3道小题。','Perfect! You learned it fast.':'全对！你学得真快。',
   'Nice work. You can read the steps again anytime.':'做得不错。这些步骤你随时可以再看。','{0} of 3':'第{0}题，共3题','{0} of {1}':'{0}/{1}',
@@ -197,7 +200,7 @@ I18N.add('zh','core',{strings:{
   'What could go wrong?':'可能出什么问题？','Test on the Future Table':'到未来之桌上试试','Revise my request':'修改我的要求','{0}: “You found the fun stuff!”':'{0}：“你发现好玩的东西啦！”',
 
   // ----- challenge levels, family play and the Grown-up forecast (modes.js) -----
-  'Kid':'儿童','Teen':'少年','Grown-up':'大人','Challenge':'挑战难度','Family play':'全家一起玩','A grown-up asks follow-up questions in conversations':'对话的时候，由一位大人来追问',
+  'Kid':'儿童','Teen':'少年','Grown-up':'大人','Challenge':'挑战难度','Family play':'全家一起玩','A grown-up asks follow-up questions in conversations':'让大人在对话里追问',
   'Challenge: {0}':'挑战难度：{0}','Tell {0} something':'告诉{0}一件事','Tell {0}':'告诉{0}','What did you notice?':'你注意到了什么？',
   'Thanks, noted. That doesn’t change my forecast.':'谢谢，我记下了。不过这不会改变我的预测。','Thanks, noted.':'谢谢，我记下了。','{0}’s take':'{0}的看法',
   'My key consideration and my recommendation cost one Decision star today. The best you can earn becomes {0} stars.':'今天，听我说最关键的考虑和我推荐的方案，要花掉一颗“决定”星。这样你最多只能拿到{0}颗星。',

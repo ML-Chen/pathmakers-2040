@@ -193,7 +193,7 @@ I18N.add('zh','maya',{strings:{
   'I’m sorry, Maya. With this plan, you won’t be able to play on Friday.':'对不起，玛雅。用这个方案，你周五没法上台了。',
   'Almost every kid heals straight with it.':'这样治，几乎每个孩子的骨头都能长正。','Nearly 9 in 10 kids heal straight with it.':'这样治，10个孩子里将近9个能长正。','About 8 in 10 kids heal straight with it.':'这样治，10个孩子里大约8个能长正。',
   'Because of your rash last summer, the gel could give you another one, so we’d watch for that. ':'你去年夏天起过疹子，用这种凝胶可能还会再起，所以我们会多留意。',
-  '{play} I’d suggest {tx}. {heal} {rash}What do you two think?':'{play}我的建议是：{tx}。{heal}{rash}你们俩觉得呢？',
+  '{play} I’d suggest {tx}. {heal} {rash}What do you two think?':'{play}我建议这样治：{tx}。{heal}{rash}你们俩觉得呢？',
   'Trust me, {tx} is the best choice for you. I’ve looked at all the numbers, so you and your dad don’t need to worry about the details.':'相信我，{tx}对你来说就是最好的选择。所有数字我都看过了，你和你爸爸不用操心这些细节。',
   'You’ll definitely play on Friday, Maya! Kids your age heal really fast, so there’s nothing to worry about.':'玛雅，你周五肯定能上台！你这个年纪的孩子长得特别快，一点都不用担心。',
   'Thank you for explaining. I understand. Let’s do it.':'谢谢你讲给我听。我明白了，就这么办吧。',
@@ -227,7 +227,7 @@ I18N.add('zh','maya',{strings:{
   'Sample size':'样本量','Evidence and truth':'证据与真相',
   'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.':'骨愈凝胶只在40个孩子身上试过，石膏却在21,000个孩子身上研究过。样本小，得出的数字可能偏得很远，所以骨愈凝胶的误差线才那么长。',
   'True today: new medicines go through trials with growing numbers of people before approval. BoneMend is made up for the game, though scientists are testing gels that help broken bones heal.':'现实中也是这样：新药获批之前要做好几轮试验，参加的人一轮比一轮多。骨愈凝胶是游戏里编出来的，不过科学家确实在试验能帮骨折愈合的凝胶。',
-  'Informed consent':'知情同意','Government, law, and power':'政府、法律与权力',
+  'Informed consent':'知情同意',
   'Patients decide about their own treatment after they understand the choices, the odds, and the tradeoffs. The doctor explains, and the patient chooses.':'病人先弄明白有哪些选择、每种有多大可能、要放弃些什么，再决定自己怎么治。医生负责讲清楚，病人自己来选。',
   'True today: US law requires informed consent for most medical treatments. For a child, a parent gives consent, and doctors also ask the child to agree, which is called assent.':'现实中也是这样：美国法律规定，大多数治疗都要先得到病人的知情同意。病人是孩子的话，由家长签字同意，医生还会问孩子自己愿不愿意，这一步叫作“赞同”。',
   
