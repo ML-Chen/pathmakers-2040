@@ -69,7 +69,7 @@ Object.assign(VIZ,{
     ${ocPlat(226,86,.62)}
     ${[['#e5484d','#fff'],['#1f6fd1','#f5b82e'],['#1fa774','#fff'],['#f5b82e','#e5484d']].map(([a,b],i)=>`<g transform="translate(${178+i*30} ${96+(i%2)*6})"><path d="M-6 6 h12 l-3 4 h-6z" fill="${OCC.mustard}"/>${lgFlag(0,-20,a,b,.8)}</g>`).join('')}
     <g transform="translate(262 22)"><rect x="-16" y="-10" width="32" height="20" rx="10" fill="#fff" stroke="${OCC.ink}" stroke-opacity=".4"/><g class="lg-flip"><circle cx="6" cy="0" r="7" fill="${OCC.teal}"/></g><g class="lg-flop"><circle cx="-6" cy="0" r="7" fill="${OCC.coral}"/></g></g>
-    <g class="lg-flip">${igT(226,26,'ON',{s:9,c:OCC.teal,a:'end',w:800})}</g><g class="lg-flop">${igT(226,26,'OFF',{s:9,c:OCC.coral,a:'end',w:800})}</g>`,'A datacenter far from any city, watched by boats from many countries, with an off switch'),
+    <g class="lg-flip">${igT(226,26,'ON',{s:9,c:OCC.teal,a:'end',w:800})}</g><g class="lg-flop">${igT(226,26,'OFF',{s:9,c:OCC.coral,a:'end',w:800})}</g>`,'A datacenter far from any city, with boats from many countries watching it and a switch that can turn it off'),
   // 5. data tankers: new chips out, old chips home
   lg_ocean5:()=>lgPic(124,[OCC.sky,OCC.sky2],`${lgCloud(40,22,.7)}${ocSea(74,50,OCC.sea2)}${lgWaves(78,'#d9efe9',.45)}${lgWaves(104,'#d9efe9',.3)}
     ${ocPlat(282,76,.45)}

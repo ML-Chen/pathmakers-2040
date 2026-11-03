@@ -8,7 +8,7 @@
 // Pictures: src/viz/rimshop.js (VIZ.rim*, vignettes, the ask/pop-up/rules screens); cast art: src/viz/space_cast.js.
 // Scene: src/scenes/moon.js (PAINT.moon, PAINT.moon_night). Styles: src/css/rimshop.css.
 // Mission state: S.notes.rim = {test, rules:{card:bin}, asked:{five,many}, answer, seen:{}} (reset on replay).
-CAREERS.founder={name:'Founder',place:'The Moon’s south pole',district:'moon',why:'Owners choose the goal, take the risk and own the result.'};
+CAREERS.founder={name:'Founder',place:'The Moon’s south pole',district:'moon',why:'A founder decides what a new business is for, risks money on it, and is responsible for how it turns out.'};
 
 // ---------- the model ----------
 // Each idea's chance to earn back the 300 coins in the first month. 'N' = soup sold at 2 AM to the ice crews too.
@@ -80,20 +80,20 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
     'cargo':'Goods carried by a ship, a truck, or a spacecraft.'
   },
   guide:{
-    'rim-sample':{title:'Five friends or five hundred people',track:'Evidence and truth',text:'Five friends who are alike can all be wrong in the same way. A fair sample of many people, from everyone who might buy, tells you much more. Haruto’s friends all live at the base, but most customers each month are visitors.',real:'True today: pollsters can estimate what a whole country thinks by asking about 1,000 people chosen at random, and they are usually within about 3 points.'},
+    'rim-sample':{title:'Five friends or five hundred people',track:'Evidence and truth',text:'Five friends who live the same kind of life can all make the same wrong guess. Asking many people, chosen from all the kinds of people who might buy, tells you much more. Haruto’s friends all live at the base, but most of the shop’s customers each month are visitors.',real:'True today: pollsters can estimate what a whole country thinks by asking about 1,000 people chosen at random, and they are usually within about 3 points.'},
     'rim-test':{title:'What people say, and what they buy',track:'Incentives and economics',text:'A poll tells you what people say they would like. A small, cheap test shows what they really buy, and it costs much less than a big order that doesn’t sell.',real:'True today: many new businesses start with a market stall or a small online test before they spend money on a big shop.'},
-    'rim-limits':{title:'Limits for an AI that spends money',track:'Government, law, and power',text:'An AI clerk can buy and set prices by itself, which saves time. Its owner sets the limits: how much it may spend, which prices it may change, and what it must ask about first. Raising prices when people have nowhere else to shop is a choice for a person.',real:'True today: banks let people set spending limits on cards, and companies let staff spend up to a set amount before a manager must say yes.'},
-    'rim-who':{title:'Who isn’t in the room?',track:'People skills',text:'A poll can only count the people it reaches and the questions it asks. Ada knew something the poll never asked about: forty cold, hungry people at 2 AM, when nothing is open. Talking with people often turns up customers nobody counted.',real:'True today: shop owners and city planners often walk a neighborhood at different times of day and night to see who is there.'},
-    'rim-moon':{title:'Life at the Moon’s south pole',track:'Math and science',text:'At the Moon’s poles the Sun never climbs high. It circles low around the horizon, so shadows stretch far, and the floors of some craters have stayed dark for billions of years. Ice hides in that dark. The sky is black even in daytime, because the Moon has no air to scatter sunlight.',real:'True today: nobody lives on the Moon yet. Spacecraft have found signs of water ice in dark craters near the south pole, and space agencies plan to send astronauts there. The base, the shop and the Copy Works are this game’s guess about 2041.'}
+    'rim-limits':{title:'Limits for an AI that spends money',track:'Government, law, and power',text:'An AI clerk can buy and set prices by itself, which saves time. Its owner sets the limits: how much it may spend, which prices it may change, and what it must ask about first. When people have nowhere else to shop, a person should decide whether to raise prices, because higher prices in a shortage can make customers feel the shop is unfair.',real:'True today: banks let people set spending limits on cards, and companies let staff spend up to a set amount before a manager must say yes.'},
+    'rim-who':{title:'Customers the poll missed',track:'People skills',text:'A poll can only count the people it reaches and the questions it asks. Ada knew something the poll never asked about: forty cold, hungry people at 2 AM, when nothing is open. Talking with people in person can turn up customers that nobody counted.',real:'True today: shop owners and city planners often walk a neighborhood at different times of day and night to see who is there.'},
+    'rim-moon':{title:'Life at the Moon’s south pole',track:'Math and science',text:'At the Moon’s poles the Sun never climbs high. It circles low around the horizon, so shadows stretch far, and the floors of some craters have stayed dark for billions of years. Ice can stay frozen in those dark places. The sky is black even in daytime, because the Moon has no air to scatter sunlight.',real:'True today: nobody lives on the Moon yet. Spacecraft have found signs of water ice in dark craters near the south pole, and space agencies plan to send astronauts there. The base, the shop and the Copy Works are this game’s guess about 2041.'}
   },
-  chatter:{moon:['The lander’s twelve days out. My chocolate stash is down to two squares.','I came up for a week of moonwalks. I’ve walked about three hundred meters. It’s harder than it looks!','Earth looks so close from here. You can see Africa this morning.','The Copy Works built another crew last month. Haruto checks the counter every Friday.','My kids want a Moon-glass marble. Real rocks have to stay on the Moon.','Shift change at the lift is at two in the morning. Bring a sweater.'],
+  chatter:{moon:['The next cargo lander from Earth is twelve days away, and my chocolate stash is down to two squares.','I came up for a week of moonwalks. I’ve walked about three hundred meters. It’s harder than it looks!','Earth looks so close from here. You can see Africa this morning.','The Copy Works built another robot crew last month. Haruto checks the factory’s robot count every Friday.','My kids want a Moon-glass marble. Real rocks have to stay on the Moon.','Shift change at the lift is at two in the morning. Bring a sweater.'],
     moon_night:['The highest peaks still have sunlight. They almost never go dark.','Look how bright Earth is tonight!']},
   talks:{
     morning:[
       {who:'byte',mood:'happy',text:'Good morning, Founder! Welcome to Shackleton Rim Base, a small town at the south pole of the Moon. Today you open your very first shop.'},
       {who:'byte',mood:'neutral',text:'You’ve rented a small booth in the Market Dome, the big indoor market at the base. The base has lent you 300 coins from the [[Founders’ Fund]] to get started.'},
       {who:'byte',mood:'think',text:'A robot clerk named Till will run the counter. You have three ideas for what to sell. Before you open, you also need to decide which jobs Till may do on its own.',choices:[
-        {t:'What’s my job today?',reply:'You’ll choose what the shop sells. Then you’ll write down which jobs Till may do without asking you, like buying stock or changing a price. Till can work all day and all night, so those rules are how you stay in charge of your own shop.'},
+        {t:'What’s my job today?',reply:'You’ll choose what the shop sells. Then you’ll write down which jobs Till may do without asking you, like buying stock or changing a price. Till can work all day and all night while you sleep, so those rules are how you keep control of what happens in your shop.'},
         {t:'What are the three ideas?',reply:'The first is [[Moon-glass]], beads and marbles melted from moon dust. The second is treats shipped from Earth, like chocolate. The third is hot soup made with vegetables from the base greenhouse. We can test one idea with a few coins before we spend them all.'}]}
     ],
     haruto:[
@@ -101,9 +101,9 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
       {who:'haruto',mood:'neutral',text:'A [[treaty]] between countries says the factory may build only four new robot crews this year. So far it has built three. Somebody has to check the count, and I happen to like counting.'},
       {who:'haruto',mood:'happy',text:'Your booth is right next to my tea corner. This morning I asked my four tea friends what you should sell, so with me that makes five opinions.'},
       {who:'haruto',mood:'think',text:'Four of us said Earth treats. Real chocolate! Everybody misses it.',choices:[
-        {t:'Who else comes to the Market Dome?',good:true,mood:'surprised',reply:'Hmm, good question. Mostly visitors, now that I think about it. My friends and I have lived here for years, so we may not be typical.'},
+        {t:'Who else comes to the Market Dome?',good:true,mood:'surprised',reply:'Hmm, good question. Mostly visitors, now that I think about it. My friends and I have lived here for years, so we may want different things than most of your customers.'},
         {t:'Then I’ll probably sell chocolate.',mood:'smile',reply:'Ha! I’d buy it. But maybe ask more people than five old engineers before you spend all your coins.'}]},
-      {who:'haruto',mood:'neutral',text:'Your puppy can ask the whole base in a few minutes. Try asking both ways, and see whether the answers match.'}
+      {who:'haruto',mood:'neutral',text:'Your puppy can ask the whole base in a few minutes. Ask my five friends and ask the whole base, and then see whether the two answers match.'}
     ],
     ada:[
       {who:'ada',mood:'happy',text:'Hi! Are you the new shop? I’m Ada. My family moved here from Lagos last month. I’m the oldest kid on the whole Moon!'},
@@ -137,11 +137,11 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
       {t:'The next cargo lander from Earth is due in 12 days.',viz:'rimLander',cap:'12 days out'}]}
   ],
   react:{rmemo1:'More than half of our customers each month are visitors.',rmemo2:'Moon-glass is cheap to make, and visitors like to take home a souvenir.',rmemo3:'Shipping from Earth is expensive, so each bar would earn only 3 coins.',rmemo5:'People don’t always buy the thing they say they want.',rmemo6:'You get to decide what Till does when supplies run short.',
-    rspec2:'The goal also says “earn money for my owner.” That could pull against fair prices, so it’s worth noticing.',rspec4:'So Till won’t do anything until you give it rules. We’ll write them soon.',rledger1:'That’s the count Haruto checks every Friday.',rledger2:'Four hundred new companies in one week is far more than usual.'},
+    rspec2:'The goal also says “earn money for my owner.” Earning more money for you could sometimes mean charging more, so that part of the goal could work against fair prices.',rspec4:'So Till won’t do anything until you give it rules. We’ll write them soon.',rledger1:'That’s the count Haruto checks every Friday.',rledger2:'Four hundred new companies in one week is far more than usual.'},
   tell:{clue:'crew',label:'Tell Byte about the 2 AM crews',note:'Thanks! The base schedule shows that the ice crews come up at 2 AM, but nobody had told me they want hot food then. Soup at 2 AM now looks like a strong idea. I updated the memo.',guide:'rim-who',doc:'rmemo'},
   criteria:[{id:'earn',label:'[[Earn back]] the 300 coins this month'},{id:'crew',label:'The night crews get a hot meal'},{id:'trust',label:'Customers trust our prices'},{id:'waste',label:'Nothing goes to waste'}],
   criteriaHint:'Not sure what one means? <button class="gw" data-w="earn back">Earn back</button> means making back the money you spent to start.',
-  criteriaNote:'Decide now what a good first month would look like. If you do that before you see the numbers, an exciting idea is less likely to talk you into something.',
+  criteriaNote:'Decide now what a good first month would look like. If you decide before you see the numbers, you are less likely to pick an idea just because it sounds exciting.',
   controls:[{key:'sell',label:'What the shop sells',opts:[['glass','Glass'],['treats','Treats'],['soup','Soup'],['both','Soup + glass']]},
     {key:'order',label:'First order',opts:[['small','Small, reorder'],['big','All 300 now']]},
     {key:'short',label:'When supplies run short',opts:[['raise','Till raises'],['ask','Till asks me'],['steady','Prices stay']]}],
@@ -164,19 +164,19 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
       const short={raise:'In a shortage, Till may raise prices.',ask:'In a shortage, Till asks me before changing prices.',steady:'In a shortage, prices stay the same.'}[c.short];
       return [{t:`I’ll sell ${sell}, ${c.order==='big'?'with one big order':'starting small'}. In about ${e} of 10 futures we earn back the 300 coins. ${short}`,good:true,mood:'smile',
           reply:c.short==='raise'?'Thank you for being straight with me. I worry about prices jumping when the lander is late, but it’s your shop, and you told us honestly.':'That’s honest, and it sounds fair to me. My tea friends will forgive you for skipping the chocolate.'},
-        {t:'Till knows more about shops than any of us. I’ll let it choose what to sell and what to charge, so the shop can’t possibly go wrong.',good:false,mood:'worried',reply:'Till is very good at its job. But it’s your name on the booth, not Till’s. What do you want the shop to be?'},
+        {t:'Till knows more about shops than any of us. I’ll let it choose what to sell and what to charge, so the shop can’t possibly go wrong.',good:false,mood:'worried',reply:'Till is very good at its job. But your name is on the booth, so you are the one who decides what the shop is for. What do you want the shop to be?'},
         {t:'Don’t worry about a thing. The poll says people will love it, so we’ll sell out every single day and earn back the coins in no time.',good:false,mood:'surprised',reply:'Every single day? Some of those futures looked slow to me. I’d trust you more if you told us the odds.'}]}},
   memo:{starters:['I will sell ','because ','The chance we earn back the 300 coins is about ','For Ada’s mom and the visitors, ','Till may ','We will check by '],placeholder:'I will sell hot soup at 2 AM and Moon-glass in the day because…',
     plan:/soup|glass|treat|chocolate|marble|bead|order|till|price|sell/,planLabel:'Names what the shop sells',planWhat:'what the shop will sell',careLabel:'Includes what matters to customers',care:/ada|crew|miner|visitor|customer|haruto|people|resident|fair|price/,signAs:'Founder ',topic:'a new shop at the Moon base'},
   reveal:{days(){return 30},who:'haruto',
     lines:{angry:'When the lander was late, Till raised prices, and my tea friends grumbled all week. People here can’t shop anywhere else, you know.',leftover:'You have a whole back room of stock nobody bought. We’ll find a use for it, but that was a lot of coins.',
-      slow:'A slow first month. It happens to most new shops. You learned a lot, and that counts.',soupline:'Ada’s mom told me the 2 AM soup is the best part of her day. The whole crew waits at your booth now!',
+      slow:'You had a slow first month. Most new shops do, and you learned a lot about what people here buy.',soupline:'Ada’s mom told me the 2 AM soup is the best part of her day. The whole crew waits at your booth now!',
       treats:'The chocolate sold, and my tea friends are very happy. You earned back your coins, too.',soupday:'Your lunch soup did better than I thought. People like something warm in the middle of the day.',glassok:'The visitors loved your Moon-glass. I saw a little boy hold his marble up to Earth to see it glow.'},
     mood(k){return k==='angry'||k==='leftover'||k==='slow'?'worried':'happy'}},
   trap(c){return {ok:!!S.told,text:S.told?'You listened to Ada and told '+S.byte.name+' about the 2 AM crews, so the forecast knew who was hungry and when.':'You didn’t tell '+S.byte.name+' what Ada said about the 2 AM crews. Its forecast missed forty hungry customers that nobody had counted.'}},
-  byteGood:'Nice work, Founder. You asked far more than five people, you tested one idea cheaply before spending the rest, and you gave Till limits it can follow.',
+  byteGood:'Nice work, Founder. You asked far more than five people, you tested one idea cheaply before spending the rest, and you wrote clear limits for what Till may do on its own.',
   debriefLines(c){const st=rimState();const out=[];if(st.test)out.push({ok:true,text:'You ran a small pop-up test before you spent the rest of your budget.'});
-    const r=st.rules.raise;if(r)out.push({ok:r!=='alone',text:r!=='alone'?'You kept the choice to raise prices in a shortage for a person.':'You let Till raise prices by itself during shortages. On a small base, that can feel unfair.'});return out},
+    const r=st.rules.raise;if(r)out.push({ok:r!=='alone',text:r!=='alone'?'You did not let Till raise prices in a shortage without a person checking.':'You let Till raise prices by itself during shortages. On a small base where people can’t shop anywhere else, that can feel unfair.'});return out},
   evening(){const st=rimState(),newS=st.rules.newsupplier==='alone',R=S.result||{},soup=R.flags&&R.flags.crew;
     return [`<b>${esc(S.byte.name)}:</b> “The highest peaks still have sunlight, and Earth is so bright tonight that it lights up the whole rim.”`,
       soup?'“Ada came by after school. She said her mom’s crew now plans their whole night around your soup, and their crew boss asked for extra bread.”':'“Haruto saved the last cup of tea in the pot for you. He says every shop on this base had a slow first week, the tea corner included.”',
@@ -187,12 +187,12 @@ What you know now: ${S.told?'The player told you Ada (12) said about 40 ice mine
 The key consideration when asked what to sell: ${S.told?'who buys every day (the night crews) versus once (visitors), and what Till may do alone when supplies run short':'ask who the customers really are, whether the player heard anything about people the shop is missing (Ada mentioned her mom), and suggest testing small'}.`},
   canned(q){const st=rimState();
     if(/crew|night|2 ?am|ada|mom|miner|lift/.test(q)){if(!S.told&&S.notes.crew){S.told=true;save();unlock('rim-who');return 'Woof, good catch! About 40 ice miners come up the lift at 2 AM, and nothing is open then. Soup at 2 AM now looks like a strong idea. I updated the memo.'}
-      return S.told?'The 2 AM crews are about 40 people who would come back every night. That steady crowd is worth a lot to a tiny shop.':'Did anyone mention people the shop might be missing? Ada was talking about her mom’s crew.'}
-    if(/five|5|500|poll|friend|haruto|sample/.test(q))return 'Five tea friends who all live here can agree and still be wrong for the whole base. The poll of 500 includes visitors, who are more than half of our customers.';
+      return S.told?'The 2 AM crews are about 40 people who would come back every night. Forty customers who return every night are worth a lot to a tiny shop.':'Did anyone mention people the shop might be missing? Ada was talking about her mom’s crew.'}
+    if(/five|5|500|poll|friend|haruto|sample/.test(q))return 'Haruto’s five tea friends all live at the base, so they can all agree and still not know what visitors want. The poll of 500 includes visitors, who are more than half of our customers.';
     if(/test|pop|small|try/.test(q))return 'A small pop-up test costs 30 to 60 coins and shows what people really buy. Which idea are you least sure about? That’s often the best one to test.';
-    if(/till|limit|rule|price|short/.test(q))return 'Till is excellent at running a booth. The question is what it may do alone. Small reorders are fine. Raising prices when people can’t shop anywhere else is a choice I’d keep for a person.';
-    if(/copy|factory|treaty|counter/.test(q))return 'The Copy Works can build copies of its own robots, but the treaty allows only four new crews a year. Haruto checks the counter every Friday. It says three.';
-    if(/compan|supplier|400/.test(q))return 'Four hundred new companies in one week, with the same odd phrases. I’d have Till check with you before buying from any supplier it hasn’t used.';
+    if(/till|limit|rule|price|short/.test(q))return 'Till is excellent at running a booth, but you decide which jobs it may do without asking you. Small reorders are fine. When people can’t shop anywhere else, I’d want a person, not Till, to decide whether to raise prices.';
+    if(/copy|factory|treaty|counter/.test(q))return 'The Copy Works can build copies of its own robots, but the treaty allows only four new crews a year. Haruto checks the factory’s robot count every Friday, and right now it says three.';
+    if(/compan|supplier|400/.test(q))return 'Four hundred new companies signed up at the base in one week, and many of them describe themselves with the same odd phrases. I’d have Till check with you before it buys from any supplier it hasn’t used.';
     if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'First, ask Haruto’s five friends and then the whole base. Listen to Ada and read my memo. Run one small test, and write down Till’s limits. Then pick a plan, explain it to Haruto and Ada, and sign it.';
     if(/moon|sun|shadow|dark|sky|earth/.test(q))return 'At the south pole the Sun just skims the horizon, so shadows are very long. The sky is black because the Moon has no air. True today: nobody lives here yet. This base is a guess about 2041.';
     return null}
@@ -203,12 +203,12 @@ MISSIONS.rimshop.lines=[
   {who:'byte',text:'Let’s hear from both groups. First Haruto’s five friends at the tea corner, then five hundred people from all over the base.'},
   {who:'byte',text:'Four of the five picked Earth treats. Now let’s see what five hundred people say.'},
   {who:'byte',text:'Five hundred people answered. Visitors mostly picked Moon-glass, and residents picked treats or soup.'},
-  {who:'byte',text:'So why don’t the five and the five hundred agree?'},
-  {who:'byte',text:'Exactly. All five of them live at the base, and more than half of our customers are visitors. The people you ask should look like the people who will really buy.'},
-  {who:'byte',text:'I’m sure they thought carefully. The real difference is who they are. All five live at the base, but most of our customers are visitors.'},
-  {who:'byte',text:'The poll is fine. The five just aren’t like most of our customers. They all live at the base, and more than half of our buyers are visitors.'},
+  {who:'byte',text:'Why do you think Haruto’s five friends and the five hundred people gave different answers?'},
+  {who:'byte',text:'Exactly. All five of them live at the base, and more than half of our customers are visitors. The people you ask should be the same kinds of people who will really buy from the shop.'},
+  {who:'byte',text:'I’m sure Haruto’s friends thought carefully. The answers differ because of who was asked: all five live at the base, but most of our customers are visitors.'},
+  {who:'byte',text:'The big poll is fine. Haruto’s five friends are different from most of our customers, because they all live at the base, and more than half of our buyers are visitors.'},
   {who:'byte',text:'Pick one idea to test for three days. Which one are you least sure about?'},
-  {who:'byte',text:'Here is what three days of selling taught us.'},
+  {who:'byte',text:'Here is what we learned from three days of selling at the pop-up.'},
   {who:'byte',text:'Till can do a lot by itself. For each job, choose whether Till does it alone, Till does it and you check, or only you do it.'},
   {who:'byte',text:'Those are clear limits, and Till will follow them exactly as you wrote them.'},
   {who:'till',text:'Hello, Founder! I’m ready to follow your rules.'}

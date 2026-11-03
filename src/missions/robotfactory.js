@@ -9,9 +9,9 @@
 // Shared screens: src/missions/china_common.js. Scene: src/scenes/shenzhen.js. Styles: src/css/china.css.
 const SZ_TESTS={
   voice:{label:'Say “Tíng!”',who:'Anyone nearby',time:'0.8 s',res:'4 of 4 paused',
-    line:'All four froze. Bot 4 put its beam down first, which took three extra seconds, and that delay is on purpose. But the crew will start again by itself in thirty seconds unless somebody tells it to stay stopped.'},
+    line:'All four robots froze. Bot 4 put its beam down before it froze, which took three extra seconds, and the crew is built to do that so the beam does not fall. But the crew will start again by itself in thirty seconds unless somebody tells it to stay stopped.'},
   button:{label:'Press the red pedestal',who:'Anyone on site',time:'0.3 s',res:'4 of 4, motors off',
-    line:'The motors went off in a third of a second, and they stay off. Starting the crew again needs the crew lead’s signed code. That is a proper stop.'},
+    line:'The motors went off in a third of a second, and they stay off. Starting the crew again needs the crew lead’s signed code, so this is a full stop that nobody else can undo.'},
   remote:{label:'Remote stop from the tower',who:'The factory',time:'1.2 s',res:'4 of 4 here, plus 212 crews worldwide',
     line:'Whoa. The tower stopped our crew from far away, and it could stop all 212 crews this factory has built, including yours in Phoenix. It can start them again too, and the crew lead is never told either way.'}};
 const SZ_RULES=[
@@ -22,7 +22,7 @@ const SZ_RULES=[
 function szSt(){const st=zhSt('sz');st.ran=st.ran||{};st.rule=st.rule||{};return st}
 
 MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'crewlead',day:2,dayLabel:'Travel',tag:'Travel',kind:'travel',year:1,season:'fall',district:'shenzhen',rank:'trainee',
-  blurb:'You fly to the Shenzhen factory that built your robot crew, to test every way of stopping one and write the rules.',after:['maya'],
+  blurb:'You fly to the factory in Shenzhen that built your robot crew. You test every way of stopping a crew, and then you write the rules for who may stop one and start it again.',after:['maya'],
   place:'Zone 3 · Shenzhen',
   flow:[{name:'sz_arrive',k:'talk',talk:'arrive',scene:'shenzhen',place:'Zone 3 test yard · 9:00 AM'},
     {name:'sz_huang',k:'talk',talk:'huang',scene:'shenzhen',place:'Zone 3 test yard · Shenzhen'},
@@ -46,8 +46,8 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
     'special economic zone':'An area with its own rules for business and building. In 2040, heavy robot industry is kept inside zones like this one. True today: Shenzhen really is a Special Economic Zone, and has been since 1980.',
     'permit':'Official permission to do something. In this zone, every working robot needs one.',
     'permit cap':'The most permits a zone may hand out. In 2040, when a zone reaches its cap, no more robots may work there. True today: no country caps robots this way.',
-    'robot crew':'In 2040, a team of robots that builds things together. Its own AI runs it, and a named human crew lead answers for it. True today: robots build parts of buildings in factories, but no robot crew builds a whole school.',
-    'crew lead':'The named person who is responsible for a robot crew and signs for everything it builds.',
+    'robot crew':'In 2040, a team of robots that builds things together. Its own AI runs it, and a human crew lead is responsible for it. True today: robots build parts of buildings in factories, but no robot crew builds a whole school.',
+    'crew lead':'The person who is responsible for a robot crew. The crew lead’s name goes on everything the crew builds, and the crew lead must deal with any problem it causes.',
     'remote stop':'A way to stop a machine from far away, over a network.',
     'stop drill':'A practice run to check that every way of stopping a machine really works.',
     'signed code':'A secret code tied to one person, so a machine knows exactly who gave the order.',
@@ -62,12 +62,12 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
   },
   guide:{
     'sz-anyone-stops':{title:'Who may stop a crew, and who may start it again',track:'Engineering and systems',
-      text:'Stopping a machine is easy to undo, so anybody who sees danger should be able to do it. Starting the machine again is much harder to undo, so only the named person who is responsible should be able to do that, using a code that proves who they are. And a stop ordered from far away should always tell the people on site.',
+      text:'If someone stops a machine by mistake, the only cost is a short delay, so anybody who sees danger should be able to stop it. Starting the machine again is riskier, because if the problem has not been fixed, someone could get hurt. So only the person who is responsible for the machine should be able to restart it, using a code that proves who they are. If someone far away stops the machine, the people on site should always be told.',
       real:'True today: factory robots have emergency stop buttons that any worker may press, and many car factories let any worker pull an andon cord to stop the line. Restarting takes a trained person. Robot crews that build whole schools are a guess about 2040.'},
     'sz-zone':{title:'Special Economic Zones',track:'Government, law, and power',
-      text:'In 2040, heavy robot industry is kept inside special zones, and each zone has a strict limit on how many robots may work there. That is how the rest of the world stays green and quiet. Zone monitors check the numbers every day.',
+      text:'In 2040, heavy robot industry is kept inside special zones like this one, and each zone has a strict limit on how many robots may work there. Keeping the robot factories and mines inside the zones lets the land outside them stay quiet and green. Zone monitors check the robot numbers every day.',
       real:'True today: in 1980, Shenzhen, then a small town, became one of China’s first Special Economic Zones. It is now a city of more than 17 million people. Robot permit caps are a guess about 2040.'}},
-  chatter:{shenzhen:['I’m the only person on this shift. Me and eleven thousand robots.','The mine used to be a hill. They’ll fill it back in when the cap goes down.','My father fished in this bay when Shenzhen was a village.','Lunch is in the tower. The noodles are made by a person, which is why they’re good.','The permit board ticks up when a crew is born and down when one is recycled.']},
+  chatter:{shenzhen:['I’m the only person on this shift. Me and eleven thousand robots.','That mine used to be a hill. They will fill it back in when the zone is allowed fewer robots.','My father fished in this bay when Shenzhen was a village.','Lunch is in the tower. The noodles are made by a person, which is why they’re good.','The number on the permit board goes up each time a new crew is built, and down each time an old crew is recycled.']},
   talks:{
     arrive:[
       {who:'byte',mood:'happy',text:'Welcome to Shenzhen! We’re in Zone 3, part of the city’s [[Special Economic Zone]]. Almost everything you can see here is run by robots.'},
@@ -76,24 +76,24 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
         {t:'Where are all the people?',reply:'There are about forty people in this whole zone today. Most of them are engineers, inspectors and monitors, and the robots do everything else.'}]},
       {who:'linxm',mood:'happy',text:'[[Nǐ hǎo]]! You must be the crew lead from Phoenix. I’m Lin Xiaomei. I test the crews before they ship.'},
       {who:'linxm',mood:'smile',text:'Your crew is the one that finished the school three days early, isn’t it? I tested that crew myself last spring. It’s a good one, and perhaps a little proud of itself.',choices:[
-        {t:'Xièxie for testing it so carefully.',good:true,mood:'happy',reply:'You’re welcome! Today we test something even more important than building. We test how the crew stops.'},
-        {t:'It finished early, so it’s probably fine.',mood:'think',reply:'Probably. But “probably fine” is exactly the thing we are here to check.'}]}
+        {t:'Xièxie for testing it so carefully.',good:true,mood:'happy',reply:'You’re welcome! Today we are testing whether the crew stops quickly and safely when someone tells it to. That matters even more than how well it builds.'},
+        {t:'It finished early, so it’s probably fine.',mood:'think',reply:'Probably. But today we are here to check with real tests whether it stops safely, instead of guessing.'}]}
     ],
     huang:[
       {who:'huangjg',mood:'smile',text:'I’m Huang Jianguo, and I run this floor. I started here at eighteen, putting phones together by hand. My father fished in that bay before there was any city here at all.'},
       {who:'huangjg',mood:'neutral',text:'In forty-three years, one rule has never changed on my floor. Anybody who sees a problem can stop the line. The newest worker, the oldest worker, even a visitor.',choices:[
-        {t:'Even a visitor like me?',mood:'happy',reply:'Even you. If you see something wrong, you stop the line, and then we talk about it. Stopping costs us a few minutes. A broken crew costs us weeks.'},
-        {t:'Doesn’t that waste a lot of time?',mood:'think',reply:'Less than you would think. People do not stop a line for fun. And when they are right about it, we save weeks.'}]},
+        {t:'Even a visitor like me?',mood:'happy',reply:'Even you. If you see something wrong, you stop the line, and then we talk about it. Stopping the line costs us a few minutes, but fixing a broken crew can take weeks.'},
+        {t:'Doesn’t that waste a lot of time?',mood:'think',reply:'Less than you would think. People here only stop the line when they think something is wrong. When they turn out to be right, the stop can save us weeks of repairs.'}]},
       {who:'linxm',mood:'neutral',text:'So here is today’s [[stop drill]]. This test crew is stacking bricks, and there are three different ways to stop it. Try each one, and we’ll time how long it takes.'},
       {who:'byte',mood:'think',text:'I’ll write down every run. Watch what each robot actually does, not only how fast the crew stops.'}
     ],
     tang:[
       {who:'tangyf',mood:'smile',text:'Hi! Tang Yifan, [[zone monitor]]. I make sure Zone 3 stays under its cap. Today it’s at 41,860 robots, out of 42,000.'},
-      {who:'tangyf',mood:'neutral',text:'I watched your remote-stop test from the tower. That is the button I care about. If a crew anywhere goes over its permit, I want it stopped quickly.'},
-      {who:'tangyf',mood:'think',text:'But you saw the other half of it. The tower can start those crews up again from right here, without asking anybody in Phoenix. I don’t like that, and I am the person who would be pressing the button.',choices:[
-        {t:'So the people on site wouldn’t even know?',good:true,mood:'worried',reply:'Not unless somebody tells them. That is why I asked the factory to bring a crew lead out here. You get a say in the rule card.'},
-        {t:'If the factory built them, shouldn’t it control them?',mood:'stern',reply:'The factory built them, yes. But your city lives beside them. The person on site should know what is happening to their own crew.'}]},
-      {who:'huangjg',mood:'neutral',text:'Every crew carries a rule card. Today we write a new one, and tonight every crew this factory has ever built will get it. So choose carefully.'}
+      {who:'tangyf',mood:'neutral',text:'I watched your remote-stop test from the tower. That is the button I care about most, because if a crew anywhere goes over its permit, I want it stopped quickly.'},
+      {who:'tangyf',mood:'think',text:'But your test also showed something else. The tower can start those crews up again from right here, without asking anybody in Phoenix. I don’t like that, and I am the person who would be pressing the button.',choices:[
+        {t:'So the people on site wouldn’t even know?',good:true,mood:'worried',reply:'Not unless somebody tells them. That is why I asked the factory to bring a crew lead out here. You get to help decide what goes on the crews’ new rule card.'},
+        {t:'If the factory built them, shouldn’t it control them?',mood:'stern',reply:'The factory built them, yes. But the people of Phoenix live and work right beside those robots. The crew lead on site should know what is happening to their own crew.'}]},
+      {who:'huangjg',mood:'neutral',text:'Every crew carries a rule card that says who may pause it, stop it and start it again. Today we write a new card, and tonight every crew this factory has ever built will get it. So choose carefully.'}
     ]
   },
   docs:[],criteria:[],controls:[],start:{},
@@ -108,7 +108,7 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
   eveningScene:'shenzhen',eveningPlace:'Zone 3 · Shenzhen · 6:40 PM',
   evening(){const st=szSt();return [
     `<b>${esc(S.byte.name)}:</b> ${rich('“Your new rule card went out to all 212 crews at six o’clock. Your own crew in Phoenix sent back a short note: rules received.”')}`,
-    rich('“Mr. Huang printed the card and pinned it beside the old one from forty-three years ago, where his whole floor walks past it.”'),
+    rich('“Mr. Huang printed the card and pinned it next to his floor’s oldest rule, from forty-three years ago: anybody who sees a problem may stop the line. His whole floor walks past them both.”'),
     rich(st.rule.remote==='both'?'“Tang Yifan says she will keep a close eye on that restart button, because the card still lets the tower use it.”':'“Tang Yifan says that if the tower ever stops a crew now, its crew lead will hear about it within a second.”'),
     rich('“In the Ledger tonight: the robot crew in Phoenix has asked its city for permission to build copies of itself so it can finish a school faster.”')]},
   brief(){const st=szSt();return `Current case: a Shenzhen travel day for the Robot Crew Lead. The player is in Zone 3 of Shenzhen's Special Economic Zone, at the robot factory that built the Phoenix crews (212 crews worldwide). Zone 3 is at 41,860 robots out of a permit cap of 42,000; very few people work in the zone. People: Lin Xiaomei (test engineer), Huang Jianguo (floor supervisor for 43 years; rule on his floor: anybody who sees a problem can stop the line), Tang Yifan (zone monitor; wants remote stop for permit breaches, worried about remote restart).
@@ -117,19 +117,19 @@ The rule card asks: who may pause, who may fully stop, who may restart, and what
 Key consideration: stopping is cheap and easy to undo, so anyone on site should be able to stop; restarting should take the named crew lead's signed code; a remote stop is useful for safety and permits but must tell the crew lead at once, and remote restart is risky.`},
   canned(q){
     if(/ting|tíng|voice|shout/.test(q))return '“Tíng” means stop. Anybody standing nearby can say it, and the crew pauses in under a second. But the crew starts again by itself after thirty seconds unless somebody tells it to stay stopped.';
-    if(/remote|tower|factory/.test(q))return 'The tower can stop every crew this factory has built, anywhere in the world. It can also start them again, without telling the crew lead. That second part is the worrying one.';
-    if(/restart|code/.test(q))return 'Starting a crew again is much harder to undo than stopping one. A signed code from the crew lead proves exactly who said to go.';
+    if(/remote|tower|factory/.test(q))return 'The tower can stop every crew this factory has built, anywhere in the world. It can also start them again, without telling the crew lead. The restart worries me, because the people on site would not know that their crew was about to move again.';
+    if(/restart|code/.test(q))return 'Starting a crew again is riskier than stopping one, because if something is still wrong, people could get hurt. A signed code from the crew lead proves exactly who said to go.';
     if(/permit|cap|zone/.test(q))return 'Zone 3 has 41,860 robots working today, and its limit is 42,000. Tang Yifan checks those numbers every day.';
     if(/help|stuck|what do i do/.test(q))return 'Try all three stops in the drill, and watch what each robot does. Then fill in the rule card: who may pause a crew, who may stop it, who may start it again, and what the factory may do from far away.';
     return null},
   lines:[
     {who:'byte',text:'Pick one of the three ways to stop the crew, and I’ll time how long it takes.'},
-    {who:'byte',text:'You’ve tried all three now. The remote stop is the one we need to talk about.'},
-    {who:'byte',text:'Stopping a crew is cheap and easy to undo, so the more people who can do it, the safer the site is. Starting one again is much harder to undo, so I would keep that with one named person.'},
+    {who:'byte',text:'You’ve tried all three now. The remote stop is the one we need to talk about, because it reaches every crew this factory has built.'},
+    {who:'byte',text:'Stopping a crew costs only a short delay, so the site is safer when everyone there can do it. A restart could hurt someone if something is still wrong, so I would let only the crew lead do that.'},
     {who:'linxm',text:'We put your card on the test crew and then tried to restart it from the tower. The crew refused, and it sent you a message about it. Then I said “Tíng,” and it stopped for me. That is exactly what we wanted.'},
     {who:'linxm',text:'We put your card on the test crew, and it works. But the tower can still restart crews without telling anybody, so Tang Yifan wants to talk about that again next month.'},
     {who:'linxm',text:'We put your card on the test crew. Now only the crew lead can stop it, so when I said “Tíng,” the crew kept working. Mr. Huang did not like that one bit.'},
-    {who:'byte',text:'Every crew needs a stop that anybody can use and a restart that only one named person can sign for. You wrote both of those into the card.'}
+    {who:'byte',text:'A safe crew needs a stop that anybody on site can use, and a restart that only the crew lead can approve with a signed code.'}
   ].concat(Object.values(SZ_TESTS).map(x=>({who:'byte',text:x.line}))),
   shots:{sz_drill:[{label:'all three run',run(){const st=szSt();st.ran={voice:1,button:1,remote:1};st.last='remote';szDrill()}}],
     sz_rules:[{label:'filled in',run(){const st=szSt();st.rule={pause:'anyone',stop:'anyone',restart:'lead',remote:'stoptell'};szRules()}}],
@@ -156,7 +156,7 @@ function szDrill(){const st=szSt(),last=st.last&&SZ_TESTS[st.last],all=Object.ke
   screen('criteria sz-drillscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Stop drill')}<div class="panel-card sz-drill"><h2>Stop drill</h2>
     <div class="sz-yard ${st.stopping?'':'running'}" id="sz-yard">${szYard()}<div class="sz-clock"><b id="sz-time">${last?last.time:'0.0 s'}</b><span>${last?esc(last.res):'Crew working'}</span></div></div>
     <div class="sz-tests">${Object.keys(SZ_TESTS).map(k=>{const x=SZ_TESTS[k];return `<button class="sz-test ${st.ran[k]?'done':''} ${st.last===k?'on':''}" data-k="${k}"><b>${esc(x.label)}</b><span>${esc(x.who)}</span>${st.ran[k]?`<i>${esc(x.time)}</i>`:''}</button>`}).join('')}</div>
-    <div class="byte-note">${byteBox({...S.byte,mood:st.last==='remote'?'alert':'think'})}<p>${esc(all&&st.last!=='remote'?'You’ve tried all three now. The remote stop is the one we need to talk about.':say)}</p></div>
+    <div class="byte-note">${byteBox({...S.byte,mood:st.last==='remote'?'alert':'think'})}<p>${esc(all&&st.last!=='remote'?'You’ve tried all three now. The remote stop is the one we need to talk about, because it reaches every crew this factory has built.':say)}</p></div>
     <button class="btn wide" id="sz-go" ${all?'':'disabled'}>Talk to the zone monitor</button></div>`);
   $$('.sz-test').forEach(b=>b.onclick=()=>{const k=b.dataset.k,x=SZ_TESTS[k],y=$('#sz-yard');y.className='sz-yard running';void y.offsetWidth;
     $$('.sz-test').forEach(z=>z.disabled=true);MUSIC.sfx&&MUSIC.sfx(k==='button'?'click':k==='voice'?'pop':'blip');
@@ -169,7 +169,7 @@ function szDrill(){const st=szSt(),last=st.last&&SZ_TESTS[st.last],all=Object.ke
 
 // ---------- the crew's rule card ----------
 function szRules(){const st=szSt(),r=st.rule,done=SZ_RULES.every(x=>r[x.key]);
-  const say='Stopping a crew is cheap and easy to undo, so the more people who can do it, the safer the site is. Starting one again is much harder to undo, so I would keep that with one named person.';
+  const say='Stopping a crew costs only a short delay, so the site is safer when everyone there can do it. A restart could hurt someone if something is still wrong, so I would let only the crew lead do that.';
   screen('criteria sz-rulesscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Rule card')}<div class="panel-card sz-card"><div class="sz-cardhead"><b>Crew rule card</b><span>All 212 crews · version 7</span></div>
     ${SZ_RULES.map(x=>`<div class="sz-rule"><div class="sz-q">${esc(x.q)}</div><div class="sz-opts">${mixIdx(x.opts).map(([o])=>`<button class="critb sz-opt ${r[x.key]===o[0]?'on':''}" data-k="${x.key}" data-v="${o[0]}">${esc(o[1])}</button>`).join('')}</div></div>`).join('')}
     <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
@@ -191,8 +191,8 @@ function szAfter(){const r=szSt().rule,k=r.pause==='lead'||r.stop==='lead'?'lead
 function szDebrief(){const st=szSt(),r=st.rule,ask=Object.keys(SZ_TESTS).every(k=>st.ran[k]);
   const decision=r.stop==='anyone'&&r.pause==='anyone'&&r.restart==='lead'&&r.remote!=='both',heart=(S.hearts.linxm||0)+(S.hearts.huangjg||0)+(S.hearts.tangyf||0)>0&&String(S.memo||'').length>=12;
   zhDebrief({scene:'shenzhen',place:'Debrief · Shenzhen',stars:{ask,decision,heart},
-    items:[{star:'ask',ok:ask,text:ask?'You tested all three stops, and you found out what the remote stop could really do.':'Try every way of stopping a crew before you write the rules. The remote stop had a surprise hidden in it.'},
-      {star:'decision',ok:decision,text:decision?'On your card, anybody can stop a crew, only the crew lead can start it again, and the tower cannot restart a crew behind anyone’s back.':'Your card left a gap. Either somebody standing right there cannot stop a crew, or somebody far away can start one again without telling them.'},
-      {star:'heart',ok:heart,text:heart?'You listened to the people who know this floor best, and you signed a card they could read.':'Mr. Huang, Ms. Lin and Tang Yifan each knew something you needed. Ask them more next time.'}],
-    byte:'Every crew needs a stop that anybody can use and a restart that only one named person can sign for. You wrote both of those into the card.'})}
+    items:[{star:'ask',ok:ask,text:ask?'You tested all three stops and found that the remote stop could also restart crews.':'Try every way of stopping a crew before you write the rules. Testing the remote stop showed that it could also restart crews without telling anyone.'},
+      {star:'decision',ok:decision,text:decision?'On your card, anybody can stop a crew, only the crew lead can start it again, and the tower cannot restart a crew without telling the people on site.':'Your card left a gap. Either a person next to a crew cannot stop it, or the factory can restart it without telling anyone.'},
+      {star:'heart',ok:heart,text:heart?'You listened to the people who know this factory floor best, and you signed a card that they could read and understand.':'Next time, ask Mr. Huang, Ms. Lin and Tang Yifan more. Each of them knew something useful.'}],
+    byte:'A safe crew needs a stop that anybody on site can use, and a restart that only the crew lead can approve with a signed code.'})}
 MISSIONS.robotfactory.lines.push({who:'linxm',text:'Tíng!'});

@@ -64,7 +64,7 @@ function dsBoardHTML(c){const need=dsNeed(c,S.told),f=forecastFor(c),max=60,W=v=
 MISSIONS.duststorm.custom={
   ds_power(){const c=S.choice;
     const say=()=>{const need=dsNeed(c,S.told),worst=48-need-DS_LONG;
-      return worst>=DS_FLOOR?'Even on the worst night in my range, this plan never touches the emergency reserve.':48-need>=DS_FLOOR?'This plan is safe if the storm clears by morning. If the storm lasts and the battery starts at the low end, we would dip into the reserve.':'This plan only works if the storm comes late and leaves early. On most nights, we would run down to the reserve.'};
+      return worst>=DS_FLOOR?'Even if the battery starts at the low end and the storm lasts past sunrise, this plan never uses the emergency reserve.':48-need>=DS_FLOOR?'This plan is safe if the storm clears by morning. If the storm lasts and the battery starts at the low end, we would dip into the reserve.':'This plan only works if the storm comes late and leaves early. On most nights like this one, the battery would run down to the emergency reserve.'};
     screen('criteria ds-powscr',`${scene('mars_hab')}${hud('Control room · Tonight’s power')}<div class="panel-card ds-card"><h2>Tonight’s power</h2>
       <div class="ds-rows"><div class="ds-row ds-locked"><span>Life support</span><b>26 kWh · always on</b></div>
         ${DS_ROWS.map(([k,l,opts])=>`<div class="ds-row"><span>${l}</span><div class="seg">${opts.map(([v,t])=>`<button class="segb ${c[k]===v?'on':''}" data-k="${k}" data-v="${esc(JSON.stringify(v))}">${t} <small>${DS_LOAD[k][v]}</small></button>`).join('')}</div></div>`).join('')}
@@ -72,7 +72,7 @@ MISSIONS.duststorm.custom={
       <div id="dsboard">${dsBoardHTML(c)}</div>
       <div class="byte-note ds-delta"><div class="ds-dface">${typeof deltaArt==='function'?`<svg viewBox="40 30 220 240">${deltaArt('think')}</svg>`:''}</div><p id="dssay">${esc(say())}</p></div>
       <button class="btn wide" id="next">Lock in tonight’s plan</button></div>`);
-    setTimeout(()=>playLine('delta','Here is tonight’s budget. Everything you switch on comes out of the same battery.'),250);
+    setTimeout(()=>playLine('delta','Here is tonight’s power budget. Everything you switch on uses energy from the same battery.'),250);
     $$('[data-k]').forEach(b=>b.onclick=()=>{S.choice[b.dataset.k]=JSON.parse(b.dataset.v);save();$$(`[data-k="${b.dataset.k}"]`).forEach(x=>x.classList.toggle('on',x===b));$('#dsboard').innerHTML=dsBoardHTML(S.choice);$('#dssay').textContent=say()});
     $('#next').onclick=()=>{unlock('mars-budget')&&toast('New Field Guide idea: '+FIELD_GUIDE['mars-budget'].title,'good');nextStep()}},
   ds_night(){dsNightRun(false)}
@@ -103,7 +103,7 @@ function dsNightRun(skip){const st=dsDraw();let R=dsResult();const hours=['6 PM'
     $('#dsmid').innerHTML=`<div class="ds-update"><div class="upd-badge">Delta’s update</div><p>${esc(line)}</p><div class="choices">${can.map(([k,t])=>`<button class="choice" data-m="${k}">${t}</button>`).join('')}<button class="choice" data-m="keep">Keep the plan</button></div></div>`;playLine('delta',line);
     $$('#dsmid [data-m]').forEach(b=>b.onclick=()=>{st.mid=st.mid||{};if(b.dataset.m!=='keep'){st.mid[b.dataset.m]=1;unlock('mars-ranges')&&toast('New Field Guide idea: '+FIELD_GUIDE['mars-ranges'].title,'good')}save();R=dsResult();
       if(b.dataset.m!=='keep')b.remove();else{$('#dsmid').innerHTML='';i++;st.step=i;save();timer=setInterval(tick,skip?1:420)}})};
-  const finish=()=>{R=dsResult();if(!R.f.safe)log('The battery reached the emergency reserve, so I moved everyone into the rover.','delta');
+  const finish=()=>{R=dsResult();if(!R.f.safe)log('The battery reached the emergency reserve, so I woke the crew and moved everyone into the rover.','delta');
     const RV=MISSIONS.duststorm.reveal,line=RV.lines[R.kind];st.done=1;save();
     const hr1=$('#dshr');if(hr1){hr1.textContent=st.long?'10 AM':'7 AM';$('#dstemp').textContent=st.long?'Storm still blowing':'Sunrise'}
     setTimeout(()=>{if(!$('#dsend'))return;$('#dsend').innerHTML=`<div class="rf-card ds-rf">${dsVignette(R.kind)}</div><h2 class="ds-cap">${esc(DS_CAPS[R.kind])}</h2><div class="rf-talk"><div class="rf-maya">${portrait({...CAST.lucia,mood:RV.mood(R.kind)})}</div><p>“${esc(line)}”</p></div><button class="btn" id="next">See how you did</button>`;
