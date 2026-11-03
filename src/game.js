@@ -466,7 +466,7 @@ function renderDebrief(){
   screen('debrief',`${scene(M().debriefScene||'hospital')}<div class="talk-dim"></div>${hud('Debrief')}<div class="panel-card debrief">
    <h2>${T('How you did')}</h2>
    <div class="scores"><div class="score">${starRow(SB)}<b>${T('Stars')}</b><span>${T('For asking well, choosing wisely and caring')}</span></div>
-    <div class="score"><div class="luckpill ${luck.toLowerCase().replace(' ','-')}">${T(luck)}</div><b>${T('Luck')}</b><span>${T('Whether chance helped or hurt. Luck never earns stars.')}</span></div></div>
+    <div class="score"><div class="luckpill ${luck.toLowerCase().replace(' ','-')}">${T(luck)}</div><b>${T('Luck')}</b><span>${T('This part shows whether luck helped or hurt your result. You don’t win or lose stars because of luck.')}</span></div></div>
    <ul class="dlist">
     <li class="${TP.ok?'ok':''}">${starIcon('ask',TP.ok)}${esc(TP.text)}</li>
     <li class="${fit?'ok':''}">${starIcon('decision',fit)}${T(fit?'Your plan was one of the best for the goals you picked.':'Another plan would have done better on the goals you picked. Try the Future Table again next time.')}</li>
