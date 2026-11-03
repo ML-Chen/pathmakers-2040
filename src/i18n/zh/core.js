@@ -99,6 +99,37 @@ I18N.add('zh','core',{strings:{
   'Halo is the hospital’s AI. It runs the everyday work, like schedules, supplies, and scans. Decisions about each patient’s care are made by people, like you and the family.':'Halo是医院的AI，管着日常的事，比如排班、物资和各种扫描。每个病人怎么治，由人来决定，比如你和病人的家人。',
   'I’m {0}, your AI partner! I read the research, make forecasts, and build Future Tables. You find out what matters to the people involved, and you make the final decision.':'我是{0}，你的AI搭档！我负责读研究、做预测、搭未来之桌。你负责弄清楚大家在乎什么，最后由你来拍板。',
 
+  'Here’s the path: read the 3 documents, listen for clues from Maya’s family, tell me anything her record is missing, pick what matters most, test plans on the Future Table, explain the choice honestly to Maya and her dad, then write your decision with odds and sign it!':'步骤是这样的：读完3份文件，留心听玛雅家人说出的线索，把她病历里缺的信息告诉我，选出最重要的几件事，在未来之桌上试试各种方案，把选择老老实实讲给玛雅和她爸爸听，最后写下你的决定和你有几成把握，再签上名！',
+  'Woof, that changes everything! If Maya reacted to an HX-2 cooling patch, BoneMend has about a 60% chance of giving her a rash, so I’d avoid it. A cast with physical therapy plus asking to move the recital is my top pick now.':'汪，这下情况全变了！玛雅对HX-2降温贴有过反应，那她用骨愈凝胶大约有60%的可能起疹子，所以我不会选它。我现在最推荐的是：打石膏加康复训练，再请他们把演出改期。',
+  'Right, the rash! I’d skip BoneMend for Maya. Pins give the best chance that the bone heals straight. A cast with physical therapy avoids surgery and lets her play again in about 3 weeks.':'对，那次起疹子的事！玛雅还是别用骨愈凝胶了。打钢钉最有可能让骨头长正。打石膏加康复训练不用做手术，大约3周以后她就能重新拉琴。',
+  'I can’t pick for you, but here’s the big thing: Maya’s rash came from HX-2, the same ingredient in BoneMend. So what matters most to her: the safest healing, or getting to her recital?':'我不能替你选，不过最要紧的是这一点：玛雅的疹子是HX-2引起的，骨愈凝胶里也有这种成分。那么对她来说，哪个更重要：骨头最稳妥地长好，还是赶上演出？',
+  'Before I answer, did her family mention any allergies or reactions? Records from other countries are often missing. And what matters most to Maya: the safest healing, or getting to her recital?':'回答之前我先问一句：她家人提到过什么过敏或者不良反应吗？在美国以外看病的记录，这边常常查不到。还有，对玛雅来说哪个更重要：骨头最稳妥地长好，还是赶上演出？',
+  'BoneMend fills the break with a gel that helps bone cells rebuild fast, so many kids play again in about 8 days. Only 40 kids have tried it, so the true heal-straight rate could be anywhere from about 76 to 97 in 100.':'骨愈凝胶会把一种凝胶填进断口，帮骨细胞很快长好，所以很多孩子大约8天就能重新拉琴。不过只有40个孩子用过它，所以真正能长正的比例，可能在100个里76个到97个之间的任何地方。',
+  'Pins hold the bone pieces perfectly still, so about 95 in 100 heal straight. The downside is that she couldn’t play violin for about 6 weeks.':'钢钉能把断开的骨头固定得一动不动，所以100个里大约95个能长正。缺点是她大约6周不能拉琴。',
+  'With a cast, about 80 in 100 kids heal straight, or 88 with physical therapy, and she could play in about 3 weeks. Casts are the most studied option, with 21,000 kids in the studies!':'打石膏的话，100个孩子里大约80个能长正，加上康复训练是88个，她大约3周以后就能拉琴。石膏是研究得最多的办法，研究里一共有21,000个孩子呢！',
+  'Then I’d pick pins (about 95 in 100 heal straight) or a cast with therapy (88 in 100) and ask to move the recital. Skip BoneMend because of her rash.':'那我会选打钢钉（100个里大约95个长正），或者打石膏加康复训练（100个里88个），再请他们把演出改期。她起过疹子，所以别用骨愈凝胶。',
+  'Then pins are the surest: about 95 in 100 heal straight, though she’d miss about 6 weeks of violin.':'那打钢钉最稳：100个里大约95个能长正，不过她大约6周不能拉琴。',
+  'Then a cast with therapy and a moved recital gives her the best shot without risking a rash from BoneMend.':'那就打石膏加康复训练，再把演出改期。这样她最有希望上台，也不用冒用骨愈凝胶起疹子的险。',
+  'Then BoneMend gives the best shot at Friday, if her skin is fine with HX-2. Moving the recital with a cast is the safer backup.':'如果她的皮肤对HX-2没问题，骨愈凝胶最有希望让她赶上周五的演出。打石膏再把演出改期，是更稳妥的备用方案。',
+  'If the recital moves about 3 weeks later, a cast would very likely have her ready in time. Keeping the recital on Friday only works with BoneMend, and only if her skin doesn’t react to it.':'如果演出推迟三周左右，打石膏很可能来得及。要想周五照常演出，只能用骨愈凝胶，而且她的皮肤还不能对它起反应。',
+  'Great question! Ask me about Maya’s options, the odds, how bones heal, or anything about 2040. I know a lot!':'问得好！你可以问我玛雅有哪些治疗方案、各种可能性有多大、骨头怎样长好，或者2040年的任何事。我知道的可多了！',
+
+  // ----- Byte's looks and closet (byte_custom.js) -----
+  'Female voice':'女声','Male voice':'男声','{0}, your robot puppy':'{0}，你的机器小狗','Byte':'Byte',
+  'Ears':'耳朵','Tail':'尾巴','Eyes':'眼睛','Floppy':'耷拉耳','Pointy':'尖耳朵','Round':'圆耳朵','Fluffy':'毛茸茸','Curly':'卷卷的','Stubby':'短短的',
+  'Sparkly':'亮晶晶','Button':'纽扣眼','Glow':'会发光','{0}’s closet':'{0}的衣柜','Look':'样子','Gear':'装扮','Color {0}':'颜色 {0}','New!':'新的！',
+  'A present for {0}':'给{0}的礼物','New for {0}: {1}':'{0}的新装扮：{1}','I love it!':'我好喜欢！','New for {0}!':'{0}有新装扮啦！','Wear it':'穿上',
+  'Bandana':'领巾','Ready from day one':'第一天就有','Dashing, right?':'帅吧？','Bow':'蝴蝶结','Finish your first day':'完成第一天','Do I look cute? I look cute.':'我可爱吗？我真可爱。',
+  'Star tag':'星星挂牌','Earn 3 stars in one day':'一天里拿到3颗星','A gold star, for me?':'一颗金星星，是给我的吗？','Snorkel':'潜水呼吸管','Finish 2 days in Boston':'在波士顿完成2天',
+  'Harbor dive, anyone?':'有人要去港口潜水吗？','Parka':'厚棉服','Finish a day in Nome':'在诺姆完成一天','Toasty enough for Nome!':'穿这个去诺姆，够暖和啦！',
+  'Safety vest':'安全背心','Finish a day in Phoenix':'在凤凰城完成一天','Hard hats on, crews!':'施工队，戴好安全帽！','Judge’s collar':'法官领','Finish a day in Washington':'在华盛顿完成一天',
+  'Order in the court! Woof.':'法庭肃静！汪。','Lab badge':'实验室胸牌','Finish a day in the Bay Area':'在湾区完成一天','Lab access: granted!':'实验室门禁：通过！',
+  'Space helmet':'太空头盔','Finish a day on the Moon':'在月球上完成一天','One small step for a puppy!':'这是小狗的一小步！',
+
+  // ----- screen labels -----
+  'Commonwealth Ave · Boston':'联邦大道 · 波士顿','The real future':'真实的未来','Debrief':'复盘','Home · Boston · 9:10 PM':'家 · 波士顿 · 晚上9:10','The Future Table':'未来之桌',
+  'sk-ant-...':'sk-ant-...','1':'1','2':'2','3':'3','10':'10','11':'11','218':'218','?':'?','z':'z','H':'H','HX-2':'HX-2',
+
   // ----- the walk to work -----
   'Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.':'机器人扛着钢梁走过，一辆电车嗡嗡地开过去，还有两个陌生人推着一只木箱，沿着人行道往前走。',
   'Look at the crate':'看看那只箱子','Go to the hospital':'去医院','The strangers hurry away, and you write the crate down in your notebook.':'两个陌生人匆匆走开了。你把这只箱子记在了笔记本上。',

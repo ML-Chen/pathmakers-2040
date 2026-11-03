@@ -107,6 +107,19 @@ I18N.add('zh','maya',{strings:{
   'Skin reaction forecast':'皮肤反应预测',
   'My forecast: 5 of 100 get a skin reaction':'我的预测：100个里有5个起皮肤反应',
 
+  'A forearm with a cracked radius bone':'一条桡骨裂开的前臂','A straight healed bone and a crooked one':'一根长正的骨头和一根长歪的骨头','Three treatment options':'三种治疗方案',
+  'Wk {0}':'第{0}周','Time until violin for each option':'每种方案要多久才能重新拉琴','A big sample and a small sample':'大样本和小样本',
+  'PATIENT':'病人','Age 11':'11岁','Violinist':'小提琴手','Maya’s patient card':'玛雅的病人卡片','Ouch!':'哎哟！','A scooter fall':'骑滑板车摔倒',
+  'Allergies on file':'已登记的过敏','none found':'没有记录','An empty allergy list':'一张空白的过敏清单','Clinic in Taipei':'台北的诊所','Boston hospital':'波士顿的医院',
+  'A record that does not transfer between countries':'一份没能转到波士顿的病历','Any care in':'在美国以外','other countries?':'看过病吗？','Ask the family a question':'问家属一个问题',
+  'Gel fills the gap and bone cells rebuild it':'凝胶填满断口，骨细胞把它重新长好','Gel helping bone cells fill a gap':'凝胶帮骨细胞填满断口',
+  'The smart splint checks that the arm stays still':'智能夹板检查胳膊有没有乱动','A smart splint on the arm':'胳膊上的智能夹板','Cooling patch':'降温贴',
+  'Same ingredient in both':'两样东西里有同一种成分','The same HX-2 ingredient in a cooling patch and in BoneMend':'降温贴和骨愈凝胶里都有HX-2',
+  'If a rash starts, a cast replaces the gel':'一起疹子，就改用石膏代替凝胶','Switching from gel to a cast':'从凝胶改成石膏',
+  'Done 3 weeks early':'提前3周完工','Robots finished a flood wall':'机器人建好了一道防洪墙','4 minutes':'4分钟','average wait':'平均等待',
+  'A clock showing a four minute wait':'一只显示等了四分钟的钟','A secret datacenter that was shut down':'一座被关停的秘密数据中心','Halo runs 11 hospitals':'Halo管着11家医院',
+  '3 weeks':'3周','later':'以后','itchy!':'好痒！','cast':'石膏','Bone healing stage {0}':'骨头愈合第{0}阶段',
+
   // ----- health record -----
   'Maya Lin: health record':'林玛雅：健康档案','Patient: Maya Lin, age 11.':'病人：林玛雅，11岁。',
   'Today: a [[fracture]] of the left [[radius]] after a scooter fall.':'今天：骑滑板车摔倒，左侧[[桡骨]][[骨折]]。',
