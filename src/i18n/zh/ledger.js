@@ -232,7 +232,7 @@ I18N.add('zh','ledger',{strings:{
     '标题大喊“告急”，文章却说队员们在玩桌游，大家都没事。吓人的标题能让更多人点进来看。相信标题或者转发之前，先把下面的文章读完。',
 
   'Nome’s Sunsets Are Turning White':'诺姆的晚霞变白了',
-  'People in Nome have noticed that the sunsets look pale and white instead of orange.':'诺姆的人发现，日落时的天空不再是橙色，而是变得又淡又白。',
+  'People in Nome have noticed that the sunsets look pale and white instead of orange.':'诺姆的人发现，日落时的天空没有了往常的橙色，看上去又淡又白。',
   'The weather AI found a thin [[haze]] high in the sky, but it cannot tell where the haze came from.':'天气AI在高空发现了一层薄薄的[[霾]]，但查不出它是从哪儿来的。',
   'Last week, a flock of geese flying north turned around over the Bering Strait.':'上周，一群往北飞的大雁飞到白令海峡上空时，掉头飞了回来。',
   'A white sunset':'发白的晚霞','Haze, high up':'高空的霾','Geese turning back':'掉头的大雁',
@@ -329,7 +329,8 @@ I18N.add('zh','ledger',{strings:{
   'Dictionary entries, each with a confidence number':'每个词条都标着把握度','Open again':'重新开放','The Dark Tower on its headland':'海岬上的黑塔','Estmark':'埃斯特马克',
   'Day 1':'第1天','Day 2':'第2天','Day 3':'第3天','Day 4':'第4天','Day 5':'第5天','Day 6':'第6天','Day 7':'第7天',
   'An island map whose lights go out for seven days':'一座岛的地图，岛上的灯熄灭了七天','Seabird nests on the tower ledges':'塔沿上的海鸟窝',
-  'A field of solar rafts covering the ocean to the horizon':'太阳能浮筏铺满海面，一直延伸到天边','Day':'白天','Night':'夜晚',
+  'A field of solar rafts covering the ocean to the horizon':'太阳能浮筏铺满海面，一直延伸到天边','Day{0}':'白天{0}','Night{0}':'夜晚{0}',  // the raft picture's labels, keyed apart from the reveal's "Day" counter
+  
   'A raft with solar panels on top and batteries underneath, by day and by night':'一只浮筏，上面是太阳能板，下面是电池，白天黑夜都在供电','cold water':'冷水',
   'A white datacenter platform drawing cold water from deep below':'白色的数据中心平台从深海抽上冷水','far from any city':'远离城市','ON':'开','OFF':'关',
   'A datacenter far from any city, with boats from many countries watching it and a switch that can turn it off':'远离城市的数据中心，好几个国家的船守着它，还有一个能把它关掉的开关',
