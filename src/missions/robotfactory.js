@@ -65,7 +65,7 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
       text:'If someone stops a machine by mistake, the only cost is a short delay, so anybody who sees danger should be able to stop it. Starting the machine again is riskier, because if the problem has not been fixed, someone could get hurt. So only the person who is responsible for the machine should be able to restart it, using a code that proves who they are. If someone far away stops the machine, the people on site should always be told.',
       real:'True today: factory robots have emergency stop buttons that any worker may press, and many car factories let any worker pull an andon cord to stop the line. Restarting takes a trained person. Robot crews that build whole schools are a guess about 2040.'},
     'sz-zone':{title:'Special Economic Zones',track:'Government, law, and power',
-      text:'In 2040, heavy robot industry is kept inside special zones, and each zone has a strict limit on how many robots may work there. Because heavy robot industry stays inside these zones, the land outside them can stay quiet and green. Zone monitors check the robot numbers every day.',
+      text:'In 2040, heavy robot industry is kept inside special zones like this one, and each zone has a strict limit on how many robots may work there. Keeping the robot factories and mines inside the zones lets the land outside them stay quiet and green. Zone monitors check the robot numbers every day.',
       real:'True today: in 1980, Shenzhen, then a small town, became one of China’s first Special Economic Zones. It is now a city of more than 17 million people. Robot permit caps are a guess about 2040.'}},
   chatter:{shenzhen:['I’m the only person on this shift. Me and eleven thousand robots.','That mine used to be a hill. They will fill it back in when the zone is allowed fewer robots.','My father fished in this bay when Shenzhen was a village.','Lunch is in the tower. The noodles are made by a person, which is why they’re good.','The number on the permit board goes up each time a new crew is built, and down each time an old crew is recycled.']},
   talks:{
@@ -124,7 +124,7 @@ Key consideration: stopping is cheap and easy to undo, so anyone on site should 
     return null},
   lines:[
     {who:'byte',text:'Pick one of the three ways to stop the crew, and I’ll time how long it takes.'},
-    {who:'byte',text:'You’ve tried all three now. The remote stop is the one we need to talk about.'},
+    {who:'byte',text:'You’ve tried all three now. The remote stop is the one we need to talk about, because it reaches every crew this factory has built.'},
     {who:'byte',text:'Stopping a crew costs only a short delay, so the site is safer when everyone there can do it. A restart could hurt someone if something is still wrong, so I would let only the crew lead do that.'},
     {who:'linxm',text:'We put your card on the test crew and then tried to restart it from the tower. The crew refused, and it sent you a message about it. Then I said “Tíng,” and it stopped for me. That is exactly what we wanted.'},
     {who:'linxm',text:'We put your card on the test crew, and it works. But the tower can still restart crews without telling anybody, so Tang Yifan wants to talk about that again next month.'},
@@ -156,7 +156,7 @@ function szDrill(){const st=szSt(),last=st.last&&SZ_TESTS[st.last],all=Object.ke
   screen('criteria sz-drillscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Stop drill')}<div class="panel-card sz-drill"><h2>Stop drill</h2>
     <div class="sz-yard ${st.stopping?'':'running'}" id="sz-yard">${szYard()}<div class="sz-clock"><b id="sz-time">${last?last.time:'0.0 s'}</b><span>${last?esc(last.res):'Crew working'}</span></div></div>
     <div class="sz-tests">${Object.keys(SZ_TESTS).map(k=>{const x=SZ_TESTS[k];return `<button class="sz-test ${st.ran[k]?'done':''} ${st.last===k?'on':''}" data-k="${k}"><b>${esc(x.label)}</b><span>${esc(x.who)}</span>${st.ran[k]?`<i>${esc(x.time)}</i>`:''}</button>`}).join('')}</div>
-    <div class="byte-note">${byteBox({...S.byte,mood:st.last==='remote'?'alert':'think'})}<p>${esc(all&&st.last!=='remote'?'You’ve tried all three now. The remote stop is the one we need to talk about.':say)}</p></div>
+    <div class="byte-note">${byteBox({...S.byte,mood:st.last==='remote'?'alert':'think'})}<p>${esc(all&&st.last!=='remote'?'You’ve tried all three now. The remote stop is the one we need to talk about, because it reaches every crew this factory has built.':say)}</p></div>
     <button class="btn wide" id="sz-go" ${all?'':'disabled'}>Talk to the zone monitor</button></div>`);
   $$('.sz-test').forEach(b=>b.onclick=()=>{const k=b.dataset.k,x=SZ_TESTS[k],y=$('#sz-yard');y.className='sz-yard running';void y.offsetWidth;
     $$('.sz-test').forEach(z=>z.disabled=true);MUSIC.sfx&&MUSIC.sfx(k==='button'?'click':k==='voice'?'pop':'blip');
