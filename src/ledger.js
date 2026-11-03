@@ -235,7 +235,7 @@ function ledgerTime(){const ids=Object.keys((typeof S!=='undefined'&&S.completed
   if(typeof camp==='function'){try{idx=Math.max(0,Math.min(11,camp().ch|0))}catch(e){}}
   else for(const id of ids.concat(S.mission&&MISSIONS[S.mission]?[S.mission]:[])){const m=MISSIONS[id];idx=Math.max(idx,ix(m.year,m.season))}
   return {idx,year:1+Math.floor(idx/4),season:LG_SEASONS[idx%4],done}}
-function ledgerDate(idx){return LG_SEASONS[idx%4].replace(/^./,c=>c.toUpperCase())+' '+(2040+Math.floor(idx/4))}
+function ledgerDate(idx){return T(LG_SEASONS[idx%4].replace(/^./,c=>c.toUpperCase())+' {0}',2040+Math.floor(idx/4))}
 function lgState(){const L=S.ledger=S.ledger||{};for(const k of ['read','saved','check','first'])L[k]=L[k]||{};L.batch=L.batch||0;return L}
 function lgWhenIdx(st){const w=st.when||{};return w.year||w.season?((w.year||1)-1)*4+Math.max(0,LG_SEASONS.indexOf(w.season||'spring')):-1}
 function lgUnlocked(st,T){const w=st.when||{};
@@ -264,73 +264,73 @@ const LG_ICON={
   noseal:'<svg viewBox="0 0 24 24"><circle cx="12" cy="11" r="8.4" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3.2 2.4"/><path d="M8.6 7.6l6.8 6.8M15.4 7.6l-6.8 6.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
   back:'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
 // New stories show as a badge on the HUD's Menu button; the Menu opens the Ledger (ledgerMenu() is its button there).
-function ledgerHud(){if(typeof S==='undefined'||!ledgerOn())return '';const n=ledgerNew();return n?`<span class="lg-badge" aria-label="${n} new in the Ledger">${n>9?'9+':n}</span>`:''}
-function ledgerMenu(){const n=ledgerNew();return `<button class="btn wide ghost lg-menu" id="m-ledger">${LG_ICON.paper}<span>The Ledger</span>${n?`<b class="lg-mnew">${n} new</b>`:''}</button>`}
+function ledgerHud(){if(typeof S==='undefined'||!ledgerOn())return '';const n=ledgerNew();return n?`<span class="lg-badge" aria-label="${T('{0} new in the Ledger',n)}">${n>9?'9+':n}</span>`:''}
+function ledgerMenu(){const n=ledgerNew();return `<button class="btn wide ghost lg-menu" id="m-ledger">${LG_ICON.paper}<span>${T('The Ledger')}</span>${n?`<b class="lg-mnew">${T('{0} new',n)}</b>`:''}</button>`}
 function ledgerBadge(){const b=$('#hud-menu');if(!b)return;const old=b.querySelector('.lg-badge');if(old)old.remove();b.insertAdjacentHTML('beforeend',ledgerHud())}
 const LG_CHIPS=[['all','All'],['science','Science'],['places','Places'],['world','World'],['saved','Saved']];
 const LG_IN={science:['science','health','space'],places:['places'],world:['world']};
 let LG_VIEW={chip:'all',story:null,mode:null,miss:0};
 function lgStamp(id){const L=lgState(),c=L.check[id],st=LEDGER.byId[id];if(!c)return '';
-  if(c==='solid')return '<b class="lg-stamp ok">Checked</b>';return `<b class="lg-stamp">${esc((st.trick&&st.trick.stamp)||'Slanted')}</b>`}
+  if(c==='solid')return `<b class="lg-stamp ok">${T('Checked')}</b>`;return `<b class="lg-stamp">${esc(T((st.trick&&st.trick.stamp)||'Slanted'))}</b>`}
 function lgSpotted(){const L=lgState();const tricks=ledgerStories().filter(s=>s.trick);return [tricks.filter(s=>L.check[s.id]&&L.check[s.id]!=='solid'&&L.check[s.id]!=='trusted').length,tricks.length]}
 function openLedger(id){stopVoice();$$('.sheet.ledger').forEach(x=>x.remove());const L=lgState();const first=!L.opened;L.opened=1;ledgerStories();L.seen=L.batch;save();
-  const d=sheet('The Ledger','<div id="lg-root"></div>');d.classList.add('ledger');d.querySelector('.x').addEventListener('click',()=>{stopVoice();ledgerBadge()});
+  const d=sheet(T('The Ledger'),'<div id="lg-root"></div>');d.classList.add('ledger');d.querySelector('.x').addEventListener('click',()=>{stopVoice();ledgerBadge()});
   LG_VIEW={chip:LG_VIEW.chip||'all',story:id||null,mode:null,miss:0,first};lgRender(d)}
 function lgRender(d){const root=d.querySelector('#lg-root');if(!root)return;const body=d.querySelector('.sheet-body');
   if(LG_VIEW.story&&LEDGER.byId[LG_VIEW.story])lgArticle(d,root,LEDGER.byId[LG_VIEW.story]);else lgList(d,root);if(body)body.scrollTop=0}
-function lgList(d,root){const L=lgState(),all=ledgerStories(),T=ledgerTime(),[sp,tot]=lgSpotted();
+function lgList(d,root){const L=lgState(),all=ledgerStories(),TM=ledgerTime(),[sp,tot]=lgSpotted();
   const ch=LG_VIEW.chip,list=ch==='all'?all:ch==='saved'?all.filter(s=>L.saved[s.id]):all.filter(s=>(LG_IN[ch]||[]).includes(s.section));
   const card=(st,i)=>{const big=i===0&&ch==='all';const s0=st.steps[0]||{};const pic=VIZ[s0.viz]?VIZ[s0.viz](s0.args||{}):'';
-    return `<button class="lg-card ${big?'big':''} ${L.read[st.id]?'':'unread'}" data-id="${esc(st.id)}"><div class="lg-thumb">${pic}</div><div class="lg-ct"><h3>${esc(st.title)}</h3><div class="lg-meta">${esc(st.place||'')} · ${esc(ledgerDate(L.first[st.id][0]))}</div></div>${lgStamp(st.id)}${L.saved[st.id]?`<i class="lg-saved" aria-label="Saved">${LG_ICON.save}</i>`:''}</button>`};
-  root.innerHTML=`<div class="lg-top"><span class="lg-edition">${esc(ledgerDate(T.idx))}</span>${tot?`<span class="lg-score" title="Tricks spotted">${LG_ICON.lens}<b>${sp}</b>/${tot}</span>`:''}</div>
-    ${LG_VIEW.first?`<div class="byte-note lg-hello">${byteBox({...S.byte,mood:'happy'})}<p>${esc(LEDGER_BYTE.hello)}</p></div>`:''}
-    <div class="lg-chips" role="tablist">${LG_CHIPS.map(([k,l])=>`<button class="lg-chip ${ch===k?'on':''}" data-c="${k}">${l}</button>`).join('')}</div>
-    <div class="lg-list">${list.length?list.map(card).join(''):`<p class="muted lg-empty">${ch==='saved'?'Tap Save on a story to keep it here.':'No stories here yet.'}</p>`}</div>`;
+    return `<button class="lg-card ${big?'big':''} ${L.read[st.id]?'':'unread'}" data-id="${esc(st.id)}"><div class="lg-thumb">${pic}</div><div class="lg-ct"><h3>${esc(T(st.title))}</h3><div class="lg-meta">${esc(T(st.place||''))} · ${esc(ledgerDate(L.first[st.id][0]))}</div></div>${lgStamp(st.id)}${L.saved[st.id]?`<i class="lg-saved" aria-label="${T('Saved')}">${LG_ICON.save}</i>`:''}</button>`};
+  root.innerHTML=`<div class="lg-top"><span class="lg-edition">${esc(ledgerDate(TM.idx))}</span>${tot?`<span class="lg-score" title="${T('Tricks spotted')}">${LG_ICON.lens}<b>${sp}</b>/${tot}</span>`:''}</div>
+    ${LG_VIEW.first?`<div class="byte-note lg-hello">${byteBox({...S.byte,mood:'happy'})}<p>${esc(T(LEDGER_BYTE.hello))}</p></div>`:''}
+    <div class="lg-chips" role="tablist">${LG_CHIPS.map(([k,l])=>`<button class="lg-chip ${ch===k?'on':''}" data-c="${k}">${T(l)}</button>`).join('')}</div>
+    <div class="lg-list">${list.length?list.map(card).join(''):`<p class="muted lg-empty">${T(ch==='saved'?'Tap Save on a story to keep it here.':'No stories here yet.')}</p>`}</div>`;
   if(LG_VIEW.first){LG_VIEW.first=false;playLine('byte',LEDGER_BYTE.hello)}
   $$('.lg-chip',root).forEach(b=>b.onclick=()=>{LG_VIEW.chip=b.dataset.c;lgRender(d)});
   $$('.lg-card',root).forEach(b=>b.onclick=()=>{stopVoice();LG_VIEW.story=b.dataset.id;LG_VIEW.mode=null;LG_VIEW.miss=0;lgRender(d)})}
 function lgArticle(d,root,st){const L=lgState();if(!L.read[st.id]){L.read[st.id]=1;save()}const ck=L.check[st.id];
   const lk=st.link&&MISSIONS[st.link.mission]&&(MISSIONS[st.link.mission].after||[]).every(x=>S.completed[x])&&S.step!==MISSIONS[st.link.mission].flow[0].name&&S.mission!==st.link.mission?st.link:null;
   root.innerHTML=`<article class="lg-art ${LG_VIEW.mode==='find'?'finding':''}">
-    ${LG_VIEW.mode==='find'?`<div class="lg-findbar"><div class="lg-find">${LG_ICON.lens}<b>Tap the part that shows the problem.</b></div><p class="lg-hint" id="lg-hint"></p></div>`:''}
-    <button class="lg-back" id="lg-back">${LG_ICON.back}<span>All stories</span></button>
-    <div class="lg-headwrap"><h2 class="lg-head lg-part" data-part="head">${esc(st.title)}</h2>${lgStamp(st.id).replace('lg-stamp','lg-stamp big')}</div>
-    <div class="lg-by lg-part ${st.signed?'':'unsigned'}" data-part="by"><i>${st.signed?LG_ICON.seal:LG_ICON.noseal}</i><span>By ${esc(st.by)} · ${esc(st.org)}<small>${st.signed?'Signed':'No content signature'}</small></span></div>
-    <div class="doc-tools"><button class="mini-btn" id="lg-read">Read to me</button><button class="mini-btn ${L.saved[st.id]?'on':''}" id="lg-save">${L.saved[st.id]?'Saved':'Save'}</button></div>
+    ${LG_VIEW.mode==='find'?`<div class="lg-findbar"><div class="lg-find">${LG_ICON.lens}<b>${T('Tap the part that shows the problem.')}</b></div><p class="lg-hint" id="lg-hint"></p></div>`:''}
+    <button class="lg-back" id="lg-back">${LG_ICON.back}<span>${T('All stories')}</span></button>
+    <div class="lg-headwrap"><h2 class="lg-head lg-part" data-part="head">${esc(T(st.title))}</h2>${lgStamp(st.id).replace('lg-stamp','lg-stamp big')}</div>
+    <div class="lg-by lg-part ${st.signed?'':'unsigned'}" data-part="by"><i>${st.signed?LG_ICON.seal:LG_ICON.noseal}</i><span>${esc(T('By {0} · {1}',T(st.by),T(st.org)))}<small>${T(st.signed?'Signed':'No content signature')}</small></span></div>
+    <div class="doc-tools"><button class="mini-btn" id="lg-read">${T('Read to me')}</button><button class="mini-btn ${L.saved[st.id]?'on':''}" id="lg-save">${T(L.saved[st.id]?'Saved':'Save')}</button></div>
     ${st.steps.map((s,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p class="sent lg-part" data-part="s${i}">${rich(s.t)}</p>
-      <figure class="fig lg-part" data-part="f${i}"><figcaption>${esc(s.cap||'')}</figcaption>${VIZ[s.viz]?VIZ[s.viz](s.args||{}):''}</figure></div></section>`).join('')}
-    ${lk?`<button class="btn wide" id="lg-go">${esc(lk.label)}</button>`:''}
+      <figure class="fig lg-part" data-part="f${i}"><figcaption>${esc(TK(st.id,s.cap||''))}</figcaption>${VIZ[s.viz]?VIZ[s.viz](s.args||{}):''}</figure></div></section>`).join('')}
+    ${lk?`<button class="btn wide" id="lg-go">${esc(T(lk.label))}</button>`:''}
     <div class="lg-check" id="lg-check"></div></article>`;
   $('#lg-back',root).onclick=()=>{stopVoice();LG_VIEW.story=null;LG_VIEW.mode=null;lgRender(d)};
-  $('#lg-save',root).onclick=e=>{L.saved[st.id]=L.saved[st.id]?0:1;save();e.target.textContent=L.saved[st.id]?'Saved':'Save';e.target.classList.toggle('on',!!L.saved[st.id]);if(L.saved[st.id])toast('Saved to your clippings','good')};
+  $('#lg-save',root).onclick=e=>{L.saved[st.id]=L.saved[st.id]?0:1;save();e.target.textContent=T(L.saved[st.id]?'Saved':'Save');e.target.classList.toggle('on',!!L.saved[st.id]);if(L.saved[st.id])toast(T('Saved to your clippings'),'good')};
   $('#lg-read',root).onclick=()=>{const ps=$$('.lg-art .sent',root);(async()=>{stopVoice();const id=playId;await playLine('narrator',st.title);playId=id;
     for(let k=0;k<st.steps.length;k++){if(id!==playId)break;ps[k]&&ps[k].classList.add('reading');await playLine('narrator',st.steps[k].t);playId=id;ps[k]&&ps[k].classList.remove('reading')}})()};
   const go=$('#lg-go',root);if(go)go.onclick=()=>{d.remove();stopVoice();startMission(lk.mission)};
   lgCheck(d,root,st);
   $$('.lg-part',root).forEach(p=>p.addEventListener('click',e=>{if(LG_VIEW.mode!=='find'||e.target.closest('.gw'))return;e.preventDefault();e.stopPropagation();lgTap(d,root,st,p)}))}
 function lgByte(text,speak){return `<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${rich(text)}</p></div>${speak!==false?'':''}`}
-function lgCheck(d,root,st){const L=lgState(),box=$('#lg-check',root),c=L.check[st.id],T=st.trick;
-  if(LG_VIEW.mode==='find'){box.innerHTML=`<button class="mini-btn" id="lg-cancel">Stop checking</button>`;
+function lgCheck(d,root,st){const L=lgState(),box=$('#lg-check',root),c=L.check[st.id],TR=st.trick;
+  if(LG_VIEW.mode==='find'){box.innerHTML=`<button class="mini-btn" id="lg-cancel">${T('Stop checking')}</button>`;
     $('#lg-cancel',box).onclick=()=>{LG_VIEW.mode=null;lgRender(d)};return}
   if(c==='solid'||c==='trusted'){box.innerHTML=lgByte(st.check||(c==='solid'?LEDGER_BYTE.solid:LEDGER_BYTE.agree));return}
-  if(c&&T){box.innerHTML=lgByte(T.why)+(FIELD_GUIDE[T.guide]?`<button class="mini-btn" id="lg-fg">Field Guide: ${esc(FIELD_GUIDE[T.guide].title)}</button>`:'');const fg=$('#lg-fg',box);if(fg)fg.onclick=()=>openGuide();return}
-  box.innerHTML=`<div class="lg-ask"><b>Can you trust this story?</b><div class="row"><button class="btn small ghost" id="lg-ok">Looks solid</button><button class="btn small" id="lg-off">${LG_ICON.lens}Something’s off</button></div></div>`;
-  $('#lg-ok',box).onclick=()=>{if(T){box.innerHTML=lgByte(LEDGER_BYTE.nudge)+`<div class="row"><button class="btn small" id="lg-again">${LG_ICON.lens}Look again</button><button class="btn small ghost" id="lg-keep">Keep reading</button></div>`;playLine('byte',LEDGER_BYTE.nudge);
+  if(c&&TR){box.innerHTML=lgByte(TR.why)+(FIELD_GUIDE[TR.guide]?`<button class="mini-btn" id="lg-fg">${esc(T('Field Guide: {0}',T(FIELD_GUIDE[TR.guide].title)))}</button>`:'');const fg=$('#lg-fg',box);if(fg)fg.onclick=()=>openGuide();return}
+  box.innerHTML=`<div class="lg-ask"><b>${T('Can you trust this story?')}</b><div class="row"><button class="btn small ghost" id="lg-ok">${T('Looks solid')}</button><button class="btn small" id="lg-off">${LG_ICON.lens}${T('Something’s off')}</button></div></div>`;
+  $('#lg-ok',box).onclick=()=>{if(TR){box.innerHTML=lgByte(LEDGER_BYTE.nudge)+`<div class="row"><button class="btn small" id="lg-again">${LG_ICON.lens}${T('Look again')}</button><button class="btn small ghost" id="lg-keep">${T('Keep reading')}</button></div>`;playLine('byte',LEDGER_BYTE.nudge);
       $('#lg-again',box).onclick=()=>{LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d)};$('#lg-keep',box).onclick=()=>{stopVoice();LG_VIEW.story=null;lgRender(d)};return}
     L.check[st.id]='trusted';save();lgTrust();lgCheck(d,root,st);playLine('byte',st.check||LEDGER_BYTE.agree)};
-  $('#lg-off',box).onclick=()=>{if(T){LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d);const a=$('.lg-art',root);a&&a.scrollIntoView({block:'start'});return}
+  $('#lg-off',box).onclick=()=>{if(TR){LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d);const a=$('.lg-art',root);a&&a.scrollIntoView({block:'start'});return}
     L.check[st.id]='solid';save();lgTrust();lgCheck(d,root,st);const s=$('#lg-check .byte-note',root);s&&s.classList.add('lg-hop');playLine('byte',st.check||LEDGER_BYTE.solid)}}
-function lgTrust(){unlock('lg-trust')&&toast('New Field Guide idea: '+FIELD_GUIDE['lg-trust'].title,'good')}
-function lgTap(d,root,st,p){const T=st.trick,part=p.dataset.part,L=lgState(),hint=$('#lg-hint',root);
-  if(T&&T.parts.includes(part)){L.check[st.id]=LG_VIEW.miss>=3?'helped':'spotted';save();LG_VIEW.mode=null;MUSIC.sfx('chime');
+function lgTrust(){unlock('lg-trust')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['lg-trust'].title)),'good')}
+function lgTap(d,root,st,p){const TR=st.trick,part=p.dataset.part,L=lgState(),hint=$('#lg-hint',root);
+  if(TR&&TR.parts.includes(part)){L.check[st.id]=LG_VIEW.miss>=3?'helped':'spotted';save();LG_VIEW.mode=null;MUSIC.sfx('chime');
     p.classList.add('lg-right');const r=p.getBoundingClientRect();burst(r.left+r.width/2,r.top+Math.min(r.height/2,60),'sparkles',9);
     setTimeout(()=>{lgRender(d);const hw=$('.lg-headwrap',root);hw&&hw.scrollIntoView({block:'start',behavior:'smooth'});const stp=$('.lg-stamp.big',root);stp&&stp.classList.add('slam');
       const c=$('#lg-check',root);if(c)setTimeout(()=>c.scrollIntoView({block:'end',behavior:'smooth'}),900);
-      if(unlock(T.guide))toast('New Field Guide idea: '+FIELD_GUIDE[T.guide].title,'good');playLine('byte',T.why)},650);return}
+      if(unlock(TR.guide))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[TR.guide].title)),'good');playLine('byte',TR.why)},650);return}
   LG_VIEW.miss++;p.classList.remove('lg-wrong');void p.offsetWidth;p.classList.add('lg-wrong');MUSIC.sfx('click');
-  if(LG_VIEW.miss>=3){const right=$(`.lg-part[data-part="${T.parts[0]}"]`,root);if(right){right.classList.add('lg-show');right.scrollIntoView({block:'center',behavior:'smooth'})}
-    if(hint)hint.textContent=LEDGER_BYTE.help;playLine('byte',LEDGER_BYTE.help);return}
-  if(hint)hint.textContent=(T.near&&T.near[part])||'Not that part. Keep looking!'}
+  if(LG_VIEW.miss>=3){const right=$(`.lg-part[data-part="${TR.parts[0]}"]`,root);if(right){right.classList.add('lg-show');right.scrollIntoView({block:'center',behavior:'smooth'})}
+    if(hint)hint.textContent=T(LEDGER_BYTE.help);playLine('byte',LEDGER_BYTE.help);return}
+  if(hint)hint.textContent=T((TR.near&&TR.near[part])||'Not that part. Keep looking!')}
 
 // Every line the Ledger speaks, for tools/make_audio.py (called from spokenLines() in content_boston.js).
 function ledgerLines(){const out=[],add=(who,t)=>{if(t)out.push({who,text:t})};

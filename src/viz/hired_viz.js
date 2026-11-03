@@ -146,7 +146,7 @@ function hvMeter(x,y,h,lvl,col,o={}){const fillH=h*lvl/10;
    <text x="17" y="${h+3.5}" font-size="10" font-weight="800" fill="${IG.soft}" font-family="Nunito, sans-serif">0</text><text x="17" y="4" font-size="10" font-weight="800" fill="${IG.soft}" font-family="Nunito, sans-serif">10</text>
    <rect x="-5" y="${hvR(h-fillH)}" width="10" height="${hvR(fillH)}" rx="5" fill="${col}" class="${o.cls||''}"/></g>`}
 // tiny calendar tag like the 'moved' recital vignette
-function hvTag(x,y,top,bot,col){return `<g transform="translate(${x} ${y})"><rect x="0" y="0" width="26" height="24" rx="3" fill="#fff"/><rect x="0" y="0" width="26" height="7" rx="3" fill="${col||'#6c5ce7'}"/><circle cx="6" cy="3.5" r="1.2" fill="#fff"/><circle cx="20" cy="3.5" r="1.2" fill="#fff"/><text x="13" y="15.5" text-anchor="middle" font-size="6.5" font-weight="800" fill="#2a2140" font-family="Nunito">${top}</text><text x="13" y="21.5" text-anchor="middle" font-size="5" font-weight="700" fill="#6b7190" font-family="Nunito">${bot}</text></g>`}
+function hvTag(x,y,top,bot,col){return `<g transform="translate(${x} ${y})"><rect x="0" y="0" width="26" height="24" rx="3" fill="#fff"/><rect x="0" y="0" width="26" height="7" rx="3" fill="${col||'#6c5ce7'}"/><circle cx="6" cy="3.5" r="1.2" fill="#fff"/><circle cx="20" cy="3.5" r="1.2" fill="#fff"/><text x="13" y="15.5" text-anchor="middle" font-size="6.5" font-weight="800" fill="#2a2140" font-family="Nunito">${T(top)}</text><text x="13" y="21.5" text-anchor="middle" font-size="5" font-weight="700" fill="#6b7190" font-family="Nunito">${T(bot)}</text></g>`}
 function hvTrophy(x,y,s){return `<g transform="translate(${x} ${y}) scale(${s||1})"><path d="M-8 -20 h16 v6 q0 10 -8 11 q-8 -1 -8 -11z" fill="#f5b82e" stroke="#b07a12" stroke-width="1.2"/><path d="M-8 -17 q-6 0 -5 5 q1 4 6 4 M8 -17 q6 0 5 5 q-1 4 -6 4" stroke="#b07a12" stroke-width="1.6" fill="none"/><rect x="-1.6" y="-3" width="3.2" height="5" fill="#d9a020"/><rect x="-6" y="2" width="12" height="4" rx="1.2" fill="#8a5a1a"/><path d="M-4 -17 v7" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/></g>`}
 function hvBall(x,y,r){return `<g transform="translate(${x} ${y})"><circle r="${r}" fill="#fff" stroke="#2a2440" stroke-width="${hvR(r*.14)}"/><path d="M0 ${-r*.42} l${r*.4} ${r*.3} l${-r*.15} ${r*.46} h${-r*.5} l${-r*.15} ${-r*.46}z" fill="#2a2440"/></g>`}
 function hvGrass(y,w,h,c1,c2){let s=`<rect x="0" y="${y}" width="${w}" height="${h}" fill="${c1}"/>`;for(let i=0;i<w/40;i++)s+=`<rect x="${i*40}" y="${y}" width="20" height="${h}" fill="${c2}" opacity=".5"/>`;return s}
@@ -181,7 +181,7 @@ Object.assign(VIZ,{
       <g transform="translate(188 12) scale(.52)"><path d="M2 8 L62 8 L62 62 C70 74 96 80 150 86 C166 88 170 98 166 112 L4 112 C-4 112 -2 98 0 86Z" fill="#a8b0c4" stroke="#3a4060" stroke-width="3" stroke-linejoin="round"/>
       <path d="M-4 118 Q80 130 170 118 L166 112 L4 112Z" fill="#3a4060"/>${[22,46,70].map(yy=>`<rect x="-2" y="${yy}" width="68" height="11" rx="4" fill="#5b6478"/><rect x="48" y="${yy+2}" width="12" height="7" rx="2" fill="#c7cfe0"/>`).join('')}<rect x="80" y="84" width="70" height="11" rx="4" fill="#5b6478" transform="rotate(8 80 84)"/></g></g>
     ${igT(76,130,'Brace',{s:13})}${igT(224,130,'Walking boot',{s:13})}`,'An ankle brace and a walking boot'),
-  rerollBars:(a={})=>{const nb=a.hidden?3:1,nt=a.hidden?5:2;const row=(y,n,lab)=>{let s=`${igT(10,y-24,lab,{s:12,a:'start'})}<g>${igT(290,y-24,n+' of 10',{s:12,a:'end',c:IG.red})}</g>`;
+  rerollBars:(a={})=>{const nb=a.hidden?3:1,nt=a.hidden?5:2;const row=(y,n,lab)=>{let s=`${igT(10,y-24,lab,{s:12,a:'start'})}<g>${igT(290,y-24,T('{0} of 10{1}',n,''),{s:12,a:'end',c:IG.red})}</g>`;
       for(let i=0;i<10;i++){const x=24+i*28,on=i<n;s+=`<g class="${on?'hv-hot':''}" style="animation-delay:${i*.2}s"><circle cx="${x}" cy="${y-6}" r="5.4" fill="${on?IG.red:IG.teal}"/><path d="M${x-7} ${y+12} v-6 q0 -6 7 -6 q7 0 7 6 v6z" fill="${on?IG.red:IG.teal}"/></g>`}
       return s};
     return igFrame(300,120,`${row(46,nb,'Brace')}${row(104,nt,'Tape only')}`,a.hidden?'Rolled again: brace 3 in 10, tape 5 in 10':'Rolled again: brace 1 in 10, tape 2 in 10')},
@@ -208,7 +208,7 @@ Object.assign(VIZ,{
     <path d="M90 8 Q150 22 210 8" stroke="#6b7aa8" stroke-width="1.2" fill="none"/>
     <g class="hv-bob"><path d="M100 10 h100 v18 q-50 8 -100 0z" fill="#ff7a6b" stroke="#c4473c" stroke-width="1.4"/>${igT(150,25,'Friendly game',{s:12,c:'#fff',w:800})}</g>
     <g transform="translate(12 6)"><rect width="34" height="30" rx="5" fill="#fff" stroke="${IG.line}"/><rect width="34" height="10" rx="5" fill="${IG.violet}"/><rect y="6" width="34" height="4" fill="${IG.violet}"/>${igT(17,25,'SAT',{s:11,w:900})}</g></g>`,'A friendly scrimmage on a sunny Saturday')},
-  calendar3:()=>{const cw=37,x0=20,y0=46,rh=22,days='SMTWTFS'.split('');let cells='';
+  calendar3:()=>{const cw=37,x0=20,y0=46,rh=22,days=T('S M T W T F S').split(' ');let cells='';
     for(let r=0;r<4;r++)for(let c=0;c<7;c++){const x=x0+c*cw,y=y0+r*rh,i=r*7+c,today=r===0&&c===4,play=r===3&&c===6,past=r===0&&c<4,lit=!past&&!today;
       cells+=`<rect x="${x+2}" y="${y+2}" width="${cw-4}" height="${rh-4}" rx="5" fill="${past?'#f4f6fd':'#fff'}" stroke="${IG.line}"/>`;
       if(lit&&!play)cells+=`<rect x="${x+2}" y="${y+2}" width="${cw-4}" height="${rh-4}" rx="5" fill="#e3f8f5" class="hv-day" style="--d:${((i-4)*.16).toFixed(2)}s"/>`}
@@ -255,7 +255,7 @@ const HIRED_VIG={
 };
 
 // ---------- "Day in the life of a Care Doctor" slideshow panels (320x200) ----------
-function hvPanel(art,label){const id='hvp'+(++HV_N);return `<svg viewBox="0 0 320 200" class="ditl" role="img" aria-label="${label}"><clipPath id="${id}"><rect width="320" height="200" rx="14"/></clipPath><g clip-path="url(#${id})">${art}</g></svg>`}
+function hvPanel(art,label){const id='hvp'+(++HV_N);return `<svg viewBox="0 0 320 200" class="ditl" role="img" aria-label="${T(label)}"><clipPath id="${id}"><rect width="320" height="200" rx="14"/></clipPath><g clip-path="url(#${id})">${art}</g></svg>`}
 function hvChair(x,y,col){return `<g transform="translate(${x} ${y})"><rect x="-16" y="-62" width="32" height="34" rx="9" fill="${col}"/><rect x="-18" y="-34" width="36" height="9" rx="4" fill="${hvMixC(col,'#000000',.15)}"/><path d="M-14 -25 V0 M14 -25 V0" stroke="#6b7190" stroke-width="3" stroke-linecap="round"/></g>`}
 function hvSofa(x,y,w,col){const d=hvMixC(col,'#1a1240',.18);return `<g transform="translate(${x} ${y})"><rect x="6" y="-66" width="${w-12}" height="36" rx="12" fill="${col}"/><rect x="0" y="-48" width="14" height="40" rx="6" fill="${d}"/><rect x="${w-14}" y="-48" width="14" height="40" rx="6" fill="${d}"/><rect x="10" y="-36" width="${w-20}" height="16" rx="6" fill="${hvMixC(col,'#ffffff',.18)}"/><rect x="8" y="-22" width="${w-16}" height="14" rx="4" fill="${d}"/><path d="M14 -8 v8 M${w-14} -8 v8" stroke="#6a4424" stroke-width="3"/></g>`}
 function hvBubble(x,y,w,h,inner,tail,d){return `<g class="hv-rise" style="--d:${d||0}s"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${h/2}" fill="#fff" stroke="#dfe3f3" stroke-width="1.6"/><path d="M${x+tail[0]} ${y+h-1} l${tail[1]} 10 l${tail[2]} -10z" fill="#fff" stroke="#dfe3f3" stroke-width="1.6" stroke-linejoin="round"/><rect x="${x+tail[0]-1}" y="${y+h-4}" width="${Math.abs(tail[2])+2}" height="4" fill="#fff"/>${inner}</g>`}
@@ -276,8 +276,8 @@ const DITL_PANELS=[
       <rect y="150" width="320" height="50" fill="#c99a6a"/><rect y="150" width="320" height="6" fill="#e0b282"/>
       <path d="M96 150 L150 40 H306 V128 L118 150Z" fill="#7ff7e4" opacity=".08"/>
       <g class="hv-flick" style="animation-duration:6s"><rect x="146" y="22" width="160" height="108" rx="12" fill="#0f2a40" opacity=".82" stroke="#7ff7e4" stroke-width="1.6"/>
-        <text x="160" y="40" font-size="10.5" font-weight="800" fill="#7ff7e4" font-family="Nunito, sans-serif">HALO &#183; OVERNIGHT</text></g>
-      ${rows.map(([k,t],i)=>`<g class="hv-rise" style="--d:${.4+i*.6}s">${icon(k,166,58+i*24)}<text x="180" y="${62+i*24}" font-size="11.5" font-weight="800" fill="#ffffff" font-family="Nunito, sans-serif">${t}</text></g>`).join('')}
+        <text x="160" y="40" font-size="10.5" font-weight="800" fill="#7ff7e4" font-family="Nunito, sans-serif">${T('HALO · OVERNIGHT')}</text></g>
+      ${rows.map(([k,t],i)=>`<g class="hv-rise" style="--d:${.4+i*.6}s">${icon(k,166,58+i*24)}<text x="180" y="${62+i*24}" font-size="11.5" font-weight="800" fill="#ffffff" font-family="Nunito, sans-serif">${T(t)}</text></g>`).join('')}
       <g class="talking">${hvByte(96,158,74,{mood:'happy'})}</g>
       <g transform="translate(262 150)"><g class="steam"><path d="M-4 -26 q-4 -6 0 -12 M4 -26 q-4 -6 0 -12" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/></g><rect x="-11" y="-24" width="22" height="24" rx="4" fill="#ff7a6b"/><path d="M11 -18 q8 0 8 6 q0 6 -8 6" stroke="#ff7a6b" stroke-width="3.4" fill="none"/>${hvHeart(0,-12,.9,'#fff')}</g>
       <g transform="translate(206 150)"><rect x="-26" y="-20" width="52" height="20" rx="5" fill="#2a2140"/><text x="0" y="-5.5" font-size="12" font-weight="900" fill="#7ff7e4" text-anchor="middle" font-family="Nunito, sans-serif">7:50</text></g>`,'Byte shows what Halo did overnight')},
@@ -306,7 +306,7 @@ const DITL_PANELS=[
   ()=>hvPanel(`<rect width="320" height="200" fill="#e4f6f0"/><rect y="170" width="320" height="30" fill="#c8e8dc"/>
       ${hvFig(40,194,{...HV.doc,pose:'hold',face:'smile'})}
       <g transform="translate(86 16)"><rect width="134" height="160" rx="14" fill="#2a2140"/><rect x="8" y="8" width="118" height="144" rx="8" fill="#fff"/>
-        <text x="67" y="30" font-size="12" font-weight="900" fill="#2a2140" text-anchor="middle" font-family="Nunito, sans-serif">Care plan</text>
+        <text x="67" y="30" font-size="12" font-weight="900" fill="#2a2140" text-anchor="middle" font-family="Nunito, sans-serif">${T('Care plan')}</text>
         ${[0,1,2].map(i=>`<g class="hv-rise" style="--d:${i*.35}s"><rect x="18" y="${42+i*20}" width="12" height="12" rx="3" fill="#1fa774"/><path d="M21 ${48+i*20} l2.4 2.4 l4.4 -5" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/><rect x="36" y="${45+i*20}" width="${[70,58,64][i]}" height="6" rx="3" fill="#dfe3f3"/></g>`).join('')}
         <path d="M18 132 H116" stroke="#8a90b0" stroke-width="1.2"/><text x="18" y="129" font-size="10" font-weight="800" fill="#8a90b0" font-family="Nunito, sans-serif">&#215;</text>
         <path class="hv-sign" style="--len:190" d="M30 126 c4 -14 8 -18 9 -10 c1 8 -4 14 -2 6 c2 -8 8 -12 10 -4 c1 5 3 6 6 -2 c2 -6 4 -3 5 1 c2 6 5 4 8 -4 c2 -5 4 -2 6 2 c3 5 8 2 12 -3 q6 -6 12 0" stroke="#6c5ce7" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>

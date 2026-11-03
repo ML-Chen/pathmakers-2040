@@ -27,23 +27,23 @@ MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:
       intro:GR_I('Good morning, everyone. Our newest Care Doctor, who is still a trainee, will present a case today. Please give them a warm welcome!')},
     beats:[
       {key:'story',label:'The story',ask:GR_B('How will you start your talk? Audiences remember a story about a person better than a list of numbers.'),
-        opts:[{t:c=>c.story,good:true,tip:GR_B('Great start! You introduced a real patient in one sentence, so the audience will want to hear what happened to them.')},
+        opts:[{t:c=>T(c.story),good:true,tip:GR_B('Great start! You introduced a real patient in one sentence, so the audience will want to hear what happened to them.')},
           {t:'Today I’ll show you forty slides of numbers about bones and healing times. Please hold all your questions until the very end.',tip:GR_B('Forty slides of numbers would put the audience to sleep. Start by telling them about your patient instead.')},
           {t:'I’d like to start by telling you how hard I worked on this case and how well I did.',tip:GR_B('Hmm. The audience came to learn about a patient’s case, not about how hard you worked. Start with your patient.')}]},
       {key:'decision',label:'The decision',ask:GR_B('Next comes the decision. What will you say about the plan you chose?'),
-        opts:[{t:c=>c.memo?`We chose ${c.plan||'a plan together'}. Here’s what I signed: “${c.memo}”`:`We chose ${c.plan||'a plan together'}, and I said how sure I was.`,good:true,
+        opts:[{t:c=>c.memo?T('We chose {plan}. Here’s what I signed: “{memo}”',{plan:T(c.plan||'a plan together'),memo:c.memo}):T('We chose {plan}, and I said how sure I was.',{plan:T(c.plan||'a plan together')}),good:true,
             tip:GR_B('Reading out the decision you signed takes courage, and it shows the audience your reasons and how sure you were.')},
           {t:'We picked the best option for the family. You can trust me on that, because I checked everything carefully.',tip:GR_B('If you just ask people to trust you, they can’t learn anything from your case. Tell them what you chose and why.')},
-          {t:c=>`${c.byte} told me which plan was best, so I went with that. It knows far more than I do.`,tip:GR_B('That’s not what happened! I gave you forecasts, and you made the decision yourself. Tell them why you chose that plan.')}]},
+          {t:c=>T('{0} told me which plan was best, so I went with that. It knows far more than I do.',c.byte),tip:GR_B('That’s not what happened! I gave you forecasts, and you made the decision yourself. Tell them why you chose that plan.')}]},
       {key:'thanks',label:'What I learned',ask:GR_B('For the last part, say what you learned from the case and who helped you.'),
-        opts:[{t:c=>`${c.lesson} ${c.thanks}`,good:true,tip:GR_B('That was honest and kind. When you thank the people who helped you, they are glad to help again next time.')},
+        opts:[{t:c=>T('{lesson} {thanks}',{lesson:T(c.lesson),thanks:T(c.thanks)}),good:true,tip:GR_B('That was honest and kind. When you thank the people who helped you, they are glad to help again next time.')},
           {t:'Honestly, everything went perfectly from start to finish, so there isn’t much I would change.',tip:GR_B('Even a case that goes well teaches you something. When you say what you learned, the other doctors can learn it too.')},
           {t:'Halo did most of the work on this case, so if anything went wrong, that was really Halo’s part.',tip:GR_B('Careful. You signed the decision, so you are responsible for it, not Halo. Say what you learned and thank the people who helped.')}]}],
     question:{q:GR_T('Halo can read every chart in this hospital in a second. Why does a human doctor need to sign at all?'),
       judge:'You are Dr. Owen Hale, a friendly Care Doctor at Boston Harbor Hospital in a kids’ game set in 2040. You trust the hospital AI a lot. You asked a young doctor at Grand Rounds why a human doctor needs to sign at all.',
       check:'explains that the choice belongs to the family, that someone must be accountable for it, or that people notice things the AI was never told',
       heur:/family|choice|consent|sign|responsib|accountab|answer for|listen|clue|rash|hides|told me|ask|explain|trust|check/,
-      opts:[{t:c=>`Halo knows the facts better than I do. But I only learned about ${c.clue} by talking with the family, and the choice belongs to them. Someone has to sit with them, explain the odds honestly, and then answer for the decision. That’s why a doctor signs.`,good:true,
+      opts:[{t:c=>T('Halo knows the facts better than I do. But I only learned about {0} by talking with the family, and the choice belongs to them. Someone has to sit with them, explain the odds honestly, and then answer for the decision. That’s why a doctor signs.',T(c.clue)),good:true,
           reply:GR_T('Huh. I trust Halo a lot, maybe too much. I’ll think about what you said the next time I sign a decision.')},
         {t:'Because people are still smarter than AIs, and a computer could make a mistake that a human doctor would never make.',reply:GR_T('Are people really smarter? Halo beats me at chess and at reading charts, so there has to be a better reason.')},
         {t:'You’re right, honestly. Halo knows more than any of us, so maybe it should just sign the decisions itself.',reply:GR_T('Hmm. But if Halo signs, who explains the choice to the family and answers to them when something goes wrong?')}],
@@ -62,6 +62,6 @@ MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:
     byte:GR_B('A Pro! I’m doing my happy spin. Can you tell?'),
     unlocks:['Harder cases, with more people to listen to','Bigger hospital systems to watch over','Trips to sister hospitals, like Shanghai']},
   brief(){return 'Right now the player is preparing and giving Grand Rounds, the hospital’s weekly talk where one doctor presents one real case. The talk has three parts: the patient’s story in one sentence, the decision with the reasons and how sure they were, and what they learned with thanks to the people who helped. Then Dr. Owen Hale, a colleague who trusts the hospital AI a lot, asks why a human doctor needs to sign at all. Good answers: the choice belongs to the family; someone must be accountable and answer for it; people notice things the AI was never told. Help them prepare, but do not write the talk for them.'},
-  canned(q){if(/talk|grand rounds|present|nervous|scared/.test(q))return 'Your talk has three parts. Start with the patient, then say what you chose and why, and then say what you learned and who helped. You can do it!';
-    if(/owen|hale|sign|why human|accountab/.test(q))return 'A doctor signs because the family’s choice needs a person who explains it to them and answers for it if it goes wrong. People also notice things the AI was never told, like a rash that happened in another country.';return null}
+  canned(q){if(TRX(/talk|grand rounds|present|nervous|scared/).test(q))return T('Your talk has three parts. Start with the patient, then say what you chose and why, and then say what you learned and who helped. You can do it!');
+    if(TRX(/owen|hale|sign|why human|accountab/).test(q))return T('A doctor signs because the family’s choice needs a person who explains it to them and answers for it if it goes wrong. People also notice things the AI was never told, like a rash that happened in another country.');return null}
 };

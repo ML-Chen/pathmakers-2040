@@ -51,7 +51,7 @@ Object.assign(VIZ,{
     ${[0,1,2,3].map(i=>`<g transform="translate(${92+i*32} 72)"><rect width="24" height="24" rx="3" fill="${OCC.white}" stroke="${OCC.ink}" stroke-opacity=".4"/><rect x="9" y="-3" width="6" height="3" rx="1" fill="${OCC.ink}" opacity=".6"/>
       <g class="lg-flip"><rect x="3" y="3" width="18" height="18" rx="2" fill="${OCC.teal}" class="lg-grow" style="--d:${i*.2}s"/></g><g class="lg-flop"><rect x="3" y="11" width="18" height="10" rx="2" fill="${OCC.mustard}"/></g></g>`).join('')}
     <path d="M226 56 V32" stroke="${OCC.ink}" stroke-width="1.4"/><g class="lg-flop"><circle cx="226" cy="31" r="5" fill="#ffd45c" opacity=".35"/></g><circle cx="226" cy="31" r="2.2" fill="${OCC.coral}"/>
-    <g class="lg-flip">${igT(40,24,'Day',{s:11,c:OCC.ink})}</g><g class="lg-flop">${igT(40,24,'Night',{s:11,c:'#fff6dc'})}</g>`,'A raft with solar panels on top and batteries underneath, by day and by night'),
+    <g class="lg-flip">${igT(40,24,T('Day{0}',''),{s:11,c:OCC.ink})}</g><g class="lg-flop">${igT(40,24,T('Night{0}',''),{s:11,c:'#fff6dc'})}</g>`,'A raft with solar panels on top and batteries underneath, by day and by night'),
   // 3. a datacenter platform, with cold water pumped up from deep below
   lg_ocean3:()=>{const g=igId('ocd');return lgPic(132,null,`<rect width="300" height="64" fill="${OCC.sky}"/>${lgCloud(56,22,.8)}
     <rect x="0" y="62" width="300" height="70" fill="url(#${g})"/><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${OCC.sea}"/><stop offset="1" stop-color="#173c50"/></linearGradient></defs>
