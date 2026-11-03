@@ -22,7 +22,7 @@ const QY_ITEMS=[
    viz:['qyOvensOn','qyNurseShift','qyBreadRobot','qyFlourStep','qyLoafCount'],
    byte:'Helping was how Kwame handled being worried. I like Kwame.'},
   {id:'sensor',who:'qypriya',art:'sensor',title:'A homemade water tester',x:31,y:79,w:54,guide:'early-warning',
-   story:['When the germ first reached Varrow, nobody noticed it for almost three weeks.','By then, the [[outbreak]] had already reached more than a hundred homes.','So after the Quiet Year, my team built this box and named it Sniffer.','It tests the [[wastewater]] that drains out of buildings for new germs, and if it finds one, it sends an alert within a day.','Today every school and neighborhood in Varrow has a tester like Sniffer, and so does every city and airport in the world.','An AI watches all of those testers at once, and it alerts the health office the moment something new shows up.','Today, a new germ that reaches Varrow gets noticed within days instead of weeks, while it is still small enough to stop. That is what an [[early warning]] does.'],
+   story:['When the germ first reached Varrow, nobody noticed it for almost three weeks.','By then, the [[outbreak]] had already reached more than a hundred homes.','So after the Quiet Year, my team built this box and named it Sniffer.','It tests the [[wastewater]] that drains out of buildings for new germs, and if it finds one, it sends an alert within a day.','Today every school and neighborhood in Varrow has a tester like Sniffer, and so does every city and airport in the world.','An AI watches all of those testers at once, and it alerts the health office the moment something new shows up.','Today, a new germ that reaches Varrow gets noticed within days instead of weeks, while it is still small enough to stop. Varrow’s [[early warning]] system is built to catch new germs that early.'],
    viz:['qyUnnoticed','qyHomesLit','qyBuildBox','qySniff','qySensorMap','qyWatchAll','qyDaysWeeks'],
    byte:'Noticing a germ in days instead of weeks makes a huge difference, because the number of sick homes keeps doubling.'},
   {id:'slip',who:'qynoor',art:'slip',title:'An order slip, stamped HOLD',x:33,y:66.4,w:46,guide:'screening',
@@ -34,7 +34,7 @@ const QY_ITEMS=[
    viz:['qyDesignFast','qyTestWeeks','qyStickerKid','qyShield','qyHelped'],
    byte:'This reminds me of BoneMend, the new treatment for Maya’s broken bone, which had been tested on only 40 kids. Careful tests are how doctors find out whether a new medicine is safe.'},
   {id:'drawing',who:'qyivy',art:'drawing',title:'A crayon drawing',x:91,y:55,w:48,guide:'pass-it-on',
-   story:['I drew this when I was seven.','I was scared, so Mom and I put a paper lantern in our window.','The next night, the family across the street put a lantern in their window too.','By the end of the week, our whole street was glowing.','That is how the lanterns of Varrow started.','I didn’t know a little kid could start something that big.'],
+   story:['I drew this when I was seven.','I was scared, so Mom and I put a paper lantern in our window.','The next night, the family across the street put a lantern in their window too.','By the end of the week, our whole street was glowing.','The lanterns in Varrow’s windows all started with our one paper lantern.','I didn’t know a little kid could start something that big.'],
    viz:['qyCrayons','qyFirstLantern','qyAcrossStreet','qyStreetGlow','qyGardenGrows','qyBigFromSmall'],
    byte:'One lantern in Ivy’s window led to lanterns in windows all over Varrow, because people who see a kind act often copy it.'}
 ];
