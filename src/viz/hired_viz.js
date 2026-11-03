@@ -188,7 +188,7 @@ Object.assign(VIZ,{
   healWeeks:()=>{const X=w=>16+w*(268/6);return igFrame(300,130,`
     ${igT(16,22,'First sprain: about 2 weeks',{s:12,a:'start'})}<rect x="16" y="30" width="268" height="16" rx="8" fill="${IG.line}" opacity=".6"/><rect x="16" y="30" width="${hvR(X(2)-16)}" height="16" rx="8" fill="${IG.teal}" class="ig-grow"/>
     ${igT(16,70,'Second sprain: about 6 weeks',{s:12,a:'start'})}<rect x="16" y="78" width="268" height="16" rx="8" fill="${IG.line}" opacity=".6"/><rect x="16" y="78" width="268" height="16" rx="8" fill="${IG.coral}" class="ig-grow" style="--d:.5s"/>
-    <path d="M16 106 H284" stroke="${IG.line}" stroke-width="2"/>${[0,1,2,3,4,5,6].map(w=>`<path d="M${hvR(X(w))} 102 v8" stroke="${IG.soft}"/>${igT(hvR(X(w)),124,w===0?'Start':'Wk '+w,{s:10,c:IG.soft})}`).join('')}`,'A first sprain heals in about 2 weeks; a second sprain takes about 6')},
+    <path d="M16 106 H284" stroke="${IG.line}" stroke-width="2"/>${[0,1,2,3,4,5,6].map(w=>`<path d="M${hvR(X(w))} 102 v8" stroke="${IG.soft}"/>${igT(hvR(X(w)),124,w===0?'Start':'Wk '+w,{s:10,c:IG.soft})}`).join('')}`,'A first sprain heals in about 2 weeks, and a second sprain takes about 6 weeks')},
   painCheck:()=>igFrame(300,140,`<rect x="0" y="0" width="300" height="140" rx="12" fill="#e6f6ff"/>${hvGrass(92,300,48,'#7fd08a','#6cc47a')}${hvGoal(14,30,70,64)}
     <g transform="translate(118 0)"><ellipse cx="11" cy="118" rx="26" ry="4" fill="rgba(20,25,60,.15)"/>
       <g class="hv-down">${hvAri(0,120,{pose:'ground',face:'smile',gloves:true,s:1.1,noShadow:true})}</g>

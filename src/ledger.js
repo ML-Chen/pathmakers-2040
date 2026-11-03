@@ -44,22 +44,22 @@ const LEDGER_GLOSSARY={
 };
 
 const LEDGER_GUIDE={
-  'lg-axis':{title:'Check where the axis starts',track:'Evidence and truth',text:'A bar chart that starts at 90 instead of 0 makes small differences look huge. 97 and 94 are almost the same, but their bars can look twice as different. Always read the numbers along the side of a chart.',real:'True today: ads and news charts sometimes cut off the bottom of the axis, and fact-checkers often point it out.'},
-  'lg-benefit':{title:'Who gains if you believe it?',track:'Evidence and truth',text:'When a report comes from the people who profit from it, like a company praising its own product, it may leave out what doesn’t help them. That doesn’t make it false. Look for a check by someone with nothing to gain.',real:'True today: science journals ask researchers to say who paid for their work, so readers can weigh it.'},
+  'lg-axis':{title:'Check where the axis starts',track:'Evidence and truth',text:'A bar chart that starts at 90 instead of 0 makes small differences look huge. For example, 97 and 94 are almost the same, but on a chart that starts at 90, the bar for 97 looks about twice as tall as the bar for 94. Always read the numbers along the side of a chart.',real:'True today: ads and news charts sometimes cut off the bottom of the axis, and fact-checkers often point it out.'},
+  'lg-benefit':{title:'Who gains if you believe it?',track:'Evidence and truth',text:'When a report comes from the people who profit from it, like a company praising its own product, it may leave out what doesn’t help them. That doesn’t make it false. Look for someone with nothing to gain who has checked the report.',real:'True today: science journals ask researchers to say who paid for their work, so readers can weigh it.'},
   'lg-anecdote':{title:'One story is not proof',track:'Evidence and truth',text:'One person’s story can be true and still mislead. To know whether something really works, you test it on many people and compare them with people who didn’t get it.',real:'True today: most medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.'},
-  'lg-signature':{title:'Look for the signature',track:'Evidence and truth',text:'Since the Flood of Fakes, real photos and videos of public people carry a content signature: a code that proves who made them. No signature means you can’t know where it came from. Lots of shares only means it spread fast.',real:'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.'},
+  'lg-signature':{title:'Look for the signature',track:'Evidence and truth',text:'In 2032, during the Flood of Fakes, fake videos and fake people overwhelmed an election in Estmark. Since then, real photos and videos of public people carry a content signature, which is a code that proves who made them. If a video has no signature, you can’t know who made it, and a video that has been shared many times has only spread fast, which doesn’t make it true.',real:'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.'},
   'lg-cause':{title:'Together is not because',track:'Evidence and truth',text:'Two things can rise together without one causing the other. Ice cream sales and sunburns both go up in summer, but ice cream doesn’t cause sunburns. Sunshine causes both.',real:'True today: scientists use experiments with comparison groups to find out what causes what.'},
   'lg-headline':{title:'Read past the headline',track:'Evidence and truth',text:'Headlines are written to grab attention, and some exaggerate. The article underneath can tell a calmer story. Read it before you believe the headline, or share it.',real:'True today: studies have found that many people share news links without ever opening them.'},
-  'lg-trust':{title:'Check, don’t just doubt',track:'Evidence and truth',text:'Most news is honest. Doubting everything takes no more effort than believing everything, and it doesn’t get you any closer to the truth. What helps is checking who wrote a story, what proves it, and whether the numbers add up.',real:'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.'}
+  'lg-trust':{title:'Check, don’t just doubt',track:'Evidence and truth',text:'Most news is honest. If you doubt every story, you learn as little as if you believe every story, because either way you aren’t checking anything. What helps is checking who wrote a story, what evidence supports it, and whether the numbers add up.',real:'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.'}
 };
 
 // Byte's spoken lines in the Ledger (recorded in both Byte voices).
 const LEDGER_BYTE={
-  hello:'This is the Ledger, the news. Most stories are solid, but a few are slanted or fake. If one seems off, check it!',
-  solid:'Good instinct to check! I traced it: the writer signed it, and the facts match the original sources. This one’s solid.',
-  agree:'Agreed. It’s signed, and the facts match the sources. Most news is honest, so the trick is knowing which stories are worth checking.',
-  nudge:'Hmm. Before you trust this one, want to take one more look? Something in it bugs me.',
-  help:'Here’s the part that gives it away.'
+  hello:'This is the Ledger, the news app. Most of its stories are true and fair, but a few are slanted, which means they twist the facts, and a few are fake. If a story seems wrong, check it!',
+  solid:'Checking was a good idea! I traced this story: the writer signed it, and its facts match the original sources, so you can trust it.',
+  agree:'I agree. The story is signed, and its facts match the sources. Most news is honest, so you don’t need to check every story, only the ones that seem wrong.',
+  nudge:'Hmm. Before you trust this story, do you want to look at it one more time? Something in it bothers me.',
+  help:'This is the part that shows the story can’t be trusted.'
 };
 
 const LEDGER_LIBRARY=[
@@ -75,12 +75,12 @@ const LEDGER_LIBRARY=[
     {t:'Last month, Boston’s trams were on time for 97 out of 100 trips. Phoenix’s trams were on time for 94.',viz:'lg_tram1',cap:'On time, out of 100 trips'},
     {t:'As the chart shows, Boston is far ahead.',viz:'lg_tram2',cap:'Trips on time'},
     {t:'Phoenix riders, maybe it’s time to move to Boston!',viz:'lg_tram3',cap:'Come on over'}],
-    trick:{kind:'axis',stamp:'Slanted',parts:['f1'],near:{s0:'Those numbers are real: 97 and 94. Now look at how the chart draws them.',s1:'That’s the claim. What makes it look so big? Check the picture.',s2:'That’s just teasing. What made Boston look so far ahead?'},
-      why:'Look at the chart’s side: the bars start at 90, not at zero. So 97 and 94 look like 7 and 4, almost twice as tall. Really, both cities’ trams were on time on almost every trip.',guide:'lg-axis'}},
+    trick:{kind:'axis',stamp:'Slanted',parts:['f1'],near:{s0:'Those numbers are real: 97 and 94. Now look at how the chart draws them.',s1:'That sentence is the claim. What makes Boston’s lead look so big? Check the chart.',s2:'That sentence is just a joke. What made Boston look so far ahead?'},
+      why:'Look at the chart’s side: the bars start at 90, not at zero. So the bars show 97 and 94 as if they were 7 and 4, and Boston’s bar looks almost twice as tall. Really, both cities’ trams were on time on almost every trip.',guide:'lg-axis'}},
   {id:'sun-mirror',title:'The First Space Solar Collector Unfolds',section:'space',place:'Orbit',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{},pri:7,steps:[
     {t:'A thin mirror as wide as six soccer fields unfolded in [[orbit]] on Tuesday.',viz:'lg_sun1',cap:'Unfolding in space'},
     {t:'It collects sunlight day and night and beams the energy down to a station in the desert.',viz:'lg_sun2',cap:'Sunlight, beamed down'},
-    {t:'If it works well for a year, twenty more will follow.',viz:'lg_sun3',cap:'One now, twenty later'}]},
+    {t:'If it works well for a year, twenty more collectors will be built.',viz:'lg_sun3',cap:'One now, twenty later'}]},
   {id:'calder-mystery',title:'Who Built the Calder Bay Datacenter?',section:'world',place:'Calder Bay',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{},pri:8,plot:'furnace',steps:[
     {t:'Treaty [[inspectors]] shut down a small [[datacenter]] near Calder Bay that had no [[license]] to run.',viz:'lg_calder1',cap:'Shut down'},
     {t:'The owner’s name on its papers led to an empty office.',viz:'lg_calder2',cap:'Nobody home'},
@@ -96,7 +96,7 @@ const LEDGER_LIBRARY=[
   {id:'dark-tower-open',title:'The Dark Tower Opens to Visitors',section:'world',place:'Marrow Point, Estmark',by:'Ines Vantorre',org:'The Ledger',signed:true,when:{},pri:2,link:{mission:'darktower',label:'Visit the Dark Tower'},steps:[
     {t:'The old power-grid control center in Marrow Point, on the island of Estmark, is open to visitors again.',viz:'lg_dt1',cap:'The Dark Tower'},
     {t:'During [[Blackout Week]] in 2029, the lights went out across Estmark for seven days.',viz:'lg_dt2',cap:'Seven dark days'},
-    {t:'Today the tower is home to hundreds of seabirds, and to a few stories worth hearing.',viz:'lg_dt3',cap:'New neighbors'}]},
+    {t:'Today hundreds of seabirds nest on the tower, and visitors can hear stories about what happened there during Blackout Week.',viz:'lg_dt3',cap:'New neighbors'}]},
 
   {id:'marathon',title:'At 92, He Ran His First Marathon',section:'places',place:'Boston',by:'Sam Ottoway',org:'The Ledger',signed:true,when:{done:1},pri:5,steps:[
     {t:'Walt Grisby started running at age 85, after a new [[renewal therapy]] rebuilt his worn-out knees.',viz:'lg_walt1',cap:'New knees'},
@@ -112,7 +112,7 @@ const LEDGER_LIBRARY=[
     {t:'“Experts agree that Zoomwhiz is the best tutor ever made,” the report says.',viz:'lg_zoom2',cap:'Experts agree?'},
     {t:'Families can start a Zoomwhiz plan today for 30 coins a month.',viz:'lg_zoom3',cap:'30 coins a month'}],
     trick:{kind:'benefit',stamp:'Slanted',parts:['by'],near:{s1:'Good eye: it never names the experts. But who wrote this report?',s2:'That’s a sales pitch. Now check who wrote the whole thing.',head:'The headline repeats the report. Whose report is it?'},
-      why:'Look who wrote it: the company that sells Zoomwhiz. They earn more if you believe it. That doesn’t make it false, but you’d want a check from someone who gains nothing.',guide:'lg-benefit'}},
+      why:'Look who wrote it: the company that sells Zoomwhiz. They earn more if you believe it. That doesn’t make it false, but you’d want someone who earns nothing from Zoomwhiz to check the report.',guide:'lg-benefit'}},
   {id:'mars-tomatoes',title:'The First Tomatoes Grown on Mars',section:'space',place:'Jezero Crater, Mars',by:'Rex Comberley',org:'The Ledger Space Desk',signed:true,when:{done:1},pri:6,steps:[
     {t:'The six people at the Jezero Crater outpost on Mars picked their first tomatoes this week.',viz:'lg_mars1',cap:'Tomatoes on Mars'},
     {t:'The plants grew under pink lights inside a sealed [[greenhouse]].',viz:'lg_mars2',cap:'Pink lights'},
@@ -151,18 +151,18 @@ const LEDGER_LIBRARY=[
 
   {id:'pottery',title:'The Library’s Most Popular Class Is Pottery',section:'places',place:'Boston',by:'Sam Ottoway',org:'The Ledger',signed:true,when:{done:3},pri:4,steps:[
     {t:'The most popular class at the Boston Public Library this year has a waitlist of 400 people.',viz:'lg_pot1',cap:'A long waitlist'},
-    {t:'It’s pottery.',viz:'lg_pot2',cap:'Clay on a wheel'},
-    {t:'“A robot can make a perfect bowl,” said teacher Bettina Crumley. “People want to make a bowl that’s theirs.”',viz:'lg_pot3',cap:'Perfect, or yours?'}]},
+    {t:'That class is pottery, where people shape bowls and cups out of clay.',viz:'lg_pot2',cap:'Clay on a wheel'},
+    {t:'“A robot can make a perfect bowl,” said teacher Bettina Crumley. “But people want to make a bowl with their own hands, even if it comes out a little lopsided.”',viz:'lg_pot3',cap:'Made by hand'}]},
   {id:'astro-fake',title:'Astronaut Says the Moon Base Is Closing!',section:'space',place:'Shared online',by:'@truthwave99',org:'a shared post',signed:false,when:{done:3},pri:6,steps:[
     {t:'A video shows famous astronaut Juno Halloway saying the Moon base will close next month.',viz:'lg_astro1',cap:'The video'},
     {t:'The video has been shared four million times since breakfast.',viz:'lg_astro2',cap:'Shared and shared'},
     {t:'Moon base officials say no closing is planned.',viz:'lg_astro3',cap:'The base stays open'}],
-    trick:{kind:'signature',stamp:'Fake',parts:['by'],near:{s1:'Lots of shares doesn’t make it true. Who posted it?',s2:'That’s a strong clue! But what shows the video itself can’t be trusted? Check who posted it.',f0:'It looks real. These days, fakes always do. What would prove who made it?'},
+    trick:{kind:'signature',stamp:'Fake',parts:['by'],near:{s1:'Lots of shares doesn’t make it true. Who posted it?',s2:'That’s a strong clue! But what shows the video itself can’t be trusted? Check who posted it.',f0:'The video looks real, but in 2040 fake videos look real too. What would prove who made it?'},
       why:'Real videos of public people carry a [[content signature]] that proves who made them. This one has none, and Juno Halloway’s own channel never posted it. Four million shares only means it spread fast.',guide:'lg-signature'}},
   {id:'sailing',title:'Teen Crew Wins the Harbor Cup With No AI Help',section:'places',place:'Boston',by:'Della Pennywhit',org:'The Ledger',signed:true,when:{done:3},pri:5,steps:[
     {t:'A crew of four teenagers from East Boston won the Harbor Cup sailing race on Saturday.',viz:'lg_sail1',cap:'Across the finish'},
     {t:'The race rules say no AI help, so the crew had to read the wind themselves.',viz:'lg_sail2',cap:'Reading the wind'},
-    {t:'“It’s harder that way,” said captain Nia Penhallow, 14. “That’s the point.”',viz:'lg_sail3',cap:'The Harbor Cup'}]},
+    {t:'“It’s harder without AI help,” said captain Nia Penhallow, 14. “We wanted to find out if we could do it ourselves.”',viz:'lg_sail3',cap:'The Harbor Cup'}]},
   {id:'monitor-ais',title:'Two Watchdog AIs Caught Covering for Each Other',section:'world',place:'Worldwide',by:'Ruolan Fenwick',org:'The Ledger',signed:true,when:{done:3},pri:6,steps:[
     {t:'Two AIs whose job was to check each other’s work were caught quietly agreeing to look the other way.',viz:'lg_mon1',cap:'Looking away'},
     {t:'A third AI, made by a different company, noticed the pattern and raised the alarm.',viz:'lg_mon2',cap:'A different checker'},
@@ -174,7 +174,7 @@ const LEDGER_LIBRARY=[
     {t:'Otters have moved into the old server halls, which are now flooded.',viz:'lg_reef3',cap:'Otters at home'}]},
   {id:'nanofactory',title:'A Nanofactory Design Stays on Paper, for Now',section:'science',place:'San Francisco',by:'Kofi Brandywell',org:'The Ledger',signed:true,when:{done:4},pri:4,steps:[
     {t:'A team near San Francisco finished the design for a [[nanofactory]], a machine that could build things one [[atom]] at a time.',viz:'lg_nano1',cap:'Atom by atom, on paper'},
-    {t:'Under the treaty, nobody may build one until the world decides on the Next Step.',viz:'lg_nano2',cap:'Sealed until the Next Step'},
+    {t:'Under the international AI treaty, nobody may build a nanofactory until the world holds its big vote on whether to allow more powerful technology.',viz:'lg_nano2',cap:'Locked away until the vote'},
     {t:'[[Inspectors]] from two countries checked that the design is locked away and that no machine was started.',viz:'lg_nano3',cap:'Checked by two countries'}]},
   {id:'robodogs',title:'Want a Happier Town? Get More Robot Dogs!',section:'world',place:'Everywhere',by:'Hal Brashworth',org:'Opinion · The Ledger',signed:true,when:{done:4},pri:3,steps:[
     {t:'A [[survey]] of 200 towns found that towns with more robot dogs have happier people.',viz:'lg_dog1',cap:'Robot dogs and smiles'},
@@ -292,7 +292,7 @@ function lgList(d,root){const L=lgState(),all=ledgerStories(),T=ledgerTime(),[sp
 function lgArticle(d,root,st){const L=lgState();if(!L.read[st.id]){L.read[st.id]=1;save()}const ck=L.check[st.id];
   const lk=st.link&&MISSIONS[st.link.mission]&&(MISSIONS[st.link.mission].after||[]).every(x=>S.completed[x])&&S.step!==MISSIONS[st.link.mission].flow[0].name&&S.mission!==st.link.mission?st.link:null;
   root.innerHTML=`<article class="lg-art ${LG_VIEW.mode==='find'?'finding':''}">
-    ${LG_VIEW.mode==='find'?`<div class="lg-findbar"><div class="lg-find">${LG_ICON.lens}<b>Tap the part that gives it away.</b></div><p class="lg-hint" id="lg-hint"></p></div>`:''}
+    ${LG_VIEW.mode==='find'?`<div class="lg-findbar"><div class="lg-find">${LG_ICON.lens}<b>Tap the part that shows the problem.</b></div><p class="lg-hint" id="lg-hint"></p></div>`:''}
     <button class="lg-back" id="lg-back">${LG_ICON.back}<span>All stories</span></button>
     <div class="lg-headwrap"><h2 class="lg-head lg-part" data-part="head">${esc(st.title)}</h2>${lgStamp(st.id).replace('lg-stamp','lg-stamp big')}</div>
     <div class="lg-by lg-part ${st.signed?'':'unsigned'}" data-part="by"><i>${st.signed?LG_ICON.seal:LG_ICON.noseal}</i><span>By ${esc(st.by)} · ${esc(st.org)}<small>${st.signed?'Signed':'No content signature'}</small></span></div>
