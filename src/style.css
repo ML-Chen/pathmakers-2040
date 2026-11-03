@@ -40,6 +40,8 @@ p{margin:.35em 0}
 
 /* HUD */
 .hud{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+/* the HUD row itself is see-through: only the place chip and the buttons catch taps, so a prop just below them stays tappable */
+.hud{pointer-events:none}.hud>*{pointer-events:auto}
 .place{background:rgba(255,255,255,.88);backdrop-filter:blur(8px);border-radius:999px;padding:7px 14px;font-weight:800;font-size:.85rem;box-shadow:0 4px 14px rgba(20,25,60,.12);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hud-btns{display:flex;gap:6px;flex:none}
 .hbtn{position:relative;width:42px;height:42px;border:0;border-radius:14px;background:rgba(255,255,255,.92);color:var(--violet);display:grid;place-items:center;box-shadow:0 4px 14px rgba(20,25,60,.14)}
@@ -176,8 +178,11 @@ textarea{resize:vertical;line-height:1.5}
 /* walking scene */
 .walk-byte{position:absolute;left:8%;top:calc(80% - 84px);width:84px;animation:stroll 9s ease-in-out infinite alternate}
 @keyframes stroll{0%{transform:translateX(0)}100%{transform:translateX(120px)}}
-.pipjory{position:absolute;right:2%;top:calc(81% - 104px);width:150px;pointer-events:auto;transition:transform 1.4s ease-in,opacity 1.4s}
-.pipjory svg{overflow:visible;display:block}
+.pipjory{position:absolute;right:2%;top:calc(81% - 104px);width:150px;pointer-events:none;transition:transform 1.4s ease-in,opacity 1.4s}
+/* only the drawn strangers and crate catch taps; the empty corners of their picture let taps through to props behind */
+.pipjory svg{overflow:visible;display:block;pointer-events:none}.pipjory svg *{pointer-events:visiblePainted}
+/* Commonwealth Ave: the strangers wheel their crate along the front of the sidewalk, in front of the robot, lamp and passers-by */
+.pipjory.st-pj{top:calc(87% - 130px)}
 .pipjory.flee{transform:translateX(70vw);opacity:0}
 .caption-card{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:488px;margin:0 auto;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 16px 40px rgba(10,14,40,.35);z-index:2}
 .caption-card.dark{background:rgba(26,30,70,.92);color:#fff;backdrop-filter:blur(6px)}
@@ -390,7 +395,8 @@ svg text:not([font-family]){font-family:var(--body)}
 .vpop{transform-box:fill-box;transform-origin:center;animation:igpulse 1.6s ease-in-out infinite}
 .vblink{animation:igblink 1.2s infinite}
 .fut:hover{transform:translateY(-2px) scale(1.04);transition:transform .2s;box-shadow:0 0 22px rgba(94,230,214,.35) inset,0 0 14px rgba(94,230,214,.35)}
-.companion{position:fixed;right:max(10px,calc(50% - 250px));bottom:calc(14px + env(safe-area-inset-bottom,0px));width:76px;border:0;background:none;padding:0;z-index:20;filter:drop-shadow(0 8px 14px rgba(20,25,60,.25))}
+/* #app>.companion: a screen that puts Byte straight inside #app must not lose the float to #app>*{position:relative} */
+.companion,#app>.companion{position:fixed;right:max(10px,calc(50% - 250px));bottom:calc(14px + env(safe-area-inset-bottom,0px));width:76px;border:0;background:none;padding:0;z-index:20;filter:drop-shadow(0 8px 14px rgba(20,25,60,.25))}
 .companion.hop{animation:hop .7s}
 .bubble{position:fixed;right:max(84px,calc(50% - 176px));bottom:calc(70px + env(safe-area-inset-bottom,0px));max-width:min(240px,62vw);background:var(--ink);color:#fff;border-radius:16px 16px 4px 16px;padding:10px 12px;font-weight:800;font-size:.92rem;z-index:21;animation:drop .35s cubic-bezier(.2,1.4,.4,1)}
 .bubble.out{opacity:0;transition:.4s}

@@ -194,8 +194,10 @@ I18N.add('zh','core',{strings:{
   'Lucky':'运气好','As expected':'和预料的一样','Unlucky':'运气不好','luck unknown':'不知道运气怎样',
 
   // ----- props and passers-by -----
-  'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}',
-  'clock':'钟','lamp':'台灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
+  'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}','Look at the {0}':'看看{0}',
+  'bay_bridge':'金门大桥','bay_base':'探索基地','cb_dc':'数据中心','cb_light':'灯塔','nyc_tower':'时代广场大楼','nyc_steps':'红色台阶',
+  'raft':'太阳能浮筏','tanker':'数据运输船','drone':'无人机',
+  'clock':'钟','lamp':'灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
   'ep_gull':'海鸥','ep_ring':'救生圈','dh_record':'唱片机','dh_peony':'牡丹花','marstomato':'番茄','marsrock':'石头','marsdrone':'无人机','moonrover':'月球车',
   'moonglass':'玻璃','moonflag':'旗子','phx_bottle':'水瓶','phx_bot':'机器人','phx_board':'滑板','phx_quail':'鹌鹑','spacewalker':'宇航员','bj_tea':'茶',
   // things people and Byte say when a scene's landmark is tapped (src/scenes/*.js)

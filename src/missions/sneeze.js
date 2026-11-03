@@ -381,7 +381,7 @@ MISSIONS.sneeze.custom={
     const heard=!!S.notes.wrongshop;
     screen('walk',`${scene('harbor')}${hud('Harbor Row · Boston')}<div class="props walklayer">
       <div class="walk-byte">${byteBox({...S.byte,mood:'alert'},'trot')}</div>
-      <div class="pipjory" id="pj"><svg viewBox="-40 -60 170 110">${mini(0,40,{who:'pip',pose:'stand',s:1.1})}${mini(52,40,{who:'jory',pose:'stand',s:1.05,flip:true})}
+      <div class="pipjory sn-pj" id="pj"><svg viewBox="-40 -60 170 110">${mini(0,40,{who:'pip',pose:'stand',s:1.1})}${mini(52,40,{who:'jory',pose:'stand',s:1.05,flip:true})}
         <g transform="translate(16 -34)"><rect x="0" y="0" width="54" height="22" rx="7" fill="#fff" opacity=".94"/><path d="M10 22 l-2 7 l9 -7z" fill="#fff" opacity=".94"/>
         <text x="27" y="15" text-anchor="middle" font-size="9" font-family="Nunito" font-weight="800" fill="#1f2340">?!</text></g></svg></div></div>
       ${snStrip()}
