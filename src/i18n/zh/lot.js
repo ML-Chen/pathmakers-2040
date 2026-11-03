@@ -66,7 +66,7 @@ I18N.add('zh','lot',{strings:{
   'A skate [[bowl]] can be a detention basin too: dry for skating most days, and full only after big storms.':'滑板[[碗池]]也可以当滞洪池用：平时是干的，可以玩滑板，只有大暴雨过后才会装满水。','A bowl with two jobs':'一个碗池，两种用处',
   'The deeper the basin and the wider its drain, the bigger the storm it can hold.':'池子挖得越深，排水口越宽，能接住的暴雨就越大。','Street stays dry, out of 10 big storms':'10场大暴雨里，街道不被淹的次数',
   'Phoenix is one of the hottest big cities in America, with more than 100 days a year above 100°F.':'凤凰城是美国最热的大城市之一，一年里有100多天气温超过华氏100度（大约38摄氏度）。','A Phoenix year':'凤凰城的一年',
-  'In July sun, bare concrete can get hotter than 140°F, and shade can make it 30 or more degrees cooler.':'七月的太阳底下，没有遮挡的水泥地能超过华氏140度（60摄氏度），有遮阴的地方能凉快华氏30度以上。','Sun and shade':'晒着和遮着',
+  'In July sun, bare concrete can get hotter than 140°F, and shade can make it 30 or more degrees cooler.':'七月的太阳底下，没有遮挡的水泥地能超过华氏140度（60摄氏度），有遮阴的地方能凉快华氏30度以上。','Sun and shade':'太阳下和阴凉里',
   'Without shade, almost nobody uses a park here between late morning and sunset.':'这里的公园要是没有遮阴，从上午十点多到太阳落山，几乎没人去。','Who visits, hour by hour':'每个钟点来公园的人',
   'Robot crews build at night, when it is cooler and fresh concrete [[cures]] more evenly.':'机器人施工队在夜里干活，因为夜里凉快，刚浇好的混凝土[[凝固]]得更均匀。','The night crew':'夜班施工队',
   'The first big storm of the summer is forecast for Thursday night, and I am about 70 in 100 sure.':'预报说，今年夏天第一场大暴雨会在星期四晚上来，我大约有70%的把握。','This week':'这个星期',
@@ -80,7 +80,7 @@ I18N.add('zh','lot',{strings:{
   'Two of those floods came after big storms, with 1.7 and 2.1 inches of rain.':'其中两次是大暴雨之后淹的，雨量分别是1.7英寸和2.1英寸。','Rain on the flood days':'被淹那几天的雨量',
   'The other two floods came after small storms of less than 1 inch, and both started at the back of the lot, away from the street.':'另外两次只下了不到1英寸的小雨，而且两次都是从空地背面淹起来的，那里离街道很远。','Two floods after small storms':'两次小雨后的水淹',
   'Both small-storm floods began on a Tuesday night.':'这两次小雨后的水淹，都是从星期二晚上开始的。','When they started':'开始的时间',
-  'Arroyo’s report lists the cause of those two floods as unknown.':'旱溪的报告里，这两次水淹的原因写的是“不明”。','Cause: unknown':'原因：不明',
+  'Arroyo’s report lists the cause of those two floods as unknown.':'旱溪的报告里，这两次水淹的原因写的是“不明”。','Cause: unknown':'原因：未知',
 
   'Neighbor survey: what should the lot be?':'邻居问卷：这块地该建成什么？',
   'Last night I asked the 200 households nearest the lot what they would like there.':'昨天晚上，我问了离这块地最近的200户人家，他们想在这里建什么。','200 homes asked':'问了200户',
@@ -109,8 +109,8 @@ I18N.add('zh','lot',{strings:{
 
   // ---------- Field Guide ----------
   // Field Guide track names (not in core.js yet; shared with other missions)
-  'Ethics and AI alignment':'伦理与AI对齐','Engineering and systems':'工程与系统','Security thinking':'安全思维','Living things and health':'生物与健康',
-  'Local knowledge':'本地人才知道的事',
+  'Ethics and AI alignment':'伦理与AI对齐','Engineering and systems':'工程与系统','Security thinking':'安全思维','Living things and health':'生命与健康',
+  'Local knowledge':'当地人的经验',
   'Mrs. Okafor knew that some of the flood water came from the neighbors’ old irrigation ditch. No city map showed the ditch, because the neighbors own it themselves. An AI can only plan for the things it knows about, so people have to tell it what they know.':'奥卡福奶奶知道，有一部分洪水是从邻居们那条老灌溉渠里来的。市里的地图上都没有这条渠，因为它归邻居们自己所有。AI只能为它知道的事情做计划，所以人得把自己知道的告诉它。',
   'True today: in parts of Phoenix, neighbors still flood-irrigate their yards from small ditches and pipes that they own and look after together.':'现实中也是这样：在凤凰城的一些街区，邻居们至今还从大家共有、一起维护的小水渠和水管里放水，漫灌自家的院子。',
   'Ask well':'把请求说清楚',
@@ -161,7 +161,7 @@ I18N.add('zh','lot',{strings:{
   'Rain from about 140 homes runs down the street to the lot, and the budget is 400 coins.':'大约140户人家的雨水顺着街道流到这块地，预算是400金币。',
   'If you decide what a good design must do before you see any designs, a design that only looks impressive is less likely to fool you.':'先想好一个好设计必须做到什么，再去看设计，这样那些只是看着厉害的设计就不容易骗到你。',
   'Design':'设计','Depth':'深度','4 feet':'4英尺','7 feet':'7英尺','Drain':'排水口','Standard':'标准','Wide':'加宽',
-  'Shade':'遮阴','None':'不要','Sails':'遮阳帆','Trees + sails':'树＋遮阳帆',
+  'Shade':'遮阴','None':'不用','Sails':'遮阳帆','Trees + sails':'树＋遮阳帆',
   'Bowl Park':'碗池公园','Garden Basin':'下沉花园','Split Lot':'两用场地','Skate Plaza':'滑板广场','Lawn Park':'草坪公园','Smart Plaza':'智能广场',
   'A skate bowl that doubles as a flood basin, with a shady terrace and benches above it.':'一个滑板碗池，同时也是蓄洪池，上面还有带遮阴的平台和长椅。',
   'A sunken desert garden that fills in storms, with a curvy skate path around the rim.':'一个下沉的沙漠花园，暴雨时会蓄满水，四周绕着一条弯弯曲曲的滑板道。',
@@ -212,9 +212,9 @@ I18N.add('zh','lot',{strings:{
   'Never? Your own Future Table didn’t say never.':'永远不会？你自己的未来之桌可没说“永远”。',
 
   // ---------- memo, reveal, debrief, evening ----------
-  'I recommend ':'我推荐','because ':'因为','In a big storm, the street stays dry about ':'遇到大暴雨，10次里街道不被淹的次数大约是','Mrs. Okafor and Dev ':'奥卡福奶奶和德夫',
-  'Overnight, the crew may ':'夜里，施工队可以','We will check by ':'我们会这样检查：',
-  'I recommend the Bowl Park with shade sails because…':'我推荐带遮阳帆的碗池公园，因为……','Names the design':'写明了选哪个设计',
+  'I recommend ':'我建议','because ':'因为','In a big storm, the street stays dry about ':'遇到大暴雨，10次里街道不被淹的次数大约是','Mrs. Okafor and Dev ':'奥卡福奶奶和德夫',
+  'Overnight, the crew may ':'夜里，施工队可以','We will check by ':'我们会这样跟进：',
+  'I recommend the Bowl Park with shade sails because…':'我建议建带遮阳帆的碗池公园，因为……','Names the design':'写明了选哪个设计',
   'Includes what the neighbors care about':'写到了邻居们在意的事','Architect {0}':'建筑师 {0}','the flood lot design':'被淹空地的设计',
   'Night':'夜',
   'The new park filled with water right up to the brim, and my back step stayed dry as a bone. I could hug those robots.':'新公园一直蓄水到边上，我家后门台阶一点都没湿。我真想抱抱那些机器人。',
@@ -299,7 +299,7 @@ I18N.add('zh','lot',{strings:{
   'I didn’t know it floods':'我不知道这里会被淹','I didn’t know who it’s for':'我不知道是给谁用的','I guessed the budget':'预算是我猜的','I guessed the deadline':'截止时间是我猜的',
   'I guessed steps, not a ramp':'我猜的是台阶，没做坡道','I guessed a gentle bowl':'我猜的是一个很浅的碗池','I guessed no shade':'我猜的是不要遮阴','I guessed how you’d judge it':'评判标准是我猜的',
   'fancy finishes for 90 more coins':'多花90金币做豪华装修','an extra finishing night':'多一个晚上做收尾','steps instead of a ramp':'用台阶，不用坡道','a gentle bowl, too tame to skate':'很浅的碗池，滑起来没劲',
-  '{0} coins':'{0}金币','{0} night':'{0}个晚上','{0} nights':'{0}个晚上','Street dry {0} in 10':'10次里{0}次街道不淹','Guess: {0}':'猜的：{0}','Why:':'理由：','Risk:':'风险：','Second Look AI:':'复查AI：',
+  '{0} coins':'{0}个金币','{0} night':'{0}个晚上','{0} nights':'{0}个晚上','Street dry {0} in 10':'10次里{0}次街道不淹','Guess: {0}':'猜的：{0}','Why:':'理由：','Risk:':'风险：','Second Look AI:':'复查AI：',
   'The bowl is the lowest spot, so street water flows in on its own, and Dev gets his bowl.':'碗池是最低的地方，街上的水会自己流进去，德夫也有了他的碗池。',
   'Plants and soil soak up water, and it’s the quickest to build: 2 nights.':'植物和泥土能吸水，而且它建得最快：只要2个晚上。',
   'A tank holds the water out of sight, so the plaza stays dry for skating.':'水存在看不见的水箱里，广场一直是干的，可以玩滑板。',
@@ -437,7 +437,7 @@ I18N.add('zh','lot',{strings:{
   'Street stays dry, out of 10 big storms, by depth and drain':'10场大暴雨里街道不被淹的次数，按深度和排水口来比',
   'over 100°F: more than 100 days a year':'超过华氏100度：一年100多天','A calendar year with more than 100 days above 100°F':'一年里有100多天超过华氏100度',
   'In the sun: 140°F+':'太阳下：华氏140度以上','In the shade: 30°+ cooler':'阴凉处：凉快华氏30度以上','Concrete in sun and under a shade sail':'太阳下的水泥地和遮阳帆下的水泥地',
-  'too hot':'太热','5 AM':'5:00','8 AM':'8:00','11 AM':'11:00','2 PM':'14:00','5 PM':'17:00','8 PM':'20:00','10 PM':'22:00',
+  'too hot':'太热','5 AM':'早上5点','8 AM':'早上8点','11 AM':'上午11点','2 PM':'下午2点','5 PM':'下午5点','8 PM':'晚上8点','10 PM':'晚上10点',
   'Park visitors by hour: mornings and evenings, almost none midday':'公园每个钟点的来客：早上和傍晚多，中午几乎没人',
   '88°F':'华氏88度','Robots pouring concrete at night':'机器人在夜里浇混凝土',
   'Mon':'周一','Tue':'周二','Wed':'周三','Thu':'周四','Fri':'周五','build':'施工','70% sure':'70%把握','Three build nights, then a likely storm on Thursday':'先施工三个晚上，星期四很可能下暴雨',
@@ -490,13 +490,11 @@ regex:{
   'okafor|grace|dev\\b|neighbor|skat|shade|street|homes|walker|ditch':'奥卡福|格蕾丝|德夫|邻居|滑板|遮阴|阴凉|街|住户|人家|助行|水渠|灌溉',
   // chat keywords (scripted replies when the live AI is off)
   'ditch|alley|irrigat|tuesday|water night|lateral':'水渠|渠|后巷|巷子|灌溉|星期二|周二|放水',
-  'best|which|pick|choose|should|recommend':'最好|哪个|哪一个|选|应该|推荐|建议',
   'crew|night|robot|surprise':'施工队|晚上|夜里|机器人|意外',
   'arroyo|gate|marco':'旱溪|闸|马可',
   'shade|hot|heat|sun':'遮阴|阴凉|热|太阳|晒',
   'deep|depth|drain|bowl':'深|排水|碗池',
   'monsoon|haboob|storm':'季风|沙暴|暴雨|风暴',
   'saguaro|cactus':'仙人掌|巨人柱',
-  'camelback|mountain':'驼背山|山',
-  'beat|win|how do i|what do i do|stuck|help':'怎么赢|怎么过|怎么办|怎么做|卡住|帮帮|帮我|不会'
+  'camelback|mountain':'驼背山|山'
 }});

@@ -200,7 +200,7 @@ I18N.add('zh','bill',{strings:{
 
   // ---------- memo, reveal, debrief, evening ----------
   'I forecast it passes about ':'我预测它通过的可能大约是','Rep. Gunderson needs ':'冈德森议员需要','Workers get ':'工人可以',
-  'I recommend phasing in checks on remote orders, with farms first in line, because…':'我推荐分阶段核对远程命令，让农场排在最前面，因为……',
+  'I recommend phasing in checks on remote orders, with farms first in line, because…':'我建议分阶段核对远程命令，让农场排在最前面，因为……',
   'Names what the bill does':'写明了法案要做什么','Includes what the members need':'写到了议员们需要什么','Aide {0}':'助理 {0}','the Robot Safety Act':'《机器人安全法》',
   'Roll call':'唱名表决',
   'We passed it! And when someone sent another fake order, the robots refused to follow it.':'我们通过了！后来又有人发假命令，机器人都拒绝照做。',
@@ -390,7 +390,7 @@ I18N.add('zh','bill',{strings:{
   'FAILED':'没通过','old':'老的','YES':'赞成','NO':'反对','report':'报告','Pause':'暂停','Safety':'安全',
   'From: Fire Department':'发件人：消防局','no signature':'没有签名','Be it enacted by the Senate and':'兹由参议院和','House of Representatives…':'众议院制定……',
   'robot crew':'机器人小队',' (n.)':'（名词）',' two or more robots doing one job':'：一起干同一件活儿的两台或更多机器人','one robot':'一台机器人','a crew':'一支小队',
-  'always':'一定要做','your choice':'自己选',
+  'always':'一定要做','your choice':'你来选',
   // the legal words beside each section's picture, line by line (the Chinese lines read on as one passage)
   'A robot may act on a':'当面提出的要求，','request made in person.':'机器人可以照办。','A remote order needs a':'远程命令必须带有','valid digital signature…':'有效的数字签名……',
   'Each covered robot shall':'每台适用机器人','have a stop control that':'都应当配备停止装置，','any person near it may use,':'附近的任何人都能用，','with no network…':'不联网也能用……',
