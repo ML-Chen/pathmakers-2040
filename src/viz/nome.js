@@ -336,13 +336,13 @@ function nomeReindeer(o){o=o||{};const c=o.col||'#7a5a44',d='#4a3424',w='#e8e0d2
     ${o.antlers===false?'':`<path d="M22 -42 C18 -50 14 -54 10 -56 M18 -49 C20 -53 22 -55 24 -56 M14 -53 C13 -57 14 -59 16 -61 M24 -42 C24 -50 27 -54 31 -56 M26 -50 C30 -51 32 -50 34 -48" stroke="#c8b08a" stroke-width="1.8" stroke-linecap="round" fill="none"/>`}</g>`}
 // automated feeder: a hopper on legs with a teal stripe and a trough
 function nomeFeeder(o){o=o||{};return `<g class="nm-feeder"><rect x="-20" y="-6" width="40" height="8" rx="3" fill="#8a96b4"/><path d="M-16 -46 L16 -46 L12 -14 L-12 -14Z" fill="#f4f6fb" stroke="#8a96b4" stroke-width="1.8" stroke-linejoin="round"/>
-  <rect x="-16" y="-40" width="32" height="4" fill="#2f9aa2"/><rect x="-6" y="-31" width="12" height="9" rx="2" fill="#2a3060"/><text x="0" y="-24.4" text-anchor="middle" font-size="5" font-weight="800" fill="#7ff7e4" font-family="Nunito">${o.label||'MIX'}</text>
+  <rect x="-16" y="-40" width="32" height="4" fill="#2f9aa2"/><rect x="-6" y="-31" width="12" height="9" rx="2" fill="#2a3060"/><text x="0" y="-24.4" text-anchor="middle" font-size="5" font-weight="800" fill="#7ff7e4" font-family="Nunito">${T(o.label||'MIX')}</text>
   <path d="M-12 -14 L-14 -4 M12 -14 L14 -4" stroke="#8a96b4" stroke-width="2.4"/><path d="M-20 -6 C-14 -1 14 -1 20 -6" fill="#c9a26b"/></g>`}
 // the ridge "weather station": really a balloon launcher with a humming pump (Pip and Jory's)
 function nomeRig(o){o=o||{};const true_=o.reveal;return `<g class="nm-rig"><path d="M0 0 L-10 -2 L-3 -40 L3 -40 L10 -2Z" fill="none" stroke="#5a6070" stroke-width="2"/><path d="M-6 -18 L6 -18 M-8 -9 L8 -9" stroke="#5a6070" stroke-width="1.6"/>
   <rect x="-2" y="-52" width="4" height="14" fill="#5a6070"/><path d="M-12 -52 L12 -52" stroke="#5a6070" stroke-width="2"/><circle cx="12" cy="-52" r="3" fill="#cfd6ea" stroke="#5a6070"/>
   <circle cx="0" cy="-56" r="3" fill="#ff5a4a" class="nm-rig-light"/>
-  ${true_?`<rect x="10" y="-14" width="26" height="14" rx="2" fill="#c9a26b" stroke="#7a5426" stroke-width="1.4"/><text x="23" y="-8.6" text-anchor="middle" font-size="3.6" font-weight="800" fill="#5b3b16" font-family="Nunito">TOTALLY NORMAL</text><text x="23" y="-4" text-anchor="middle" font-size="3.6" font-weight="800" fill="#5b3b16" font-family="Nunito">WEATHER BALLOONS</text>
+  ${true_?`<rect x="10" y="-14" width="26" height="14" rx="2" fill="#c9a26b" stroke="#7a5426" stroke-width="1.4"/><text x="23" y="-8.6" text-anchor="middle" font-size="3.6" font-weight="800" fill="#5b3b16" font-family="Nunito">${T('TOTALLY NORMAL')}</text><text x="23" y="-4" text-anchor="middle" font-size="3.6" font-weight="800" fill="#5b3b16" font-family="Nunito">${T('WEATHER BALLOONS')}</text>
     <rect x="-30" y="-12" width="16" height="12" rx="3" fill="#7a8090" stroke="#3a3f4c" stroke-width="1.2"/><circle cx="-22" cy="-6" r="3.4" fill="#3a3f4c" class="nm-rig-pump"/><path d="M-14 -8 C-8 -10 -6 -16 -2 -20" stroke="#3a3f4c" stroke-width="1.6" fill="none"/>`:''}</g>`}
 
 // ---------- the Observe mechanic (reusable for any Nome workday) ----------
@@ -359,7 +359,7 @@ const NM_ICON={ears:'<path d="M7 5 C3 6 2 12 4 16 C6 19 10 19 12 17 C13 13 12 7 
   tail:'<path d="M5 5 C7 10 10 13 12 17 M10 16 L13 21 M12 16 L16 20 M11 17 L12 22"/>',cup:'<path d="M5 8 L7 20 L15 20 L17 8Z M17 11 C21 11 21 16 16 16 M8 11 C10 12 12 10 14 11"/>',
   ridge:'<path d="M2 20 L9 9 L13 14 L16 10 L22 20Z M16 10 L16 3 M14 3 L18 3"/>'};
 function nomeObserve(cfg){const st=cfg.state;let t0=performance.now(),timer=0,pulsing=false,firstFreeze=true,asked=false;
-  const S_=v=>esc(v);
+  const S_=v=>esc(T(v));
   screen('nm-observe',`${scene(cfg.scene)}${hud(cfg.place)}<div class="nm-layer"><div class="nm-src ${cfg.src.part?'nm-env':''}" ${cfg.src.part?`data-part="${cfg.src.part}"`:''} id="nmsrc" style="left:${cfg.src.x}%;top:${cfg.src.y}%"><i></i><i></i><i></i></div></div>
     <div class="nm-stage" id="nmstage"><svg viewBox="${cfg.vb}" preserveAspectRatio="xMidYMax meet">${cfg.stage}
       ${cfg.hot.map(h=>`<rect class="nm-hot" data-part="${h.part}" x="${h.x}" y="${h.y}" width="${h.w}" height="${h.h}" rx="8"/>`).join('')}</svg></div>
@@ -379,7 +379,7 @@ function nomeObserve(cfg){const st=cfg.state;let t0=performance.now(),timer=0,pu
   function log(part,ev){const phase=pulsing?'pulse':'calm';if(st[part]!=='pulse')st[part]=phase;save();MUSIC.sfx&&MUSIC.sfx('blip');
     if(ev&&ev.clientX!=null){const r=stage.getBoundingClientRect(),m=document.createElement('div');m.className='nm-mark'+(phase==='pulse'?' key':'');m.style.left=(ev.clientX-r.left)+'px';m.style.top=(ev.clientY-r.top)+'px';stage.appendChild(m);setTimeout(()=>m.remove(),900)}
     card({part,phase:st[part]==='pulse'?'pulse':phase});cfg.onLog&&cfg.onLog(part,phase,st)}
-  function nmBubble(text){$$('.nm-bubble').forEach(b=>b.remove());const d=document.createElement('div');d.className='nm-bubble';d.innerHTML=`<div class="nm-bbyte">${byteBox({...S.byte,mood:'alert'})}</div><p>${esc(text)}</p>`;APP.appendChild(d);playLine('byte',text);setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},4200)}
+  function nmBubble(text){$$('.nm-bubble').forEach(b=>b.remove());const d=document.createElement('div');d.className='nm-bubble';d.innerHTML=`<div class="nm-bbyte">${byteBox({...S.byte,mood:'alert'})}</div><p>${esc(T(text))}</p>`;APP.appendChild(d);playLine('byte',text);setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},4200)}
   function compare(){const box=$('#nmcard');const saw=cfg.saw(st);
     box.innerHTML=`<div class="nm-cmp"><div class="nm-cmp-h"><span>${S_(cfg.youLabel||'What you saw')}</span><span>${S_(cfg.collarLabel||'What the collar says')}</span></div>
       ${cfg.order.filter(id=>st[id]).map(id=>{const P=cfg.parts[id],ph=st[id];return `<div class="nm-row ${ph==='pulse'?'key':''}"><b>${S_(P[ph][0])}</b><span>${S_(P[ph][1])}</span></div>`}).join('')}</div>
@@ -390,7 +390,7 @@ function nomeObserve(cfg){const st=cfg.state;let t0=performance.now(),timer=0,pu
       if(c==='unsure'){nmBubble(reply);card(null);return}
       if(c==='good')cfg.onClue&&cfg.onClue();
       box.innerHTML=`<div class="nm-ask"><div class="nm-bbyte">${byteBox({...S.byte,mood:c==='good'?'happy':'neutral'})}</div><p>${S_(reply)}</p></div>
-        <div class="row nm-end"><button class="btn small ghost" id="nmmore">Keep watching</button><button class="btn small" id="nmdone">${S_(cfg.doneLabel||'Done')}</button></div>`;
+        <div class="row nm-end"><button class="btn small ghost" id="nmmore">${S_('Keep watching')}</button><button class="btn small" id="nmdone">${S_(cfg.doneLabel||'Done')}</button></div>`;
       $('#nmmore').onclick=()=>card(null);$('#nmdone').onclick=()=>cfg.onDone&&cfg.onDone(st)})}
   $$('.nm-hot',stage).forEach(h=>h.addEventListener('click',e=>{e.stopPropagation();log(h.dataset.part,e)}));
   const env=$$('.nm-env');env.forEach(h=>h.addEventListener('click',e=>{e.stopPropagation();log(h.dataset.part,e)}));
