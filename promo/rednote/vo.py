@@ -88,7 +88,24 @@ def eleven(voice, text, speed, dst):
                 print(last, flush=True); break
     raise RuntimeError(last or 'ElevenLabs failed')
 
+def edge(voice, text, speed, dst):
+    """Microsoft Edge neural voice (free, native Mandarin): zh-CN-YunxiNeural by default; speed as a rate like +20%."""
+    import asyncio, edge_tts
+    rate = f"{round((speed - 1) * 100):+d}%"; mp3 = dst + '.mp3'
+    for attempt in range(4):
+        try: asyncio.run(edge_tts.Communicate(tts_text(text), voice, rate=rate).save(mp3)); break
+        except Exception as e:
+            if attempt == 3: raise
+            print('edge retry', e, flush=True); time.sleep(2 + 3 * attempt)
+    subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-i', mp3, dst], check=True); os.remove(mp3)
+
+ENGINE = os.environ.get('PROMO_TTS', 'edge')   # edge (default), eleven, or kokoro
+
 def synth(voice, text, speed, dst):
+    if ENGINE == 'edge' and voice.startswith('zh-'):
+        try: return edge(voice, text, speed, dst)
+        except Exception as e: print('Edge voice failed, using Kokoro:', str(e)[:200], flush=True); voice = 'zf_xiaoxiao'
+        import zh_tts as _z; return _z.synth(voice, text, speed, dst)
     """ElevenLabs when the key works; if it fails (for example out of credits), switch to Kokoro for the rest of the run."""
     global EL_KEY, zh_tts, speaker
     if EL_KEY and voice not in EL and not (len(voice) > 15 and voice.isalnum()):
@@ -103,11 +120,11 @@ def synth(voice, text, speed, dst):
     return zh_tts.synth(voice, text, speed, dst)
 
 ZH = []
-if EL_KEY:
+if EL_KEY and ENGINE == 'eleven':
     try: ZH = mandarin_voices()
     except Exception as e: print('Mandarin voice lookup failed:', str(e)[:200])
     for nm, vid in ZH: EL[nm] = vid
-out = sys.argv[1]; speaker = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else ((ZH[0][0] if ZH else 'zf_xiaoxiao') if EL_KEY else 'zf_xiaoxiao'); speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
+out = sys.argv[1]; speaker = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else ('zh-CN-YunxiNeural' if ENGINE == 'edge' else (ZH[0][0] if ZH else 'zf_xiaoxiao') if EL_KEY else 'zf_xiaoxiao'); speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 os.makedirs(out, exist_ok=True)
 shots = json.loads(subprocess.run(['node', '-e', "process.stdout.write(JSON.stringify(require(process.argv[1]).map(s=>({id:s.id,vo:s.vo}))))",
                                    os.path.join(HERE, 'shots.js')], capture_output=True, text=True, check=True).stdout)
@@ -115,7 +132,7 @@ shots = json.loads(subprocess.run(['node', '-e', "process.stdout.write(JSON.stri
 def clean(raw, dst, tempo=None):
     """Trim leading/trailing silence and level to about -16 LUFS, 44.1 kHz mono."""
     subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-i', raw, '-af',
-                    'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,'
+                    'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,' +
                     (f'atempo={tempo},' if tempo and abs(tempo - 1) > .01 else '') + 'loudnorm=I=-16:TP=-1.5:LRA=7,aresample=44100', '-ac', '1', dst], check=True)
     return float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', dst],
                                 capture_output=True, text=True).stdout)
@@ -129,8 +146,8 @@ for s in shots:
 json.dump(dur, open(os.path.join(out, 'durations.json'), 'w'), ensure_ascii=False, indent=1)
 
 text = shots[0]['vo']
-voices = [nm for nm, _ in ZH] if EL_KEY else [n for n in zh_tts.NAMES if n[:3] in ('zf_', 'zm_')]
+voices = ['zh-CN-YunxiNeural', 'zh-CN-YunjianNeural', 'zh-CN-YunyangNeural', 'zh-CN-XiaoxiaoNeural', 'zh-CN-XiaoyiNeural'] if ENGINE == 'edge' else [nm for nm, _ in ZH] if EL_KEY else [n for n in zh_tts.NAMES if n[:3] in ('zf_', 'zm_')]
 for sp in voices:
     raw = os.path.join(out, 'a.raw.wav'); synth(sp, text, speed, raw); clean(raw, os.path.join(out, f'audition_{sp}.wav')); os.remove(raw)
-print('engine', 'ElevenLabs' if EL_KEY else 'Kokoro', 'voice', speaker)
+print('engine', 'Edge' if ENGINE == 'edge' else 'ElevenLabs' if EL_KEY else 'Kokoro', 'voice', speaker)
 print('total narration', round(sum(dur.values()), 1), 's')

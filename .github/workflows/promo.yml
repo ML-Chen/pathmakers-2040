@@ -29,7 +29,7 @@ jobs:
         with: {node-version: 22}
       - name: Install sherpa-onnx, ffmpeg, Chinese fonts, Playwright
         run: |
-          pip install "sherpa-onnx==1.13.8" numpy
+          pip install "sherpa-onnx==1.13.8" numpy edge-tts
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-cjk >/dev/null
           npm install --no-save --no-package-lock --no-audit --no-fund playwright@${PLAYWRIGHT_VERSION}
           npx playwright install --with-deps chromium
@@ -43,8 +43,8 @@ jobs:
           mkdir -p ../tts-models && cd ../tts-models
           curl -sSLO https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-multi-lang-v1_0.tar.bz2
           tar xjf kokoro-multi-lang-v1_0.tar.bz2 && rm kokoro-multi-lang-v1_0.tar.bz2
-      - name: Mandarin narration (ElevenLabs when the secret is set, otherwise Kokoro)
-        env: {ELEVENLABS_API_KEY: '${{ secrets.ELEVENLABS_API_KEY }}'}
+      - name: Mandarin narration (Edge neural voice by default)
+        env: {ELEVENLABS_API_KEY: '${{ secrets.ELEVENLABS_API_KEY }}', PROMO_TTS: "${{ github.event.inputs.engine || 'edge' }}"}
         run: set -o pipefail; python3 promo/rednote/vo.py vo "${{ github.event.inputs.speaker }}" "${{ github.event.inputs.speed || '1.2' }}" | tee vo.log
       - name: Background music (ElevenLabs Music when the secret is set)
         env: {ELEVENLABS_API_KEY: '${{ secrets.ELEVENLABS_API_KEY }}'}
