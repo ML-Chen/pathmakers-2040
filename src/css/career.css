@@ -17,7 +17,10 @@
 .cj-q.asked::before{content:'✓ ';color:var(--good)}
 .cj-ans{min-height:84px}
 .cj-ans p{animation:reveal .35s ease-out}
-.cj-oh-wrap{display:flex;flex-direction:column;min-height:calc(100vh - 80px);min-height:calc(100dvh - 80px)}
+/* the wrap fills the window below the HUD and no further (a fixed "100vh minus the HUD" made the page scroll by a few pixels
+   whenever the HUD or #app's padding came out taller than the guess): #app becomes a window-high column and the wrap takes the rest */
+#app.openhouse{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+.cj-oh-wrap{display:flex;flex-direction:column;flex:1 0 auto}
 /* the wrap is a see-through full-height column: only its cards catch taps, so Halo's orb and the props above the cards stay tappable */
 .cj-oh-wrap{pointer-events:none}.cj-oh-wrap>*{pointer-events:auto}
 .cj-oh-people{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto}
