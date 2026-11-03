@@ -100,7 +100,7 @@ I18N.add('zh','sneeze',{strings:{
   'Most of the safety rules in this building were written after the Quiet Year in 2030.':'这栋楼里的大部分安全规定，都是2030年静默之年以后写的。',
 
   // the Ledger
-  'The Ledger: Boston':'账本新闻：波士顿','News':'新闻',
+  'The Ledger: Boston':'《纪事报》：波士顿','News':'新闻',
   'Print shops around the harbor are holding new orders from customers they do not know, while screeners look into a [[pattern]] from Tuesday night.':'港口周围的打印店扣下了陌生顾客的新订单，筛查员正在调查星期二晚上出现的一种[[规律]]。','Orders on hold at the harbor':'港口扣下的订单',
   'A DNA print shop in Kendall Square flagged odd orders from brand-new customers placed the same night, and blocked them.':'肯德尔广场的一家DNA打印店，标记了几个全新顾客在同一晚下的奇怪订单，并把它们拦了下来。','One shop across the river':'河对岸的一家店',
   'Treaty inspectors still do not know who built the unlicensed datacenter near Calder Bay, which was taken offline last week.':'考尔德湾附近那座没有许可证的数据中心上周被关停了，条约检查员到现在还不知道是谁建的。','The Calder Bay datacenter':'考尔德湾的数据中心',
@@ -229,7 +229,7 @@ I18N.add('zh','sneeze',{strings:{
   '“Tomás called while you were on the tram. His machines are running again, and he has taped the pattern to the wall above them, where his whole crew can see it.”':'“你坐电车的时候，托马斯打来了电话。他的机器又转起来了，他还把那个规律贴在了机器上方的墙上，店里每个人都看得见。”',
   '“The council kept your rule, too. Lena says that next year a screener neither of us has met will catch something because of what you said today.”':'“议会也保留了你提的规定。莉娜说，明年会有一位我们俩都没见过的筛查员，因为你今天说的话拦下一些东西。”',
   '“The council did not keep the rule, though. Lena says the next screener will have to make the whole argument again from the beginning.”':'“不过议会没有保留那条规定。莉娜说，下一位筛查员只能从头再把道理讲一遍了。”',
-  '“One item from the Ledger: treaty inspectors still do not know who built the unlicensed datacenter near Calder Bay that was switched off last week.”':'“账本新闻上有一条消息：考尔德湾附近那座没有许可证的数据中心上周被关掉了，条约检查员到现在还不知道是谁建的。”',
+  '“One item from the Ledger: treaty inspectors still do not know who built the unlicensed datacenter near Calder Bay that was switched off last week.”':'“《纪事报》上有一条消息：考尔德湾附近那座没有许可证的数据中心上周被关掉了，条约检查员到现在还不知道是谁建的。”',
 
   // the tell, the lesson and the Field Guide
   'Tell Byte what Pip said':'把皮普说的话告诉Byte',
@@ -345,13 +345,13 @@ glossary:{
   'vaccine':{w:'疫苗',d:'一种针剂，让身体还没碰到病菌之前，就先学会怎么打败它。',alt:['新疫苗']},
   'vaccines':{w:'疫苗',d:'一种针剂，让身体还没碰到病菌之前，就先学会怎么打败它。'},
   'wastewater':{w:'污水',d:'从家里、学校和其他楼里排走的用过的水。检查这些水，医生在大家觉得不舒服之前，就能知道有什么病在传播。'},
-  'far-UVC':{w:'远紫外线',d:'一种对人安全、却让病菌很难受的光。2040年，这样的灯在车站和学校里整天开着。现实中：远紫外线灯已经有了，也正在测试，但装了它的楼还很少。'},
-  'shelter':{w:'避难所',d:'一个有独立洁净空气的房间或建筑，随时准备着，万一大家需要就能用。2040年，每座城市的避难所都够所有人用。现实中：这样的洁净空气避难所还没有建起来。'},
+  'far-UVC':{w:'远紫外线',d:'一种对人安全、却让病菌很难受的光。2040年，这样的灯在车站和学校里整天开着。现实中也是这样：远紫外线灯已经有了，也正在测试，但装了它的楼还很少。'},
+  'shelter':{w:'避难所',d:'一个有独立洁净空气的房间或建筑，随时准备着，万一大家需要就能用。2040年，每座城市的避难所都够所有人用。现实中也是这样：这样的洁净空气避难所还没有建起来。'},
   'traced':{w:'追查到',d:'顺着线索，找到真正发出它的人。'},
   'evidence':{w:'证据',d:'能拿给别人看、让他们自己去核对的事实，比如每份订单发出的时间记录。光是觉得不对劲，不算证据。'},
   'appeal':{w:'申诉',d:'觉得一个决定错了，请人重新看一看。'},
   'least privilege':{w:'最小权限',d:'只给一个人或一台机器做好本职工作所需要的权力，多一点都不给。'},
-  'the Quiet Year':{w:'静默之年',d:'在这个故事里，2030年是静默之年。那一年，一种新病菌在港口城市瓦罗传开，人们在家待了好几个月，直到快速研发的疫苗挡住了它。现实中：瓦罗和静默之年都是为这个游戏编出来的。'}
+  'the Quiet Year':{w:'静默之年',d:'在这个故事里，2030年是静默之年。那一年，一种新病菌在港口城市瓦罗传开，人们在家待了好几个月，直到快速研发的疫苗挡住了它。现实中也是这样：瓦罗和静默之年都是为这个游戏编出来的。'}
 },
 regex:{
   'recipe|germ|what.*(in|inside) (it|the order)|how.*(make|made|build)|pathogen|virus|bacteria':'配方|病菌|里面是什么|里面有什么|怎么做出|怎么造|怎么制造|病原体|病毒|细菌',

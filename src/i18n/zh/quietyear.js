@@ -170,7 +170,7 @@ I18N.add('zh','quietyear',{strings:{
   'That’s what a [[memorial]] is for. When people remember what happened, they keep taking care of the safeguards.':'[[纪念花园]]就是为这个建的。人们记得发生过什么，就会一直好好守着这些安全措施。',
   'The ferry leaves in ten minutes. Let’s go home.':'渡轮还有十分钟就开了。我们回家吧。',
   '<b>{byte}:</b> “I keep thinking about Noor at her desk, reading DNA orders one after another. Ivy told me she wants to be a DNA screener like Noor when she grows up.”':'<b>{byte}：</b>“我一直想着努尔坐在桌前，一份接一份读DNA订单的样子。艾薇跟我说，她长大了想当努尔那样的DNA筛查员。”',
-  '“The Ledger posted a short note tonight. Several new customers signed up at Boston’s DNA print shops within a few minutes of each other, and the shops are checking every one of their orders.”':'“今晚账本新闻发了一条短消息：有几个新顾客在几分钟之内，先后在波士顿的几家DNA打印店注册了账号。打印店正在检查他们的每一份订单。”',
+  '“The Ledger posted a short note tonight. Several new customers signed up at Boston’s DNA print shops within a few minutes of each other, and the shops are checking every one of their orders.”':'“今晚《纪事报》发了一条短消息：有几个新顾客在几分钟之内，先后在波士顿的几家DNA打印店注册了账号。打印店正在检查他们的每一份订单。”',
 
   // the Field Guide
   'How germs spread':'病菌是怎么传开的','Living things and health':'生命与健康',
