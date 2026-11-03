@@ -268,11 +268,11 @@
       '<circle cx="42" cy="22" r="8.5" fill="#6a6458" stroke="#4a4038" stroke-width="2"/><path d="M40 20 a5 5 0 0 1 8 0" fill="#c8642a"/><circle cx="45" cy="22" r="1.6" fill="#1d1630"/><path d="M50 23 l5 1 l-5 2z" fill="#2a2420"/><path d="M42 26 q4 4 8 0" stroke="#fff" stroke-width="1.6" fill="none"/><path d="M41 14 q-2 -8 4 -10 q1 4 -2 7" fill="#2a2420"/><path d="M24 48 v6 M32 48 v6" stroke="#8a6a4a" stroke-width="2"/></g></svg>'; };
     PROPS_ART.phx_bottle = function () { return '<svg viewBox="0 0 40 80"><ellipse cx="20" cy="77" rx="12" ry="3" fill="rgba(0,0,0,.2)"/><g class="pa-body"><rect x="9" y="18" width="22" height="58" rx="7" fill="#e86a5a" stroke="#5b2a2a" stroke-width="2.4"/><rect x="12" y="8" width="16" height="11" rx="3" fill="#d8dce6" stroke="#4a4650" stroke-width="2.4"/><path d="M14 8 a6 6 0 0 1 12 0" stroke="#4a4650" stroke-width="2.4" fill="none"/><rect x="13" y="26" width="4" height="40" rx="2" fill="#fff" opacity=".45"/><path d="M12 50 q8 -6 16 0" stroke="#fff" stroke-width="2.4" fill="none"/></g></svg>'; };
     PROPS.phx_lot = [
-      { id: 'phx_bottle', x: 8, y: 74, w: 24, sfx: 'clink', fx: 'jiggle' },
+      { id: 'phx_bottle', x: 22, y: 74, w: 24, sfx: 'clink', fx: 'jiggle' },
       { id: 'person', x: 32, y: 74, w: 46, talk: 'phx_lot', look: { skin: '#c98e64', shirt: '#f2c14e', hair: '#1b1410' } },
-      { id: 'phx_board', x: 54, y: 75, w: 54, sfx: 'whoosh', fx: 'spin' },
+      { id: 'phx_board', x: 45, y: 75, w: 54, sfx: 'whoosh', fx: 'spin' },
       { id: 'phx_quail', x: 70, y: 66, w: 34, sfx: 'flap', fx: 'flyaway' },
-      { id: 'person', x: 88, y: 74, w: 44, talk: 'phx_lot', look: { skin: '#e8b896', shirt: '#2a9d8f', hair: '#9a9aa2' } }
+      { id: 'person', x: 92, y: 74, w: 44, talk: 'phx_lot', look: { skin: '#e8b896', shirt: '#2a9d8f', hair: '#9a9aa2' } }
     ];
   });
 })();

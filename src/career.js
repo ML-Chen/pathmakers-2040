@@ -81,7 +81,7 @@ function jSnapshot(){const m=M(),H=jState(m),r=S.result||{};
 function pageTitle(x){const m=MISSIONS[x.mission];return T((m&&(m.caseTitle||m.title))||x.title||'A decision')}
 function pageHTML(x,stamp){const sure=x.conf!=null?T((typeof x.conf==='number'&&x.conf>4?CJ_SURE[[50,62,75,87,97].indexOf(x.conf)]||x.conf+'%':CJ_SURE[x.conf])||''):'';
   return `<article class="cj-pbook">${stamp?`<div class="cj-pb-stamp">${T('Saved')}</div>`:''}<h3>${esc(pageTitle(x))}</h3><div class="cj-pb-plan">${esc(T(x.plan||''))}</div>
-    ${x.memo?`<blockquote>${esc(x.memo)}</blockquote>`:''}<dl>${sure?`<dt>${T('How sure')}</dt><dd>${esc(sure)}</dd>`:''}${x.out||x.cap?`<dt>${T('What happened')}</dt><dd>${esc(T(x.out||x.cap))}</dd>`:''}<dt>${T('Stars')}</dt><dd class="cj-pb-stars">${'★'.repeat(x.stars||0)}${'☆'.repeat(3-(x.stars||0))}</dd></dl></article>`}
+    ${x.memo?`<blockquote>${esc(x.memo)}</blockquote>`:''}<dl>${sure?`<dt>${T('How sure')}</dt><dd>${esc(sure)}</dd>`:''}${x.out||x.cap?`<dt>${T('What happened')}</dt><dd>${esc(T(x.out||x.cap))}</dd>`:''}<dt>${T('Stars')}</dt><dd class="cj-pb-stars">${x.stars?`<span class="on">${'★'.repeat(x.stars)}</span>`:''}${(x.stars||0)<3?`<span class="off">${'☆'.repeat(3-(x.stars||0))}</span>`:''}</dd></dl></article>`}
 function jPortfolio(){const m=M(),J=m.journey.portfolio;const pg=jPage(m)&&jPage(m).memo===S.memo?jPage(m):null;
   const page=pg||{plan:m.planName?m.planName(S.choice):'',memo:S.memo,conf:S.conf??2,cap:(S.result||{}).cap||'',stars:S.lastStars||0};
   screen('debrief',`${scene(jScene(J.scene||'night'))}<div class="talk-dim"></div>${hud(J.place)}<div class="cj-card"><h2>${T('Portfolio Book')}</h2>

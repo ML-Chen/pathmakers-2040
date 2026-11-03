@@ -32,12 +32,30 @@ const PROPS={
   night:[{id:'star',x:20,y:10,w:30,sfx:'chime',fx:'shoot'},{id:'star',x:78,y:11,w:22,sfx:'chime',fx:'shoot'}],
   table:[]
 };
-function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${p.talk?T('Talk to a passer-by'):T('Play with the {0}',T(p.id))}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
+// Readable names for the screen-reader label ("Play with the teapot"). Chinese names live in src/i18n/zh/core.js under the prop id.
+const PROP_NAMES={orbHit:'glowing orb',bay_bridge:'Golden Gate Bridge',bay_base:'science base',bj_persimmon:'persimmons',bj_tea:'teapot',
+  cb_dc:'datacenter',cb_light:'lighthouse',ep_gull:'gull',ep_ring:'life ring',dh_record:'record player',dh_peony:'peonies',
+  marstomato:'tomato plant',marsrock:'Mars rock',marsdrone:'drone',moonrover:'moon rover',moonglass:'moon glass',moonflag:'flag',
+  nyc_tower:'Times Square tower',nyc_steps:'red steps',raft:'solar raft',tanker:'data tanker',phx_bottle:'water bottle',phx_board:'skateboard',
+  phx_quail:'quail',phx_bot:'robot',sh_steamer:'dumpling steamer',sz_stop:'emergency stop post',sz_bot:'little robot',
+  nm_feeder:'feeder',nm_raven:'raven',nm_hay:'hay',spacewalker:'astronaut'};
+function propName(id){const L=typeof LANG==='function'?LANG():'en';if(L!=='en'){const v=(I18N.tab[L]||{})[id];if(v!=null)return v}return T(PROP_NAMES[id]||id)}
+// a prop that says something (p.say) is a thing to look at, like a bridge or a lighthouse; the rest are things to play with
+const propLabel=p=>p.talk?T('Talk to a passer-by'):p.say?T('Look at the {0}',propName(p.id)):T('Play with the {0}',propName(p.id));
+function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${esc(propLabel(p))}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
 function burst(x,y,kind,n=7){const sym={hearts:'♥',notes:'♪',leaves:'❦',steam:'☁',sparkles:'✦'}[kind]||'✦';const col={hearts:'#ff6f8f',notes:'#6c5ce7',leaves:'#38b07f',steam:'#ffffff',sparkles:'#ffe08a'}[kind];
   for(let i=0;i<n;i++){const d=document.createElement('div');d.className='burst';d.textContent=sym;d.style.left=x+'px';d.style.top=y+'px';d.style.color=col;
     d.style.setProperty('--dx',((Math.random()-.5)*120).toFixed(0)+'px');d.style.setProperty('--dy',(-50-Math.random()*90).toFixed(0)+'px');d.style.setProperty('--r',((Math.random()-.5)*80).toFixed(0)+'deg');d.style.fontSize=(14+Math.random()*12)+'px';d.style.animationDelay=(i*.04)+'s';
     document.body.appendChild(d);setTimeout(()=>d.remove(),1500)}}
-function wireProps(){$$('.prop').forEach(b=>b.onclick=e=>{e.stopPropagation();MUSIC.unlock();const p=PROPS[b.dataset.s][b.dataset.i];
+// Keep every prop out from under the place chip and the top buttons. The HUD's height changes with the language and
+// with pinyin (up to about two lines taller), so this measures it after each screen, after pinyin is added and on resize,
+// and moves a prop that would sit under it down to just below it.
+function propsClearHud(){const hs=$$('.hud .place,.hud-btns').map(e=>e.getBoundingClientRect()).filter(r=>r.height);
+  $$('.props .prop').forEach(b=>{b.style.marginTop='';if(!hs.length)return;const r=b.getBoundingClientRect();let dy=0;
+    for(const h of hs)if(r.left<h.right+6&&r.right>h.left-6&&r.top<h.bottom+6&&r.bottom>h.top-6)dy=Math.max(dy,h.bottom+6-r.top);
+    if(dy)b.style.marginTop=Math.ceil(dy)+'px'})}
+addEventListener('resize',()=>propsClearHud());
+function wireProps(){propsClearHud();requestAnimationFrame(propsClearHud);setTimeout(propsClearHud,400);$$('.prop').forEach(b=>b.onclick=e=>{e.stopPropagation();MUSIC.unlock();const p=PROPS[b.dataset.s][b.dataset.i];
   if(p.talk||p.say){const lines=p.say?[p.say]:CHATTER[p.talk];b._n=((b._n??Math.floor(Math.random()*lines.length))+1)%lines.length;const line=lines[b._n];
     $$('.pbubble').forEach(x=>x.remove());const r0=b.getBoundingClientRect();const d=document.createElement('div');d.className='pbubble';d.textContent=T(line);document.body.appendChild(d);
     d.style.left=Math.max(8,Math.min(innerWidth-d.offsetWidth-8,r0.left+r0.width/2-d.offsetWidth/2))+'px';d.style.top=Math.max(8,r0.top-d.offsetHeight-8)+'px';

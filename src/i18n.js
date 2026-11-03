@@ -78,7 +78,8 @@ I18N.sync=function(){if(typeof document==='undefined')return;const el=document.d
   el.classList.toggle('pm-zh',L==='zh');const py=this.pyOn();
   if(L==='zh')el.setAttribute('lang','zh-CN');else if(this._lang0)el.setAttribute('lang',this._lang0);else el.removeAttribute('lang');
   if(py!==el.classList.contains('pm-py')){el.classList.toggle('pm-py',py);if(py)this.ruby(document.body);else this.unruby(document.body)}};
-I18N.set=function(lang,py){if(lang)S.lang=lang;if(py!=null)S.pinyin=py;save();this.savePref();this.sync()};
+I18N.set=function(lang,py){if(lang)S.lang=lang;if(py!=null)S.pinyin=py;save();this.savePref();this.sync();
+  if(typeof propsClearHud==='function')requestAnimationFrame(propsClearHud)};  // pinyin changes the HUD's height
 // Setup: a small pill in the card's corner switches language (it names the other language); in Chinese a second pill toggles pinyin.
 I18N.setupHTML=function(){const zh=LANG()==='zh';return `<div class="i18n-pills">${zh?`<button class="i18n-pill ${this.pyOn()?'on':''}" id="i18n-py" aria-pressed="${this.pyOn()}">拼音</button>`:''}<button class="i18n-pill" id="i18n-lang" lang="${zh?'en':'zh-CN'}">${zh?'English':'中文'}</button></div>`};
 I18N.wireSetup=function(rerender){const b=document.getElementById('i18n-lang');if(b)b.onclick=()=>{this.set(LANG()==='zh'?'en':'zh');rerender()};
