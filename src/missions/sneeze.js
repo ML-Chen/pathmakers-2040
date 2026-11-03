@@ -462,9 +462,8 @@ MISSIONS.sneeze.custom={
        <div class="stage"><div class="speaker">${portrait({...CAST.osei,mood:'neutral'})}</div></div>
        <div class="subtitle"><div class="who"><b>Councilor Amara Osei</b><span>Boston City Council</span></div>
         ${bench}
-        <p>You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep.</p>
-        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(x.t)}</button>`).join('')}</div>
-        <div class="tiny muted" style="margin-top:6px">Pick three.</div></div>`);
+        <p>You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep. Pick three things to say.</p>
+        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(x.t)}</button>`).join('')}</div></div>`);
       const chosen=[];
       $$('#say .choice').forEach(b=>b.onclick=()=>{if(b.classList.contains('on'))return;
         const x=SN_SAY[b.dataset.j];b.classList.add('on',x.good?'good':'bad');chosen.push(x);
