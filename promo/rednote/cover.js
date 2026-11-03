@@ -20,7 +20,7 @@ html,body{margin:0;width:1080px;height:1440px;overflow:hidden;background:#141838
 <div class="band"></div><div class="one"><span class="fit">vibe coding 的游戏</span><span class="fit">帮孩子备战 <em>AI 2040</em></span></div>`;
 (async () => {
   const b = await chromium.launch();
-  const g = await b.newPage({viewport: {width: 405, height: 540}, deviceScaleFactor: 4/3});
+  const g = await b.newPage({viewport: {width: 405, height: 540}, deviceScaleFactor: 8/3});
   await g.goto('file://' + path.resolve(game)); await g.waitForTimeout(800); fs.mkdirSync(path.join(out, 'clean'), {recursive: true});
   for (const k of SCENES) { await g.evaluate(k => { S.mute = true; screen('covershot', scene(k)); document.querySelectorAll('.props,.hud').forEach(e => e.remove()) }, k); await g.waitForTimeout(1500);
     const f = path.join(out, 'clean', 'cover_' + k + '.png'); await g.screenshot({path: f}); pick.push(f) }
