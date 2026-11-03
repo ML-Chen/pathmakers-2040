@@ -13,10 +13,10 @@ I18N.add('zh','treatytalks',{strings:{
   // ----- the mission -----
   'Trust, Then Check':'先信任，再核查',
   'You travel to Beijing, where the American and Chinese teams read each other’s AI rules line by line.':'你来到北京。中美两国的团队要在这里一行一行地读对方的AI规则。',
-  'Hutong near Shichahai · Beijing':'什刹海边的胡同 · 北京','Hutong near Shichahai · 8:30 AM':'什刹海边的胡同 · 上午8:30',
+  'Hutong near Shichahai · Beijing':'什刹海胡同 · 北京','Hutong near Shichahai · 8:30 AM':'什刹海胡同 · 上午8:30',
   'Courtyard gate · Treaty talks':'院门口 · 条约会谈','Courtyard · Treaty talks · 11:00 AM':'院子里 · 条约会谈 · 上午11:00',
-  'Courtyard · Treaty talks':'院子里 · 条约会谈','Hutong near Shichahai · 4:30 PM':'什刹海边的胡同 · 下午4:30',
-  'Hutong near Shichahai · 7:10 PM':'什刹海边的胡同 · 晚上7:10','Debrief · Beijing':'总结 · 北京',
+  'Courtyard · Treaty talks':'院子里 · 条约会谈','Hutong near Shichahai · 4:30 PM':'什刹海胡同 · 下午4:30',
+  'Hutong near Shichahai · 7:10 PM':'什刹海胡同 · 晚上7:10','Debrief · Beijing':'总结 · 北京',
   'Travel':'出行',
 
   // cast
@@ -181,7 +181,7 @@ I18N.add('zh','treatytalks',{strings:{
   '“Mr. Qiao kept the tea stand open until the last car left. He put two persimmons in your coat pocket while you were saying goodbye.”':
     '“乔大爷的茶摊儿一直开到最后一辆车走。你跟大家道别的时候，他往你外套兜里塞了两个柿子。”',
   '“In the Ledger tonight: a robot factory in Shenzhen has invited an American who runs a school-building robot crew to come and test every way its robot crews can be stopped.”':
-    '“今晚的《纪事报》上说：深圳一家机器人工厂请来一位美国人，他带着一支盖学校的机器人施工队。工厂请他来把让机器人队停下的每一种办法都试一遍。”',
+    '“今晚的《纪事报》上说：深圳有一家机器人工厂，邀请一位带机器人队盖学校的美国人过去，把让机器人队停下的每一种办法都试一遍。”',
 
   // chat with Byte (scripted replies)
   'Thirty days is a very long time for a chip report to wait. Chips could be moved somewhere else and brought back again before anybody was told.':

@@ -109,11 +109,11 @@ I18N.add('zh','sisterhospital',{strings:{
   // Compare notes
   'Compare notes':'一起对病情','Ellie’s chart':'艾莉的病历','Riverside':'滨江医院','Riverside’s team is listening.':'滨江的团队在听。',
   'Is it Kawasaki disease?':'是川崎病吗？','Halo, Boston':'Halo（波士顿）','Riverside’s AI':'滨江的AI','Together':'合起来',
-  'Private':'隐私','From your notebook':'来自你的笔记本','{0}: “{1}”':'{0}：“{1}”','Decide with Dr. Wen':'和温医生一起决定',
-  'Fever for five days that keeps coming back':'发烧五天，退了又烧','Red eyes and red, cracked lips':'眼睛红，嘴唇红、干裂',
-  'No rash, and her hands and feet look normal':'没有皮疹，手脚看起来正常','Born in Shanghai, with her baby shots there':'在上海出生，小时候的预防针也在上海打',
-  'Her baby-shot scar turned pink and puffy yesterday':'胳膊上的预防针疤昨天变红、肿起来了','Her full name and birthday':'她的全名和生日',
-  'Her home address in Boston':'她在波士顿的家庭住址','A photo from her school':'一张学校里拍的照片',
+  'Private':'隐私','From your notebook':'笔记本里有','{0}: “{1}”':'{0}：“{1}”','Decide with Dr. Wen':'和温医生一起决定',
+  'Fever for five days that keeps coming back':'反复发烧五天','Red eyes and red, cracked lips':'眼睛红，嘴唇干裂',
+  'No rash, and her hands and feet look normal':'没有皮疹，手脚正常','Born in Shanghai, with her baby shots there':'生在上海，预防针也在上海打',
+  'Her baby-shot scar turned pink and puffy yesterday':'预防针疤昨天红肿了','Her full name and birthday':'全名和生日',
+  'Her home address in Boston':'波士顿的家庭住址','A photo from her school':'在学校拍的照片',
   'Riverside sees many more cases':'滨江见过的病例多得多',
   'Riverside treats about 300 children with Kawasaki disease every year, and Boston Harbor treats about 20. So we have seen this illness many more times than you have.':
     '滨江每年大约收治300个川崎病孩子，波士顿港医院大约20个。所以这种病我们见得比你们多得多。',
