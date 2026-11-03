@@ -168,7 +168,7 @@ const SHOPVIZ={
   shopMix:()=>{let f='';for(let i=0;i<10;i++){const x=22+i*28,auto=i%5<3;f+=svP(x,98,.78,{skin:SKIN[(i*2+1)%6],shirt:['#5b9bf0','#ff7a6b','#38b07f','#f5b82e','#8f86ff'][i%5],hair:['#1b1410','#6b4a2e','#2a1712','#c9772d','#3a2a1a'][i%5]})+
       (auto?`<g transform="translate(${x} 40)"><rect x="-12" y="-7" width="24" height="12" rx="6" fill="${SV.amber}"/>${svT(0,2.6,'AUTO',{s:6.4,c:'#fff'})}</g>`:`<g transform="translate(${x+1} 38)"><circle r="5" fill="rgba(200,235,255,.6)" stroke="${SV.ink}" stroke-width="1.4"/><path d="M3.6 3.6 L7 7" stroke="${SV.ink}" stroke-width="2" stroke-linecap="round"/></g>`)}
     return igFrame(300,124,`${f}${svT(150,18,'6 in 10 families are on autopilot',{s:11})}${svT(150,118,'With 200 orders: catch about 81 in 100',{s:10.5,c:SV.soft})}`,'A mix of real families: 6 in 10 on autopilot')},
-  shopBlind:()=>{const P=shopPiles(200,{shop:'careful'});return igFrame(300,132,`${P.svg}${svT(288,16,'Bargain hunters: the piles match',{s:10.5,a:'end'})}${svT(150,P.H-2,'catch 4 in 100, the same as a false alarm',{s:10,c:SV.red})}`,'With careful shoppers, steering and fair look the same')},
+  shopBlind:()=>{const P=shopPiles(200,{shop:'careful'});return igFrame(300,132,`${P.svg}${svT(288,16,'Bargain hunters: both results look alike',{s:10.5,a:'end'})}${svT(150,P.H-2,'catch 4 in 100, the same as a false alarm',{s:10,c:SV.red})}`,'With careful shoppers, steering and fair look the same')},
   // pilot
   shopPilotAll:()=>{let r='';SHOP_PILOT.forEach((o,i)=>{r+=`<g class="ig-rise" style="--d:${(i*.15).toFixed(2)}s"><rect x="${12+i*35}" y="30" width="30" height="40" rx="4" fill="#fff" stroke="#c8cce0"/><path d="M${18+i*35} 40 h18 M${18+i*35} 47 h18 M${18+i*35} 54 h12" stroke="#d0d4e6" stroke-width="2"/>${svT(27+i*35,66,i+1,{s:9,c:SV.soft})}</g>`});
     return igFrame(300,124,`${r}${shopPantryOrb(110,98,.8)}${svT(150,102,'vs',{s:11,c:SV.soft})}${shopTwinOrb(190,98,.8)}${svT(150,20,'8 mystery orders',{s:11})}`,'Eight pilot orders, each checked against the twin')},
@@ -227,9 +227,9 @@ const SHOPVIZ={
     return igFrame(300,124,`<rect x="${X(39.5)}" y="18" width="${X(60.5)-X(39.5)}" height="80" rx="6" fill="${SV.twin}" opacity=".08"/>${g}<path d="M18 96 H284" stroke="#b8bed6"/>${[30,40,50,60,70].map(k=>svT(X(k),110,k,{s:9,c:SV.soft,w:700})).join('')}${svT(150,14,'heads in 100 flips',{s:10})}${svT(150,122,'40 to 60 heads: about 96 times in 100',{s:10.5,c:SV.twinD})}`,'100 flips land between 40 and 60 heads about 96 times in 100')},
   shopHillNarrow:()=>{const X=f=>20+f*264,g=[10,50,400].map((n,i)=>{const pm=shopPmf(n,.5),pk=Math.max(...pm);let d=`M${X(0)} 100 `;for(let k=0;k<=n;k++)d+=`L${svR(X(k/n))} ${svR(100-pm[k]/pk*76)} `;d+=`L${X(1)} 100Z`;
       return `<path d="${d}" fill="${['#c8cee2',SV.amber,SV.twin][i]}" opacity=".5" class="shop-seq" style="--d:${i*1.3}s"/>${svT([60,96,150][i],[56,42,18][i],n+' tries',{s:9.5,c:['#7a80a0',SV.amberD,SV.twinD][i],cls:'shop-seq',w:800})}`}).join('');
-    return igFrame(300,118,`${g}<path d="M18 100 H284" stroke="#b8bed6"/>${svT(X(.5),114,'the truth',{s:9.5,c:SV.soft})}<path d="M${X(.5)} 100 v-90" stroke="${SV.ink}" stroke-dasharray="2 3" opacity=".4"/>`,'More tries make the pile of possible results narrower')},
+    return igFrame(300,118,`${g}<path d="M18 100 H284" stroke="#b8bed6"/>${svT(X(.5),114,'the truth',{s:9.5,c:SV.soft})}<path d="M${X(.5)} 100 v-90" stroke="${SV.ink}" stroke-dasharray="2 3" opacity=".4"/>`,'More tries make the range of possible results narrower')},
   shopHillsApart:()=>{const half=(n,ox)=>{const P=shopPiles(n,{shop:'auto',h:118,xmax:.34});return `<g transform="translate(${ox} 4) scale(.5 .86)">${P.svg}</g>`+svT(ox+75,112,n+' orders',{s:10})};
-    return igFrame(300,118,`${half(40,0)}${half(800,150)}<path d="M150 8 V100" stroke="#dfe3f3"/>`,'Fair and steering piles overlap with 40 orders and separate with 800')}
+    return igFrame(300,118,`${half(40,0)}${half(800,150)}<path d="M150 8 V100" stroke="#dfe3f3"/>`,'Results for a fair and a steering Pantry overlap with 40 orders and separate with 800')}
 };
 Object.assign(VIZ,SHOPVIZ);
 
