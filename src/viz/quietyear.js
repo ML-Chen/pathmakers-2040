@@ -403,7 +403,7 @@ const QY_ART=(()=>{
     ${germ(220,104,4,'#7cc576','opacity=".55"')}${germ(246,108,3,'#7cc576','opacity=".45"')}`,'Nobody noticed the germ for almost three weeks'),
   qyHomesLit:()=>{let s='';for(let j=0;j<5;j++)for(let i=0;i<16;i++){const x=14+i*17.5+(j%2)*7,y=18+j*21,hit=(i*7+j*11)%10<5;
       s+=`<path d="M${x} ${y+12}V${y+5}L${x+6} ${y}L${x+12} ${y+5}V${y+12}Z" fill="#e8e2f4" stroke="#b8b0d0" stroke-width=".8"/>${hit?`<path d="${ov(x+6,y+8,2.6)}" fill="${CO}" class="qyv-on" style="--d:${(((i*13+j*7)%20)*.12).toFixed(2)}s"/>`:''}`}
-    return pic(...['#f6f2ff','#fff'],s,'The outbreak reached hundreds of homes')},
+    return pic(...['#f6f2ff','#fff'],s,'The outbreak reached more than a hundred homes')},
   qyBuildBox:()=>pic(...ROOM,`${gnd(104,'#d9c3a8','#c4aa8a')}<path d="M70 92H230V98H70Z" fill="#a8744a"/><path d="M80 98V122M220 98V122" stroke="#8a5a3a" stroke-width="4"/>
     ${boxG(150,92,1.25,GR,'qyv-blink')}
     <path d="M96 90L114 86" stroke="#8a90b0" stroke-width="2.4" stroke-linecap="round"/><path d="M114 86L122 84" stroke="#e5484d" stroke-width="3.6" stroke-linecap="round"/>
@@ -415,7 +415,7 @@ const QY_ART=(()=>{
     <path d="M118 108C126 108 128 100 126 96" stroke="#3d5a80" stroke-width="3" fill="none"/>${boxG(100,96,1.5,'#e5484d','qyv-blink')}
     <path d="${ov(114,60,8)}" fill="none" stroke="#e5484d" stroke-width="2" class="qyv-ring"/><path d="${ov(114,60,8)}" fill="none" stroke="#e5484d" stroke-width="2" class="qyv-ring" style="--d:1.2s"/>
     <path d="M132 62H186" stroke="#e5484d" stroke-width="2" class="qyv-dash"/>${bld(196,108,74,56,{col:'#eef1fb',sign:'Health office',cols:3,rows:2})}
-    <path d="${rr(250,26,40,16,8)}" fill="#e5484d" class="qyv-pulse"/>${txt(270,37.5,8.6,'#fff','< 1 day')}`,'Sniffer finds something new in the water and calls for help within a day'),
+    <path d="${rr(250,26,40,16,8)}" fill="#e5484d" class="qyv-pulse"/>${txt(270,37.5,8.6,'#fff','< 1 day')}`,'Sniffer finds something new in the water and sends an alert within a day'),
   qySensorMap:()=>pic(...DAY,`<path d="${rr(10,10,170,110,8)}" fill="#e9f2e2" stroke="#b9d0a8"/><path d="M10 64H180M96 10V120M40 10C52 50 50 90 36 120" stroke="#fff" stroke-width="7" fill="none"/>
     ${bld(118,58,40,34,{col:'#f2d3a0',cols:2,rows:1})}${txt(138,30,6.4,'#8a5a3a','SCHOOL','textLength="26" lengthAdjust="spacingAndGlyphs"')}
     ${[[26,40,0],[64,34,1],[70,96,0],[22,96,1],[156,100,0],[124,96,1]].map(([x,y,k],i)=>`<path d="M${x-7} ${y+4}V${y-3}L${x} ${y-9}L${x+7} ${y-3}V${y+4}Z" fill="${k?'#f0c39a':'#d9c2e8'}" stroke="#8a7a9a" stroke-width=".8"/><path d="${ov(x+9,y+3,3.4)}" fill="${TE}" class="qyv-pulse" style="--d:${i*.3}s"/>`).join('')}
@@ -442,7 +442,7 @@ const QY_ART=(()=>{
     return pic(...['#e6f1ff','#f8fbff'],`${globe(150,66,34)}${ring.map(([a,b],i)=>{const x=150+a*84,y=66+b*48;return `<path d="M${150+a*40} ${66+b*40}L${x} ${y}" stroke="#b9c1d9" stroke-width="1" stroke-dasharray="2 3"/><g transform="translate(${x-12} ${y-11})"><path d="M0 22V7L12 0L24 7V22Z" fill="#e8f6f4" stroke="${TE}" stroke-width="1"/><path d="M9 22V14H15V22Z" fill="${TE}"/></g><g class="qyv-pop" style="--d:${i*.45}s"><path d="${ov(x+12,y-10,6)}" fill="${GR}"/><path d="M${x+9} ${y-10}L${x+11} ${y-8}L${x+15} ${y-12.5}" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>`}).join('')}`,'Every print shop in the world checks every order')},
   qyOrderScan:()=>pic(...['#eef7f6','#fbfffe'],`<path d="M0 92H300V104H0Z" fill="#8a90b0"/>${[0,1,2,3,4,5,6,7,8,9,10].map(i=>`<path d="${ov(14+i*28,104,4)}" fill="#5d6385"/>`).join('')}
     <path d="M128 92V30Q128 22 136 22H164Q172 22 172 30V92" stroke="${TE}" stroke-width="7" fill="none"/><path d="M134 34H166V90H134Z" fill="#7ff7e4" opacity=".22" class="qyv-pulse"/>
-    ${[0,1,2,3].map(i=>`<g class="qyv-slide" style="--dx:330px;--d:${(i*.8).toFixed(1)}s">${slipG(-30,62,1,{check:1,cc:'qyv-chk',d:(i*.8).toFixed(1)})}</g>`).join('')}`,'An AI checks every order in a blink'),
+    ${[0,1,2,3].map(i=>`<g class="qyv-slide" style="--dx:330px;--d:${(i*.8).toFixed(1)}s">${slipG(-30,62,1,{check:1,cc:'qyv-chk',d:(i*.8).toFixed(1)})}</g>`).join('')}`,'An AI checks every order in less than a second'),
   qyOrdersPass:()=>pic(...['#eef7f6','#fbfffe'],`${slipG(14,30,1,{icon:'med'})}${slipG(42,44,1,{icon:'lab'})}${slipG(18,72,1,{icon:'med'})}
     <path d="M72 70H110" stroke="${TE}" stroke-width="2.4" class="qyv-dash"/><path d="M106 64L114 70L106 76" stroke="${TE}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
     <path d="${rr(118,36,80,62,8)}" fill="#e8f6f4" stroke="${TE}" stroke-width="1.6"/><path d="${rr(128,46,60,18,4)}" fill="#3a3f5a"/><path d="M134 55H182" stroke="#7ff7e4" stroke-width="2" class="qyv-dash"/><path d="${ov(176,82,4)}" fill="${GR}" class="qyv-blink"/>
@@ -495,7 +495,7 @@ const QY_ART=(()=>{
     ${[0,1,2,3,4,5,6].map(i=>`<path d="M${150+i*20} 104V${70+(i%2)*6}" stroke="#1e2a2a" stroke-width="1.6"/>${lamp(150+i*20,66+(i%2)*6,.9,['#f7a440','#ff8a7a','#ffd45c','#7fd8c8','#a99bff','#f7a440','#ff8a7a'][i],'qyv-sway',i*.3)}`).join('')}
     ${[0,1,2,3,4,5,6,7,8].map(i=>lamp(140+i*17,96+(i%2)*3,.55,['#f7a440','#ffd45c','#ff8a7a'][i%3])).join('')}`,'That is how the lantern garden started'),
   qyBigFromSmall:()=>{let s='';for(let k=0;k<3;k++){const n=8+k*6,R=26+k*24;for(let i=0;i<n;i++){const a=i/n*Math.PI*2+k*.3,x=190+Math.cos(a)*R*1.3,y=66+Math.sin(a)*R*.7;if(x<110||x>292||y<6||y>124)continue;s+=`<g class="qyv-on" style="--d:${(k*.9+i*.04).toFixed(2)}s">${lamp(r(x),r(y),.55,['#f7a440','#ffd45c','#ff8a7a','#7fd8c8','#a99bff'][(i+k)%5])}</g>`}}
-    return pic(...NIGHT,`${stars(12,15,30)}${gnd(112,'#2c3466')}${P(44,112,{...IVY,s:1.3,face:'happy'})}${lamp(66,70,1.3,'#f7a440','qyv-sway')}${lamp(190,66,1.1,'#ffd45c','qyv-pulse')}${s}`,'One small lantern became thousands')}
+    return pic(...NIGHT,`${stars(12,15,30)}${gnd(112,'#2c3466')}${P(44,112,{...IVY,s:1.3,face:'happy'})}${lamp(66,70,1.3,'#f7a440','qyv-sway')}${lamp(190,66,1.1,'#ffd45c','qyv-pulse')}${s}`,'One small lantern led to thousands')}
   });
 
   return ART;
