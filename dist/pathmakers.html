@@ -179,11 +179,20 @@ textarea{resize:vertical;line-height:1.5}
 .gpop .mini-btn{margin-top:4px}
 
 /* toasts */
-.toast{position:fixed;left:50%;top:calc(62px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:10px 16px;border-radius:14px;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:drop .35s cubic-bezier(.2,1.4,.4,1);width:max-content;max-width:min(90vw,420px);text-align:center}
+/* A toast is a banner laid over the HUD row for a moment (game.js shows one at a time), so it never lands on the text the
+   player is reading. The column's HUD row runs 12-54px from the top (24-66px from 700px up); the banner covers it. */
+.toast{--tx:-50%;position:fixed;left:50%;top:calc(8px + env(safe-area-inset-top,0px));transform:translateX(var(--tx));z-index:60;width:min(calc(100vw - 24px),496px);min-height:50px;
+  display:flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;padding:6px 14px;border-radius:14px;font-weight:800;font-size:.95rem;line-height:1.25;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);animation:toastin .35s cubic-bezier(.2,1.4,.4,1);text-align:center;cursor:pointer}
+.toast.wait{display:none}
 .toast.good{background:var(--good)}
-/* toasts drop in just below the HUD row so they never cover the place name or the HUD buttons */
-@media (min-width:700px){.toast{top:calc(82px + env(safe-area-inset-top,0px))}}
-.toast.out{opacity:0;transform:translate(-50%,-10px);transition:.4s}
+@media (min-width:700px){.toast{top:calc(20px + env(safe-area-inset-top,0px))}}
+/* a wide window has empty space beside the 520px column: the toast sits there, next to the column's top right corner */
+@media (min-width:1100px){body:not(.cm-wide) .toast{--tx:0px;left:calc(50% + 276px);width:max-content;max-width:min(360px,calc(50vw - 300px));justify-content:flex-start;text-align:left}}
+/* the world map fills the window with its HUD across the top; the middle of that row is empty */
+@media (min-aspect-ratio:1/1) and (min-width:820px){body.cm-wide .toast{width:max-content;max-width:min(480px,calc(100vw - 560px));top:calc(16px + env(safe-area-inset-top,0px))}}
+.toast.out{opacity:0;transform:translate(var(--tx),-10px);transition:.4s}
+@keyframes toastin{from{transform:translate(var(--tx),-30px);opacity:0}}
 @keyframes drop{from{transform:translate(-50%,-30px);opacity:0}}
 
 /* walking scene */
@@ -1055,6 +1064,7 @@ svg text:not([font-family]){font-family:var(--body)}
 .bd-enact{font-size:.88rem;margin:6px 0 10px;padding:8px 10px;background:#f6f0de;border-radius:10px}
 .bd-h{font-weight:700;font-size:.82rem;letter-spacing:.04em;margin:12px 0 4px}
 .bd-small{font-size:.84rem;margin:0 0 4px}
+.bd-note{margin:10px 0}.bd-note .byteart{width:48px}
 .bd-sec{border-top:1px solid #ece4cc;padding-top:4px;margin-top:8px}
 .bd-vers{margin:4px 0 8px;font-family:var(--body)}
 .bd-vers .segb{font-size:.8rem;padding:7px 6px}
@@ -1473,7 +1483,10 @@ body:has(.screen.worldmap) .bc-gift{bottom:calc(136px + env(safe-area-inset-bott
 .cj-q.asked::before{content:'✓ ';color:var(--good)}
 .cj-ans{min-height:84px}
 .cj-ans p{animation:reveal .35s ease-out}
-.cj-oh-wrap{display:flex;flex-direction:column;min-height:calc(100vh - 80px);min-height:calc(100dvh - 80px)}
+/* the wrap fills the window below the HUD and no further (a fixed "100vh minus the HUD" made the page scroll by a few pixels
+   whenever the HUD or #app's padding came out taller than the guess): #app becomes a window-high column and the wrap takes the rest */
+#app.openhouse{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+.cj-oh-wrap{display:flex;flex-direction:column;flex:1 0 auto}
 /* the wrap is a see-through full-height column: only its cards catch taps, so Halo's orb and the props above the cards stay tappable */
 .cj-oh-wrap{pointer-events:none}.cj-oh-wrap>*{pointer-events:auto}
 .cj-oh-people{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto}
@@ -1902,6 +1915,13 @@ html.pm-py .fut figcaption{min-height:4.2em}
 .lg-hint{min-height:0;font-weight:800;color:var(--violet);margin:6px 4px 2px;font-size:.92rem}.lg-hint:empty{display:none}
 .lg-check .byte-note.lg-hop{animation:hop .6s}
 .finding .lg-part{cursor:zoom-in;outline:2px dashed rgba(108,92,231,.38);outline-offset:3px;border-radius:10px}
+/* The tap outlines (5px outside each part) and a sentence's highlight (8px past its text) reach past the text column. The sheet
+   body gets 8px of room on each side for them (the sheet's own padding shrinks by as much, so the text stays where it was);
+   otherwise the body's clip edge cut them off and the body could be scrolled sideways. */
+.sheet.ledger .sheet-in{padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+.sheet.ledger .sheet-body{padding-left:8px;padding-right:8px}
+.sheet.ledger .sheet-top{margin-left:8px;margin-right:8px}
+.finding .sent.lg-part{outline-offset:-2px}
 .finding .lg-part:hover{outline-color:var(--violet);background:rgba(108,92,231,.06)}
 .lg-part.lg-wrong{animation:lgshake .4s}
 @keyframes lgshake{20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
@@ -1983,7 +2003,13 @@ html.pm-py .fut figcaption{min-height:4.2em}
 .lot-pj.gone{animation:lot-pjgone 1.2s ease-in forwards}
 @keyframes lot-pj{0%{transform:translateX(-160px)}100%{transform:translateX(160px)}}
 @keyframes lot-pjgone{to{transform:translateX(260px);opacity:0}}
-.lot-cap{top:calc(64px + env(safe-area-inset-top,0px));bottom:auto}
+/* The field notes card is fixed just under the HUD row, above the highest survey spot (Camelback Mountain, 36% down the scene).
+   #app>.lot-cap keeps it fixed: #app>*:not(.scene){position:relative} used to win, which pushed the card down a whole HUD
+   height and over the mountain spot. */
+#app>.lot-cap{position:fixed;top:calc(62px + env(safe-area-inset-top,0px));bottom:auto}
+@media (min-width:700px){#app>.lot-cap{top:calc(74px + env(safe-area-inset-top,0px))}}
+/* short phones: a tighter card, so it still ends above the mountain spot */
+@media (max-height:720px){#app>.lot-cap{padding:9px 14px}.lot-cap p{margin:2px 0 6px;font-size:.9rem;line-height:1.3;min-height:0}.lot-cap .btn.small{padding:7px 12px;font-size:.9rem}}
 .lot-cap-top{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--ink2)}
 .lot-cap-top b{font-family:var(--display);font-size:1.05rem;color:var(--ink)}
 .lot-cap p{margin:4px 0 10px;font-size:.98rem;line-height:1.4;min-height:2.8em}
@@ -29879,6 +29905,11 @@ function lgArticle(d,root,st){const L=lgState();if(!L.read[st.id]){L.read[st.id]
   const go=$('#lg-go',root);if(go)go.onclick=()=>{d.remove();stopVoice();startMission(lk.mission)};
   lgCheck(d,root,st);
   $$('.lg-part',root).forEach(p=>p.addEventListener('click',e=>{if(LG_VIEW.mode!=='find'||e.target.closest('.gw'))return;e.preventDefault();e.stopPropagation();lgTap(d,root,st,p)}))}
+// Scroll the sheet up or down to a part of the article. Unlike scrollIntoView this never scrolls sideways: a sentence's highlight
+// reaches a few pixels past the text, and scrollIntoView used to slide the whole article left to show it, cutting off its left edge.
+function lgScroll(el,block,smooth){const b=el&&el.closest('.sheet-body');if(!b)return;const r=el.getBoundingClientRect(),br=b.getBoundingClientRect();
+  let y=b.scrollTop+r.top-br.top;if(block==='center')y-=(br.height-r.height)/2;else if(block==='end')y-=br.height-r.height;
+  b.scrollLeft=0;b.scrollTo({top:Math.max(0,y),behavior:smooth?'smooth':'auto'})}
 function lgByte(text,speak){return `<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${rich(text)}</p></div>${speak!==false?'':''}`}
 function lgCheck(d,root,st){const L=lgState(),box=$('#lg-check',root),c=L.check[st.id],TR=st.trick;
   if(LG_VIEW.mode==='find'){box.innerHTML=`<button class="mini-btn" id="lg-cancel">${T('Stop checking')}</button>`;
@@ -29889,17 +29920,17 @@ function lgCheck(d,root,st){const L=lgState(),box=$('#lg-check',root),c=L.check[
   $('#lg-ok',box).onclick=()=>{if(TR){box.innerHTML=lgByte(LEDGER_BYTE.nudge)+`<div class="row"><button class="btn small" id="lg-again">${LG_ICON.lens}${T('Look again')}</button><button class="btn small ghost" id="lg-keep">${T('Keep reading')}</button></div>`;playLine('byte',LEDGER_BYTE.nudge);
       $('#lg-again',box).onclick=()=>{LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d)};$('#lg-keep',box).onclick=()=>{stopVoice();LG_VIEW.story=null;lgRender(d)};return}
     L.check[st.id]='trusted';save();lgTrust();lgCheck(d,root,st);playLine('byte',st.check||LEDGER_BYTE.agree)};
-  $('#lg-off',box).onclick=()=>{if(TR){LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d);const a=$('.lg-art',root);a&&a.scrollIntoView({block:'start'});return}
+  $('#lg-off',box).onclick=()=>{if(TR){LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d);lgScroll($('.lg-art',root),'start');return}
     L.check[st.id]='solid';save();lgTrust();lgCheck(d,root,st);const s=$('#lg-check .byte-note',root);s&&s.classList.add('lg-hop');playLine('byte',st.check||LEDGER_BYTE.solid)}}
 function lgTrust(){unlock('lg-trust')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['lg-trust'].title)),'good')}
 function lgTap(d,root,st,p){const TR=st.trick,part=p.dataset.part,L=lgState(),hint=$('#lg-hint',root);
   if(TR&&TR.parts.includes(part)){L.check[st.id]=LG_VIEW.miss>=3?'helped':'spotted';save();LG_VIEW.mode=null;MUSIC.sfx('chime');
     p.classList.add('lg-right');const r=p.getBoundingClientRect();burst(r.left+r.width/2,r.top+Math.min(r.height/2,60),'sparkles',9);
-    setTimeout(()=>{lgRender(d);const hw=$('.lg-headwrap',root);hw&&hw.scrollIntoView({block:'start',behavior:'smooth'});const stp=$('.lg-stamp.big',root);stp&&stp.classList.add('slam');
-      const c=$('#lg-check',root);if(c)setTimeout(()=>c.scrollIntoView({block:'end',behavior:'smooth'}),900);
+    setTimeout(()=>{lgRender(d);lgScroll($('.lg-headwrap',root),'start',1);const stp=$('.lg-stamp.big',root);stp&&stp.classList.add('slam');
+      const c=$('#lg-check',root);if(c)setTimeout(()=>lgScroll(c,'end',1),900);
       if(unlock(TR.guide))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[TR.guide].title)),'good');playLine('byte',TR.why)},650);return}
   LG_VIEW.miss++;p.classList.remove('lg-wrong');void p.offsetWidth;p.classList.add('lg-wrong');MUSIC.sfx('click');
-  if(LG_VIEW.miss>=3){const right=$(`.lg-part[data-part="${TR.parts[0]}"]`,root);if(right){right.classList.add('lg-show');right.scrollIntoView({block:'center',behavior:'smooth'})}
+  if(LG_VIEW.miss>=3){const right=$(`.lg-part[data-part="${TR.parts[0]}"]`,root);if(right){right.classList.add('lg-show');lgScroll(right,'center',1)}
     if(hint)hint.textContent=T(LEDGER_BYTE.help);playLine('byte',LEDGER_BYTE.help);return}
   if(hint)hint.textContent=T((TR.near&&TR.near[part])||'Not that part. Keep looking!')}
 
@@ -31360,6 +31391,7 @@ function bill_draftSecs(){const c=S.choice,lines=t=>T(t).split('\n').map(l=>`<sp
 function bill_draft(){unlock('signed-commands');
   screen('bench',`${scene('workbench')}${hud('Drafting desk · H.R. 6120')}<div class="bench bill-desk">
     <div class="bd-strip" id="bdstrip">${bill_draftStrip()}</div>
+    <div class="byte-note bd-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(T('Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.'))}</p></div>
     <article class="doc doc-bill bd-paper"><div class="doc-from">${T('127th Congress · 2nd Session')}</div><h2>H.R. 6120</h2>
       <p class="bd-title">${T('A BILL to require that home and work robots check who sent any order that reaches them over the internet, and for other purposes.')}</p>
       <p class="bd-enact"><i>${T('Be it enacted by the Senate and House of Representatives of the United States of America in Congress assembled,')}</i></p>
@@ -31367,7 +31399,8 @@ function bill_draft(){unlock('signed-commands');
       <div class="bd-h">${T('SEC. 2. DEFINITIONS.')}</div><p class="bd-small">${T('(1) COVERED ROBOT.—The term “covered robot” means a machine that moves in the physical world and acts on its own in a home or workplace. (2) ROBOT CREW.—The term “robot crew” means two or more covered robots doing one job together. (3) REMOTE ORDER.—The term “remote order” means an instruction that reaches a covered robot over a network rather than from a person beside it. (4) SECRETARY.—The term “Secretary” means the Secretary of Commerce.')}</p>
       <div id="bdsecs">${bill_draftSecs()}</div></article>
     ${companion()}<div class="bench-foot"><button class="btn" id="next">${T('Set my criteria')}</button></div></div>`);
-  wireCompanion();setTimeout(()=>byteSays('Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.','happy'),500);
+  // Byte's pointer sits in the page above the bill: as a floating bubble it covered the bill's two-column sections
+  wireCompanion();
   const wire=()=>$$('.bd-vers .segb').forEach(b=>b.onclick=()=>{S.choice={...S.choice,[b.dataset.k]:b.dataset.v};save();MUSIC.sfx('click');
     $('#bdsecs').innerHTML=bill_draftSecs();$('#bdstrip').innerHTML=bill_draftStrip();$$('.bd-m').forEach(m=>m.classList.add('bump'));wire()});
   wire();$('#next').onclick=()=>nextStep()}
@@ -41156,9 +41189,11 @@ function rngFrom(seed){let a=(seed>>>0)||1;return()=>{a=(a+0x6D2B79F5)>>>0;let t
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 // graded reader markup: [[word]] → tappable glossary word
 function rich(t){return esc(fill(T(t))).replace(/\[\[([^\]]+)\]\]/g,(m,w)=>{const k=gkey(w);return GLOSSARY[k]?`<button class="gw" data-w="${esc(k)}">${w}</button>`:w})}
-function toast(msg,kind=''){const prev=$$('.toast:not(.out)'),n=prev.length;const d=document.createElement('div');d.className='toast '+kind;d.innerHTML=msg;document.body.appendChild(d);
-  // stack below the toasts already showing, by their real height (a toast can wrap to two lines)
-  if(n){const b=Math.max(...prev.map(x=>x.offsetTop+x.offsetHeight));d.style.marginTop=Math.max(0,b+8-d.offsetTop)+'px'}setTimeout(()=>d.classList.add('out'),2600+n*600);setTimeout(()=>d.remove(),3200+n*600)}
+// Toasts show one at a time in a banner over the HUD row (or beside the column on a wide window, see style.css), so they never
+// stack down onto the text the player is reading. Later toasts wait their turn (as hidden .toast.wait), and a tap closes one early.
+function toast(msg,kind=''){const d=document.createElement('div');d.className='toast wait '+kind;d.innerHTML=msg;d.setAttribute('role','status');d.onclick=()=>toastOut(d);document.body.appendChild(d);toastNext()}
+function toastNext(){if($('.toast:not(.wait)'))return;const d=$('.toast.wait');if(!d)return;d.classList.remove('wait');d._t=setTimeout(()=>toastOut(d),$('.toast.wait')?1900:2600)}
+function toastOut(d){if(d._out)return;d._out=1;clearTimeout(d._t);d.classList.add('out');setTimeout(()=>{d.remove();toastNext()},400)}
 // ---------- voices: prerecorded clips (AUDIO from audio.js), device voice as fallback ----------
 let curAudio=null,playId=0;
 function stopVoice(){playId++;MUSIC.duck(false);try{if(curAudio){curAudio.pause();curAudio=null}}catch(e){}}
