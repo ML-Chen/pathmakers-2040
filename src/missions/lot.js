@@ -231,7 +231,7 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     'Byte never heard about the alley ditch. Mrs. Okafor mentioned it, and the flood log showed two Tuesday-night floods from the back of the lot.')}},
   debriefLines(){const L=lotState(),f=L.f||{},crew=S.choice.crew,ar=S.choice.arroyo,out=[];
     const miss=[!(f.flood||f.homes)&&'the goal',!(f.dev&&f.okafor)&&'who it was for',!(f.budget&&f.deadline)&&'the limits',!f.criteria&&'your criteria'].filter(Boolean);
-    out.push(miss.length?{ok:false,text:T('Your request left out {0}, so Byte had to guess.',miss.map(x=>T(x)).join(T(' and ')))}:{ok:true,text:'Your request named the goal, who it was for, the limits and your criteria, so Byte designed for this lot.'});
+    out.push(miss.length?{ok:false,text:T('Your request left out {0}, so Byte had to guess.',miss.map(x=>T(x)).reduce((a,x)=>T('{0} and {1}',a,x)))}:{ok:true,text:'Your request named the goal, who it was for, the limits and your criteria, so Byte designed for this lot.'});
     out.push(crew==='free'?{ok:false,text:'You let the crew sign its own changes. When it finds something that belongs to someone else, nobody gets asked.'}:
       crew==='all'?{ok:true,text:'Your crew had to stop for every surprise. That was safe, but even a buried rock could cost a night of building.'}:
       {ok:true,text:'Your crew could move rocks on its own, but had to stop for anything that belongs to someone else.'});

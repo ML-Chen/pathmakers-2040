@@ -236,7 +236,7 @@ I18N.add('zh','bill',{strings:{
   'Madam Chair, on that vote there were 10 ayes and 11 noes.':'主席女士，本次表决，赞成10票，反对11票。','Madam Chair, on that vote there were 9 ayes and 12 noes.':'主席女士，本次表决，赞成9票，反对12票。',
   'The ayes have it, and the bill is forwarded to the full committee.':'赞成票占多数，法案提交全委员会。','The noes have it, and the bill is not forwarded.':'反对票占多数，法案不予提交。',
   'Aye.':'赞成。','No.':'反对。','{0}?':'{0}？',
-  'Ms. Adler':'阿德勒女士','Mr. Bao':'鲍先生','Ms. Castellanos':'卡斯特利亚诺斯女士','Mr. Dunmore':'邓莫尔先生','Ms. Ellery':'埃勒里女士','Mr. Fairbanks':'费尔班克斯先生','Mr. Gunderson':'冈德森先生',
+  'Ms. Adler':'阿德勒女士','Mr. Bao':'鲍先生','Ms. Castellanos':'卡斯特拉诺女士','Mr. Dunmore':'邓莫尔先生','Ms. Ellery':'埃勒里女士','Mr. Fairbanks':'费尔班克斯先生','Mr. Gunderson':'冈德森先生',
   'Ms. Hollis':'霍利斯女士','Ms. Ibarra':'伊巴拉女士','Mr. Jansen':'扬森先生','Ms. Kowalczyk':'科瓦尔奇克女士','Mr. Lindqvist':'林奎斯特先生','Ms. Moreau':'莫罗女士','Mr. Nakamura':'中村先生',
   'Ms. Oyelaran':'奥耶拉兰女士','Mr. Quintero':'金特罗先生','Ms. Rasmussen':'拉斯穆森女士','Mr. Sethi':'塞西先生','Ms. Tolliver':'托利弗女士','Mr. Whitlock':'惠特洛克先生','Ms. Yazzie':'亚齐女士',
   'Roll call on the Robot Safety Act':'《机器人安全法》唱名表决','Ayes':'赞成','Noes':'反对','11 to pass':'11票通过',
@@ -300,7 +300,7 @@ I18N.add('zh','bill',{strings:{
 
   // ---------- the drafting desk ----------
   'Here’s the bill, section by section. The legal words are on the left, and what they mean is on the right.':'这是法案，一条一条列出来了。左边是法律条文，右边是它的意思。',
-  '127th Congress · 2nd Session':'第127届国会 · 第2次会议',
+  '127th Congress · 2nd Session':'第127届国会 · 第2会期',
   'A BILL to require that home and work robots check who sent any order that reaches them over the internet, and for other purposes.':'法案：要求家用和工作用机器人核对通过互联网收到的每条命令的发送者，及其他目的。',
   'Be it enacted by the Senate and House of Representatives of the United States of America in Congress assembled,':'兹由美利坚合众国国会参议院与众议院在国会召开会议时制定：',
   'SEC. 1. SHORT TITLE.':'第1条 简称','This Act may be cited as the “Robot Safety Act”.':'本法可以称为《机器人安全法》。',
@@ -362,7 +362,7 @@ I18N.add('zh','bill',{strings:{
   'Crew of 40':'40台一队','In charge:':'负责人：','A robot crew rolling to the town square with nobody in charge':'一支没人负责的机器人小队开到了镇广场上',
   'Signed: obey':'有签名：照做','Unsigned: ignore':'没签名：不理','A robot checks the digital signature on each order':'机器人核对每条命令上的数字签名',
   'An unknown sender, still a mystery':'发送者不明，到现在还是个谜',
-  '127th CONGRESS · 2d Session':'第127届国会 · 第2次会议','H.R. 6120':'H.R. 6120','IN THE HOUSE OF':'美国众议院','REPRESENTATIVES':'','H.R.':'H.R.','= House':'＝众议院',
+  '127th CONGRESS · 2d Session':'第127届国会 · 第2会期','H.R. 6120':'H.R. 6120','IN THE HOUSE OF':'美国众议院','REPRESENTATIVES':'','H.R.':'H.R.','= House':'＝众议院',
   'The cover of bill H.R. 6120':'H.R. 6120法案的封面','LAW':'法律','if it passes':'通过后','The enacting clause turns words into law':'制定条款让文字变成法律',
   'One robot alone is not a crew, but three robots carrying a beam together are a crew':'一台机器人单干不算小队，三台机器人一起抬一根梁才算小队',
   'SHALL = must':'应当＝必须','MAY = allowed to':'可以＝允许','“Shall” means must, and “may” means allowed to':'“应当”就是必须，“可以”就是允许',

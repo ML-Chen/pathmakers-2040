@@ -62,7 +62,7 @@ Object.assign(VIZ,{
   lotDayClock:()=>{const H=[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],ppl={5:3,6:4,7:3,8:2,9:1,19:1,20:3,21:4,22:2},X=h=>14+(h-5)*16;
     return igFrame(300,130,`<rect x="${X(10)-6}" y="18" width="${X(19)-X(10)}" height="86" rx="8" fill="#ffe2cc" opacity=".7"/>${igT((X(10)+X(19))/2-6,32,'too hot',{s:10,c:'#c4581f'})}
       <path d="M${X(6)} 70 Q${X(13.5)} -18 ${X(21)} 70" stroke="#ffd98a" stroke-width="1.4" fill="none" stroke-dasharray="3 4"/><g class="lot-sunarc">${lxSun(0,0,6)}</g>
-      <path d="M8 104 H292" stroke="${IG.line}" stroke-width="2"/>${H.filter(h=>h%3===2||h===22).map(h=>`<path d="M${X(h)} 100 v8" stroke="${IG.soft}"/>${igT(X(h),120,h<12?h+' AM':h===12?'noon':(h-12)+' PM',{s:9,c:IG.soft})}`).join('')}
+      <path d="M8 104 H292" stroke="${IG.line}" stroke-width="2"/>${H.filter(h=>h%3===2||h===22).map(h=>`<path d="M${X(h)} 100 v8" stroke="${IG.soft}"/>${igT(X(h),120,h<12?T('{0} AM',h):h===12?T('noon'):T('{0} PM',h-12,h),{s:9,c:IG.soft})}`).join('')}
       ${H.map(h=>[...Array(ppl[h]||0)].map((_,k)=>`<g class="lot-pop" style="--d:${((h-5)*.08+k*.1).toFixed(2)}s">${lxPerson(X(h),100-k*13,1,['#2a9d8f','#e0803a','#6c5ce7','#3b7dd8'][k%4])}</g>`).join('')).join('')}`,'Park visitors by hour: mornings and evenings, almost none midday')},
   lotNightCrew:()=>igFrame(300,130,`<rect width="300" height="130" rx="10" fill="#1d2552"/>${[0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(i=>`<circle cx="${(i*71)%300}" cy="${6+(i*23)%46}" r="1" fill="#fff" opacity=".8" class="${i%3?'':'lot-blink'}" style="--d:${i*.2}s"/>`).join('')}
     <circle cx="258" cy="24" r="11" fill="#fff6cf"/><circle cx="263" cy="21" r="10" fill="#1d2552"/>
