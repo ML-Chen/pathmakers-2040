@@ -10,6 +10,8 @@ I18N.add('zh','sisterhospital',{strings:{
   'Video call · Boston, 9:15 PM':'视频通话 · 波士顿，晚上9:15','The Bund · Shanghai · 9:30 PM':'外滩 · 上海 · 晚上9:30',
   'Riverside’s Bund Clinic':'滨江医院外滩诊所','Video call · Saturday morning':'视频通话 · 星期六早上','Debrief · The Bund':'总结 · 外滩',
   'Friday, 8:50 AM':'星期五 上午8:50',
+  // the prop in the Shanghai scene (its id is read out as a label)
+  'sh_steamer':'小笼包蒸笼',
 
   // cast
   'Dr. Wen Jiahui':'温佳慧医生','Children’s doctor, Riverside Children’s Hospital':'滨江儿童医院儿科医生',
@@ -91,7 +93,7 @@ I18N.add('zh','sisterhospital',{strings:{
 
   // mom
   'Hi, Doctor. Hi, everyone. I’m Gao Ying, Ellie’s mom. She just fell asleep. The fever keeps coming back every few hours.':
-    '医生好，大家好。我是高颖，艾莉的妈妈。她刚睡着。烧总是退了没几个小时又起来。',
+    '医生好，大家好。我是高颖，艾莉的妈妈。她刚睡着。烧退了没几个小时又烧起来，一直这样。',
   'Dr. Reyes said you’re in Shanghai today. I grew up there, and Ellie was born there too. We moved to Boston when she was one year old.':
     '雷耶斯医生说你今天在上海。我就是在上海长大的，艾莉也是在上海出生的。她一岁的时候，我们搬到了波士顿。',
   'This might be silly, but she keeps showing me her arm. The little round scar from one of her baby shots went pink and puffy yesterday. Could that be from the fever?':

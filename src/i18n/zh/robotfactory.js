@@ -9,6 +9,8 @@ I18N.add('zh','robotfactory',{strings:{
   'Zone 3 test yard · 11:30 AM':'3号区测试场 · 上午11:30','Zone 3 · Shenzhen · 6:40 PM':'3号区 · 深圳 · 傍晚6:40',
   'Zone 3 test yard · Stop drill':'3号区测试场 · 停机演练','Zone 3 test yard · Rule card':'3号区测试场 · 规则卡',
   'Zone 3 test yard · 4:00 PM':'3号区测试场 · 下午4:00','Debrief · Shenzhen':'总结 · 深圳',
+  // the props in the Shenzhen scene (their ids are read out as labels)
+  'sz_stop':'急停柱','sz_bot':'小机器人',
 
   // cast
   'Lin Xiaomei':'林晓梅','Test engineer, Zone 3 robot factory':'3号区机器人工厂测试工程师',
@@ -91,7 +93,7 @@ I18N.add('zh','robotfactory',{strings:{
   'I watched your remote-stop test from the tower. That is the button I care about most, because if a crew anywhere goes over its permit, I want it stopped quickly.':
     '你做远程停机测试的时候，我在控制塔上看着。我最在意的就是那个按钮，因为不管哪里的机器人队超出了许可，我都希望能马上让它停下。',
   'But your test also showed something else. The tower can start those crews up again from right here, without asking anybody in Phoenix. I don’t like that, and I am the person who would be pressing the button.':
-    '可是你的测试还暴露了另一件事：控制塔在这儿就能让那些机器人队重新开工，不用问凤凰城的任何人。我不喜欢这样，而按那个按钮的人就是我。',
+    '可是你的测试还暴露了另一件事：控制塔在这儿就能让那些机器人队重新开工，不用问凤凰城的任何人。我不喜欢这样，何况按那个按钮的人就是我。',
   'So the people on site wouldn’t even know?':'那现场的人连知道都不知道？',
   'Not unless somebody tells them. That is why I asked the factory to bring a crew lead out here. You get to help decide what goes on the crews’ new rule card.':
     '除非有人告诉他们。所以我才请工厂把一位队长请过来。机器人队的新规则卡上写什么，你也能一起来定。',

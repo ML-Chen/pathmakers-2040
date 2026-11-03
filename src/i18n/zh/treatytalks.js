@@ -9,6 +9,12 @@ I18N.add('zh','treatytalks',{strings:{
   'For the questions you asked, the plan you chose and the people you looked after':'看你问的问题、选的方案，还有你照顾到的人',
   '{0} Field Guide ideas':'{0} 条图鉴','{0} new words':'{0} 个新词','{0} hearts':'{0} 颗心','Head out for the evening':'晚上出去走走','Debrief':'总结',
   'New Field Guide idea: {0}':'图鉴新增：{0}',
+  // core interface pieces that show on the China screens (debrief stars, evening buttons, scene props, Byte's label).
+  // They belong in core.js; they are here so these visits read fully in Chinese until core.js has them.
+  'Ask':'提问','Decision':'决策','Heart':'关心','ask':'提问','decision':'决策','heart':'关心',
+  '{0} star':'{0}星','{0} star (not earned)':'{0}星（还没拿到）','{0}, your robot puppy':'{0}，你的机器人小狗',
+  'Open Field Guide':'打开图鉴','Plan tomorrow':'安排明天','Talk to a passer-by':'和路人聊聊','Play with the {0}':'逗逗{0}',
+  'pigeon':'鸽子','robot':'机器人','plant':'盆栽',
 
   // ----- the mission -----
   'Trust, Then Check':'先信任，再核查',
@@ -18,6 +24,8 @@ I18N.add('zh','treatytalks',{strings:{
   'Courtyard · Treaty talks':'院子里 · 条约会谈','Hutong near Shichahai · 4:30 PM':'什刹海胡同 · 下午4:30',
   'Hutong near Shichahai · 7:10 PM':'什刹海胡同 · 晚上7:10','Debrief · Beijing':'总结 · 北京',
   'Travel':'出行',
+  // the props in the Beijing scene (their ids are read out as labels)
+  'bj_tea':'茶壶','bj_persimmon':'柿子',
 
   // cast
   'Han Yuewen':'韩悦文','Lead delegate for China, treaty talks':'条约会谈中方首席代表',
@@ -144,7 +152,7 @@ I18N.add('zh','treatytalks',{strings:{
   'Beacon’s chip-buying line breaks no rule, so you could defend it. But a treaty AI is supposed to help both countries keep the treaty, and Mr. Zhao will remember how you answered him today. Admitting the problem and letting him check the fix would cost our side very little. What matters most to you here?':
     '灯塔那行买芯片的话没有违反规定，所以你可以替它辩护。可是条约AI本来应该帮两国遵守条约，而且赵先生会记住你今天是怎么答复他的。承认问题，再让他来查改好了没有，对我们这边来说代价很小。在这件事上，你最看重的是什么？',
   'Thank you. You found two lines in our spec, and you did not hide the one in yours. Mr. Zhao will check your change tonight. When each side fixes the problems the other side finds, these talks are working the way they should.':
-    '谢谢。你们在我们的规范里找出了两行，自己规范里的那一行也没有藏着。赵先生今晚会去查你们的修改。对方找出的问题，每一方都动手改好，会谈就是应该这样开的。',
+    '谢谢。你们在我们的规范里找出了两行，自己规范里的那一行也没有藏着掖着。赵先生今晚会去查你们的修改。双方都把对方找出的问题改好，会谈就算开成了。',
   'I understand that the line is legal. But we cannot ask our people to trust an AI that leans toward your companies. We will raise that line first at next year’s talks.':
     '我明白这一行是合法的。但是一个偏向你们公司的AI，我们没法让自己的老百姓去信任它。明年的会谈上，我们头一件事就要提这一行。',
   'A year is a long time to leave a line like that in place. We will wait, and until then our inspectors will read Beacon’s spec twice as carefully.':

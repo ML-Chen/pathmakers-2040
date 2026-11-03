@@ -39,9 +39,9 @@ function placeColor(k){return PLACE_TINT[k]||PLACE_COLOR[PLACES[k].kind]||'#6c5c
 const STAR_ICON={ask:'<path d="M12 2.6l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.6l-5.4 2.9 1-6.1L3.2 9.1l6.1-.9z" fill="currentColor"/><path d="M10.2 9.6c0-1.2.9-2 1.9-2s1.9.7 1.9 1.7c0 1.4-1.9 1.4-1.9 2.8M12.1 13.8v.4" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/>',
   decision:'<path d="M12 2.6l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.6l-5.4 2.9 1-6.1L3.2 9.1l6.1-.9z" fill="currentColor"/><path d="M9.2 11.2l2 2 3.6-3.8" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   heart:'<path d="M12 2.6l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.6l-5.4 2.9 1-6.1L3.2 9.1l6.1-.9z" fill="currentColor"/><path d="M12 14.2c-2.2-1.5-3-2.8-2.7-3.9.3-1 1.6-1.4 2.7-.3 1.1-1.1 2.4-.7 2.7.3.3 1.1-.5 2.4-2.7 3.9z" fill="#fff"/>'};
-function starIcon(type,on){return `<svg class="cm-star t-${type} ${on?'on':''}" viewBox="0 0 24 24" aria-label="${type} star${on?'':' (not earned)'}">${STAR_ICON[type]}</svg>`}
+function starIcon(type,on){return `<svg class="cm-star t-${type} ${on?'on':''}" viewBox="0 0 24 24" aria-label="${T(on?'{0} star':'{0} star (not earned)',T(type))}">${STAR_ICON[type]}</svg>`}
 // three labeled stars (debrief, big talk): sb = starsFrom(...) or a S.completed entry
-function starRow(sb){return `<div class="cm-stars">${STAR_TYPES.map(([k,l])=>`<span class="cm-st ${sb&&sb[k]?'on':''}">${starIcon(k,sb&&sb[k])}<small>${l}</small></span>`).join('')}</div>`}
+function starRow(sb){return `<div class="cm-stars">${STAR_TYPES.map(([k,l])=>`<span class="cm-st ${sb&&sb[k]?'on':''}">${starIcon(k,sb&&sb[k])}<small>${T(l)}</small></span>`).join('')}</div>`}
 // small stars for a mission card: typed when known, plain gold for saves from before star types
 function cardStars(c){if(!c)return '';const typed=STAR_TYPES.some(([k])=>k in c);
   if(typed)return `<span class="cm-cstars">${STAR_TYPES.map(([k])=>starIcon(k,c[k])).join('')}</span>`;
