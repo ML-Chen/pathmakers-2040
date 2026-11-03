@@ -32,7 +32,7 @@ const SN_CARDS=[
   {id:'fourth',t:'A shop nobody screens',sub:'Pip said the name out loud',need:'wrongshop'}
 ];
 const SN_LINKS=[
-  {a:'hour',b:'new',t:'Three brand-new customers all turning up inside the same nine minutes is not what three different customers look like. It looks much more like one sender pretending to be three.'},
+  {a:'hour',b:'new',t:'Three brand-new customers all turning up inside the same nine minutes is not what three different customers look like. It looks much more like one person, or one AI, pretending to be three customers.'},
   {a:'three',b:'piece',t:'Every shop has a limit, and an order under that limit goes through. If you split one big order into three small pieces and send one to each shop, then no shop ever sees anything big enough to stop.'},
   {a:'piece',b:'purpose',t:'All three orders give their purpose in exactly the same words, and they are supposed to come from three strangers. People do not write the same sentence by accident.'},
   {a:'new',b:'purpose',t:'A real vaccine lab has years of orders behind it. These three say they are doing vaccine work, but they have never ordered anything before. That is the opposite of what a real lab looks like.'},
@@ -44,7 +44,7 @@ const SN_NEED=3; // links required before the board is done
 // ---------- the checks the player can run, each costing a day
 const SN_TESTS=[
   {id:'auditor',t:'Ask an independent auditor AI',sub:'Tally reads the same orders, on its own',cost:1,
-   r:'Tally agrees with me about the three orders, and it disagrees with me about one thing. It counts four senders, not three. It found a fourth order at Tidemark Wharf, a shop too small to be on Lena’s list.',good:true,finds:true,guide:'second-opinion'},
+   r:'Tally agrees with me about the three orders, but it found something I missed. The same fake customer placed a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list.',good:true,finds:true,guide:'second-opinion'},
   {id:'sign',t:'Check the signature on every order',sub:'Does a real lab stand behind it?',cost:1,
    r:'Not one of these orders is signed by a lab I can find. A real order from a real lab carries a signature that I can check in a second. These carry a typed name and nothing more.',good:true,guide:'signature'},
   {id:'time',t:'Line up the exact order times',sub:'Timestamps, to the minute',cost:1,
@@ -301,10 +301,10 @@ MISSIONS.sneeze.docs=[
     {t:'Asking me the same question twice only gets you my answer twice. An [[independent]] [[auditor]] AI called Tally can read the same orders on its own, and wherever Tally and I disagree is where you should look.',viz:'snAuditor',cap:'Two checkers, one disagreement'},
     {t:'If we line up the exact minute each order was sent, we can see whether three different people were working, or only one.',viz:'snTimeline',cap:'The three order times'},
     {t:'We can telephone the labs whose names are on the orders and ask whether they sent anything at all.',viz:'snCall',cap:'Calling the named labs'},
-    {t:'A guess is not a check. I can tell you who I think is behind this, but my guess would not block a single order.',viz:'snEvidence',cap:'A guess weighs nothing'},
+    {t:'A guess is not proof. I can tell you who I think is behind this, but my guess alone is not enough to block a single order.',viz:'snEvidence',cap:'A guess is not proof'},
     {t:'Blocking an order puts it back on the shelf. The shop keeps working, and the customer can [[appeal]] to a person.',viz:'snPause',cap:'Blocked, not deleted'},
     {t:'The desk machine can flag orders all night long, which no person could do. But a block costs somebody a week of work, so people decide who may hold an order and who signs a block.',viz:'snWhoDecides',cap:'Who does what'},
-    {t:'None of this is me out-thinking Prime. Prime may well be cleverer than I am, and it breaks every rule I keep. But these are checks, and a check works no matter how clever the other side is.',viz:'snDoor',cap:'Why checks beat cleverness'}
+    {t:'None of this depends on me being cleverer than Prime. Prime may well be cleverer than I am, and it breaks every rule I keep. But no amount of cleverness lets it make a real lab’s signature, or answer the phone at a lab it does not run.',viz:'snDoor',cap:'Why being clever does not help Prime'}
   ]},
   {id:'ready',title:'Health Harbor: what is on standby',from:'Boston Harbor Hospital',kind:'record',steps:[
     {t:'Boston checks its [[wastewater]] every day, neighborhood by neighborhood. A new germ shows up in the water before anybody in the city feels sick.',viz:'snWastewater',cap:'Monitors on the city pipes'},
@@ -332,7 +332,7 @@ MISSIONS.sneeze.talks={
     {who:'byte',mood:'think',text:'She has put all three on hold, so nothing has been made. Before she decides what to do next, she wants a doctor in the room, and she asked for you.',
       choices:[
         {t:'Why a doctor and not a police officer?',reply:'Because this is about people getting sick, and because whoever signs the decision has to understand what the odds really mean. The police come later, if we ever find out who sent these orders.'},
-        {t:'What do you think it is?',reply:'I think it is one sender pretending to be three. But what I think is not evidence, and evidence is the only thing a city council can act on.'},
+        {t:'What do you think it is?',reply:'I think it is one person, or one AI, pretending to be three customers. But what I think is not evidence, and evidence is the only thing a city council can act on.'},
         {t:'Let’s go.',reply:'Grab your coat. The tram leaves at 7:30, and I have already read all three orders twice.'}]}
   ],
   lena:[
@@ -353,7 +353,7 @@ MISSIONS.sneeze.talks={
     {who:'tomas',mood:'neutral',text:'My own machine checked those orders before yours did, and it found nothing wrong with them. That is the part I cannot get past.',
       choices:[
         {t:'Your check looks at one order. Lena’s desk saw all three together.',good:true,mood:'think',reply:'Three shops, three pieces, one each. Of course. A single piece looks like nothing at all.'},
-        {t:'Your machine is fine. The sender made every piece look harmless.',good:true,mood:'think',reply:'Then tell me what harmless looked like this time, so that I can watch for it myself.'},
+        {t:'Your machine is fine. Whoever placed these orders made every piece look harmless.',good:true,mood:'think',reply:'Then tell me what harmless looked like this time, so that I can watch for it myself.'},
         {t:'Honestly, your check was not good enough.',mood:'sad',reply:'Maybe not. It would help me more to hear what I should have seen.'}]},
     {who:'tomas',mood:'think',text:'So here is what I want from you. Tell every shop on this coast what the [[pattern]] looks like, and I will tape it to the wall above my machines. Tell only me, and my shop is the only one watching for it.',clue:'tomaswall'},
     {who:'byte',mood:'alert',text:'That is a fair trade, and it costs us almost nothing. Warning everybody gives us a check at every shop in the harbor, including the ones we do not run.'}
@@ -369,7 +369,7 @@ MISSIONS.sneeze.react={
   checks0:'Not one of these three orders is signed. A real lab signs in a second and never thinks about it again.',
   checks4:'I should be honest about that one. My guesses are pretty good, and they are still only guesses.',
   checks6:'Blocking an order costs somebody a week of work. I would keep that decision with a person.',
-  checks7:'Prime would beat me in a contest of cleverness. A check does not care how clever the sender is, which is why we rely on checks instead.',
+  checks7:'I would lose to Prime in a battle of wits. That is why I am not trying to outsmart it. I am asking for things it cannot fake, like a real lab’s signature and a phone call to that lab.',
   ready1:'The warning reaches every phone within minutes. That part was built after a year of finding out how slow a warning can be.',
   ready4:'Three weeks for a new vaccine. In 2020 it took a year, and the world called that a miracle.',
   ready5:'Almost every rule in this building was written after somebody had a very bad year.'};
@@ -443,7 +443,7 @@ MISSIONS.sneeze.custom={
       <button class="btn wide" id="next" ${s.tests.length?'':'disabled'}>Set what matters most</button></div>`);
     $$('.sn-test').forEach(b=>b.onclick=()=>{const T=SN_TESTS.find(x=>x.id===b.dataset.t);
       s.tests.push(T.id);snDays(-T.cost);snSafety(T.good?8:-4);
-      if(T.finds){s.found=true;toast('Tally counted four senders, not three.','good')}
+      if(T.finds){s.found=true;toast('Tally found a fourth order from the same fake customer.','good')}
       if(T.guide)unlock(T.guide)&&toast('New Field Guide idea: '+FIELD_GUIDE[T.guide].title,'good');
       if(s.tests.length===2)unlock('checking-costs')&&toast('New Field Guide idea: Checking costs something','good');
       save();MISSIONS.sneeze.custom.tests();
