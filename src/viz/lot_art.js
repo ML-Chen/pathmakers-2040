@@ -126,7 +126,7 @@ function lotDiorama(o){const P=lxIso(),id=lxId('dio'),K=o.kind||'bowl',deep=o.de
     <radialGradient id="${id}g" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#fff9ec"/><stop offset="1" stop-color="#f3e2c4"/></radialGradient></defs>
     <ellipse cx="150" cy="150" rx="140" ry="26" fill="url(#${id}g)"/>`;
   // base slab with soil sides, the street along the front-left edge and a slump-block wall at the back-right
-  const T=8;s+=`<path d="${lxPoly(P,[[0,82],[100,82],[100,82,-T],[0,82,-T]])}" fill="#7d6a58"/><path d="${lxPoly(P,[[100,0],[100,82],[100,82,-T],[100,0,-T]])}" fill="#9a8269"/>
+  const TK=8;s+=`<path d="${lxPoly(P,[[0,82],[100,82],[100,82,-TK],[0,82,-TK]])}" fill="#7d6a58"/><path d="${lxPoly(P,[[100,0],[100,82],[100,82,-TK],[100,0,-TK]])}" fill="#9a8269"/>
     <path d="${lxPoly(P,[[0,0],[100,0],[100,70],[0,70]])}" fill="${K==='lawn'?'#86b862':'#e2c99a'}"/>
     <path d="${lxPoly(P,[[0,70],[100,70],[100,82],[0,82]])}" fill="${LX.asph}"/><path d="${lxPoly(P,[[0,70],[100,70],[100,71.6],[0,71.6]])}" fill="${LX.conc}"/>
     <path d="M${g(0,77)} L${g(100,77)}" stroke="#d7d0b0" stroke-width="1" stroke-dasharray="5 4"/>
@@ -174,7 +174,7 @@ function lotDiorama(o){const P=lxIso(),id=lxId('dio'),K=o.kind||'bowl',deep=o.de
   s+=lxSaguaro(...P(6,62),30,{});
   if(o.night){s+=`<rect width="300" height="180" fill="#0b1238" opacity=".52"/>${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>`<circle cx="${(i*97)%300}" cy="${(i*41)%30+4}" r=".9" fill="#fff" opacity=".8"/>`).join('')}`;
     const bots=[[34,40],[62,52],[84,24]];s+=bots.map(([x,y],i)=>{const p=P(x,y);return `<ellipse cx="${p[0]}" cy="${p[1]}" rx="34" ry="16" fill="#fff2b8" opacity=".22"/><g class="lot-bot" style="--d:${i*.7}s">${lxRobot(p[0],p[1],.75,{armCls:'lot-arm'})}</g>`}).join('')}
-  return `<svg class="lot-dio" viewBox="0 0 300 180" role="img" aria-label="${esc(lotSpec(o.design).name)} model">${s}</svg>`}
+  return `<svg class="lot-dio" viewBox="0 0 300 180" role="img" aria-label="${esc(T('{0} model',T(lotSpec(o.design).name)))}">${s}</svg>`}
 
 // ---------- red-team cartoons (viewBox 0 0 300 170) ----------
 function lotRedTeamSVG(k){const G=128;let s=`<rect width="300" height="170" rx="14" fill="${k==='bowl'?'#2a3158':'#bfe0f4'}"/>`;
