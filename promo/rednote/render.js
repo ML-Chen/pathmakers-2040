@@ -12,7 +12,7 @@ for (const d of ['frames', 'segs', 'stills', 'clean']) fs.mkdirSync(path.join(ou
 const ff = (...a) => execFileSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...a]);
 const VO = voDir && fs.existsSync(path.join(voDir, 'durations.json')) ? JSON.parse(fs.readFileSync(path.join(voDir, 'durations.json'))) : null;
 const LEAD = 0.35, PAUSE = 0.55;
-const W = 405, H = 540, OW = +(process.env.PROMO_W || 2160), OH = OW * 4 / 3;   // 3:4 portrait, rendered sharp at 2160x2880 by default
+const W = 405, H = 540, OW = +(process.env.PROMO_W || 1440), OH = OW * 4 / 3;   // 3:4 portrait, 1440x1920 by default (PROMO_W=2160 for 2160x2880)
 // a slow camera move on every shot (the captions stay still): push in, pull out, drift left or right, rise
 const CAMS = [{o: '50% 40%', a: 'scale(1.0)', b: 'scale(1.13)'}, {o: '50% 50%', a: 'scale(1.16) translateX(-3%)', b: 'scale(1.04) translateX(2%)'},
   {o: '30% 60%', a: 'scale(1.06)', b: 'scale(1.18) translateY(-2%)'}, {o: '70% 40%', a: 'scale(1.15) translateX(3%)', b: 'scale(1.03) translateX(-2%)'},
@@ -75,7 +75,7 @@ const CSS = `
   const p = await ctx.newPage(); const errs = [];
   p.on('pageerror', e => errs.push(e.message));
   await p.addInitScript(() => {
-    window.__noaudio = 1; window.__pmDpr = 8; try { localStorage.clear() } catch (e) {}  // paint backgrounds at full video resolution, with room for camera zoom
+    window.__noaudio = 1; window.__pmDpr = 5; try { localStorage.clear() } catch (e) {}  // paint backgrounds at full video resolution, with room for camera zoom
     const base = performance.now(), d0 = Date.now(); let vt = 0, seq = 0; const timers = new Map(); let rafs = [];
     performance.now = () => base + vt; Date.now = () => Math.round(d0 + vt);
     window.setTimeout = (f, ms, ...a) => { const id = ++seq; timers.set(id, {due: vt + Math.max(0, +ms || 0), f, a}); return id };
