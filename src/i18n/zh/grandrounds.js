@@ -6,7 +6,7 @@ I18N.add('zh','grandrounds',{strings:{
   'Who answers for it?':'出了问题，谁来负责？','Government, law, and power':'政府、法律与权力',
   'An expert AI can know the facts better than anyone. A person still signs, because someone has to explain the choice to the family and answer for it if it goes wrong. That person is accountable.':
     '专家级的AI可能比谁都更了解事实。可签字的仍然是人，因为总得有人把这个选择给家人讲清楚，万一出了问题，也得有人站出来负责。签字的这个人就要承担责任。',
-  'True today: doctors, engineers and judges sign their names to decisions, and they can be asked to explain them later.':'现实中也是这样：医生、工程师和法官都会在决定上签自己的名字，以后也可能被要求解释这些决定。',
+  'True today: doctors, engineers and judges sign their names to decisions, and they can be asked to explain them later.':'现实中：医生、工程师和法官都会在决定上签自己的名字，以后也可能被要求解释这些决定。',
 
   // ----- backstage: building the talk with Byte -----
   'Backstage · Grand Rounds':'后台 · 病例分享会',

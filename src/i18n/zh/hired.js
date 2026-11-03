@@ -307,21 +307,21 @@ I18N.add('zh','hired',{strings:{
   'Asking good questions':'学会提好问题','People skills':'与人相处',
   'A good question is specific, and it can’t be answered with just yes or no. For example, “What’s the hardest part of your job?” teaches you more than “Is it fun?” Asking people about their jobs before you choose a career helps you find one that fits you.':
     '好问题很具体，不能只用“是”或“不是”来回答。比如问“你工作里最难的是什么？”，比问“好玩吗？”能学到更多。选职业之前，先问问别人他们的工作是什么样的，能帮你找到适合自己的那一行。',
-  'True today: career counselors suggest informational interviews, short talks where you ask someone about their job.':'现实中也是这样：职业规划老师会建议做“职业访谈”，也就是找人简短地聊一聊，问问他们的工作。',
+  'True today: career counselors suggest informational interviews, short talks where you ask someone about their job.':'现实中：职业规划老师会建议做“职业访谈”，也就是找人简短地聊一聊，问问他们的工作。',
   'Trust and referrals':'信任和推荐',
   'When lots of people can do a job, employers often pick someone that they or their team already trust. People come to trust you when you’re kind and helpful, even when nobody is grading you.':
     '很多人都能做一份工作时，雇主常常会挑一个自己或团队已经信得过的人。你待人友善、乐于帮忙，哪怕没有人给你打分，别人也会慢慢信任你。',
-  'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.':'现实中也是这样：很多工作是靠推荐找到人的，也就是在那里工作的人推荐一个自己认识的人。',
+  'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.':'现实中：很多工作是靠推荐找到人的，也就是在那里工作的人推荐一个自己认识的人。',
   'What people say vs. how they feel':'嘴上说的和真实的感受',
   'Some people say “I’m fine” when they are hurting, so a plan that depends on a person telling you about their own pain can fail. Ari hides pain, so a plan where he plays and stops when it hurts was not safe for him.':
     '有些人明明很疼，嘴上却说“我没事”。所以，一个方案如果要靠病人自己说出疼不疼，就可能失灵。阿里会忍着疼不说，所以“上场比赛、疼了就停”的方案对他并不安全。',
   'True today: athletes sometimes hide concussion symptoms to keep playing, so many sports leagues use sideline checks that don’t depend only on what the player says.':
-    '现实中也是这样：运动员有时会瞒着脑震荡的症状继续比赛，所以很多体育联赛会在场边做检查，不只听球员自己怎么说。',
+    '现实中：运动员有时会瞒着脑震荡的症状继续比赛，所以很多体育联赛会在场边做检查，不只听球员自己怎么说。',
   'Show your work':'拿出真实的例子',
   'A real story with details (what you decided, why, and how it turned out) shows more than saying “I’m good at decisions.” Honest stories about mistakes count too.':
     '讲一个有细节的真实故事（你做了什么决定、为什么、结果怎样），比说“我很会做决定”更能说明问题。老老实实讲自己犯过的错，也一样算数。',
   'True today: many interviewers ask “Tell me about a time when…” questions, and people prepare by writing down real examples of their work.':
-    '现实中也是这样：很多面试官会问“说说你有一次……的经历”这样的问题，大家会提前写下自己工作中的真实例子来准备。',
+    '现实中：很多面试官会问“说说你有一次……的经历”这样的问题，大家会提前写下自己工作中的真实例子来准备。',
 
   // ----- pictures (src/viz/hired_viz.js) -----
   'ligament':'韧带','The outer ankle ligament, gently stretched':'脚踝外侧的韧带被轻轻拉伤了','An ankle brace and a walking boot':'护踝和固定靴',

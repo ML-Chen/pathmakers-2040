@@ -284,31 +284,31 @@ I18N.add('zh','ledger',{strings:{
   'Check where the axis starts':'看清坐标轴从哪儿开始',
   'A bar chart that starts at 90 instead of 0 makes small differences look huge. For example, 97 and 94 are almost the same, but on a chart that starts at 90, the bar for 97 looks about twice as tall as the bar for 94. Always read the numbers along the side of a chart.':
     '柱状图如果从90开始画，而不是从0开始，很小的差别也会显得特别大。比如97和94几乎一样，可在从90开始的图上，97的柱子看起来差不多是94的两倍高。看图时，一定要读一读旁边标的数字。',
-  'True today: ads and news charts sometimes cut off the bottom of the axis, and fact-checkers often point it out.':'现实中也是这样：广告和新闻里的图表有时会把坐标轴底部截掉，事实核查员常常会把这一点指出来。',
+  'True today: ads and news charts sometimes cut off the bottom of the axis, and fact-checkers often point it out.':'现实中：广告和新闻里的图表有时会把坐标轴底部截掉，事实核查员常常会把这一点指出来。',
   'Who gains if you believe it?':'你信了，谁得好处？',
   'When a report comes from the people who profit from it, like a company praising its own product, it may leave out what doesn’t help them. That doesn’t make it false. Look for someone with nothing to gain who has checked the report.':
     '如果一份报告出自能从中赚钱的人，比如公司夸自己的产品，它可能会漏掉对他们不利的内容。这不代表报告是假的。你可以去找一个和这件事没有利益关系、又核查过这份报告的人。',
-  'True today: science journals ask researchers to say who paid for their work, so readers can weigh it.':'现实中也是这样：科学期刊会要求研究人员写明是谁出钱资助了研究，好让读者自己掂量。',
+  'True today: science journals ask researchers to say who paid for their work, so readers can weigh it.':'现实中：科学期刊会要求研究人员写明是谁出钱资助了研究，好让读者自己掂量。',
   'One story is not proof':'一个故事不算证据',
   'One person’s story can be true and still mislead. To know whether something really works, you test it on many people and compare them with people who didn’t get it.':
     '一个人的故事可能是真的，却照样会误导人。想知道一样东西到底有没有用，得在很多人身上试，再和没用过它的人比一比。',
-  'True today: most medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.':'现实中也是这样：大多数药物要在几千人身上做试验，还要有对照组，才能获批，而不是靠几个开心的故事。',
+  'True today: most medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.':'现实中：大多数药物要在几千人身上做试验，还要有对照组，才能获批，而不是靠几个开心的故事。',
   'Look for the signature':'找一找签名',
   'In 2032, during the Flood of Fakes, fake videos and fake people overwhelmed an election in Estmark. Since then, real photos and videos of public people carry a content signature, which is a code that proves who made them. If a video has no signature, you can’t know who made it, and a video that has been shared many times has only spread fast, which doesn’t make it true.':
     '2032年，在“假货洪灾”期间，假视频和冒充真人的假账号淹没了埃斯特马克的一场选举。从那以后，公众人物的真照片和真视频都带着内容签名，这是一种能证明是谁拍的代码。视频没有签名，你就没法知道是谁拍的。一段视频被转发了很多次，只说明它传得快，不说明它是真的。',
-  'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.':'现实中也是这样：相机厂商和新闻机构正在开发“内容凭证”，记录一张照片是谁拍的、又是怎么修改的。',
+  'True today: camera makers and news groups are building “content credentials” that record who made a photo and how it was edited.':'现实中：相机厂商和新闻机构正在开发“内容凭证”，记录一张照片是谁拍的、又是怎么修改的。',
   'Together is not because':'一起出现，不等于谁导致谁',
   'Two things can rise together without one causing the other. Ice cream sales and sunburns both go up in summer, but ice cream doesn’t cause sunburns. Sunshine causes both.':
     '两件事可以一起增加，但不一定是一件导致了另一件。夏天冰淇淋卖得多，晒伤的人也多，可冰淇淋不会让人晒伤。这两件事都是阳光引起的。',
-  'True today: scientists use experiments with comparison groups to find out what causes what.':'现实中也是这样：科学家用带对照组的实验，来弄清楚到底是什么导致了什么。',
+  'True today: scientists use experiments with comparison groups to find out what causes what.':'现实中：科学家用带对照组的实验，来弄清楚到底是什么导致了什么。',
   'Read past the headline':'别只看标题',
   'Headlines are written to grab attention, and some exaggerate. The article underneath can tell a calmer story. Read it before you believe the headline, or share it.':
     '标题是为了吸引眼球写的，有些标题会夸大。标题下面的文章讲的可能平静得多。相信标题或者转发之前，先把文章读完。',
-  'True today: studies have found that many people share news links without ever opening them.':'现实中也是这样：研究发现，很多人转发新闻链接时，根本没点开看过。',
+  'True today: studies have found that many people share news links without ever opening them.':'现实中：研究发现，很多人转发新闻链接时，根本没点开看过。',
   'Check, don’t just doubt':'要核查，不要光怀疑',
   'Most news is honest. If you doubt every story, you learn as little as if you believe every story, because either way you aren’t checking anything. What helps is checking who wrote a story, what evidence supports it, and whether the numbers add up.':
     '大多数新闻是诚实的。如果你每篇都怀疑，学到的东西就和每篇都信一样少，因为这两种做法都没有核查任何东西。真正有用的是看看报道是谁写的，有什么证据支持，数字对不对得上。',
-  'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.':'现实中也是这样：专业的事实核查员会打开别的资料来核对一个说法，而不是看一个网页长什么样就下判断。',
+  'True today: professional fact-checkers open other sources to check a claim, instead of judging one page by how it looks.':'现实中：专业的事实核查员会打开别的资料来核对一个说法，而不是看一个网页长什么样就下判断。',
 
   // ----- story pictures (src/viz/ledger.js and src/viz/ocean_dc.js) -----
   'Final trial: passed':'最后一轮试验：通过','A nose spray stopping cold germs':'鼻喷雾挡住了感冒病毒','30,000 people in the trial':'30,000人参加试验',
@@ -362,8 +362,8 @@ glossary:{
   'greenhouse':{w:'温室',d:'用玻璃或透明材料盖的房子，植物在里面暖和又安全。'},
   'far-uvc':{w:'远紫外线',d:'一种紫外线，远在我们眼睛能看到的颜色之外。它能破坏空气里的病菌，对皮肤和眼睛却很温和。'},
   'international waters':{w:'公海',d:'远离各国海岸的大海，不归任何一个国家管。'},
-  'solar rafts':{w:'太阳能浮筏',d:'2040年的一种漂浮平台，上面铺满太阳能板，能在开阔的海面上连成一片。现实中也是这样：浮在平静湖面上的太阳能板已经在发电了，也有几家公司正在海上做试验。'},
+  'solar rafts':{w:'太阳能浮筏',d:'2040年的一种漂浮平台，上面铺满太阳能板，能在开阔的海面上连成一片。现实中：浮在平静湖面上的太阳能板已经在发电了，也有几家公司正在海上做试验。'},
   'treaty':{w:'条约',d:'国家之间签订的书面协议。签了的国家都承诺遵守里面的规定。'},
   'data tankers':{w:'数据运输船',d:'2040年的一种船，把新电脑芯片运到海上的数据中心，再把旧芯片运回来。现实中：还没有这种船，这是游戏对未来的猜想。'},
-  'floating solar':{w:'水上光伏',alt:['水上太阳能'],d:'装在浮筒上的太阳能板，放在水面上，就不用占地了。现实中也是这样：很多国家的湖泊和水库上已经有了水上太阳能电站。'}
+  'floating solar':{w:'水上光伏',alt:['水上太阳能'],d:'装在浮筒上的太阳能板，放在水面上，就不用占地了。现实中：很多国家的湖泊和水库上已经有了水上太阳能电站。'}
 }});
