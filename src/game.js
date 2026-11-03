@@ -33,9 +33,11 @@ function rngFrom(seed){let a=(seed>>>0)||1;return()=>{a=(a+0x6D2B79F5)>>>0;let t
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 // graded reader markup: [[word]] → tappable glossary word
 function rich(t){return esc(fill(T(t))).replace(/\[\[([^\]]+)\]\]/g,(m,w)=>{const k=gkey(w);return GLOSSARY[k]?`<button class="gw" data-w="${esc(k)}">${w}</button>`:w})}
-function toast(msg,kind=''){const prev=$$('.toast:not(.out)'),n=prev.length;const d=document.createElement('div');d.className='toast '+kind;d.innerHTML=msg;document.body.appendChild(d);
-  // stack below the toasts already showing, by their real height (a toast can wrap to two lines)
-  if(n){const b=Math.max(...prev.map(x=>x.offsetTop+x.offsetHeight));d.style.marginTop=Math.max(0,b+8-d.offsetTop)+'px'}setTimeout(()=>d.classList.add('out'),2600+n*600);setTimeout(()=>d.remove(),3200+n*600)}
+// Toasts show one at a time in a banner over the HUD row (or beside the column on a wide window, see style.css), so they never
+// stack down onto the text the player is reading. Later toasts wait their turn (as hidden .toast.wait), and a tap closes one early.
+function toast(msg,kind=''){const d=document.createElement('div');d.className='toast wait '+kind;d.innerHTML=msg;d.setAttribute('role','status');d.onclick=()=>toastOut(d);document.body.appendChild(d);toastNext()}
+function toastNext(){if($('.toast:not(.wait)'))return;const d=$('.toast.wait');if(!d)return;d.classList.remove('wait');d._t=setTimeout(()=>toastOut(d),$('.toast.wait')?1900:2600)}
+function toastOut(d){if(d._out)return;d._out=1;clearTimeout(d._t);d.classList.add('out');setTimeout(()=>{d.remove();toastNext()},400)}
 // ---------- voices: prerecorded clips (AUDIO from audio.js), device voice as fallback ----------
 let curAudio=null,playId=0;
 function stopVoice(){playId++;MUSIC.duck(false);try{if(curAudio){curAudio.pause();curAudio=null}}catch(e){}}

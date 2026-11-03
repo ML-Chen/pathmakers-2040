@@ -308,6 +308,11 @@ function lgArticle(d,root,st){const L=lgState();if(!L.read[st.id]){L.read[st.id]
   const go=$('#lg-go',root);if(go)go.onclick=()=>{d.remove();stopVoice();startMission(lk.mission)};
   lgCheck(d,root,st);
   $$('.lg-part',root).forEach(p=>p.addEventListener('click',e=>{if(LG_VIEW.mode!=='find'||e.target.closest('.gw'))return;e.preventDefault();e.stopPropagation();lgTap(d,root,st,p)}))}
+// Scroll the sheet up or down to a part of the article. Unlike scrollIntoView this never scrolls sideways: a sentence's highlight
+// reaches a few pixels past the text, and scrollIntoView used to slide the whole article left to show it, cutting off its left edge.
+function lgScroll(el,block,smooth){const b=el&&el.closest('.sheet-body');if(!b)return;const r=el.getBoundingClientRect(),br=b.getBoundingClientRect();
+  let y=b.scrollTop+r.top-br.top;if(block==='center')y-=(br.height-r.height)/2;else if(block==='end')y-=br.height-r.height;
+  b.scrollLeft=0;b.scrollTo({top:Math.max(0,y),behavior:smooth?'smooth':'auto'})}
 function lgByte(text,speak){return `<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${rich(text)}</p></div>${speak!==false?'':''}`}
 function lgCheck(d,root,st){const L=lgState(),box=$('#lg-check',root),c=L.check[st.id],TR=st.trick;
   if(LG_VIEW.mode==='find'){box.innerHTML=`<button class="mini-btn" id="lg-cancel">${T('Stop checking')}</button>`;
@@ -318,17 +323,17 @@ function lgCheck(d,root,st){const L=lgState(),box=$('#lg-check',root),c=L.check[
   $('#lg-ok',box).onclick=()=>{if(TR){box.innerHTML=lgByte(LEDGER_BYTE.nudge)+`<div class="row"><button class="btn small" id="lg-again">${LG_ICON.lens}${T('Look again')}</button><button class="btn small ghost" id="lg-keep">${T('Keep reading')}</button></div>`;playLine('byte',LEDGER_BYTE.nudge);
       $('#lg-again',box).onclick=()=>{LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d)};$('#lg-keep',box).onclick=()=>{stopVoice();LG_VIEW.story=null;lgRender(d)};return}
     L.check[st.id]='trusted';save();lgTrust();lgCheck(d,root,st);playLine('byte',st.check||LEDGER_BYTE.agree)};
-  $('#lg-off',box).onclick=()=>{if(TR){LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d);const a=$('.lg-art',root);a&&a.scrollIntoView({block:'start'});return}
+  $('#lg-off',box).onclick=()=>{if(TR){LG_VIEW.mode='find';LG_VIEW.miss=0;lgRender(d);lgScroll($('.lg-art',root),'start');return}
     L.check[st.id]='solid';save();lgTrust();lgCheck(d,root,st);const s=$('#lg-check .byte-note',root);s&&s.classList.add('lg-hop');playLine('byte',st.check||LEDGER_BYTE.solid)}}
 function lgTrust(){unlock('lg-trust')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['lg-trust'].title)),'good')}
 function lgTap(d,root,st,p){const TR=st.trick,part=p.dataset.part,L=lgState(),hint=$('#lg-hint',root);
   if(TR&&TR.parts.includes(part)){L.check[st.id]=LG_VIEW.miss>=3?'helped':'spotted';save();LG_VIEW.mode=null;MUSIC.sfx('chime');
     p.classList.add('lg-right');const r=p.getBoundingClientRect();burst(r.left+r.width/2,r.top+Math.min(r.height/2,60),'sparkles',9);
-    setTimeout(()=>{lgRender(d);const hw=$('.lg-headwrap',root);hw&&hw.scrollIntoView({block:'start',behavior:'smooth'});const stp=$('.lg-stamp.big',root);stp&&stp.classList.add('slam');
-      const c=$('#lg-check',root);if(c)setTimeout(()=>c.scrollIntoView({block:'end',behavior:'smooth'}),900);
+    setTimeout(()=>{lgRender(d);lgScroll($('.lg-headwrap',root),'start',1);const stp=$('.lg-stamp.big',root);stp&&stp.classList.add('slam');
+      const c=$('#lg-check',root);if(c)setTimeout(()=>lgScroll(c,'end',1),900);
       if(unlock(TR.guide))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[TR.guide].title)),'good');playLine('byte',TR.why)},650);return}
   LG_VIEW.miss++;p.classList.remove('lg-wrong');void p.offsetWidth;p.classList.add('lg-wrong');MUSIC.sfx('click');
-  if(LG_VIEW.miss>=3){const right=$(`.lg-part[data-part="${TR.parts[0]}"]`,root);if(right){right.classList.add('lg-show');right.scrollIntoView({block:'center',behavior:'smooth'})}
+  if(LG_VIEW.miss>=3){const right=$(`.lg-part[data-part="${TR.parts[0]}"]`,root);if(right){right.classList.add('lg-show');lgScroll(right,'center',1)}
     if(hint)hint.textContent=T(LEDGER_BYTE.help);playLine('byte',LEDGER_BYTE.help);return}
   if(hint)hint.textContent=T((TR.near&&TR.near[part])||'Not that part. Keep looking!')}
 
