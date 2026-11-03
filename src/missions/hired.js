@@ -141,7 +141,7 @@ MISSIONS.hired={id:'hired',title:'Getting Hired',career:'doctor',day:0,dayLabel:
   criteriaHint:'Not sure what one means? Tap a word: <button class="gw" data-w="playoff">playoff</button>, <button class="gw" data-w="walking boot">walking boot</button>.',
   controls:[{key:'prot',label:'Protect the ankle',opts:[['brace','Brace'],['tape','Tape'],['boot','Walking boot']]},{key:'sat',label:'Saturday',opts:[['play','Play'],['sit','Sit out']]}],
   start:{prot:'tape',sat:'play'},
-  planName(c){const p={brace:'Brace',tape:'Tape',boot:'Walking boot'}[c.prot];return c.prot==='boot'?p+', sit out Saturday':p+(c.sat==='play'?', play Saturday':', sit out Saturday')},
+  planName(c){const p={brace:'Brace',tape:'Tape',boot:'Walking boot'}[c.prot];return T(c.prot==='boot'?p+', sit out Saturday':p+(c.sat==='play'?', play Saturday':', sit out Saturday'))},
   outcomes(c,knows){const hide=!!knows,play=c.sat==='play'&&c.prot!=='boot',comfy=c.prot==='boot'?0:1;
     const r=play?(c.prot==='brace'?(hide?.3:.1):(hide?.5:.2)):({brace:.03,tape:.08,boot:.02}[c.prot]);
     if(play)return [{kind:'saturday',p:1-r,cap:'He played Saturday, and his ankle stayed fine!',flags:{heal:1,plays:1,comfy}},
@@ -203,7 +203,7 @@ function hiredCanned(q){
 // ---------- the journey screens' content (src/career.js reads it) ----------
 // Every spoken line is a {who, text} object, so missionLines() finds it for recording.
 function hiredStory(){const p=(typeof S!=='undefined'&&S.m_hired&&S.m_hired.page)||null;
-  if(!p||!p.choice||!p.choice.prot)return {story:'At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.',bad:false,told:false};
+  if(!p||!p.choice||!p.choice.prot)return {story:T('At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.'),bad:false,told:false};
   const c=p.choice,play=c.sat==='play'&&c.prot!=='boot';const what=c.prot==='boot'?'a walking boot':c.prot==='brace'?'a brace':'tape';
   const why=p.told?'because his grandma told me he hides pain':play?'because Saturday mattered a lot to him':'because the playoffs mattered more than a friendly game';
   const out={saturday:'He played, and his ankle was fine.',reroll:'He rolled it again, so next time I’d ask more about his pain.',cheer:'He cheered from the bench and was ready for the playoffs.',boot:'He healed in the boot and was ready for the playoffs.'}[p.kind]||'';
@@ -241,7 +241,7 @@ const HIRED_JOURNEY={
        opts:[{t:x=>x.story,good:true,reply:[{if:'bad',who:'imani',text:'That’s a real story: you told me what you chose, why you chose it, and what happened. Thank you for being honest that it didn’t go well, because that takes courage.'},I_('That’s a real story: you told me what you chose, why you chose it, and what happened.')],
            tip:B_('Great answer! You said what you chose, why you chose it, and what happened. In the real interview, say it just like that.')},
          {t:'I make hard choices all the time. At school I pick the hardest projects, and my friends always ask me for advice.',reply:I_('Hmm. Can you give me a real example? A true story about one choice tells me more than hearing that you’re good at choosing.'),tip:B_('Try a real example instead, like Ari’s ankle. Details make a story believable.')},
-         {t:x=>x.bad?'I helped a goalkeeper named Ari with a sprained ankle at the open house, and everything went perfectly from start to finish.':'I helped a goalkeeper named Ari with a sprained ankle at the open house. It went great, and everyone said I’m a natural.',
+         {t:x=>T(x.bad?'I helped a goalkeeper named Ari with a sprained ankle at the open house, and everything went perfectly from start to finish.':'I helped a goalkeeper named Ari with a sprained ankle at the open house. It went great, and everyone said I’m a natural.'),
            reply:[{if:'bad',who:'imani',text:'Your Portfolio Book says his ankle rolled again. I’d rather hear what really happened. We all learn from our mistakes here.'},I_('It did go well! But tell me why you chose that plan. I want to hear how you decided, not just how it turned out.')],
            tip:[{if:'bad',who:'byte',text:'Hmm, that’s not quite what happened with Ari. Interviewers are more impressed by honest stories, even stories about mistakes.'},B_('Add your reason! Say why you chose it, not only that it worked.')]}]},
       {q:I_('What would you do if your AI and a patient disagreed?'),rq:B_('She might ask: “What would you do if your AI and a patient disagreed?”'),

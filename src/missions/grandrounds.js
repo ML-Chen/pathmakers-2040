@@ -27,7 +27,7 @@ MISSIONS.grandrounds={id:'grandrounds',title:'Grand Rounds',career:'doctor',day:
       intro:GR_I('Good morning, everyone. Our newest Care Doctor, who is still a trainee, will present a case today. Please give them a warm welcome!')},
     beats:[
       {key:'story',label:'The story',ask:GR_B('How will you start your talk? Audiences remember a story about a person better than a list of numbers.'),
-        opts:[{t:c=>c.story,good:true,tip:GR_B('Great start! You introduced a real patient in one sentence, so the audience will want to hear what happened to them.')},
+        opts:[{t:c=>T(c.story),good:true,tip:GR_B('Great start! You introduced a real patient in one sentence, so the audience will want to hear what happened to them.')},
           {t:'Today I’ll show you forty slides of numbers about bones and healing times. Please hold all your questions until the very end.',tip:GR_B('Forty slides of numbers would put the audience to sleep. Start by telling them about your patient instead.')},
           {t:'I’d like to start by telling you how hard I worked on this case and how well I did.',tip:GR_B('Hmm. The audience came to learn about a patient’s case, not about how hard you worked. Start with your patient.')}]},
       {key:'decision',label:'The decision',ask:GR_B('Next comes the decision. What will you say about the plan you chose?'),

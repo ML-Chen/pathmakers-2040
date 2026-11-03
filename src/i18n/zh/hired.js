@@ -215,7 +215,8 @@ I18N.add('zh','hired',{strings:{
   'Tell me about a hard choice you made.':'说说你做过的一个艰难的选择。','Dr. Reyes might ask: “Tell me about a hard choice you made.”':'雷耶斯医生可能会问：“说说你做过的一个艰难的选择。”',
   'At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.':'在开放日上，我帮一个扭伤脚踝的男孩在上场和休息之间做选择。我把可能性讲给了他和他奶奶听。',
   'At the open house I helped Ari, a goalkeeper with a sprained ankle. I chose {plan}, {why}. {out}':'在开放日上，我帮了扭伤脚踝的守门员阿里。我选了{plan}，{why}。{out}',
-  'a walking boot':'固定靴','a brace and playing on Saturday':'戴护踝、星期六上场','a brace and sitting out on Saturday':'戴护踝、星期六不上场','tape and sitting out on Saturday':'缠胶布、星期六不上场',
+  ', play Saturday':'，星期六上场',', sit out Saturday':'，星期六不上场','{0}':'{0}','…':'……','night':'夜晚',
+  'a walking boot':'固定靴',' and playing on Saturday':'、星期六上场',' and sitting out on Saturday':'、星期六不上场','a brace and playing on Saturday':'戴护踝、星期六上场','a brace and sitting out on Saturday':'戴护踝、星期六不上场','tape and sitting out on Saturday':'缠胶布、星期六不上场',
   'because his grandma told me he hides pain':'因为他奶奶告诉我，他会忍着疼不说','because Saturday mattered a lot to him':'因为星期六的比赛对他很重要',
   'because the playoffs mattered more than a friendly game':'因为季后赛比友谊赛更重要',
   'He played, and his ankle was fine.':'他上场了，脚踝没事。','He rolled it again, so next time I’d ask more about his pain.':'他又崴了脚，所以下次我会多问问他疼不疼。',
@@ -333,7 +334,7 @@ I18N.add('zh','hired',{strings:{
   'A calendar from today to the playoffs three weeks later':'从今天到三周后季后赛的日历','Ari cheers from the bench with his teammates':'阿里和队友在替补席上加油',
   'HALO · OVERNIGHT':'HALO · 昨夜','312 scans read':'看了312份扫描','40 medicines delivered':'送了40份药','27 families updated':'通知了27户家庭',
   'Byte shows what Halo did overnight':'Byte告诉你Halo昨晚做了什么','You listen to a family':'你认真听一家人说话','You test plans on the Future Table':'你在未来之桌上试各种方案',
-  'Care plan':'照护方案','The family decides, and you sign':'家人做决定，你来签字','A follow-up call':'回访电话'
+  '3 weeks':'3周','later':'以后','2 weeks':'2周','in a boot':'穿固定靴','Care plan':'照护方案','The family decides, and you sign':'家人做决定，你来签字','A follow-up call':'回访电话'
 },
 glossary:{
   'open house':{w:'开放日',d:'一个地方邀请所有人进来参观、认识里面工作人员的日子。'},
@@ -355,7 +356,9 @@ glossary:{
   'house rule':{w:'院规',d:'一个家庭、一个团队或一个单位自己定下、大家都遵守的规矩。医院里的这种规矩就叫院规。'}
 },
 regex:{
-  // memo checks
+  // memo checks (the reason and the odds checks are shared by every mission; the same alternatives may also live in core.js)
+  "because|since|so that| so she| so her| so it|that's why|that is why|which is why|this is why|the reason|reason is|in order to| to avoid| to keep| to help| to make sure|balances|helps|means|otherwise| due to|thanks to|given that|as she|as her":'因为|由于|所以|为了|这样|免得|以免|不然|否则|才能|就能|能让|好让|理由',
+  "\\d|percent|%|out of|likely|unlikely|probably|pretty sure|very sure|not sure|i'm sure|i am sure|most of the time|chance (is|of|it)|odds":'百分|成把握|可能|大概|大约|也许|有把握|没把握|不确定|几率|概率|机会|十个里|10个里|多半',
   'brace|tape|boot|rest|sit|play|bench':'护踝|胶布|靴|休息|养|不上场|上场|替补|坐',
   'ari|he |his |him |soccer|game|saturday|playoff|goal|team|grandma':'阿里|他|足球|比赛|星期六|周六|季后赛|守门|球队|队友|奶奶',
   // interview answers written in the player's own words

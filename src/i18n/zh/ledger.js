@@ -4,7 +4,7 @@ I18N.add('zh','ledger',{strings:{
   // ----- the app -----
   'The Ledger':'纪事报','{0} new in the Ledger':'纪事报有{0}条新报道','{0} new':'{0}条新',
   'Spring {0}':'{0}年春','Summer {0}':'{0}年夏','Fall {0}':'{0}年秋','Winter {0}':'{0}年冬',
-  'All':'全部','Science':'科学','Places':'各地','World':'世界','Saved':'已收藏','Save':'收藏',
+  'All':'全部','Science':'科学','science':'科学','Places':'各地','World':'世界','Saved':'已收藏','Save':'收藏',
   'Tricks spotted':'识破的报道','Tap Save on a story to keep it here.':'在报道里点“收藏”，它就会留在这里。','No stories here yet.':'这里还没有报道。',
   'Checked':'已核实','Slanted':'偏颇','Fake':'假新闻',
   'Tap the part that shows the problem.':'点一下有问题的那部分。','All stories':'全部报道','By {0} · {1}':'{0} · {1}',
@@ -26,7 +26,7 @@ I18N.add('zh','ledger',{strings:{
   'Jezero Crater, Mars':'火星，耶泽罗陨石坑','Nome, Alaska':'阿拉斯加，诺姆','Shared online':'网上转发','Worldwide':'全球','San Francisco':'旧金山','Everywhere':'各地',
   'A city council':'某市议会',
   'The Ledger City Desk':'纪事报 · 城市版','The Ledger Space Desk':'纪事报 · 太空版','The Ledger Lifestyle':'纪事报 · 生活版','Opinion · The Ledger':'纪事报 · 评论版',
-  'Zoomwhiz, Inc.':'速学宝公司','The Zoomwhiz Team':'速学宝团队','a shared post':'一条转发的帖子',
+  'Zoomwhiz, Inc.':'速学宝公司','@truthwave99':'@真相浪潮99','The Zoomwhiz Team':'速学宝团队','a shared post':'一条转发的帖子',
   'Ottilie Brasswick':'奥蒂莉·布拉斯威克','Della Pennywhit':'德拉·彭尼惠特','Tamsin Quillfeather':'塔姆辛·奎尔费瑟','Kofi Brandywell':'科菲·布兰迪韦尔',
   'Ines Vantorre':'伊内丝·万托雷','Sam Ottoway':'萨姆·奥托韦','Rex Comberley':'雷克斯·康伯利','Luz Calderilla':'卢丝·卡尔德里亚','Kip Glimmerton':'基普·格利默顿',
   'Lena Hagelstein':'莉娜·哈格尔施泰因','Marisol Tennyfield':'玛丽索尔·坦尼菲尔德','Ada Tullwick':'艾达·塔尔威克','Ruolan Fenwick':'若兰·芬威克','Hal Brashworth':'哈尔·布拉什沃思',
