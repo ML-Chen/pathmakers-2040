@@ -4,7 +4,7 @@
 // Keys are the exact English text; missing strings fall back to English. See src/i18n.js.
 I18N.add('zh','core',{strings:{
   // ----- title and setup -----
-  'Pathmakers':'开路人','Juniper':'朱妮','Meet your AI partner':'认识你的AI搭档','Partner’s name':'搭档的名字','Color':'颜色','Voice':'声音',
+  'Juniper':'朱妮','Meet your AI partner':'认识你的AI搭档','Partner’s name':'搭档的名字','Color':'颜色','Voice':'声音',
   'Your character’s name':'你的角色叫什么','Start my first day':'开始我的第一天','Continue':'继续','Start':'开始','New game':'新游戏',
   'Hi! I’m your AI partner. Let’s do great work together!':'嗨！我是你的AI搭档。我们一起好好干吧！',
 
@@ -106,7 +106,7 @@ I18N.add('zh','core',{strings:{
   'Woof, that changes everything! If Maya reacted to an HX-2 cooling patch, BoneMend has about a 60% chance of giving her a rash, so I’d avoid it. A cast with physical therapy plus asking to move the recital is my top pick now.':'汪，这下情况全变了！玛雅对HX-2降温贴有过反应，那她用骨愈凝胶大约有60%的可能起疹子，所以我不会选它。我现在最推荐的是：打石膏加康复训练，再请他们把演出改期。',
   'Right, the rash! I’d skip BoneMend for Maya. Pins give the best chance that the bone heals straight. A cast with physical therapy avoids surgery and lets her play again in about 3 weeks.':'对，那次起疹子的事！玛雅还是别用骨愈凝胶了。打钢钉最有可能让骨头长正。打石膏加康复训练不用做手术，大约3周以后她就能重新拉琴。',
   'I can’t pick for you, but here’s the big thing: Maya’s rash came from HX-2, the same ingredient in BoneMend. So what matters most to her: the safest healing, or getting to her recital?':'我不能替你选，不过最要紧的是这一点：玛雅的疹子是HX-2引起的，骨愈凝胶里也有这种成分。那么对她来说，哪个更重要：骨头最稳妥地长好，还是赶上演出？',
-  'Before I answer, did her family mention any allergies or reactions? Records from other countries are often missing. And what matters most to Maya: the safest healing, or getting to her recital?':'回答之前我先问一句：她家人提到过什么过敏或者不良反应吗？在美国以外看病的记录，这边常常查不到。还有，对玛雅来说哪个更重要：骨头最稳妥地长好，还是赶上演出？',
+  'Before I answer, did her family mention any allergies or reactions? Records from other countries are often missing. And what matters most to Maya: the safest healing, or getting to her recital?':'回答之前我先问一句：她家人提到过什么过敏或者不良反应吗？在别的地方看病的记录，这边常常查不到。还有，对玛雅来说哪个更重要：骨头最稳妥地长好，还是赶上演出？',
   'BoneMend fills the break with a gel that helps bone cells rebuild fast, so many kids play again in about 8 days. Only 40 kids have tried it, so the true heal-straight rate could be anywhere from about 76 to 97 in 100.':'骨愈凝胶会把一种凝胶填进断口，帮骨细胞很快长好，所以很多孩子大约8天就能重新拉琴。不过只有40个孩子用过它，所以真正能长正的比例，可能在100个里76个到97个之间的任何地方。',
   'Pins hold the bone pieces perfectly still, so about 95 in 100 heal straight. The downside is that she couldn’t play violin for about 6 weeks.':'钢钉能把断开的骨头固定得一动不动，所以100个里大约95个能长正。缺点是她大约6周不能拉琴。',
   'With a cast, about 80 in 100 kids heal straight, or 88 with physical therapy, and she could play in about 3 weeks. Casts are the most studied option, with 21,000 kids in the studies!':'打石膏的话，100个孩子里大约80个能长正，加上康复训练是88个，她大约3周以后就能拉琴。石膏是研究得最多的办法，研究里一共有21,000个孩子呢！',

@@ -112,7 +112,7 @@ I18N.add('zh','maya',{strings:{
   'Wk {0}':'第{0}周','Time until violin for each option':'每种方案要多久才能重新拉琴','A big sample and a small sample':'大样本和小样本',
   'PATIENT':'病人','Age 11':'11岁','Violinist':'小提琴手','Maya’s patient card':'玛雅的病人卡片','Ouch!':'哎哟！','A scooter fall':'骑滑板车摔倒',
   'Allergies on file':'已登记的过敏','none found':'没有记录','An empty allergy list':'一张空白的过敏清单','Clinic in Taipei':'台北的诊所','Boston hospital':'波士顿的医院',
-  'A record that does not transfer between countries':'一份没能转到波士顿的病历','Any care in':'在美国以外','other countries?':'看过病吗？','Ask the family a question':'问家属一个问题',
+  'A record that does not transfer between countries':'一份没能转到波士顿的病历','Any care in':'在别的地方','other countries?':'看过病吗？','Ask the family a question':'问家属一个问题',
   'Gel fills the gap and bone cells rebuild it':'凝胶填满断口，骨细胞把它重新长好','Gel helping bone cells fill a gap':'凝胶帮骨细胞填满断口',
   'The smart splint checks that the arm stays still':'智能夹板检查胳膊有没有乱动','A smart splint on the arm':'胳膊上的智能夹板','Cooling patch':'降温贴',
   'Same ingredient in both':'两样东西里有同一种成分','The same HX-2 ingredient in a cooling patch and in BoneMend':'降温贴和骨愈凝胶里都有HX-2',
@@ -126,7 +126,7 @@ I18N.add('zh','maya',{strings:{
   'Today: a [[fracture]] of the left [[radius]] after a scooter fall.':'今天：骑滑板车摔倒，左侧[[桡骨]][[骨折]]。',
   'Allergies on file: none.':'已登记的过敏：无。',
   'Records from clinics outside the United States are not always [[synced]] with this hospital.':'美国以外的诊所留下的病历，不一定会和本院[[同步]]。',
-  'Ask the family about any care received in other countries.':'请问问家属，病人有没有在美国以外的地方看过病。',
+  'Ask the family about any care received in other countries.':'请问问家属，病人有没有在别的地方看过病。',
   'Patient card':'病人卡片','What happened':'发生了什么','Allergy list':'过敏清单','Records between countries':'跨国病历','A good question to ask':'值得问的问题',
 
   // ----- BoneMend fact sheet -----
@@ -149,7 +149,7 @@ I18N.add('zh','maya',{strings:{
   // ----- Byte's notes while reading -----
   'Maya’s recital is only nine days away, so there isn’t much time.':'离玛雅的演出只有九天了，时间不多。',
   'BoneMend was tested on only 40 kids, so my numbers for it could be wrong.':'骨愈凝胶只在40个孩子身上试过，所以我给它的数字可能不准。',
-  'Hmm, Maya’s record might be missing care she got in another country.':'嗯，玛雅要是在美国以外的地方看过病，她的病历里可能没有记录。',
+  'Hmm, Maya’s record might be missing care she got in another country.':'嗯，玛雅要是在别的地方看过病，她的病历里可能没有记录。',
   'HX-2 is also in sunburn cooling patches. I wonder if Maya has ever used one.':'治晒伤的降温贴里也有HX-2。不知道玛雅有没有用过。',
   'If Maya is sensitive to HX-2, this rash risk could really matter for her.':'如果玛雅对HX-2敏感，起疹子的风险对她来说就很要紧了。',
   'Someone built a datacenter in secret near Calder Bay. I wonder who built it, and why they hid it.':'有人在考尔德湾附近偷偷建了一座数据中心。不知道是谁建的，又为什么要藏起来。',
@@ -223,7 +223,7 @@ I18N.add('zh','maya',{strings:{
 
   // ----- Field Guide -----
   'Information only you have':'只有你知道的信息','Ethics and AI':'伦理与AI',
-  'An AI can be very smart and still know only what is in its records or what people tell it. Maya’s rash happened in another country, so it was not in her Boston record, and Byte had no way to know about it. When you know something your AI doesn’t, tell it.':'AI再聪明，也只知道记录里写了什么、别人告诉了它什么。玛雅起疹子是在美国以外的地方，波士顿的病历里没有这件事，Byte也就没办法知道。你知道的事如果AI不知道，就告诉它。',
+  'An AI can be very smart and still know only what is in its records or what people tell it. Maya’s rash happened in another country, so it was not in her Boston record, and Byte had no way to know about it. When you know something your AI doesn’t, tell it.':'AI再聪明，也只知道记录里写了什么、别人告诉了它什么。玛雅起疹子的事，波士顿的病历里没有，Byte也就没办法知道。你知道的事如果AI不知道，就告诉它。',
   'True today: medical records often don’t transfer between countries or even between hospitals.':'现实中：病历常常没法从一个国家转到另一个国家，就连医院和医院之间也常常不通。',
   'Sample size':'样本量','Evidence and truth':'证据与真相',
   'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.':'骨愈凝胶只在40个孩子身上试过，石膏却在21,000个孩子身上研究过。样本小，得出的数字可能偏得很远，所以骨愈凝胶的误差线才那么长。',
