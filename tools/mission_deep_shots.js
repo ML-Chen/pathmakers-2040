@@ -4,7 +4,8 @@
 const {chromium}=require('playwright');const fs=require('fs'),path=require('path');
 const [html,out,id]=[process.argv[2],process.argv[3]||'/tmp/mission-shots',process.argv[4]];if(!id){console.error('usage: mission_deep_shots.js page.html outDir missionId');process.exit(2)}
 fs.mkdirSync(out,{recursive:true});for(const f of fs.readdirSync(out))if(/\.(png|txt)$/.test(f))fs.unlinkSync(path.join(out,f));
-(async()=>{const VW=+process.env.PM_VW||390,VH=+process.env.PM_VH||844,LG=process.env.PM_LANG||'';const uiChecks=require('./ui_checks.js');const issues=[];
+(async()=>{const VW=+process.env.PM_VW||390,VH=+process.env.PM_VH||844,LG=process.env.PM_LANG||'';  // PM_PY=1 with PM_LANG=zh turns pinyin on
+const uiChecks=require('./ui_checks.js');const issues=[];
  const b=await chromium.launch();const p=await b.newPage({viewport:{width:VW,height:VH},deviceScaleFactor:1});
  const errs=[];p.on('pageerror',e=>errs.push('pageerror: '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
  await p.route(/fonts\.(googleapis|gstatic)\.com/,r=>r.fulfill({status:200,body:''}));
@@ -15,7 +16,7 @@ fs.mkdirSync(out,{recursive:true});for(const f of fs.readdirSync(out))if(/\.(png
  const E=(f,a)=>p.evaluate(f,a);
  // tap the subtitle's bottom-right corner ("Tap to continue"), not a word that opens a definition; close any open definition first
  const tapSub=async()=>{await E(()=>document.querySelectorAll('.gpop').forEach(x=>x.remove()));const r=await E(()=>{const e=document.querySelector('#sub');if(!e)return null;const b=e.getBoundingClientRect();return [b.right-14,b.bottom-10]});if(r)await p.mouse.click(r[0],r[1]).catch(()=>{})};
- const flow=await E(([id,lg])=>{S.mute=true;if(lg)S.lang=lg;if(!MISSIONS[id])return null;S.completed={};startMission(id);return M().flow.map(f=>({name:f.name,k:f.k}))},[id,LG]);
+ const flow=await E(([id,lg,py])=>{S.mute=true;if(lg)S.lang=lg;if(py){S.pinyin=true;I18N.sync()}if(!MISSIONS[id])return null;S.completed={};startMission(id);return M().flow.map(f=>({name:f.name,k:f.k}))},[id,LG,!!process.env.PM_PY]);
  if(!flow){console.error('no mission '+id);process.exit(2)}
  for(const f of flow){await E(n=>{window.__st=n;go(n)},f.name);
   if(f.k==='talk'){for(let i=0;i<40;i++){await p.waitForFunction(()=>document.querySelectorAll('#choices .choice').length||(document.querySelector('#hint')&&!document.querySelector('#hint').hidden)||S.step!==window.__st,null,{timeout:3500}).catch(()=>{});await shot(f.name+'-'+i,200);const st=await E(()=>({ch:document.querySelectorAll('#choices .choice').length,step:S.step}));if(st.step!==f.name)break;

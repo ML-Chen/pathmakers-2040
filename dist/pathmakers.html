@@ -31164,9 +31164,6 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       gapfarm:'We passed it, but a fake order fooled some farm robots, because our version didn’t check every order. We’ll have to fix that part of the law.',
       gapold:'We passed it! But one fake order fooled some older robots before they got their new chips. We’ll push to get chips to older robots faster.',
       fail10:'We lost by one vote. Good bills sometimes lose. We’ll listen more closely to the members, change the bill, and bring it back for another vote.',fail9:'We lost, 9 to 12. We’ll listen more closely to the members, change the bill, and bring it back for another vote.'},
-    later:{law12:'Later, someone sent another fake order. Every robot checked the digital signature, saw that it was fake, and ignored the order.',law11:'Later, someone sent another fake order. Every robot checked the digital signature, saw that it was fake, and ignored the order.',
-      gapfarm:'Later, a string of harmless-looking fake orders got some robots to wander outside before anyone noticed.',gapold:'Later, fake orders fooled some robots: older ones still waiting for chips, or ones tricked by a string of harmless-looking orders.',
-      fail10:'Congress passed no robot safety law this year, so robots still can’t tell a real order from a fake one.',fail9:'Congress passed no robot safety law this year, so robots still can’t tell a real order from a fake one.'},
     mood(k){return /^law/.test(k)?'happy':/^fail/.test(k)?'sad':'think'}},
   debriefScene:'dc_hearing',eveningScene:'dc_night',eveningPlace:'Rep. Hollis’s office · 8:40 PM',
   trap(c){return {ok:!!S.told,text:S.told?T('You asked Rep. Gunderson an open question, kept his goat story private from everyone else, and told {0} about it, so {0}’s forecast of his vote was accurate.',S.byte.name)
@@ -40730,7 +40727,7 @@ function playMission(m){if(!m)return;if(resumeMission(m.id))return;startMission(
 
 // ---------- a place's planner ----------
 // the most beautiful painted view of each place, for its preview screen (outdoor skylines and landscapes, not rooms)
-const PLACE_VIEW={boston:['harbor','street'],nome:['nome_reserve','nome_dusk'],phoenix:['phx_lot','phx_street','phx_yard'],dc:['dc_night'],vienna:['vienna_night','vienna_market'],
+const PLACE_VIEW={boston:['harbor','street'],nome:['nome_reserve','nome_dusk'],phoenix:['phx_lot','phx_street','phx_yard'],dc:['dc_night'],vienna:['vienna_market','vienna_night'],
   marrowpoint:['mp_tower'],mars:['mars_dusk','mars'],moon:['moon','moon_night'],shanghai:['shanghai','shanghai_night'],beijing:['beijing'],shenzhen:['shenzhen'],varrow:['varrow'],ocean:['ocean_dc']};
 function placeScene(key){const P=PLACES[key];const k=(PLACE_VIEW[key]||[]).concat(P.scenes||[]).find(x=>window.PAINT&&PAINT[x]);if(k)return k;
   const ms=placeMissions(key);for(const m of ms)for(const f of (m.flow||[]))if(f.scene&&window.PAINT&&PAINT[f.scene]&&!['home','night','table','workbench'].includes(f.scene))return f.scene;

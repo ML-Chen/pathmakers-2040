@@ -115,7 +115,7 @@ function playMission(m){if(!m)return;if(resumeMission(m.id))return;startMission(
 
 // ---------- a place's planner ----------
 // the most beautiful painted view of each place, for its preview screen (outdoor skylines and landscapes, not rooms)
-const PLACE_VIEW={boston:['harbor','street'],nome:['nome_reserve','nome_dusk'],phoenix:['phx_lot','phx_street','phx_yard'],dc:['dc_night'],vienna:['vienna_night','vienna_market'],
+const PLACE_VIEW={boston:['harbor','street'],nome:['nome_reserve','nome_dusk'],phoenix:['phx_lot','phx_street','phx_yard'],dc:['dc_night'],vienna:['vienna_market','vienna_night'],
   marrowpoint:['mp_tower'],mars:['mars_dusk','mars'],moon:['moon','moon_night'],shanghai:['shanghai','shanghai_night'],beijing:['beijing'],shenzhen:['shenzhen'],varrow:['varrow'],ocean:['ocean_dc']};
 function placeScene(key){const P=PLACES[key];const k=(PLACE_VIEW[key]||[]).concat(P.scenes||[]).find(x=>window.PAINT&&PAINT[x]);if(k)return k;
   const ms=placeMissions(key);for(const m of ms)for(const f of (m.flow||[]))if(f.scene&&window.PAINT&&PAINT[f.scene]&&!['home','night','table','workbench'].includes(f.scene))return f.scene;

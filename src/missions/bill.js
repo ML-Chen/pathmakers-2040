@@ -248,9 +248,6 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
       gapfarm:'We passed it, but a fake order fooled some farm robots, because our version didn’t check every order. We’ll have to fix that part of the law.',
       gapold:'We passed it! But one fake order fooled some older robots before they got their new chips. We’ll push to get chips to older robots faster.',
       fail10:'We lost by one vote. Good bills sometimes lose. We’ll listen more closely to the members, change the bill, and bring it back for another vote.',fail9:'We lost, 9 to 12. We’ll listen more closely to the members, change the bill, and bring it back for another vote.'},
-    later:{law12:'Later, someone sent another fake order. Every robot checked the digital signature, saw that it was fake, and ignored the order.',law11:'Later, someone sent another fake order. Every robot checked the digital signature, saw that it was fake, and ignored the order.',
-      gapfarm:'Later, a string of harmless-looking fake orders got some robots to wander outside before anyone noticed.',gapold:'Later, fake orders fooled some robots: older ones still waiting for chips, or ones tricked by a string of harmless-looking orders.',
-      fail10:'Congress passed no robot safety law this year, so robots still can’t tell a real order from a fake one.',fail9:'Congress passed no robot safety law this year, so robots still can’t tell a real order from a fake one.'},
     mood(k){return /^law/.test(k)?'happy':/^fail/.test(k)?'sad':'think'}},
   debriefScene:'dc_hearing',eveningScene:'dc_night',eveningPlace:'Rep. Hollis’s office · 8:40 PM',
   trap(c){return {ok:!!S.told,text:S.told?T('You asked Rep. Gunderson an open question, kept his goat story private from everyone else, and told {0} about it, so {0}’s forecast of his vote was accurate.',S.byte.name)
