@@ -22,7 +22,9 @@ html.pm-zh :is(.sent,.step-body p,.fg p,.gpop p,.subtitle p,.caption-card p,.byt
 .i18n-seg [data-lang="zh"]{font-family:'Nunito',var(--i18n-cjk)}
 
 /* Pinyin: one ruby per character. Punctuation is kept with its character (.i18n-nb) so it never starts a line. */
-html.pm-py ruby.i18n-r{ruby-position:over;ruby-align:center}
+/* each character and its syllable form one column as wide as the wider of the two, so long syllables never run into the next one */
+html.pm-py ruby.i18n-r{display:inline-flex;flex-direction:column-reverse;align-items:center;vertical-align:baseline;baseline-source:last;line-height:1.25}
+html.pm-py ruby.i18n-r rt{display:block;padding:0 .18em}
 html.pm-py ruby.i18n-r rt{font-family:'Nunito',sans-serif;font-size:.5em;font-weight:700;line-height:1;letter-spacing:0;text-transform:none;opacity:.8;-webkit-user-select:none;user-select:none}
 html.pm-py .i18n-nb{white-space:nowrap}
 html.pm-py :is(p,li,.choice,.sent,.qopt,.critb,.why,.toast,.bubble,.pbubble,.fut figcaption,.caption-card,.subtitle .who span,.lbl){line-height:2.1}
