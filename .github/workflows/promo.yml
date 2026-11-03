@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       speaker: {description: 'Narrator. With the ELEVENLABS_API_KEY secret: a native Mandarin voice from the ElevenLabs library, by name (see the audition zip) or voice id; empty picks the most-used one. Without it: a Kokoro voice (zf_xiaoxiao, zm_yunjian, ...). Empty = default.', default: ''}
-      speed: {description: 'Speaking speed', default: '1.0'}
+      speed: {description: 'Speaking speed (ElevenLabs allows 0.7 to 1.2)', default: '1.2'}
   push:
     branches: [main]
     paths: ['promo/rednote/**', 'promo/tools/zh_tts.py']
@@ -45,7 +45,12 @@ jobs:
           tar xjf kokoro-multi-lang-v1_0.tar.bz2 && rm kokoro-multi-lang-v1_0.tar.bz2
       - name: Mandarin narration (ElevenLabs when the secret is set, otherwise Kokoro)
         env: {ELEVENLABS_API_KEY: '${{ secrets.ELEVENLABS_API_KEY }}'}
-        run: set -o pipefail; python3 promo/rednote/vo.py vo "${{ github.event.inputs.speaker }}" "${{ github.event.inputs.speed || '1.0' }}" | tee vo.log
+        run: set -o pipefail; python3 promo/rednote/vo.py vo "${{ github.event.inputs.speaker }}" "${{ github.event.inputs.speed || '1.2' }}" | tee vo.log
+      - name: Background music (ElevenLabs Music when the secret is set)
+        env: {ELEVENLABS_API_KEY: '${{ secrets.ELEVENLABS_API_KEY }}'}
+        run: |
+          secs=$(python3 -c "import json;d=json.load(open('vo/durations.json'));print(round(sum(d.values())+len(d)*1.1+6))" 2>/dev/null || echo 95)
+          if python3 promo/rednote/music.py promo-music.mp3 "$secs"; then echo "PROMO_MUSIC=$PWD/promo-music.mp3" >> "$GITHUB_ENV"; fi
       - name: Build the game and render the video
         run: |
           python3 src/build.py dist/pathmakers.html

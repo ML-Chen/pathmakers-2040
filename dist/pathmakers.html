@@ -34465,7 +34465,7 @@ const SCENE_STANDIN={};
 // (CURSCENE keeps the scene's own key, so its props and passers-by stay; only the painting is borrowed)
 function standIn(k){return window.PAINT&&!PAINT[k]&&SCENE_STANDIN[k]&&PAINT[SCENE_STANDIN[k]]?SCENE_STANDIN[k]:k}
 function scene(k){if(window.PAINT&&(PAINT[k]||PAINT[standIn(k)])&&!SCENES[k]){CURSCENE=k;return ''}if(window.PAINT&&PAINT[k]){CURSCENE=k;return ''}if(SCENES[k]){CURSCENE=k;return SCENES[k]()}CURSCENE=(window.PAINT&&PAINT.hospital)?'hospital':null;return CURSCENE?'':SCENES.hospital()}
-function bgSize(){const cv=BG.cv,r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);return [Math.max(1,Math.round(r.width*dpr)),Math.max(1,Math.round(r.height*dpr))]}
+function bgSize(){const cv=BG.cv,r=cv.getBoundingClientRect(),dpr=Math.min(window.__pmDpr||2,window.devicePixelRatio||1);return [Math.max(1,Math.round(r.width*dpr)),Math.max(1,Math.round(r.height*dpr))]}
 function applyScene(){const k=standIn(CURSCENE);if(!(window.PAINT&&PAINT[k])){if(BG.cv)BG.cv.style.display='none';return}
   if(!BG.cv){BG.cv=document.createElement('canvas');BG.cv.className='scene bgcanvas';document.body.prepend(BG.cv);addEventListener('resize',()=>{BG.cache={};drawBg(true)})}
   BG.cv.style.display='block';BG.key=k;drawBg(true);if(!BG.raf)loopBg()}

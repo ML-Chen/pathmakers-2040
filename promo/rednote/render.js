@@ -36,7 +36,7 @@ const CSS = `
 .speaker .p-mouth[data-m=happy],.speaker .p-mouth[data-m=o]{animation-name:talkbig}
 @keyframes prbob{from{transform:translateY(0) rotate(-.6deg)}to{transform:translateY(-6px) rotate(.6deg)}}
 .byteart{animation:hop 1.1s ease-in-out infinite}
-#pr .cap{animation:prin .45s ease-out .1s both}
+#pr .cap{animation:none}
 @keyframes prcam{from{transform:var(--c0)}to{transform:var(--c1)}}
 #pr.shot-hook .big{top:40%;animation:none}#pr.shot-hook .cap{animation:none}
 .pr-hook{display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -75,7 +75,7 @@ const CSS = `
   const p = await ctx.newPage(); const errs = [];
   p.on('pageerror', e => errs.push(e.message));
   await p.addInitScript(() => {
-    window.__noaudio = 1; try { localStorage.clear() } catch (e) {}
+    window.__noaudio = 1; window.__pmDpr = 5; try { localStorage.clear() } catch (e) {}  // paint backgrounds at full video resolution, with room for camera zoom
     const base = performance.now(), d0 = Date.now(); let vt = 0, seq = 0; const timers = new Map(); let rafs = [];
     performance.now = () => base + vt; Date.now = () => Math.round(d0 + vt);
     window.setTimeout = (f, ms, ...a) => { const id = ++seq; timers.set(id, {due: vt + Math.max(0, +ms || 0), f, a}); return id };
@@ -138,7 +138,7 @@ const CSS = `
     for (const [t, code] of (s.taps || [])) events.push([t, code, false]);
     // a long line shows as several captions (s.caps), each up to three lines, switched in proportion to their length
     if (s.caps && s.caps.length > 1) { const tot = s.caps.join('').length, voLen = (VO && VO[s.id]) || est(s); let acc = 0;
-      s.caps.forEach((c, i) => { if (i) events.push([(LEAD + voLen * acc / tot) * 1000, `(()=>{const e=document.querySelector('#pr .cap');if(e){e.style.animation='none';e.textContent=${JSON.stringify(c)}}})()`, false]); acc += c.length }) }
+      s.caps.forEach((c, i) => { if (i) events.push([Math.max(0, LEAD + voLen * acc / tot - 0.25) * 1000, `(()=>{const e=document.querySelector('#pr .cap');if(e){e.style.animation='none';e.textContent=${JSON.stringify(c)}}})()`, false]); acc += c.length }) }
     if (s.every) for (let t = s.every[0]; t < D * 1000; t += s.every[0]) events.push([t, s.every[1], false]);
     if (s.cycle) { const [ms, ...setups] = s.cycle; for (let k = 1, t = ms; t < D * 1000 && k < setups.length; k++, t += ms) events.push([t, setups[k], true]) }  // each place once; the last one holds
     events.sort((a, b) => a[0] - b[0]);
@@ -147,9 +147,9 @@ const CSS = `
     for (let f = 0; f < N; f++) {
       const t = f * DT;
       while (events.length && events[0][0] <= t) { const [, code, keep] = events.shift();
-        await p.evaluate(({code, keep}) => { const pr = document.getElementById('pr'); try { (0, eval)(code) } catch (e) {} if (keep && pr) document.body.appendChild(pr) }, {code, keep}).catch(() => {}) }
+        await p.evaluate(({code, keep}) => { const pr = document.getElementById('pr'); try { (0, eval)(code) } catch (e) {} if (keep && pr) { pr.querySelectorAll('*').forEach(e => e.style.animation = 'none'); document.body.appendChild(pr) } }, {code, keep}).catch(() => {}) }
       const file = path.join(dir, String(frames.length).padStart(5, '0') + '.jpg');
-      const shot = await cdp.send('Page.captureScreenshot', {format: 'jpeg', quality: 88, optimizeForSpeed: true}); fs.writeFileSync(file, Buffer.from(shot.data, 'base64')); frames.push([file, t / 1000]);
+      const shot = await cdp.send('Page.captureScreenshot', {format: 'jpeg', quality: 94, optimizeForSpeed: true}); fs.writeFileSync(file, Buffer.from(shot.data, 'base64')); frames.push([file, t / 1000]);
       if (!still && f >= N * .45) { fs.copyFileSync(file, path.join(out, 'stills', `${String(n + 1).padStart(2, '0')}-${s.id}.jpg`)); still = true }
       await p.evaluate(dt => __adv(dt), DT);
     }
@@ -169,7 +169,7 @@ const CSS = `
   for (let i = 1; i < segs.length; i++) { off += segs[i - 1].D - X; const o = `[v${i}]`; filt.push(`${last}[${i}:v]xfade=transition=${i === 1 ? 'fade' : TR[i % TR.length]}:duration=${X}:offset=${off.toFixed(3)}${o}`); last = o; segs[i].at = off }
   const vlen = off + segs[segs.length - 1].D;
   const video = path.join(out, 'video.mp4');
-  ff(...inputs, '-filter_complex', filt.join(';'), '-map', last, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '17', '-pix_fmt', 'yuv420p', video);
+  ff(...inputs, ...(filt.length ? ['-filter_complex', filt.join(';')] : []), '-map', filt.length ? last : '0:v', '-c:v', 'libx264', '-preset', 'slow', '-crf', '15', '-tune', 'animation', '-pix_fmt', 'yuv420p', video);
   // audio: music bed (the game's Future Table track), ducked under the narration
   // PROMO_MUSIC=file (mp3, wav, ogg) uses that track instead, for example one made with Suno; promo/rednote/music.* is used if present
   const own = process.env.PROMO_MUSIC || ['mp3', 'wav', 'ogg', 'm4a'].map(e => path.join(__dirname, 'music.' + e)).find(f => fs.existsSync(f));

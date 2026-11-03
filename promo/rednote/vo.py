@@ -6,7 +6,7 @@ voices) so the family can pick a narrator by ear.
 Engine: ElevenLabs (eleven_multilingual_v2) when ELEVENLABS_API_KEY is set; then [speaker] is an ElevenLabs voice name
 from tools/make_audio.py's list or a voice id (default Sarah). Otherwise Kokoro (promo/tools/zh_tts.py), where
 [speaker] is a Kokoro Mandarin voice (default zf_xiaoxiao)."""
-import json, os, subprocess, sys, time, urllib.request, urllib.error
+import json, os, re, subprocess, sys, time, urllib.request, urllib.error
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'tools'))
 EL_KEY = os.environ.get('ELEVENLABS_API_KEY', '').strip()
@@ -47,21 +47,46 @@ def mandarin_voices(n=8):
         out.append((nm[6:], vid)); print('Mandarin voice:', nm[6:], v.get('gender'), v.get('age'), v.get('accent'), v.get('use_case'), flush=True)
     return out
 
+def zh_num(n):
+    """Whole numbers up to 9999 in Chinese words (5 -> 五, 60 -> 六十, 21000 is left as digits)."""
+    d = '零一二三四五六七八九'; n = int(n)
+    if n < 10: return d[n]
+    if n < 20: return '十' + (d[n % 10] if n % 10 else '')
+    if n < 100: return d[n // 10] + '十' + (d[n % 10] if n % 10 else '')
+    if n < 1000: return d[n // 100] + '百' + ('' if n % 100 == 0 else ('零' + d[n % 10] if n % 100 < 10 else zh_num(n % 100)))
+    if n < 10000: return d[n // 1000] + '千' + ('' if n % 1000 == 0 else ('零' + zh_num(n % 1000) if n % 1000 < 100 else zh_num(n % 1000)))
+    return str(n)
+
+def tts_text(t):
+    """What the voice reads: percents and small numbers as Chinese words, so they aren't read in English."""
+    t = re.sub(r'(\d+)%', lambda m: '百分之' + zh_num(m.group(1)), t)
+    t = re.sub(r'(?<![\d.])(\d{1,3})(?=个|户|天|次|年前|倍)', lambda m: zh_num(m.group(1)), t)
+    return t
+
 def eleven(voice, text, speed, dst):
-    vid = EL.get(voice, voice)
-    body = json.dumps({'text': text, 'model_id': os.environ.get('ELEVENLABS_MODEL', 'eleven_multilingual_v2'),
-                       'voice_settings': {'stability': 0.5, 'similarity_boost': 0.8, 'style': 0.25, 'use_speaker_boost': True, 'speed': speed}}).encode()
-    req = urllib.request.Request(f'https://api.elevenlabs.io/v1/text-to-speech/{vid}?output_format=mp3_44100_128', data=body, method='POST',
-                                 headers={'xi-api-key': EL_KEY, 'content-type': 'application/json', 'accept': 'audio/mpeg'})
-    for attempt in range(6):
-        try:
-            with urllib.request.urlopen(req, timeout=120) as r: mp3 = r.read()
-            break
-        except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 502, 503) and attempt < 5: time.sleep(3 * (attempt + 1)); continue
-            raise RuntimeError(f'ElevenLabs HTTP {e.code}: {e.read()[:300]!r}')
-    tmp = dst + '.mp3'; open(tmp, 'wb').write(mp3)
-    subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-i', tmp, dst], check=True); os.remove(tmp)
+    """One line with ElevenLabs. Model eleven_v3 (much better Mandarin tones than multilingual_v2); speed is applied
+    afterwards by clean(), since v3 has no speed setting. Falls back to multilingual_v2 if v3 refuses the request."""
+    vid = EL.get(voice, voice); text = tts_text(text)
+    models = [os.environ.get('ELEVENLABS_MODEL', 'eleven_v3'), 'eleven_multilingual_v2']
+    last = None
+    for model in models:
+        body = {'text': text, 'model_id': model}
+        if model == 'eleven_v3': body['language_code'] = 'zh'; body['voice_settings'] = {'stability': 0.5}
+        else: body['voice_settings'] = {'stability': 0.5, 'similarity_boost': 0.8, 'style': 0.2, 'use_speaker_boost': True}
+        req = urllib.request.Request(f'https://api.elevenlabs.io/v1/text-to-speech/{vid}?output_format=mp3_44100_128', data=json.dumps(body).encode(), method='POST',
+                                     headers={'xi-api-key': EL_KEY, 'content-type': 'application/json', 'accept': 'audio/mpeg'})
+        for attempt in range(5):
+            try:
+                with urllib.request.urlopen(req, timeout=180) as r: mp3 = r.read()
+                tmp = dst + '.mp3'; open(tmp, 'wb').write(mp3)
+                subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-i', tmp] + (['-filter:a', f'atempo={speed}'] if abs(speed - 1) > .01 else []) + [dst], check=True); os.remove(tmp)
+                return
+            except urllib.error.HTTPError as e:
+                last = f'ElevenLabs {model} HTTP {e.code}: {e.read()[:300]!r}'
+                if e.code in (429, 500, 502, 503) and attempt < 4: time.sleep(3 * (attempt + 1)); continue
+                if e.code == 401 and b'quota' in last.encode(): raise RuntimeError(last)
+                print(last, flush=True); break
+    raise RuntimeError(last or 'ElevenLabs failed')
 
 def synth(voice, text, speed, dst):
     """ElevenLabs when the key works; if it fails (for example out of credits), switch to Kokoro for the rest of the run."""
@@ -87,11 +112,11 @@ os.makedirs(out, exist_ok=True)
 shots = json.loads(subprocess.run(['node', '-e', "process.stdout.write(JSON.stringify(require(process.argv[1]).map(s=>({id:s.id,vo:s.vo}))))",
                                    os.path.join(HERE, 'shots.js')], capture_output=True, text=True, check=True).stdout)
 
-def clean(raw, dst):
+def clean(raw, dst, tempo=None):
     """Trim leading/trailing silence and level to about -16 LUFS, 44.1 kHz mono."""
     subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-i', raw, '-af',
                     'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,'
-                    'loudnorm=I=-16:TP=-1.5:LRA=7,aresample=44100', '-ac', '1', dst], check=True)
+                    (f'atempo={tempo},' if tempo and abs(tempo - 1) > .01 else '') + 'loudnorm=I=-16:TP=-1.5:LRA=7,aresample=44100', '-ac', '1', dst], check=True)
     return float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', dst],
                                 capture_output=True, text=True).stdout)
 
