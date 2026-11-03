@@ -41,6 +41,7 @@ I18N.add('zh','hired',{strings:{
     '想被录用，你要认识医院里工作的人，把你做过的事存进作品集，再在雷耶斯医生的面试里好好表现。医院的开放日就是今天，现在就能开始！',
 
   // ----- the open house -----
+  'Imani':'伊曼尼','Owen':'欧文','Ari':'阿里','Abena':'阿贝娜',
   'Gabi Santos':'嘉比·桑托斯','Charge nurse':'护士长','Gabi':'嘉比','Kofi Asante':'科菲·阿桑特','Robot crew lead':'机器人小队队长','Kofi':'科菲',
   'Ruth Abrams':'露丝·艾布拉姆斯','Volunteer, age 88':'志愿者，88岁','Volunteer':'志愿者','Ruth':'露丝',
   'Ari Mensah':'阿里·门萨','Patient, age 10':'病人，10岁','Abena Mensah':'阿贝娜·门萨','Ari’s grandma':'阿里的奶奶',
