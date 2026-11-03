@@ -197,6 +197,6 @@ function bjDebrief(){const st=bjSt(),found=BJ_SPEC.filter(x=>x.flag&&st.tap[x.id
   zhDebrief({scene:'beijing',place:'Debrief · Beijing',stars:{ask,decision,heart},
     items:[{star:'ask',ok:ask,text:ask?'You read every line and found both of the gaps in Tianping’s spec.':'Read each line slowly and ask yourself what an inspector could miss. Two of the lines in Tianping’s spec had gaps that could hide things from inspectors.'},
       {star:'decision',ok:decision,text:decision?'You admitted the problem with Beacon’s line and invited Mr. Zhao to check the change. Admitting a mistake and letting the other side check the fix is the quickest way to win back their trust.':'Beacon’s chip-buying line stayed in place. It was legal, but it made a treaty AI favor one country.'},
-      {star:'heart',ok:heart,text:heart?'You treated the other team and Mr. Qiao with respect, and you signed a clear statement.':'Next time, try being kind to Mr. Qiao or Mr. Zhao. Small kindnesses help two teams work well together at talks like these.'}],
-    byte:'Today each team read the other team’s AI spec line by line and pointed out the lines that worried them. That checking is what the treaty talks are for.'})}
-MISSIONS.treatytalks.lines.push({who:'byte',text:'Today each team read the other team’s AI spec line by line and pointed out the lines that worried them. That checking is what the treaty talks are for.'});
+      {star:'heart',ok:heart,text:heart?'You treated the other team and Mr. Qiao with respect, and you signed a clear statement.':'Next time, be kind to Mr. Qiao or Mr. Zhao. Kindness helps two teams work well together.'}],
+    byte:'Each team read the other team’s AI spec and pointed out the lines that worried them, which is what the treaty talks are for.'})}
+MISSIONS.treatytalks.lines.push({who:'byte',text:'Each team read the other team’s AI spec and pointed out the lines that worried them, which is what the treaty talks are for.'});
