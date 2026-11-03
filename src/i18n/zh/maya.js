@@ -1,0 +1,185 @@
+// Simplified Chinese for the first mission, "The Violinist’s Wrist" (src/content_boston.js, src/missions.js, src/infog.js).
+// Keys are the exact English text; missing strings fall back to English. See src/i18n.js.
+I18N.add('zh','maya',{strings:{
+  // ----- mission card and flow -----
+  'The Violinist’s Wrist':'小提琴手的手腕',
+  'An 11-year-old violinist broke her wrist nine days before her recital.':'一个11岁的小提琴手摔断了手腕，离她的演出只剩九天。',
+  'Home · Boston · 7:40 AM':'家 · 波士顿 · 早上7:40','Room 4B · Boston Harbor Hospital':'4B病房 · 波士顿港医院','New work on your Workbench':'工作台上有新任务',
+  'Care Doctor':'照护医生','Elder Companion':'老人陪伴师',
+
+  // ----- cast -----
+  'Dr. Imani Reyes':'伊曼尼·雷耶斯医生','Chief of Care, Boston Harbor Hospital':'波士顿港医院照护主任','Maya Lin':'林玛雅','Patient, age 11':'病人，11岁',
+  'Wei Lin':'林伟','Maya’s dad':'玛雅的爸爸','Halo':'Halo','The hospital’s operations AI':'医院的运营AI',
+
+  // ----- morning at home -----
+  'Good morning, Doctor! Today is your first shift at Boston Harbor Hospital!':'早上好，医生！今天是你在波士顿港医院上班的第一天！',
+  'The tram leaves at 8:05, it’s sunny, and your badge is already in your bag. You have one patient this morning: a girl with a broken wrist.':'电车8:05发车，今天是晴天，你的工牌已经放进包里了。今天上午你只有一位病人，是个手腕骨折的女孩。',
+  'I can look things up, work out the odds, and show you what might happen with each treatment. Helping the family decide what to do is your job.':'我能帮你查资料、算概率，还能让你看到每种治法可能带来什么结果。帮这家人拿主意，是你的工作。',
+  'What’s my job today?':'我今天要做什么？',
+  'Listen to your patient and her family, figure out what matters most to them, explain the choices honestly, and get their [[consent]]. Then you sign the decision, which means you are [[accountable]]: you have to explain it and answer for how it turns out.':'好好听病人和她家人说话，弄清楚他们最在乎什么，把几种选择老老实实讲清楚，再请他们[[同意]]。最后由你在决定上签字，这个决定就由你来[[负责]]：你要讲得清为什么这么选，结果怎样也要由你来回答。',
+  'Let’s go!':'出发吧！','Woof! Grab your coat!':'汪！别忘了穿外套！',
+
+  // ----- Dr. Reyes -----
+  'You must be our new Care Doctor. Welcome. I’m Dr. Reyes.':'你就是新来的照护医生吧？欢迎你。我是雷耶斯医生。',
+  'Your patient is Maya Lin, age 11. She fell off her scooter yesterday and broke her wrist: a clean [[fracture]] of the [[radius]], and the two pieces slipped a little out of line.':'你的病人叫林玛雅，11岁。她昨天骑滑板车摔了一跤，把手腕摔断了。她是[[桡骨]][[骨折]]，断口很整齐，只是断开的两截稍微错开了一点。',
+  'There are three good treatments for Maya’s wrist. Which one is right depends on what Maya and her family care about, and you can only find that out by talking to them.':'玛雅的手腕有三种不错的治法。哪一种最合适，要看玛雅和她家人在乎什么，这只有跟他们聊过才知道。',
+  'What does Maya care about?':'玛雅在乎什么？',
+  'Ask her. I’ll give you a hint, though: she came in holding a violin case with her good arm.':'你去问她吧。不过我可以给你个提示：她进来的时候，用没受伤的那只手抱着一个小提琴盒。',
+  'Which treatment would you pick?':'换作是你，会选哪种？',
+  'If it were my own kid, I’d probably pick surgery with [[pins]]. But Maya may care about different things than I do, so go and meet her.':'要是我自己的孩子，我大概会选手术打[[钢钉]]。不过玛雅在乎的东西可能跟我不一样，你还是先去见见她吧。',
+
+  // ----- Maya and her dad -----
+  'Hi. Is my arm going to be okay?':'你好。我的胳膊会好起来吗？',
+  'My [[recital]] is Friday. I’ve practiced the Bach piece for four months.':'我周五有[[演出]]。那首巴赫的曲子，我练了整整四个月。',
+  'Your arm is going to heal. Let’s figure out the best plan together.':'你的胳膊会长好的。我们一起想个最好的办法。','Okay. Can I still play on Friday?':'好。那我周五还能上台吗？',
+  'Don’t worry about the recital right now.':'演出的事先别想了。','But it’s really important to me...':'可是演出对我真的很重要……',
+  'We just want her arm to heal right. She wants to keep playing the violin for the rest of her life.':'我们只希望她的胳膊能好好长回去。她想拉一辈子小提琴。',
+  'Oh, one thing. Last summer she got a bad [[rash]] from one of those cooling patches for sunburn. We were visiting family in Taipei, so it’s probably not in her records here.':'哦，还有件事。去年夏天她贴了那种治晒伤的降温贴，结果起了一大片[[疹子]]。那时我们在台北走亲戚，所以这边的病历里应该没有记录。',
+  'That rash was super itchy. It looked like strawberry polka dots.':'那次的疹子痒死了，满胳膊都是小红点，像草莓上的点点。',
+  'Thanks for telling me. That might really matter when we choose a treatment.':'谢谢你告诉我。选治疗方案的时候，这件事可能很要紧。','Really? Okay!':'真的吗？好呀！',
+  'That was a long time ago.':'那都是很久以前的事了。','Okay...':'哦……',
+  'So, Doctor, what do you think we should do?':'医生，你看我们该怎么办？','And will I get to play?':'我还能上台演出吗？',
+
+  // ----- Byte's memo (the alternative sentence after the rash clue) -----
+  'Maya’s [[radius]] has a clean [[fracture]]: one crack straight across the bone, with the two pieces a little out of line.':'玛雅的[[桡骨]][[骨折]]了，断口很整齐：骨头上横着一道裂缝，断开的两截稍微错开了一点。',
+  'A bone [[heals straight]] when it grows back in its normal shape. If it heals crooked, doctors may have to fix it again.':'骨头按原来的形状长回去，就叫[[长正]]。要是长歪了，医生可能得再治一次。',
+  'There are three [[options]] for treating Maya’s wrist, and all three are safe and [[approved]].':'玛雅的手腕有三种治疗[[方案]]，三种都很安全，也都已经[[获批]]。',
+  'I updated this: Maya once got a [[rash]] from an HX-2 cooling patch, so my [[forecast]] for a skin reaction to BoneMend is now about 60 in 100, not 5. For Maya, I would avoid BoneMend.':'这一条我更新了：玛雅用HX-2降温贴起过[[疹子]]，所以我现在[[预测]]她用骨愈凝胶起皮肤反应的可能是100个里大约60个，不是5个了。玛雅最好别用骨愈凝胶。',
+  'New forecast for Maya: 60 of 100':'玛雅的新预测：100个里60个','Updated forecast':'更新后的预测',
+
+  // ----- health record -----
+  'Maya Lin: health record':'林玛雅：健康档案','Patient: Maya Lin, age 11.':'病人：林玛雅，11岁。',
+  'Today: a [[fracture]] of the left [[radius]] after a scooter fall.':'今天：骑滑板车摔倒，左侧[[桡骨]][[骨折]]。',
+  'Allergies on file: none.':'已登记的过敏：无。',
+  'Records from clinics outside the United States are not always [[synced]] with this hospital.':'美国以外的诊所留下的病历，不一定会和本院[[同步]]。',
+  'Ask the family about any care received in other countries.':'请问问家属，病人有没有在美国以外的地方看过病。',
+  'Patient card':'病人卡片','What happened':'发生了什么','Allergy list':'过敏清单','Records between countries':'跨国病历','A good question to ask':'值得问的问题',
+
+  // ----- BoneMend fact sheet -----
+  'BoneMend hydrogel: fact sheet':'骨愈水凝胶：说明书',
+  'BoneMend is a [[hydrogel]] that helps bone cells rebuild the broken spot quickly.':'骨愈是一种[[水凝胶]]，能帮骨细胞很快把断开的地方重新长好。',
+  'A smart [[splint]] with sensors keeps the arm steady while it heals and checks that it stays still.':'一块带传感器的智能[[夹板]]会在愈合期间托稳胳膊，还会随时检查胳膊有没有乱动。',
+  'BoneMend’s main [[ingredient]] is HX-2 cooling gel, the same material used in many sunburn cooling patches.':'骨愈的主要[[成分]]是HX-2降温凝胶，很多治晒伤的降温贴用的也是这种材料。',
+  'People who once got a [[rash]] from an HX-2 cooling patch may be [[sensitive]]. In the [[trial]] of BoneMend, about 60 out of 100 kids like that got a rash from it.':'用HX-2降温贴起过[[疹子]]的人，可能对它[[敏感]]。在骨愈的[[临床试验]]里，这样的孩子100个里大约有60个用了以后起了疹子。',
+  'If a rash happens, BoneMend is stopped and the arm goes into a regular [[cast]].':'要是起了疹子，就停用骨愈，给胳膊改打普通[[石膏]]。',
+  'How BoneMend works':'骨愈怎样起作用','The smart splint':'智能夹板','One shared ingredient':'同一种成分','Kids who are sensitive to HX-2':'对HX-2敏感的孩子','The backup plan':'备用方案',
+  '60 of 100 sensitive kids got a rash':'敏感的孩子：100个里60个起疹子',
+
+  // ----- the Ledger, Boston -----
+  'The Ledger: Boston':'账本新闻：波士顿','News':'新闻',
+  'Robot crews finished the new Charles River flood wall three weeks early.':'机器人施工队提前三周建好了查尔斯河的新防洪墙。',
+  'The average wait in Boston emergency rooms last month was four minutes.':'上个月，在波士顿看急诊，平均只要等四分钟。',
+  'Last night, inspectors who enforce the international AI [[treaty]] shut down a small [[datacenter]] near the town of Calder Bay, because it had no license to run. Nobody knows who built the datacenter.':'昨晚，负责执行国际AI[[条约]]的检查员关停了考尔德湾镇附近的一座小型[[数据中心]]，因为它没有运行许可证。没人知道这座数据中心是谁建的。',
+  'Charles River flood wall':'查尔斯河防洪墙','Emergency room waits':'急诊等候时间','A mystery datacenter':'神秘的数据中心',
+
+  // ----- Byte's notes while reading -----
+  'Maya’s recital is only nine days away, so there isn’t much time.':'离玛雅的演出只有九天了，时间不多。',
+  'BoneMend was tested on only 40 kids, so my numbers for it could be wrong.':'骨愈凝胶只在40个孩子身上试过，所以我给它的数字可能不准。',
+  'Hmm, Maya’s record might be missing care she got in another country.':'嗯，玛雅要是在美国以外的地方看过病，她的病历里可能没有记录。',
+  'HX-2 is also in sunburn cooling patches. I wonder if Maya has ever used one.':'治晒伤的降温贴里也有HX-2。不知道玛雅有没有用过。',
+  'If Maya is sensitive to HX-2, this rash risk could really matter for her.':'如果玛雅对HX-2敏感，起疹子的风险对她来说就很要紧了。',
+  'Someone built a datacenter in secret near Calder Bay. I wonder who built it, and why they hid it.':'有人在考尔德湾附近偷偷建了一座数据中心。不知道是谁建的，又为什么要藏起来。',
+  'Tell Byte about Maya’s rash':'把玛雅起疹子的事告诉Byte',
+  'Thanks! I updated my forecast. Because Maya once got a rash from an HX-2 cooling patch, I now think BoneMend has about a 60% chance of giving her a skin reaction.':'谢谢你！我更新了预测。玛雅用HX-2降温贴起过疹子，所以我现在估计，她用骨愈凝胶起皮肤反应的可能大约是60%。',
+
+  // ----- lesson: how a broken bone heals -----
+  'Learn it fast: how a broken bone heals':'快速了解：断了的骨头怎样长好','How a broken bone heals':'断了的骨头怎样长好',
+  'When a bone breaks, blood rushes to the spot and forms a soft [[clot]] around the break.':'骨头一断，血就涌到断口那里，在周围凝成一团软软的[[血块]]。',
+  'Over about two weeks, the body builds a soft bridge across the gap, called a [[callus]].':'在大约两周里，身体会在断口之间搭起一座软软的“桥”，叫作[[骨痂]]。',
+  'Then the callus slowly hardens into real bone, which takes about 6 to 12 weeks.':'接着，骨痂慢慢变硬，变成真正的骨头，这要花大约6到12周。',
+  'Keeping the bone still with a cast or pins helps the bridge grow straight instead of crooked.':'用石膏或钢钉让骨头一动不动，这座“桥”才能长直，不会长歪。',
+  'Day 1':'第1天','Weeks 1 to 2':'第1到2周','Weeks 3 to 12':'第3到12周','Why we keep it still':'为什么要保持不动',
+  'What forms first around a break?':'断口周围最先形成的是什么？','A soft clot':'一团软软的血块','Hard new bone':'坚硬的新骨头','A cast':'打石膏',
+  'Blood forms a soft clot first. Hard bone comes weeks later.':'最先形成的是软软的血块。坚硬的骨头要过好几周才长出来。',
+  'What is a callus?':'骨痂是什么？','A kind of cast':'一种石膏','A soft bridge the body builds across the gap':'身体在断口之间搭起的软“桥”','An allergy':'一种过敏',
+  'A callus is the bridge of new tissue that later hardens into bone.':'骨痂是新组织搭成的桥，后来会变硬，变成骨头。',
+  'Why keep a broken bone still?':'为什么要让断了的骨头保持不动？','So it heals faster than a week':'好让它一周之内就长好','So the bridge grows straight':'好让那座“桥”长直','So it doesn’t need a doctor':'好让它不用看医生',
+  'Moving the pieces can make the bridge grow crooked.':'断开的骨头一动，那座“桥”就可能长歪。',
+
+  // ----- Future Table -----
+  'Heals straight (out of 100 kids)':'长正的人数（每100个孩子）','BoneMend':'骨愈凝胶',
+  'Skin reaction, so she switched to a cast.':'起了皮肤反应，只好改打石膏。','Healed crooked and needs another fix.':'骨头长歪了，还得再治一次。',
+  'Played Bach on Friday!':'周五上台拉了巴赫！','Played at the moved recital!':'改期以后，她上台演出了！','Healed straight but missed the recital.':'骨头长正了，可是错过了演出。',
+  'Skin reaction, but played at the moved recital.':'起了皮肤反应，不过还是赶上了改期后的演出。','Skin reaction, then healed crooked.':'起了皮肤反应，后来骨头还长歪了。',
+  ' + therapy':'＋康复训练',', move the recital':'，演出改期',', keep Friday':'，周五照常演出',
+  '<b>{plan}:</b> the bone grows back straight about {st}% of the time, and she plays at her recital about {pl}% of the time. ':'<b>{plan}：</b>骨头长正的可能大约是{st}%，她赶上演出的可能大约是{pl}%。',
+  'Because of Maya’s old rash, a skin reaction from BoneMend is likely, at about 60%. ':'玛雅以前起过疹子，所以她用骨愈凝胶很可能起皮肤反应，可能性大约是60%。',
+  'I see no allergy in her record, so I forecast a skin reaction at about 5%. ':'她的病历里没有过敏记录，所以我预测她起皮肤反应的可能大约是5%。',
+  'Only 40 kids have tried BoneMend, so I’m less sure about these numbers.':'只有40个孩子用过骨愈凝胶，所以这些数字我没那么有把握。',
+  'Choosing what matters before you see the futures helps you pick the plan that fits those goals, instead of the plan that looks most exciting.':'先选好什么最重要，再去看未来，你挑出的方案才会符合这些目标，不会只是看上去最新奇。',
+
+  // ----- consent -----
+  'Maya and Wei Lin':'林玛雅和林伟','Patient and parent':'病人和家长','So, what do you suggest? And will I get to play?':'那你建议怎么做？我还能上台吗？',
+  'surgery with pins':'手术打钢钉','a cast':'打石膏',' plus physical therapy':'，再加上康复训练',
+  'If we ask to move your recital about three weeks, you’ll very likely get to play.':'如果我们请他们把演出推迟三周左右，你很可能就能上台了。',
+  'You’ll very likely get to play on Friday.':'你很可能赶得上周五的演出。',
+  'If we move your recital about three weeks, there’s a good chance you’ll play, but it isn’t certain.':'如果把演出推迟三周左右，你很有希望能上台，但我还不能打包票。',
+  'There’s a good chance you’ll play on Friday, but it isn’t certain.':'你很有希望赶上周五的演出，但我还不能打包票。',
+  'You might get to play, Maya, but I can’t promise it.':'玛雅，你也许能上台，可我没法保证。',
+  'I’m sorry, Maya. Even with the recital moved, this plan probably won’t have you ready in time.':'对不起，玛雅。就算演出改了期，用这个方案你大概也来不及恢复好。',
+  'I’m sorry, Maya. With this plan, you won’t be able to play on Friday.':'对不起，玛雅。用这个方案，你周五没法上台了。',
+  'Almost every kid heals straight with it.':'这样治，几乎每个孩子的骨头都能长正。','Nearly 9 in 10 kids heal straight with it.':'这样治，10个孩子里将近9个能长正。','About 8 in 10 kids heal straight with it.':'这样治，10个孩子里大约8个能长正。',
+  'Because of your rash last summer, the gel could give you another one, so we’d watch for that. ':'你去年夏天起过疹子，用这种凝胶可能还会再起，所以我们会多留意。',
+  '{play} I’d suggest {tx}. {heal} {rash}What do you two think?':'{play}我的建议是：{tx}。{heal}{rash}你们俩觉得呢？',
+  'Trust me, {tx} is the best choice for you. I’ve looked at all the numbers, so you and your dad don’t need to worry about the details.':'相信我，{tx}对你来说就是最好的选择。所有数字我都看过了，你和你爸爸不用操心这些细节。',
+  'You’ll definitely play on Friday, Maya! Kids your age heal really fast, so there’s nothing to worry about.':'玛雅，你周五肯定能上台！你这个年纪的孩子长得特别快，一点都不用担心。',
+  'Thank you for explaining. I understand. Let’s do it.':'谢谢你讲给我听。我明白了，就这么办吧。',
+  'So I’ll miss Friday... but I want my arm to work for a long time. Okay. I agree.':'那我周五就上不了台了……不过我想让胳膊以后一直好好的。好吧，我同意。',
+  'Um... okay. But I don’t really understand what will happen.':'嗯……好吧。可我还是不太明白会发生什么。',
+  'Definitely? Are you sure? The Future Table showed some futures where I don’t get to play.':'肯定能？你确定吗？未来之桌上明明有几种未来，我是上不了台的。',
+
+  // ----- memo -----
+  'I recommend ':'我建议','because ':'因为','The chance it heals straight is about ':'骨头长正的可能大约是','Maya cares about ':'玛雅在乎的是','We will check by ':'我们会这样检查：',
+  'I recommend a cast with physical therapy because…':'我建议打石膏再加康复训练，因为……','Includes what Maya cares about':'写到了玛雅在乎的事','Dr. {0}':'{0}医生','Maya’s treatment':'玛雅的治疗',
+
+  // ----- outcome -----
+  'I played the whole Bach piece! My wrist didn’t hurt at all!':'我把那首巴赫从头到尾拉完了！手腕一点都不疼！',
+  'We moved the recital and I played! Thank you for explaining everything.':'演出改了期，我上台拉琴了！谢谢你把每件事都讲得那么清楚。',
+  'I missed Friday, but my wrist is straight. There’s another recital in spring.':'周五的演出我没赶上，不过手腕长正了。春天还有一场演出呢。',
+  'It didn’t heal straight. The doctors say they can fix it, but I’m sad.':'骨头没长正。医生说还能治好，可我还是很难过。',
+  'I got the strawberry polka-dot rash again! The doctors switched me to a cast.':'我又起那种草莓点点的疹子了！医生只好给我改成打石膏。',
+  'You told {byte} about Maya’s old rash, so the forecast was accurate.':'你把玛雅以前起疹子的事告诉了{byte}，所以预测很准。',
+  'You avoided BoneMend. Did you notice why it was risky for Maya? Her dad mentioned a rash.':'你没选骨愈凝胶。你注意到它对玛雅为什么有风险了吗？她爸爸提到过她起疹子的事。',
+  'You didn’t tell {byte} about Maya’s rash. BoneMend looked safer than it really was for her.':'你没把玛雅起疹子的事告诉{byte}。所以骨愈凝胶看上去很安全，其实对她没那么安全。',
+  'Nice work, Doctor. You listened to Maya and her dad, you explained the choices honestly, and Maya trusted you.':'干得好，医生。你认真听了玛雅和她爸爸的话，老老实实讲清了每种选择，玛雅也信任你。',
+  'Your plan fit your goals well, but this time it was unlucky. We judge a decision by what you knew when you made it, not only by how it turned out.':'你的方案很符合你们的目标，只是这次运气不好。评价一个决定，要看做决定的时候你知道些什么，不能只看结果。',
+  'Hi! I’m your AI partner. Let’s do great work together!':'嗨！我是你的AI搭档。我们一起好好干吧！',
+  'Something strange happened tonight. Someone tried to install an upgrade on me from a maker I’ve never heard of. I blocked it.':'今晚出了件怪事。有人想给我装一个升级程序，发布它的厂家我从来没听说过。我把它拦下来了。',
+  '<b>{byte}:</b> “Maya’s dad sent a message tonight. Maya wants to know if you can come to her recital, whichever day it ends up being.”':'<b>{byte}：</b>“玛雅的爸爸今晚发来消息。玛雅想问你能不能来看她的演出，不管最后定在哪一天。”',
+  '“Tonight the Ledger, the news app, had a story about Calder Bay. A new building there uses as much electricity as a small city, and nobody has a permit for it, so inspectors are going to visit.”':'“今晚，账本新闻上有一篇考尔德湾的报道。那里有一栋新楼，用的电跟一座小城市差不多，可是没人为它申请过许可证，所以检查员要过去看看。”',
+
+  // ----- Field Guide -----
+  'Information only you have':'只有你知道的信息','Ethics and AI':'伦理与AI',
+  'An AI can be very smart and still know only what is in its records or what people tell it. Maya’s rash happened in another country, so it was not in her Boston record, and Byte had no way to know about it. When you know something your AI doesn’t, tell it.':'AI再聪明，也只知道记录里写了什么、别人告诉了它什么。玛雅起疹子是在美国以外的地方，波士顿的病历里没有这件事，Byte也就没办法知道。你知道的事如果AI不知道，就告诉它。',
+  'True today: medical records often don’t transfer between countries or even between hospitals.':'现实中也是这样：病历常常没法从一个国家转到另一个国家，就连医院和医院之间也常常不通。',
+  'Sample size':'样本量','Evidence and truth':'证据与真相',
+  'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.':'骨愈凝胶只在40个孩子身上试过，石膏却在21,000个孩子身上研究过。样本小，得出的数字可能偏得很远，所以骨愈凝胶的误差线才那么长。',
+  'True today: new medicines go through trials with growing numbers of people before approval. BoneMend is made up for the game, though scientists are testing gels that help broken bones heal.':'现实中也是这样：新药获批之前要做好几轮试验，参加的人一轮比一轮多。骨愈凝胶是游戏里编出来的，不过科学家确实在试验能帮骨折愈合的凝胶。',
+  'Informed consent':'知情同意','Government, law, and power':'政府、法律与权力',
+  'Patients decide about their own treatment after they understand the choices, the odds, and the tradeoffs. The doctor explains, and the patient chooses.':'病人先弄明白有哪些选择、每种有多大可能、要放弃些什么，再决定自己怎么治。医生负责讲清楚，病人自己来选。',
+  'True today: US law requires informed consent for most medical treatments. For a child, a parent gives consent, and doctors also ask the child to agree, which is called assent.':'现实中也是这样：美国法律规定，大多数治疗都要先得到病人的知情同意。病人是孩子的话，由家长签字同意，医生还会问孩子自己愿不愿意，这一步叫作“赞同”。',
+  'Calibration':'校准',
+  'Being well calibrated means your words match your results. When you say you are “pretty sure,” you should turn out right most of the time, and when you say it is a “coin flip,” you should be right about half the time. You get better at this by writing down how sure you are and later checking how often you were right.':'校准得好，就是你嘴上说的把握和最后的结果对得上。你说“挺有把握”，那大多数时候就该是对的；你说“一半一半”，那就该差不多对一半。想练好这件事，可以每次把自己有几成把握记下来，过后再查一查自己到底对了多少次。',
+  'True today: weather forecasters and doctors practice this. When a good forecaster says there is a 70% chance of rain, it rains on about 7 of every 10 of those days.':'现实中也是这样：天气预报员和医生都会这样练。一位好的预报员说降雨概率是70%，那么在他这样说的日子里，大约10天里有7天会下雨。',
+  'Forecasts are not promises':'预测不是保证',
+  'A forecast of 90% still means that about 1 time in 10, things go the other way. So a good decision can still turn out badly because of bad luck, and a bad decision can turn out well because of good luck.':'预测说有90%的可能，意思是大约10次里还会有1次结果相反。所以，好的决定可能碰上坏运气，结果很糟；差的决定也可能碰上好运气，结果不错。',
+  'True today: weather forecasters track how often their 70% predictions come true.':'现实中也是这样：天气预报员会统计，自己说“70%”的那些预报，后来有多少次真的应验了。',
+
+  // ----- passers-by in Boston -----
+  'Ugh, the tram was ninety seconds late. NINETY seconds!':'唉，电车晚了九十秒。整整九十秒！',
+  'I’m voting on the river park plan tonight. Did you read it?':'今晚我要给河滨公园的方案投票。你看过那个方案没？',
+  'Rain at 3:10, my phone says. Better hurry.':'手机说3点10分下雨，得快点走了。',
+  'I teach violin on Saturdays, just because I love it.':'我每个星期六教小提琴，纯粹是因为喜欢。',
+  'Did you hear about that secret datacenter near Calder Bay?':'你听说考尔德湾附近那个秘密数据中心了吗？',
+  'My grandpa ran his first marathon last week. He’s 92!':'我爷爷上个星期跑完了他人生第一个马拉松。他92岁了！',
+  'I’m learning Mandarin. Nǐ hǎo!':'我在学中文呢。你好！',
+  'My knee feels brand new. Dr. Reyes explained everything so clearly.':'我的膝盖跟新的一样。雷耶斯医生什么都讲得清清楚楚。',
+  'I’m visiting my great-grandma. She’s 104 and still dances on Sundays!':'我来看我太奶奶。她104岁了，每个星期天还去跳舞呢！',
+  'Have you tried the cafeteria dumplings? I’d give them ten out of ten.':'你尝过食堂的饺子没有？我给打满分，十分！',
+  'I volunteer here on Tuesdays. I read stories to the kids.':'我每个星期二来这儿做志愿者，给孩子们读故事。',
+  'Good morning, Doctor! Heads up: elevator B is a little slow today.':'早上好，医生！提醒一下：今天B号电梯有点慢。'
+},
+regex:{
+  'pin|surg|cast|gel|bonemend|therap':'钢钉|钢针|手术|石膏|凝胶|骨愈|康复|训练|理疗',
+  'maya|she |her |recital|violin|family|dad':'玛雅|她|演出|上台|小提琴|拉琴|家人|爸爸|父亲'
+}});
