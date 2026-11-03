@@ -220,8 +220,8 @@ function shNotes(flash){const st=shSt(),f=shForecast(st),sent=st.sent,noted=!!S.
 function shDecide(){const st=shSt(),f=shForecast(st)||45,know=f>=70;
   const say=know?'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. What matters most to you?'
     :'Right now it is close to a coin flip. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?';
-  const odds={treat:`If this is Kawasaki disease, and we think it is about ${f} times in 100, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.`,
-    scan:`If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be delayed by a day or more.`,
+  const odds={treat:`We think this is Kawasaki disease about ${f} times in 100. If it is, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.`,
+    scan:`If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be a day late.`,
     wait:`Some fevers fade on their own. If this one is Kawasaki disease, she would still get the drip before day ten, but only just in time.`};
   const opt=k=>`<button class="sh-plan ${st.plan===k?'on':''}" data-p="${k}"><b>${esc(SH_PLANS[k].t)}</b><span>${esc(odds[k])}</span></button>`;
   screen('criteria sh-decidescr',`${scene('shanghai')}${hud('Riverside’s Bund Clinic')}<div class="panel-card sh-decide"><h2>Choose together</h2>
