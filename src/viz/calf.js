@@ -74,7 +74,7 @@ const CALF_VIZ={
   calfChewStop:()=>igFrame(300,120,`<rect width="300" height="120" fill="#eef4f6"/><g class="calf-chewloop">${cHead(-40,126,.78,{sprig:true,cls:'nm-eat'},110)}</g>${cBubble(92,34,124,'“My mouth hurts.”')}${cGauge(156,84,55,CALF_COL.tooth,17)}${cT(182,89,'9 times',{s:11,c:CALF_COL.soft,a:'start'})}`,'Stopped chewing: mouth hurts, 55%'),
   calfTrunkCurl:()=>igFrame(300,120,`<rect width="300" height="120" fill="#eef4f6"/><g class="calf-curlloop">${cHead(-40,126,.78,{},110)}</g>${cBubble(92,34,118,'“I’m worried.”')}${cGauge(152,84,60,CALF_COL.fear,17)}`,'Trunk curled: worried, 60%'),
   calfFootUp:()=>{const id='cfc'+(++NM_N);return igFrame(300,120,`<rect width="300" height="120" fill="#eef4f6"/><clipPath id="${id}"><rect x="0" y="0" width="150" height="120"/></clipPath><g clip-path="url(#${id})"><g class="calf-footloop">${cCalf(-60,112,1.05,{})}</g></g>
-    ${cBubble(118,34,130,'“My foot is sore?”')}${cGauge(180,84,30,CALF_COL.sick,17)}`,'Lifted a foot: sore foot, 30%')},
+    ${cBubble(118,34,160,'“Maybe my foot is sore.”')}${cGauge(180,84,30,CALF_COL.sick,17)}`,'Lifted a foot: maybe a sore foot, 30%')},
   calfTogether:()=>{const rows=[['Ears out','ears'],['Stops chewing','mouth'],['Trunk curls','trunk'],['Foot lifts','feet']],cols=[96,152,206,258];
     return igFrame(300,128,`${cols.map((x,i)=>`<rect x="${x-9}" y="12" width="18" height="${rows.length*24+4}" rx="9" fill="#ede9ff" class="calf-colhi" style="--d:${i*.5}s"/>${igT(x,10,'?',{s:12,w:800,c:CALF_COL.fear})}`).join('')}
       ${rows.map(([l],j)=>{const y=28+j*24;return `<g>${igT(8,y+4,l,{s:10.5,w:800,a:'start'})}<path d="M86 ${y} H284" stroke="#dfe3f3" stroke-width="2"/>${cols.map((x,i)=>`<circle cx="${x+(j%2?1:-1)}" cy="${y}" r="5" fill="${CALF_COL.fear}" class="calf-pop" style="animation-delay:${i*.5+j*.05}s"/>`).join('')}</g>`}).join('')}
@@ -86,12 +86,12 @@ const CALF_VIZ={
     <g class="calf-blink"><path d="M${X(14)} 40 V96" stroke="#e5484d" stroke-width="3"/>${igT(X(14)-4,46,'hum?',{s:10.5,w:800,c:'#e5484d',a:'end'})}</g>`,'What the collar can and cannot hear')},
   calfConfidence:()=>igFrame(300,110,`<g transform="translate(150 84)"><path d="M-80 0 A80 80 0 0 1 80 0" fill="none" stroke="#e4e7f3" stroke-width="14" stroke-linecap="round"/><path d="M-40 -69 A80 80 0 0 1 28 -75" fill="none" stroke="#c7bdfb" stroke-width="14" stroke-linecap="round" opacity=".9"/>
     <g class="calf-needle"><path d="M0 0 L0 -70" stroke="${CALF_COL.ink}" stroke-width="3.4" stroke-linecap="round"/></g><circle r="6" fill="${CALF_COL.ink}"/>${igT(-80,20,'sure it’s wrong',{s:9.5,c:CALF_COL.soft})}${igT(80,20,'sure it’s right',{s:9.5,c:CALF_COL.soft})}</g>
-    ${cT(150,14,'A best guess wobbles inside a range',{s:10.5,c:CALF_COL.soft})}`,'Confidence is a best guess'),
+    ${cT(150,14,'Even a guess the collar is sure about can be wrong',{s:10.5,c:CALF_COL.soft})}`,'Confidence means how sure the collar is'),
   calfUpdates:()=>igFrame(300,118,`<g transform="translate(40 52)"><rect x="-26" y="-22" width="52" height="40" rx="8" fill="#fff" stroke="#dfe3f3" stroke-width="2"/>${igT(0,-4,'Maker',{s:10.5,w:800})}${igT(0,10,'update',{s:10,c:CALF_COL.soft})}</g>
     <g class="calf-parcel"><rect x="-9" y="-8" width="18" height="16" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="1.6"/><path d="M-9 -2 H9 M0 -8 V8" stroke="#7a5426" stroke-width="1.4"/></g>
     <g transform="translate(150 52)"><rect x="-30" y="-24" width="60" height="44" rx="10" fill="#fff8e0" stroke="#f5b82e" stroke-width="2"/><path d="M-12 2 C-8 -6 -4 8 0 0 C4 -8 8 6 14 -2" stroke="${CALF_COL.ink}" stroke-width="2" fill="none" class="calf-sign"/>${igT(0,-8,'Keeper OK?',{s:9.5,w:800})}</g>
     <g transform="translate(256 52)"><path d="M-22 -10 C-22 -20 22 -20 22 -10 L22 10 C22 18 -22 18 -22 10Z" fill="#2f9aa2"/><path d="M0 -6 L5.2 -3 V3 L0 6 L-5.2 3 V-3Z" fill="#7ff7e4" class="nm-collar-light"/></g>
-    ${cT(150,104,'No learning on the job',{s:11,w:800})}`,'Updates come from the maker and need approval'),
+    ${cT(150,104,'Each update waits for the keeper’s OK',{s:11,w:800})}`,'Updates come from the maker and need approval'),
   // ---- the reserve systems' overnight log ----
   calfFeeder:()=>igFrame(300,118,`<rect width="300" height="118" fill="#f4f6fb"/><g transform="translate(150 100) scale(1.5)">${nomeFeeder({label:'WINTER'})}</g>
     <g transform="translate(64 50)" class="calf-fadeout"><rect x="-34" y="-14" width="68" height="28" rx="8" fill="#d8f2c8"/>${igT(0,4,'summer mix',{s:10.5,w:800})}</g>

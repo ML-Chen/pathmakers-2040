@@ -370,7 +370,7 @@ function nomeObserve(cfg){const st=cfg.state;let t0=performance.now(),timer=0,pu
   function card(last){const box=$('#nmcard');if(!box)return;const P=last&&cfg.parts[last.part];
     box.innerHTML=`<div class="nm-last">${P?`<b>${S_(P.label)}</b> ${S_(P[last.phase][0])}<span class="nm-tr">${S_(cfg.collarName||'Collar')}: ${S_(P[last.phase][1])}</span>`:`<span class="nm-hint">${S_(cfg.hint)}</span>`}</div>
       <div class="nm-icons">${cfg.order.map(id=>`<button class="nm-ic ${st[id]?'on':''} ${st[id]==='pulse'?'key':''}" data-ic="${id}" aria-label="${S_(cfg.parts[id].label)}"><svg viewBox="0 0 24 24">${NM_ICON[id]||''}</svg><span>${S_(cfg.parts[id].short||cfg.parts[id].label)}</span></button>`).join('')}</div>
-      <button class="btn small wide" id="nmcmp" ${count()>=cfg.need?'':'disabled'}>${S_(cfg.compareLabel||'Compare with the collar')}</button>`;
+      <button class="btn small wide" id="nmcmp" ${count()>=cfg.need?'':'disabled'}>${S_(cfg.compareLabel||'Compare with the collar’s guesses')}</button>`;
     $$('.nm-ic',box).forEach(b=>b.onclick=()=>log(b.dataset.ic));  // the buttons work like tapping that part in the picture
     $('#nmcmp',box).onclick=compare}
   function setPulse(on){pulsing=on;const r=root();if(r){r.classList.toggle(cfg.pulseCls,on);r.classList.toggle(cfg.calmCls,!on)}stage.classList.toggle('pulse',on);src.classList.toggle('on',on);
@@ -381,7 +381,7 @@ function nomeObserve(cfg){const st=cfg.state;let t0=performance.now(),timer=0,pu
     card({part,phase:st[part]==='pulse'?'pulse':phase});cfg.onLog&&cfg.onLog(part,phase,st)}
   function nmBubble(text){$$('.nm-bubble').forEach(b=>b.remove());const d=document.createElement('div');d.className='nm-bubble';d.innerHTML=`<div class="nm-bbyte">${byteBox({...S.byte,mood:'alert'})}</div><p>${esc(text)}</p>`;APP.appendChild(d);playLine('byte',text);setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),400)},4200)}
   function compare(){const box=$('#nmcard');const saw=cfg.saw(st);
-    box.innerHTML=`<div class="nm-cmp"><div class="nm-cmp-h"><span>${S_(cfg.youLabel||'You saw')}</span><span>${S_(cfg.collarName||'Collar')}</span></div>
+    box.innerHTML=`<div class="nm-cmp"><div class="nm-cmp-h"><span>${S_(cfg.youLabel||'What you saw')}</span><span>${S_(cfg.collarLabel||'What the collar says')}</span></div>
       ${cfg.order.filter(id=>st[id]).map(id=>{const P=cfg.parts[id],ph=st[id];return `<div class="nm-row ${ph==='pulse'?'key':''}"><b>${S_(P[ph][0])}</b><span>${S_(P[ph][1])}</span></div>`}).join('')}</div>
       <div class="nm-ask"><div class="nm-bbyte">${byteBox({...S.byte,mood:'think'})}</div><p>${S_(cfg.lines.ask)}</p></div>
       <div class="choices">${saw?`<button class="choice" data-c="good">${S_(cfg.choices.good)}</button>`:''}<button class="choice" data-c="bad">${S_(cfg.choices.bad)}</button><button class="choice" data-c="unsure">${S_(cfg.choices.unsure)}</button></div>`;
