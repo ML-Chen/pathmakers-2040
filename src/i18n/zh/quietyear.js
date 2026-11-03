@@ -243,7 +243,10 @@ I18N.add('zh','quietyear',{strings:{
   'One shot protects you and the people around you':'打一针，保护你，也保护你身边的人','“I helped Varrow”':'“我帮助了瓦罗”',
   'Ivy drawing at seven':'七岁的艾薇在画画','Ivy and her mom put a paper lantern in the window':'艾薇和妈妈在窗口放了一盏纸灯笼',
   'The next night, the house across the street lit one too':'第二天晚上，街对面那家也点了一盏','By the end of the week, the whole street glowed':'不到周末，整条街都亮了',
-  'That is how the lantern garden started':'灯笼花园就是这样开始的','One small lantern led to thousands':'一盏小灯笼，引出了几千盏'
+  'That is how the lantern garden started':'灯笼花园就是这样开始的','One small lantern led to thousands':'一盏小灯笼，引出了几千盏',
+  // words written on the six things people left in the garden
+  'for now':'过段时间见','Bread for':'面包送给','nurses':'护士们','back door':'放后门','SNIFFER v1':'嗅嗅 1号',
+  'PRINT ORDER':'DNA订单','HOLD FOR':'暂扣','REVIEW':'待审'
 },
 glossary:{
   'germ':{w:'病菌',d:'非常小的生物，小到眼睛看不见，会让人生病。',alt:['新病菌']},
