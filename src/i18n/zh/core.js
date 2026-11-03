@@ -202,6 +202,23 @@ I18N.add('zh','core',{strings:{
   '{0} home':'{0}户人家','{0} homes':'{0}户人家','About 20 homes':'大约20户','About 100 homes':'大约100户','About 1,000 homes':'大约1,000户',
   'Boston Harbor Hospital':'波士顿港医院'
 },
+regex:{
+  // memo checks (game.js, modes.js)
+  "because|since|so that| so she| so her| so it|that's why|that is why|which is why|this is why|the reason|reason is|in order to| to avoid| to keep| to help| to make sure|balances|helps|means|otherwise| due to|thanks to|given that|as she|as her":'因为|由于|所以|为了|这样|既然|免得|以免|好让|才能|才可以|理由|原因|避免|保证|确保|不然|否则|毕竟',
+  "\\d|percent|%|out of|likely|unlikely|probably|pretty sure|very sure|not sure|i'm sure|i am sure|most of the time|chance (is|of|it)|odds":'[一二三四五六七八九十百]成|百分之|分之|可能|大概|多半|也许|把握|肯定|确定|一半|概率|机会',
+  "\\d|percent|half|one in|out of":'百分之|分之|一半|[一二三四五六七八九十]成|[零一二三四五六七八九十百]+个里',
+  'risk|could go wrong|might not|chance of|side effect|uncertain|fail|crooked|rash|infection':'风险|出问题|出错|万一|不一定|副作用|不确定|失败|长歪|疹子|感染|危险',
+  // chat with Byte (game.js cannedReply, modes.js)
+  'beat|win|how do i|what do i do|stuck|help':'怎么玩|怎么做|怎么办|做什么|干什么|卡住|帮帮|帮我|帮忙|过关|赢',
+  'best|which|pick|choose|should|recommend':'最好|哪个|哪种|哪一种|哪一个|选|应该|推荐|建议',
+  '\\b(best|which|pick|choose|should|recommend|recommendation|what would you do|your take|decide|what matters)\\b':'最好|哪个|哪种|选哪|应该|推荐|建议|你会怎么|你的看法|你怎么看|决定|什么最重要',
+  'rash|allerg|patch|itch':'疹|过敏|降温贴|贴片|痒',
+  'bonemend|gel':'骨愈|凝胶','pin|surg':'钢钉|钢针|手术|开刀','cast':'石膏',
+  'safe|heal.*(best|most)|long.?term|arm first':'安全|稳妥|长远|长期|长得最好|长正|胳膊最重要|胳膊要紧',
+  'recital matters|play.*(most|matter)|get to (her|the) recital':'演出最重要|演出更重要|演出要紧|赶上演出|上台最重要|上台更重要',
+  'recital|move|friday':'演出|改期|推迟|延期|周五|星期五|上台',
+  'halo':'哈罗|光环','who are you|what are you':'你是谁|你是什么|你叫什么'
+},
 glossary:{
   // Every global word from src/content_boston.js. Other translation files reuse these entries: write [[w]] or one of its alt forms.
   'fracture':{w:'骨折',d:'骨头裂开了或者断了。',alt:['骨裂']},
