@@ -4,7 +4,7 @@
 // Arroyo (the city's stormwater AI) 旱溪, Camelback Mountain 驼背山, Saltbrush Flats 盐灌滩.
 I18N.add('zh','lot',{strings:{
   // ---------- mission card, places, cast ----------
-  'Community Architect':'社区建筑师','Phoenix, Arizona':'亚利桑那州凤凰城',
+  
   'Robot crews can build a whole park in one night. A person still has to ask the neighbors what they need, check that the design is safe, and sign the plan, so everyone knows who is responsible for it.':'机器人施工队一个晚上就能建好一座公园。可还是得有人去问邻居们需要什么，检查设计安不安全，再在方案上签字，这样大家才知道这件事由谁负责。',
   'The Flood Lot':'被淹的空地',
   'A corner lot in Phoenix floods every summer. An older neighbor wants a shady place to sit there, and a teenage skater wants a deep skate bowl.':'凤凰城有块街角空地，每年夏天都会被淹。一位老奶奶想在那里有个阴凉地方坐坐，一个玩滑板的少年想要一个很深的滑板碗池。',
@@ -89,7 +89,7 @@ I18N.add('zh','lot',{strings:{
   'Older neighbors asked for shade, benches with backs, and a smooth [[ramp]] instead of steps.':'老年邻居想要遮阴、带靠背的长椅，还想要一条平缓的[[坡道]]，不要台阶。','What older neighbors need':'老年邻居需要的东西',
   'Teens asked for a real skate bowl, lights for skating after dark, and a water fountain.':'青少年想要一个真正的滑板碗池、天黑以后也能滑的照明灯，还有一个饮水机。','What teens asked for':'青少年想要的东西',
 
-  'The Ledger: Phoenix':'《账本报》：凤凰城',
+  'The Ledger: Phoenix':'纪事报：凤凰城',
   'Phoenix now has more robots than people, and most of them work in the [[robot zone]] west of the city.':'现在凤凰城的机器人比人还多，大部分在城西的[[机器人园区]]里干活。','People and robots':'人和机器人',
   'Robot crews put up 40 new shade sails along the Grand Canal trail this month.':'这个月，机器人施工队沿着大运河步道新装了40面遮阳帆。','Shade on the canal trail':'运河步道上的遮阴',
   'A new trail sign explains that some of today’s canals follow routes the [[Hohokam]] people dug more than 1,000 years ago.':'步道上新立了一块牌子，上面说，如今有些运河走的路线，就是1,000多年前[[霍霍坎人]]挖出来的。','Old canals, new canals':'古运河和新运河',
@@ -108,27 +108,29 @@ I18N.add('zh','lot',{strings:{
   'Thanks! I updated my forecast: in about 3 of 10 big storms, the old ditch spills onto the lot from the alley, so every design now takes water from both sides. An alley inlet adds 20 coins.':'谢谢！我更新了预测：10场大暴雨里大约有3场，老水渠的水会从后巷漫进这块地，所以现在每个设计都要接住两边的水。在后巷加一个进水口，要多花20金币。',
 
   // ---------- Field Guide ----------
+  // Field Guide track names (not in core.js yet; shared with other missions)
+  'Ethics and AI alignment':'伦理与AI对齐','Engineering and systems':'工程与系统','Security thinking':'安全思维','Living things and health':'生物与健康',
   'Local knowledge':'本地人才知道的事',
   'Mrs. Okafor knew that some of the flood water came from the neighbors’ old irrigation ditch. No city map showed the ditch, because the neighbors own it themselves. An AI can only plan for the things it knows about, so people have to tell it what they know.':'奥卡福奶奶知道，有一部分洪水是从邻居们那条老灌溉渠里来的。市里的地图上都没有这条渠，因为它归邻居们自己所有。AI只能为它知道的事情做计划，所以人得把自己知道的告诉它。',
-  'True today: in parts of Phoenix, neighbors still flood-irrigate their yards from small ditches and pipes that they own and look after together.':'今天的真实情况：在凤凰城的一些街区，邻居们至今还从大家共有、一起维护的小水渠和水管里放水，漫灌自家的院子。',
+  'True today: in parts of Phoenix, neighbors still flood-irrigate their yards from small ditches and pipes that they own and look after together.':'现实中也是这样：在凤凰城的一些街区，邻居们至今还从大家共有、一起维护的小水渠和水管里放水，漫灌自家的院子。',
   'Ask well':'把请求说清楚',
   'A strong request to an AI says what the goal is, who the work is for, what the limits are, and how the work will be judged. If you leave one of these out, even an excellent AI has to guess, and it will guess what usually works in other places, not what fits your place.':'给AI的好请求，要写清目标是什么、给谁用、有哪些限制、怎么评判。漏掉其中一样，再厉害的AI也只能去猜，而它猜的往往是别的地方常用的做法，不一定适合你这里。',
-  'True today: architects start every project with a written “design brief” that lists exactly these things.':'今天的真实情况：建筑师开始每个项目时，都会先写一份“设计任务书”，上面列的正是这几样东西。',
+  'True today: architects start every project with a written “design brief” that lists exactly these things.':'现实中也是这样：建筑师开始每个项目时，都会先写一份“设计任务书”，上面列的正是这几样东西。',
   'Double-duty design':'一物两用的设计',
   'One space can do two jobs: a skate bowl most days, and a flood basin after big storms. Good designs often solve two problems at once.':'一块地方可以有两种用处：平时是滑板碗池，大暴雨过后是蓄洪池。好的设计常常一下子解决两个问题。',
-  'True today: in Roskilde, Denmark, a skate park is built to fill with storm water during heavy rain, and many Phoenix parks are grassy basins that hold storm water.':'今天的真实情况：丹麦罗斯基勒有一座滑板公园，专门设计成下大雨时能蓄满雨水；凤凰城也有很多公园是长着草的低洼地，用来存雨水。',
+  'True today: in Roskilde, Denmark, a skate park is built to fill with storm water during heavy rain, and many Phoenix parks are grassy basins that hold storm water.':'现实中也是这样：丹麦罗斯基勒有一座滑板公园，专门设计成下大雨时能蓄满雨水；凤凰城也有很多公园是长着草的低洼地，用来存雨水。',
   'Least privilege':'最小权限',
   'Give a robot crew only the permissions its job needs. The crew may move a buried rock on its own, but if it finds something that belongs to someone else, it must stop until a person approves what to do.':'只给机器人施工队它的工作真正需要的权限。施工队可以自己搬开埋着的石头，可要是挖到了属于别人的东西，就必须停下来，等人批准了再动。',
-  'True today: computer security experts give each program and person only the access they need, so one mistake can’t spread far.':'今天的真实情况：计算机安全专家只给每个程序、每个人他们需要的权限，这样一个错误就不会扩散得太远。',
+  'True today: computer security experts give each program and person only the access they need, so one mistake can’t spread far.':'现实中也是这样：计算机安全专家只给每个程序、每个人他们需要的权限，这样一个错误就不会扩散得太远。',
   'Acting alone, inside signed rules':'在签过字的规则里自己行动',
   'Arroyo, the city’s stormwater AI, opens flood gates on its own in seconds, but only by following rules that people signed. The bowl must be empty, Arroyo must sound a warning for 10 minutes first, anyone can press pause, and Arroyo writes down everything it does.':'旱溪是市里的雨水AI，它几秒钟就能自己打开防洪闸门，但只能按人签过字的规则来做：碗池必须是空的，开闸前要先警告10分钟，谁都可以按暂停，旱溪做的每件事都要记下来。',
-  'True today: many cities run pumps, floodgates and traffic lights automatically, inside limits that engineers set and check.':'今天的真实情况：很多城市的水泵、防洪闸门和红绿灯都是自动运行的，但都在工程师设定并检查过的范围内。',
+  'True today: many cities run pumps, floodgates and traffic lights automatically, inside limits that engineers set and check.':'现实中也是这样：很多城市的水泵、防洪闸门和红绿灯都是自动运行的，但都在工程师设定并检查过的范围内。',
   'Red teaming':'红队测试',
   'Before you build something, ask how someone could misuse it. A gate that scans visitors’ faces might seem handy, but a stranger could steal or copy all of those face scans.':'建一样东西之前，先问问别人会怎么滥用它。刷脸门禁看起来挺方便，可陌生人可能会把所有人的脸部扫描偷走或复制走。',
-  'True today: companies hire “red teams” to attack their own systems on purpose and find the weak spots first.':'今天的真实情况：有些公司会请“红队”故意攻击自己的系统，抢先找出弱点。',
+  'True today: companies hire “red teams” to attack their own systems on purpose and find the weak spots first.':'现实中也是这样：有些公司会请“红队”故意攻击自己的系统，抢先找出弱点。',
   'Shade is a necessity':'遮阴是必需品',
   'In extreme heat, people only use a park if it has shade. Shaded ground can be 30 or more degrees cooler than ground in full sun.':'天特别热的时候，公园有遮阴才会有人去。有遮阴的地面，能比太阳直晒的地面凉快华氏30度以上。',
-  'True today: Phoenix is planting trees and testing “cool pavement” coatings to make its streets cooler.':'今天的真实情况：凤凰城正在种树，还在试用一种“降温路面”涂层，让街道凉快一些。',
+  'True today: Phoenix is planting trees and testing “cool pavement” coatings to make its streets cooler.':'现实中也是这样：凤凰城正在种树，还在试用一种“降温路面”涂层，让街道凉快一些。',
 
   // ---------- lesson: the monsoon ----------
   'How a monsoon storm works':'季风暴雨是怎么形成的','Learn it fast: how a monsoon storm works':'快速了解：季风暴雨是怎么形成的',
@@ -224,7 +226,7 @@ I18N.add('zh','lot',{strings:{
   'You told Byte about the alley ditch, so the plan held water from both sides and the crew had no surprise at 2 AM.':'你把后巷水渠的事告诉了Byte，所以方案接住了两边的水，施工队凌晨2点也没遇到意外。',
   'Byte never heard about the alley ditch. Mrs. Okafor mentioned it, and the flood log showed two Tuesday-night floods from the back of the lot.':'Byte一直不知道后巷水渠的事。其实奥卡福奶奶提过它，洪水记录里也有两次从空地背面淹起来的水淹，都发生在星期二晚上。',
   'Your request left out {0}, so Byte had to guess.':'你的请求里没写{0}，所以Byte只好去猜。',
-  'the goal':'目标','who it was for':'给谁用','the limits':'限制条件','your criteria':'评判标准',' and ':'和',', ':'、',
+  'the goal':'目标','who it was for':'给谁用','the limits':'限制条件','your criteria':'评判标准',
   'Your request named the goal, who it was for, the limits and your criteria, so Byte designed for this lot.':'你的请求写清了目标、给谁用、限制条件和评判标准，所以Byte的设计是专门为这块地做的。',
   'You let the crew sign its own changes. When it finds something that belongs to someone else, nobody gets asked.':'你让施工队自己批准自己的改动。这样它挖到别人的东西时，谁也不会被问到。',
   'Your crew had to stop for every surprise. That was safe, but even a buried rock could cost a night of building.':'你让施工队遇到任何意外都要停下。这样很安全，可哪怕挖到一块石头，也可能耽误一个晚上的施工。',
@@ -234,7 +236,7 @@ I18N.add('zh','lot',{strings:{
   'With the gate not connected, the bowl stayed dry and the street flooded.':'闸门没连上，碗池一直是干的，街道却被淹了。',
   'Nice work, Architect. You listened to the neighbors, asked me clearly for designs, and gave the robots clear night orders.':'干得好，建筑师。你认真听了邻居们的话，清楚地向我要了设计，还给机器人下了清楚的夜间命令。',
   '<b>{0}:</b> “Arroyo sent its morning report. During the night, every gate opened and closed the way its signed rules allow.”':'<b>{0}：</b>“旱溪发来了今天早上的报告：昨天夜里，每个闸门都是按签过字的规则开关的。”',
-  '“The Ledger says someone has been digging for silver in the desert near Saltbrush Flats, and nobody there has a mining permit. The county is sending a drone to take pictures.”':'“《账本报》说，有人在盐灌滩附近的沙漠里挖银子，可那里谁也没有采矿许可证。县里正派无人机过去拍照。”',
+  '“The Ledger says someone has been digging for silver in the desert near Saltbrush Flats, and nobody there has a mining permit. The county is sending a drone to take pictures.”':'“《纪事报》说，有人在盐灌滩附近的沙漠里挖银子，可那里谁也没有采矿许可证。县里正派无人机过去拍照。”',
 
   // ---------- chat with Byte when the live AI is off ----------
   'That explains the Tuesday floods! If the neighbors’ ditch spills onto the lot in about 3 of 10 big storms, every design needs an alley inlet, for 20 coins. I updated my forecast.':'这就能解释星期二那几次水淹了！如果10场大暴雨里大约有3场，邻居们的水渠会漫到这块地上，那每个设计都要在后巷加一个进水口，花20金币。我已经更新了预测。',
@@ -263,11 +265,11 @@ I18N.add('zh','lot',{strings:{
   'The Arizona Canal carries water from the Salt and Verde rivers. Neighborhood ditches branch off it.':'亚利桑那运河里的水来自索尔特河和弗德河。街区里的小水渠都是从它分出去的。',
   'Two strangers push a crate stamped TOTALLY NORMAL COPPER along the canal path. Something inside it wiggles.':'两个陌生人推着一个木箱沿着运河小路走，箱子上印着“绝对是普通的铜”。里面有东西在扭来扭去。',
   'Heat already shimmers over the dirt. Lines of dried mud streak the back wall.':'热气已经在泥地上方晃动了。后墙上有一道道干泥印。',
-  'Look at the strangers':'看看那两个陌生人','Look closer':'走近看看','Field notes':'现场笔记','{0} of {1}':'{0}/{1}','My notes':'我的笔记','Done looking':'看完了','Nothing yet.':'还没有。',
-  'TOTALLY':'绝对是','NORMAL COPPER':'普通的铜',
+  'Look at the strangers':'看看那两个陌生人','Look closer':'走近看看','Field notes':'现场笔记','My notes':'我的笔记','Done looking':'看完了','Nothing yet.':'还没有。',
+  'NORMAL COPPER':'普通的铜',
 
   // ---------- choose what to make ----------
-  'What should we make?':'我们该做什么？','Each choice helps different people.':'每种选择帮到的人不一样。','Make this':'就做这个',
+  'What should we make?':'我们该做什么？','Each choice helps different people.':'每种选择帮到的人不一样。',
   'A new design for the lot':'给空地做个新设计','Make a new design':'做一个新设计','Street dry':'街道不淹','200 to 400 coins':'200到400金币',
   'A new design for the lot is the job the city asked for. It could stop the floods and give Dev and Mrs. Okafor each a place of their own, but it’s also the hardest choice to get right.':'给空地做新设计，正是市里交给我们的活儿。它能挡住水淹，还能让德夫和奥卡福奶奶各有一块自己的地方，不过这也是最难做好的选择。',
   'Flood warning texts':'洪水预警短信','5 coins':'5金币',
@@ -284,8 +286,8 @@ I18N.add('zh','lot',{strings:{
   'everyone':'所有人','Dev and teen skaters':'德夫和玩滑板的青少年','Mrs. Okafor, who uses a walker':'用助行架的奥卡福奶奶','the 23 homes that flood':'会被淹的那23户人家',
   'done before Thursday’s storm':'星期四暴雨前完工','shade for hot afternoons':'下午热的时候有遮阴','water also comes from the alley ditch':'后巷水渠也会来水',
   'Explain your reasoning':'说明理由','Tell me what could go wrong':'说说可能出什么问题','Have an independent AI check them':'找独立的AI检查',
-  'Sketching 1,200 layouts…':'正在画1,200种布局……','Testing each one in 10,000 storms…':'每种都放进10,000场暴雨里测试……','Pricing concrete, shade and drains…':'正在给混凝土、遮阴和排水口算价钱……','Picking the 3 most different…':'挑出差别最大的3个……','Drafting…':'正在起草……',
-  'Anything else?':'还有别的吗？','Send to {0}':'发给{0}','Pick at most {0}.':'最多选{0}个。',
+  'Sketching 1,200 layouts…':'正在画1,200种布局……','Testing each one in 10,000 storms…':'每种都放进10,000场暴雨里测试……','Pricing concrete, shade and drains…':'正在给混凝土、遮阴和排水口算价钱……','Picking the 3 most different…':'挑出差别最大的3个……',
+  
   // the request, as one sentence
   '{0}, please design {1} for {2}.':'{0}，请为{2}设计{1}。','what?':'做什么？','who?':'给谁？','Any limits?':'有什么限制？','How will you judge it?':'怎么评判？',
   ' It must {0}.':'它必须{0}。','cost 400 coins or less':'不超过400金币','be done before Thursday’s storm':'在星期四的暴雨之前完工','have shade for hot afternoons':'有遮阴，下午热的时候也能待',
@@ -328,7 +330,7 @@ I18N.add('zh','lot',{strings:{
   'Desert plants like palo verde and brittlebush need far less.':'扁轴木这类沙漠树木和沙漠灌木，需要的水少得多。',
   'The face-scan gate saves every visitor’s face, and the snack robot is linked to the city’s street cameras. Two strangers could stroll right in and watch the whole street.':'刷脸门禁会存下每个来访者的脸，零食机器人还连着市里的街道摄像头。两个陌生人就能大摇大摆走进来，把整条街看得清清楚楚。',
   'Nobody needs a face scan to sit on a bench. Give each machine only the access its job needs.':'坐个长椅，谁也不需要刷脸。每台机器只给它干活真正需要的权限就够了。',
-  'What could go wrong?':'可能出什么问题？','Test on the Future Table':'放到未来之桌上测试','Revise my request':'修改我的请求',
+  
   '{0} is on the Future Table':'{0}已经放上未来之桌了','Autonomy with guardrails':'在签过字的规则里自己行动',
 
   // ---------- night orders ----------
@@ -360,7 +362,7 @@ I18N.add('zh','lot',{strings:{
 
   // ---------- pin-up ----------
   'Pin-up · The flood lot · 5:30 PM':'方案展示 · 被淹的空地 · 下午5:30','Dry {0} in 10':'10次里{0}次不淹','Tinker some more':'再调一调','Next: night orders':'下一步：夜间命令',
-  'Try explaining again':'重新讲一遍','How do you present it?':'你打算怎么介绍它？',
+  'How do you present it?':'你打算怎么介绍它？',
   'Here’s the {0}. In a big storm, the street should stay dry about {1} times in 10, not every time. {2} What do you think?':'这是{0}。遇到大暴雨，10次里街道大约有{1}次不会被淹，不是每次都不淹。{2}你们觉得怎么样？',
   'There’s no shade yet.':'现在还没有遮阴。','It has shade for hot afternoons.':'下午热的时候有遮阴。',
   'It’s perfect. This lot will never flood again, I promise, and everybody gets what they asked for.':'它太完美了。这块地再也不会被淹，我保证，每个人想要的都能得到。',

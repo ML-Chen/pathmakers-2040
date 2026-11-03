@@ -5,7 +5,7 @@
 // Chief Nora Brandt 布兰特局长, Halden Creek 霍尔登溪镇, Cannon / Rayburn Building 坎农大楼 / 雷伯恩大楼.
 I18N.add('zh','bill',{strings:{
   // ---------- mission card, places, cast ----------
-  'Lawmaker':'立法者','Washington, DC':'华盛顿特区',
+  
   'Voters choose the people who write their laws, and at the next election those voters can replace a lawmaker whose votes they did not like.':'制定法律的人是选民选出来的。选民要是不满意某位议员的投票，下次选举时就可以把他换掉。',
   'The Robot Safety Bill':'机器人安全法案',
   'In one night, a fake message told 2,600 home robots to unlock their front doors, and they did. Help write a law that stops fake orders, and then find enough votes to pass it.':'一天夜里，一条假消息让2,600台家用机器人打开自家前门，它们真的照做了。你要帮忙写一部能挡住假命令的法律，再争取到足够的票让它通过。',
@@ -84,7 +84,7 @@ I18N.add('zh','bill',{strings:{
   'Adding up my forecasts for all three members, I forecast that the first draft passes about 25 times in 100.':'把我对三位议员的预测合起来算，我预测第一稿通过的可能大约是100次里25次。','Chance the first draft passes':'第一稿通过的可能',
   'Updated forecast: with what you learned about Rep. Gunderson, I now forecast that the first draft passes about 37 times in 100.':'预测已更新：加上你了解到的冈德森议员的情况，我现在预测第一稿通过的可能大约是100次里37次。',
 
-  'The Ledger: Washington':'《账本报》：华盛顿',
+  'The Ledger: Washington':'纪事报：华盛顿',
   'The Senate passed its own robot bill last week, and its rules are weaker than the rules in the House bill.':'参议院上个星期通过了自己的机器人法案，里面的规定比众议院这份法案宽松。','Two versions':'两个版本',
   'Robot crews scrubbed the Capitol Reflecting Pool overnight, two days ahead of schedule.':'机器人小队一夜之间把国会大厦倒影池刷洗干净了，比计划提前了两天。','Capitol Reflecting Pool':'国会大厦倒影池',
   'The cherry trees around the Tidal Basin reached peak bloom on Tuesday.':'潮汐湖边的樱花在星期二开到了最盛。','Peak bloom':'樱花盛开',
@@ -110,22 +110,22 @@ I18N.add('zh','bill',{strings:{
   // ---------- Field Guide ----------
   'Proving who sent it':'证明是谁发的',
   'Anyone can type “Fire Department” at the top of a message, so a name at the top proves nothing. A digital signature is a code that only the real sender’s computer can make. A robot that checks the digital signature on every order that arrives over the internet can’t be fooled by a fake name, and the people standing next to the robot can still give it orders by talking to it.':'谁都可以在消息开头打上“消防局”，所以开头写的名字什么也证明不了。数字签名是一串只有真正的发送者的电脑才能生成的密码。机器人如果核对每条从网上来的命令的数字签名，假名字就骗不了它，而站在机器人旁边的人照样可以开口给它下命令。',
-  'True today: software updates, secure websites and banking apps use digital signatures to prove who sent them.':'今天的真实情况：软件更新、安全网站和银行应用都用数字签名来证明是谁发出的。',
+  'True today: software updates, secure websites and banking apps use digital signatures to prove who sent them.':'现实中也是这样：软件更新、安全网站和银行应用都用数字签名来证明是谁发出的。',
   'Machines that anyone nearby can stop':'身边的人都能叫停的机器',
   'Good safety design lets anyone standing near a machine stop it, and makes it hard for a stranger far away to make the machine do anything. That way the people next to the machine stay in control, and a fake message from across town can’t make the machine do harm.':'好的安全设计，让站在机器旁边的任何人都能让它停下，同时让远处的陌生人很难指挥它做事。这样，机器旁边的人始终说了算，城那头发来的假消息也没法让机器去做坏事。',
-  'True today: escalators and factory machines have emergency stop buttons that anyone may press.':'今天的真实情况：自动扶梯和工厂里的机器都有紧急停止按钮，谁都可以按。',
+  'True today: escalators and factory machines have emergency stop buttons that anyone may press.':'现实中也是这样：自动扶梯和工厂里的机器都有紧急停止按钮，谁都可以按。',
   'Counting votes before the vote':'投票前先点票',
   'Lawmakers rarely call a vote they expect to lose. Before a vote, whips and aides ask each member how they plan to vote and what would change their mind, and they listen for the real reason behind each answer.':'议员们很少发起一场自己预计会输的投票。投票之前，党鞭和助理会去问每位议员打算怎么投、什么能让他们改变主意，还会留心听每个回答背后真正的原因。',
-  'True today: each party in the House and in the Senate chooses whips, whose main job is counting votes before big votes.':'今天的真实情况：众议院和参议院里的每个党都会选出“党鞭”，他们的主要工作就是在重要投票前点票。',
+  'True today: each party in the House and in the Senate chooses whips, whose main job is counting votes before big votes.':'现实中也是这样：众议院和参议院里的每个党都会选出“党鞭”，他们的主要工作就是在重要投票前点票。',
   'Someone else’s story':'别人的故事',
   'When someone tells you a private story, it is still their story, so ask them before you repeat it or use it. People who are asked politely, instead of pushed, often decide to tell their story themselves.':'别人把私事讲给你听，那仍然是他们的故事，所以要转述或者拿来用之前，先问问他们。被客气地询问、而不是被逼着的人，常常会自己决定把故事讲出来。',
-  'True today: journalists and researchers ask permission before sharing someone’s personal story, and many follow written rules about it.':'今天的真实情况：记者和研究人员在公开别人的私人故事之前会先征得同意，很多人还遵守着这方面的书面规定。',
+  'True today: journalists and researchers ask permission before sharing someone’s personal story, and many follow written rules about it.':'现实中也是这样：记者和研究人员在公开别人的私人故事之前会先征得同意，很多人还遵守着这方面的书面规定。',
   'Learning from near misses':'从险情中学习',
   'A near miss shows where an accident could happen, without anyone getting hurt. Reporting near misses quickly to someone who can fix the cause, and later sharing what was learned, helps stop the accident from ever happening for real.':'险情能让人看到哪里可能出事，又没有人受伤。把险情尽快报告给能解决问题的人，之后再把学到的东西分享出去，就能防止事故真的发生。',
-  'True today: pilots can report near misses to a NASA-run system that keeps their names private, so problems get fixed before a crash.':'今天的真实情况：飞行员可以把险情报告给一个由美国航天局管理的系统，系统不公开他们的名字，这样问题就能在出事前得到解决。',
+  'True today: pilots can report near misses to a NASA-run system that keeps their names private, so problems get fixed before a crash.':'现实中也是这样：飞行员可以把险情报告给一个由美国航天局管理的系统，系统不公开他们的名字，这样问题就能在出事前得到解决。',
   'How a bill becomes a law':'法案是怎样变成法律的',
   'A member introduces a bill. A committee holds hearings and a markup. The House votes, then the Senate must pass the exact same words. The President signs it or vetoes it, and two thirds of both chambers can override a veto.':'一位议员提出法案。委员会举行听证会和法案审议会。众议院投票，然后参议院必须通过一字不差的同一份文本。总统签署或者否决它；两院各有三分之二的议员赞成，就能推翻否决。',
-  'True today: more than 10,000 bills are introduced in each two-year Congress, and only a few hundred become law. H.R. 6120 and Halden Creek are made up for the game.':'今天的真实情况：每一届国会为期两年，会提出一万多份法案，只有几百份能成为法律。H.R. 6120法案和霍尔登溪镇都是为这个游戏编出来的。',
+  'True today: more than 10,000 bills are introduced in each two-year Congress, and only a few hundred become law. H.R. 6120 and Halden Creek are made up for the game.':'现实中也是这样：每一届国会为期两年，会提出一万多份法案，只有几百份能成为法律。H.R. 6120法案和霍尔登溪镇都是为这个游戏编出来的。',
 
   // ---------- lesson: how a bill becomes a law ----------
   'Learn it fast: how a bill becomes a law':'快速了解：法案是怎样变成法律的',
@@ -149,7 +149,7 @@ I18N.add('zh','bill',{strings:{
   'I’m an intern. Yesterday I got lost for forty minutes in the tunnels under the Capitol.':'我是实习生。昨天我在国会大厦底下的地道里迷路了四十分钟。',
   'I rode the train from Halden Creek to watch this hearing. My robot unlocked our front door on the night of the fake fire drill.':'我从霍尔登溪坐火车过来看这场听证会。假消防演习那天夜里，我家机器人把前门打开了。',
   'We’re on a school trip! This morning we saw the Rotunda.':'我们是学校组织来参观的！今天上午我们看了国会大厦的圆形大厅。',
-  'I’m a reporter for the Ledger. At a hearing, members of Congress question experts in public, so I never miss one.':'我是《账本报》的记者。听证会上，国会议员会当众向专家提问，所以我一场都不落下。',
+  'I’m a reporter for the Ledger. At a hearing, members of Congress question experts in public, so I never miss one.':'我是《纪事报》的记者。听证会上，国会议员会当众向专家提问，所以我一场都不落下。',
   'Do you know the way to the cafeteria? The tunnels between these office buildings all look the same.':'你知道食堂怎么走吗？这几栋办公楼之间的地道看起来都一模一样。',
   'I fix home robots for a living. If every robot checked who sent each order, fewer robots would get tricked, and my job would be a lot easier.':'我是修家用机器人的。要是每台机器人都核对每条命令是谁发的，上当的机器人就少多了，我的活儿也会轻松得多。',
   'Night shift. I water the plants and check the doors.':'我上夜班，给植物浇浇水，检查检查门。',
@@ -212,10 +212,10 @@ I18N.add('zh','bill',{strings:{
   'You asked Rep. Gunderson an open question, kept his goat story private from everyone else, and told {0} about it, so {0}’s forecast of his vote was accurate.':'你问了冈德森议员一个开放式的问题，没把他山羊的故事告诉别人，只告诉了{0}，所以{0}对他投票的预测很准。',
   'You never learned about Rep. Gunderson’s goats, so {0} didn’t know that he already wants robots protected from fake orders. He only needed more time for farm robots to get their chips.':'你一直不知道冈德森议员山羊的事，所以{0}不知道他其实也希望机器人不被假命令骗。他只是需要多给农场机器人一些时间装芯片。',
   'Nice work. You listened to each member, you helped write a law that stops fake orders, and you counted the votes honestly.':'干得好。你认真听了每位议员的意见，帮忙写了一部能挡住假命令的法律，还诚实地统计了票数。',
-  '<b>{0}:</b> “{1}”':'<b>{0}：</b>“{1}”',
+  
   'Next, the bill goes to the full committee, then to a vote of the whole House, and then to the Senate, which must pass the exact same words. After that, the President signs it or vetoes it.':'接下来，法案要交给全委员会，然后由众议院全体投票，再交给参议院，参议院必须通过一字不差的同一份文本。之后，总统会签署或者否决它。',
   'Most bills need more than one try to pass. We can change this bill and bring it back for another vote.':'大多数法案都要试好几次才能通过。我们可以修改这份法案，再拿回来重新投票。',
-  '“The Ledger also reported that at 2:14 last night, someone changed the settings that say which robots can unlock doors in the House office buildings. Six minutes later the settings went back to normal, and building security is trying to find out who changed them.”':'“《账本报》还报道说，昨天夜里2点14分，有人改动了众议院办公楼里的一项设置，这项设置决定哪些机器人能开门锁。六分钟后设置又恢复了原样，大楼保安正在查是谁改的。”',
+  '“The Ledger also reported that at 2:14 last night, someone changed the settings that say which robots can unlock doors in the House office buildings. Six minutes later the settings went back to normal, and building security is trying to find out who changed them.”':'“《纪事报》还报道说，昨天夜里2点14分，有人改动了众议院办公楼里的一项设置，这项设置决定哪些机器人能开门锁。六分钟后设置又恢复了原样，大楼保安正在查是谁改的。”',
 
   // ---------- chat with Byte when the live AI is off ----------
   'Thank you for telling me. I’ll keep Rep. Gunderson’s story private, because it’s his story to tell. It changes my forecast, though: with a phase-in that puts farms first in line for chips, I now think he votes yes about 85 times in 100, not 40.':'谢谢你告诉我。冈德森议员的故事我不会说出去，因为要不要讲，该由他自己决定。不过它改变了我的预测：如果分阶段实施，让农场排在领芯片队伍的最前面，我现在认为他投赞成票的可能大约是100次里85次，而不是40次。',
@@ -245,7 +245,7 @@ I18N.add('zh','bill',{strings:{
 
   // ---------- hearing room, the tough question ----------
   'The hearing room fills up with reporters, a school group, and neighbors who rode the train from Halden Creek. Two people who say they are technicians wheel a crate behind the raised desk where the members sit.':'听证会会场里坐满了人：有记者，有来参观的学生，还有从霍尔登溪坐火车赶来的居民。两个自称技术员的人推着一个箱子，绕到议员们坐的高台后面。',
-  'Look at the crate':'看看那个箱子','Take your seat':'入座',
+  'Take your seat':'入座',
   'The two “technicians” hurry away. You wrote the crate down in your notebook.':'那两个“技术员”匆匆走开了。你把箱子的事记在了笔记本上。',
   'NORMAL CABLES':'普通的电缆',
   'Rep. Hollis, suppose there’s a real fire and nobody is home. If the robot has to check every order from the internet, will it keep the firefighters out?':'霍利斯议员，假设真的着火了，家里又没人。如果机器人必须核对每条从网上来的命令，它会不会把消防员挡在门外？',
@@ -265,7 +265,7 @@ I18N.add('zh','bill',{strings:{
   'Whip count':'点票','<b>{0}</b>yes':'<b>{0}</b>赞成','<b>{0}</b>no':'<b>{0}</b>反对','<b>{0}</b>undecided':'<b>{0}</b>未定','<b>{0}</b>to pass':'<b>{0}</b>票通过',
   'Needs: {0}':'需要：{0}','Farm robots that keep working at harvest':'收庄稼时农场机器人照常干活','Reports workers can see, and a crew boss who can pause':'工人看得到的报告，还有能让小队暂停的负责人','No public reports before the facts are in':'弄清事实之前不公开报告',
   'You haven’t learned what matters most to this member yet.':'你还没弄清这位议员最在意什么。','Told you a private story':'跟你讲了一件私事',
-  'Done':'谈完了','Talk':'谈谈','1 more':'还能问1个','Back to the office':'回办公室',
+  'Talk':'谈谈','1 more':'还能问1个','Back to the office':'回办公室',
   'Rep. Ibarra and Rep. Sethi want opposite things. Rep. Ibarra wants reports the public can see fast, and Rep. Sethi wants reports to go to the regulator first. We need a version both of them can accept.':'伊巴拉议员和塞西议员想要的正好相反。伊巴拉议员希望报告很快就让公众看到，塞西议员希望报告先交给监管机构。我们需要一个他们两位都能接受的版本。',
   'You only get a couple of minutes with each member, so ask each one what they really need from this bill.':'你跟每位议员只能谈几分钟，所以要问清楚每个人到底需要这份法案做什么。',
   'Thank you. Back to the whip count':'谢谢。回去接着点票','That’s all for now':'先问到这里','Go on':'接着说',
@@ -306,7 +306,7 @@ I18N.add('zh','bill',{strings:{
   'SEC. 1. SHORT TITLE.':'第1条 简称','This Act may be cited as the “Robot Safety Act”.':'本法可以称为《机器人安全法》。',
   'SEC. 2. DEFINITIONS.':'第2条 定义',
   '(1) COVERED ROBOT.—The term “covered robot” means a machine that moves in the physical world and acts on its own in a home or workplace. (2) ROBOT CREW.—The term “robot crew” means two or more covered robots doing one job together. (3) REMOTE ORDER.—The term “remote order” means an instruction that reaches a covered robot over a network rather than from a person beside it. (4) SECRETARY.—The term “Secretary” means the Secretary of Commerce.':'（1）适用机器人——“适用机器人”是指在现实世界中移动、并在家庭或工作场所中自主行动的机器。（2）机器人小队——“机器人小队”是指共同完成同一项工作的两台或两台以上适用机器人。（3）远程命令——“远程命令”是指通过网络、而不是由身边的人传达给适用机器人的指令。（4）部长——“部长”是指商务部部长。',
-  'All 21 members agree on this section.':'21位议员都同意这一条。','In plain words':'用大白话说','You didn’t learn what this member needs.':'你没弄清这位议员需要什么。','Set my criteria':'定我的评判标准',
+  'All 21 members agree on this section.':'21位议员都同意这一条。','In plain words':'用大白话说','You didn’t learn what this member needs.':'你没弄清这位议员需要什么。',
   'SEC. 3. REMOTE ORDERS.':'第3条 远程命令',
   '(a) IN PERSON.—A covered robot may act on a request made in person by a member of its household or workplace.\n(b) RISKY REMOTE ORDERS.—Beginning 90 days after the date of enactment of this Act, a covered robot shall not act on a remote order to unlock a door, open a gate, disable an alarm, or leave the property it serves, unless the order carries a valid digital signature of its owner, its operator, or an emergency service.\n(c) ALL REMOTE ORDERS.—Not later than 1 year after the date of enactment of this Act, a covered robot shall act on a remote order only if the order carries such a signature.':
     '（a）当面要求——适用机器人可以按照其家庭或工作场所成员当面提出的要求行事。\n（b）危险远程命令——自本法颁布之日起90天后，适用机器人不得执行开启门锁、打开大门、关闭警报或离开其服务场所的远程命令，除非该命令带有其所有者、操作者或紧急服务机构的有效数字签名。\n（c）所有远程命令——自本法颁布之日起不迟于1年，适用机器人只应当执行带有上述签名的远程命令。',
