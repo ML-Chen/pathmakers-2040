@@ -51,6 +51,8 @@ p{margin:.35em 0}
 
 /* HUD */
 .hud{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+/* the HUD row itself is see-through: only the place chip and the buttons catch taps, so a prop just below them stays tappable */
+.hud{pointer-events:none}.hud>*{pointer-events:auto}
 .place{background:rgba(255,255,255,.88);backdrop-filter:blur(8px);border-radius:999px;padding:7px 14px;font-weight:800;font-size:.85rem;box-shadow:0 4px 14px rgba(20,25,60,.12);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hud-btns{display:flex;gap:6px;flex:none}
 .hbtn{position:relative;width:42px;height:42px;border:0;border-radius:14px;background:rgba(255,255,255,.92);color:var(--violet);display:grid;place-items:center;box-shadow:0 4px 14px rgba(20,25,60,.14)}
@@ -187,8 +189,11 @@ textarea{resize:vertical;line-height:1.5}
 /* walking scene */
 .walk-byte{position:absolute;left:8%;top:calc(80% - 84px);width:84px;animation:stroll 9s ease-in-out infinite alternate}
 @keyframes stroll{0%{transform:translateX(0)}100%{transform:translateX(120px)}}
-.pipjory{position:absolute;right:2%;top:calc(81% - 104px);width:150px;pointer-events:auto;transition:transform 1.4s ease-in,opacity 1.4s}
-.pipjory svg{overflow:visible;display:block}
+.pipjory{position:absolute;right:2%;top:calc(81% - 104px);width:150px;pointer-events:none;transition:transform 1.4s ease-in,opacity 1.4s}
+/* only the drawn strangers and crate catch taps; the empty corners of their picture let taps through to props behind */
+.pipjory svg{overflow:visible;display:block;pointer-events:none}.pipjory svg *{pointer-events:visiblePainted}
+/* Commonwealth Ave: the strangers wheel their crate along the front of the sidewalk, in front of the robot, lamp and passers-by */
+.pipjory.st-pj{top:calc(87% - 130px)}
 .pipjory.flee{transform:translateX(70vw);opacity:0}
 .caption-card{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:488px;margin:0 auto;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 16px 40px rgba(10,14,40,.35);z-index:2}
 .caption-card.dark{background:rgba(26,30,70,.92);color:#fff;backdrop-filter:blur(6px)}
@@ -401,7 +406,8 @@ svg text:not([font-family]){font-family:var(--body)}
 .vpop{transform-box:fill-box;transform-origin:center;animation:igpulse 1.6s ease-in-out infinite}
 .vblink{animation:igblink 1.2s infinite}
 .fut:hover{transform:translateY(-2px) scale(1.04);transition:transform .2s;box-shadow:0 0 22px rgba(94,230,214,.35) inset,0 0 14px rgba(94,230,214,.35)}
-.companion{position:fixed;right:max(10px,calc(50% - 250px));bottom:calc(14px + env(safe-area-inset-bottom,0px));width:76px;border:0;background:none;padding:0;z-index:20;filter:drop-shadow(0 8px 14px rgba(20,25,60,.25))}
+/* #app>.companion: a screen that puts Byte straight inside #app must not lose the float to #app>*{position:relative} */
+.companion,#app>.companion{position:fixed;right:max(10px,calc(50% - 250px));bottom:calc(14px + env(safe-area-inset-bottom,0px));width:76px;border:0;background:none;padding:0;z-index:20;filter:drop-shadow(0 8px 14px rgba(20,25,60,.25))}
 .companion.hop{animation:hop .7s}
 .bubble{position:fixed;right:max(84px,calc(50% - 176px));bottom:calc(70px + env(safe-area-inset-bottom,0px));max-width:min(240px,62vw);background:var(--ink);color:#fff;border-radius:16px 16px 4px 16px;padding:10px 12px;font-weight:800;font-size:.92rem;z-index:21;animation:drop .35s cubic-bezier(.2,1.4,.4,1)}
 .bubble.out{opacity:0;transition:.4s}
@@ -1468,6 +1474,8 @@ body:has(.screen.worldmap) .bc-gift{bottom:calc(136px + env(safe-area-inset-bott
 .cj-ans{min-height:84px}
 .cj-ans p{animation:reveal .35s ease-out}
 .cj-oh-wrap{display:flex;flex-direction:column;min-height:calc(100vh - 80px);min-height:calc(100dvh - 80px)}
+/* the wrap is a see-through full-height column: only its cards catch taps, so Halo's orb and the props above the cards stay tappable */
+.cj-oh-wrap{pointer-events:none}.cj-oh-wrap>*{pointer-events:auto}
 .cj-oh-people{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto}
 .cj-oh-card{position:relative;overflow:hidden;isolation:isolate;border:0;background:rgba(255,255,255,.95);border-radius:20px;padding:6px 6px 8px;box-shadow:0 10px 26px rgba(20,25,60,.2);display:flex;flex-direction:column;align-items:center;min-width:0;animation:reveal .35s backwards}
 .cj-oh-card:nth-child(2){animation-delay:.08s}.cj-oh-card:nth-child(3){animation-delay:.16s}
@@ -1491,7 +1499,8 @@ body:has(.screen.worldmap) .bc-gift{bottom:calc(136px + env(safe-area-inset-bott
 .cj-pbook blockquote{margin:8px 0;padding:10px 12px;background:#fff;border-left:4px solid var(--violet);border-radius:0 12px 12px 0;font-size:.98rem;font-weight:700}
 .cj-pbook dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0 0;font-size:.92rem}
 .cj-pbook dt{font-weight:800;color:var(--ink2)} .cj-pbook dd{margin:0;font-weight:700}
-.cj-pbook .cj-pb-stars{color:var(--gold);letter-spacing:2px}
+/* earned stars in deep gold, empty ones as gray-violet outlines: both at least 3:1 against the cream page */
+.cj-pbook .cj-pb-stars{color:#8a84a8;letter-spacing:2px}.cj-pb-stars .on{color:#b97c00}.cj-pb-stars .off{color:#8a84a8}
 .cj-pbook+.cj-pbook{margin-top:14px}
 .cj-pb-stamp{position:absolute;right:14px;top:12px;border:3px solid var(--good);color:var(--good);border-radius:10px;padding:2px 10px;font-family:var(--display);font-weight:700;transform:rotate(-10deg);animation:cj-stamp .45s cubic-bezier(.2,1.6,.4,1)}
 @keyframes cj-stamp{from{transform:rotate(-10deg) scale(2.2);opacity:0}}
@@ -2558,6 +2567,9 @@ body:has(#app.qyscreen) .bubble{bottom:calc(214px + env(safe-area-inset-bottom,0
 .sn-bench{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px}
 .sn-bench span{font-size:.68rem;font-weight:800;letter-spacing:.01em;color:#2a2f55;background:#e9ecfb;border-radius:999px;padding:3px 9px}
 
+/* Harbor Row: Pip and Jory argue just left of the potted plant, so the plant on its stone stand stays in view and tappable */
+.pipjory.sn-pj{right:15%}
+
 /* sneeze_viz.css — calm looping animations for the order-screening infographics (src/viz/sneeze.js).
    Same conventions as the ig-* animations in style.css: a few seconds long, looping, --d for staggering. */
 
@@ -2734,7 +2746,8 @@ I18N.sync=function(){if(typeof document==='undefined')return;const el=document.d
   el.classList.toggle('pm-zh',L==='zh');const py=this.pyOn();
   if(L==='zh')el.setAttribute('lang','zh-CN');else if(this._lang0)el.setAttribute('lang',this._lang0);else el.removeAttribute('lang');
   if(py!==el.classList.contains('pm-py')){el.classList.toggle('pm-py',py);if(py)this.ruby(document.body);else this.unruby(document.body)}};
-I18N.set=function(lang,py){if(lang)S.lang=lang;if(py!=null)S.pinyin=py;save();this.savePref();this.sync()};
+I18N.set=function(lang,py){if(lang)S.lang=lang;if(py!=null)S.pinyin=py;save();this.savePref();this.sync();
+  if(typeof propsClearHud==='function')requestAnimationFrame(propsClearHud)};  // pinyin changes the HUD's height
 // Setup: a small pill in the card's corner switches language (it names the other language); in Chinese a second pill toggles pinyin.
 I18N.setupHTML=function(){const zh=LANG()==='zh';return `<div class="i18n-pills">${zh?`<button class="i18n-pill ${this.pyOn()?'on':''}" id="i18n-py" aria-pressed="${this.pyOn()}">拼音</button>`:''}<button class="i18n-pill" id="i18n-lang" lang="${zh?'en':'zh-CN'}">${zh?'English':'中文'}</button></div>`};
 I18N.wireSetup=function(rerender){const b=document.getElementById('i18n-lang');if(b)b.onclick=()=>{this.set(LANG()==='zh'?'en':'zh');rerender()};
@@ -4815,8 +4828,10 @@ I18N.add('zh','core',{strings:{
   'Lucky':'运气好','As expected':'和预料的一样','Unlucky':'运气不好','luck unknown':'不知道运气怎样',
 
   // ----- props and passers-by -----
-  'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}',
-  'clock':'钟','lamp':'台灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
+  'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}','Look at the {0}':'看看{0}',
+  'bay_bridge':'金门大桥','bay_base':'探索基地','cb_dc':'数据中心','cb_light':'灯塔','nyc_tower':'时代广场大楼','nyc_steps':'红色台阶',
+  'raft':'太阳能浮筏','tanker':'数据运输船','drone':'无人机',
+  'clock':'钟','lamp':'灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
   'ep_gull':'海鸥','ep_ring':'救生圈','dh_record':'唱片机','dh_peony':'牡丹花','marstomato':'番茄','marsrock':'石头','marsdrone':'无人机','moonrover':'月球车',
   'moonglass':'玻璃','moonflag':'旗子','phx_bottle':'水瓶','phx_bot':'机器人','phx_board':'滑板','phx_quail':'鹌鹑','spacewalker':'宇航员','bj_tea':'茶',
   // things people and Byte say when a scene's landmark is tapped (src/scenes/*.js)
@@ -24415,11 +24430,11 @@ LATE.push(()=>{const app=document.getElementById('app');if(!app||typeof Mutation
       '<circle cx="42" cy="22" r="8.5" fill="#6a6458" stroke="#4a4038" stroke-width="2"/><path d="M40 20 a5 5 0 0 1 8 0" fill="#c8642a"/><circle cx="45" cy="22" r="1.6" fill="#1d1630"/><path d="M50 23 l5 1 l-5 2z" fill="#2a2420"/><path d="M42 26 q4 4 8 0" stroke="#fff" stroke-width="1.6" fill="none"/><path d="M41 14 q-2 -8 4 -10 q1 4 -2 7" fill="#2a2420"/><path d="M24 48 v6 M32 48 v6" stroke="#8a6a4a" stroke-width="2"/></g></svg>'; };
     PROPS_ART.phx_bottle = function () { return '<svg viewBox="0 0 40 80"><ellipse cx="20" cy="77" rx="12" ry="3" fill="rgba(0,0,0,.2)"/><g class="pa-body"><rect x="9" y="18" width="22" height="58" rx="7" fill="#e86a5a" stroke="#5b2a2a" stroke-width="2.4"/><rect x="12" y="8" width="16" height="11" rx="3" fill="#d8dce6" stroke="#4a4650" stroke-width="2.4"/><path d="M14 8 a6 6 0 0 1 12 0" stroke="#4a4650" stroke-width="2.4" fill="none"/><rect x="13" y="26" width="4" height="40" rx="2" fill="#fff" opacity=".45"/><path d="M12 50 q8 -6 16 0" stroke="#fff" stroke-width="2.4" fill="none"/></g></svg>'; };
     PROPS.phx_lot = [
-      { id: 'phx_bottle', x: 8, y: 74, w: 24, sfx: 'clink', fx: 'jiggle' },
+      { id: 'phx_bottle', x: 22, y: 74, w: 24, sfx: 'clink', fx: 'jiggle' },
       { id: 'person', x: 32, y: 74, w: 46, talk: 'phx_lot', look: { skin: '#c98e64', shirt: '#f2c14e', hair: '#1b1410' } },
-      { id: 'phx_board', x: 54, y: 75, w: 54, sfx: 'whoosh', fx: 'spin' },
+      { id: 'phx_board', x: 45, y: 75, w: 54, sfx: 'whoosh', fx: 'spin' },
       { id: 'phx_quail', x: 70, y: 66, w: 34, sfx: 'flap', fx: 'flyaway' },
-      { id: 'person', x: 88, y: 74, w: 44, talk: 'phx_lot', look: { skin: '#e8b896', shirt: '#2a9d8f', hair: '#9a9aa2' } }
+      { id: 'person', x: 92, y: 74, w: 44, talk: 'phx_lot', look: { skin: '#e8b896', shirt: '#2a9d8f', hair: '#9a9aa2' } }
     ];
   });
 })();
@@ -34754,7 +34769,7 @@ MISSIONS.sneeze.custom={
     const heard=!!S.notes.wrongshop;
     screen('walk',`${scene('harbor')}${hud('Harbor Row · Boston')}<div class="props walklayer">
       <div class="walk-byte">${byteBox({...S.byte,mood:'alert'},'trot')}</div>
-      <div class="pipjory" id="pj"><svg viewBox="-40 -60 170 110">${mini(0,40,{who:'pip',pose:'stand',s:1.1})}${mini(52,40,{who:'jory',pose:'stand',s:1.05,flip:true})}
+      <div class="pipjory sn-pj" id="pj"><svg viewBox="-40 -60 170 110">${mini(0,40,{who:'pip',pose:'stand',s:1.1})}${mini(52,40,{who:'jory',pose:'stand',s:1.05,flip:true})}
         <g transform="translate(16 -34)"><rect x="0" y="0" width="54" height="22" rx="7" fill="#fff" opacity=".94"/><path d="M10 22 l-2 7 l9 -7z" fill="#fff" opacity=".94"/>
         <text x="27" y="15" text-anchor="middle" font-size="9" font-family="Nunito" font-weight="800" fill="#1f2340">?!</text></g></svg></div></div>
       ${snStrip()}
@@ -39989,12 +40004,30 @@ const PROPS={
   night:[{id:'star',x:20,y:10,w:30,sfx:'chime',fx:'shoot'},{id:'star',x:78,y:11,w:22,sfx:'chime',fx:'shoot'}],
   table:[]
 };
-function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${p.talk?T('Talk to a passer-by'):T('Play with the {0}',T(p.id))}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
+// Readable names for the screen-reader label ("Play with the teapot"). Chinese names live in src/i18n/zh/core.js under the prop id.
+const PROP_NAMES={orbHit:'glowing orb',bay_bridge:'Golden Gate Bridge',bay_base:'science base',bj_persimmon:'persimmons',bj_tea:'teapot',
+  cb_dc:'datacenter',cb_light:'lighthouse',ep_gull:'gull',ep_ring:'life ring',dh_record:'record player',dh_peony:'peonies',
+  marstomato:'tomato plant',marsrock:'Mars rock',marsdrone:'drone',moonrover:'moon rover',moonglass:'moon glass',moonflag:'flag',
+  nyc_tower:'Times Square tower',nyc_steps:'red steps',raft:'solar raft',tanker:'data tanker',phx_bottle:'water bottle',phx_board:'skateboard',
+  phx_quail:'quail',phx_bot:'robot',sh_steamer:'dumpling steamer',sz_stop:'emergency stop post',sz_bot:'little robot',
+  nm_feeder:'feeder',nm_raven:'raven',nm_hay:'hay',spacewalker:'astronaut'};
+function propName(id){const L=typeof LANG==='function'?LANG():'en';if(L!=='en'){const v=(I18N.tab[L]||{})[id];if(v!=null)return v}return T(PROP_NAMES[id]||id)}
+// a prop that says something (p.say) is a thing to look at, like a bridge or a lighthouse; the rest are things to play with
+const propLabel=p=>p.talk?T('Talk to a passer-by'):p.say?T('Look at the {0}',propName(p.id)):T('Play with the {0}',propName(p.id));
+function propsLayer(sceneKey){const list=PROPS[sceneKey]||[];return `<div class="props">${list.map((p,i)=>`<button class="prop" data-i="${i}" data-s="${sceneKey}" style="left:${p.x}%;top:${p.y}%;width:${p.w}px" aria-label="${esc(propLabel(p))}">${PROPS_ART[p.id](p.look)}</button>`).join('')}</div>`}
 function burst(x,y,kind,n=7){const sym={hearts:'♥',notes:'♪',leaves:'❦',steam:'☁',sparkles:'✦'}[kind]||'✦';const col={hearts:'#ff6f8f',notes:'#6c5ce7',leaves:'#38b07f',steam:'#ffffff',sparkles:'#ffe08a'}[kind];
   for(let i=0;i<n;i++){const d=document.createElement('div');d.className='burst';d.textContent=sym;d.style.left=x+'px';d.style.top=y+'px';d.style.color=col;
     d.style.setProperty('--dx',((Math.random()-.5)*120).toFixed(0)+'px');d.style.setProperty('--dy',(-50-Math.random()*90).toFixed(0)+'px');d.style.setProperty('--r',((Math.random()-.5)*80).toFixed(0)+'deg');d.style.fontSize=(14+Math.random()*12)+'px';d.style.animationDelay=(i*.04)+'s';
     document.body.appendChild(d);setTimeout(()=>d.remove(),1500)}}
-function wireProps(){$$('.prop').forEach(b=>b.onclick=e=>{e.stopPropagation();MUSIC.unlock();const p=PROPS[b.dataset.s][b.dataset.i];
+// Keep every prop out from under the place chip and the top buttons. The HUD's height changes with the language and
+// with pinyin (up to about two lines taller), so this measures it after each screen, after pinyin is added and on resize,
+// and moves a prop that would sit under it down to just below it.
+function propsClearHud(){const hs=$$('.hud .place,.hud-btns').map(e=>e.getBoundingClientRect()).filter(r=>r.height);
+  $$('.props .prop').forEach(b=>{b.style.marginTop='';if(!hs.length)return;const r=b.getBoundingClientRect();let dy=0;
+    for(const h of hs)if(r.left<h.right+6&&r.right>h.left-6&&r.top<h.bottom+6&&r.bottom>h.top-6)dy=Math.max(dy,h.bottom+6-r.top);
+    if(dy)b.style.marginTop=Math.ceil(dy)+'px'})}
+addEventListener('resize',()=>propsClearHud());
+function wireProps(){propsClearHud();requestAnimationFrame(propsClearHud);setTimeout(propsClearHud,400);$$('.prop').forEach(b=>b.onclick=e=>{e.stopPropagation();MUSIC.unlock();const p=PROPS[b.dataset.s][b.dataset.i];
   if(p.talk||p.say){const lines=p.say?[p.say]:CHATTER[p.talk];b._n=((b._n??Math.floor(Math.random()*lines.length))+1)%lines.length;const line=lines[b._n];
     $$('.pbubble').forEach(x=>x.remove());const r0=b.getBoundingClientRect();const d=document.createElement('div');d.className='pbubble';d.textContent=T(line);document.body.appendChild(d);
     d.style.left=Math.max(8,Math.min(innerWidth-d.offsetWidth-8,r0.left+r0.width/2-d.offsetWidth/2))+'px';d.style.top=Math.max(8,r0.top-d.offsetHeight-8)+'px';
@@ -40420,7 +40453,7 @@ function jSnapshot(){const m=M(),H=jState(m),r=S.result||{};
 function pageTitle(x){const m=MISSIONS[x.mission];return T((m&&(m.caseTitle||m.title))||x.title||'A decision')}
 function pageHTML(x,stamp){const sure=x.conf!=null?T((typeof x.conf==='number'&&x.conf>4?CJ_SURE[[50,62,75,87,97].indexOf(x.conf)]||x.conf+'%':CJ_SURE[x.conf])||''):'';
   return `<article class="cj-pbook">${stamp?`<div class="cj-pb-stamp">${T('Saved')}</div>`:''}<h3>${esc(pageTitle(x))}</h3><div class="cj-pb-plan">${esc(T(x.plan||''))}</div>
-    ${x.memo?`<blockquote>${esc(x.memo)}</blockquote>`:''}<dl>${sure?`<dt>${T('How sure')}</dt><dd>${esc(sure)}</dd>`:''}${x.out||x.cap?`<dt>${T('What happened')}</dt><dd>${esc(T(x.out||x.cap))}</dd>`:''}<dt>${T('Stars')}</dt><dd class="cj-pb-stars">${'★'.repeat(x.stars||0)}${'☆'.repeat(3-(x.stars||0))}</dd></dl></article>`}
+    ${x.memo?`<blockquote>${esc(x.memo)}</blockquote>`:''}<dl>${sure?`<dt>${T('How sure')}</dt><dd>${esc(sure)}</dd>`:''}${x.out||x.cap?`<dt>${T('What happened')}</dt><dd>${esc(T(x.out||x.cap))}</dd>`:''}<dt>${T('Stars')}</dt><dd class="cj-pb-stars">${x.stars?`<span class="on">${'★'.repeat(x.stars)}</span>`:''}${(x.stars||0)<3?`<span class="off">${'☆'.repeat(3-(x.stars||0))}</span>`:''}</dd></dl></article>`}
 function jPortfolio(){const m=M(),J=m.journey.portfolio;const pg=jPage(m)&&jPage(m).memo===S.memo?jPage(m):null;
   const page=pg||{plan:m.planName?m.planName(S.choice):'',memo:S.memo,conf:S.conf??2,cap:(S.result||{}).cap||'',stars:S.lastStars||0};
   screen('debrief',`${scene(jScene(J.scene||'night'))}<div class="talk-dim"></div>${hud(J.place)}<div class="cj-card"><h2>${T('Portfolio Book')}</h2>
@@ -41381,7 +41414,7 @@ const STEPS={
         return `<button class="mcard ${done?'done':''} ${open?'':'locked'}" data-m="${m.id}" ${open?'':'disabled'}><div class="mday">${esc(m.dayLabel?T(m.dayLabel):m.tag?T(m.tag):T('Day {0}',m.day))}</div><div class="mtxt"><b>${esc(T(m.title))}</b><span>${esc(T(open?m.blurb:'Finish earlier days to unlock.'))}</span></div><div class="mstar">${done?'★'.repeat(done.stars||0)+'☆'.repeat(3-(done.stars||0)):''}</div></button>`}).join('')}</div>`}).join('')}
       </div>`);
     $$('.mcard').forEach(b=>b.onclick=()=>{if(!resumeMission(b.dataset.m))startMission(b.dataset.m)})},
-  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(24)}>${T('TOTALLY')}</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(34)}>${T('NORMAL BOLTS')}</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
+  street(){screen('walk',`${scene('street')}${hud('Commonwealth Ave · Boston')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div><div class="pipjory st-pj" id="pj"><svg viewBox="-40 -60 150 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 8)"><rect x="0" y="0" width="40" height="30" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><text x="20" y="13" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(24)}>${T('TOTALLY')}</text><text x="20" y="21" text-anchor="middle" font-size="6" font-family="Nunito" font-weight="800" fill="#5b3b16"${I18N.fit(34)}>${T('NORMAL BOLTS')}</text></g>${mini(66,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
       <div class="caption-card"><p>${T('Robots carry beams, a tram hums past, and two strangers wheel a crate down the sidewalk.')}</p><div class="row"><button class="btn small ghost" id="clue">${T('Look at the crate')}</button><button class="btn small" id="on">${T('Go to the hospital')}</button></div></div>`);
     $('#clue').onclick=()=>{S.notes.crate=true;S.crate=true;save();$('#pj').classList.add('flee');toast(T('The strangers hurry away, and you write the crate down in your notebook.'),'good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()}
