@@ -29,7 +29,7 @@ I18N.add('zh','core',{strings:{
   'Doctors at Boston’s sister hospital in Shanghai want to talk through one child’s case with you.':'波士顿港医院在上海有一家姐妹医院，那里的医生想和你一起商量一个孩子的病情。',
   'In Beijing, American and Chinese teams read each other’s rules for AI, line by line.':'在北京，美国和中国的团队要把对方定的AI规则一条一条地读一遍。',
   'In Shenzhen, you visit the factory that builds robot crews, to test every way of stopping a robot.':'在深圳，你要去一家造机器人施工队的工厂，把让机器人停下来的每一种办法都试一遍。',
-  'A garden of lanterns in Varrow remembers the Quiet Year of 2030, when a dangerous new germ spread through the town and people stayed home for months.':'瓦罗有一座灯笼园，是为了纪念2030年的“安静之年”。那一年，一种危险的新病菌在镇上传开，人们在家里待了好几个月。',
+  'A garden of lanterns in Varrow remembers the Quiet Year of 2030, when a dangerous new germ spread through the town and people stayed home for months.':'瓦罗有一座灯笼园，是为了纪念2030年的“静默之年”。那一年，一种危险的新病菌在镇上传开，人们在家里待了好几个月。',
   'The tower that ran Estmark’s power grid has stood empty since 2029, when the power went out across the island for seven days.':'埃斯特马克岛的电网原来由一座塔控制。2029年，全岛停电整整七天，从那以后，这座塔就一直空着。',
   'Someone built a secret datacenter near this town without a license, and nobody knows who did it.':'有人没拿许可证，就在这座小镇附近偷偷建了一座数据中心，谁也不知道是谁干的。',
   'Far out at sea, solar rafts power a town of floating datacenters.':'在远离陆地的海上，一片太阳能筏子给一座漂在海上的数据中心小镇供电。',
@@ -154,8 +154,16 @@ I18N.add('zh','core',{strings:{
   'Key saved':'密钥已保存','Save':'保存','Remove':'删除','Progress':'进度','{0}’s progress':'{0}的进度',' · went well':' · 顺利',' · did not go well':' · 不顺利','luck not recorded':'没有记录运气',
   ' · said {0}% sure':' · 自己说有{0}%的把握',' · {0}\'s forecast {1}%':' · {0}预测{1}%','Key saved on this device':'密钥已保存在这台设备上','What is {0} × {1}?':'{0} × {1} 等于多少？','Open':'打开',
 
+  'Decisions':'决定','Portfolio':'作品集','Writing':'写作','Appears after the first signed decision.':'第一次签名做出决定以后，这里才会有内容。',
+  'Signed decisions are saved here.':'签过名的决定会保存在这里。','Words appear here after they are tapped in a document or conversation.':'在文件或对话里点过的词，会出现在这里。',
+  'Not yet':'还没找到','Used again':'又用上了','Found':'找到了','Names a clear plan':'说清了方案','Says how sure':'说了有几成把握','Says who it is for':'说了是为谁着想',
+  'Lucky':'运气好','As expected':'和预料的一样','Unlucky':'运气不好','luck unknown':'不知道运气怎样',
+
   // ----- props and passers-by -----
-  'Talk to a passer-by':'和路人聊聊','Play with the {0}':'和{0}玩一玩','{0}: “You found the fun stuff!”':'{0}：“你发现好玩的东西啦！”',
+  'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}',
+  'clock':'钟','lamp':'台灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
+  'Anything else?':'还有别的吗？','Send to {0}':'发给{0}','Pick at most {0}.':'最多选{0}个。','Drafting…':'正在起草……','Make this':'就做这个',
+  'What could go wrong?':'可能出什么问题？','Test on the Future Table':'到未来之桌上试试','Revise my request':'修改我的要求','{0}: “You found the fun stuff!”':'{0}：“你发现好玩的东西啦！”',
 
   // ----- shared numbers used by more than one mission -----
   '{0} home':'{0}户人家','{0} homes':'{0}户人家','About 20 homes':'大约20户','About 100 homes':'大约100户','About 1,000 homes':'大约1,000户',

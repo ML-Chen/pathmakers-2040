@@ -126,7 +126,7 @@ I18N.add('zh','maya',{strings:{
   '60 of 100 sensitive kids got a rash':'敏感的孩子：100个里60个起疹子',
 
   // ----- the Ledger, Boston -----
-  'The Ledger: Boston':'账本新闻：波士顿','News':'新闻',
+  'The Ledger: Boston':'纪事报：波士顿','News':'新闻',
   'Robot crews finished the new Charles River flood wall three weeks early.':'机器人施工队提前三周建好了查尔斯河的新防洪墙。',
   'The average wait in Boston emergency rooms last month was four minutes.':'上个月，在波士顿看急诊，平均只要等四分钟。',
   'Last night, inspectors who enforce the international AI [[treaty]] shut down a small [[datacenter]] near the town of Calder Bay, because it had no license to run. Nobody knows who built the datacenter.':'昨晚，负责执行国际AI[[条约]]的检查员关停了考尔德湾镇附近的一座小型[[数据中心]]，因为它没有运行许可证。没人知道这座数据中心是谁建的。',
@@ -205,7 +205,7 @@ I18N.add('zh','maya',{strings:{
   'Your plan fit your goals well, but this time it was unlucky. We judge a decision by what you knew when you made it, not only by how it turned out.':'你的方案很符合你们的目标，只是这次运气不好。评价一个决定，要看做决定的时候你知道些什么，不能只看结果。',
   'Something strange happened tonight. Someone tried to install an upgrade on me from a maker I’ve never heard of. I blocked it.':'今晚出了件怪事。有人想给我装一个升级程序，发布它的厂家我从来没听说过。我把它拦下来了。',
   '<b>{byte}:</b> “Maya’s dad sent a message tonight. Maya wants to know if you can come to her recital, whichever day it ends up being.”':'<b>{byte}：</b>“玛雅的爸爸今晚发来消息。玛雅想问你能不能来看她的演出，不管最后定在哪一天。”',
-  '“Tonight the Ledger, the news app, had a story about Calder Bay. A new building there uses as much electricity as a small city, and nobody has a permit for it, so inspectors are going to visit.”':'“今晚，账本新闻上有一篇考尔德湾的报道。那里有一栋新楼，用的电跟一座小城市差不多，可是没人为它申请过许可证，所以检查员要过去看看。”',
+  '“Tonight the Ledger, the news app, had a story about Calder Bay. A new building there uses as much electricity as a small city, and nobody has a permit for it, so inspectors are going to visit.”':'“今晚，新闻应用《纪事报》登了一篇考尔德湾的报道。那里有一栋新楼，用的电跟一座小城市差不多，可是没人为它申请过许可证，所以检查员要过去看看。”',
 
   // ----- Field Guide -----
   'Information only you have':'只有你知道的信息','Ethics and AI':'伦理与AI',
