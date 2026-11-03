@@ -21,6 +21,7 @@ const walk=d=>fs.existsSync(d)?fs.readdirSync(d,{withFileTypes:true}).flatMap(e=
 const files=walk(SRC).filter(f=>f.endsWith('.js')&&!/[\\/](audio|i18n)[\\/]|audio\.js$|music_tracks\.js$/.test(f));
 function bucketOf(rel){rel=rel.replace(/\\/g,'/');
   if(/^(game|parent|props|i18n|music|build)\.js$/.test(rel))return 'core';
+  if(rel==='ledger.js')return 'ledger';if(rel==='career.js')return 'hired';  // the Ledger app; the career-journey screens (Getting Hired, Grand Rounds)
   if(/^(content_boston|missions|infog|art|characters|paint_boston)\.js$/.test(rel))return 'maya';
   const m=/^(missions|viz|scenes)\/([a-z0-9]+)/i.exec(rel);return m?m[2].toLowerCase():'core'}
 function unesc(s){return s.replace(/\\(u\{([0-9a-f]+)\}|u([0-9a-f]{4})|x([0-9a-f]{2})|n|t|r|(.))/gi,(m,a,b,c,d,e)=>b?String.fromCodePoint(parseInt(b,16)):c?String.fromCharCode(parseInt(c,16)):d?String.fromCharCode(parseInt(d,16)):a==='n'?'\n':a==='t'?'\t':a==='r'?'\r':e)}
@@ -97,6 +98,17 @@ function literalBucket(s){for(const rel in SRC_TEXT)if(SRC_TEXT[rel].includes(s)
       (m.lines||[]).forEach(x=>W(x.text));
       for(const k in (m.glossary||{}))owned.glossary[k]=id;
       if(typeof CAREERS!=='undefined'&&CAREERS[m.career])W(CAREERS[m.career].name);
+      // career journeys and big talks (src/career.js): every text in m.journey, m.bigtalk and m.promotion, and the lines built for each case
+      {const SK=new Set(['scene','who','mood','art','viz','if','key','k','judge','check','heur','career','to','at','boss','guide','notes','people','id','rank','kind']);
+        const walkW=(o,dp=0)=>{if(dp>7||o==null)return;if(typeof o==='string'){W(o);return}if(Array.isArray(o)){o.forEach(x=>walkW(x,dp+1));return}
+          if(typeof o==='object')for(const k in o){if(SK.has(k))continue;let v;try{v=o[k]}catch(e){continue}if(typeof v!=='function')walkW(v,dp+1)}};
+        ['journey','bigtalk','promotion'].forEach(k=>{try{walkW(m[k])}catch(e){}});
+        const B=m.bigtalk;if(B){for(const c of Object.values(B.cases||{}).concat(B.fallback?[B.fallback]:[]))for(const memo of ['','I chose this plan.']){const ctx={...c,plan:'',memo,byte:'Byte'};
+          for(const b of B.beats||[])for(const o of b.opts||[])if(typeof o.t==='function')try{leakText('big talk option',o.t(ctx))}catch(e){}
+          for(const o of (B.question&&B.question.opts)||[])if(typeof o.t==='function')try{leakText('big talk answer',o.t(ctx))}catch(e){}}}
+        const J=m.journey;if(J&&J.interview){const ctxs=[J.interview.context?J.interview.context():{},{bad:true},{bad:false}];
+          for(const ctx of ctxs)for(const Q of J.interview.questions||[])for(const o of Q.opts||[])if(typeof o.t==='function')try{leakText('interview option',o.t(ctx))}catch(e){}
+          if(J.firstday&&J.firstday.end&&typeof J.firstday.end.text==='function')try{leakText('first day',J.firstday.end.text({remembered:2}))}catch(e){}}}
       // text built by the mission's functions, for every plan, with and without each clue
       Object.assign(S,MISSION_FIELDS());S.mission=id;S.choice={...(m.start||{})};let plans=[S.choice];try{plans=allPlans()}catch(e){}
       for(const told of [false,true])for(const crate of [false,true]){S.told=told;S.notes={crate};WHERE='functions';
@@ -106,6 +118,12 @@ function literalBucket(s){for(const rel in SRC_TEXT)if(SRC_TEXT[rel].includes(s)
           try{m.consent.opts(c,m).forEach(o=>{leakText('consent option',o.t);W(o.reply)})}catch(e){}
           tryit('trap',()=>m.trap&&m.trap(c).text)}
         try{(m.evening?m.evening():[]).forEach(l=>leakText('evening',l))}catch(e){}}}
+    // ----- the Ledger news app (src/ledger.js): stories (a story declared by a mission belongs to that mission), Byte's lines, ideas and words -----
+    if(typeof LEDGER!=='undefined'){for(const st of LEDGER.list){CTX=st.mission||'ledger';WHERE='content';['title','place','by','org','check'].forEach(k=>W(st[k]));if(st.link)W(st.link.label);
+        (st.steps||[]).forEach(x=>{W(x.t);W(x.cap);try{if(VIZ[x.viz])leakText('picture '+x.viz,svgText(VIZ[x.viz](x.args||{})))}catch(e){}});
+        if(st.trick){W(st.trick.why);W(st.trick.stamp);Object.values(st.trick.near||{}).forEach(W)}}
+      CTX='ledger';Object.values(LEDGER_BYTE).forEach(W);for(const k in LEDGER_GUIDE){owned.guide.add(k);['title','track','text','real'].forEach(x=>W(LEDGER_GUIDE[k][x]))}
+      for(const k in LEDGER_GLOSSARY)owned.glossary[k]='ledger';['Spring {0}','Summer {0}','Fall {0}','Winter {0}'].forEach(W)}
     // ----- shared tables from content_boston.js that no mission file owns: the Maya mission and Boston -----
     CTX='maya';WHERE='content';
     for(const k in CAST)if(!owned.cast.has(k)){W(CAST[k].name);W(CAST[k].role)}
@@ -138,6 +156,17 @@ function literalBucket(s){for(const rel in SRC_TEXT)if(SRC_TEXT[rel].includes(s)
       for(const L in LESSONS){await shots('lesson '+L,()=>openLesson(L));document.querySelectorAll('.sheet').forEach(x=>x.remove())}}
     CTX='core';
     await shots('hub',()=>go('hub'));await shots('chat',()=>openChat());
+    // the Ledger: the list, every story, and the checking flow (Looks solid, Something's off, a wrong tap, the answer)
+    if(typeof openLedger==='function'){CTX='ledger';document.querySelectorAll('.sheet').forEach(x=>x.remove());const C0=S.completed;S.completed=Object.fromEntries(Object.keys(MISSIONS).map(k=>[k,{stars:3}]));S.ledger=null;
+      await shots('ledger',()=>openLedger());const d=document.querySelector('.sheet.ledger'),L=lgState();
+      for(const ch of ['science','saved'])await shots('ledger '+ch,()=>{LG_VIEW.chip=ch;lgRender(d)});LG_VIEW.chip='all';
+      for(const st of LEDGER.list){CTX=st.mission||'ledger';const art=()=>{LG_VIEW.story=st.id;LG_VIEW.mode=null;lgRender(d)};
+        L.check[st.id]=0;await shots('ledger '+st.id,art);await shots('ledger saved '+st.id,()=>document.querySelector('#lg-save').click());
+        if(st.trick){await shots('ledger nudge '+st.id,()=>document.querySelector('#lg-ok').click());await shots('ledger find '+st.id,()=>document.querySelector('#lg-off').click());
+          for(const part of ['head','by','s0','s1','s2','f0','f1'].filter(x=>!st.trick.parts.includes(x)))await shots('ledger near '+st.id,()=>{const e=document.querySelector(`.lg-part[data-part="${part}"]`);e&&e.click()});
+          L.check[st.id]='spotted';await shots('ledger spotted '+st.id,art)}
+        else{await shots('ledger solid '+st.id,()=>document.querySelector('#lg-off').click());L.check[st.id]='trusted';await shots('ledger trusted '+st.id,art)}}
+      document.querySelectorAll('.sheet').forEach(x=>x.remove());await shots('ledger menu',()=>openMenu());document.querySelectorAll('.sheet').forEach(x=>x.remove());S.completed=C0;S.ledger=null;CTX='core'}
     for(const told of [false,true]){S.told=told;S.mission='maya';['how do I win','which is best','tell me about bonemend gel','pins surgery','what about a cast','safest long term','the recital matters most','move the recital friday','what is halo','who are you','she had a rash','hello'].forEach(q=>{CTX='maya';try{cannedReply(q)}catch(e){}})}
     CTX='core';document.querySelectorAll('.sheet').forEach(x=>x.remove());
     await shots('menu',()=>openMenu());await shots('menu: start over',()=>document.querySelector('#m-new').click());document.querySelectorAll('.sheet').forEach(x=>x.remove());

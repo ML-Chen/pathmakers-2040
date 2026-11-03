@@ -208,7 +208,7 @@ Object.assign(VIZ,{
     <path d="M90 8 Q150 22 210 8" stroke="#6b7aa8" stroke-width="1.2" fill="none"/>
     <g class="hv-bob"><path d="M100 10 h100 v18 q-50 8 -100 0z" fill="#ff7a6b" stroke="#c4473c" stroke-width="1.4"/>${igT(150,25,'Friendly game',{s:12,c:'#fff',w:800})}</g>
     <g transform="translate(12 6)"><rect width="34" height="30" rx="5" fill="#fff" stroke="${IG.line}"/><rect width="34" height="10" rx="5" fill="${IG.violet}"/><rect y="6" width="34" height="4" fill="${IG.violet}"/>${igT(17,25,'SAT',{s:11,w:900})}</g></g>`,'A friendly scrimmage on a sunny Saturday')},
-  calendar3:()=>{const cw=37,x0=20,y0=46,rh=22,days='SMTWTFS'.split('');let cells='';
+  calendar3:()=>{const cw=37,x0=20,y0=46,rh=22,days=T('S M T W T F S').split(' ');let cells='';
     for(let r=0;r<4;r++)for(let c=0;c<7;c++){const x=x0+c*cw,y=y0+r*rh,i=r*7+c,today=r===0&&c===4,play=r===3&&c===6,past=r===0&&c<4,lit=!past&&!today;
       cells+=`<rect x="${x+2}" y="${y+2}" width="${cw-4}" height="${rh-4}" rx="5" fill="${past?'#f4f6fd':'#fff'}" stroke="${IG.line}"/>`;
       if(lit&&!play)cells+=`<rect x="${x+2}" y="${y+2}" width="${cw-4}" height="${rh-4}" rx="5" fill="#e3f8f5" class="hv-day" style="--d:${((i-4)*.16).toFixed(2)}s"/>`}
