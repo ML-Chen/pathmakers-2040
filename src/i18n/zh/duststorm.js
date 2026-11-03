@@ -188,21 +188,21 @@ I18N.add('zh','duststorm',{strings:{
   '“Lucía is planting new seeds already. She says the second planting should go faster, because now she knows how this soil behaves.”':'“露西娅已经在种新种子了。她说第二次会种得快一些，因为她现在摸清了这里的土是什么脾气。”',
   '“Dev slept through the whole storm. He fixed the rover’s dust seals this morning and left a packet of cocoa by your door.”':'“整场风暴里，德夫一觉睡到了天亮。今天早上他修好了火星车的防尘密封条，还在你门口放了一包可可。”',
   '“Dev spent the morning cleaning dust out of the rover’s seals, and he asked me to say thank you for a quiet night.”':'“德夫一上午都在清理火星车密封条里的尘土。他让我替他谢谢你，昨晚过得很安稳。”',
-  '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”':'“今天的真实情况：火星车已经在耶泽罗陨石坑拍到过这样的蓝色晚霞，但还没有人站在这里过。”',
+  '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”':'“现实中：火星车已经在耶泽罗陨石坑拍到过这样的蓝色晚霞，但还没有人站在这里过。”',
 
   // ---- Field Guide ----
   'Forecasts with ranges':'带范围的预测',
   'An honest forecast gives a range and some odds, instead of one exact number. Delta said the storm would arrive between 5 and 8 PM, and that it would still be there at sunrise about 35 times in 100. A safe plan should still work if the storm comes at the early end of that range and is still there at sunrise.':'诚实的预测会给出一个范围和几种可能性，不会只报一个准确的数字。Delta说风暴会在下午5点到晚上8点之间到，100次里大约有35次到日出时还没走。一个安全的方案，就算风暴按最早的时间来、到日出还没走，也应该行得通。',
-  'True today: weather forecasters say things like “a 30% chance of rain,” and hurricane maps show a cone of places the storm might go.':'今天的真实情况：天气预报员会说“降雨概率30%”这样的话，飓风地图上也会画出一个锥形区域，表示风暴可能经过的地方。',
+  'True today: weather forecasters say things like “a 30% chance of rain,” and hurricane maps show a cone of places the storm might go.':'现实中：天气预报员会说“降雨概率30%”这样的话，飓风地图上也会画出一个锥形区域，表示风暴可能经过的地方。',
   'A power budget':'用电预算',
   'When there is only so much energy, you add up what everything needs, set aside a reserve for surprises, and then choose what matters most with what is left. Keeping the greenhouse warm but dark saved a lot of power and cost the plants almost nothing.':'电就那么多的时候，你要把每样东西要用的电加起来，留出一份储备以防意外，再用剩下的电去保最重要的东西。温室只保暖、不开灯，省了很多电，植物却几乎没受影响。',
-  'True today: Mars rovers run on carefully budgeted power. When dust covered the solar panels of NASA’s InSight lander, it shut down instruments one by one to save energy.':'今天的真实情况：火星车用电都要精打细算。美国宇航局的“洞察号”着陆器的太阳能板被尘土盖住以后，它把仪器一台接一台地关掉来省电。',
+  'True today: Mars rovers run on carefully budgeted power. When dust covered the solar panels of NASA’s InSight lander, it shut down instruments one by one to save energy.':'现实中：火星车用电都要精打细算。美国宇航局的“洞察号”着陆器的太阳能板被尘土盖住以后，它把仪器一台接一台地关掉来省电。',
   'Private needs':'个人的私事',
   'Some health needs are private. Dev told you about his breathing machine because he trusted you with it. You asked him before you told Delta, and Delta only needed to know that one outlet had to stay on.':'有些健康上的需要是私事。德夫把呼吸机的事告诉你，是因为他信任你。你告诉Delta之前先问了他，而Delta只需要知道有一个插座得一直开着。',
-  'True today: doctors and nurses must keep health information private, and share only what others need to know to help.':'今天的真实情况：医生和护士必须为病人的健康信息保密，只把别人帮忙时需要知道的那部分说出去。',
+  'True today: doctors and nurses must keep health information private, and share only what others need to know to help.':'现实中：医生和护士必须为病人的健康信息保密，只把别人帮忙时需要知道的那部分说出去。',
   'Mars, today and in this game':'火星：现实里和游戏里',
   'Mars has thin air full of fine red dust, so its daytime sky looks butterscotch, and its sunsets glow blue around the Sun. Dust storms can cover a region for days and block the sunlight that solar panels need.':'火星的空气很稀薄，里面全是细细的红色尘土，所以白天的天空是奶油糖果那样的黄褐色，晚霞却在太阳周围泛着蓝光。沙尘暴能一连几天盖住一大片地方，挡住太阳能板需要的阳光。',
-  'True today: robot rovers have explored Jezero Crater since 2021, and they have filmed dust devils and blue sunsets there. No person has been to Mars yet. The outpost, the crew and the tomatoes are this game’s guess about 2041.':'今天的真实情况：从2021年起，机器人火星车就在探索耶泽罗陨石坑，还在那里拍到了尘卷风和蓝色的晚霞。还没有人去过火星。前哨站、队员和番茄，都是这个游戏对2041年的猜想。',
+  'True today: robot rovers have explored Jezero Crater since 2021, and they have filmed dust devils and blue sunsets there. No person has been to Mars yet. The outpost, the crew and the tomatoes are this game’s guess about 2041.':'现实中：从2021年起，机器人火星车就在探索耶泽罗陨石坑，还在那里拍到了尘卷风和蓝色的晚霞。还没有人去过火星。前哨站、队员和番茄，都是这个游戏对2041年的猜想。',
   'Evidence and truth':'证据与真相','Engineering and systems':'工程与系统','People skills':'与人相处','Math and science':'数学与科学',
 
   // ---- passers-by ----
@@ -223,7 +223,7 @@ I18N.add('zh','duststorm',{strings:{
   'The battery should hold 48 to 55 kilowatt-hours at sunset. If you plan for 48, the low end, you won’t be surprised.':'日落时电池里应该有48到55千瓦时的电。按最低的48来计划，你就不会措手不及。',
   'Sending the messages costs 2 kilowatt-hours, and the relay window closes at 9 PM. After that, they wait a day.':'发消息要用2千瓦时，中继窗口晚上9点就关了。过了这个时间，消息就要等一天。',
   'Here’s the path: hear Delta’s forecast, talk with Lucía and Dev, read the power list, build tonight’s budget, explain it to the crew, sign it, and then lead the night.':'你可以这样做：听Delta的预测，跟露西娅和德夫聊聊，读一读用电清单，做出今晚的用电预算，讲给队员们听，签字，然后带大家度过这一夜。',
-  'True today: rovers have explored Jezero Crater since 2021, but no person has been to Mars yet. This outpost is a guess about 2041.':'今天的真实情况：从2021年起就有火星车在探索耶泽罗陨石坑，但还没有人去过火星。这个前哨站是对2041年的猜想。',
+  'True today: rovers have explored Jezero Crater since 2021, but no person has been to Mars yet. This outpost is a guess about 2041.':'现实中：从2021年起就有火星车在探索耶泽罗陨石坑，但还没有人去过火星。这个前哨站是对2041年的猜想。',
 
   // ---- pictures ----
   'Jezero':'耶泽罗','east':'东','most likely 6:30':'最可能6:30','early?':'提前？','a range':'一个范围','a promise':'一句保证','not':'不是',

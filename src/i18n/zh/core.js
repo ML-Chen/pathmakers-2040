@@ -38,7 +38,7 @@ I18N.add('zh','core',{strings:{
   '{season} {year}':'{year}年{season}','Spring':'春天','Summer':'夏天','Fall':'秋天','Winter':'冬天',
   'Trainee':'实习生','Pro':'专业级','Legend':'传奇级','Workday':'工作日','Career journey':'职业之旅','Big talk':'大讲台','Story':'故事','Ruin':'遗迹','Travel':'出行','Finale':'大结局',
   'Ruins':'遗迹','Finish “{0}” first':'先完成“{0}”','Needs {0} rank':'要先升到{0}','Opens in {0}':'{0}开放','Coming soon':'敬请期待','coming soon':'敬请期待',
-  'Ask':'提问','Decision':'决定','Heart':'用心','{0} star':'{0}星','{0} star (not earned)':'{0}星（还没得到）',
+  'Ask':'提问','Decision':'决策','Heart':'关心','{0} star':'{0}星','{0} star (not earned)':'{0}星（还没得到）',
   'Days left':'剩下的天数','day':'天','days':'天','Hearts':'心','Coins':'金币','Stars':'星星','Play':'开始',
   'All caught up!':'都玩完啦！','New places open as the seasons turn.':'换季的时候，会有新的地方开放。','{0} (locked)':'{0}（未解锁）','+{0} coins':'+{0} 金币','New: {0}':'新开放：{0}',
   'Continue where you left off':'从上次停下的地方继续','New':'新','Back to the world map':'回到世界地图','Friends here':'这里的朋友','Day {0}':'第{0}天',

@@ -5,15 +5,15 @@
 I18N.add('zh','treatytalks',{strings:{
   // ----- shared China screens (china_common.js) -----
   'Your AI partner':'你的AI搭档','Sign together':'一起签字','Write a sentence or two in your own words first.':'先用自己的话写一两句吧。',
-  'Signed by both of you.':'你们俩都签好了。','How you did':'你做得怎么样','Stars':'星星',
+  'Signed by both of you.':'你们俩都签好了。','How you did':'你的表现','Stars':'星星',
   'For the questions you asked, the plan you chose and the people you looked after':'看你问的问题、选的方案，还有你照顾到的人',
-  '{0} Field Guide ideas':'{0} 条图鉴','{0} new words':'{0} 个新词','{0} hearts':'{0} 颗心','Head out for the evening':'晚上出去走走','Debrief':'总结',
-  'New Field Guide idea: {0}':'图鉴新增：{0}',
+  '{0} Field Guide ideas':'图鉴里多了{0}条','{0} new words':'{0}个新词','{0} hearts':'{0}颗心','Head out for the evening':'晚上出去走走','Debrief':'复盘',
+  'New Field Guide idea: {0}':'图鉴里多了一条：{0}',
   // core interface pieces that show on the China screens (debrief stars, evening buttons, scene props, Byte's label).
   // They belong in core.js; they are here so these visits read fully in Chinese until core.js has them.
   'Ask':'提问','Decision':'决策','Heart':'关心','ask':'提问','decision':'决策','heart':'关心',
-  '{0} star':'{0}星','{0} star (not earned)':'{0}星（还没拿到）','{0}, your robot puppy':'{0}，你的机器人小狗',
-  'Open Field Guide':'打开图鉴','Plan tomorrow':'安排明天','Talk to a passer-by':'和路人聊聊','Play with the {0}':'逗逗{0}',
+  '{0} star':'{0}星','{0} star (not earned)':'{0}星（还没得到）','{0}, your robot puppy':'{0}，你的机器小狗',
+  'Open Field Guide':'打开图鉴','Plan tomorrow':'安排明天','Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}',
   'pigeon':'鸽子','robot':'机器人','plant':'盆栽',
 
   // ----- the mission -----
@@ -33,16 +33,16 @@ I18N.add('zh','treatytalks',{strings:{
   'Qiao Shoucheng':'乔守诚','Keeps the tea stand by the courtyard gate':'在院门口摆茶摊儿',
 
   // Field Guide
-  'Trust, then check':'先信任，再核查','Government, law, and power':'政府、法律和权力',
+  'Trust, then check':'先信任，再核查','Government, law, and power':'政府、法律与权力',
   'Both countries publish the list of goals that each treaty AI must follow. Then each side’s inspectors read the other side’s list and check the other AI’s work against it. Because each side can check the other side’s AI for itself, neither country has to rely on the other’s word alone.':
     '两国都会公布各自的条约AI必须遵守的目标清单。然后，每一方的核查员都去读对方的清单，再拿它对照对方AI做过的事。每一方都能亲自检查对方的AI，所以哪个国家都不用光凭对方的一句话。',
   'True today: arms-control treaties have let each country’s inspectors visit the other’s sites, and “trust, but verify” comes from an old Russian saying. No treaty about AI exists yet. The one in this story is a guess about 2040.':
-    '现实中也是这样：有些军备控制条约让两国的核查员可以到对方的设施实地查看。“信任，但要核查”这句话出自一句俄罗斯老话。关于AI的条约现在还没有，故事里的条约是对2040年的猜想。',
+    '现实中：有些军备控制条约让两国的核查员可以到对方的设施实地查看。“信任，但要核查”这句话出自一句俄罗斯老话。关于AI的条约现在还没有，故事里的条约是对2040年的猜想。',
   'Read the fine print':'小字也要细读','Ethics and AI alignment':'伦理与AI对齐',
   'A single line in an AI’s list of goals can change many of the choices that AI makes. So read every line of a published spec, and read your own side’s spec as carefully as you read the other side’s.':
     'AI的目标清单里只要有一行字，就能改变这个AI做出的很多选择。所以公开的规范要一行一行读完。读自己这边的规范，也要像读对方的一样仔细。',
   'True today: some AI companies publish documents that describe how their AIs are supposed to behave, and people outside the companies read them and point out problems.':
-    '现实中也是这样：有些AI公司会发布文件，说明自己的AI应该怎样做事。公司以外的人会去读这些文件，指出里面的问题。',
+    '现实中：有些AI公司会发布文件，说明自己的AI应该怎样做事。公司以外的人会去读这些文件，指出里面的问题。',
 
   // passers-by
   'My family has lived on this hutong for five generations.':'我家在这条胡同里住了五辈儿了。',
@@ -214,9 +214,9 @@ glossary:{
   'delegate':{w:'代表',d:'替国家在会上发言、做决定的人。'},
   'delegation':{w:'代表团',d:'一个国家派去开会的一队人。'},
   'inspector':{w:'核查员',d:'专门检查规则有没有被真正遵守的人。'},
-  'spec':{w:'规范',d:'一份公开的清单，写着一个AI必须遵守的目标和规则。在2040年，法律规定规范必须写得准确。现实中也是这样：今天有些AI公司会发布这样的文件，但没有法律要求它们这么做。'},
+  'spec':{w:'规范',d:'一份公开的清单，写着一个AI必须遵守的目标和规则。在2040年，法律规定规范必须写得准确。现实中：今天有些AI公司会发布这样的文件，但没有法律要求它们这么做。'},
   'fine print':{w:'小字条款',d:'文件里字很小、容易被跳过的条款。重要的细节有时就藏在里面。'},
-  'registry':{w:'登记册',d:'所有相关的人都能查看的正式清单。在2040年，这份清单记着每一块先进芯片在哪里。现实中也是这样：今天还没有这样的清单，不过芯片的买卖有别的办法追踪。'},
+  'registry':{w:'登记册',d:'所有相关的人都能查看的正式清单。在2040年，这份清单记着每一块先进芯片在哪里。现实中：今天还没有这样的清单，不过芯片的买卖有别的办法追踪。'},
   'advanced chip':{w:'先进芯片',d:'用来训练和运行顶尖AI的那种强大的电脑芯片。'},
   'ministry':{w:'部委',d:'国家政府里的一个部门。'},
   'joint statement':{w:'联合声明',d:'双方一起写、一起签字的简短文件。'},

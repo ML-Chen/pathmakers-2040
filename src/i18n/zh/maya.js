@@ -224,19 +224,19 @@ I18N.add('zh','maya',{strings:{
   // ----- Field Guide -----
   'Information only you have':'只有你知道的信息','Ethics and AI':'伦理与AI',
   'An AI can be very smart and still know only what is in its records or what people tell it. Maya’s rash happened in another country, so it was not in her Boston record, and Byte had no way to know about it. When you know something your AI doesn’t, tell it.':'AI再聪明，也只知道记录里写了什么、别人告诉了它什么。玛雅起疹子是在美国以外的地方，波士顿的病历里没有这件事，Byte也就没办法知道。你知道的事如果AI不知道，就告诉它。',
-  'True today: medical records often don’t transfer between countries or even between hospitals.':'现实中也是这样：病历常常没法从一个国家转到另一个国家，就连医院和医院之间也常常不通。',
+  'True today: medical records often don’t transfer between countries or even between hospitals.':'现实中：病历常常没法从一个国家转到另一个国家，就连医院和医院之间也常常不通。',
   'Sample size':'样本量','Evidence and truth':'证据与真相',
   'BoneMend was tested on 40 kids. Casts were studied on 21,000. Numbers from small samples can be far off, which is why BoneMend’s error bar is so wide.':'骨愈凝胶只在40个孩子身上试过，石膏却在21,000个孩子身上研究过。样本小，得出的数字可能偏得很远，所以骨愈凝胶的误差线才那么长。',
-  'True today: new medicines go through trials with growing numbers of people before approval. BoneMend is made up for the game, though scientists are testing gels that help broken bones heal.':'现实中也是这样：新药获批之前要做好几轮试验，参加的人一轮比一轮多。骨愈凝胶是游戏里编出来的，不过科学家确实在试验能帮骨折愈合的凝胶。',
+  'True today: new medicines go through trials with growing numbers of people before approval. BoneMend is made up for the game, though scientists are testing gels that help broken bones heal.':'现实中：新药获批之前要做好几轮试验，参加的人一轮比一轮多。骨愈凝胶是游戏里编出来的，不过科学家确实在试验能帮骨折愈合的凝胶。',
   'Informed consent':'知情同意',
   'Patients decide about their own treatment after they understand the choices, the odds, and the tradeoffs. The doctor explains, and the patient chooses.':'病人先弄明白有哪些选择、每种有多大可能、要放弃些什么，再决定自己怎么治。医生负责讲清楚，病人自己来选。',
-  'True today: US law requires informed consent for most medical treatments. For a child, a parent gives consent, and doctors also ask the child to agree, which is called assent.':'现实中也是这样：美国法律规定，大多数治疗都要先得到病人的知情同意。病人是孩子的话，由家长签字同意，医生还会问孩子自己愿不愿意，这一步叫作“赞同”。',
+  'True today: US law requires informed consent for most medical treatments. For a child, a parent gives consent, and doctors also ask the child to agree, which is called assent.':'现实中：美国法律规定，大多数治疗都要先得到病人的知情同意。病人是孩子的话，由家长签字同意，医生还会问孩子自己愿不愿意，这一步叫作“赞同”。',
   
   'Being well calibrated means your words match your results. When you say you are “pretty sure,” you should turn out right most of the time, and when you say it is a “coin flip,” you should be right about half the time. You get better at this by writing down how sure you are and later checking how often you were right.':'校准得好，就是你嘴上说的把握和最后的结果对得上。你说“挺有把握”，那大多数时候就该是对的；你说“一半一半”，那就该差不多对一半。想练好这件事，可以每次把自己有几成把握记下来，过后再查一查自己到底对了多少次。',
-  'True today: weather forecasters and doctors practice this. When a good forecaster says there is a 70% chance of rain, it rains on about 7 of every 10 of those days.':'现实中也是这样：天气预报员和医生都会这样练。一位好的预报员说降雨概率是70%，那么在他这样说的日子里，大约10天里有7天会下雨。',
+  'True today: weather forecasters and doctors practice this. When a good forecaster says there is a 70% chance of rain, it rains on about 7 of every 10 of those days.':'现实中：天气预报员和医生都会这样练。一位好的预报员说降雨概率是70%，那么在他这样说的日子里，大约10天里有7天会下雨。',
   'Forecasts are not promises':'预测不是保证',
   'A forecast of 90% still means that about 1 time in 10, things go the other way. So a good decision can still turn out badly because of bad luck, and a bad decision can turn out well because of good luck.':'预测说有90%的可能，意思是大约10次里还会有1次结果相反。所以，好的决定可能碰上坏运气，结果很糟；差的决定也可能碰上好运气，结果不错。',
-  'True today: weather forecasters track how often their 70% predictions come true.':'现实中也是这样：天气预报员会统计，自己说“70%”的那些预报，后来有多少次真的应验了。',
+  'True today: weather forecasters track how often their 70% predictions come true.':'现实中：天气预报员会统计，自己说“70%”的那些预报，后来有多少次真的应验了。',
 
   // ----- passers-by in Boston -----
   'Ugh, the tram was ninety seconds late. NINETY seconds!':'唉，电车晚了九十秒。整整九十秒！',
