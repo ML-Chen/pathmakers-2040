@@ -7,7 +7,7 @@
 // it, and lives through the night hour by hour, with one chance to change the plan when Delta updates at 1 AM (ds_night).
 // Pictures: src/viz/duststorm.js; cast art: src/viz/space_cast.js; scenes: src/scenes/mars.js; styles: src/css/duststorm.css.
 // Mission state: S.notes.ds = {B, long, mid:{gh,cabin}, step} (startMission resets S.notes, so a replay starts fresh).
-CAREERS.explorer={name:'Mars Explorer',place:'Jezero Crater, Mars',district:'mars',why:'People want humans to go to new places.'};
+CAREERS.explorer={name:'Mars Explorer',place:'Jezero Crater, Mars',district:'mars',why:'Many people want humans, and not only robots, to go and live in new places like Mars.'};
 
 // ---------- the power model (kilowatt-hours over the night, 6 PM to 7 AM) ----------
 const DS_LIFE=26,DS_FLOOR=5,DS_LONG=8,DS_HOURS=13;
@@ -67,9 +67,9 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
     'sunset':'When the Sun goes down below the horizon.'
   },
   guide:{
-    'mars-ranges':{title:'Forecasts with ranges',track:'Evidence and truth',text:'An honest forecast gives a range and some odds, instead of one exact number. Delta said the storm would arrive between 5 and 8 PM, and that it would still be there at sunrise about 35 times in 100. A good plan works even at the worst end of a range like that.',real:'True today: weather forecasters say things like “a 30% chance of rain,” and hurricane maps show a cone of places the storm might go.'},
+    'mars-ranges':{title:'Forecasts with ranges',track:'Evidence and truth',text:'An honest forecast gives a range and some odds, instead of one exact number. Delta said the storm would arrive between 5 and 8 PM, and that it would still be there at sunrise about 35 times in 100. A safe plan should still work if the storm comes at the early end of that range and is still there at sunrise.',real:'True today: weather forecasters say things like “a 30% chance of rain,” and hurricane maps show a cone of places the storm might go.'},
     'mars-budget':{title:'A power budget',track:'Engineering and systems',text:'When there is only so much energy, you add up what everything needs, set aside a reserve for surprises, and then choose what matters most with what is left. Keeping the greenhouse warm but dark saved a lot of power and cost the plants almost nothing.',real:'True today: Mars rovers run on carefully budgeted power. When dust covered the solar panels of NASA’s InSight lander, it shut down instruments one by one to save energy.'},
-    'mars-private':{title:'Private needs',track:'People skills',text:'Some needs are private. Dev told you about his breathing machine because he trusted you with it. You asked him before you told Delta, and Delta only needed to know that one outlet had to stay on.',real:'True today: doctors and nurses must keep health information private, and share only what others need to know to help.'},
+    'mars-private':{title:'Private needs',track:'People skills',text:'Some health needs are private. Dev told you about his breathing machine because he trusted you with it. You asked him before you told Delta, and Delta only needed to know that one outlet had to stay on.',real:'True today: doctors and nurses must keep health information private, and share only what others need to know to help.'},
     'mars-real':{title:'Mars, today and in this game',track:'Math and science',text:'Mars has thin air full of fine red dust, so its daytime sky looks butterscotch, and its sunsets glow blue around the Sun. Dust storms can cover a region for days and block the sunlight that solar panels need.',real:'True today: robot rovers have explored Jezero Crater since 2021, and they have filmed dust devils and blue sunsets there. No person has been to Mars yet. The outpost, the crew and the tomatoes are this game’s guess about 2041.'}
   },
   chatter:{mars:['The dust gets into everything. My socks are pink now.','Did you see the dust devil this morning? It went right past the panels.','Three tomatoes! Lucía has named every one of them.','Earth is just a bright dot from here. I wave at it anyway.','The messages from home take twelve minutes to arrive today.'],
@@ -87,7 +87,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
       {who:'delta',mood:'think',text:'The storm should arrive between 5 and 8 PM, most likely at about 6:30. At [[sunset]], the battery should hold between 48 and 55 [[kilowatt-hours]] of energy.'},
       {who:'delta',mood:'worried',text:'There is about a 35% chance that the storm is still here at sunrise. If it is, the panels will make only a little power until noon, and we will need 8 more kilowatt-hours from the battery to get through the morning.'},
       {who:'delta',mood:'neutral',text:'My default plan follows the [[priority list]] that [[mission control]] wrote years ago. [[Life support]] comes first, then crew comfort, then science. The greenhouse comes last, so it goes off tonight.',choices:[
-        {t:'Can we change that order tonight?',good:true,mood:'smile',reply:'Yes. The list is only a starting point. You lead the station tonight, so you choose the order. I’ll show you exactly how much power each choice costs.'},
+        {t:'Can we change that order tonight?',good:true,mood:'smile',reply:'Yes. The old priority list is only where my plan starts. You lead the station tonight, so you choose the order. I’ll show you exactly how much power each choice costs.'},
         {t:'You know best. Use your plan.',mood:'think',reply:'I can run my plan safely. But my list was written before anyone grew food here. You should hear from the crew before you decide.'}]}
     ],
     lucia:[
@@ -95,7 +95,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
       {who:'lucia',mood:'worried',text:'If the greenhouse goes cold tonight, the flowers die, and the tomatoes freeze. We’d have to start again, and that takes four months.'},
       {who:'lucia',mood:'think',text:'But the plants can live through one dark night, as long as they stay warm. We could keep the heat on and turn the lights off. They won’t mind the dark.'},
       {who:'lucia',mood:'smile',text:'One more thing, and it’s just for me. My son Caio turns ten tomorrow, back home in Recife. I recorded a birthday message, and the [[relay window]] closes at 9 PM.',choices:[
-        {t:'Ten! Does he know about the tomatoes?',good:true,mood:'happy',reply:'He made me promise to save him the first seed. He wants to plant it in our backyard. That boy.'},
+        {t:'Ten! Does he know about the tomatoes?',good:true,mood:'happy',reply:'He made me promise to save him the first seed. He wants to plant it in our backyard.'},
         {t:'Messages can wait a day, right?',mood:'sad',reply:'They can. It’s only a birthday. I just hoped he’d hear from me on the day.'}]}
     ],
     dev:[
@@ -131,7 +131,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
   tell:{clue:'cpap',label:'Tell Delta about Dev’s outlet',note:'Done. Delta will keep that one outlet on all night, and it won’t say why. That adds half a kilowatt-hour to tonight’s plan.',guide:'mars-private',doc:'dpower'},
   criteria:[{id:'safe',label:'The battery lasts until the Sun is back'},{id:'tomatoes',label:'The first tomatoes survive'},{id:'rest',label:'Everyone sleeps safely'},{id:'message',label:'Lucía’s message reaches Earth in time'}],
   criteriaHint:'Not sure what one means? <button class="gw" data-w="relay window">Relay window</button> means the time a satellite can carry messages to Earth.',
-  criteriaNote:'Decide what matters most tonight before you look at the odds. Once you know that, the numbers can help you choose between plans.',
+  criteriaNote:'Decide what matters most tonight before you look at the odds. When you know what matters most, the odds can help you choose between plans.',
   controls:[{key:'gh',label:'Greenhouse',opts:[['lights','Lights + heat'],['heat','Heat only'],['off','Off']]},
     {key:'cabin',label:'Cabin',opts:[['warm','Cozy 20°C'],['cool','Cool 14°C']]},
     {key:'msg',label:'Message to Earth',opts:[['send','Send tonight'],['wait','Wait']]}],
