@@ -201,7 +201,7 @@ function beaVignette(kind){let art='';const W=(x,y,s,m,d)=>bvFig(beaFig('waltz',
   if(kind==='waltz')art=beaHall()+`<g class="beav-dance">${W(46,82,.95)}${bvFig(jordanFig('waltz'),68,82,.95)}</g>
     <g class="vnote"><path d="M20 26 v-9 l7 -2 v9" stroke="#fff" stroke-width="1.6" fill="none"/><ellipse cx="18.6" cy="26" rx="2.4" ry="1.7" fill="#fff"/><ellipse cx="25.6" cy="24" rx="2.4" ry="1.7" fill="#fff"/></g>
     <g class="vnote d2"><path d="M98 30 v-9" stroke="#fff" stroke-width="1.5"/><ellipse cx="96.6" cy="30" rx="2.4" ry="1.7" fill="#fff"/><path d="M98 21 q4 2 3 6" stroke="#fff" stroke-width="1.5" fill="none"/></g>
-    <g transform="translate(88 8)"><rect width="26" height="12" rx="6" fill="#fff"/><text x="13" y="8.6" text-anchor="middle" font-size="6.4" font-weight="800" fill="#7d4fa8" font-family="Nunito">no cane!</text></g>`;
+    <g transform="translate(88 8)"><rect width="26" height="12" rx="6" fill="#fff"/><text x="13" y="8.6" text-anchor="middle" font-size="6.4" font-weight="800" fill="#7d4fa8" font-family="Nunito">${typeof T==='function'?T('no cane!'):'no cane!'}</text></g>`;
   if(kind==='cane')art=beaHall()+`${bvFig(beaFig('cane',{mood:'smile'}),48,82,.95)}${bvFig(jordanFig('stand',{mood:'happy'}),70,82,.95)}
     <path d="M58 30 Q60 26 62 30" stroke="#fff" stroke-width="1.2" fill="none"/>${ch_star(30,20,3,'#fff6c8')}`;
   if(kind==='flutter')art=`<rect width="120" height="90" fill="#eef3ff"/><path d="M0 64 H120 V90 H0Z" fill="#dfe6f6"/>
@@ -210,11 +210,11 @@ function beaVignette(kind){let art='';const W=(x,y,s,m,d)=>bvFig(beaFig('waltz',
     <g class="vnote"><path d="M106 22 l3 -3 m0 6 l3 -3" stroke="#f5b82e" stroke-width="1.4"/></g>`;
   if(kind==='fall')art=`<rect width="120" height="90" fill="#fdf0ea"/><path d="M0 64 H120 V90 H0Z" fill="#f2dccf"/>
     ${bvFig(beaFig('sadsit',{mood:'sad'}),70,84,.95)}${bvFig(wrenFig('spot'),36,84,.9)}
-    <g transform="translate(8 8)"><rect width="34" height="20" rx="4" fill="#fff"/><text x="17" y="13" text-anchor="middle" font-size="7" font-weight="800" fill="#e5484d" font-family="Nunito">week 6</text></g>
-    <g transform="translate(92 14)"><rect width="22" height="14" rx="4" fill="#cfe8ff"/><text x="11" y="10" text-anchor="middle" font-size="6.4" font-weight="800" fill="#2a5a9a" font-family="Nunito">ice</text></g>`;
+    <g transform="translate(8 8)"><rect width="34" height="20" rx="4" fill="#fff"/><text x="17" y="13" text-anchor="middle" font-size="7" font-weight="800" fill="#e5484d" font-family="Nunito">${typeof T==='function'?T('week 6'):'week 6'}</text></g>
+    <g transform="translate(92 14)"><rect width="22" height="14" rx="4" fill="#cfe8ff"/><text x="11" y="10" text-anchor="middle" font-size="6.4" font-weight="800" fill="#2a5a9a" font-family="Nunito">${typeof T==='function'?T('ice'):'ice'}</text></g>`;
   if(kind==='quit')art=`<rect width="120" height="90" fill="#f3eefc"/><path d="M0 64 H120 V90 H0Z" fill="#e2d9f2"/>
     ${bvFig(beaFig('cross',{mood:'stern'}),78,84,.95)}${bvFig(wrenFig('stand',{bar:'M-4 -48 Q0 -50 4 -48'}),34,84,.9)}
-    <g transform="translate(6 6)"><rect width="56" height="22" rx="6" fill="#fff" stroke="#d9def0"/><text x="28" y="9.6" text-anchor="middle" font-size="5.6" font-weight="800" fill="#1f2340" font-family="Nunito">Dose raised</text><text x="28" y="17" text-anchor="middle" font-size="5" font-weight="700" fill="#8a90b0" font-family="Nunito">without asking</text></g>
+    <g transform="translate(6 6)"><rect width="56" height="22" rx="6" fill="#fff" stroke="#d9def0"/><text x="28" y="9.6" text-anchor="middle" font-size="5.6" font-weight="800" fill="#1f2340" font-family="Nunito">${typeof T==='function'?T('Dose raised'):'Dose raised'}</text><text x="28" y="17" text-anchor="middle" font-size="5" font-weight="700" fill="#8a90b0" font-family="Nunito">${typeof T==='function'?T('without asking'):'without asking'}</text></g>
     <path d="M100 12 l10 10 M110 12 l-10 10" stroke="#e5484d" stroke-width="2.6" stroke-linecap="round"/>`;
   if(!art)return vignette(kind);
   return `<svg viewBox="0 0 120 90" class="vig"><clipPath id="vc${++VGN}"><rect width="120" height="90" rx="10"/></clipPath><g clip-path="url(#vc${VGN})">${art}</g></svg>`}
@@ -234,13 +234,13 @@ function beaTreasureArt(id){const g='bt'+(++VGN);let a='';
     <path d="M44 28 h12 M50 22 v12" stroke="#e5484d" stroke-width="4" stroke-linecap="round"/>
     <g transform="translate(50 70)"><circle r="12" fill="#f5c84a" stroke="#9a6a16" stroke-width="1.6"/><circle r="8" fill="#ffffff" stroke="#9a6a16" stroke-width="1"/><path d="M-3 0 h6 M0 -3 v6" stroke="#2f3e6b" stroke-width="2.2" stroke-linecap="round"/>${[-1,1].map(s=>`<path d="M${s*9} 6 C${s*13} 2 ${s*13} -4 ${s*10} -8" stroke="#3a8a4a" stroke-width="1.6" fill="none"/>`).join('')}<circle cx="-4" cy="-6" r="1.6" fill="#fff" opacity=".8"/></g>`;
   if(id==='invite')a=`<g transform="rotate(-6 50 52)"><rect x="12" y="18" width="76" height="66" rx="5" fill="#fffaf0" stroke="#d9c58e" stroke-width="1.6"/><rect x="17" y="23" width="66" height="56" rx="3" fill="none" stroke="#e8c870" stroke-width="1.2"/>
-    <text x="50" y="40" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">Jordan</text><text x="50" y="50" text-anchor="middle" font-size="7" font-family="Georgia, serif" fill="#9a8aa8">&amp;</text><text x="50" y="60" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">Ana</text>
-    <text x="50" y="72" text-anchor="middle" font-size="6.4" font-weight="800" font-family="Nunito" fill="#b07a12" letter-spacing=".5">JULY 19</text></g>
+    <text x="50" y="40" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">${typeof T==='function'?T('Jordan'):'Jordan'}</text><text x="50" y="50" text-anchor="middle" font-size="7" font-family="Georgia, serif" fill="#9a8aa8">&amp;</text><text x="50" y="60" text-anchor="middle" font-size="9" font-family="Georgia, serif" font-style="italic" fill="#7d4fa8">${typeof T==='function'?T('Ana'):'Ana'}</text>
+    <text x="50" y="72" text-anchor="middle" font-size="6.4" font-weight="800" font-family="Nunito" fill="#b07a12" letter-spacing=".5">${typeof T==='function'?T('JULY 19'):'JULY 19'}</text></g>
     <g transform="translate(76 80)"><g class="ig-pulse"><circle r="9" fill="#c0304a" stroke="#8a1a30" stroke-width="1.2"/>${bvHeart(0,0,1.2,'#ff9aa8')}</g></g>`;
   if(id==='cane')a=`<path d="M58 94 L46 30" stroke="#4a2814" stroke-width="7" stroke-linecap="round"/><path d="M58 94 L46 30" stroke="#8a5430" stroke-width="5" stroke-linecap="round"/><path d="M57 92 L46.6 34" stroke="#c08a5a" stroke-width="1.4" stroke-linecap="round"/>
     <path d="M46 30 C44 14 26 12 24 26" stroke="#4a2814" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M46 30 C44 14 26 12 24 26" stroke="#8a5430" stroke-width="5" fill="none" stroke-linecap="round"/>
     <rect x="52" y="92" width="10" height="5" rx="2" fill="#2a1a12"/>
-    <g transform="translate(62 48) rotate(14)"><path d="M-6 -2 L-12 -6" stroke="#9a8aa8" stroke-width="1"/><rect x="0" y="-8" width="26" height="14" rx="3" fill="#fff6d8" stroke="#c9a24a" stroke-width="1.2"/><circle cx="3" cy="-1" r="1.4" fill="#c9a24a"/><text x="15" y="2.6" text-anchor="middle" font-size="7.6" font-weight="800" font-family="Nunito" fill="#7d4fa8">Fred</text></g>`;
+    <g transform="translate(62 48) rotate(14)"><path d="M-6 -2 L-12 -6" stroke="#9a8aa8" stroke-width="1"/><rect x="0" y="-8" width="26" height="14" rx="3" fill="#fff6d8" stroke="#c9a24a" stroke-width="1.2"/><circle cx="3" cy="-1" r="1.4" fill="#c9a24a"/><text x="15" y="2.6" text-anchor="middle" font-size="7.6" font-weight="800" font-family="Nunito" fill="#7d4fa8">${typeof T==='function'?T('Fred'):'Fred'}</text></g>`;
   if(id==='wren')a=bvFig(wrenFig('stand',{bar:'M-4 -49 Q0 -47 4 -49'}),50,96,1.42);
   return `<svg viewBox="0 0 100 100" class="bea-trsvg">${a}</svg>`}
 

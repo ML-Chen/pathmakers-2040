@@ -81,60 +81,60 @@ function rimFace(pick){return `<svg viewBox="-12 -26 24 30" class="rim-face">${r
 MISSIONS.rimshop.custom={
   rim_ride(){const st=rimState();
     screen('walk',`${scene('moon')}${hud('The rim road · Shackleton Rim Base')}<div class="props walklayer"><div class="walk-byte rim-walkbyte">${byteBox({...onSite(S.byte),mood:'happy'},'trot')}</div></div>
-      <div class="caption-card"><p>The Sun sits low over the hills, so every rock throws a long shadow. Far below the rim of the crater, tiny lights move through the dark.</p><div class="row"><button class="btn small ghost" id="clue">Look down</button><button class="btn small" id="on">Go to the market</button></div></div>`);
-    $('#clue').onclick=()=>{st.seen.crater=true;save();unlock('rim-moon')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-moon'].title,'good');toast('Those lights are headlamps. An ice crew is riding down to dig at the bottom of the crater.','good');$('#clue').disabled=true};
+      <div class="caption-card"><p>${T('The Sun sits low over the hills, so every rock throws a long shadow. Far below the rim of the crater, tiny lights move through the dark.')}</p><div class="row"><button class="btn small ghost" id="clue">${T('Look down')}</button><button class="btn small" id="on">${T('Go to the market')}</button></div></div>`);
+    $('#clue').onclick=()=>{st.seen.crater=true;save();unlock('rim-moon')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['rim-moon'].title)),'good');toast(T('Those lights are headlamps. An ice crew is riding down to dig at the bottom of the crater.'),'good');$('#clue').disabled=true};
     $('#on').onclick=()=>nextStep()},
   rim_ask(){const st=rimState();const A=st.asked;
-    const five=()=>`<div class="rim-five">${RIM_FIVE.map((f,i)=>`<div class="rim-f" style="--d:${i*.12}s">${rimFace(f.pick)}<b>${f.n}</b><span style="color:${RIM_COL[f.pick]}">${RIM_IDEA[f.pick]}</span></div>`).join('')}</div>`;
+    const five=()=>`<div class="rim-five">${RIM_FIVE.map((f,i)=>`<div class="rim-f" style="--d:${i*.12}s">${rimFace(f.pick)}<b>${T(f.n)}</b><span style="color:${RIM_COL[f.pick]}">${T(RIM_IDEA[f.pick])}</span></div>`).join('')}</div>`;
     const many=()=>{const dots=[];['glass','treats','soup'].forEach(k=>{for(let g=0;g<2;g++)for(let i=0;i<RIM_POLL[k][g];i++)dots.push([k,g])});dots.sort((a,b)=>a[1]-b[1]||['glass','treats','soup'].indexOf(a[0])-['glass','treats','soup'].indexOf(b[0]));
       const W=50,cell=6.4;const svg=dots.map((d,i)=>{const col=i%W,row=Math.floor(i/W);return `<rect x="${col*cell}" y="${row*cell+(d[1]?4:0)}" width="${cell-1.4}" height="${cell-1.4}" rx="1.4" fill="${RIM_COL[d[0]]}" class="rim-cell" style="--d:${(i*.002).toFixed(3)}s"/>`}).join('');
       const rows=Math.ceil(dots.length/W),h=rows*cell+8;
-      return `<div class="rim-many"><svg viewBox="0 0 ${W*cell} ${h}">${svg}</svg><div class="rim-legend">${['glass','treats','soup'].map(k=>`<span><i style="background:${RIM_COL[k]}"></i>${RIM_IDEA[k]} ${RIM_POLL[k][0]+RIM_POLL[k][1]}</span>`).join('')}</div><div class="rim-split"><span>Top rows: 220 people who live here</span><span>Bottom rows: 280 visitors</span></div></div>`};
+      return `<div class="rim-many"><svg viewBox="0 0 ${W*cell} ${h}">${svg}</svg><div class="rim-legend">${['glass','treats','soup'].map(k=>`<span><i style="background:${RIM_COL[k]}"></i>${T(RIM_IDEA[k])} ${RIM_POLL[k][0]+RIM_POLL[k][1]}</span>`).join('')}</div><div class="rim-split"><span>${T('Top rows: 220 people who live here')}</span><span>${T('Bottom rows: 280 visitors')}</span></div></div>`};
     const Q=[{t:'Haruto’s friends all live here, but more than half of our customers are visitors.',ok:'good'},{t:'Five people answered quickly, so they didn’t think as carefully.',ok:'fast'},{t:'The big poll probably has a mistake, because it disagrees with the five.',ok:'wrong'}];
-    screen('criteria rim-askscr',`${scene('moon_dome')}${hud('Market Dome · Asking around')}<div class="panel-card rim-card"><h2>Five or five hundred?</h2>
-      <div class="rim-asks"><button class="rim-askb ${A.five?'on':''}" id="a5"><b>5</b><span>Haruto’s tea friends</span></button><button class="rim-askb ${A.many?'on':''}" id="a500"><b>500</b><span>${esc(S.byte.name)}’s poll of the base</span></button></div>
+    screen('criteria rim-askscr',`${scene('moon_dome')}${hud('Market Dome · Asking around')}<div class="panel-card rim-card"><h2>${T('Five or five hundred?')}</h2>
+      <div class="rim-asks"><button class="rim-askb ${A.five?'on':''}" id="a5"><b>5</b><span>${T('Haruto’s tea friends')}</span></button><button class="rim-askb ${A.many?'on':''}" id="a500"><b>500</b><span>${esc(T('{0}’s poll of the base',S.byte.name))}</span></button></div>
       <div id="r5">${A.five?five():''}</div><div id="r500">${A.many?many():''}</div><div id="rq"></div></div>`);
     const say=t=>playLine('byte',t);
     if(!A.five&&!A.many)setTimeout(()=>say('Let’s hear from both groups. First Haruto’s five friends at the tea corner, then five hundred people from all over the base.'),250);
     const ask=()=>{if(!(A.five&&A.many))return;const box=$('#rq');
-      if(st.answer){box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(RIM_ASKSAY[st.answer])}</p></div><button class="btn wide" id="rgo">Meet my next customer</button>`;$('#rgo').onclick=()=>nextStep();return}
-      box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>Why do you think Haruto’s five friends and the five hundred people gave different answers?</p></div><div class="choices">${mixIdx(Q).map(([q,j])=>`<button class="choice" data-j="${j}">${esc(q.t)}</button>`).join('')}</div>`;
+      if(st.answer){box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'happy'})}<p>${esc(T(RIM_ASKSAY[st.answer]))}</p></div><button class="btn wide" id="rgo">${T('Meet my next customer')}</button>`;$('#rgo').onclick=()=>nextStep();return}
+      box.innerHTML=`<div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${T('Why do you think Haruto’s five friends and the five hundred people gave different answers?')}</p></div><div class="choices">${mixIdx(Q).map(([q,j])=>`<button class="choice" data-j="${j}">${esc(T(q.t))}</button>`).join('')}</div>`;
       say('Why do you think Haruto’s five friends and the five hundred people gave different answers?');
-      $$('#rq .choice').forEach(b=>b.onclick=()=>{const q=Q[b.dataset.j];st.answer=q.ok;save();if(q.ok==='good'){unlock('rim-sample')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-sample'].title,'good');heart('haruto')}say(RIM_ASKSAY[q.ok]);ask();box.scrollIntoView({behavior:'smooth',block:'end'})})};
+      $$('#rq .choice').forEach(b=>b.onclick=()=>{const q=Q[b.dataset.j];st.answer=q.ok;save();if(q.ok==='good'){unlock('rim-sample')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['rim-sample'].title)),'good');heart('haruto')}say(RIM_ASKSAY[q.ok]);ask();box.scrollIntoView({behavior:'smooth',block:'end'})})};
     $('#a5').onclick=()=>{if(A.five)return;A.five=1;save();$('#a5').classList.add('on');$('#r5').innerHTML=five();say('Four of the five picked Earth treats. Now let’s see what five hundred people say.');ask()};
     $('#a500').onclick=()=>{if(A.many)return;A.many=1;save();$('#a500').classList.add('on');$('#r500').innerHTML=many();say('Five hundred people answered. Visitors mostly picked Moon-glass, and residents picked treats or soup.');ask();$('#r500').scrollIntoView({behavior:'smooth',block:'nearest'})};
     ask()},
   rim_popup(){const st=rimState();let pick=st.test||null;const done=!!st.test;
-    const card=k=>{const T=RIM_TESTS[k];return `<button class="rim-test ${pick===k?'on':''}" data-t="${k}" ${done?'disabled':''}><div class="rim-ticon">${rimTestIcon(k)}</div><b>${esc(T.name)}</b><span>${T.cost} coins · 3 days</span></button>`};
-    screen('criteria rim-popscr',`${scene('moon_dome')}${hud('Your booth · Pop-up test')}<div class="panel-card rim-card"><h2>Test small first</h2>
-      <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>Pick one idea to test for three days. Which one are you least sure about?</p></div>
+    const card=k=>{const X=RIM_TESTS[k];return `<button class="rim-test ${pick===k?'on':''}" data-t="${k}" ${done?'disabled':''}><div class="rim-ticon">${rimTestIcon(k)}</div><b>${esc(T(X.name))}</b><span>${T('{0} coins · 3 days',X.cost)}</span></button>`};
+    screen('criteria rim-popscr',`${scene('moon_dome')}${hud('Your booth · Pop-up test')}<div class="panel-card rim-card"><h2>${T('Test small first')}</h2>
+      <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${T('Pick one idea to test for three days. Which one are you least sure about?')}</p></div>
       <div class="rim-tests">${['glass','treats','soup'].map(card).join('')}</div>
-      <button class="btn wide" id="run" ${pick&&!done?'':'disabled'}>Open the pop-up</button><div id="rimres"></div></div>`);
+      <button class="btn wide" id="run" ${pick&&!done?'':'disabled'}>${T('Open the pop-up')}</button><div id="rimres"></div></div>`);
     if(!done)setTimeout(()=>playLine('byte','Pick one idea to test for three days. Which one are you least sure about?'),250);
     $$('.rim-test').forEach(b=>b.onclick=()=>{pick=b.dataset.t;$$('.rim-test').forEach(x=>x.classList.toggle('on',x===b));$('#run').disabled=false});
     const show=()=>{const r=rimTestResult(st.test);
-      $('#rimres').innerHTML=`<div class="rim-result ${r.good?'':'meh'}"><div class="rim-rvig">${rimVignette(r.vig)}</div><div><h3>${esc(r.head)}</h3><p>${esc(r.text)}</p></div></div>
-        <div class="rim-learn"><div class="upd-badge">What we learned</div>${['glass','treats','soup'].map(k=>{const v=rimDaily(k);const tested=k===st.test;return `<div class="rim-lrow"><span>${RIM_IDEA[k]}</span><div class="rim-ltrack"><i class="${tested?'t':'g'}" style="width:${Math.round(v/40*100)}%;background:${RIM_COL[k]}"></i></div><b>${tested?v+' coins a day':'guess'}</b></div>`}).join('')}</div>
-        <button class="btn wide" id="rimgo">Write Till’s limits</button>`;
+      $('#rimres').innerHTML=`<div class="rim-result ${r.good?'':'meh'}"><div class="rim-rvig">${rimVignette(r.vig)}</div><div><h3>${esc(T(r.head))}</h3><p>${esc(T(r.text))}</p></div></div>
+        <div class="rim-learn"><div class="upd-badge">${T('What we learned')}</div>${['glass','treats','soup'].map(k=>{const v=rimDaily(k);const tested=k===st.test;return `<div class="rim-lrow"><span>${T(RIM_IDEA[k])}</span><div class="rim-ltrack"><i class="${tested?'t':'g'}" style="width:${Math.round(v/40*100)}%;background:${RIM_COL[k]}"></i></div><b>${tested?T('{0} coins a day',v):T('guess')}</b></div>`}).join('')}</div>
+        <button class="btn wide" id="rimgo">${T('Write Till’s limits')}</button>`;
       $('#rimgo').onclick=()=>nextStep();return r.line};
-    $('#run').onclick=()=>{if(!pick)return;st.test=pick;save();unlock('rim-test')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-test'].title,'good');$('#run').disabled=true;$$('.rim-test').forEach(b=>b.disabled=true);
-      const ov=document.createElement('div');ov.className='rim-days';ov.innerHTML=`<div class="rim-dayn"><b id="rimday">Day 1</b><span id="rimcoins">0 coins</span></div><div class="rim-dvig">${rimVignette(rimTestResult(pick).vig)}</div>`;document.body.appendChild(ov);
-      const r=rimTestResult(pick);let i=0;const tm=setInterval(()=>{i++;const d=$('#rimday'),c=$('#rimcoins');if(d)d.textContent='Day '+Math.min(3,1+Math.floor(i/4));if(c)c.textContent=Math.round(r.coins*Math.min(1,i/12))+' coins';
+    $('#run').onclick=()=>{if(!pick)return;st.test=pick;save();unlock('rim-test')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['rim-test'].title)),'good');$('#run').disabled=true;$$('.rim-test').forEach(b=>b.disabled=true);
+      const ov=document.createElement('div');ov.className='rim-days';ov.innerHTML=`<div class="rim-dayn"><b id="rimday">${T('Day {0}',1)}</b><span id="rimcoins">${T('{0} coins',0)}</span></div><div class="rim-dvig">${rimVignette(rimTestResult(pick).vig)}</div>`;document.body.appendChild(ov);
+      const r=rimTestResult(pick);let i=0;const tm=setInterval(()=>{i++;const d=$('#rimday'),c=$('#rimcoins');if(d)d.textContent=T('Day {0}',Math.min(3,1+Math.floor(i/4)));if(c)c.textContent=T('{0} coins',Math.round(r.coins*Math.min(1,i/12)));
         if(i>=13){clearInterval(tm);ov.classList.add('out');setTimeout(()=>ov.remove(),450);playLine('byte','Here is what we learned from three days of selling at the pop-up.');show();$('#rimres').scrollIntoView({behavior:'smooth',block:'start'})}},230)};
     if(done)show()},
   rim_rules(){const st=rimState(),R=st.rules;const all=()=>RIM_RULES.every(r=>R[r.id]);
-    screen('criteria rim-rulescr',`${scene('moon_dome')}${hud('Your booth · Till’s limits')}<div class="panel-card rim-card"><h2>Till’s limits</h2>
-      <div class="byte-note">${byteBox({...S.byte,mood:'neutral'})}<p>For each job below, choose who does it: Till on its own, Till with you checking afterwards, or only you.</p></div>
-      <div class="rim-rules">${RIM_RULES.map(r=>`<div class="rim-rule"><p>${esc(r.t)}</p><div class="seg">${RIM_BINS.map(([v,l])=>`<button class="segb ${R[r.id]===v?'on':''}" data-r="${r.id}" data-v="${v}">${l}</button>`).join('')}</div></div>`).join('')}</div>
-      <div id="rimnote"></div><button class="btn wide" id="next" ${all()?'':'disabled'}>Set my goals</button></div>`);
+    screen('criteria rim-rulescr',`${scene('moon_dome')}${hud('Your booth · Till’s limits')}<div class="panel-card rim-card"><h2>${T('Till’s limits')}</h2>
+      <div class="byte-note">${byteBox({...S.byte,mood:'neutral'})}<p>${T('For each job below, choose who does it: Till on its own, Till with you checking afterwards, or only you.')}</p></div>
+      <div class="rim-rules">${RIM_RULES.map(r=>`<div class="rim-rule"><p>${esc(T(r.t))}</p><div class="seg">${RIM_BINS.map(([v,l])=>`<button class="segb ${R[r.id]===v?'on':''}" data-r="${r.id}" data-v="${v}">${T(l)}</button>`).join('')}</div></div>`).join('')}</div>
+      <div id="rimnote"></div><button class="btn wide" id="next" ${all()?'':'disabled'}>${T('Set my goals')}</button></div>`);
     if(!all())setTimeout(()=>playLine('byte','Till can do a lot by itself. For each job, choose whether Till does it alone, Till does it and you check, or only you do it.'),250);
     const note=()=>{const n=[];if(R.raise==='alone')n.push('If supplies run short, Till will raise prices by itself. People here can’t shop anywhere else, so think about whether that feels fair.');
       if(R.newsupplier==='alone')n.push('Till could buy from any of the 400 new companies on the base without asking you first.');if(R.reorder==='me'||R.nudge==='me')n.push('Asking you about tiny jobs is safe, but it will wake you up at 2 AM a lot.');
-      $('#rimnote').innerHTML=n.length?`<div class="rim-warn">${n.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`:''};
+      $('#rimnote').innerHTML=n.length?`<div class="rim-warn">${n.map(x=>`<p>${esc(T(x))}</p>`).join('')}</div>`:''};
     note();
     $$('[data-r]').forEach(b=>b.onclick=()=>{R[b.dataset.r]=b.dataset.v;save();$$(`[data-r="${b.dataset.r}"]`).forEach(x=>x.classList.toggle('on',x===b));
       if(b.dataset.r==='raise'){S.choice.short=b.dataset.v==='alone'?'raise':'ask';save()}note();
-      if(all()){$('#next').disabled=false;if(!st.rulesSaid){st.rulesSaid=1;save();playLine('byte','Those are clear limits, and Till will follow them exactly as you wrote them.');unlock('rim-limits')&&toast('New Field Guide idea: '+FIELD_GUIDE['rim-limits'].title,'good')}}});
+      if(all()){$('#next').disabled=false;if(!st.rulesSaid){st.rulesSaid=1;save();playLine('byte','Those are clear limits, and Till will follow them exactly as you wrote them.');unlock('rim-limits')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['rim-limits'].title)),'good')}}});
     $('#next').onclick=()=>nextStep()}
 };
 const RIM_ASKSAY={good:'Exactly. All five of them live at the base, and more than half of our customers are visitors. The people you ask should be the same kinds of people who will really buy from the shop.',

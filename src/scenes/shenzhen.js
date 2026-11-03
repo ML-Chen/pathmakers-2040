@@ -494,11 +494,11 @@
     ctx.beginPath(); rrect(ctx, bx2 - 2 * s, by - 2 * s, bw + 4 * s, bh + 4 * s, 6 * s); ctx.fillStyle = '#2a2430'; ctx.fill();
     ctx.beginPath(); rrect(ctx, bx2, by, bw, bh, 5 * s); ctx.fillStyle = '#16202e'; ctx.fill();
     ctx.strokeStyle = 'rgba(255,214,150,0.7)'; ctx.lineWidth = 0.8 * s; ctx.beginPath(); ctx.moveTo(bx2 + bw, by + 4 * s); ctx.lineTo(bx2 + bw, by + bh - 4 * s); ctx.stroke();
-    ctx.fillStyle = '#7ff7e4'; ctx.font = '800 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('ROBOT PERMITS IN USE', bx2 + 6 * s, by + 11 * s);
+    ctx.fillStyle = '#7ff7e4'; ctx.font = '800 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; var zhb = typeof LANG === 'function' && LANG() === 'zh'; ctx.fillText(zhb ? '在用机器人许可' : 'ROBOT PERMITS IN USE', bx2 + 6 * s, by + 11 * s);
     ctx.fillStyle = '#ffffff'; ctx.font = '800 ' + (13 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('41,860', bx2 + 6 * s, by + 28 * s);
-    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('CAP 42,000', bx2 + 54 * s, by + 27 * s);
+    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (6.4 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText(zhb ? '上限 42,000' : 'CAP 42,000', bx2 + 54 * s, by + 27 * s);
     ctx.fillStyle = '#34445a'; ctx.fillRect(bx2 + 6 * s, by + 36 * s, bw - 12 * s, 6 * s); ctx.fillStyle = '#f0b020'; ctx.fillRect(bx2 + 6 * s, by + 36 * s, (bw - 12 * s) * 0.9967, 6 * s);
-    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (5 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText('SHENZHEN ZONE 3 · LIVE', bx2 + 6 * s, by + 49 * s);
+    ctx.fillStyle = '#9ab0c8'; ctx.font = '700 ' + (5 * s).toFixed(1) + 'px Nunito, sans-serif'; ctx.fillText(zhb ? '深圳 3号区 · 实时' : 'SHENZHEN ZONE 3 · LIVE', bx2 + 6 * s, by + 49 * s);
     L.board = [bx2, by, bw, bh];
     items.forEach(function (it) { it[1](); });
     // the nearest stones fall into soft shade, calm for the dialogue

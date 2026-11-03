@@ -47,7 +47,7 @@ function aghLines(x,y,w,n,gap,cls){return [...Array(n)].map((_,i)=>`<rect x="${x
 // a tea tin, front view, centred on (x,y), about 26 x 34
 function aghTin(x,y,s){return `<g transform="translate(${aghF(x)} ${aghF(y)}) scale(${s})"><rect x="-13" y="-15" width="26" height="32" rx="3" fill="#8b2f3c" stroke="#5e1c27" stroke-width="1.2"/>
    <ellipse cx="0" cy="-15" rx="13" ry="3.4" fill="#b23a4a" stroke="#5e1c27" stroke-width="1.2"/><rect x="-13" y="-6" width="26" height="14" fill="#f6e3b4"/>
-   <text x="0" y="0" font-size="5.2" font-weight="900" text-anchor="middle" fill="#5e1c27" font-family="Nunito, sans-serif">LICORICE</text><text x="0" y="6" font-size="4.2" font-weight="800" text-anchor="middle" fill="#7a4a22" font-family="Nunito, sans-serif">ROOT TEA</text>
+   <text x="0" y="0" font-size="5.2" font-weight="900" text-anchor="middle" fill="#5e1c27" font-family="Nunito, sans-serif">${typeof T==='function'?T('LICORICE'):'LICORICE'}</text><text x="0" y="6" font-size="4.2" font-weight="800" text-anchor="middle" fill="#7a4a22" font-family="Nunito, sans-serif">${typeof T==='function'?T('ROOT TEA'):'ROOT TEA'}</text>
    <path d="M-10 -12 V14" stroke="#fff" stroke-width="2" opacity=".25"/></g>`}
 
 Object.assign(VIZ,{

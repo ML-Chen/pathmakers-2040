@@ -98,11 +98,11 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
   },
   docs:[],criteria:[],controls:[],start:{},
   planName(){const r=szSt().rule;const s=[];
-    if(r.pause)s.push(r.pause==='anyone'?'Anyone on the site may pause a crew.':'Only the crew lead may pause a crew.');
-    if(r.stop)s.push(r.stop==='anyone'?'Anyone on the site may fully stop a crew with the red pedestal.':'Only the crew lead may fully stop a crew, using a code.');
-    if(r.restart)s.push(r.restart==='lead'?'Only the crew lead may start it again, with a signed code.':'The factory may start it again from the tower.');
-    if(r.remote)s.push({stoptell:'The factory may stop a crew from far away, and it must tell the crew lead at once.',never:'The factory may do nothing at all from far away.',both:'The factory may stop or start any crew it built from far away.'}[r.remote]);
-    return s.join(' ')||'Rule card'},
+    if(r.pause)s.push(T(r.pause==='anyone'?'Anyone on the site may pause a crew.':'Only the crew lead may pause a crew.'));
+    if(r.stop)s.push(T(r.stop==='anyone'?'Anyone on the site may fully stop a crew with the red pedestal.':'Only the crew lead may fully stop a crew, using a code.'));
+    if(r.restart)s.push(T(r.restart==='lead'?'Only the crew lead may start it again, with a signed code.':'The factory may start it again from the tower.'));
+    if(r.remote)s.push(T({stoptell:'The factory may stop a crew from far away, and it must tell the crew lead at once.',never:'The factory may do nothing at all from far away.',both:'The factory may stop or start any crew it built from far away.'}[r.remote]));
+    return s.join(LANG()==='en'?' ':'')||T('Rule card')},
   outcomes(){return [{kind:'done',p:1,cap:'',flags:{}}]},truth(){return true},knows(){return true},
   custom:{sz_drill(){szDrill()},sz_rules(){szRules()},sz_sign(){szSign()},sz_after(){szAfter()},sz_debrief(){szDebrief()}},
   eveningScene:'shenzhen',eveningPlace:'Zone 3 · Shenzhen · 6:40 PM',
@@ -116,11 +116,11 @@ Stop drill: saying "Tíng!" pauses the crew in 0.8 s (a robot carrying a beam se
 The rule card asks: who may pause, who may fully stop, who may restart, and what the factory may do remotely. ${Object.keys(st.rule).length?'Player chose: '+MISSIONS.robotfactory.planName()+'.':''}
 Key consideration: stopping is cheap and easy to undo, so anyone on site should be able to stop; restarting should take the named crew lead's signed code; a remote stop is useful for safety and permits but must tell the crew lead at once, and remote restart is risky.`},
   canned(q){
-    if(/ting|tíng|voice|shout/.test(q))return '“Tíng” means stop. Anybody standing nearby can say it, and the crew pauses in under a second. But the crew starts again by itself after thirty seconds unless somebody tells it to stay stopped.';
-    if(/remote|tower|factory/.test(q))return 'The tower can stop every crew this factory has built, anywhere in the world. It can also start them again, without telling the crew lead. The restart worries me, because the people on site would not know that their crew was about to move again.';
-    if(/restart|code/.test(q))return 'Starting a crew again is riskier than stopping one, because if something is still wrong, people could get hurt. A signed code from the crew lead proves exactly who said to go.';
-    if(/permit|cap|zone/.test(q))return 'Zone 3 has 41,860 robots working today, and its limit is 42,000. Tang Yifan checks those numbers every day.';
-    if(/help|stuck|what do i do/.test(q))return 'Try all three stops in the drill, and watch what each robot does. Then fill in the rule card: who may pause a crew, who may stop it, who may start it again, and what the factory may do from far away.';
+    if(TRX(/ting|tíng|voice|shout/).test(q))return T('“Tíng” means stop. Anybody standing nearby can say it, and the crew pauses in under a second. But the crew starts again by itself after thirty seconds unless somebody tells it to stay stopped.');
+    if(TRX(/remote|tower|factory/).test(q))return T('The tower can stop every crew this factory has built, anywhere in the world. It can also start them again, without telling the crew lead. The restart worries me, because the people on site would not know that their crew was about to move again.');
+    if(TRX(/restart|code/).test(q))return T('Starting a crew again is riskier than stopping one, because if something is still wrong, people could get hurt. A signed code from the crew lead proves exactly who said to go.');
+    if(TRX(/permit|cap|zone/).test(q))return T('Zone 3 has 41,860 robots working today, and its limit is 42,000. Tang Yifan checks those numbers every day.');
+    if(TRX(/help|stuck|what do i do/).test(q))return T('Try all three stops in the drill, and watch what each robot does. Then fill in the rule card: who may pause a crew, who may stop it, who may start it again, and what the factory may do from far away.');
     return null},
   lines:[
     {who:'byte',text:'Pick one of the three ways to stop the crew, and I’ll time how long it takes.'},
@@ -153,32 +153,32 @@ function szYard(){const bot=(x,c,beam)=>`<g class="sz-bot" transform="translate(
 // ---------- the stop drill ----------
 function szDrill(){const st=szSt(),last=st.last&&SZ_TESTS[st.last],all=Object.keys(SZ_TESTS).every(k=>st.ran[k]);
   const say=last?last.line:'Pick one of the three ways to stop the crew, and I’ll time how long it takes.';
-  screen('criteria sz-drillscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Stop drill')}<div class="panel-card sz-drill"><h2>Stop drill</h2>
-    <div class="sz-yard ${st.stopping?'':'running'}" id="sz-yard">${szYard()}<div class="sz-clock"><b id="sz-time">${last?last.time:'0.0 s'}</b><span>${last?esc(last.res):'Crew working'}</span></div></div>
-    <div class="sz-tests">${Object.keys(SZ_TESTS).map(k=>{const x=SZ_TESTS[k];return `<button class="sz-test ${st.ran[k]?'done':''} ${st.last===k?'on':''}" data-k="${k}"><b>${esc(x.label)}</b><span>${esc(x.who)}</span>${st.ran[k]?`<i>${esc(x.time)}</i>`:''}</button>`}).join('')}</div>
-    <div class="byte-note">${byteBox({...S.byte,mood:st.last==='remote'?'alert':'think'})}<p>${esc(all&&st.last!=='remote'?'You’ve tried all three now. The remote stop is the one we need to talk about, because it reaches every crew this factory has built.':say)}</p></div>
-    <button class="btn wide" id="sz-go" ${all?'':'disabled'}>Talk to the zone monitor</button></div>`);
+  screen('criteria sz-drillscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Stop drill')}<div class="panel-card sz-drill"><h2>${esc(T('Stop drill'))}</h2>
+    <div class="sz-yard ${st.stopping?'':'running'}" id="sz-yard">${szYard()}<div class="sz-clock"><b id="sz-time">${last?esc(T(last.time)):T('0.0 s')}</b><span>${esc(T(last?last.res:'Crew working'))}</span></div></div>
+    <div class="sz-tests">${Object.keys(SZ_TESTS).map(k=>{const x=SZ_TESTS[k];return `<button class="sz-test ${st.ran[k]?'done':''} ${st.last===k?'on':''}" data-k="${k}"><b>${esc(T(x.label))}</b><span>${esc(T(x.who))}</span>${st.ran[k]?`<i>${esc(T(x.time))}</i>`:''}</button>`}).join('')}</div>
+    <div class="byte-note">${byteBox({...S.byte,mood:st.last==='remote'?'alert':'think'})}<p>${esc(T(all&&st.last!=='remote'?'You’ve tried all three now. The remote stop is the one we need to talk about, because it reaches every crew this factory has built.':say))}</p></div>
+    <button class="btn wide" id="sz-go" ${all?'':'disabled'}>${esc(T('Talk to the zone monitor'))}</button></div>`);
   $$('.sz-test').forEach(b=>b.onclick=()=>{const k=b.dataset.k,x=SZ_TESTS[k],y=$('#sz-yard');y.className='sz-yard running';void y.offsetWidth;
     $$('.sz-test').forEach(z=>z.disabled=true);MUSIC.sfx&&MUSIC.sfx(k==='button'?'click':k==='voice'?'pop':'blip');
     if(k==='voice'){y.classList.add('ting');playLine('linxm','Tíng!')}if(k==='remote')y.classList.add('wave');
-    const t0=Date.now(),lim=parseFloat(x.time)*1000,tm=$('#sz-time');const iv=setInterval(()=>{const d=Math.min(lim,Date.now()-t0);if(tm)tm.textContent=(d/1000).toFixed(1)+' s';if(d>=lim)clearInterval(iv)},50);
+    const t0=Date.now(),lim=parseFloat(x.time)*1000,tm=$('#sz-time');const iv=setInterval(()=>{const d=Math.min(lim,Date.now()-t0);if(tm)tm.textContent=T('{0} s',(d/1000).toFixed(1));if(d>=lim)clearInterval(iv)},50);
     setTimeout(()=>{y.classList.add('stopped');y.classList.remove('running')},lim+80);
-    setTimeout(()=>{st.ran[k]=1;st.last=k;save();if(k==='remote')unlock('sz-zone')&&toast('New Field Guide idea: Special Economic Zones','good');szDrill();playLine('byte',SZ_TESTS[k].line)},lim+1200)});
+    setTimeout(()=>{st.ran[k]=1;st.last=k;save();if(k==='remote')unlock('sz-zone')&&toast(T('New Field Guide idea: {0}',T('Special Economic Zones')),'good');szDrill();playLine('byte',SZ_TESTS[k].line)},lim+1200)});
   if(!last)playLine('byte',say);
   $('#sz-go').onclick=()=>nextStep()}
 
 // ---------- the crew's rule card ----------
 function szRules(){const st=szSt(),r=st.rule,done=SZ_RULES.every(x=>r[x.key]);
   const say='Stopping a crew costs only a short delay, so the site is safer when everyone there can do it. A restart could hurt someone if something is still wrong, so I would let only the crew lead do that.';
-  screen('criteria sz-rulesscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Rule card')}<div class="panel-card sz-card"><div class="sz-cardhead"><b>Crew rule card</b><span>All 212 crews · version 7</span></div>
-    ${SZ_RULES.map(x=>`<div class="sz-rule"><div class="sz-q">${esc(x.q)}</div><div class="sz-opts">${mixIdx(x.opts).map(([o])=>`<button class="critb sz-opt ${r[x.key]===o[0]?'on':''}" data-k="${x.key}" data-v="${o[0]}">${esc(o[1])}</button>`).join('')}</div></div>`).join('')}
-    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
-    <button class="btn wide" id="sz-go" ${done?'':'disabled'}>Sign the card</button></div>`);
+  screen('criteria sz-rulesscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Rule card')}<div class="panel-card sz-card"><div class="sz-cardhead"><b>${esc(T('Crew rule card'))}</b><span>${esc(T('All 212 crews · version 7'))}</span></div>
+    ${SZ_RULES.map(x=>`<div class="sz-rule"><div class="sz-q">${esc(T(x.q))}</div><div class="sz-opts">${mixIdx(x.opts).map(([o])=>`<button class="critb sz-opt ${r[x.key]===o[0]?'on':''}" data-k="${x.key}" data-v="${o[0]}">${esc(T(o[1]))}</button>`).join('')}</div></div>`).join('')}
+    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(T(say))}</p></div>
+    <button class="btn wide" id="sz-go" ${done?'':'disabled'}>${esc(T('Sign the card'))}</button></div>`);
   if(!st.said){st.said=1;save();setTimeout(()=>playLine('byte',say),300)}
   $$('.sz-opt').forEach(b=>b.onclick=()=>{r[b.dataset.k]=b.dataset.v;save();const y=window.scrollY;szRules();window.scrollTo(0,y)});
-  $('#sz-go').onclick=()=>{unlock('sz-anyone-stops')&&toast('New Field Guide idea: Who may stop a crew, and who may start it again','good');nextStep()}}
+  $('#sz-go').onclick=()=>{unlock('sz-anyone-stops')&&toast(T('New Field Guide idea: {0}',T('Who may stop a crew, and who may start it again')),'good');nextStep()}}
 
-function szSign(){zhSign({scene:'shenzhen',place:'Zone 3 test yard · Rule card',title:'Sign the rule card',plan:`<b>Rules:</b> ${esc(MISSIONS.robotfactory.planName())}`,
+function szSign(){zhSign({scene:'shenzhen',place:'Zone 3 test yard · Rule card',title:'Sign the rule card',plan:`<b>${esc(T('Rules:'))}</b> ${esc(MISSIONS.robotfactory.planName())}`,
   starters:['Anyone on site ','because ','The factory may ','Only the crew lead ','We will test '],placeholder:'Anyone on site may stop a crew because…',
   partner:{who:'huangjg',name:'Huang Jianguo',zh:'黄建国'},signAs:'Crew Lead {0}',done:'Signed. Tonight every crew this factory built gets the new card.'})}
 

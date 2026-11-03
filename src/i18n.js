@@ -29,6 +29,10 @@ function T(s,...a){if(typeof s!=='string'||!s)return s;let out=s;const L=LANG();
   if(L!=='en'){const v=I18N.tab[L]&&I18N.tab[L][s];if(v!=null)out=v;if(I18N.trace&&!I18N_HAN.test(s))I18N.trace(s,v!=null,'text')}
   if(a.length){const v=a.length===1&&a[0]!==null&&typeof a[0]==='object'?a[0]:a;out=String(out).replace(/\{(\w+)\}/g,(m,k)=>k in v?v[k]:m)}
   return out}
+// A short word whose meaning depends on where it sits, such as a control option ('Yes', 'None'): a translation keyed
+// '<context> · <word>' (for example 'Physical therapy · Yes') wins over the plain '<word>' key, so one mission can say
+// 要做 without changing every other mission's Yes. TK('Physical therapy','Yes').
+function TK(ctx,s,...a){const L=LANG();if(L!=='en'&&ctx&&I18N.tab[L]&&I18N.tab[L][ctx+' · '+s]!=null)return T(ctx+' · '+s,...a);return T(s,...a)}
 // Glossary: the English key a [[marked]] word opens, the term shown for a key, and its definition.
 function gkey(w){const k=w.toLowerCase();if(typeof GLOSSARY==='undefined'||GLOSSARY[k])return k;const b=I18N.gback[LANG()];return (b&&b[w])||k}
 function TW(k){const g=I18N.gloss[LANG()];return (g&&g[k]&&g[k].w)||k}

@@ -59,4 +59,4 @@ function zhArt(o,mood,x){x=x||{};let s=personSVG({...o,art:undefined,mood});
   if(x.top){const i=s.lastIndexOf('</g></g></g>');if(i>0)s=s.slice(0,i)+x.top+s.slice(i)}
   return s}
 // a small place card for a visit's first screen: {name, zh, time}
-function zhPlace(c){return `<div class="zh-placecard"><b>${esc(T(c.name))}</b><span lang="zh">${esc(c.zh)}</span><i>${esc(T(c.time||''))}</i></div>`}
+function zhPlace(c){const n=T(c.name);return `<div class="zh-placecard"><b>${esc(n)}</b>${n===c.zh?'':`<span lang="zh">${esc(c.zh)}</span>`}<i>${esc(T(c.time||''))}</i></div>`}

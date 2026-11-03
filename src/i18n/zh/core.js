@@ -38,7 +38,7 @@ I18N.add('zh','core',{strings:{
   '{season} {year}':'{year}年{season}','Spring':'春天','Summer':'夏天','Fall':'秋天','Winter':'冬天',
   'Trainee':'实习生','Pro':'专业级','Legend':'传奇级','Workday':'工作日','Career journey':'职业之旅','Big talk':'大讲台','Story':'故事','Ruin':'遗迹','Travel':'出行','Finale':'大结局',
   'Ruins':'遗迹','Finish “{0}” first':'先完成“{0}”','Needs {0} rank':'要先升到{0}','Opens in {0}':'{0}开放','Coming soon':'敬请期待','coming soon':'敬请期待',
-  'Ask':'提问','Decision':'决定','Heart':'用心','{0} star':'{0}星','{0} star (not earned)':'{0}星（还没得到）',
+  'Ask':'提问','Decision':'决策','Heart':'关心','{0} star':'{0}星','{0} star (not earned)':'{0}星（还没得到）',
   'Days left':'剩下的天数','day':'天','days':'天','Hearts':'心','Coins':'金币','Stars':'星星','Play':'开始',
   'All caught up!':'都玩完啦！','New places open as the seasons turn.':'换季的时候，会有新的地方开放。','{0} (locked)':'{0}（未解锁）','+{0} coins':'+{0} 金币','New: {0}':'新开放：{0}',
   'Continue where you left off':'从上次停下的地方继续','New':'新','Back to the world map':'回到世界地图','Friends here':'这里的朋友','Day {0}':'第{0}天',
@@ -86,7 +86,10 @@ I18N.add('zh','core',{strings:{
   'Speak instead of typing':'用说的，不用打字','The microphone isn’t available here. You can type instead.':'这里用不了麦克风，你可以打字。',
 
   // ----- Field Guide and Word Book -----
-  '{0} of {1} found in Boston':'在波士顿找到了{0}个，一共{1}个','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
+  // Field Guide tracks shared by every mission (the same words the other translators use)
+  'Ethics and AI':'伦理与AI','Evidence and truth':'证据与真相','Government, law, and power':'政府、法律与权力','Ethics and AI alignment':'伦理与AI对齐',
+  'Living things and health':'生命与健康','Incentives and economics':'激励与经济','Security thinking':'安全思维','Engineering and systems':'工程与系统','People skills':'与人相处','Math and science':'数学与科学',
+  '{0} of {1} found in Boston':'在波士顿发现了{0}条，一共{1}条','True today':'现实中','Keep playing to discover this idea.':'继续玩，就能解锁这一条。',
   'Tap any underlined word to learn it. It will be saved here.':'点一下带下划线的词，就能看到它的意思。看过的词会存在这里。',
   'Learn It Fast':'快速了解','Got it? Try 3 quick questions.':'学会了吗？来做3道小题。','Perfect! You learned it fast.':'全对！你学得真快。',
   'Nice work. You can read the steps again anytime.':'做得不错。这些步骤你随时可以再看。','{0} of 3':'第{0}题，共3题','{0} of {1}':'{0}/{1}',
@@ -193,11 +196,24 @@ I18N.add('zh','core',{strings:{
   // ----- props and passers-by -----
   'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}',
   'clock':'钟','lamp':'台灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
+  'ep_gull':'海鸥','ep_ring':'救生圈','dh_record':'唱片机','dh_peony':'牡丹花','marstomato':'番茄','marsrock':'石头','marsdrone':'无人机','moonrover':'月球车',
+  'moonglass':'玻璃','moonflag':'旗子','phx_bottle':'水瓶','phx_bot':'机器人','phx_board':'告示板','phx_quail':'鹌鹑','spacewalker':'宇航员','bj_tea':'茶',
+  // things people and Byte say when a scene's landmark is tapped (src/scenes/*.js)
+  'The Golden Gate Bridge opened in 1937. Its color is called International Orange, so ships can see it in the fog.':'金门大桥是1937年通车的。它的颜色叫“国际橙”，这样船在雾里也能看见它。',
+  'That’s Discovery Base, where scientists and AIs run experiments together. In this 2040, trees grow on every terrace.':'那就是探索基地，科学家和AI在那里一起做实验。2040年的这里，每一层露台上都种着树。',
+  'That building showed up last year. Its computers run so hot that the water around it steams. Nobody here knows who owns it.':'那栋楼是去年冒出来的。里面的电脑热得厉害，连周围的水都在冒热气。这里没人知道它是谁的。',
+  'The lighthouse still blinks every night, even though boats here steer with satellites now.':'现在这里的船都靠卫星导航了，可这座灯塔每天晚上还是一闪一闪地亮着。',
+  'Every New Year’s Eve, a big glowing ball drops from a tower right here. It has happened almost every year since 1907.':'每年跨年夜，都会有一个发光的大球从这里的一座楼顶落下来。从1907年起，差不多每年都有。',
+  'People sit on these red steps to watch the screens. More than 40 theaters are within a few blocks of here.':'大家坐在这些红色台阶上看大屏幕。离这里几个街区之内，有40多家剧院。',
+  'Each raft has solar panels on top and batteries underneath. The six sides mean every raft fits snugly against its neighbors.':'每只筏子上面铺着太阳能板，下面装着电池。筏子是六边形的，所以每一只都能和旁边的紧紧挨在一起。',
+  'Millions of AIs are thinking inside that platform right now. Cold seawater from deep below keeps their computers from overheating.':'这会儿，那座平台里有几百万个AI在思考。从深海抽上来的冷海水，让它们的电脑不会过热。',
+  'That’s a data tanker. It brings new computer chips out here, and it carries the old ones home to be recycled.':'那是一艘数据运输船。它把新的电脑芯片运到这里，再把旧芯片运回去回收。',
+  'That drone checks the rafts for cracks and barnacles. It gets around to each one about once a week.':'那架无人机负责检查筏子上有没有裂缝和藤壶，大约每星期能把每只筏子都查一遍。',
   'Anything else?':'还有别的吗？','Send to {0}':'发给{0}','Pick at most {0}.':'最多选{0}个。','Drafting…':'正在起草……','Make this':'就做这个',
   'What could go wrong?':'可能出什么问题？','Test on the Future Table':'到未来之桌上试试','Revise my request':'修改我的要求','{0}: “You found the fun stuff!”':'{0}：“你发现好玩的东西啦！”',
 
   // ----- challenge levels, family play and the Grown-up forecast (modes.js) -----
-  'Kid':'儿童','Teen':'少年','Grown-up':'大人','Challenge':'挑战难度','Family play':'全家一起玩','A grown-up asks follow-up questions in conversations':'对话的时候，由一位大人来追问',
+  'Kid':'儿童','Teen':'少年','Grown-up':'大人','Challenge':'挑战难度','Family play':'全家一起玩','A grown-up asks follow-up questions in conversations':'让大人在对话里追问',
   'Challenge: {0}':'挑战难度：{0}','Tell {0} something':'告诉{0}一件事','Tell {0}':'告诉{0}','What did you notice?':'你注意到了什么？',
   'Thanks, noted. That doesn’t change my forecast.':'谢谢，我记下了。不过这不会改变我的预测。','Thanks, noted.':'谢谢，我记下了。','{0}’s take':'{0}的看法',
   'My key consideration and my recommendation cost one Decision star today. The best you can earn becomes {0} stars.':'今天，听我说最关键的考虑和我推荐的方案，要花掉一颗“决定”星。这样你最多只能拿到{0}颗星。',

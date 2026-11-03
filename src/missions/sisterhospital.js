@@ -124,12 +124,12 @@ MISSIONS.sisterhospital={id:'sisterhospital',title:'The Sister Hospital',career:
     ]
   },
   docs:[],criteria:[],controls:[],start:{},
-  planName(){const p=SH_PLANS[shSt().plan];return p?p.short:'Plan'},
+  planName(){const p=SH_PLANS[shSt().plan];return T(p?p.short:'Plan')},
   outcomes(){return [{kind:'done',p:1,cap:'',flags:{}}]},truth(){return true},knows(){return true},
   custom:{sh_walk(){shWalk()},sh_notes(){shNotes()},sh_decide(){shDecide()},sh_sign(){shSign()},sh_news(){shNews()},sh_debrief(){shDebrief()}},
   eveningScene:'shanghai_night',eveningPlace:'The Bund · Shanghai · 9:30 PM',
   evening(){const st=shSt();return [
-    `<b>${esc(S.byte.name)}:</b> “Look at the river. You can see every tower across the water reflected upside down in it.”`,
+    `<b>${esc(S.byte.name)}:</b> ${rich('“Look at the river. You can see every tower across the water reflected upside down in it.”')}`,
     rich(`“Dr. Wen sent a message a minute ago: ‘[[Xièxie]] for today. Ellie is lucky to have doctors in two cities looking after her.’${st.plan==='treat'?' She added a photo of a pancake.':''}”`),
     rich('“Dr. Lu stayed late to write up Ellie’s case for his students, and he asked whether Boston would send another doctor in the spring.”'),
     rich('“In the Ledger tonight: next month, American and Chinese treaty teams will meet in Beijing to check, in person, that each country’s AI follows the rules both countries agreed to.”')]},
@@ -137,13 +137,13 @@ MISSIONS.sisterhospital={id:'sisterhospital',title:'The Sister Hospital',career:
 What has been shared so far: ${Object.keys(st.sent).filter(k=>st.sent[k]).join(', ')||'nothing yet'}. Shared forecast: ${f==null?'not yet':f+'% Kawasaki'}. ${st.plan?'The doctors chose: '+SH_PLANS[st.plan].t+'.':''}
 Key consideration: ${st.sent.scar?'with the scar clue, it is probably Kawasaki, and treatment works best within ten days; a heart scan tonight could look normal even if it is Kawasaki.':'ask whether Ellie\'s mother mentioned anything Halo might not know about, like where Ellie got her baby shots or her vaccine scar.'}`},
   canned(q){const st=shSt();
-    if(/scar|bcg|shot|vaccin|arm/.test(q))return st.sent.scar?'Ellie’s pink scar is the clue that Halo could not see. In children who had the BCG shot, the scar turns red in about half of those who have Kawasaki disease.':'Ms. Gao said that Ellie’s baby-shot scar went pink yesterday. The doctors here may know what that means, so try sending that card across.';
-    if(/name|address|photo|privat/.test(q))return 'Ms. Gao said yes to sharing Ellie’s medical facts, and no to her name, address and photos. Riverside’s AI does not need any of those to compare her with other children.';
-    if(/kawasaki/.test(q))return 'Kawasaki disease mostly affects children under five. It causes a long fever, red eyes and lips, and sometimes a rash and swollen hands. The real danger is to the small arteries around the heart, which is why doctors treat it quickly.';
-    if(/ivig|drip|treat/.test(q))return 'IVIG is a drip of antibodies from donated blood. Given within ten days of the first fever, it protects the heart in almost every child. Today is day five.';
-    if(/scan|echo|heart/.test(q))return 'A heart scan is a painless ultrasound picture. This early, it often looks normal even when a child does have Kawasaki disease, so a normal scan would not settle the question.';
-    if(/mandarin|chinese|say|word/.test(q))return 'Try “nǐ hǎo” for hello and “xièxie” for thank you. Dr. Wen will be delighted.';
-    if(/help|stuck|what do i do/.test(q))return 'Listen to Ellie’s mom first. Then send Boston’s medical facts across to Riverside, one card at a time, and keep her private details at home. After that, choose a plan with Dr. Wen and sign it together.';
+    if(TRX(/scar|bcg|shot|vaccin|arm/).test(q))return T(st.sent.scar?'Ellie’s pink scar is the clue that Halo could not see. In children who had the BCG shot, the scar turns red in about half of those who have Kawasaki disease.':'Ms. Gao said that Ellie’s baby-shot scar went pink yesterday. The doctors here may know what that means, so try sending that card across.');
+    if(TRX(/name|address|photo|privat/).test(q))return T('Ms. Gao said yes to sharing Ellie’s medical facts, and no to her name, address and photos. Riverside’s AI does not need any of those to compare her with other children.');
+    if(TRX(/kawasaki/).test(q))return T('Kawasaki disease mostly affects children under five. It causes a long fever, red eyes and lips, and sometimes a rash and swollen hands. The real danger is to the small arteries around the heart, which is why doctors treat it quickly.');
+    if(TRX(/ivig|drip|treat/).test(q))return T('IVIG is a drip of antibodies from donated blood. Given within ten days of the first fever, it protects the heart in almost every child. Today is day five.');
+    if(TRX(/scan|echo|heart/).test(q))return T('A heart scan is a painless ultrasound picture. This early, it often looks normal even when a child does have Kawasaki disease, so a normal scan would not settle the question.');
+    if(TRX(/mandarin|chinese|say|word/).test(q))return T('Try “nǐ hǎo” for hello and “xièxie” for thank you. Dr. Wen will be delighted.');
+    if(TRX(/help|stuck|what do i do/).test(q))return T('Listen to Ellie’s mom first. Then send Boston’s medical facts across to Riverside, one card at a time, and keep her private details at home. After that, choose a plan with Dr. Wen and sign it together.');
     return null},
   lines:[
     {who:'byte',text:'Send Boston’s cards across to Riverside one at a time. Each medical fact you send can change how sure the two AIs are that Ellie has Kawasaki disease.'},
@@ -185,56 +185,56 @@ function shWalk(){const st=shSt();
   screen('walk sh-walk',`${scene('shanghai')}${hud('The Bund · Shanghai')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div></div>
     ${zhPlace({name:'Shanghai',zh:'上海',time:'Friday, 8:50 AM'})}
     <div class="caption-card"><p>${rich('A cool wind comes off the [[Huangpu]] river. Electric ferries hum across it with gulls following them. On the far bank, the white hospital with the teal cross is already busy.')}</p>
-    <div class="row"><button class="btn small ghost" id="sh-look">${st.looked?'Look again':'Look across the river'}</button><button class="btn small" id="on">Go to the terrace</button></div></div>`);
+    <div class="row"><button class="btn small ghost" id="sh-look">${esc(T(st.looked?'Look again':'Look across the river'))}</button><button class="btn small" id="on">${esc(T('Go to the terrace'))}</button></div></div>`);
   $('#sh-look').onclick=()=>{const t=st.looked?'That’s Qingtai across the water. It is a whole new town stacked up on wide terraces, and trains run through tunnels under its gardens.':'The buildings along the Bund are about a hundred years old. Shanghai keeps them exactly as they were, so the delivery robots work quietly in the back lanes instead.';
-    st.looked=(st.looked||0)+1;save();toast(S.byte.name+': '+t,'good');playLine('byte',t)};
+    st.looked=(st.looked||0)+1;save();toast(esc(S.byte.name)+(LANG()==='en'?': ':'：')+esc(T(t)),'good');playLine('byte',t)};
   $('#on').onclick=()=>nextStep()}
 
 // ---------- Compare notes: the two-sided board ----------
 function shNotes(flash){const st=shSt(),f=shForecast(st),sent=st.sent,noted=!!S.notes.bcg;
   const card=c=>{const on=!!sent[c.id];return `<button class="sh-card ${c.kind} ${on?'sent':''} ${c.clue&&noted?'noted':''}" data-c="${c.id}" ${on?'disabled':''}>
-      <span class="sh-ic">${shIcon(c.id)}</span><span class="sh-t">${esc(c.t)}</span>${c.kind==='private'?'<i class="sh-lock" aria-label="Private">●</i>':''}${c.clue&&noted?'<i class="sh-nb">From your notebook</i>':''}</button>`};
+      <span class="sh-ic">${shIcon(c.id)}</span><span class="sh-t">${esc(T(c.t))}</span>${c.kind==='private'?`<i class="sh-lock" aria-label="${esc(T('Private'))}">●</i>`:''}${c.clue&&noted?`<i class="sh-nb">${esc(T('From your notebook'))}</i>`:''}</button>`};
   const shown=Object.keys(SH_CARDS.shanghai).filter(k=>SH_CARDS.boston.some(c=>sent[c.id]&&c.reply===k));
   const open=st.open&&shown.includes(st.open)?st.open:shown[shown.length-1];
-  const reply=k=>{const r=SH_CARDS.shanghai[k],c=CAST[r.who],o=k===open;return `<button class="sh-reply ${k} ${o?'open':''}" data-k="${k}"><span class="sh-face">${portrait({...c,mood:'smile'})}</span><p>${o?rich(r.t):esc(r.k)}</p></button>`};
-  const bar=(lbl,v,cls)=>`<div class="sh-bar ${cls}"><span>${esc(lbl)}</span><div class="sh-track"><i style="width:${v==null?0:v}%"></i></div><b>${v==null?'?':v+'%'}</b></div>`;
+  const reply=k=>{const r=SH_CARDS.shanghai[k],c=CAST[r.who],o=k===open;return `<button class="sh-reply ${k} ${o?'open':''}" data-k="${k}"><span class="sh-face">${portrait({...c,mood:'smile'})}</span><p>${o?rich(r.t):esc(T(r.k))}</p></button>`};
+  const bar=(lbl,v,cls)=>`<div class="sh-bar ${cls}"><span>${esc(T(lbl))}</span><div class="sh-track"><i style="width:${v==null?0:v}%"></i></div><b>${v==null?'?':v+'%'}</b></div>`;
   const nMed=SH_CARDS.boston.filter(c=>c.kind==='med'&&sent[c.id]).length;
   const say=flash?'Ellie’s mother asked us not to share her name, address or photos, so that card stays in Boston. Riverside’s AI does not need it to compare Ellie with other children.':f==null?'Send Boston’s cards across to Riverside one at a time. Each medical fact you send can change how sure the two AIs are that Ellie has Kawasaki disease.':f>=70?'Both AIs are looking at the same facts now, and together they think it is probably Kawasaki disease, about 8 times in 10.':nMed>=3?'Even with both hospitals’ facts, the two AIs are still not sure it is Kawasaki disease. Did Ms. Gao mention anything that Halo might not know about?':'';
-  screen('criteria sh-notesscr',`${scene('shanghai')}${hud('Riverside’s Bund Clinic')}<div class="panel-card sh-board"><h2>Compare notes</h2>
-    <div class="sh-cols"><div class="sh-col boston"><div class="sh-head"><b>Boston</b><span>Ellie’s chart</span></div>${SH_CARDS.boston.map(card).join('')}</div>
-      <div class="sh-col shanghai"><div class="sh-head"><b>Shanghai</b><span lang="zh">上海</span></div>${shown.length?shown.map(reply).join(''):'<p class="sh-empty">Riverside’s team is listening.</p>'}</div></div>
-    <div class="sh-meter"><div class="sh-mlbl">Is it Kawasaki disease?</div>${bar('Halo, Boston',30,'b')}${bar('Riverside’s AI',45,'s')}${bar('Together',f,'t')}</div>
-    ${say?`<div class="byte-note">${byteBox({...S.byte,mood:flash?'alert':f>=70?'happy':'think'})}<p>${esc(flash?CAST.wenjh.name+': “'+say+'”':say)}</p></div>`:''}
-    <button class="btn wide" id="sh-go" ${nMed>=3?'':'disabled'}>Decide with Dr. Wen</button></div>`);
+  screen('criteria sh-notesscr',`${scene('shanghai')}${hud('Riverside’s Bund Clinic')}<div class="panel-card sh-board"><h2>${esc(T('Compare notes'))}</h2>
+    <div class="sh-cols"><div class="sh-col boston"><div class="sh-head"><b>${esc(T('Boston'))}</b><span>${esc(T('Ellie’s chart'))}</span></div>${SH_CARDS.boston.map(card).join('')}</div>
+      <div class="sh-col shanghai"><div class="sh-head"><b>${esc(T('Shanghai'))}</b>${LANG()==='zh'?`<span>${esc(T('Riverside'))}</span>`:'<span lang="zh">上海</span>'}</div>${shown.length?shown.map(reply).join(''):`<p class="sh-empty">${esc(T('Riverside’s team is listening.'))}</p>`}</div></div>
+    <div class="sh-meter"><div class="sh-mlbl">${esc(T('Is it Kawasaki disease?'))}</div>${bar('Halo, Boston',30,'b')}${bar('Riverside’s AI',45,'s')}${bar('Together',f,'t')}</div>
+    ${say?`<div class="byte-note">${byteBox({...S.byte,mood:flash?'alert':f>=70?'happy':'think'})}<p>${esc(flash?T('{0}: “{1}”',{0:T(CAST.wenjh.name),1:T(say)}):T(say))}</p></div>`:''}
+    <button class="btn wide" id="sh-go" ${nMed>=3?'':'disabled'}>${esc(T('Decide with Dr. Wen'))}</button></div>`);
   if(say&&!flash)playLine('byte',say);if(flash)playLine('wenjh',say);
   $$('.sh-card').forEach(b=>b.onclick=()=>{const c=SH_CARDS.boston.find(x=>x.id===b.dataset.c);MUSIC.sfx&&MUSIC.sfx('whoosh');
     if(c.kind==='private'){st.leak=(st.leak||0)+1;save();b.classList.add('sh-bounce');setTimeout(()=>shNotes(c.id),420);return}
     sent[c.id]=1;st.open=c.reply;save();b.classList.add('sh-fly');
-    if(c.id==='scar'||c.id==='born')unlock('sh-two-halves')&&toast('New Field Guide idea: Two halves of the picture','good');
+    if(c.id==='scar'||c.id==='born')unlock('sh-two-halves')&&toast(T('New Field Guide idea: {0}',T('Two halves of the picture')),'good');
     setTimeout(()=>{shNotes();const r=SH_CARDS.shanghai[c.reply];st.open=c.reply;if(r&&!(st.heard||{})[c.reply]){st.heard=st.heard||{};st.heard[c.reply]=1;save();setTimeout(()=>playLine(r.who,r.t),900)}
       const el=$('.sh-reply.'+c.reply);el&&el.classList.add('sh-new')},380)});
   $$('.sh-reply').forEach(b=>b.onclick=()=>{st.open=b.dataset.k;save();shNotes()});
-  $('#sh-go').onclick=()=>{unlock('sh-need-to-know')&&toast('New Field Guide idea: Share what’s needed','good');nextStep()}}
+  $('#sh-go').onclick=()=>{unlock('sh-need-to-know')&&toast(T('New Field Guide idea: {0}',T('Share what’s needed')),'good');nextStep()}}
 
 // ---------- choosing a plan together ----------
 function shDecide(){const st=shSt(),f=shForecast(st)||45,know=f>=70;
   const say=know?'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. Which plan do you think is best for Ellie?'
     :'Right now the two AIs think the chance that this is Kawasaki disease is only about half. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?';
-  const odds={treat:`We think this is Kawasaki disease about ${f} times in 100. If it is, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.`,
-    scan:`If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be a day late.`,
-    wait:`Some fevers fade on their own. If this one is Kawasaki disease, she would still get the drip before day ten, but only just in time.`};
-  const opt=k=>`<button class="sh-plan ${st.plan===k?'on':''}" data-p="${k}"><b>${esc(SH_PLANS[k].t)}</b><span>${esc(odds[k])}</span></button>`;
-  screen('criteria sh-decidescr',`${scene('shanghai')}${hud('Riverside’s Bund Clinic')}<div class="panel-card sh-decide"><h2>Choose together</h2>
-    <div class="sh-duo"><span class="sh-face">${portrait({...CAST.wenjh,mood:'think'})}</span><span class="sh-face">${portrait({...CAST.luguo,mood:'neutral'})}</span><p>“${esc(know?'With that scar, I think this is Kawasaki disease. But she is your patient, Doctor. What would you like to do?':'We are still not sure. She is your patient, Doctor. What would you like to do?')}”</p></div>
+  const odds={treat:T('We think this is Kawasaki disease about {0} times in 100. If it is, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.',f),
+    scan:T('If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be a day late.'),
+    wait:T('Some fevers fade on their own. If this one is Kawasaki disease, she would still get the drip before day ten, but only just in time.')};
+  const opt=k=>`<button class="sh-plan ${st.plan===k?'on':''}" data-p="${k}"><b>${esc(T(SH_PLANS[k].t))}</b><span>${esc(odds[k])}</span></button>`;
+  screen('criteria sh-decidescr',`${scene('shanghai')}${hud('Riverside’s Bund Clinic')}<div class="panel-card sh-decide"><h2>${esc(T('Choose together'))}</h2>
+    <div class="sh-duo"><span class="sh-face">${portrait({...CAST.wenjh,mood:'think'})}</span><span class="sh-face">${portrait({...CAST.luguo,mood:'neutral'})}</span><p>“${esc(T(know?'With that scar, I think this is Kawasaki disease. But she is your patient, Doctor. What would you like to do?':'We are still not sure. She is your patient, Doctor. What would you like to do?'))}”</p></div>
     <div class="sh-plans">${mixIdx(Object.keys(SH_PLANS)).map(([k])=>opt(k)).join('')}</div>
-    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
-    <button class="btn wide" id="sh-go" ${st.plan?'':'disabled'}>Write it down</button></div>`);
+    <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(T(say))}</p></div>
+    <button class="btn wide" id="sh-go" ${st.plan?'':'disabled'}>${esc(T('Write it down'))}</button></div>`);
   if(!st.planSaid){st.planSaid=1;save();setTimeout(()=>playLine('byte',say),300)}
   $$('.sh-plan').forEach(b=>b.onclick=()=>{st.plan=b.dataset.p;save();$$('.sh-plan').forEach(x=>x.classList.toggle('on',x===b));$('#sh-go').disabled=false});
   $('#sh-go').onclick=()=>nextStep()}
 
 function shSign(){const st=shSt(),p=SH_PLANS[st.plan]||SH_PLANS.treat;
-  zhSign({scene:'shanghai',place:'Riverside’s Bund Clinic',title:'A note to Ellie’s mom',plan:`<b>Plan:</b> ${esc(p.t)}.`,
+  zhSign({scene:'shanghai',place:'Riverside’s Bund Clinic',title:'A note to Ellie’s mom',plan:`<b>${esc(T('Plan:'))}</b> ${esc(T(p.t))}${LANG()==='en'?'.':'。'}`,
     starters:['We recommend ','because ','Shanghai’s doctors noticed ','We are about ','We will check '],placeholder:'We recommend starting the drip tonight because…',
     partner:{who:'wenjh',name:'Dr. Wen Jiahui',zh:'温佳慧'},signAs:'Dr. {0}',done:'Signed by both doctors. Dr. Reyes will read it to Ms. Gao tonight.'})}
 

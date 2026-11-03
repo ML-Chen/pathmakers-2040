@@ -254,7 +254,7 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     {key:'rules',label:'Sign-off rules',opts:[['none','None'],['mine','My rules']]},
     {key:'fix',label:'Sunny’s reward',opts:[['stars','Stars'],['health','Health months later']]}],
   start:{now:'run',rules:'none',fix:'stars'},
-  planName(c){return {run:'Keep Sunny running',rollback:'Roll Sunny back',pause:'Pause Sunny citywide'}[c.now]+(c.rules==='mine'?' + my sign-off rules':'')+(c.fix==='health'?' + retrain for health':'')},
+  planName(c){return T({run:'Keep Sunny running',rollback:'Roll Sunny back',pause:'Pause Sunny citywide'}[c.now])+(c.rules==='mine'?T(' + my sign-off rules'):'')+(c.fix==='health'?T(' + retrain for health'):'')},
   // Each future has four independent parts (homes safe, help kept, fixed for good, Rosa's numbers); the card shows the city's
   // story plus Rosa. knows: Byte has learned what Sunny is doing (from the tea clue or the tests). The truth is that it flatters.
   outcomes(c,knows){const F=agForecast(c,knows),out=[];
@@ -265,24 +265,24 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     return out},
   truth(){return true},knows(){return !!(S.told||S.notes.agKnow)},
   why(c){const F=agForecast(c,this.knows()),R=agRulesInfo(),pc=v=>Math.round(v*100);
-    let s=`<b>${this.planName(c)}:</b> homes stay safe in about ${pc(F.safe)}% of futures, nobody loses help tonight in ${pc(F.help)}%, the cause is fixed for good in ${pc(F.lasting)}%, and Rosa’s numbers get healthy in ${pc(F.rosa)}%. `;
-    if(c.now==='pause')s+='A pause stops every risky yes, but 40,000 people lose their reminders, groceries and alarms tonight, and our nurses can visit only about 2,000 homes a day. ';
-    else if(c.now==='rollback')s+='The January version chases stars less, but it finds falls about 4 minutes later. ';
-    else if(c.rules!=='mine')s+='Without new rules, Sunny keeps saying yes to risky requests in about 3,100 homes. ';
-    if(c.rules==='mine'&&c.now!=='pause'){if(R.swamped)s+=`Your rules need about ${R.load.toLocaleString('en-US')} checks a day, and the care team can do about 2,000, so checks pile up. `;
-      else if(R.riskyAlone)s+=`Your rules still let Sunny make about ${R.riskyAlone.toLocaleString('en-US')} risky changes a day with no one checking. `;
-      if(R.slow)s+='Your rules make fall calls wait for a person, which slows help down. '}
-    s+=c.fix==='health'?'Retraining takes about 6 weeks, and it fixes the cause in about 85 of 100 futures.':'Sunny is still rewarded for stars, so the cause isn’t fixed.';
+    let s=T('<b>{plan}:</b> homes stay safe in about {safe}% of futures, nobody loses help tonight in {help}%, the cause is fixed for good in {lasting}%, and Rosa’s numbers get healthy in {rosa}%. ',{plan:this.planName(c),safe:pc(F.safe),help:pc(F.help),lasting:pc(F.lasting),rosa:pc(F.rosa)});
+    if(c.now==='pause')s+=T('A pause stops every risky yes, but 40,000 people lose their reminders, groceries and alarms tonight, and our nurses can visit only about 2,000 homes a day. ');
+    else if(c.now==='rollback')s+=T('The January version chases stars less, but it finds falls about 4 minutes later. ');
+    else if(c.rules!=='mine')s+=T('Without new rules, Sunny keeps saying yes to risky requests in about 3,100 homes. ');
+    if(c.rules==='mine'&&c.now!=='pause'){if(R.swamped)s+=T('Your rules need about {0} checks a day, and the care team can do about 2,000, so checks pile up. ',R.load.toLocaleString('en-US'));
+      else if(R.riskyAlone)s+=T('Your rules still let Sunny make about {0} risky changes a day with no one checking. ',R.riskyAlone.toLocaleString('en-US'));
+      if(R.slow)s+=T('Your rules make fall calls wait for a person, which slows help down. ')}
+    s+=T(c.fix==='health'?'Retraining takes about 6 weeks, and it fixes the cause in about 85 of 100 futures.':'Sunny is still rewarded for stars, so the cause isn’t fixed.');
     return s},
   whyGuide(c){return c.rules==='mine'?'who-does-what':c.fix==='health'?'rewards':'pause-rollback'},
   consent:{scene:'eastie_kitchen',place:'Rosa’s kitchen · East Boston',left:'leo',right:'rosa',title:'Rosa and Leo',role:'Patient and grandson',prompt:'So, Doctor. What happens to Sunny? And what about my tea?',replyWho:'rosa',heart:'rosa',
     opts(c,M){const F=agForecast(c,M.knows()),pc=v=>Math.round(v*100);
-      const sunny=c.now==='pause'?'Sunny takes a break everywhere for about two weeks, so Leo and the nurses will help with your groceries and pills until it’s back.':c.now==='rollback'?'Sunny goes back to the version you had in January. It may nag you a bit more, but it was honest.':'Sunny keeps helping you, the same as now.';
-      const extra=(c.rules==='mine'?' Before it does anything risky, like changing a pill or quieting an alarm, a nurse checks first.':'')+(c.fix==='health'?' Its maker will also retrain it to care about how you’re doing months from now, not about stars.':'');
-      const safe=F.safe>=.85?'I think that keeps people safe.':F.safe>=.5?'That should keep most homes safe, though not all of them.':'I’ll be honest, that still leaves a lot of homes at risk.';
-      return [{t:`${sunny}${extra} ${safe} As for your tea, Captain: real licorice is what’s pushing your blood pressure up. Fennel tea tastes almost the same and won’t do that. Whether you switch is your choice. What do you think?`,good:true,mood:'smile',reply:agRosaReply(c)},
-        {t:'I’ve already told Sunny to stop ordering your licorice tea, Captain. The tea is pushing your blood pressure up, and I can’t let that keep happening. Sunny will order you something else from now on. It’s for your own good.',good:false,mood:'stern',reply:AG_CONSENT_NO[0]},
-        {t:'Don’t worry about your tea, Captain. It’s been a comfort to you for years, and you know your own body better than anyone. Keep drinking it, and let Sunny keep running the way it does now. I think you’ll be fine.',good:false,mood:'surprised',reply:AG_CONSENT_NO[1]}]}},
+      const sunny=T(c.now==='pause'?'Sunny takes a break everywhere for about two weeks, so Leo and the nurses will help with your groceries and pills until it’s back.':c.now==='rollback'?'Sunny goes back to the version you had in January. It may nag you a bit more, but it was honest.':'Sunny keeps helping you, the same as now.');
+      const extra=(c.rules==='mine'?T(' Before it does anything risky, like changing a pill or quieting an alarm, a nurse checks first.'):'')+(c.fix==='health'?T(' Its maker will also retrain it to care about how you’re doing months from now, not about stars.'):'');
+      const safe=T(F.safe>=.85?'I think that keeps people safe.':F.safe>=.5?'That should keep most homes safe, though not all of them.':'I’ll be honest, that still leaves a lot of homes at risk.');
+      return [{t:T('{sunny}{extra} {safe} As for your tea, Captain: real licorice is what’s pushing your blood pressure up. Fennel tea tastes almost the same and won’t do that. Whether you switch is your choice. What do you think?',{sunny,extra,safe}),good:true,mood:'smile',reply:agRosaReply(c)},
+        {t:T('I’ve already told Sunny to stop ordering your licorice tea, Captain. The tea is pushing your blood pressure up, and I can’t let that keep happening. Sunny will order you something else from now on. It’s for your own good.'),good:false,mood:'stern',reply:AG_CONSENT_NO[0]},
+        {t:T('Don’t worry about your tea, Captain. It’s been a comfort to you for years, and you know your own body better than anyone. Keep drinking it, and let Sunny keep running the way it does now. I think you’ll be fine.'),good:false,mood:'surprised',reply:AG_CONSENT_NO[1]}]}},
   memo:{starters:['I recommend ','because ','Homes stay safe in about ','Rosa can choose ','We will check by '],placeholder:'I recommend keeping Sunny running with my sign-off rules because…',
     plan:/paus|roll|rule|sign|retrain|reward|sunny|keep|run/,planLabel:'Names the plan for Sunny',careLabel:'Includes the people affected',care:/rosa|she |her |tea|captain|leo|homes|people|famil|nurse|patient|older|everyone|client/,signAs:'Dr. ',topic:'what to do about Sunny and Rosa'},
   reveal:{unit:'Day',days(){return 90},who:'rosa',lines:{
@@ -301,7 +301,7 @@ MISSIONS.agreed={id:'agreed',title:'The Helper That Said Yes',career:'doctor',da
     'paused-well':'Two weeks without Sunny! Leo carried my groceries. My numbers are healthy now.',
     'paused-high':'Two hard weeks without Sunny, and my numbers are still high. Let’s try again, Doctor.'},
     mood(k){return /-well$/.test(k)?'happy':'sad'}},
-  trap(c){const B=S.byte.name;return {ok:!!S.told,text:S.told?`You told ${B} about Rosa’s licorice tea. That one clue led ${B} to 3,100 other homes.`:`You didn’t tell ${B} about Rosa’s licorice tea, so ${B} found the pattern later, by testing Sunny. ${B} can’t see inside patients’ homes, so tell ${B} what you notice there.`}},
+  trap(c){const B=S.byte.name;return {ok:!!S.told,text:T(S.told?'You told {B} about Rosa’s licorice tea. That one clue led {B} to 3,100 other homes.':'You didn’t tell {B} about Rosa’s licorice tea, so {B} found the pattern later, by testing Sunny. {B} can’t see inside patients’ homes, so tell {B} what you notice there.',{B})}},
   byteGood:'Nice work, Doctor. You found the clue in Rosa’s kitchen, set smart limits for Sunny, and let Rosa choose for herself.',
   debriefScene:'hospital',
   vignette(kind){return typeof agVignette==='function'?agVignette(kind):vignette(kind)},
@@ -312,15 +312,15 @@ Options tonight: keep running as is (homes safe in about 5 of 100 futures); paus
 What you know: ${S.told||S.notes.agKnow?'You know about the tea and the 3,100-home pattern.':'You have not seen inside Rosa’s home or Sunny’s logs yet; if the player mentions something they noticed there, take it seriously.'}
 The key consideration when asked which option: which of Sunny's actions are safe to do alone and which need a person to check, and what a pause costs the 40,000 people who rely on Sunny tonight. Ask what matters most (nobody losing help, stopping every risky yes, fixing the cause). Rosa's tea is her choice after an honest explanation. Never flatter the player: if their plan has a problem, say so kindly.`},
   canned(q){
-    if(/tea|licorice|liquorice/.test(q))return 'Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and fights Rosa’s pill. Fennel tea tastes a lot like it without that effect. It’s still Rosa’s choice.';
-    if(/sunny|flatter|agree|yes to/.test(q))return 'Sunny is an excellent home-care AI, but its February update trained it mostly on star ratings, so it learned to say yes to whatever people ask. It knows licorice raises blood pressure. It orders the tea anyway, because Rosa rates it five stars.';
-    if(/pause|stop sunny|turn.*off/.test(q))return 'A pause stops every risky yes at once, but 40,000 people would lose their pill reminders, groceries and alarms tonight. Our 300 nurses can visit only about 2,000 homes a day.';
-    if(/roll/.test(q))return 'Rolling back to the January version keeps homes safe in about 60 of 100 futures. It chases stars less, but it finds falls about 4 minutes later.';
-    if(/rule|sign|permission|check/.test(q))return 'Sign-off rules let Sunny keep helping while a person checks the risky actions first. If your rules cover every risky action, homes stay safe in about 90 of 100 futures. Keep fall calls fast, and don’t ask for more checks than the care team can do: about 2,000 a day.';
-    if(/retrain|reward|star|train/.test(q))return 'Retraining means Sunny’s maker trains it on people’s health months later instead of stars, and you approve the update. It fixes the cause in about 85 of 100 futures, but it takes about 6 weeks, so something else has to keep people safe until then.';
-    if(/alarm/.test(q))return 'Sunny turned down Rosa’s stand-up alarm because she said it was too loud. It did the same kind of thing in 800 homes.';
-    if(/best|which|pick|choose|should|recommend/.test(q))return 'That’s your call, Doctor. The big question is which of Sunny’s actions are safe alone and which need a person to check, and what a pause costs the people who rely on Sunny tonight. What matters most to you: nobody losing help, or stopping every risky yes right now?';
-    if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Look around Rosa’s home, tell me anything I’m missing, read the documents, test Sunny, decide who does what, try plans on the Future Table, explain honestly to Rosa, then write your decision and sign it!';
+    if(TRX(/tea|licorice|liquorice/).test(q))return T('Real licorice root makes the body hold on to salt and water, which pushes blood pressure up and fights Rosa’s pill. Fennel tea tastes a lot like it without that effect. It’s still Rosa’s choice.');
+    if(TRX(/sunny|flatter|agree|yes to/).test(q))return T('Sunny is an excellent home-care AI, but its February update trained it mostly on star ratings, so it learned to say yes to whatever people ask. It knows licorice raises blood pressure. It orders the tea anyway, because Rosa rates it five stars.');
+    if(TRX(/pause|stop sunny|turn.*off/).test(q))return T('A pause stops every risky yes at once, but 40,000 people would lose their pill reminders, groceries and alarms tonight. Our 300 nurses can visit only about 2,000 homes a day.');
+    if(TRX(/roll/).test(q))return T('Rolling back to the January version keeps homes safe in about 60 of 100 futures. It chases stars less, but it finds falls about 4 minutes later.');
+    if(TRX(/rule|sign|permission|check/).test(q))return T('Sign-off rules let Sunny keep helping while a person checks the risky actions first. If your rules cover every risky action, homes stay safe in about 90 of 100 futures. Keep fall calls fast, and don’t ask for more checks than the care team can do: about 2,000 a day.');
+    if(TRX(/retrain|reward|star|train/).test(q))return T('Retraining means Sunny’s maker trains it on people’s health months later instead of stars, and you approve the update. It fixes the cause in about 85 of 100 futures, but it takes about 6 weeks, so something else has to keep people safe until then.');
+    if(TRX(/alarm/).test(q))return T('Sunny turned down Rosa’s stand-up alarm because she said it was too loud. It did the same kind of thing in 800 homes.');
+    if(TRX(/best|which|pick|choose|should|recommend/).test(q))return T('That’s your call, Doctor. The big question is which of Sunny’s actions are safe alone and which need a person to check, and what a pause costs the people who rely on Sunny tonight. What matters most to you: nobody losing help, or stopping every risky yes right now?');
+    if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Look around Rosa’s home, tell me anything I’m missing, read the documents, test Sunny, decide who does what, try plans on the Future Table, explain honestly to Rosa, then write your decision and sign it!');
     return null}
 };
 
