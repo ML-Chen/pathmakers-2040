@@ -17,6 +17,36 @@ EL = {'Sarah': 'EXAVITQu4vr4xnSDxMaL', 'Laura': 'FGY2WhTYpPnrIDTdsKH5', 'Jessica
       'Aria': '9BWtsMINqrJLrRacOk9x', 'Lily': 'pFZP5JQG7iQjIQuC4Bku', 'Charlotte': 'XB0fDUnXU5powFXDhCwa', 'Brian': 'nPczCjzI2devNBz1zQrb',
       'Eric': 'cjVigY5qzO86Huf0OWal', 'Chris': 'iP95p4xoKVk53GoZ742B', 'Liam': 'TX3LPaxmHKxFdv7VOQHJ', 'Daniel': 'onwK4e9ZLuTAKqWW03F9'}
 
+def el_api(method, path, body=None):
+    req = urllib.request.Request('https://api.elevenlabs.io' + path, method=method, data=json.dumps(body).encode() if body is not None else None,
+                                 headers={'xi-api-key': EL_KEY, 'content-type': 'application/json', 'accept': 'application/json'})
+    with urllib.request.urlopen(req, timeout=60) as r: return json.loads(r.read() or b'{}')
+
+def mandarin_voices(n=8):
+    """The most-used native Mandarin narration voices in the ElevenLabs voice library, added to this account.
+    Returns [(name, voice_id)]. The built-in voices are English speakers and read Chinese with an English accent."""
+    found, seen = [], set()
+    for q in ['language=zh&use_cases=narrative_story', 'language=zh&use_cases=informative_educational', 'language=zh&use_cases=social_media', 'language=zh']:
+        try: vs = el_api('GET', f'/v1/shared-voices?page_size=30&sort=usage_character_count_1y&{q}').get('voices', [])
+        except Exception as e: print('voice search failed:', str(e)[:120]); vs = []
+        for v in vs:
+            acc = (v.get('accent') or '').lower(); lang = (v.get('language') or '').lower()
+            if v['voice_id'] in seen or lang not in ('zh', 'cmn', 'chinese') or any(a in acc for a in ('cantonese', 'taiwan', 'english', 'american', 'british')): continue
+            seen.add(v['voice_id']); found.append(v)
+        if len(found) >= n: break
+    mine = {}
+    try: mine = {v['name']: v['voice_id'] for v in el_api('GET', '/v1/voices').get('voices', [])}
+    except Exception: pass
+    out = []
+    for v in found[:n]:
+        nm = 'PM zh ' + (v.get('name') or v['voice_id'])[:30]
+        vid = mine.get(nm)
+        if not vid:
+            try: vid = el_api('POST', f"/v1/voices/add/{v['public_owner_id']}/{v['voice_id']}", {'new_name': nm}).get('voice_id')
+            except Exception as e: print('could not add', nm, str(e)[:120]); continue
+        out.append((nm[6:], vid)); print('Mandarin voice:', nm[6:], v.get('gender'), v.get('age'), v.get('accent'), v.get('use_case'), flush=True)
+    return out
+
 def eleven(voice, text, speed, dst):
     vid = EL.get(voice, voice)
     body = json.dumps({'text': text, 'model_id': os.environ.get('ELEVENLABS_MODEL', 'eleven_multilingual_v2'),
@@ -36,6 +66,9 @@ def eleven(voice, text, speed, dst):
 def synth(voice, text, speed, dst):
     """ElevenLabs when the key works; if it fails (for example out of credits), switch to Kokoro for the rest of the run."""
     global EL_KEY, zh_tts, speaker
+    if EL_KEY and voice not in EL and not (len(voice) > 15 and voice.isalnum()):
+        print('no native Mandarin ElevenLabs voice; using Kokoro', flush=True); EL_KEY = ''
+        import zh_tts as _z; zh_tts = _z; speaker = 'zf_xiaoxiao'; voice = speaker
     if EL_KEY:
         try: return eleven(voice, text, speed, dst)
         except Exception as e:
@@ -44,7 +77,12 @@ def synth(voice, text, speed, dst):
     if voice in EL or not voice.startswith(('zf_', 'zm_')): voice = 'zf_xiaoxiao'
     return zh_tts.synth(voice, text, speed, dst)
 
-out = sys.argv[1]; speaker = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else ('Sarah' if EL_KEY else 'zf_xiaoxiao'); speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
+ZH = []
+if EL_KEY:
+    try: ZH = mandarin_voices()
+    except Exception as e: print('Mandarin voice lookup failed:', str(e)[:200])
+    for nm, vid in ZH: EL[nm] = vid
+out = sys.argv[1]; speaker = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else ((ZH[0][0] if ZH else 'zf_xiaoxiao') if EL_KEY else 'zf_xiaoxiao'); speed = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 os.makedirs(out, exist_ok=True)
 shots = json.loads(subprocess.run(['node', '-e', "process.stdout.write(JSON.stringify(require(process.argv[1]).map(s=>({id:s.id,vo:s.vo}))))",
                                    os.path.join(HERE, 'shots.js')], capture_output=True, text=True, check=True).stdout)
@@ -66,7 +104,7 @@ for s in shots:
 json.dump(dur, open(os.path.join(out, 'durations.json'), 'w'), ensure_ascii=False, indent=1)
 
 text = shots[0]['vo']
-voices = ['Sarah', 'Jessica', 'Laura', 'Matilda', 'Lily', 'Brian', 'Eric', 'Daniel'] if EL_KEY else [n for n in zh_tts.NAMES if n[:3] in ('zf_', 'zm_')]
+voices = [nm for nm, _ in ZH] if EL_KEY else [n for n in zh_tts.NAMES if n[:3] in ('zf_', 'zm_')]
 for sp in voices:
     raw = os.path.join(out, 'a.raw.wav'); synth(sp, text, speed, raw); clean(raw, os.path.join(out, f'audition_{sp}.wav')); os.remove(raw)
 print('engine', 'ElevenLabs' if EL_KEY else 'Kokoro', 'voice', speaker)

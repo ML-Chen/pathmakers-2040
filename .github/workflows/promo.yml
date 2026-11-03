@@ -5,7 +5,7 @@ name: RedNote promo video
 on:
   workflow_dispatch:
     inputs:
-      speaker: {description: 'Narrator. With the ELEVENLABS_API_KEY secret: an ElevenLabs voice name (Sarah, Jessica, Laura, Matilda, Lily, Brian, Eric, Daniel) or voice id. Without it: a Kokoro voice (zf_xiaoxiao, zm_yunjian, ...). Empty = default.', default: ''}
+      speaker: {description: 'Narrator. With the ELEVENLABS_API_KEY secret: a native Mandarin voice from the ElevenLabs library, by name (see the audition zip) or voice id; empty picks the most-used one. Without it: a Kokoro voice (zf_xiaoxiao, zm_yunjian, ...). Empty = default.', default: ''}
       speed: {description: 'Speaking speed', default: '1.0'}
   push:
     branches: [main]
@@ -50,7 +50,7 @@ jobs:
         run: |
           python3 src/build.py dist/pathmakers.html
           node promo/rednote/render.js dist/pathmakers.html video vo
-          node promo/rednote/cover.js video
+          node promo/rednote/cover.js video dist/pathmakers.html
       - uses: actions/upload-artifact@v4
         with:
           name: promo
