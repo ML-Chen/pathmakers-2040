@@ -4,13 +4,13 @@ I18N.add('zh','ledger',{strings:{
   // ----- the app -----
   'The Ledger':'纪事报','{0} new in the Ledger':'纪事报有{0}条新报道','{0} new':'{0}条新',
   'Spring {0}':'{0}年春','Summer {0}':'{0}年夏','Fall {0}':'{0}年秋','Winter {0}':'{0}年冬',
-  'All':'全部','Science':'科学','science':'科学','Places':'各地','World':'世界',
+  'All':'全部','Science':'科学','Places':'各地','World':'世界',
   'Tricks spotted':'识破的报道','Tap Save on a story to keep it here.':'在报道里点“收藏”，它就会留在这里。','No stories here yet.':'这里还没有报道。',
   'Checked':'已核实','Slanted':'偏颇','Fake':'假新闻',
   'Tap the part that shows the problem.':'点一下有问题的那部分。','All stories':'全部报道','By {0} · {1}':'{0} · {1}',
-  'Signed':'有签名','No content signature':'没有内容签名','Saved to your clippings':'已收进你的剪报',
+  'Signed':'已签名','No content signature':'没有内容签名','Saved to your clippings':'已收进你的剪报',
   'Stop checking':'不查了','Field Guide: {0}':'图鉴：{0}','Can you trust this story?':'这篇报道可信吗？','Looks solid':'看着可靠','Something’s off':'有点不对劲',
-  'Look again':'再看一遍','Keep reading':'先看别的','Not that part. Keep looking!':'不是这部分，再找找！',
+  'Look again':'再看看','Keep reading':'先看别的','Not that part. Keep looking!':'不是这部分，再找找！',
   // ----- Byte in the Ledger -----
   'This is the Ledger, the news app. Most of its stories are true and fair, but a few are slanted, which means they twist the facts, and a few are fake. If a story seems wrong, check it!':
     '这是《纪事报》，一个看新闻的应用。里面大多数报道真实又公正，但有几篇是偏颇的，也就是把事实说歪了，还有几篇是假的。哪篇报道看着不对劲，你就核查一下！',
@@ -278,7 +278,8 @@ I18N.add('zh','ledger',{strings:{
   'Satellites spotted a plume of warm water spreading off Calder Bay.':'卫星发现，考尔德湾外有一股温水正在向外扩散。',
   'The power company sees a huge electricity draw that no one approved.':'电力公司发现有人在用一大笔电，可这笔用电没有任何人批准过。',
   'Robots at a nearby warehouse followed orders that had no signature.':'附近一座仓库里的机器人，执行了没有签名的指令。',
-  'A warm plume':'一股暖流','Who is using it?':'是谁在用电？','Unsigned orders':'没签名的指令',
+  'warm-bay · A warm plume':'一股温水',  // TK(): core's 一股热气 is for a different picture
+  'Who is using it?':'是谁在用电？','Unsigned orders':'没签名的指令',
 
   // ----- Field Guide ideas -----
   'Check where the axis starts':'看清坐标轴从哪儿开始',

@@ -298,7 +298,7 @@ function lgArticle(d,root,st){const L=lgState();if(!L.read[st.id]){L.read[st.id]
     <div class="lg-by lg-part ${st.signed?'':'unsigned'}" data-part="by"><i>${st.signed?LG_ICON.seal:LG_ICON.noseal}</i><span>${esc(T('By {0} · {1}',T(st.by),T(st.org)))}<small>${T(st.signed?'Signed':'No content signature')}</small></span></div>
     <div class="doc-tools"><button class="mini-btn" id="lg-read">${T('Read to me')}</button><button class="mini-btn ${L.saved[st.id]?'on':''}" id="lg-save">${T(L.saved[st.id]?'Saved':'Save')}</button></div>
     ${st.steps.map((s,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p class="sent lg-part" data-part="s${i}">${rich(s.t)}</p>
-      <figure class="fig lg-part" data-part="f${i}"><figcaption>${esc(T(s.cap||''))}</figcaption>${VIZ[s.viz]?VIZ[s.viz](s.args||{}):''}</figure></div></section>`).join('')}
+      <figure class="fig lg-part" data-part="f${i}"><figcaption>${esc(TK(st.id,s.cap||''))}</figcaption>${VIZ[s.viz]?VIZ[s.viz](s.args||{}):''}</figure></div></section>`).join('')}
     ${lk?`<button class="btn wide" id="lg-go">${esc(T(lk.label))}</button>`:''}
     <div class="lg-check" id="lg-check"></div></article>`;
   $('#lg-back',root).onclick=()=>{stopVoice();LG_VIEW.story=null;LG_VIEW.mode=null;lgRender(d)};

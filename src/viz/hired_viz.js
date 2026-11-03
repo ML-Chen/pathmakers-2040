@@ -181,7 +181,7 @@ Object.assign(VIZ,{
       <g transform="translate(188 12) scale(.52)"><path d="M2 8 L62 8 L62 62 C70 74 96 80 150 86 C166 88 170 98 166 112 L4 112 C-4 112 -2 98 0 86Z" fill="#a8b0c4" stroke="#3a4060" stroke-width="3" stroke-linejoin="round"/>
       <path d="M-4 118 Q80 130 170 118 L166 112 L4 112Z" fill="#3a4060"/>${[22,46,70].map(yy=>`<rect x="-2" y="${yy}" width="68" height="11" rx="4" fill="#5b6478"/><rect x="48" y="${yy+2}" width="12" height="7" rx="2" fill="#c7cfe0"/>`).join('')}<rect x="80" y="84" width="70" height="11" rx="4" fill="#5b6478" transform="rotate(8 80 84)"/></g></g>
     ${igT(76,130,'Brace',{s:13})}${igT(224,130,'Walking boot',{s:13})}`,'An ankle brace and a walking boot'),
-  rerollBars:(a={})=>{const nb=a.hidden?3:1,nt=a.hidden?5:2;const row=(y,n,lab)=>{let s=`${igT(10,y-24,lab,{s:12,a:'start'})}<g>${igT(290,y-24,n+' of 10',{s:12,a:'end',c:IG.red})}</g>`;
+  rerollBars:(a={})=>{const nb=a.hidden?3:1,nt=a.hidden?5:2;const row=(y,n,lab)=>{let s=`${igT(10,y-24,lab,{s:12,a:'start'})}<g>${igT(290,y-24,T('{0} of 10{1}',n,''),{s:12,a:'end',c:IG.red})}</g>`;
       for(let i=0;i<10;i++){const x=24+i*28,on=i<n;s+=`<g class="${on?'hv-hot':''}" style="animation-delay:${i*.2}s"><circle cx="${x}" cy="${y-6}" r="5.4" fill="${on?IG.red:IG.teal}"/><path d="M${x-7} ${y+12} v-6 q0 -6 7 -6 q7 0 7 6 v6z" fill="${on?IG.red:IG.teal}"/></g>`}
       return s};
     return igFrame(300,120,`${row(46,nb,'Brace')}${row(104,nt,'Tape only')}`,a.hidden?'Rolled again: brace 3 in 10, tape 5 in 10':'Rolled again: brace 1 in 10, tape 2 in 10')},

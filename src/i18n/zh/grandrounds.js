@@ -3,7 +3,7 @@
 I18N.add('zh','grandrounds',{strings:{
   'Grand Rounds':'病例分享会','Tell the whole hospital about one of your cases, and answer one tough question.':'给全院的人讲讲你的一个病例，再回答一个难题。',
   'Dr. Owen Hale':'欧文·黑尔医生','Care Doctor, Boston Harbor Hospital':'波士顿港医院照护医生',
-  'Who answers for it?':'出了问题，谁来负责？','Government, law, and power':'政府、法律与权力',
+  'Who answers for it?':'出了问题，谁来负责？',
   'An expert AI can know the facts better than anyone. A person still signs, because someone has to explain the choice to the family and answer for it if it goes wrong. That person is accountable.':
     '专家级的AI可能比谁都更了解事实。可签字的仍然是人，因为总得有人把这个选择给家人讲清楚，万一出了问题，也得有人站出来负责。签字的这个人就要承担责任。',
   'True today: doctors, engineers and judges sign their names to decisions, and they can be asked to explain them later.':'现实中：医生、工程师和法官都会在决定上签自己的名字，以后也可能被要求解释这些决定。',
@@ -71,7 +71,7 @@ I18N.add('zh','grandrounds',{strings:{
     '我看着你认真听家人说话，把选择讲清楚，用心地在每个决定上签字。恭喜你，医生，你升为专业级医生了。',
   'A Pro! I’m doing my happy spin. Can you tell?':'专业级！我在开心地转圈圈呢，你看出来了吗？',
   'Harder cases, with more people to listen to':'更难的病例，要听更多人的意见','Bigger hospital systems to watch over':'要照看更大的医院系统','Trips to sister hospitals, like Shanghai':'去姐妹医院出差，比如上海',
-  'Back to the map':'回到地图',
+  
 
   // ----- chat fallback replies -----
   'Your talk has three parts. Start with the patient, then say what you chose and why, and then say what you learned and who helped. You can do it!':'你的演讲有三部分。先讲病人，再讲你选了什么、为什么，最后讲你学到了什么、谁帮了你。你一定行！',

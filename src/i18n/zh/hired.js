@@ -3,7 +3,7 @@
 I18N.add('zh','hired',{strings:{
   // ----- the mission -----
   'Getting Hired':'应聘','See what the job is like, meet the team, try a practice case, and interview with Dr. Reyes.':'看看这份工作是什么样的，认识团队，试着处理一个练习病例，再和雷耶斯医生面试。',
-  'Ari’s ankle · practice case':'阿里的脚踝 · 练习病例','Care Doctor':'照护医生',
+  'Ari’s ankle · practice case':'阿里的脚踝 · 练习病例',
   'Home · Boston · 8:00 AM':'家 · 波士顿 · 早上8:00','Open House · Boston Harbor Hospital':'开放日 · 波士顿港医院','First-aid tent · Open House':'急救帐篷 · 开放日',
   'Practice case on your Workbench':'练习病例已经放到你的工作台上了',
 
@@ -17,13 +17,13 @@ I18N.add('zh','hired',{strings:{
     '照护医生帮病人和家人选择治疗方案。我负责查资料、做预测。你负责听家人怎么说，自己拿主意，最后在决定上签字。',
 
   // ----- a day in the life (src/career.js explore screen) -----
-  'A day as a Care Doctor':'照护医生的一天','Skip':'跳过','Next':'下一步',
+  'A day as a Care Doctor':'照护医生的一天',
   '7:50 AM. I tell you what Halo, the hospital’s AI, did overnight.':'早上7:50。我告诉你，医院的AI Halo昨晚都做了什么。',
   '9:00 AM. You listen to a family and learn what matters to them.':'上午9:00。你听一家人说话，弄清他们在乎什么。',
   '11:00 AM. We try out plans on the Future Table to see how each one might turn out.':'上午11:00。我们在未来之桌上试几个方案，看看每个方案可能会怎样。',
   '2:00 PM. You explain the choices, the family decides, and you sign the decision.':'下午2:00。你把几种选择讲清楚，家人做决定，你在决定上签字。',
   '5:00 PM. You call to check on your patient, who is doing great!':'下午5:00。你打电话问问病人的情况，他恢复得很好！',
-  'Ask {0}':'问问{0}','Ask my own question':'问我自己的问题','Watch again':'再看一遍','Go to the open house':'去开放日',
+  'Go to the open house':'去开放日',
   'What does Halo do, and what do I do?':'Halo做什么，我做什么？',
   'Halo is the hospital’s AI, and it runs everyday jobs like scans, schedules, and medicine deliveries. I read the research and write forecasts. You talk with patients, find out what matters to them, and sign the decision.':
     'Halo是医院的AI，管着日常的活儿，比如做扫描、排班、送药。我读研究资料，写预测。你和病人聊天，弄清他们在乎什么，然后在决定上签字。',
@@ -45,7 +45,7 @@ I18N.add('zh','hired',{strings:{
   'Gabi Santos':'嘉比·桑托斯','Charge nurse':'护士长','Gabi':'嘉比','Kofi Asante':'科菲·阿桑特','Robot crew lead':'机器人小队队长','Kofi':'科菲',
   'Ruth Abrams':'露丝·艾布拉姆斯','Volunteer, age 88':'志愿者，88岁','Volunteer':'志愿者','Ruth':'露丝',
   'Ari Mensah':'阿里·门萨','Patient, age 10':'病人，10岁','Abena Mensah':'阿贝娜·门萨','Ari’s grandma':'阿里的奶奶',
-  '{0}: “{1}”':'{0}：“{1}”',
+  
   'Say hi to everyone. Try to remember one thing about each person.':'和每个人打个招呼。试着记住每个人的一件事。',
   'You met everyone! Let’s find Dr. Reyes.':'大家你都见过了！我们去找雷耶斯医生吧。','Everyone’s talking about how helpful you were. Let’s find Dr. Reyes!':'大家都在说你帮了好多忙。我们去找雷耶斯医生吧！',
   'Find Dr. Reyes':'去找雷耶斯医生',
@@ -107,7 +107,7 @@ I18N.add('zh','hired',{strings:{
   'Being tough is great! Goalkeepers have to be tough.':'坚强是好事！守门员就得坚强。','Yeah! I’m super tough.':'对！我超级坚强。',
 
   // ----- the Workbench: Byte's memo and the coach's message -----
-  'Byte’s memo: Ari’s ankle':'Byte的备忘录：阿里的脚踝','Byte':'Byte',
+  'Byte’s memo: Ari’s ankle':'Byte的备忘录：阿里的脚踝',
   'Ari rolled his right ankle and stretched a [[ligament]]. That is a mild [[sprain]].':'阿里的右脚踝崴了，一条[[韧带]]被拉伤。这是轻度[[扭伤]]。',
   'Most mild sprains heal in about 2 weeks. A [[brace]] or a [[walking boot]] protects the ankle while it heals.':'大多数轻度扭伤大约2周就能好。在脚踝愈合期间，[[护踝]]或者[[固定靴]]都能保护它。',
   'If Ari plays on Saturday wearing a brace, about 1 in 10 kids like him roll the ankle again, and with only tape, about 2 in 10 do.':'如果阿里星期六戴着护踝上场，像他这样的孩子，10个里大约有1个会再次崴脚；只缠胶布的话，10个里大约有2个。',
@@ -161,7 +161,7 @@ I18N.add('zh','hired',{strings:{
   'Um... okay. But what if it gets worse?':'嗯……好吧。可要是更严重了怎么办？',
   'You’ll definitely be fine, Ari. Kids your age heal really fast, so nothing can go wrong with this plan!':'你肯定没事的，阿里。你这么大的孩子好得特别快，这个方案不会出任何问题！',
   'Definitely? On the Future Table, some of the futures had my ankle getting hurt again.':'肯定没事？可未来之桌上，有几个未来里我的脚踝又受伤了。',
-  'I recommend ':'我建议','because ':'因为','The chance he rolls it again is about ':'他再次崴脚的可能大约是','Ari cares about ':'阿里在乎的是','We will check by ':'我们会这样跟进：',
+  'I recommend ':'我建议','because ':'因为','The chance he rolls it again is about ':'他再次崴脚的可能大约是','Ari cares about ':'阿里在乎的是','We will check by ':'我们会这样检查：',
   'I recommend a brace and sitting out Saturday because…':'我建议戴护踝、星期六不上场，因为……','Includes what Ari cares about':'写到了阿里在乎的事','Ari’s sprained ankle':'阿里扭伤的脚踝',
   'I made three saves on Saturday! My ankle feels totally fine.':'星期六我扑出了三个球！脚踝一点事都没有。','Ow. It rolled again, and now I have to miss the playoffs...':'哎哟。又崴了，这下季后赛我只能错过了……',
   'I cheered so loud on Saturday. And now I’m ready for the playoffs!':'星期六我加油喊得可响了。现在我准备好打季后赛了！','Wearing that boot was so boring. But my ankle is strong again!':'穿那只靴子真没劲。不过我的脚踝又结实了！',
@@ -199,15 +199,15 @@ I18N.add('zh','hired',{strings:{
   
 
   // ----- the Portfolio Book -----
-  'Home · Boston · 8:30 PM':'家 · 波士顿 · 晚上8:30','Portfolio Book':'作品集','Save to my Portfolio Book':'存进我的作品集','Saved to your Portfolio Book':'已存进你的作品集',
-  'Stars':'星星','A decision':'一个决定',
-  'A coin flip':'一半一半','A little sure':'有一点把握',
+  'Home · Boston · 8:30 PM':'家 · 波士顿 · 晚上8:30',
+  
+  
   'You did real work on Ari’s case. Do you want to save it in your Portfolio Book?':'你在阿里的病例上做了真正的工作。要把它存进你的作品集吗？',
   'Saved! Tomorrow, at your interview, Dr. Reyes will want to hear about this case.':'存好了！明天面试时，雷耶斯医生会想听你讲讲这个病例。','Get ready for the interview':'准备面试',
 
   // ----- the interview -----
-  'Dr. Reyes’s office · Boston Harbor Hospital':'雷耶斯医生的办公室 · 波士顿港医院','Your AI partner':'你的AI搭档','You':'你','Tap to continue':'点一下继续',
-  'Say it my way':'用我自己的话说','Type your answer':'写下你的回答','Back':'返回','Answer':'回答','Write a little more first.':'再多写一点吧。',
+  'Dr. Reyes’s office · Boston Harbor Hospital':'雷耶斯医生的办公室 · 波士顿港医院',
+  
   'Today’s your [[interview]] with Dr. Reyes! Want to [[rehearse]] with me first?':'今天你要和雷耶斯医生[[面试]]！想先跟我[[预演]]一下吗？',
   'Yes, let’s practice!':'好，我们练练！','I’m ready. Let’s go!':'我准备好了，走吧！',
   'You’re ready! Remember to tell real stories from your work, answer honestly, and ask Dr. Reyes one good question at the end.':'你准备好了！记住：讲你工作中的真实故事，诚实回答，最后再问雷耶斯医生一个好问题。',
@@ -215,7 +215,7 @@ I18N.add('zh','hired',{strings:{
   'Tell me about a hard choice you made.':'说说你做过的一个艰难的选择。','Dr. Reyes might ask: “Tell me about a hard choice you made.”':'雷耶斯医生可能会问：“说说你做过的一个艰难的选择。”',
   'At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.':'在开放日上，我帮一个扭伤脚踝的男孩在上场和休息之间做选择。我把可能性讲给了他和他奶奶听。',
   'At the open house I helped Ari, a goalkeeper with a sprained ankle. I chose {plan}, {why}. {out}':'在开放日上，我帮了扭伤脚踝的守门员阿里。我选了{plan}，{why}。{out}',
-  ', play Saturday':'，星期六上场',', sit out Saturday':'，星期六不上场','{0}':'{0}','…':'……','night':'夜晚',
+  ', play Saturday':'，星期六上场',', sit out Saturday':'，星期六不上场','…':'……',
   'a walking boot':'固定靴',' and playing on Saturday':'、星期六上场',' and sitting out on Saturday':'、星期六不上场','a brace and playing on Saturday':'戴护踝、星期六上场','a brace and sitting out on Saturday':'戴护踝、星期六不上场','tape and sitting out on Saturday':'缠胶布、星期六不上场',
   'because his grandma told me he hides pain':'因为他奶奶告诉我，他会忍着疼不说','because Saturday mattered a lot to him':'因为星期六的比赛对他很重要',
   'because the playoffs mattered more than a friendly game':'因为季后赛比友谊赛更重要',
@@ -271,11 +271,11 @@ I18N.add('zh','hired',{strings:{
     '这次面试太棒了。你给我讲了真实的故事，回答得很诚实，还问了一个很好的问题。欢迎来到波士顿港医院。你被录用了！',
   'I can tell you care about people, and that is what matters most to me in a Care Doctor. You’re hired! Next time, try to tell more real stories, like the ones in your Portfolio Book.':
     '我看得出你很在乎别人，这是我最看重的照护医生的品质。你被录用了！下次试着多讲些真实的故事，就像你作品集里的那些。',
-  'You’re hired!':'你被录用了！','Your first day is tomorrow. You’ll meet the team.':'明天是你上班的第一天，你会认识团队里的人。',
-  'Start my first day':'开始我的第一天',
+  'Your first day is tomorrow. You’ll meet the team.':'明天是你上班的第一天，你会认识团队里的人。',
+  
 
   // ----- the first day -----
-  'Kids’ floor · Boston Harbor Hospital · 8:30 AM':'儿童病房 · 波士顿港医院 · 早上8:30','Open my world map':'打开我的世界地图',
+  'Kids’ floor · Boston Harbor Hospital · 8:30 AM':'儿童病房 · 波士顿港医院 · 早上8:30',
   'Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.':'欢迎来上第一天班，{P}医生！你先从[[实习生]]做起。我来给你介绍一下团队。',
   'Thank you again for finding my glasses, dear. I can read the sheet music now!':'再次谢谢你帮我找到眼镜，孩子。现在我能看清乐谱了！',
   'Welcome back! Sorry, I’m a little sleepy. Someone at home knocked the whole first-aid box off the shelf at 3 a.m. and then fell asleep inside it...':
@@ -304,7 +304,7 @@ I18N.add('zh','hired',{strings:{
     '3个同事里，你记住了{0}个人的事，还学会了院规。明天你要第一次值班，接诊真正的病人。早点睡吧，医生！',
 
   // ----- Field Guide ideas -----
-  'Asking good questions':'学会提好问题','People skills':'与人相处',
+  'Asking good questions':'学会提好问题',
   'A good question is specific, and it can’t be answered with just yes or no. For example, “What’s the hardest part of your job?” teaches you more than “Is it fun?” Asking people about their jobs before you choose a career helps you find one that fits you.':
     '好问题很具体，不能只用“是”或“不是”来回答。比如问“你工作里最难的是什么？”，比问“好玩吗？”能学到更多。选职业之前，先问问别人他们的工作是什么样的，能帮你找到适合自己的那一行。',
   'True today: career counselors suggest informational interviews, short talks where you ask someone about their job.':'现实中：职业规划老师会建议做“职业访谈”，也就是找人简短地聊一聊，问问他们的工作。',
@@ -325,7 +325,7 @@ I18N.add('zh','hired',{strings:{
 
   // ----- pictures (src/viz/hired_viz.js) -----
   'ligament':'韧带','The outer ankle ligament, gently stretched':'脚踝外侧的韧带被轻轻拉伤了','An ankle brace and a walking boot':'护踝和固定靴',
-  '1 of 10':'10个里1个','2 of 10':'10个里2个','3 of 10':'10个里3个','5 of 10':'10个里5个','Tape only':'只缠胶布',
+  '{0} of 10{1}':'10个里{0}个','Tape only':'只缠胶布',
   'Rolled again: brace 1 in 10, tape 2 in 10':'再次崴脚：护踝10个里1个，胶布10个里2个','Rolled again: brace 3 in 10, tape 5 in 10':'再次崴脚：护踝10个里3个，胶布10个里5个',
   'First sprain: about 2 weeks':'第一次扭伤：大约2周','Second sprain: about 6 weeks':'第二次扭伤：大约6周',
   'A first sprain heals in about 2 weeks, and a second sprain takes about 6 weeks':'第一次扭伤大约2周能好，第二次扭伤大约要6周',
