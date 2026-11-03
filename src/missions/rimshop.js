@@ -180,7 +180,7 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
   debriefLines(c){const st=rimState();const out=[];if(st.test)out.push({ok:true,text:'You ran a small pop-up test before you spent the rest of your budget.'});
     const r=st.rules.raise;if(r)out.push({ok:r!=='alone',text:r!=='alone'?'You did not let Till raise prices in a shortage without a person checking.':'You let Till raise prices by itself during shortages. On a small base where people can’t shop anywhere else, that can feel unfair.'});return out},
   evening(){const st=rimState(),newS=st.rules.newsupplier==='alone',R=S.result||{},soup=R.flags&&R.flags.crew;
-    return [`<b>${esc(S.byte.name)}:</b> ${T('“The highest peaks still have sunlight, and Earth is so bright tonight that it lights up the whole rim.”')}`,
+    return [T('<b>{0}:</b> {1}',esc(S.byte.name),T('“The highest peaks still have sunlight, and Earth is so bright tonight that it lights up the whole rim.”')),
       soup?'“Ada came by after school. She said her mom’s crew now plans their whole night around your soup, and their crew boss asked for extra bread.”':'“Haruto saved the last cup of tea in the pot for you. He says every shop on this base had a slow first week, the tea corner included.”',
       newS?'“Till paid a new supplier 40 coins for jars today, and the jars haven’t arrived. From now on, Till will check with you before it buys from anyone new.”':'“Fourteen brand-new companies offered to sell to Till today. Your rules said to ask you first, so Till didn’t pay any of them.”',
       '“True today: nobody lives on the Moon yet. Spacecraft have found signs of ice in the dark craters near the south pole. This base is the game’s guess about 2041.”'].map((l,i)=>i?T(l):l)},

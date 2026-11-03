@@ -31,7 +31,7 @@ I18N.add('zh','calf',{strings:{
   'That’s Aqpik, standing beside her mother, Nuna. We give every calf an [[Iñupiaq]] name, and Aqpik means [[cloudberry]], a small orange berry. We picked that name because her hair is the same orange.':'站在妈妈努娜身边的那头就是阿克皮克。我们给每头小象都起一个[[伊努皮亚克语]]名字。“阿克皮克”的意思是[[云莓]]，一种橙色的小浆果。她的毛正好是这种橙色，所以我们给她起了这个名字。',
   'Collar translator, 55% sure: “My mouth hurts.”':'项圈翻译器（55%把握）：“我嘴巴疼。”',
   'Aqpik hasn’t nursed since yesterday morning. A calf her age drinks milk all day long, and after about three days without milk, she’ll get weak.':'阿克皮克从昨天早上起就没吃过奶。她这么大的小象一整天都要喝奶，要是三天左右喝不上奶，身子就会虚下去。',
-  'Maybe her mouth does hurt, because her [[milk tusks]] are almost in. But I’ve watched calves teethe for twelve years, and a teething calf fusses and rubs her [[gums]] on everything. Aqpik isn’t doing that.':'她的嘴也许真的疼，因为她的[[乳牙]]快长出来了。可我看小象长牙已经看了十二年。长牙的小象会闹脾气，见什么都要拿[[牙龈]]去蹭。阿克皮克没有这样。',
+  'Maybe her mouth does hurt, because her [[milk tusks]] are almost in. But I’ve watched calves teethe for twelve years, and a teething calf fusses and rubs her [[gums]] on everything. Aqpik isn’t doing that.':'她也许真是嘴疼，因为[[乳牙]]快长出来了。可我看小象长牙已经看了十二年。长牙的小象会闹脾气，见什么都要拿[[牙龈]]去蹭。阿克皮克没有这样。',
   'What does she do instead?':'那她在做什么？',
   'Go watch her yourself, and look at her feet as well as her face. Mammoths can feel low sounds through their feet, so their feet can show you when they’re listening to something.':'你自己去看看她吧，别光看脸，也看看她的脚。猛犸象能用脚感觉到很低的声音，所以看它们的脚，就知道它们是不是在听什么。',
   'Should we trust the translator?':'我们该相信翻译器吗？',
@@ -91,7 +91,7 @@ I18N.add('zh','calf',{strings:{
   'Feet':'脚',
   'Most of these movements happen at the same moment, every few minutes, and I could not find what makes her do them.':'这些动作大多每隔几分钟就同时出现一次。我找不到是什么让她这样做。',
   'They happen together':'同时出现',
-  'My microphones cannot hear sounds lower than 20 [[hertz]], which is also about the lowest sound that people can hear.':'我的麦克风听不见低于20[[赫兹]]的声音。人能听到的最低的声音，也差不多是20赫兹。',
+  'My microphones cannot hear sounds lower than 20 [[hertz]], which is also about the lowest sound that people can hear.':'我的麦克风听不见低于20[[赫兹]]的声音。人耳能听到的最低声音，也差不多是20赫兹。',
   'What the collar can hear':'项圈能听到什么',
   'Each percent I give is my [[confidence]], meaning how sure I am, and even a guess I am quite sure about can be wrong.':'我给出的每个百分比都是我的[[把握度]]，也就是我有多确定。就算是我很有把握的猜测，也可能是错的。',
   'A guess, not a fact':'这只是猜测',
@@ -334,7 +334,7 @@ I18N.add('zh','calf',{strings:{
   '“Eli rode up to the ridge on his four-wheeler and took photos for the state trooper. His reindeer grazed calmly the whole time.”':'“伊莱骑着四轮摩托上了山梁，给州警拍了照片。他的驯鹿一直安安静静地吃草。”',
   '“Eli says his reindeer still won’t graze near the east ridge, but at least no drone flew over them today.”':'“伊莱说，他的驯鹿还是不肯去东山梁附近吃草。不过至少今天没有无人机从它们头上飞过。”',
   '“The state trooper looked at the ridge photos. The ‘weather station’ on the east ridge was really a balloon launcher with a humming pump. The launcher has been switched off, and the ground near the barns is quiet again.”':'“州警看了山梁上拍的照片。东山梁上那座‘气象站’其实是一台气球发射器，上面有个嗡嗡响的泵。发射器已经关掉了，暖舍附近的地面又安静下来了。”',
-  '“The Ledger says the weather service still doesn’t know who put up the station on the east ridge. A state trooper plans to drive up and look at it tomorrow morning.”':'“新闻报道说，气象局还是不知道是谁在东山梁上立了那座站。一位州警打算明天早上开车上去看看。”',
+  '“The Ledger says the weather service still doesn’t know who put up the station on the east ridge. A state trooper plans to drive up and look at it tomorrow morning.”':'“纪事报说，气象局还是不知道是谁在东山梁上立了那座站。一位州警打算明天早上开车上去看看。”',
 
   // ---- chat with Byte (when the AI chat is off) ----
   'Woof, good catch! I checked the reserve’s quake sensor, and every few minutes it picks up a hum from the east ridge that is too low for Aqpik’s collar to hear. Aqpik freezes each time the hum comes. Now I think there’s about a 60% chance she stopped eating because she’s scared, and the chance of a sore mouth drops to 20%.':'汪，你发现得真好！我查了保护区的地震传感器。它每隔几分钟就会测到东山梁传来一阵嗡嗡声，低到阿克皮克的项圈听不见。每次嗡嗡声一来，阿克皮克就僵住不动。现在我觉得，她不吃东西大约有60%的可能是因为害怕，嘴疼的可能降到了20%。',
@@ -351,7 +351,7 @@ I18N.add('zh','calf',{strings:{
   'A good first test is cheap and safe, and it checks the cause we think is most likely.':'好的第一个测试要便宜、安全，查的又是我们觉得最可能的原因。',
 
   // ---- plan names on the Future Table ----
-  '{0}, {1}, {2}':'{0}，{1}，{2}',
+  '{0}, {1}, {2}':'{0}，{1}，{2}','<b>{0}:</b> {1}':'<b>{0}：</b>{1}',
   'leave the ridge':'不管山梁','camera drone to the ridge':'派无人机去山梁拍照','Eli checks the ridge':'伊莱去山梁查看',
   'care protocol runs on its own':'护理规程自动执行','a keeper signs first':'饲养员先签字',
 

@@ -163,7 +163,7 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
   byteGood:'Nice work, Explorer. You planned for the worst end of Delta’s range, you kept the emergency reserve untouched, and you kept power for the things your crew cared about.',
   debriefLines(){const st=dsState();return st.mid?[{ok:true,text:'When Delta’s forecast changed at 1 AM, you changed the plan to match it.'}]:[]},
   evening(){const R=S.result||{},ok=R.flags&&R.flags.tomatoes,rest=R.flags&&R.flags.rest;
-    return [`<b>${esc(S.byte.name)}:</b> ${T('“Look, a blue sunset! Fine dust in the air sends blue light toward us, right around the Sun. And that bright star above it is Earth.”')}`,
+    return [T('<b>{0}:</b> {1}',esc(S.byte.name),T('“Look, a blue sunset! Fine dust in the air sends blue light toward us, right around the Sun. And that bright star above it is Earth.”')),
       ok?'“Lucía picked Uno, the first ripe tomato on Mars, and cut it into six tiny pieces, one for each of us. She saved the seeds for Caio.”':'“Lucía is planting new seeds already. She says the second planting should go faster, because now she knows how this soil behaves.”',
       S.told&&rest?'“Dev slept through the whole storm. He fixed the rover’s dust seals this morning and left a packet of cocoa by your door.”':'“Dev spent the morning cleaning dust out of the rover’s seals, and he asked me to say thank you for a quiet night.”',
       '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”'].map((l,i)=>i?T(l):l)},

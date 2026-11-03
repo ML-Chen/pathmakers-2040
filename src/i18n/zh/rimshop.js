@@ -38,10 +38,10 @@ I18N.add('zh','rimshop',{strings:{
 
   // ---- Ada ----
   'Hi! Are you the new shop? I’m Ada. My family moved here from Lagos last month. I’m the oldest kid on the whole Moon!':'嗨！你就是新开的店吗？我叫阿达。上个月我们全家从拉各斯搬到这儿来了。整个月球上，我是年纪最大的小孩！',
-  'I do school by video with my old class. They think it’s so cool that I live here. Mostly it’s cold, and the walls are close together.':'我通过视频跟原来的班级一起上课。同学们觉得我住在这儿酷极了。其实这里大部分时候都很冷，墙和墙也挨得很近。',
+  'I do school by video with my old class. They think it’s so cool that I live here. Mostly it’s cold, and the walls are close together.':'我通过视频跟原来的班级一起上课。同学们觉得我住在这儿酷极了。其实这儿大多时候都很冷，屋子也小得转不开身。',
   'My mom works on the ice crew. They drive the robots that dig ice at the bottom of the crater. Sunlight never reaches down there, so it’s always dark.':'我妈妈在采冰队上班。他们开着机器人，在陨石坑底下挖冰。阳光从来照不到那里，所以那里一直是黑的。',
-  'Her crew comes up the lift at two in the morning, and they’re so cold and hungry. Everything is closed then. The vending wall only has cold sandwiches.':'他们队凌晨两点坐升降梯上来，又冷又饿。可那个时候哪儿都关门了，自动售货墙里只有冷冰冰的三明治。',
-  'There are about forty of them. Mom says she’d pay anything for something hot.':'他们队大约有四十个人。妈妈说，只要能吃上口热的，花多少钱她都愿意。',
+  'Her crew comes up the lift at two in the morning, and they’re so cold and hungry. Everything is closed then. The vending wall only has cold sandwiches.':'她那个队的人凌晨两点坐升降梯上来，一个个又冷又饿。可那个时候哪儿都关门了，自动售货墙里只有冷冰冰的三明治。',
+  'There are about forty of them. Mom says she’d pay anything for something hot.':'他们大约有四十个人。妈妈说，只要能吃上口热的，花多少钱她都愿意。',
   'Thanks, Ada. That could really matter.':'谢谢你，阿达。这件事可能很重要。',
   'Really? Mom would be so happy. Just don’t make it too spicy. Her crew boss hates spicy.':'真的吗？妈妈肯定会高兴坏的。不过别做得太辣，他们队长最怕辣了。',
   'Sorry, the shop is only open in the day.':'对不起，小店只在白天开门。',
@@ -77,7 +77,7 @@ I18N.add('zh','rimshop',{strings:{
   'I do not learn on the job. My maker sends updates, and my owner must approve each one.':'我不会在干活的时候自己学新东西。造我的公司会发来更新，每次更新都要店主批准。',
   'Updates':'更新','Updates need your OK':'更新要你同意',
   'Right now I have no limits set, so I will ask you before I do anything at all.':'现在我还没有任何权限，所以不管做什么，我都会先问你。',
-  'No limits yet':'还没有权限','May I…?':'我可以……吗？','Till asks first':'Till先问你',
+  'No limits yet':'还没有权限','May I…?':'可以吗？','Till asks first':'Till先问你',
 
   // ---- the Ledger ----
   'The Ledger: Moon Market':'纪事报：月球集市','News':'新闻',
@@ -110,7 +110,7 @@ I18N.add('zh','rimshop',{strings:{
   'When supplies run short':'货不够的时候','Till raises':'Till涨价','Till asks me':'Till先问我','Prices stay':'价格不变',
 
   // ---- plan names ----
-  '{0}, {1}, {2}':'{0}，{1}，{2}',
+  '{0}, {1}, {2}':'{0}，{1}，{2}','<b>{0}:</b> {1}':'<b>{0}：</b>{1}',
   'Soup and Moon-glass':'汤和月球玻璃','a big first order':'第一批货进得多','a small first order':'第一批货进得少',
   'Till raises prices in a shortage':'缺货时Till涨价','Till asks before changing prices':'Till改价前先问','prices stay put':'价格不变',
 
@@ -244,7 +244,7 @@ I18N.add('zh','rimshop',{strings:{
   'Sold 36 bowls a night at 2 AM':'凌晨2点每晚卖出36碗','Ada’s mom brought her whole crew. They asked whether you will keep selling soup at 2 AM. Lunch sales were small.':'阿达的妈妈把全队都带来了。他们问你以后凌晨2点还卖不卖汤。午饭时卖得不多。',
   'Sold 7 bowls a day at lunch':'午饭时每天卖出7碗','Most people at lunch already eat at the base kitchen. The pot was still half full at closing.':'大多数人午饭都在基地食堂吃了。收摊的时候，锅里还剩半锅汤。',
   'What we learned':'我们学到了什么','{0} coins a day':'每天{0}金币','guess':'猜测','Write Till’s limits':'给Till写权限',
-  'Day {0}':'第 {0} 天','{0} coins':'{0}金币',
+  '{0} coins':'{0}金币',
 
   // ---- Till's limits ----
   'Your booth · Till’s limits':'你的摊位 · Till的权限','Till’s limits':'Till的权限',

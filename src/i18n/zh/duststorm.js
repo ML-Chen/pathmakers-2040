@@ -108,7 +108,7 @@ I18N.add('zh','duststorm',{strings:{
   'Message to Earth':'发往地球的消息','Send tonight':'今晚发','Wait':'等一等',
 
   // ---- plan names ----
-  '{0}, {1}, {2}':'{0}，{1}，{2}',
+  '{0}, {1}, {2}':'{0}，{1}，{2}','<b>{0}:</b> {1}':'<b>{0}：</b>{1}',
   'Greenhouse lights and heat':'温室开灯加暖气','Greenhouse heat only':'温室只开暖气','Greenhouse off':'温室关掉',
   'a cozy cabin':'舱房暖和','a cool cabin':'舱房凉快','send the messages':'发出消息','messages wait':'消息等一等',
 
@@ -186,7 +186,7 @@ I18N.add('zh','duststorm',{strings:{
   '“Look, a blue sunset! Fine dust in the air sends blue light toward us, right around the Sun. And that bright star above it is Earth.”':'“看，蓝色的晚霞！空气里细细的尘土把蓝光散向我们，就在太阳周围。太阳上面那颗亮星，就是地球。”',
   '“Lucía picked Uno, the first ripe tomato on Mars, and cut it into six tiny pieces, one for each of us. She saved the seeds for Caio.”':'“露西娅摘下了老大，这是火星上第一个熟透的番茄。她把它切成六小块，我们每人一块。种子她留给了卡约。”',
   '“Lucía is planting new seeds already. She says the second planting should go faster, because now she knows how this soil behaves.”':'“露西娅已经在种新种子了。她说第二次会种得快一些，因为她现在摸清了这里的土是什么脾气。”',
-  '“Dev slept through the whole storm. He fixed the rover’s dust seals this morning and left a packet of cocoa by your door.”':'“风暴过去的这一整夜，德夫都睡得很香。今天早上他修好了火星车的防尘密封条，还在你门口放了一包可可。”',
+  '“Dev slept through the whole storm. He fixed the rover’s dust seals this morning and left a packet of cocoa by your door.”':'“整场风暴里，德夫一觉睡到了天亮。今天早上他修好了火星车的防尘密封条，还在你门口放了一包可可。”',
   '“Dev spent the morning cleaning dust out of the rover’s seals, and he asked me to say thank you for a quiet night.”':'“德夫一上午都在清理火星车密封条里的尘土。他让我替他谢谢你，昨晚过得很安稳。”',
   '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”':'“今天的真实情况：火星车已经在耶泽罗陨石坑拍到过这样的蓝色晚霞，但还没有人站在这里过。”',
 
@@ -211,7 +211,7 @@ I18N.add('zh','duststorm',{strings:{
   'Three tomatoes! Lucía has named every one of them.':'三个番茄！露西娅给每一个都起了名字。',
   'Earth is just a bright dot from here. I wave at it anyway.':'从这儿看，地球只是一个亮点。我还是会朝它挥挥手。',
   'The messages from home take twelve minutes to arrive today.':'今天家里发来的消息，要十二分钟才能到。',
-  'Blue sunsets. I’ll never get used to them.':'蓝色的晚霞。我大概永远看不惯。',
+  'Blue sunsets. I’ll never get used to them.':'蓝色的晚霞。我到现在还是觉得好神奇。',
   'That bright star is Earth. Everyone I love is on it.':'那颗亮星就是地球。我爱的每一个人都在上面。',
 
   // ---- chat with Byte (when the AI chat is off) ----
