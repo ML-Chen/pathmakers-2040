@@ -395,12 +395,12 @@ function lotAsk(){const opt=(id,t,x)=>({id,t,...x});
     onChoose(o){S.choice={...S.choice,design:o.id,...o.knobs};save();toast(o.name+' is on the Future Table');nextStep()}})}
 
 // ---------- night orders: what the crew and Arroyo may do without a person ----------
-const LOT_CREW=[['all','Stop for every surprise','The crew stops and waits for me to sign every change. It’s the safest choice, but even a buried rock could cost a whole night of building.'],
+const LOT_CREW=[['all','Stop for every surprise','The crew waits for me to sign every change. It’s the safest choice, but even a buried rock could cost a night of building.'],
   ['scoped','Fix small things. Stop for other people’s things.','The crew handles things like buried rocks. For anything that belongs to someone else, the owner and I sign first.'],
-  ['free','Fix everything. Report at 6 AM.','The crew approves its own changes and tells me about them at 6 AM. This is the fastest choice.']];
-const LOT_GATE=[['auto','Arroyo opens it, with safety checks','Arroyo opens the gate only when the bowl is empty, after 10 minutes of warning lights and a horn. Anyone can press pause. Marco signs these rules once, ahead of time.'],
+  ['free','Fix everything. Report at 6 AM.','The crew approves its own changes and tells me at 6 AM. This is the fastest choice.']];
+const LOT_GATE=[['auto','Arroyo opens it, with safety checks','Arroyo opens the gate only when the bowl is empty, after 10 minutes of warning lights and a horn. Anyone can press pause. Marco signs these rules ahead of time.'],
   ['ask','Arroyo calls Marco every time','Marco must say yes before each opening, even at 2 AM.'],['off','Not connected','The bowl holds only the rain that falls on the lot.']];
-const LOT_NIGHT={intro:'My forecast only knows about things that are on my maps. If the crew digs up something at 2 AM that isn’t on any map, who should decide what to do with it? Which matters more to you: building fast, or making sure nobody’s things get changed without their owners saying yes?',
+const LOT_NIGHT={intro:'My maps don’t show everything under this lot. If the crew digs up something at 2 AM that isn’t on any map, who should decide what to do with it? Which matters more to you: building fast, or asking the owners before anything of theirs gets changed?',
   pick:'I’d pick “fix small things” and “Arroyo opens it, with safety checks.” The crew is great at building, but when something belongs to the neighbors, the neighbors should decide. And in the middle of the night, a storm can flood the street before Marco wakes up to answer his phone.',
   crew:{all:['okafor','The crew will stop and ask about everything? Good. I like careful, even if it’s slow.'],scoped:['okafor','Good. Nobody touches what’s ours without asking us first.'],free:['okafor','Robots deciding about our things at three in the morning? I don’t like that.']},
   gate:{auto:[['arroyo','Rules received. I will open the gate only when the bowl is empty, after ten minutes of warning lights and a horn.'],['marco','So Arroyo checks that the bowl is empty, warns people for ten minutes, lets anyone press pause, and keeps a log I can read every morning. Fine. I’ll sign those rules.']],
