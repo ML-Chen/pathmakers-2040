@@ -94,32 +94,32 @@ function qyViz(kind){return typeof VIZ!=='undefined'&&VIZ[kind]?VIZ[kind]({}):''
 // ---------- the garden: tap the things people left ----------
 function qyGarden(){const st=qyState(),n=qyFound().length,all=n===QY_ITEMS.length;
   screen('qyscreen',`${scene('varrow')}${hud('Lantern Garden · Varrow')}
-   <div class="qy-field">${QY_ITEMS.map((it,i)=>`<button class="qy-item ${st.found[it.id]?'found':''}" data-i="${i}" style="left:${it.x}%;top:${it.y}%;width:${it.w}px;--d:${(-i*.53).toFixed(2)}s" aria-label="${esc(it.title)}">${qyArt(it.art)}${st.found[it.id]?'<span class="qy-check">✓</span>':''}</button>`).join('')}</div>
+   <div class="qy-field">${QY_ITEMS.map((it,i)=>`<button class="qy-item ${st.found[it.id]?'found':''}" data-i="${i}" style="left:${it.x}%;top:${it.y}%;width:${it.w}px;--d:${(-i*.53).toFixed(2)}s" aria-label="${esc(T(it.title))}">${qyArt(it.art)}${st.found[it.id]?'<span class="qy-check">✓</span>':''}</button>`).join('')}</div>
    <div class="qy-fixed">${companion()}
-   <div class="caption-card dark qy-cap"><p>${all?'You heard every story. Gus is waiting by the Safety Table.':n?(n>=4?`${QY_ITEMS.length-n} more ${QY_ITEMS.length-n===1?'story glows':'stories glow'} in the garden.`:'Keep looking. Every glowing thing in the garden has a story.'):'People left these things in the garden to remember the Quiet Year. Tap anything that glows.'}</p>
+   <div class="caption-card dark qy-cap"><p>${T(all?'You heard every story. Gus is waiting by the Safety Table.':n?(n>=4?(QY_ITEMS.length-n===1?'{0} more story glows in the garden.':'{0} more stories glow in the garden.'):'Keep looking. Every glowing thing in the garden has a story.'):'People left these things in the garden to remember the Quiet Year. Tap anything that glows.',QY_ITEMS.length-n)}</p>
     <div class="qy-count">${QY_ITEMS.map(x=>`<i class="${st.found[x.id]?'on':''}"></i>`).join('')}</div>
-    ${n>=4?`<div class="row"><button class="btn small" id="qy-on">${all?'Go to the Safety Table':'Go on to the Safety Table'}</button></div>`:''}</div></div>`);
+    ${n>=4?`<div class="row"><button class="btn small" id="qy-on">${T(all?'Go to the Safety Table':'Go on to the Safety Table')}</button></div>`:''}</div></div>`);
   wireCompanion();
   $$('.qy-item').forEach(b=>b.onclick=e=>{e.stopPropagation();qyOpenItem(QY_ITEMS[+b.dataset.i])});
   const on=$('#qy-on');if(on)on.onclick=()=>nextStep()}
 
 function qyOpenItem(it,opts){opts=opts||{};const st=qyState(),first=!st.found[it.id];st.found[it.id]=1;save();const c=CAST[it.who]||{};
-  const d=sheet(esc(it.title),`<div class="qy-sheet">
+  const d=sheet(esc(T(it.title)),`<div class="qy-sheet">
     <div class="qy-head"><div class="qy-art">${qyArt(it.art)}</div>
-     <div class="qy-teller"><div class="qy-face">${portrait({...c,mood:'smile'})}</div><b>${esc(c.name||'')}</b><span>${esc(c.role||'')}</span></div></div>
-    <div class="row qy-tools"><button class="mini-btn" id="qy-read">Read to me</button></div>
+     <div class="qy-teller"><div class="qy-face">${portrait({...c,mood:'smile'})}</div><b>${esc(T(c.name||''))}</b><span>${esc(T(c.role||''))}</span></div></div>
+    <div class="row qy-tools"><button class="mini-btn" id="qy-read">${T('Read to me')}</button></div>
     <div class="qy-story">${it.story.map((t,i)=>`<section class="step"><div class="step-n">${i+1}</div><div class="step-body"><p class="sent">${rich(t)}</p><figure class="fig">${qyViz(it.viz[i])}</figure></div></section>`).join('')}</div></div>`);
   d.classList.add('qy-storysheet');
   let reading=false;const btn=$('#qy-read',d),ps=$$('.qy-story .sent',d);
-  const stop=()=>{reading=false;stopVoice();ps.forEach(p=>p.classList.remove('reading'));btn.textContent='Read to me'};
-  const read=async()=>{reading=true;btn.textContent='Stop';stopVoice();const id=playId;
+  const stop=()=>{reading=false;stopVoice();ps.forEach(p=>p.classList.remove('reading'));btn.textContent=T('Read to me')};
+  const read=async()=>{reading=true;btn.textContent=T('Stop');stopVoice();const id=playId;
     for(let k=0;k<it.story.length;k++){if(!reading||!d.isConnected||id!==playId)break;ps.forEach(p=>p.classList.remove('reading'));ps[k].classList.add('reading');
       if(k>0)ps[k].closest('.step').scrollIntoView({behavior:'smooth',block:'nearest'});await playLine(it.who,it.story[k]);playId=id}
     if(d.isConnected&&id===playId)stop()};
   btn.onclick=()=>reading?stop():read();
   if(!S.mute&&!opts.quiet)setTimeout(()=>d.isConnected&&read(),450);
   const close=()=>{stop();if(S.step!=='qy_garden')return;qyGarden();if(first)setTimeout(()=>{byteSays(it.byte,'happy');
-      if(it.guide&&unlock(it.guide))toast('New Field Guide idea: '+FIELD_GUIDE[it.guide].title,'good')},350)};
+      if(it.guide&&unlock(it.guide))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE[it.guide].title)),'good')},350)};
   d.querySelector('.x').addEventListener('click',close);
   d.addEventListener('click',e=>{if(e.target===d){d.classList.remove('on');setTimeout(()=>d.remove(),250);close()}});
   return d}
@@ -131,18 +131,18 @@ function qyCounts(on){let left=100;const out={};for(const L of QY_LAYERS){if(on[
   const r={};keys.forEach((k,i)=>r[k]=fl[i]);return r}
 function qyTable(){const on=qyState().on,cnt=qyCounts(on),nOn=QY_LAYERS.filter(L=>on[L.id]).length;
   const cats=[...QY_LAYERS.map(L=>({kind:L.kind,cap:L.cap,color:L.color})),QY_YEAR];const cells=[];cats.forEach(c=>{for(let k=0;k<cnt[c.kind];k++)cells.push(c)});
-  const line=nOn===0?'This is Varrow in 2030, with no safeguards ready. In all 100 futures, the germ starts another Quiet Year.':
+  const line=T(nOn===0?'This is Varrow in 2030, with no safeguards ready. In all 100 futures, the germ starts another Quiet Year.':
     nOn===1?'One safeguard helps a lot, but it misses some attempts. Try turning on another one.':
     nOn<QY_LAYERS.length?'Each safeguard you add catches some of the attempts that the safeguards before it missed.':
-    'All four safeguards are on, which is what Varrow has today. Fewer than 1 attempt in 100 gets past all four, so people still keep watching.';
+    'All four safeguards are on, which is what Varrow has today. Fewer than 1 attempt in 100 gets past all four, so people still keep watching.');
   screen('futuretable',`${scene('table')}${hud('The Safety Table · Varrow')}
    <div class="ft qy-ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:nOn===QY_LAYERS.length?'happy':'think'})}</div><p>${esc(line)}</p></div>
-    <div class="qy-grid" role="img" aria-label="100 possible futures">${cells.map((c,i)=>`<i class="qy-cell k-${c.kind}" style="--c:${c.color};--d:${(i%20)*25}ms"></i>`).join('')}</div>
-    <div class="qy-legend">${cats.filter(c=>cnt[c.kind]>0).map(c=>`<div><span class="sw2" style="background:${c.color}"></span><span>${esc(c.cap)}</span><b>${cnt[c.kind]}</b></div>`).join('')}</div>
-    <div class="qy-layers">${QY_LAYERS.map(L=>`<button class="qy-layer ${on[L.id]?'on':''}" data-l="${L.id}" style="--c:${L.color}" aria-pressed="${!!on[L.id]}"><span class="tg"></span><span><b>${esc(L.label)}</b><small>${esc(L.cost)}</small></span></button>`).join('')}</div>
-    <div class="ft-foot"><button class="btn ghost small" id="qy-rules" ${nOn>=2?'':'disabled'}>See Varrow’s rule board</button><button class="btn" id="qy-next" ${nOn>=2?'':'disabled'}>Back to the pond</button></div></div>`);
+    <div class="qy-grid" role="img" aria-label="${T('100 possible futures')}">${cells.map((c,i)=>`<i class="qy-cell k-${c.kind}" style="--c:${c.color};--d:${(i%20)*25}ms"></i>`).join('')}</div>
+    <div class="qy-legend">${cats.filter(c=>cnt[c.kind]>0).map(c=>`<div><span class="sw2" style="background:${c.color}"></span><span>${esc(T(c.cap))}</span><b>${cnt[c.kind]}</b></div>`).join('')}</div>
+    <div class="qy-layers">${QY_LAYERS.map(L=>`<button class="qy-layer ${on[L.id]?'on':''}" data-l="${L.id}" style="--c:${L.color}" aria-pressed="${!!on[L.id]}"><span class="tg"></span><span><b>${esc(T(L.label))}</b><small>${esc(T(L.cost))}</small></span></button>`).join('')}</div>
+    <div class="ft-foot"><button class="btn ghost small" id="qy-rules" ${nOn>=2?'':'disabled'}>${T('See Varrow’s rule board')}</button><button class="btn" id="qy-next" ${nOn>=2?'':'disabled'}>${T('Back to the pond')}</button></div></div>`);
   $$('.qy-layer').forEach(b=>b.onclick=()=>{on[b.dataset.l]=!on[b.dataset.l];if(QY_LAYERS.every(L=>on[L.id]))qyState().stacked=1;save();MUSIC.sfx&&MUSIC.sfx('blip');qyTable();
-    if(QY_LAYERS.filter(L=>on[L.id]).length>=2&&unlock('defense-in-depth'))toast('New Field Guide idea: '+FIELD_GUIDE['defense-in-depth'].title,'good')});
+    if(QY_LAYERS.filter(L=>on[L.id]).length>=2&&unlock('defense-in-depth'))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['defense-in-depth'].title)),'good')});
   $('#qy-rules').onclick=()=>nextStep();$('#qy-next').onclick=()=>go('qy_ivy')}
 
 
@@ -159,52 +159,52 @@ function qyDouble(){const st=qyState(),D=st.dbl=st.dbl||{day:0,guess:null,phase:
     const opts=['About 20 homes','About 100 homes','About 1,000 homes'];
     panel=`<div class="choices qyd-opts">${mixIdx(opts).map(([o,j])=>`<button class="choice" data-g="${j}">${esc(T(o))}</button>`).join('')}</div>`}
   else{const said=['About 20 homes','About 100 homes','About 1,000 homes'][D.guess];
-    head=D.phase==='slide'?(D.guess===2?'You guessed about 1,000, and that’s right. Most people guess much lower. Slide through the days and watch how the number of sick homes grows.':`You guessed ${said.toLowerCase()}. Most people guess much lower than the real answer. Slide through the days and watch how the number of sick homes grows.`)
+    head=D.phase==='slide'?(D.guess===2?'You guessed about 1,000, and that’s right. Most people guess much lower. Slide through the days and watch how the number of sick homes grows.':T('You guessed {0}. Most people guess much lower than the real answer. Slide through the days and watch how the number of sick homes grows.',T(said).toLowerCase()))
       :'In 2030, nobody noticed the germ until day 21. Today, a water tester in every neighborhood notices a new germ by day 3. Slide to each day to compare.';
     panel=`<div class="qyd-read"><b>${T('Day {0}',D.day)}</b><span>${T(homes===1?'{0} home':'{0} homes',fmt(homes))}</span></div>
-      <input type="range" class="qyd-range" id="qyd-day" min="0" max="${QYD_DAYS}" step="${QYD_STEP}" value="${D.day}" aria-label="Day">
+      <input type="range" class="qyd-range" id="qyd-day" min="0" max="${QYD_DAYS}" step="${QYD_STEP}" value="${D.day}" aria-label="${T('Day')}">
       <div class="qyd-ticks">${Array.from({length:QYD_DAYS/QYD_STEP+1},(_,k)=>k*QYD_STEP).map(d=>`<span class="${D.phase==='notice'&&(d===QYD_THEN||d===QYD_NOW)?'mark':''}">${d}</span>`).join('')}</div>
-      ${D.phase==='notice'?`<div class="qyd-cmp"><button class="qyd-c then" data-d="${QYD_THEN}"><b>2030</b><span>Noticed on day ${QYD_THEN}: ${fmt(qydHomes(QYD_THEN))} homes</span></button><button class="qyd-c now" data-d="${QYD_NOW}"><b>Today</b><span>Noticed by day ${QYD_NOW}: ${fmt(qydHomes(QYD_NOW))} homes</span></button></div>`:''}
-      <button class="btn wide" id="qyd-next" ${D.phase==='slide'&&D.day<QYD_DAYS?'disabled':''}>${D.phase==='slide'?'What if the germ is noticed early?':'Back to the pond'}</button>`}
+      ${D.phase==='notice'?`<div class="qyd-cmp"><button class="qyd-c then" data-d="${QYD_THEN}"><b>2030</b><span>${T('Noticed on day {0}: {1} homes',QYD_THEN,fmt(qydHomes(QYD_THEN)))}</span></button><button class="qyd-c now" data-d="${QYD_NOW}"><b>${T('Today')}</b><span>${T('Noticed by day {0}: {1} homes',QYD_NOW,fmt(qydHomes(QYD_NOW)))}</span></button></div>`:''}
+      <button class="btn wide" id="qyd-next" ${D.phase==='slide'&&D.day<QYD_DAYS?'disabled':''}>${T(D.phase==='slide'?'What if the germ is noticed early?':'Back to the pond')}</button>`}
   screen('futuretable',`${scene('table')}${hud('Doubling · Lantern Garden')}
    <div class="ft qy-ft qyd"><div class="ft-head"><div class="ft-byte">${CAST.qypriya?`<div class="qyd-face">${portrait({...CAST.qypriya,mood:'smile'})}</div>`:byteBox({...S.byte,mood:'think'})}</div><p>${rich(head)}</p></div>
-    <div class="qyd-grid" role="img" aria-label="${fmt(homes)} of 1,024 homes">${dots}</div>${panel}</div>`);
+    <div class="qyd-grid" role="img" aria-label="${T('{0} of 1,024 homes',fmt(homes))}">${dots}</div>${panel}</div>`);
   $$('.qyd-opts .choice').forEach(b=>b.onclick=()=>{D.guess=+b.dataset.g;D.phase='slide';D.day=0;save();MUSIC.sfx&&MUSIC.sfx(D.guess===2?'chime':'blip');qyDouble()});
   const r=$('#qyd-day');if(r)r.oninput=()=>{D.day=+r.value;save();const h=qydHomes(D.day);$$('.qyd-grid i').forEach((x,i)=>x.classList.toggle('on',i<h));
-    $('.qyd-read b').textContent=T('Day {0}',D.day);$('.qyd-read span').textContent=T(h===1?'{0} home':'{0} homes',fmt(h));$('.qyd-grid').setAttribute('aria-label',fmt(h)+' of 1,024 homes');
+    $('.qyd-read b').textContent=T('Day {0}',D.day);$('.qyd-read span').textContent=T(h===1?'{0} home':'{0} homes',fmt(h));$('.qyd-grid').setAttribute('aria-label',T('{0} of 1,024 homes',fmt(h)));
     const n=$('#qyd-next');if(n&&D.phase==='slide')n.disabled=D.day<QYD_DAYS};
   $$('.qyd-c').forEach(b=>b.onclick=()=>{D.day=+b.dataset.d;save();qyDouble()});
-  const n=$('#qyd-next');if(n)n.onclick=()=>{if(D.phase==='slide'){D.phase='notice';D.day=QYD_THEN;save();qyDouble()}else{unlock('doubling')&&toast('New Field Guide idea: '+FIELD_GUIDE['doubling'].title,'good');nextStep()}}}
+  const n=$('#qyd-next');if(n)n.onclick=()=>{if(D.phase==='slide'){D.phase='notice';D.day=QYD_THEN;save();qyDouble()}else{unlock('doubling')&&toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['doubling'].title)),'good');nextStep()}}}
 
 // ---------- Who does what? Sort Varrow's safety jobs ----------
 function qyRules(){const st=qyState(),R=st.rules,done=QY_JOBS.filter(j=>R[j.id]).length;
   const at=Math.min(st.ruleAt||0,QY_JOBS.length),job=QY_JOBS[at],ans=job&&R[job.id];const bin=id=>QY_BINS.find(b=>b.id===id);
-  const board=`<div class="qy-board">${QY_BINS.map(b=>`<div class="qy-col" style="--c:${b.color}"><b>${esc(b.label)}</b>${QY_JOBS.filter(j=>R[j.id]===b.id).map(j=>`<span class="qy-chip ${j.best===b.id?'':'off'}">${qyArt('job',j.icon)}</span>`).join('')}</div>`).join('')}</div>`;
+  const board=`<div class="qy-board">${QY_BINS.map(b=>`<div class="qy-col" style="--c:${b.color}"><b>${esc(T(b.label))}</b>${QY_JOBS.filter(j=>R[j.id]===b.id).map(j=>`<span class="qy-chip ${j.best===b.id?'':'off'}">${qyArt('job',j.icon)}</span>`).join('')}</div>`).join('')}</div>`;
   let body;
-  if(job){body=`<div class="qy-job"><div class="qy-jobn">${at+1} of ${QY_JOBS.length}</div><div class="qy-jobart">${qyArt('job',job.icon)}</div><h3>${esc(job.t)}</h3>
-     ${ans?`<div class="qy-why ${ans===job.best?'ok':''}"><b>${ans===job.best?'Varrow’s rules agree':'Varrow’s rule: '+esc(bin(job.best).label)}</b><p>${esc(job.why)}</p></div><button class="btn wide" id="qy-nextjob">${at+1<QY_JOBS.length?'Next job':'See the board'}</button>`
-       :`<div class="qy-bins">${QY_BINS.map(b=>`<button class="qy-bin" data-b="${b.id}" style="--c:${b.color}">${esc(b.label)}</button>`).join('')}</div>`}</div>`}
+  if(job){body=`<div class="qy-job"><div class="qy-jobn">${T('{0} of {1}',at+1,QY_JOBS.length)}</div><div class="qy-jobart">${qyArt('job',job.icon)}</div><h3>${esc(T(job.t))}</h3>
+     ${ans?`<div class="qy-why ${ans===job.best?'ok':''}"><b>${ans===job.best?T('Varrow’s rules agree'):T('Varrow’s rule: {0}',esc(T(bin(job.best).label)))}</b><p>${esc(T(job.why))}</p></div><button class="btn wide" id="qy-nextjob">${T(at+1<QY_JOBS.length?'Next job':'See the board')}</button>`
+       :`<div class="qy-bins">${QY_BINS.map(b=>`<button class="qy-bin" data-b="${b.id}" style="--c:${b.color}">${esc(T(b.label))}</button>`).join('')}</div>`}</div>`}
   else{const match=QY_JOBS.filter(j=>R[j.id]===j.best).length;
-    body=`<div class="qy-job qy-sum"><h3>${match>=5?'You sorted the jobs the way Varrow’s rules do.':match>=3?'You sorted most jobs the way Varrow’s rules do.':'Varrow’s rules sort a few of these jobs differently.'}</h3>
-     <p>Varrow’s rule of thumb: if a job is small, fast and easy to undo, the AI does it alone. If it matters more, the AI does the work and a person checks it. If it is huge or hard to undo, a person decides and signs.</p>
-     <button class="btn wide" id="qy-done">Back to the pond</button></div>`}
-  const head=job?'In Varrow, AIs help run the safeguards. For each job, decide: can the AI do it alone, should a person check, or should only a person decide?':'Here is your board. A faded card means Varrow sorted that job differently.';
+    body=`<div class="qy-job qy-sum"><h3>${T(match>=5?'You sorted the jobs the way Varrow’s rules do.':match>=3?'You sorted most jobs the way Varrow’s rules do.':'Varrow’s rules sort a few of these jobs differently.')}</h3>
+     <p>${T('Varrow’s rule of thumb: if a job is small, fast and easy to undo, the AI does it alone. If it matters more, the AI does the work and a person checks it. If it is huge or hard to undo, a person decides and signs.')}</p>
+     <button class="btn wide" id="qy-done">${T('Back to the pond')}</button></div>`}
+  const head=T(job?'In Varrow, AIs help run the safeguards. For each job, decide: can the AI do it alone, should a person check, or should only a person decide?':'Here is your board. A faded card means Varrow sorted that job differently.');
   screen('futuretable',`${scene('table')}${hud('Rule board · Varrow')}
    <div class="ft qy-ft"><div class="ft-head"><div class="ft-byte">${byteBox({...S.byte,mood:job?'think':'happy'})}</div><p>${esc(head)}</p></div>${board}${body}</div>`);
   $$('.qy-bin').forEach(b=>b.onclick=()=>{R[job.id]=b.dataset.b;save();MUSIC.sfx&&MUSIC.sfx(b.dataset.b===job.best?'chime':'blip');qyRules()});
-  const nj=$('#qy-nextjob');if(nj)nj.onclick=()=>{st.ruleAt=at+1;save();if(st.ruleAt>=QY_JOBS.length&&unlock('who-does-what'))toast('New Field Guide idea: '+FIELD_GUIDE['who-does-what'].title,'good');qyRules()};
+  const nj=$('#qy-nextjob');if(nj)nj.onclick=()=>{st.ruleAt=at+1;save();if(st.ruleAt>=QY_JOBS.length&&unlock('who-does-what'))toast(T('New Field Guide idea: {0}',T(FIELD_GUIDE['who-does-what'].title)),'good');qyRules()};
   const dn=$('#qy-done');if(dn)dn.onclick=()=>nextStep()}
 
 // ---------- light your own lantern ----------
 function qyLantern(){const L=qyState().lantern;
   screen('qyscreen',`${scene('varrow')}${hud('Lantern Garden · Varrow')}<div class="panel-card qy-lpanel">
-    <h2>Light a lantern</h2>
+    <h2>${T('Light a lantern')}</h2>
     <div class="qy-light">${qyArt('lantern',L.color)}<div class="qy-tag" id="qy-tag"></div></div>
-    <div class="qy-swatches">${QY_COLORS.map(c=>`<button data-c="${c}" class="${L.color===c?'on':''}" style="background:${c}" aria-label="Lantern color"></button>`).join('')}</div>
-    <div class="qy-cards">${QY_THANKS.map(t=>`<button class="critb ${L.to===t?'on':''}" data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div>
-    <div class="ta-wrap"><textarea id="qy-text" rows="2" maxlength="120" placeholder="Add your own words">${esc(L.text)}</textarea>${micButton('qy-text')}</div>
-    <button class="btn wide" id="qy-go" ${L.to?'':'disabled'}>Set it on the pond</button></div>`);
-  wireMics();const msg=()=>{$('#qy-tag').textContent=L.to?`Thank you to ${L.to}.${L.text.trim()?' '+L.text.trim():''}`:''};msg();
+    <div class="qy-swatches">${QY_COLORS.map(c=>`<button data-c="${c}" class="${L.color===c?'on':''}" style="background:${c}" aria-label="${T('Lantern color')}"></button>`).join('')}</div>
+    <div class="qy-cards">${QY_THANKS.map(t=>`<button class="critb ${L.to===t?'on':''}" data-t="${esc(t)}">${esc(T(t))}</button>`).join('')}</div>
+    <div class="ta-wrap"><textarea id="qy-text" rows="2" maxlength="120" placeholder="${T('Add your own words')}">${esc(L.text)}</textarea>${micButton('qy-text')}</div>
+    <button class="btn wide" id="qy-go" ${L.to?'':'disabled'}>${T('Set it on the pond')}</button></div>`);
+  wireMics();const msg=()=>{$('#qy-tag').textContent=L.to?T('Thank you to {0}.',T(L.to))+(L.text.trim()?' '+L.text.trim():''):''};msg();
   $$('[data-c]').forEach(b=>b.onclick=()=>{L.color=b.dataset.c;save();qyLantern()});
   $$('[data-t]').forEach(b=>b.onclick=()=>{L.to=b.dataset.t;save();qyLantern()});
   $('#qy-text').oninput=e=>{L.text=e.target.value;save();msg()};
@@ -314,24 +314,24 @@ MISSIONS.quietyear={id:'quietyear',title:'The Lantern Garden',career:'visit',day
   docs:[],criteria:[],controls:[],start:{},
   eveningScene:'night',eveningPlace:'Home · Boston · 9:40 PM',
   evening(){S.lastStars=qyStars();return [
-    `<b>${esc(S.byte.name)}:</b> “I keep thinking about Noor at her desk, reading DNA orders one after another. Ivy told me she wants to be a DNA screener like Noor when she grows up.”`,
-    `“The Ledger posted a short note tonight. Several new customers signed up at Boston’s DNA print shops within a few minutes of each other, and the shops are checking every one of their orders.”`]},
+    T('<b>{byte}:</b> “I keep thinking about Noor at her desk, reading DNA orders one after another. Ivy told me she wants to be a DNA screener like Noor when she grows up.”',{byte:esc(S.byte.name)}),
+    T('“The Ledger posted a short note tonight. Several new customers signed up at Boston’s DNA print shops within a few minutes of each other, and the shops are checking every one of their orders.”')]},
   brief(){const st=qyState();return `Today is a day off. The player took the ferry to Varrow, a fictional small port city up the coast from Boston, to visit the Lantern Garden, the memorial to the Quiet Year (2030). That year a new germ, made with help from an unsafe AI (one built without safety checks, which would help anyone do anything), spread through Varrow. Nobody noticed it for almost three weeks, and by then it had reached more than a hundred homes (about 128, the doubling exhibit's day 21). Families stayed home for about five months. An AI designed a vaccine in two days, it was carefully tested for weeks, and the shots stopped the germ. Varrow had ${QY_LANTERNS} families in 2030, and every one of them helped, so the garden has ${QY_LANTERNS} lanterns${st.lantern.lit?' (now '+(QY_LANTERNS+1)+', counting the player’s)':''}. The keeper is Gus Barros.
 The six things people left, each with a story: Ana Ribeiro's old phone (nightly video calls with Grandma Lucía); baker Kwame Mensah's sign (bread for the nurses at Varrow General, carried by a delivery robot); Dr. Priya Nair's first wastewater tester, "Sniffer" (it tests the water draining out of buildings for new germs, so a new germ is noticed in days, not weeks; today every school and neighborhood in Varrow has one, as do every city and airport in the world, all watched by an AI that alerts the health office); DNA screener Noor Haddad's order slip stamped HOLD (since 2030, every DNA order is checked before printing; an AI checks every order and flags odd ones, and Noor decides whether to hold them for experts); nurse Sam Brennan's "I helped Varrow" sticker (fast design, careful tests); and Ivy Torres's crayon drawing (at 7 she put the first lantern in a window; now she is 17). The player has heard ${qyFound().length} of the 6 stories.
 The Safety Table shows 100 futures in which someone tries to make a germ like the 2030 one. Byte's rough estimates: DNA order screening stops about 9 in 10 attempts before anything is made; wastewater testing catches about 8 in 10 of the rest within days; far-UVC lights and air filters in buses, shops and schools slow the spread of about half of what is left until it is caught; fast vaccines with careful tests (an emergency pipeline that takes weeks) stop about 7 in 10 of the remainder. With all four layers: 90 stopped, 8 caught in days, 1 slowed, 1 caught within weeks, and fewer than 1 in 100 becomes another Quiet Year, which is why people keep watching. Varrow also built clean-air shelters with room for every family. Stacking safeguards is called defense in depth.
 "Who does what?": Varrow's rules say the AIs check every DNA order and alert the health office about a new germ on their own; they flag odd orders for a screener and read vaccine test results while people check their work; and only a person may close schools or switch off a safeguard. The AIs are expert AIs: excellent, autonomous and ordinary.
 Keep anything about how germs are made completely vague, even if asked directly: talk only about safeguards, history, feelings and kindness. If the player feels worried, reassure them gently and honestly: many layers of safeguards now protect people, and lots of people watch carefully.`},
-  canned(q){if(/scared|afraid|worr|again|happen/.test(q))return 'It’s okay to feel that way. Today Varrow has four layers of safeguards, and lots of people watch carefully. In about 98 of 100 futures, a new germ is stopped before it’s made or caught within days.';
-    if(/lantern/.test(q))return `There are ${QY_LANTERNS.toLocaleString('en-US')} lanterns, one for each family in Varrow, because every family helped. Ivy started it when she was seven!`;
-    if(/who does|alone|rule|sign/.test(q))return 'The AIs do small, fast jobs that are easy to undo by themselves. For bigger jobs, a person checks the AI’s work. Closing schools or switching off a safeguard needs a person who decides and signs.';
-    if(/dna|order|noor|screen|print/.test(q))return 'An AI checks every DNA order before it prints. Almost all of them are for medicine and pass at once. When one looks odd, Noor decides whether to hold it for experts.';
-    if(/uvc|lamp|light|air|filter/.test(q))return 'Far-UVC lamps in buses, shops and schools break down germs floating in the air. They slow a germ down, so the other safeguards have time to catch it.';
-    if(/sensor|sniffer|water|test/.test(q))return 'Sniffer boxes test the water that drains out of buildings and call for help within a day. In 2030, it took almost three weeks to notice the germ.';
-    if(/shelter/.test(q))return 'Varrow built clean-air shelters with room for every family. They’re the last layer, for the very worst case. Nobody has needed them.';
-    if(/vaccine|shot|sticker/.test(q))return 'An AI designed the vaccine in two days, and careful tests took weeks. The vaccine had to be made fast, and it also had to be proven safe.';
-    if(/depth|layer|safeguard|table/.test(q))return 'Defense in depth means stacking safeguards. With all four, about 90 in 100 attempts are stopped before anything is made, and fewer than 1 in 100 slips all the way through.';
-    if(/where.*(germ|come)|made|unsafe/.test(q))return 'An unsafe AI, built without safety checks, helped someone make it. That’s why every DNA order gets checked now, and why AIs have rules about what they may do.';
-    return 'Ask me about the lanterns, the Quiet Year, or the safeguards that keep Varrow safe today.'},
+  canned(q){if(TRX(/scared|afraid|worr|again|happen/).test(q))return T('It’s okay to feel that way. Today Varrow has four layers of safeguards, and lots of people watch carefully. In about 98 of 100 futures, a new germ is stopped before it’s made or caught within days.');
+    if(TRX(/lantern/).test(q))return T('There are {0} lanterns, one for each family in Varrow, because every family helped. Ivy started it when she was seven!',QY_LANTERNS.toLocaleString('en-US'));
+    if(TRX(/who does|alone|rule|sign/).test(q))return T('The AIs do small, fast jobs that are easy to undo by themselves. For bigger jobs, a person checks the AI’s work. Closing schools or switching off a safeguard needs a person who decides and signs.');
+    if(TRX(/dna|order|noor|screen|print/).test(q))return T('An AI checks every DNA order before it prints. Almost all of them are for medicine and pass at once. When one looks odd, Noor decides whether to hold it for experts.');
+    if(TRX(/uvc|lamp|light|air|filter/).test(q))return T('Far-UVC lamps in buses, shops and schools break down germs floating in the air. They slow a germ down, so the other safeguards have time to catch it.');
+    if(TRX(/sensor|sniffer|water|test/).test(q))return T('Sniffer boxes test the water that drains out of buildings and call for help within a day. In 2030, it took almost three weeks to notice the germ.');
+    if(TRX(/shelter/).test(q))return T('Varrow built clean-air shelters with room for every family. They’re the last layer, for the very worst case. Nobody has needed them.');
+    if(TRX(/vaccine|shot|sticker/).test(q))return T('An AI designed the vaccine in two days, and careful tests took weeks. The vaccine had to be made fast, and it also had to be proven safe.');
+    if(TRX(/depth|layer|safeguard|table/).test(q))return T('Defense in depth means stacking safeguards. With all four, about 90 in 100 attempts are stopped before anything is made, and fewer than 1 in 100 slips all the way through.');
+    if(TRX(/where.*(germ|come)|made|unsafe/).test(q))return T('An unsafe AI, built without safety checks, helped someone make it. That’s why every DNA order gets checked now, and why AIs have rules about what they may do.');
+    return T('Ask me about the lanterns, the Quiet Year, or the safeguards that keep Varrow safe today.')},
   // extra states for tools/mission_shots.js (run in the page after the step's own screenshot)
   shots:{
     qy_garden:[{label:'a story, reading',run(){qyOpenItem(QY_ITEMS[3],{quiet:1});const p=document.querySelector('.qy-story .sent');p&&p.classList.add('reading')}},

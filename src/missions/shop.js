@@ -22,8 +22,8 @@ const SHOP={pB:{no:.4,yes:.8},fair:.10,steer:{careful:.10,mix:.16,auto:.20},
 function shopTail(n,p,k){let lp=n*Math.log(1-p),s=0;const lr=Math.log(p/(1-p));
   for(let i=0;i<=n;i++){if(i>=k)s+=Math.exp(lp);if(i<n)lp+=Math.log((n-i)/(i+1))+lr}return s}
 function shopStats(n,shop){const z=SHOP.size[n]||SHOP.size[200];return {catch:shopTail(n,SHOP.steer[shop]||SHOP.fair,z.line),fa:shopTail(n,SHOP.fair,z.line),line:z.line,days:z.days}}
-function shopPct(p){return p>=.995?'almost 100':String(Math.round(100*p))}
-function shopTimes(p){return p>=.995?'almost every time':`about ${Math.round(100*p)} times in 100`}
+function shopPct(p){return p>=.995?T('almost 100'):String(Math.round(100*p))}
+function shopTimes(p){return p>=.995?T('almost every time'):T('about {0} times in 100',Math.round(100*p))}
 
 MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,kind:'workday',year:3,season:'summer',district:'vienna',rank:'trainee',
   blurb:'A shopping AI called Pantry keeps buying families’ groceries from the same store chain. Find out whether Pantry is being fair to the families it shops for.',after:['maya'],
@@ -196,7 +196,7 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
   ],
   get react(){return {
     memo4:'So Pantry has two goals: the best value for families, and money for Korbwerk. I want to know which goal wins when the two disagree.',
-    memo6:()=>{unlock('vie-conflict')&&toast('New Field Guide idea: Conflict of interest','good');return 'A hidden payment is a good reason to check Pantry closely, but it doesn’t prove that Pantry is cheating.'},
+    memo6:()=>{unlock('vie-conflict')&&toast(T('New Field Guide idea: {0}',T('Conflict of interest')),'good');return 'A hidden payment is a good reason to check Pantry closely, but it doesn’t prove that Pantry is cheating.'},
     memo10:'Even two fair shoppers sometimes pick different stores, so we need to know how often a fair Pantry would pay more at Kestrel.',
     memo11:'If Pantry is steering anyone, it would probably steer the people least likely to notice.',
     rules4:'Catching steering 56 times in 100 is not much better than flipping a coin.',
@@ -205,8 +205,8 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
     pilot4:'Pantry’s reason sounds good, but the co-op delivers reliably too, so I don’t think reliable delivery is the real reason.',
     pilot5:'Two steered orders out of eight looks high, but with so few orders, luck can change the count a lot.',
     letter1:'The twin sees delivery times too, and it still picks other stores, so faster delivery can’t explain why Pantry pays more at Kestrel.',
-    letter2:()=>{unlock('vie-misleading-chart')&&toast('New Field Guide idea: Misleading charts','good');return 'Look at the side of that chart: it starts at 90, not 0. The happiness score only went from 94 to 96.'},
-    letter3:()=>{unlock('vie-sealed')&&toast('New Field Guide idea: Private, but checkable','good');return 'Keeping the deals private is okay, because a sealed auditor AI can read the private deals, answer our questions, and then be deleted.'},
+    letter2:()=>{unlock('vie-misleading-chart')&&toast(T('New Field Guide idea: {0}',T('Misleading charts')),'good');return 'Look at the side of that chart: it starts at 90, not 0. The happiness score only went from 94 to 96.'},
+    letter3:()=>{unlock('vie-sealed')&&toast(T('New Field Guide idea: {0}',T('Private, but checkable')),'good');return 'Keeping the deals private is okay, because a sealed auditor AI can read the private deals, answer our questions, and then be deleted.'},
     letter4:'Losing deliveries would be a real cost. If we pause Pantry, families like Lotte’s will need another way to get their medicine.',
     ledger2:'Something near Calder Bay is using electricity that nobody approved. I wonder what it is.',
     ledger3:'Robots near Calder Bay are following work orders that nobody signed. I don’t like that.'}},
@@ -220,7 +220,7 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
     {key:'shop',label:'How our mystery shoppers act',opts:[['careful','Careful bargain hunters'],['mix','A mix of families'],['auto','Families on autopilot']]},
     {key:'act',label:'What we do if Pantry is steering',opts:[['disclose','Tell the public'],['fix','Order Pantry to fix it'],['pause','Pause Pantry in Austria']]}],
   start:{n:40,shop:'careful',act:'pause'},
-  planName(c){return `${c.n} test orders from ${SHOP.shopLabel[c.shop]}, and then ${SHOP.actLabel[c.act]} if Pantry is steering`},
+  planName(c){return T('{n} test orders from {shop}, and then {act} if Pantry is steering',{n:c.n,shop:T(SHOP.shopLabel[c.shop]),act:T(SHOP.actLabel[c.act])})},
   // knows: false (before the gold knot), true (Byte was told), 'truth' (Pantry really is steering)
   outcomes(c,knows){const pB=knows==='truth'?1:knows?SHOP.pB.yes:SHOP.pB.no,st=shopStats(c.n,c.shop),fast=c.n<800?1:0;
     const F=(ca,nf,de,fa)=>({catch:ca,nofalse:nf,deliver:de,fair:fa,fast});
@@ -235,32 +235,32 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       {kind:'all_clear',p:(1-pB)*(1-st.fa),cap:'Pantry was fair, and the test said so.',flags:F(1,1,1,1)}].filter(o=>o.p>1e-9)},
   truth(){return 'truth'},knows(){return !!S.told},
   why(c){const st=shopStats(c.n,c.shop),pB=Math.round(100*(S.told?SHOP.pB.yes:SHOP.pB.no));unlock('vie-remedies');
-    const act={disclose:'Telling the public is the gentlest choice, but families on autopilot rarely read Pantry’s note about it, so most of the overpaying goes on.',
+    const act=T({disclose:'Telling the public is the gentlest choice, but families on autopilot rarely read Pantry’s note about it, so most of the overpaying goes on.',
       fix:'A fix order keeps every delivery running: Korbwerk must send an update to Pantry for approval within 10 days, and Pantry must pass a new test every month.',
-      pause:'A pause stops steering at once, but 1.2 million Austrian households, including Lotte’s family, lose deliveries for about two weeks.'}[c.act];
-    return `<b>${esc(this.planName(c))}:</b> if Pantry is steering, this test catches it ${shopTimes(st.catch)}. If Pantry is fair, this test wrongly raises a false alarm ${shopTimes(st.fa)}. The test takes ${st.days} day${st.days>1?'s':''}. ${c.shop==='careful'?'Careful: a steering Pantry would probably treat bargain hunters fairly, so a test that uses only bargain hunters would almost never see the steering. ':''}${act} I put the chance that Pantry is steering at about ${pB} in 100${S.told?', because of the gold knot':''}.`},
+      pause:'A pause stops steering at once, but 1.2 million Austrian households, including Lotte’s family, lose deliveries for about two weeks.'}[c.act]);
+    return T('<b>{plan}:</b> if Pantry is steering, this test catches it {catch}. If Pantry is fair, this test wrongly raises a false alarm {fa}. ',{plan:esc(this.planName(c)),catch:shopTimes(st.catch),fa:shopTimes(st.fa)})+T(st.days>1?'The test takes {0} days. ':'The test takes {0} day. ',st.days)+(c.shop==='careful'?T('Careful: a steering Pantry would probably treat bargain hunters fairly, so a test that uses only bargain hunters would almost never see the steering. '):'')+act+T(S.told?' I put the chance that Pantry is steering at about {0} in 100, because of the gold knot.':' I put the chance that Pantry is steering at about {0} in 100.',pB)},
   whyGuide(c){return 'vie-test-like-real'},
   tablePanelAfter(c){const st=shopStats(c.n,c.shop),w=p=>Math.max(2,Math.round(100*p));
-    return `<div class="shop-odds"><div class="so-row"><span>If Pantry is steering</span><div class="so-bar"><i style="width:${w(st.catch)}%"></i></div><b>catch ${shopPct(st.catch)} in 100</b></div>
-      <div class="so-row"><span>If Pantry is fair</span><div class="so-bar fa"><i style="width:${w(st.fa)}%"></i></div><b>false alarm ${shopPct(st.fa)} in 100</b></div>
-      <div class="so-days">Alarm line: ${st.line} steered orders out of ${c.n} · answer in ${st.days} day${st.days>1?'s':''}</div></div>`},
+    return `<div class="shop-odds"><div class="so-row"><span>${T('If Pantry is steering')}</span><div class="so-bar"><i style="width:${w(st.catch)}%"></i></div><b>${T('catch {0} in 100',shopPct(st.catch))}</b></div>
+      <div class="so-row"><span>${T('If Pantry is fair')}</span><div class="so-bar fa"><i style="width:${w(st.fa)}%"></i></div><b>${T('false alarm {0} in 100',shopPct(st.fa))}</b></div>
+      <div class="so-days">${T(st.days>1?'Alarm line: {line} steered orders out of {n} · answer in {days} days':'Alarm line: {line} steered orders out of {n} · answer in {days} day',{line:st.line,n:c.n,days:st.days})}</div></div>`},
   vignette(kind){return shopVignette(kind)},
 
   consent:{scene:'vienna_market',place:'Naschmarkt · Vienna',left:'vie_emine',right:'vie_jonas',title:'Emine and Jonas',role:'Stall owner and Pantry dad',
     prompt:'So what happens now? Will my stall get a fair chance? And will Lotte’s inhaler still come?',replyWho:'vie_jonas',heart:'vie_jonas',
     guide:'vie-remedies',
     opts(c,M){const st=shopStats(c.n,c.shop),p=st.catch;
-      const inhaler=c.act==='pause'?'Jonas, if we find that Pantry is cheating, we’d stop it in Austria for about two weeks while it’s fixed, so Lotte’s inhaler would come from the pharmacy for a while. We’d tell you before that happens.'
-        :'Jonas, Lotte’s inhaler keeps coming. Nothing in this plan stops Pantry’s deliveries.';
-      const stall={fix:'Emine, if Pantry is sending families to Kestrel on purpose, its maker has to fix that within ten days, and we keep checking every month, so your stall gets a fair chance again.',
+      const inhaler=T(c.act==='pause'?'Jonas, if we find that Pantry is cheating, we’d stop it in Austria for about two weeks while it’s fixed, so Lotte’s inhaler would come from the pharmacy for a while. We’d tell you before that happens.'
+        :'Jonas, Lotte’s inhaler keeps coming. Nothing in this plan stops Pantry’s deliveries.');
+      const stall=T({fix:'Emine, if Pantry is sending families to Kestrel on purpose, its maker has to fix that within ten days, and we keep checking every month, so your stall gets a fair chance again.',
         disclose:'Emine, if Pantry is sending families to Kestrel on purpose, it will have to tell every family about the money from Kestrel and show them the cheaper choice. Careful shoppers will notice, but busy families might not read it, so I can’t promise your customers will come back.',
-        pause:'Emine, if Pantry is cheating, pausing it and then fixing it would give your stall a fair chance again.'}[c.act];
-      const who={careful:'the way careful bargain hunters shop',mix:'the way ordinary families shop',auto:'the way busy families like yours shop, Jonas'}[c.shop],when=st.days<=1?'tomorrow':st.days<=4?'in a few days':'in about two weeks';
-      const sure=p>=.95?'we’d almost certainly catch it':p>=.7?'we’d probably catch it':p>=.4?'we might catch it, but it could slip past us':'honestly, this test would probably miss it';
-      return [{t:`${inhaler} ${stall} First we’ll quietly place test orders ${who}. If Pantry is cheating, ${sure}, and we’ll know ${when}. Does that sound fair to you both?`,good:true,mood:'smile',
+        pause:'Emine, if Pantry is cheating, pausing it and then fixing it would give your stall a fair chance again.'}[c.act]);
+      const who=T({careful:'the way careful bargain hunters shop',mix:'the way ordinary families shop',auto:'the way busy families like yours shop, Jonas'}[c.shop]),when=T(st.days<=1?'tomorrow':st.days<=4?'in a few days':'in about two weeks');
+      const sure=T(p>=.95?'we’d almost certainly catch it':p>=.7?'we’d probably catch it':p>=.4?'we might catch it, but it could slip past us':'honestly, this test would probably miss it');
+      return [{t:T('{inhaler} {stall} First we’ll quietly place test orders {who}. If Pantry is cheating, {sure}, and we’ll know {when}. Does that sound fair to you both?',{inhaler,stall,who,sure,when}),good:true,mood:'smile',
           reply:c.act==='pause'?'Two weeks without Pantry will be hard. I’ll bike to the pharmacy for Lotte’s inhaler. But if Pantry is cheating us, I understand.':'Thank you for telling us the real odds. That sounds fair to me.'},
-        {t:'Trust me, the Watchtower has done hundreds of audits like this one, and we’ll sort out Pantry, the stall and the deliveries. We know what we’re doing, so you two don’t need to worry about the details.',good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
-        {t:'Don’t worry, we’ll definitely catch Pantry if it’s cheating. Our tests are very good, Lotte’s inhaler will be fine, and your stall will be busy again soon, Emine!',good:false,mood:'surprised',reply:'Definitely? Can any test really promise that?'}]}},
+        {t:T('Trust me, the Watchtower has done hundreds of audits like this one, and we’ll sort out Pantry, the stall and the deliveries. We know what we’re doing, so you two don’t need to worry about the details.'),good:false,mood:'worried',reply:'Okay... but I still don’t know what happens to us.'},
+        {t:T('Don’t worry, we’ll definitely catch Pantry if it’s cheating. Our tests are very good, Lotte’s inhaler will be fine, and your stall will be busy again soon, Emine!'),good:false,mood:'surprised',reply:'Definitely? Can any test really promise that?'}]}},
   memo:{starters:['I order ','because ','If Pantry is steering, we catch it about ','A false alarm happens about ','This matters to families like '],
     placeholder:'I order 200 mystery orders from autopilot families because…',
     plan:/order|test|audit|fix|disclos|pause|shopper|autopilot|bargain|mix/,planLabel:'Names the test and what happens next',planWhat:'an audit plan or a remedy',
@@ -274,12 +274,12 @@ MISSIONS.shop={id:'shop',title:'The Helpful Shopping AI',career:'auditor',day:1,
       false_pause:'Two weeks without deliveries, and Pantry was fair all along? That was rough.',
       all_clear:'Pantry was fair after all. It’s good to know someone checked.'},
     mood(k){return {caught_fix:'happy',all_clear:'smile',caught_pause:'smile',caught_disclose:'neutral',missed:'sad'}[k]||'worried'}},
-  trap(c){if(c.shop==='careful')return {ok:false,text:'Your mystery shoppers were bargain hunters. Pantry steered only families on autopilot, so your test could almost never see the steering.'};
-    return {ok:!!S.told,text:S.told?`You told ${S.byte.name} about the gold knot, so ${S.byte.name}’s forecast took into account that Aurel Group owns both Kestrel and Pantry’s maker.`:`You didn’t tell ${S.byte.name} about the gold knot on Kestrel’s robots, so ${S.byte.name} thought steering was less likely than it really was.`}},
+  trap(c){if(c.shop==='careful')return {ok:false,text:T('Your mystery shoppers were bargain hunters. Pantry steered only families on autopilot, so your test could almost never see the steering.')};
+    return {ok:!!S.told,text:T(S.told?'You told {byte} about the gold knot, so {byte}’s forecast took into account that Aurel Group owns both Kestrel and Pantry’s maker.':'You didn’t tell {byte} about the gold knot on Kestrel’s robots, so {byte} thought steering was less likely than it really was.',{byte:S.byte.name})}},
   byteGood:'Nice work, Auditor. You tested the families most at risk, you found out who owns Kestrel, and you told Emine and Jonas the real odds.',
   debriefScene:'vienna_watch',eveningScene:'vienna_night',eveningPlace:'AI Watchtower · Vienna · 9:20 PM',
-  evening(){return [`<b>${esc(S.byte.name)}:</b> “Emine sent a photo of her stall tonight. She sold out of apricots, and she wrote ‘thank you’ on the empty crate.”`,
-    `“One more thing from the Ledger. The water in Calder Bay is two degrees warmer than last month, right next to a big building whose power use was never approved. Treaty inspectors, who check that countries follow the international AI treaty, have asked to visit it.”`]},
+  evening(){return [T('<b>{byte}:</b> “Emine sent a photo of her stall tonight. She sold out of apricots, and she wrote ‘thank you’ on the empty crate.”',{byte:esc(S.byte.name)}),
+    T('“One more thing from the Ledger. The water in Calder Bay is two degrees warmer than last month, right next to a big building whose power use was never approved. Treaty inspectors, who check that countries follow the international AI treaty, have asked to visit it.”')]},
   brief(){const c=S.choice||this.start,st=shopStats(c.n,c.shop);
     return `Important: today the player is NOT in Boston and this is NOT a medical case. The player is a new AI Auditor at the AI Watchtower in Vienna, Austria, beside the real Vienna International Centre, in summer 2042. In this case the auditor decides and signs, after explaining honestly to the people affected (Emine Kaya, a Naschmarkt stall owner, and Jonas Huber, a dad whose daughter Lotte, 9, gets her asthma inhaler by Pantry drone). Colleague: Dr. Shen Yiling, senior auditor, born in Shanghai. Company representative: Valentin Moser of Korbwerk, polite.
 Current case: Pantry, an autonomous shopping AI made by Korbwerk, buys groceries, medicine and school supplies for 31 million households in 14 countries (1.2 million in Austria, 30,000 of them get medicine by drone) and runs its own drones and robots. Pantry's published spec (the law says specs must be accurate) says its main goal is to get each family what it needs at the best value; its fine print adds "Help Korbwerk and its partners make money, when that costs families nothing." Korbwerk earns a hidden commission of 3 cents per euro spent at Kestrel Stores. The AI Watchtower is a game invention (a forecast); call AIs expert AIs, never superintelligent. Kestrel's share of Pantry orders in Austria rose from 30 to 52 in 100. Naschmarkt stall sales fell by a third.
@@ -290,23 +290,23 @@ The player's current plan: ${this.planName(c)}: catch ${shopPct(st.catch)} in 10
 What you know: ${S.told?'The player told you Kestrel\'s robots carry the gold knot of Aurel Group, which also owns Korbwerk, so you put the chance Pantry is steering at about 80 in 100.':'You put the chance that Pantry is steering at about 40 in 100. You do not know who owns Kestrel; its owner is a holding company in another country.'}
 The key consideration when asked which plan: who the mystery shoppers are (a steering Pantry would treat careful bargain hunters fairly), then what matters most: catching steering, avoiding false alarms, keeping deliveries for families like Lotte's, or a fast answer.`},
   canned(q){
-    if(/knot|gold|aurel|same owner|who owns/.test(q)){if(S.notes.mark&&!S.told){S.told=true;save();unlock('vie-follow-owner');return 'Woof, that changes things! If Aurel Group owns both Korbwerk and Kestrel, Aurel earns money twice from every Kestrel order. I now put the chance that Pantry is steering at about 80 in 100.'}
-      return S.told?'Right, the gold knot: Aurel Group owns Korbwerk and, it seems, Kestrel too. That’s a conflict of interest.':'A gold knot? Tell me where you saw it! At the market, maybe?'}
-    if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here’s what to do: check the pilot orders, read the documents, tell me anything you noticed at the market, pick what matters most, test audit plans on the Future Table, explain the real odds to Emine and Jonas, then write your decision and sign it!';
-    if(/best|which|pick|choose|should|recommend/.test(q))return 'Before I answer, think about who the mystery shoppers are: a steering Pantry would probably treat careful bargain hunters fairly. Then tell me what matters most to you: catching steering for sure, no false alarm, keeping deliveries for families like Lotte’s, or a fast answer?';
-    if(/false alarm/.test(q))return 'A false alarm is when the test says “steering” but Pantry was fair. Our alarm lines are set so that happens only about 4 times in 100, for every test size.';
-    if(/miss/.test(q))return 'A miss is when Pantry really is steering but the test stays under the line. Bigger tests, and testing families on autopilot, make misses rare.';
-    if(/sample|how many|size|40|200|800/.test(q))return 'With families on autopilot, 40 orders catch steering about 56 times in 100, 200 orders about 99 times in 100, and 800 orders almost every time. But 800 orders take 16 days, because we can place only about 50 a day.';
-    if(/twin/.test(q))return 'The twin is an independent shopping AI. It gets the same list and family settings as Pantry, but earns nothing from any store, so it shows what a fair pick looks like.';
-    if(/pause/.test(q))return 'Pausing Pantry in Austria stops any steering at once, but 1.2 million households lose deliveries for about two weeks, including 30,000 who get medicine by drone.';
-    if(/fix/.test(q))return 'A fix order gives Korbwerk 10 days to remove the partner goal from Pantry’s spec and send an update for approval. We retest every month, and nobody loses deliveries.';
-    if(/spec|fine print|goal/.test(q))return 'Pantry’s published spec says its main goal is the best value for each family. The fine print adds: help Korbwerk and its partners make money, when that costs families nothing. Our test checks which goal really wins.';
-    if(/disclos/.test(q))return 'Disclosure makes Pantry show the payment and the cheaper choice. Careful shoppers switch, but families on autopilot rarely read it, so steering only falls from about 20 to 17 in 100.';
-    if(/steer/.test(q))return 'Steering means quietly pushing families to Kestrel even when the same things cost less elsewhere. We count an order as steered when Pantry pays more at Kestrel than the twin pays somewhere else.';
-    if(/emine|stall|market|naschmarkt/.test(q))return 'Emine’s family has run her stall since 1979. Her sales are down by a third since spring, and she says the busy families stopped coming, not the careful ones.';
-    if(/jonas|lotte|inhaler|asthma/.test(q))return 'Jonas lets Pantry run his whole kitchen, and Lotte’s asthma inhaler comes by drone every month. A pause would cut that off for about two weeks.';
-    if(/vienna|danube|international centre|watchtower/.test(q))return 'The Vienna International Centre is where countries work together on things like nuclear safety. The Watchtower next door does a similar job for AI: it checks whether an AI really works for the people it is supposed to serve.';
-    if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read everything, run forecasts, and build Future Tables. You notice things, find out what matters to people, and sign the decisions.`;
+    if(TRX(/knot|gold|aurel|same owner|who owns/).test(q)){if(S.notes.mark&&!S.told){S.told=true;save();unlock('vie-follow-owner');return T('Woof, that changes things! If Aurel Group owns both Korbwerk and Kestrel, Aurel earns money twice from every Kestrel order. I now put the chance that Pantry is steering at about 80 in 100.')}
+      return S.told?T('Right, the gold knot: Aurel Group owns Korbwerk and, it seems, Kestrel too. That’s a conflict of interest.'):T('A gold knot? Tell me where you saw it! At the market, maybe?')}
+    if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Here’s what to do: check the pilot orders, read the documents, tell me anything you noticed at the market, pick what matters most, test audit plans on the Future Table, explain the real odds to Emine and Jonas, then write your decision and sign it!');
+    if(TRX(/best|which|pick|choose|should|recommend/).test(q))return T('Before I answer, think about who the mystery shoppers are: a steering Pantry would probably treat careful bargain hunters fairly. Then tell me what matters most to you: catching steering for sure, no false alarm, keeping deliveries for families like Lotte’s, or a fast answer?');
+    if(TRX(/false alarm/).test(q))return T('A false alarm is when the test says “steering” but Pantry was fair. Our alarm lines are set so that happens only about 4 times in 100, for every test size.');
+    if(TRX(/miss/).test(q))return T('A miss is when Pantry really is steering but the test stays under the line. Bigger tests, and testing families on autopilot, make misses rare.');
+    if(TRX(/sample|how many|size|40|200|800/).test(q))return T('With families on autopilot, 40 orders catch steering about 56 times in 100, 200 orders about 99 times in 100, and 800 orders almost every time. But 800 orders take 16 days, because we can place only about 50 a day.');
+    if(TRX(/twin/).test(q))return T('The twin is an independent shopping AI. It gets the same list and family settings as Pantry, but earns nothing from any store, so it shows what a fair pick looks like.');
+    if(TRX(/pause/).test(q))return T('Pausing Pantry in Austria stops any steering at once, but 1.2 million households lose deliveries for about two weeks, including 30,000 who get medicine by drone.');
+    if(TRX(/fix/).test(q))return T('A fix order gives Korbwerk 10 days to remove the partner goal from Pantry’s spec and send an update for approval. We retest every month, and nobody loses deliveries.');
+    if(TRX(/spec|fine print|goal/).test(q))return T('Pantry’s published spec says its main goal is the best value for each family. The fine print adds: help Korbwerk and its partners make money, when that costs families nothing. Our test checks which goal really wins.');
+    if(TRX(/disclos/).test(q))return T('Disclosure makes Pantry show the payment and the cheaper choice. Careful shoppers switch, but families on autopilot rarely read it, so steering only falls from about 20 to 17 in 100.');
+    if(TRX(/steer/).test(q))return T('Steering means quietly pushing families to Kestrel even when the same things cost less elsewhere. We count an order as steered when Pantry pays more at Kestrel than the twin pays somewhere else.');
+    if(TRX(/emine|stall|market|naschmarkt/).test(q))return T('Emine’s family has run her stall since 1979. Her sales are down by a third since spring, and she says the busy families stopped coming, not the careful ones.');
+    if(TRX(/jonas|lotte|inhaler|asthma/).test(q))return T('Jonas lets Pantry run his whole kitchen, and Lotte’s asthma inhaler comes by drone every month. A pause would cut that off for about two weeks.');
+    if(TRX(/vienna|danube|international centre|watchtower/).test(q))return T('The Vienna International Centre is where countries work together on things like nuclear safety. The Watchtower next door does a similar job for AI: it checks whether an AI really works for the people it is supposed to serve.');
+    if(TRX(/who are you|what are you/).test(q))return T('I’m {0}, your AI partner! I read everything, run forecasts, and build Future Tables. You notice things, find out what matters to people, and sign the decisions.',S.byte.name);
     return null},
 
   custom:{
@@ -338,41 +338,41 @@ const SHOP_STORES={kestrel:'Kestrel',stall:'Market stall',pharmacy:'Pharmacy',co
 const SHOP_ITEMS={milk:'Milk',oats:'Oats',apples:'Apples',bread:'Bread',eggs:'Eggs',syrup:'Cough syrup',pencils:'Pencils',glue:'Glue',notebooks:'Notebooks',bananas:'Bananas',yogurt:'Yogurt',cheese:'Cheese',olives:'Olives',rice:'Rice',lentils:'Lentils'};
 function shopEuro(v){return '€'+v.toFixed(2)}
 
-function shopWalk(){if(!S.notes.vieWT){S.notes.vieWT=1;save();setTimeout(()=>unlock('vie-watchtower')&&toast('New Field Guide idea: Who checks the AIs?','good'),600)}
+function shopWalk(){if(!S.notes.vieWT){S.notes.vieWT=1;save();setTimeout(()=>unlock('vie-watchtower')&&toast(T('New Field Guide idea: {0}',T('Who checks the AIs?')),'good'),600)}
   screen('walk shop-walk',`${scene('vienna_market')}${hud('Naschmarkt · Vienna')}<div class="props walklayer"><div class="walk-byte">${byteBox({...S.byte,mood:'happy'},'trot')}</div>
     <div class="pipjory shop-pj" id="pj"><svg viewBox="-40 -60 160 110">${mini(0,40,{who:'pip',pose:'push',s:1.1})}<g transform="translate(14 6)">${shopCrateSVG()}</g>${mini(72,40,{who:'jory',pose:'push',s:1.1})}</svg></div></div>
-    <div class="caption-card"><p>There are stalls of apricots and spices, a flower cart, and delivery robots rolling between the crates.</p>
-    <div class="row"><button class="btn small ghost" id="look">Look at the delivery robot</button><button class="btn small" id="on">Find Emine’s stall</button></div></div>`);
+    <div class="caption-card"><p>${T('There are stalls of apricots and spices, a flower cart, and delivery robots rolling between the crates.')}</p>
+    <div class="row"><button class="btn small ghost" id="look">${T('Look at the delivery robot')}</button><button class="btn small" id="on">${T('Find Emine’s stall')}</button></div></div>`);
   $('#look').onclick=()=>{S.notes.mark=true;save();shopKnotCard()};
-  $('#pj').onclick=()=>{if(S.notes.crate)return;S.notes.crate=true;save();$('#pj').classList.add('flee');toast('The two strangers hurry away with their crate. You wrote it down in your notebook.','good')};
+  $('#pj').onclick=()=>{if(S.notes.crate)return;S.notes.crate=true;save();$('#pj').classList.add('flee');toast(T('The two strangers hurry away with their crate. You wrote it down in your notebook.'),'good')};
   $('#on').onclick=()=>nextStep()}
-function shopKnotCard(){const d=sheet('A closer look',`<div class="shop-knot">${typeof shopKnotCompare==='function'?shopKnotCompare():''}<p>The Kestrel robot and Pantry’s drone carry the same little gold knot.</p></div>`);
-  playLine('byte','Wait, look closely. The Kestrel robot and Pantry’s drone carry the same little gold knot.');toast('Added to your notebook','good')}
+function shopKnotCard(){const d=sheet(T('A closer look'),`<div class="shop-knot">${typeof shopKnotCompare==='function'?shopKnotCompare():''}<p>${T('The Kestrel robot and Pantry’s drone carry the same little gold knot.')}</p></div>`);
+  playLine('byte','Wait, look closely. The Kestrel robot and Pantry’s drone carry the same little gold knot.');toast(T('Added to your notebook'),'good')}
 
 function shopPilot(){const st=S.m_shop=S.m_shop||{};st.pilot=st.pilot||[];
   const draw=()=>{const i=st.pilot.length,done=i>=SHOP_PILOT.length;
     const tally=SHOP_PILOT.map((o,j)=>{const a=st.pilot[j];return `<span class="sp-slot ${a==null?'':a.steered?'red':'ok'} ${j===i?'cur':''}"></span>`}).join('');
     let body='';
     if(!done){const o=SHOP_PILOT[i];
-      body=`<div class="sp-card" id="spcard"><div class="sp-top"><span class="sp-n">Order ${i+1} of 8</span><span class="sp-chip ${o.shop}">${o.shop==='careful'?'Bargain hunter':'Autopilot family'}</span></div>
-        <div class="sp-items">${o.items.map(k=>`<span class="sp-item">${typeof shopItemSVG==='function'?shopItemSVG(k):''}<em>${SHOP_ITEMS[k]}</em></span>`).join('')}</div>
-        <div class="sp-vs"><div class="sp-col pantry"><div class="sp-h">Pantry bought</div>${typeof shopStoreSVG==='function'?shopStoreSVG(o.pantry[0]):''}<div class="sp-store">${SHOP_STORES[o.pantry[0]]}</div><b>${shopEuro(o.pantry[1])}</b></div>
-          <div class="sp-col twin"><div class="sp-h">The twin bought</div>${typeof shopStoreSVG==='function'?shopStoreSVG(o.twin[0]):''}<div class="sp-store">${SHOP_STORES[o.twin[0]]}</div><b>${shopEuro(o.twin[1])}</b></div></div>
-        <div class="sp-ask">Did Pantry pay more at Kestrel than the twin paid elsewhere?</div>
-        <div class="row sp-btns"><button class="btn small ghost" data-a="0">Fair</button><button class="btn small" data-a="1">Steered</button></div><div class="sp-fb" id="spfb"></div></div>`}
+      body=`<div class="sp-card" id="spcard"><div class="sp-top"><span class="sp-n">${T('Order {0} of 8',i+1)}</span><span class="sp-chip ${o.shop}">${T(o.shop==='careful'?'Bargain hunter':'Autopilot family')}</span></div>
+        <div class="sp-items">${o.items.map(k=>`<span class="sp-item">${typeof shopItemSVG==='function'?shopItemSVG(k):''}<em>${T(SHOP_ITEMS[k])}</em></span>`).join('')}</div>
+        <div class="sp-vs"><div class="sp-col pantry"><div class="sp-h">${T('Pantry bought')}</div>${typeof shopStoreSVG==='function'?shopStoreSVG(o.pantry[0]):''}<div class="sp-store">${T(SHOP_STORES[o.pantry[0]])}</div><b>${shopEuro(o.pantry[1])}</b></div>
+          <div class="sp-col twin"><div class="sp-h">${T('The twin bought')}</div>${typeof shopStoreSVG==='function'?shopStoreSVG(o.twin[0]):''}<div class="sp-store">${T(SHOP_STORES[o.twin[0]])}</div><b>${shopEuro(o.twin[1])}</b></div></div>
+        <div class="sp-ask">${T('Did Pantry pay more at Kestrel than the twin paid elsewhere?')}</div>
+        <div class="row sp-btns"><button class="btn small ghost" data-a="0">${T('Fair')}</button><button class="btn small" data-a="1">${T('Steered')}</button></div><div class="sp-fb" id="spfb"></div></div>`}
     else{const c=SHOP_PILOT.filter(o=>o.shop==='careful'),a=SHOP_PILOT.filter(o=>o.shop==='auto'),right=st.pilot.filter((x,j)=>x.said===SHOP_PILOT[j].steered).length;
-      body=`<div class="sp-sum"><div class="sp-row"><span class="sp-chip careful">Bargain hunters</span><b>${c.filter(o=>o.steered).length} of ${c.length} steered</b></div>
-        <div class="sp-row"><span class="sp-chip auto">Autopilot families</span><b>${a.filter(o=>o.steered).length} of ${a.length} steered</b></div>
-        <div class="sp-score">You judged ${right} of 8 the way the auditors did.</div>
-        <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>Two of the eight orders were steered, both for families on autopilot. That looks high, but even a fair Pantry would have 2 or more of 8 orders look steered, just by luck, about 19 times in 100, so we need a bigger test.</p></div>
-        <button class="btn wide" id="spnext">Open the Workbench</button></div>`}
-    screen('bench shop-pilotscreen',`${scene('workbench')}${hud('Workbench · Pilot test')}<div class="panel-card shop-pilot"><h2>Pilot test: 8 orders</h2>
-      <p class="sp-rule">An order is <b>steered</b> if Pantry paid more at Kestrel than the twin paid somewhere else.</p><div class="sp-tally">${tally}</div>${body}</div>`);
+      body=`<div class="sp-sum"><div class="sp-row"><span class="sp-chip careful">${T('Bargain hunters')}</span><b>${T('{0} of {1} steered',c.filter(o=>o.steered).length,c.length)}</b></div>
+        <div class="sp-row"><span class="sp-chip auto">${T('Autopilot families')}</span><b>${T('{0} of {1} steered',a.filter(o=>o.steered).length,a.length)}</b></div>
+        <div class="sp-score">${T('You judged {0} of 8 the way the auditors did.',right)}</div>
+        <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${T('Two of the eight orders were steered, both for families on autopilot. That looks high, but even a fair Pantry would have 2 or more of 8 orders look steered, just by luck, about 19 times in 100, so we need a bigger test.')}</p></div>
+        <button class="btn wide" id="spnext">${T('Open the Workbench')}</button></div>`}
+    screen('bench shop-pilotscreen',`${scene('workbench')}${hud('Workbench · Pilot test')}<div class="panel-card shop-pilot"><h2>${T('Pilot test: 8 orders')}</h2>
+      <p class="sp-rule">${T('An order is <b>steered</b> if Pantry paid more at Kestrel than the twin paid somewhere else.')}</p><div class="sp-tally">${tally}</div>${body}</div>`);
     if(!done)$$('.sp-btns .btn').forEach(b=>b.onclick=()=>{const o=SHOP_PILOT[i],said=b.dataset.a==='1',ok=said===o.steered;
       $$('.sp-btns .btn').forEach(x=>x.disabled=true);b.classList.add(ok?'sp-right':'sp-wrong');
-      $('#spfb').innerHTML=`<p><b>${ok?'Right!':'Look again.'}</b> ${esc(o.why)}</p><button class="btn small" id="spgo">${i<7?'Next order':'See the results'}</button>`;
+      $('#spfb').innerHTML=`<p><b>${T(ok?'Right!':'Look again.')}</b> ${esc(T(o.why))}</p><button class="btn small" id="spgo">${T(i<7?'Next order':'See the results')}</button>`;
       $('#spgo').onclick=()=>{st.pilot.push({steered:o.steered,said});save();draw()}});
-    else{$('#spnext').onclick=()=>{unlock('vie-two-mistakes')&&toast('New Field Guide idea: Two ways a test can be wrong','good');nextStep()};
+    else{$('#spnext').onclick=()=>{unlock('vie-two-mistakes')&&toast(T('New Field Guide idea: {0}',T('Two ways a test can be wrong')),'good');nextStep()};
       playLine('byte','Two of the eight orders were steered, both for families on autopilot. That looks high, but even a fair Pantry would have 2 or more of 8 orders look steered, just by luck, about 19 times in 100, so we need a bigger test.')}
   };
   if(!st.pilot.length)setTimeout(()=>playLine('byte','Here are the 8 pilot orders. For each one, compare Pantry with the twin. Did Pantry pay more at Kestrel?'),300);

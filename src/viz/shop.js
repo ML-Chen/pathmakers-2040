@@ -5,7 +5,7 @@
 const SV={amber:'#f29a2e',amberD:'#b8661a',kes:'#c4553a',kesD:'#8a3424',gold:'#e8b53a',goldD:'#9a6a12',twin:'#16b3a6',twinD:'#0e7d74',
   navy:'#34416e',stall:'#3f8f5a',stallD:'#2a6a40',paper:'#fffdf7',ink:'#1f2340',soft:'#7d84a6',line:'#dfe3f3',red:'#e5484d',green:'#1fa774',sky:'#dff1fb'};
 let SVN=0;const svId=p=>'sv'+p+(++SVN);
-const svT=(x,y,t,o={})=>`<text x="${x}" y="${y}" font-size="${o.s||11}" font-weight="${o.w||800}" fill="${o.c||SV.ink}" text-anchor="${o.a||'middle'}" font-family="Nunito, sans-serif"${o.cls?` class="${o.cls}"`:''}>${t}</text>`;
+const svT=(x,y,t,o={})=>`<text x="${x}" y="${y}" font-size="${o.s||11}" font-weight="${o.w||800}" fill="${o.c||SV.ink}" text-anchor="${o.a||'middle'}" font-family="Nunito, sans-serif"${o.cls?` class="${o.cls}"`:''}>${typeof T==='function'&&/[A-Za-z]{2}/.test(t)?T(String(t)):t}</text>`;
 const svR=v=>Math.round(v*10)/10;
 
 // The gold knot of Aurel Group: a trefoil knot drawn as one ribbon (dark outline, gold band, light edge).
@@ -162,7 +162,7 @@ const SHOPVIZ={
   shopMiss:()=>{const P=shopPiles(40,{show:'steer',pulseMiss:1});return igFrame(300,132,`${P.svg}${svT(P.X(.36),P.top+8,'steering Pantry',{s:10,c:SV.amberD,a:'end'})}${svT(P.X(.005),P.top+14,'miss: stays',{s:10,c:'#5a6080',a:'start'})}${svT(P.X(.005),P.top+27,'under the line',{s:10,c:'#5a6080',a:'start'})}${svT(150,P.H-2,'share of orders steered',{s:9,c:SV.soft,w:700})}`,'A steering Pantry can stay under the line')},
   shopHills:({n})=>{const P=shopPiles(n,{shop:'auto'});return igFrame(300,132,`${P.svg}${svT(24,16,n+' orders',{s:12,a:'start'})}${svT(P.lx+10,16,'line: '+P.st.line,{s:10,c:SV.goldD,a:'start'})}
      <g transform="translate(206 22)"><rect width="10" height="10" rx="2" fill="${SV.twin}" opacity=".5"/>${svT(14,9,'fair',{s:9,c:SV.twinD,a:'start'})}<rect y="14" width="10" height="10" rx="2" fill="${SV.amber}" opacity=".7"/>${svT(14,23,'steering',{s:9,c:SV.amberD,a:'start'})}</g>
-     ${svT(150,P.H-2,`${P.st.catch>=.995?'catch almost every time':'catch '+shopPct(P.st.catch)+' in 100'} · false alarm ${shopPct(P.st.fa)} in 100`,{s:10,c:SV.ink})}`,`${n} orders: catch ${shopPct(P.st.catch)} in 100`)},
+     ${svT(150,P.H-2,P.st.catch>=.995?T('catch almost every time · false alarm {0} in 100',shopPct(P.st.fa)):T('catch {0} in 100 · false alarm {1} in 100',shopPct(P.st.catch),shopPct(P.st.fa)),{s:10,c:SV.ink})}`,T('{0} orders: catch {1} in 100',n,shopPct(P.st.catch)))},
   shopCalendar:()=>{let c='';for(let d=0;d<21;d++){const x=24+(d%7)*36,y=34+Math.floor(d/7)*26,on=d<16;c+=`<rect x="${x}" y="${y}" width="32" height="22" rx="4" fill="${on?'#fff4e4':'#f2f4fa'}" stroke="${on?SV.amber:'#d8dcec'}"/>${svT(x+16,y+15,d+1,{s:9.5,c:on?SV.amberD:SV.soft})}${on?`<path d="M${x+6} ${y+5} L${x+26} ${y+17}" stroke="${SV.amber}" stroke-width="1.6" class="shop-cross" style="--d:${(d*.18).toFixed(2)}s"/>`:''}`}
     return igFrame(300,124,`<rect x="18" y="8" width="264" height="22" rx="6" fill="${SV.amber}"/>${svT(150,23,'800 orders ÷ 50 a day = 16 days',{s:11,c:'#fff'})}${c}`,'800 orders take 16 days at 50 a day')},
   shopMix:()=>{let f='';for(let i=0;i<10;i++){const x=22+i*28,auto=i%5<3;f+=svP(x,98,.78,{skin:SKIN[(i*2+1)%6],shirt:['#5b9bf0','#ff7a6b','#38b07f','#f5b82e','#8f86ff'][i%5],hair:['#1b1410','#6b4a2e','#2a1712','#c9772d','#3a2a1a'][i%5]})+
@@ -243,7 +243,7 @@ function shopLuckRuns(){const counts=[].concat(Array(43).fill(0),Array(38).fill(
 
 // The crate Pip and Jory push at the market
 function shopCrateSVG(){return `<rect x="0" y="0" width="44" height="32" rx="3" fill="#c9a26b" stroke="#7a5426" stroke-width="2"/><path d="M2 10 H42 M2 22 H42" stroke="#a8824a" stroke-width="1.2"/>
-  <text x="22" y="9" text-anchor="middle" font-size="5.6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="26" lengthAdjust="spacingAndGlyphs">TOTALLY</text><text x="22" y="18" text-anchor="middle" font-size="5.6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="36" lengthAdjust="spacingAndGlyphs">NORMAL COOLING</text><text x="22" y="27" text-anchor="middle" font-size="5.6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="18" lengthAdjust="spacingAndGlyphs">FANS</text>`}
+  <text x="22" y="9" text-anchor="middle" font-size="5.6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="26" lengthAdjust="spacingAndGlyphs">${typeof T==='function'?T('TOTALLY'):'TOTALLY'}</text><text x="22" y="18" text-anchor="middle" font-size="5.6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="36" lengthAdjust="spacingAndGlyphs">${typeof T==='function'?T('NORMAL COOLING'):'NORMAL COOLING'}</text><text x="22" y="27" text-anchor="middle" font-size="5.6" font-family="Nunito" font-weight="800" fill="#5b3b16" textLength="18" lengthAdjust="spacingAndGlyphs">${typeof T==='function'?T('FANS'):'FANS'}</text>`}
 // The close-up card: the knot on a Kestrel robot and on a Pantry drone
 function shopKnotCompare(){return `<svg viewBox="0 0 300 150" class="shop-knotcmp"><rect width="300" height="150" rx="14" fill="#eef4f8"/>
   <g transform="translate(78 0)"><rect x="-66" y="10" width="132" height="110" rx="12" fill="#fff" stroke="#d8dcec"/>${shopRobot(0,104,1.9,{knotCls:'ig-pulse'})}<circle cx="17" cy="67" r="9" fill="none" stroke="${SV.red}" stroke-width="2" stroke-dasharray="3 2" class="ig-pulse"/></g>

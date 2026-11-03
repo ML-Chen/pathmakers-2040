@@ -165,8 +165,8 @@ const QY_ART=(()=>{
     <path d="M${cx-24} ${cy-14}C${cx-19} ${cy-24} ${cx-9} ${cy-29} ${cx+2} ${cy-29}" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".35"/>
     <path d="${ov(cx,cy+1,17)}" fill="url(#${g})"/>
     ${miniLantern(cx,cy+1,1.12,GO,dk(GO,.5))}
-    <text font-size="9.6" fill="${PA}" ${F} letter-spacing=".6"><textPath href="#${a}" xlink:href="#${a}" startOffset="50%" text-anchor="middle">I HELPED</textPath></text>
-    <text font-size="10.4" fill="${GO}" ${F} letter-spacing="1"><textPath href="#${b}" xlink:href="#${b}" startOffset="50%" text-anchor="middle">VARROW</textPath></text>
+    <text font-size="9.6" fill="${PA}" ${F} letter-spacing=".6"><textPath href="#${a}" xlink:href="#${a}" startOffset="50%" text-anchor="middle">${typeof T==='function'?T('I HELPED'):'I HELPED'}</textPath></text>
+    <text font-size="10.4" fill="${GO}" ${F} letter-spacing="1"><textPath href="#${b}" xlink:href="#${b}" startOffset="50%" text-anchor="middle">${typeof T==='function'?T('VARROW'):'VARROW'}</textPath></text>
     <path d="M${cx+20} ${cy+29}C${cx+24} ${cy+27} ${cx+28} ${cy+24} ${cx+30.5} ${cy+20}C${cx+27} ${cy+22} ${cx+23} ${cy+22} ${cx+20} ${cy+21}C${cx+21} ${cy+23.6} ${cx+21} ${cy+26.4} ${cx+20} ${cy+29}Z" fill="#e9e5f5" ${I('#c9c0e8')}/>
     <path d="M90 74H106C106 74 107 84 107 96C107 104 104 107 98 107C92 107 89 104 89 96C89 84 90 74 90 74Z" fill="${G}" ${O('#7fb9bd')}/>
     <path d="M89.6 88C93 89.4 103 89.4 106.6 88C106.9 92 107 94 107 96C107 104 104 107 98 107C92 107 89 104 89 96C89 93 89.2 90 89.6 88Z" fill="${lt(VI,.55)}"/>

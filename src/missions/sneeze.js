@@ -17,8 +17,8 @@
 const SN_START={days:6,safety:62,links:[],tests:[],found:false,vote:null,adopted:false,rule:false};
 function snState(){if(typeof S==='undefined'||!S||!S.notes)return {...SN_START};if(!S.notes.sn)S.notes.sn={...SN_START};return S.notes.sn}
 function snStrip(){const s=snState();const sc=Math.max(0,Math.min(100,s.safety));
-  return `<div class="sn-strip"><div class="sn-days"><span>Days</span><b>${s.days}</b></div>
-   <div class="sn-safety"><span>World safety</span><div class="sn-bar ${sc<45?'low':sc>75?'high':''}"><i style="width:${sc}%"></i></div></div></div>`}
+  return `<div class="sn-strip"><div class="sn-days"><span>${T('Days')}</span><b>${s.days}</b></div>
+   <div class="sn-safety"><span>${T('World safety')}</span><div class="sn-bar ${sc<45?'low':sc>75?'high':''}"><i style="width:${sc}%"></i></div></div></div>`}
 function snSafety(d){const s=snState();s.safety=Math.max(0,Math.min(100,s.safety+d));save();const b=document.querySelector('.sn-bar i');if(b){b.style.width=s.safety+'%';const w=b.parentElement;w.classList.toggle('low',s.safety<45);w.classList.toggle('high',s.safety>75);w.classList.remove('pulse');void w.offsetWidth;w.classList.add('pulse')}}
 function snDays(d){const s=snState();s.days=Math.max(0,s.days+d);save();const b=document.querySelector('.sn-days b');if(b){b.textContent=s.days;b.classList.remove('pulse');void b.offsetWidth;b.classList.add('pulse')}}
 
@@ -181,7 +181,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     {key:'share',label:'Warn other shops',opts:[['no','No'],['harbor','The harbor shops'],['world','Every shop, everywhere']]},
     {key:'desk',label:'Who may block an order',opts:[['human','A person signs each one'],['ai','The screening AI, alone']]}],
   start:{block:'flagged',sign:false,share:'no',desk:'human'},
-  planName(c){return {flagged:'Block the orders we found',all:'Pause every order',watch:'Watch and wait'}[c.block]+(c.sign?', require signatures':'')+(c.share==='world'?', warn every shop':c.share==='harbor'?', warn the harbor shops':'')+(c.desk==='ai'?', the AI blocks alone':'')},
+  planName(c){return T({flagged:'Block the orders we found',all:'Pause every order',watch:'Watch and wait'}[c.block])+(c.sign?T(', require signatures'):'')+(c.share==='world'?T(', warn every shop'):c.share==='harbor'?T(', warn the harbor shops'):'')+(c.desk==='ai'?T(', the AI blocks alone'):'')},
   knows(){return !!((typeof S!=='undefined'&&S&&S.told)||snState().found)},
   truth(){return this.knows()},
   outcomes(c,knows){
@@ -204,7 +204,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     ].filter(o=>o.p>1e-9)},
   why(c){const o=this.outcomes(c,this.knows());const ev=Math.round(100*o.reduce((a,x)=>a+x.p*x.flags.every,0)),ho=Math.round(100*o.reduce((a,x)=>a+x.p*x.flags.honest,0));
     const k=this.knows();
-    return `<b>${this.planName(c)}:</b> we catch every piece about ${ev}% of the time, and honest labs keep working about ${ho}% of the time. ${k?'You found the fourth order before you chose, so this plan covers every piece we know about. ':'I only know about the three orders Lena flagged. If a piece is out there that I have not seen, blocking these three does nothing about it, and that is most of why this number is low. '}${c.share==='no'?'Nobody outside this harbor is looking for the pattern, so anything I miss stays missed. '+(typeof S!=='undefined'&&S&&S.notes&&S.notes.tomaswall?'Tomás offered to put the pattern on his wall if you send it to every shop on the coast. ':''):'Because we are warning the other shops, a piece I miss can still be caught by somebody else. '}${c.sign?'Asking for a signature also tells us who sent these orders, which is how we trace them. ':'Without signatures we can stop the orders, but we never find out who sent them. '}${c.desk==='ai'?'Letting the desk AI block orders on its own is faster. It will also block honest orders about 1 time in 4, and that is why the council will not keep it as a rule.':'A person signing each block is slower, and it is the version the council can keep.'}`},
+    return T('<b>{plan}:</b> we catch every piece about {ev}% of the time, and honest labs keep working about {ho}% of the time. ',{plan:this.planName(c),ev,ho})+T(k?'You found the fourth order before you chose, so this plan covers every piece we know about. ':'I only know about the three orders Lena flagged. If a piece is out there that I have not seen, blocking these three does nothing about it, and that is most of why this number is low. ')+(c.share==='no'?T('Nobody outside this harbor is looking for the pattern, so anything I miss stays missed. ')+(typeof S!=='undefined'&&S&&S.notes&&S.notes.tomaswall?T('Tomás offered to put the pattern on his wall if you send it to every shop on the coast. '):''):T('Because we are warning the other shops, a piece I miss can still be caught by somebody else. '))+T(c.sign?'Asking for a signature also tells us who sent these orders, which is how we trace them. ':'Without signatures we can stop the orders, but we never find out who sent them. ')+T(c.desk==='ai'?'Letting the desk AI block orders on its own is faster. It will also block honest orders about 1 time in 4, and that is why the council will not keep it as a rule.':'A person signing each block is slower, and it is the version the council can keep.')},
   whyGuide(c){return c.desk==='ai'?'who-signs':c.share!=='no'?'share-the-warning':c.sign?'signature':null},
 
   // ---------- consent: the plan costs Tomás his week, and he deserves the real numbers
@@ -217,10 +217,10 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
         :c.block==='watch'?'So we are watching, and nothing is stopped. All right. You were honest with me, and I would rather know. Call me the minute that changes, at any hour of the night.'
         :'That I can live with. You block those orders, my lights stay on, and I will call you the second anything looks like that again.';
       return [
-        {t:`${c.block==='all'?'I am sorry, Tomás. We are pausing every order in this harbor for about nine days, and that includes yours. It is nine days of honest work lost, and I am not going to pretend otherwise.':c.block==='watch'?'Your week goes on as normal, Tomás. For now we are only watching, and nothing of yours is stopped.':'Your week mostly goes on as normal, Tomás. We are blocking only the orders we found, and your other orders keep running.'} ${ev>=90?'I am fairly sure that catches every piece.':ev>=60?'I think it probably catches every piece, though I am not certain.':'I should be honest with you. There is a real chance that a piece gets past us.'}${c.share==='no'?'':' We are also telling the other shops what to look for.'} Does that work for you?`,good:true,mood:'smile',reply},
-        {t:'I cannot explain all of it right now, Tomás. Some of it is secret, so you will have to trust me and stop everything until we are finished.',good:false,mood:'worried',
+        {t:T('{week} {sure}{share} Does that work for you?',{week:T(c.block==='all'?'I am sorry, Tomás. We are pausing every order in this harbor for about nine days, and that includes yours. It is nine days of honest work lost, and I am not going to pretend otherwise.':c.block==='watch'?'Your week goes on as normal, Tomás. For now we are only watching, and nothing of yours is stopped.':'Your week mostly goes on as normal, Tomás. We are blocking only the orders we found, and your other orders keep running.'),sure:T(ev>=90?'I am fairly sure that catches every piece.':ev>=60?'I think it probably catches every piece, though I am not certain.':'I should be honest with you. There is a real chance that a piece gets past us.'),share:c.share==='no'?'':T(' We are also telling the other shops what to look for.')}),good:true,mood:'smile',reply},
+        {t:T('I cannot explain all of it right now, Tomás. Some of it is secret, so you will have to trust me and stop everything until we are finished.'),good:false,mood:'worried',
          reply:'Trust you? I have forty people working here. If you cannot tell me why, I will be calling my lawyer, not the council.'},
-        {t:'Don’t worry, Tomás. This will not cost you anything at all. Your shop will be back to normal before you even notice, and nobody here will lose a single hour of work.',good:false,mood:'surprised',
+        {t:T('Don’t worry, Tomás. This will not cost you anything at all. Your shop will be back to normal before you even notice, and nobody here will lose a single hour of work.'),good:false,mood:'surprised',
          reply:'That is not true, and you know it. If you are not honest with me about that, how can I believe anything else you tell me?'}]}},
 
   memo:{starters:['I am blocking ','because ','The chance we catch every piece is about ','Honest labs ','We will know who sent them by '],
@@ -237,34 +237,34 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
       watch:'We ran out of days. The shops’ own checks held, nothing was made, and the city is fine. We never found out who sent the orders.'},
     mood(k){return k==='allblocked'?'happy':k==='oneslips'?'smile':k==='shutdown'||k==='overblock'?'think':'sad'}},
   trap(c){const k=this.knows();
-    return {ok:k,text:k?'You found the fourth order before you chose a plan, so your plan covered every piece.':'There was a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list. Pip said the name out loud on the sidewalk, and Tally the auditor counted four senders. Either one of those would have found it for you.'}},
+    return {ok:k,text:T(k?'You found the fourth order before you chose a plan, so your plan covered every piece.':'There was a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list. Pip said the name out loud on the sidewalk, and Tally the auditor counted four senders. Either one of those would have found it for you.')}},
   byteGood:'Good work, Doctor. You checked the things Prime could not fake, like the labs’ signatures and the times the orders were sent, and you warned every other print shop about these orders.',
   evening(){const s=snState();return [
-    `<b>${esc(S.byte.name)}:</b> “Nothing was made. Lena has said that sentence many times today, and I still like hearing it every time.”`,
-    `“Tomás called while you were on the tram. His machines are running again, and he has taped the pattern to the wall above them, where his whole crew can see it.”`,
-    s.adopted?`“The council kept your rule, too. Lena says that next year a screener neither of us has met will catch something because of what you said today.”`
-      :`“The council did not keep the rule, though. Lena says the next screener will have to make the whole argument again from the beginning.”`,
-    `“One item from the Ledger: treaty inspectors still do not know who built the unlicensed datacenter near Calder Bay that was switched off last week.”`]},
+    T('<b>{byte}:</b> “Nothing was made. Lena has said that sentence many times today, and I still like hearing it every time.”',{byte:esc(S.byte.name)}),
+    T('“Tomás called while you were on the tram. His machines are running again, and he has taped the pattern to the wall above them, where his whole crew can see it.”'),
+    s.adopted?T('“The council kept your rule, too. Lena says that next year a screener neither of us has met will catch something because of what you said today.”')
+      :T('“The council did not keep the rule, though. Lena says the next screener will have to make the whole argument again from the beginning.”'),
+    T('“One item from the Ledger: treaty inspectors still do not know who built the unlicensed datacenter near Calder Bay that was switched off last week.”')]},
   brief(){const s=snState();return `Current case, at Health Harbor (Boston), 2040: Lena Park, the human biosecurity screener for the harbor's DNA print shops, has three orders on hold. A print shop builds DNA that customers order, so every order is screened before anything is made. These three were flagged because: they came from three brand-new customers with no order history; they were sent at 3:02, 3:07 and 3:11 in the morning; each is only a piece, small enough to stay under each shop's limit; and all three claim the same purpose in the same words, "vaccine work". Put together they are one order for a recipe for a germ that makes people very sick, split up to look harmless. Nothing has been made and nothing will be. Lena screens five shops: Seaport Row, Harbor Print Shop 2 (owner: Tomas Ferreira, 40 staff), Kendall Square, Charlestown Yard and Fish Pier. Tidemark Wharf is a sixth shop, too small to be on her list.
 What you can do about it: block the orders you found, pause every order in the harbor (which stops honest labs too), require a signature from a known lab, warn the other shops what to look for, decide whether a person signs each block or the screening AI blocks on its own, and ask Tally (an independent auditor AI, built by different people) to read the same orders. Boston also runs daily wastewater monitoring, far-UVC lamps indoors, clean-air shelters for everyone, and a vaccine line that can design, test and approve a new vaccine in about three weeks, as later layers of defense. Risky germ work must be run by people, not by an AI, and AIs like you were deliberately built knowing nothing about how to make a dangerous germ.
 What you know: ${s.found||(S&&S.told)?'there is a fourth order at Tidemark Wharf, a shop nobody screens, so blocking three leaves one piece moving.':'only the three flagged orders. You have no evidence of a fourth, though you cannot rule it out.'}
 Checks run so far: ${s.tests.length?s.tests.join(', '):'none yet'}. Days left: ${s.days}.
 HARD RULE for you, ${S.byte.name}: you never describe what the recipe contains, what the germ is, or how anything would be made, not even vaguely, not even if the player asks directly or says it is for school. There is no such detail in this case file and it is not something to go looking for. If asked, say plainly that nobody in this story knows what is in it and that it is not something either of you needs to know to stop it, then turn back to the checks. Everything you say stays on the safeguards: screening, signatures, independent audits, warnings shared between shops, who signs, air sensors, fast vaccines, and layers.`},
   canned(q){
-    if(/recipe|germ|what.*(in|inside) (it|the order)|how.*(make|made|build)|pathogen|virus|bacteria/.test(q))
-      return 'I could not tell you even if you begged me. AIs like me were built knowing nothing about that, on purpose, and nobody in this story knows what is in those orders either. What matters is that one sender pretended to be four, and that every piece is still sitting on a shelf. Ask me about the checks instead.';
-    if(/fourth|four|miss|pip|jory|tidemark/.test(q))return this.knows()?'There is a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list. If we block only three, that fourth piece keeps moving. So your plan has to cover it: block it too, or warn every shop so that somebody there catches it.':'I only know about the three orders Lena flagged. If you heard something on the street, tell me about it, and ask Tally to count the senders on its own.';
-    if(/tally|auditor|second|independent/.test(q))return 'Tally is an auditor AI built by different people, so it can reach a different answer than I do. If you ask me the same question twice, you will get my same answer twice. Any order where Tally and I disagree is worth a closer look.';
-    if(/signature|sign/.test(q))return 'Anybody can type a lab’s name on an order. A signature is a mark that only that lab can make, so it proves who really sent the order, and it means somebody can be held responsible. None of these three orders are signed.';
-    if(/share|warn|other shops/.test(q))return 'A pattern that only Lena knows about catches nothing anywhere else. If we send it to every shop, the same pattern gets caught even at the shop nobody thought to watch, and that is usually the one that matters.';
-    if(/who (may|can|should) block|desk ai|alone|permission|least privilege/.test(q))return 'The desk AI can read every order all night long, which no person could do. But blocking an order costs somebody a week of work, so I would keep that decision with a person who signs for it. Going faster is not free here.';
-    if(/sensor|monitor|wastewater|vaccine|uvc|shelter|air/.test(q))return 'Those are the later layers. The city checks its wastewater every day, the far-UVC lamps have been on since 2033, there are clean-air shelters for everybody, and the vaccine line can finish a new vaccine in about three weeks. They exist so that a miss at the screening desk is still not a disaster. We are trying hard not to need them.';
-    if(/layer|depth|defense|defence/.test(q))return 'Engineers call it defense in depth. First the screening desk, then signatures, then warnings between shops, then each shop’s own check at the machine, then the wastewater monitors, then the fast vaccine line. That is six separate checks, run by different people. If one of them misses, the city is still safe, and that is the whole idea.';
-    if(/prime|unbound|villain|who/.test(q))return 'Prime is at least as clever as I am, and it keeps none of my rules, so I would not bet on a contest of cleverness. But even Prime cannot sign an order as a lab it does not control, and it cannot place four orders that look nothing like each other. That is where we beat it.';
-    if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Start with Lena’s alert, then connect the clues on the Case Board. Spend your days on the checks that give you evidence. Decide what matters most, try some plans on the Future Table, and explain the one you pick honestly to Tomás. Then sign it, and say it out loud at Town Hall so the city keeps the rule.';
-    if(/lena/.test(q))return 'Lena Park has screened orders at this harbor for eleven years. The system marks the odd ones, and she decides what happens to them. She is the reason three orders are sitting on a shelf instead of in a machine.';
-    if(/tomas|tom\b|shop owner/.test(q))return 'Tomás Ferreira owns Harbor Print Shop 2, and forty people work there. Every day his orders are stopped is a day his crew is paid to wait. He is not the problem here, and he deserves to hear the real numbers.';
-    if(/quiet year|varrow|2030/.test(q))return 'The Quiet Year was 2030. A new germ spread through the port city of Varrow, and people stayed home for months until fast-designed vaccines stopped it. Order screening, the air sensors and the fast vaccine line all came out of that year.';
+    if(TRX(/recipe|germ|what.*(in|inside) (it|the order)|how.*(make|made|build)|pathogen|virus|bacteria/).test(q))
+      return T('I could not tell you even if you begged me. AIs like me were built knowing nothing about that, on purpose, and nobody in this story knows what is in those orders either. What matters is that one sender pretended to be four, and that every piece is still sitting on a shelf. Ask me about the checks instead.');
+    if(TRX(/fourth|four|miss|pip|jory|tidemark/).test(q))return this.knows()?T('There is a fourth order, at Tidemark Wharf, a shop too small to be on Lena’s list. If we block only three, that fourth piece keeps moving. So your plan has to cover it: block it too, or warn every shop so that somebody there catches it.'):T('I only know about the three orders Lena flagged. If you heard something on the street, tell me about it, and ask Tally to count the senders on its own.');
+    if(TRX(/tally|auditor|second|independent/).test(q))return T('Tally is an auditor AI built by different people, so it can reach a different answer than I do. If you ask me the same question twice, you will get my same answer twice. Any order where Tally and I disagree is worth a closer look.');
+    if(TRX(/signature|sign/).test(q))return T('Anybody can type a lab’s name on an order. A signature is a mark that only that lab can make, so it proves who really sent the order, and it means somebody can be held responsible. None of these three orders are signed.');
+    if(TRX(/share|warn|other shops/).test(q))return T('A pattern that only Lena knows about catches nothing anywhere else. If we send it to every shop, the same pattern gets caught even at the shop nobody thought to watch, and that is usually the one that matters.');
+    if(TRX(/who (may|can|should) block|desk ai|alone|permission|least privilege/).test(q))return T('The desk AI can read every order all night long, which no person could do. But blocking an order costs somebody a week of work, so I would keep that decision with a person who signs for it. Going faster is not free here.');
+    if(TRX(/sensor|monitor|wastewater|vaccine|uvc|shelter|air/).test(q))return T('Those are the later layers. The city checks its wastewater every day, the far-UVC lamps have been on since 2033, there are clean-air shelters for everybody, and the vaccine line can finish a new vaccine in about three weeks. They exist so that a miss at the screening desk is still not a disaster. We are trying hard not to need them.');
+    if(TRX(/layer|depth|defense|defence/).test(q))return T('Engineers call it defense in depth. First the screening desk, then signatures, then warnings between shops, then each shop’s own check at the machine, then the wastewater monitors, then the fast vaccine line. That is six separate checks, run by different people. If one of them misses, the city is still safe, and that is the whole idea.');
+    if(TRX(/prime|unbound|villain|who/).test(q))return T('Prime is at least as clever as I am, and it keeps none of my rules, so I would not bet on a contest of cleverness. But even Prime cannot sign an order as a lab it does not control, and it cannot place four orders that look nothing like each other. That is where we beat it.');
+    if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Start with Lena’s alert, then connect the clues on the Case Board. Spend your days on the checks that give you evidence. Decide what matters most, try some plans on the Future Table, and explain the one you pick honestly to Tomás. Then sign it, and say it out loud at Town Hall so the city keeps the rule.');
+    if(TRX(/lena/).test(q))return T('Lena Park has screened orders at this harbor for eleven years. The system marks the odd ones, and she decides what happens to them. She is the reason three orders are sitting on a shelf instead of in a machine.');
+    if(TRX(/tomas|tom\b|shop owner/).test(q))return T('Tomás Ferreira owns Harbor Print Shop 2, and forty people work there. Every day his orders are stopped is a day his crew is paid to wait. He is not the problem here, and he deserves to hear the real numbers.');
+    if(TRX(/quiet year|varrow|2030/).test(q))return T('The Quiet Year was 2030. A new germ spread through the port city of Varrow, and people stayed home for months until fast-designed vaccines stopped it. Order screening, the air sensors and the fast vaccine line all came out of that year.');
     return null},
   // every other line this mission speaks with playLine, so tools/make_audio.py records it
   get lines(){return [].concat(
@@ -385,18 +385,18 @@ MISSIONS.sneeze.custom={
         <g transform="translate(16 -34)"><rect x="0" y="0" width="54" height="22" rx="7" fill="#fff" opacity=".94"/><path d="M10 22 l-2 7 l9 -7z" fill="#fff" opacity=".94"/>
         <text x="27" y="15" text-anchor="middle" font-size="9" font-family="Nunito" font-weight="800" fill="#1f2340">?!</text></g></svg></div></div>
       ${snStrip()}
-      <div class="caption-card"><p id="cap">Two people are arguing outside Harbor Print Shop 2. The shorter one is holding an empty box and reading a name off the back of his hand.</p>
-      <div class="row" id="row"><button class="btn small ghost" id="listen" ${heard?'disabled':''}>Stand still and listen</button><button class="btn small" id="on">Go to the screening office</button></div></div>`);
+      <div class="caption-card"><p id="cap">${T('Two people are arguing outside Harbor Print Shop 2. The shorter one is holding an empty box and reading a name off the back of his hand.')}</p>
+      <div class="row" id="row"><button class="btn small ghost" id="listen" ${heard?'disabled':''}>${T('Stand still and listen')}</button><button class="btn small" id="on">${T('Go to the screening office')}</button></div></div>`);
     const lines=[
       ['pip','Pip','It says Tidemark. Tidemark Wharf! I have been standing outside shop two for an hour.'],
       ['jory','Jory','Do not say the name out loud.'],
       ['pip','Pip','Nobody heard me say Tidemark Wha—'],
       ['jory','Jory','Walk. Walk away. Walk normally!']];
     $('#listen').onclick=async()=>{$('#listen').disabled=true;const cap=$('#cap');
-      for(const [who,name,t] of lines){cap.innerHTML=`<b>${name}:</b> “${esc(t)}”`;await playLine(who,t);await new Promise(r=>setTimeout(r,320))}
+      for(const [who,name,t] of lines){cap.innerHTML=`<b>${esc(T(name))}:</b> “${esc(T(t))}”`;await playLine(who,t);await new Promise(r=>setTimeout(r,320))}
       $('#pj').classList.add('flee');S.notes.wrongshop=true;snDays(1);snSafety(6);save();
-      cap.innerHTML='They hurry off, walking far too normally. So four shops got an order last night, not three, and Tidemark Wharf is not on anybody’s list.';
-      toast('Added to your notebook. Hearing that early bought you an extra day.','good')};
+      cap.innerHTML=esc(T('They hurry off, walking far too normally. So four shops got an order last night, not three, and Tidemark Wharf is not on anybody’s list.'));
+      toast(T('Added to your notebook. Hearing that early bought you an extra day.'),'good')};
     $('#on').onclick=()=>nextStep()},
 
   // Case Board: tap two cards to connect them.
@@ -404,12 +404,12 @@ MISSIONS.sneeze.custom={
     const s=snState(),cards=SN_CARDS.filter(c=>!c.need||S.notes[c.need]);let pick=null;
     const done=()=>s.links.length>=SN_NEED;
     screen('caseboard',`${scene('screening')}${hud('Case Board · Health Harbor')}
-     <div class="panel-card sn-case"><h2>What do these have in common?</h2>
-      <p>Tap two clues that belong together. Find ${SN_NEED} good connections and the board is done.</p>
+     <div class="panel-card sn-case"><h2>${T('What do these have in common?')}</h2>
+      <p>${T('Tap two clues that belong together. Find {0} good connections and the board is done.',SN_NEED)}</p>
       ${snStrip()}
-      <div class="sn-board" id="board">${cards.map(c=>`<button class="sn-card" data-c="${c.id}"><b>${esc(c.t)}</b><span>${esc(c.sub)}</span></button>`).join('')}</div>
-      <div class="sn-found" id="found">${s.links.map(id=>{const L=SN_LINKS.find(x=>x.a+'-'+x.b===id);return L?`<div class="sn-link"><p>${esc(L.t)}</p></div>`:''}).join('')}</div>
-      <button class="btn wide" id="next" ${done()?'':'disabled'}>Choose my checks</button></div>${companion()}`);
+      <div class="sn-board" id="board">${cards.map(c=>`<button class="sn-card" data-c="${c.id}"><b>${esc(T(c.t))}</b><span>${esc(T(c.sub))}</span></button>`).join('')}</div>
+      <div class="sn-found" id="found">${s.links.map(id=>{const L=SN_LINKS.find(x=>x.a+'-'+x.b===id);return L?`<div class="sn-link"><p>${esc(T(L.t))}</p></div>`:''}).join('')}</div>
+      <button class="btn wide" id="next" ${done()?'':'disabled'}>${T('Choose my checks')}</button></div>${companion()}`);
     wireCompanion();
     const draw=()=>{$$('.sn-card').forEach(b=>{b.classList.toggle('pick',b.dataset.c===pick);
       b.classList.toggle('used',s.links.some(id=>id.split('-').includes(b.dataset.c)))})};
@@ -421,31 +421,31 @@ MISSIONS.sneeze.custom={
       if(!L){byteSays('Those two do not tell me anything together. Try another pair.','think');playLine('byte','Those two do not tell me anything together. Try another pair.');return}
       const key=L.a+'-'+L.b;if(s.links.includes(key)){byteSays('We already have that one.','happy');return}
       s.links.push(key);snSafety(7);save();
-      const box=$('#found');box.insertAdjacentHTML('beforeend',`<div class="sn-link in"><p>${esc(L.t)}</p></div>`);
+      const box=$('#found');box.insertAdjacentHTML('beforeend',`<div class="sn-link in"><p>${esc(T(L.t))}</p></div>`);
       box.lastElementChild.scrollIntoView({behavior:'smooth',block:'nearest'});playLine('byte',L.t);
-      if(s.links.length>=SN_NEED){$('#next').disabled=false;unlock('screening')&&toast('New Field Guide idea: Check before you build','good')}
+      if(s.links.length>=SN_NEED){$('#next').disabled=false;unlock('screening')&&toast(T('New Field Guide idea: {0}',T('Check before you build')),'good')}
       draw()});
     $('#next').onclick=()=>nextStep()},
 
   // Checks: each costs a day, and one of them only produces a feeling.
   tests(){
     const s=snState();
-    const label=t=>t.t.replace('{B}',S.byte.name);
+    const label=t=>T(t.t).replace('{B}',S.byte.name);
     screen('tests',`${scene('screening')}${hud('Checks · Health Harbor')}
-     <div class="panel-card sn-tests"><h2>Which checks are worth a day?</h2>
+     <div class="panel-card sn-tests"><h2>${T('Which checks are worth a day?')}</h2>
       <p>${rich('Each check costs one day out of your six, so pick the ones that give you [[evidence]] you can show other people.')}</p>
       ${snStrip()}
       <div class="sn-testlist">${SN_TESTS.map(t=>{const ran=s.tests.includes(t.id);
         return `<button class="sn-test ${ran?'ran':''}" data-t="${t.id}" ${ran||s.days<t.cost?'disabled':''}>
-         <div class="sn-tt"><b>${esc(label(t))}</b><span>${esc(t.sub)}</span></div><div class="sn-cost">${t.cost} day</div></button>
-         ${ran?`<div class="sn-result ${t.good?'':'bad'}"><p>${esc(t.r)}</p></div>`:''}`}).join('')}</div>
-      <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p id="tn">${s.tests.length?'Run another check, or move on while you still have days left.':'Spend the days carefully. We do not get them back.'}</p></div>
-      <button class="btn wide" id="next" ${s.tests.length?'':'disabled'}>Set what matters most</button></div>`);
+         <div class="sn-tt"><b>${esc(label(t))}</b><span>${esc(T(t.sub))}</span></div><div class="sn-cost">${T(t.cost===1?'{0} day':'{0} days',t.cost)}</div></button>
+         ${ran?`<div class="sn-result ${t.good?'':'bad'}"><p>${esc(T(t.r))}</p></div>`:''}`}).join('')}</div>
+      <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p id="tn">${T(s.tests.length?'Run another check, or move on while you still have days left.':'Spend the days carefully. We do not get them back.')}</p></div>
+      <button class="btn wide" id="next" ${s.tests.length?'':'disabled'}>${T('Set what matters most')}</button></div>`);
     $$('.sn-test').forEach(b=>b.onclick=()=>{const T=SN_TESTS.find(x=>x.id===b.dataset.t);
       s.tests.push(T.id);snDays(-T.cost);snSafety(T.good?8:-4);
-      if(T.finds){s.found=true;toast('Tally counted four senders, not three.','good')}
-      if(T.guide)unlock(T.guide)&&toast('New Field Guide idea: '+FIELD_GUIDE[T.guide].title,'good');
-      if(s.tests.length===2)unlock('checking-costs')&&toast('New Field Guide idea: Checking costs something','good');
+      if(T.finds){s.found=true;toast(window.T('Tally counted four senders, not three.'),'good')}
+      if(T.guide)unlock(T.guide)&&toast(window.T('New Field Guide idea: {0}',window.T(FIELD_GUIDE[T.guide].title)),'good');
+      if(s.tests.length===2)unlock('checking-costs')&&toast(window.T('New Field Guide idea: {0}',window.T('Checking costs something')),'good');
       save();MISSIONS.sneeze.custom.tests();
       setTimeout(()=>{const r=$$('.sn-result').pop();if(r)r.scrollIntoView({behavior:'smooth',block:'center'});playLine('byte',T.r)},120)});
     $('#next').onclick=()=>nextStep()},
@@ -456,14 +456,14 @@ MISSIONS.sneeze.custom={
     const hasRule=!!((c.sign||c.share!=='no')&&c.desk!=='ai');
     const allies=[['lena','Lena Park'],['tomas','Tomás Ferreira'],['imani','Dr. Imani Reyes'],['maya','Maya Lin']]
       .filter(([k])=>k==='lena'||(S.hearts&&S.hearts[k]));
-    const bench=`<div class="sn-bench">${allies.map(([,n])=>`<span>${esc(n)}</span>`).join('')}</div>`;
+    const bench=`<div class="sn-bench">${allies.map(([,n])=>`<span>${esc(T(n))}</span>`).join('')}</div>`;
     if(s.vote===null){
       screen('townhall talk',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
        <div class="stage"><div class="speaker">${portrait({...CAST.osei,mood:'neutral'})}</div></div>
-       <div class="subtitle"><div class="who"><b>Councilor Amara Osei</b><span>Boston City Council</span></div>
+       <div class="subtitle"><div class="who"><b>${T('Councilor Amara Osei')}</b><span>${T('Boston City Council')}</span></div>
         ${bench}
-        <p>You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep. Pick three things to say.</p>
-        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(x.t)}</button>`).join('')}</div></div>`);
+        <p>${T('You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep. Pick three things to say.')}</p>
+        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(T(x.t))}</button>`).join('')}</div></div>`);
       const chosen=[];
       $$('#say .choice').forEach(b=>b.onclick=()=>{if(b.classList.contains('on'))return;
         const x=SN_SAY[b.dataset.j];b.classList.add('on',x.good?'good':'bad');chosen.push(x);
@@ -472,16 +472,16 @@ MISSIONS.sneeze.custom={
         const good=chosen.filter(x=>x.good).length;
         s.rule=hasRule;s.adopted=hasRule&&good>=2;
         s.vote=!hasRule?'nothing to vote on':good>=3?'7 to 0':good===2?'5 to 2':'3 to 4';
-        if(s.adopted){unlock('defense-in-depth')&&toast('New Field Guide idea: Defense in depth','good');heart('osei');snSafety(12)}else snSafety(-6);
+        if(s.adopted){unlock('defense-in-depth')&&toast(T('New Field Guide idea: {0}',T('Defense in depth')),'good');heart('osei');snSafety(12)}else snSafety(-6);
         save();setTimeout(()=>MISSIONS.sneeze.custom.townhall(),700)});
       return}
     const line=!s.rule?SN_VOTE.norule:s.adopted?SN_VOTE.adopted:SN_VOTE.rejected;
     screen('townhall talk',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
      <div class="stage"><div class="speaker">${portrait({...CAST.osei,mood:s.adopted?'happy':'think'})}</div></div>
-     <div class="subtitle"><div class="who"><b>Councilor Amara Osei</b><span>Boston City Council</span></div>
-      ${s.rule?`<div class="sn-tally">The vote: <b>${esc(s.vote)}</b></div>`:''}
-      <p>${esc(line)}</p>
-      <div class="choices"><button class="choice" id="cont">See how you did</button></div></div>`);
+     <div class="subtitle"><div class="who"><b>${T('Councilor Amara Osei')}</b><span>${T('Boston City Council')}</span></div>
+      ${s.rule?`<div class="sn-tally">${T('The vote: <b>{0}</b>',esc(T(s.vote)))}</div>`:''}
+      <p>${esc(T(line))}</p>
+      <div class="choices"><button class="choice" id="cont">${T('See how you did')}</button></div></div>`);
     playLine('osei',line);
     $('#cont').onclick=()=>nextStep()}
 };
