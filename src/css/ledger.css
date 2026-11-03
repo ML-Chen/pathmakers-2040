@@ -86,4 +86,4 @@
 .lg-wave{animation:lgwave 4s linear infinite}@keyframes lgwave{to{transform:translateX(-40px)}}
 .lg-rise{animation:lgrise 4s ease-in infinite;animation-delay:var(--d,0s)}@keyframes lgrise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-40px);opacity:0}}
 .lg-turn{transform-box:fill-box;transform-origin:center;animation:lgturn 6s ease-in-out infinite}@keyframes lgturn{0%,30%{transform:none}55%,100%{transform:scaleX(-1)}}
-@media (prefers-reduced-motion: reduce){.lg-bob,.lg-drift,.lg-spin,.lg-fade,.lg-in,.lg-pop,.lg-grow,.lg-growx,.lg-swing,.lg-beat,.lg-move,.lg-flash,.lg-flip,.lg-flop,.lg-dash,.lg-wave,.lg-rise,.lg-turn{animation:none;opacity:1}}
+@media (prefers-reduced-motion: reduce){.lg-bob,.lg-drift,.lg-spin,.lg-fade,.lg-in,.lg-pop,.lg-grow,.lg-growx,.lg-swing,.lg-beat,.lg-move,.lg-flash,.lg-flip,.lg-flop,.lg-dash,.lg-wave,.lg-rise,.lg-turn{animation:none;opacity:1}.lg-flop{opacity:0}}
