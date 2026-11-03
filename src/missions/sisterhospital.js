@@ -36,7 +36,7 @@ const SH_PLANS={
   wait:{t:'Wait two more days, and treat her if the fever keeps coming back',short:'Wait two more days'}};
 
 MISSIONS.sisterhospital={id:'sisterhospital',title:'The Sister Hospital',career:'doctor',day:5,dayLabel:'Travel',tag:'Travel',kind:'travel',year:1,season:'fall',district:'shanghai',rank:'trainee',
-  blurb:'You fly to Shanghai to talk through one child’s case with the doctors there. Each hospital knows something the other does not.',after:['maya'],
+  blurb:'You fly to Shanghai to talk through a sick child’s case with the doctors there, because each hospital knows something about her illness that the other does not.',after:['maya'],
   place:'The Bund · Shanghai',
   flow:[{name:'sh_arrive',k:'talk',talk:'arrive',scene:'shanghai',place:'The Bund · Shanghai · 7:40 AM'},
     {name:'sh_walk',k:'custom'},
@@ -83,23 +83,23 @@ MISSIONS.sisterhospital={id:'sisterhospital',title:'The Sister Hospital',career:
   },
   guide:{
     'sh-two-halves':{title:'Two halves of the picture',track:'Evidence and truth',
-      text:'Halo knew Ellie, and Riverside’s AI knew Kawasaki disease. Neither of them could see the whole picture by itself. When two teams each know something the other does not, sharing the right facts works better than trusting either side’s guess.',
+      text:'Boston’s hospital AI, Halo, knew Ellie well, and Riverside’s AI knew a lot about Kawasaki disease. Neither AI had every fact it needed to judge Ellie’s case by itself. When two teams each know something the other does not, they get a better answer by sharing the medical facts than by trusting either team’s first guess.',
       real:'True today: Kawasaki disease is much more common in Japan, Korea and China than in the United States, and doctors there noticed that a red BCG scar can be an early clue. The hospital AIs in this story are a guess about 2040.'},
     'sh-need-to-know':{title:'Share what’s needed',track:'People skills',
-      text:'Ellie’s mother agreed to share her medical facts, but not her name. Doctors can compare two cases without knowing who the child is. Asking first, and then sharing only what the work really needs, is how you keep people’s trust.',
+      text:'Ellie’s mother agreed to share Ellie’s medical facts, but not her name. Doctors can compare a child with other children without knowing who the child is. When you ask a family first, and then share only the facts the doctors really need, the family can keep trusting you with their information.',
       real:'True today: hospitals often take out names, addresses and photos before they share records for research. This is called de-identifying the data.'}},
-  chatter:{shanghai:['Every morning I walk the Bund before work. The river looks different every day.','My grandmother danced here in the 1990s. Now I bring my kids.','The ferries are so quiet now. You can hear the gulls.','That terraced town across the river has a forest on the roof. I want to live there.','Try the soup dumplings on the corner. Bite a small hole first, or you’ll burn your tongue!','The old buildings behind us are almost a hundred years old. They look just like my grandpa’s photos.']},
+  chatter:{shanghai:['Every morning I walk the Bund before work. The river looks different every day.','My grandmother came here to dance in the 1990s, and now I bring my own kids.','The electric ferries are so quiet now that you can hear the gulls over the river.','That terraced town across the river has trees growing on its roofs. I want to live there.','Try the soup dumplings on the corner. Bite a small hole first, or you’ll burn your tongue!','The old buildings behind us are almost a hundred years old. They look just like my grandpa’s photos.']},
   talks:{
     arrive:[
       {who:'byte',mood:'happy',text:'Good morning from Shanghai! We’re standing on [[the Bund]], the old stone riverfront. Those tall towers across the water are a business district called [[Lujiazui]].'},
       {who:'byte',mood:'think',text:'Boston Harbor Hospital and Riverside Children’s Hospital here are [[sister hospitals]], which means their doctors work together. Twice a year they meet to talk through their hardest cases. Today you are the doctor from Boston.',choices:[
         {t:'What’s the case?',reply:'A five-year-old in Boston named Ellie has had a fever for five days. It might be a rare illness that the doctors here see far more often than we do.'},
-        {t:'Why fly here for a meeting?',reply:'Some conversations go better face to face. And Riverside treats this particular illness about fifteen times as often as Boston does.'}]},
+        {t:'Why fly here for a meeting?',reply:'The doctors here wanted to go through the case with you in person. Also, Riverside treats this illness about fifteen times as often as Boston does.'}]},
       {who:'wenjh',mood:'happy',text:'[[Zǎoshang hǎo]]! Good morning! I’m Dr. Wen Jiahui, a children’s doctor at Riverside. Welcome to Shanghai.'},
       {who:'wenjh',mood:'smile',text:'I trained at Boston Harbor for a year. I still miss the clam chowder, and I still talk with your Dr. Reyes every month.'},
       {who:'wenjh',mood:'neutral',text:'Our [[case conference]] is on the terrace of Riverside’s old clinic, just along the Bund. Our new hospital is the white building across the river, the one with the teal cross on it.',choices:[
         {t:'Nǐ hǎo! Thank you for meeting me so early.',good:true,mood:'happy',reply:'Your Mandarin is good! For thank you, we say [[xièxie]]. You’ll hear it a lot today.'},
-        {t:'What’s that terraced building with the trees?',mood:'smile',reply:'That’s [[Qingtai]], a new town that was built all in one piece, with homes, shops and gardens stacked on wide terraces. The Bund itself stays exactly as it was. People here like it that way.'}]}
+        {t:'What’s that terraced building with the trees?',mood:'smile',reply:'That’s [[Qingtai]], a new town that was built all in one piece, with homes, shops and gardens stacked on wide terraces. The old buildings on this side, along the Bund, have been kept exactly as they were, and people here like it that way.'}]}
     ],
     caseconf:[
       {who:'luguo',mood:'smile',text:'Welcome, Doctor. I’m Lu Guoqiang. I take care of children’s hearts at Riverside. Please sit down. The tea is [[lóngjǐng]], from Hangzhou.'},
@@ -129,15 +129,15 @@ MISSIONS.sisterhospital={id:'sisterhospital',title:'The Sister Hospital',career:
   custom:{sh_walk(){shWalk()},sh_notes(){shNotes()},sh_decide(){shDecide()},sh_sign(){shSign()},sh_news(){shNews()},sh_debrief(){shDebrief()}},
   eveningScene:'shanghai_night',eveningPlace:'The Bund · Shanghai · 9:30 PM',
   evening(){const st=shSt();return [
-    `<b>${esc(S.byte.name)}:</b> “Look at the river. Every tower across the water is doubled in it.”`,
-    rich(`“Dr. Wen sent a message a minute ago: ‘[[Xièxie]] for today. Ellie is lucky to have two hospitals looking after her.’${st.plan==='treat'?' She added a photo of a pancake.':''}”`),
+    `<b>${esc(S.byte.name)}:</b> “Look at the river. You can see every tower across the water reflected upside down in it.”`,
+    rich(`“Dr. Wen sent a message a minute ago: ‘[[Xièxie]] for today. Ellie is lucky to have doctors in two cities looking after her.’${st.plan==='treat'?' She added a photo of a pancake.':''}”`),
     rich('“Dr. Lu stayed late to write up Ellie’s case for his students, and he asked whether Boston would send another doctor in the spring.”'),
-    rich('“In the Ledger tonight: American and Chinese treaty teams meet in Beijing next month to check each other’s AI promises in person.”')]},
+    rich('“In the Ledger tonight: next month, American and Chinese treaty teams will meet in Beijing to check, in person, that each country’s AI follows the rules both countries agreed to.”')]},
   brief(){const st=shSt(),f=shForecast(st);return `Current case: a Shanghai travel day for the Care Doctor. Boston Harbor Hospital and Riverside Children's Hospital in Pudong, Shanghai, are sister hospitals; the player is at their case conference on the terrace of Riverside's old clinic on the Bund. Doctors: Dr. Wen Jiahui (children's doctor, trained a year in Boston) and Dr. Lu Guoqiang (children's heart doctor). Patient: Ellie Gao, 5, in Boston, fever for 5 days that keeps coming back, red eyes and red cracked lips, no rash, hands and feet normal: possible incomplete Kawasaki disease. Kawasaki disease is rare in Boston (about 20 children a year at Boston Harbor) and much more common in East Asia (about 300 a year at Riverside). Treatment: IVIG (antibodies from donated blood) plus aspirin, best within 10 days of the first fever; it protects the coronary arteries in almost every child. A heart scan this early often looks normal even with Kawasaki. Halo (Boston's AI) is 30% sure; Riverside's AI is 45% sure. Ellie's mother Gao Ying says Ellie was born in Shanghai and got her baby shots there (including the BCG shot, given at birth in China and rarely in the US), and her BCG scar turned pink and puffy yesterday, which Shanghai's doctors know as a strong early clue. She agreed to share Ellie's medical facts but not her name, address or photos.
 What has been shared so far: ${Object.keys(st.sent).filter(k=>st.sent[k]).join(', ')||'nothing yet'}. Shared forecast: ${f==null?'not yet':f+'% Kawasaki'}. ${st.plan?'The doctors chose: '+SH_PLANS[st.plan].t+'.':''}
 Key consideration: ${st.sent.scar?'with the scar clue, it is probably Kawasaki, and treatment works best within ten days; a heart scan tonight could look normal even if it is Kawasaki.':'ask whether Ellie\'s mother mentioned anything Halo might not know about, like where Ellie got her baby shots or her vaccine scar.'}`},
   canned(q){const st=shSt();
-    if(/scar|bcg|shot|vaccin|arm/.test(q))return st.sent.scar?'That scar is the clue Halo could not see. In children who had the BCG shot, the scar turns red in about half of those who have Kawasaki disease.':'Ms. Gao said that Ellie’s baby-shot scar went pink yesterday. The doctors here may know what that means, so try sending it across.';
+    if(/scar|bcg|shot|vaccin|arm/.test(q))return st.sent.scar?'Ellie’s pink scar is the clue that Halo could not see. In children who had the BCG shot, the scar turns red in about half of those who have Kawasaki disease.':'Ms. Gao said that Ellie’s baby-shot scar went pink yesterday. The doctors here may know what that means, so try sending that card across.';
     if(/name|address|photo|privat/.test(q))return 'Ms. Gao said yes to sharing Ellie’s medical facts, and no to her name, address and photos. Riverside’s AI does not need any of those to compare her with other children.';
     if(/kawasaki/.test(q))return 'Kawasaki disease mostly affects children under five. It causes a long fever, red eyes and lips, and sometimes a rash and swollen hands. The real danger is to the small arteries around the heart, which is why doctors treat it quickly.';
     if(/ivig|drip|treat/.test(q))return 'IVIG is a drip of antibodies from donated blood. Given within ten days of the first fever, it protects the heart in almost every child. Today is day five.';
@@ -146,16 +146,16 @@ Key consideration: ${st.sent.scar?'with the scar clue, it is probably Kawasaki, 
     if(/help|stuck|what do i do/.test(q))return 'Listen to Ellie’s mom first. Then send Boston’s medical facts across to Riverside, one card at a time, and keep her private details at home. After that, choose a plan with Dr. Wen and sign it together.';
     return null},
   lines:[
-    {who:'byte',text:'Send Boston’s cards across one at a time. Every fact you share can change what Riverside’s AI sees.'},
+    {who:'byte',text:'Send Boston’s cards across to Riverside one at a time. Each medical fact you send can change how sure the two AIs are that Ellie has Kawasaki disease.'},
     {who:'byte',text:'Both AIs are looking at the same facts now, and together they think it is probably Kawasaki disease, about 8 times in 10.'},
-    {who:'byte',text:'Together they are still not sure. Did Ms. Gao mention anything that Halo might not know about?'},
-    {who:'wenjh',text:'Her mother asked us to leave that out, so let’s keep it in Boston. Riverside’s AI does not need it.'},
-    {who:'byte',text:'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. What matters most to you?'},
-    {who:'byte',text:'Right now it is close to a coin flip. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?'},
+    {who:'byte',text:'Even with both hospitals’ facts, the two AIs are still not sure it is Kawasaki disease. Did Ms. Gao mention anything that Halo might not know about?'},
+    {who:'wenjh',text:'Ellie’s mother asked us not to share her name, address or photos, so that card stays in Boston. Riverside’s AI does not need it to compare Ellie with other children.'},
+    {who:'byte',text:'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. Which plan do you think is best for Ellie?'},
+    {who:'byte',text:'Right now the two AIs think the chance that this is Kawasaki disease is only about half. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?'},
     {who:'gaoying',text:'Her fever broke at three in the morning, and she woke up asking for pancakes! Dr. Reyes says her heart scan looks completely normal.'},
     {who:'gaoying',text:'The heart scan last night looked normal, so they waited. Then the fever came back this morning, and Dr. Reyes started the drip at noon. Her heart still looks fine.'},
     {who:'gaoying',text:'The fever kept coming back for two more days, so Dr. Reyes started the drip on day seven. Her heart is fine, but they want to check it again in six weeks.'},
-    {who:'byte',text:'You helped two hospitals put their halves of the picture together, and you kept Ellie’s name where her mom wanted it.'},
+    {who:'byte',text:'You helped Boston and Shanghai share what each hospital knew about Ellie’s illness, and you kept her name and address private, as her mom asked.'},
     {who:'byte',text:'The buildings along the Bund are about a hundred years old. Shanghai keeps them exactly as they were, so the delivery robots work quietly in the back lanes instead.'},
     {who:'byte',text:'That’s Qingtai across the water. It is a whole new town stacked up on wide terraces, and trains run through tunnels under its gardens.'}
   ].concat(Object.values(SH_CARDS.shanghai).map(c=>({who:c.who,text:c.t}))),
@@ -199,7 +199,7 @@ function shNotes(flash){const st=shSt(),f=shForecast(st),sent=st.sent,noted=!!S.
   const reply=k=>{const r=SH_CARDS.shanghai[k],c=CAST[r.who],o=k===open;return `<button class="sh-reply ${k} ${o?'open':''}" data-k="${k}"><span class="sh-face">${portrait({...c,mood:'smile'})}</span><p>${o?rich(r.t):esc(r.k)}</p></button>`};
   const bar=(lbl,v,cls)=>`<div class="sh-bar ${cls}"><span>${esc(lbl)}</span><div class="sh-track"><i style="width:${v==null?0:v}%"></i></div><b>${v==null?'?':v+'%'}</b></div>`;
   const nMed=SH_CARDS.boston.filter(c=>c.kind==='med'&&sent[c.id]).length;
-  const say=flash?'Her mother asked us to leave that out, so let’s keep it in Boston. Riverside’s AI does not need it.':f==null?'Send Boston’s cards across one at a time. Every fact you share can change what Riverside’s AI sees.':f>=70?'Both AIs are looking at the same facts now, and together they think it is probably Kawasaki disease, about 8 times in 10.':nMed>=3?'Together they are still not sure. Did Ms. Gao mention anything that Halo might not know about?':'';
+  const say=flash?'Ellie’s mother asked us not to share her name, address or photos, so that card stays in Boston. Riverside’s AI does not need it to compare Ellie with other children.':f==null?'Send Boston’s cards across to Riverside one at a time. Each medical fact you send can change how sure the two AIs are that Ellie has Kawasaki disease.':f>=70?'Both AIs are looking at the same facts now, and together they think it is probably Kawasaki disease, about 8 times in 10.':nMed>=3?'Even with both hospitals’ facts, the two AIs are still not sure it is Kawasaki disease. Did Ms. Gao mention anything that Halo might not know about?':'';
   screen('criteria sh-notesscr',`${scene('shanghai')}${hud('Riverside’s Bund Clinic')}<div class="panel-card sh-board"><h2>Compare notes</h2>
     <div class="sh-cols"><div class="sh-col boston"><div class="sh-head"><b>Boston</b><span>Ellie’s chart</span></div>${SH_CARDS.boston.map(card).join('')}</div>
       <div class="sh-col shanghai"><div class="sh-head"><b>Shanghai</b><span lang="zh">上海</span></div>${shown.length?shown.map(reply).join(''):'<p class="sh-empty">Riverside’s team is listening.</p>'}</div></div>
@@ -218,8 +218,8 @@ function shNotes(flash){const st=shSt(),f=shForecast(st),sent=st.sent,noted=!!S.
 
 // ---------- choosing a plan together ----------
 function shDecide(){const st=shSt(),f=shForecast(st)||45,know=f>=70;
-  const say=know?'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. What matters most to you?'
-    :'Right now it is close to a coin flip. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?';
+  const say=know?'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. Which plan do you think is best for Ellie?'
+    :'Right now the two AIs think the chance that this is Kawasaki disease is only about half. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?';
   const odds={treat:`We think this is Kawasaki disease about ${f} times in 100. If it is, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.`,
     scan:`If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be a day late.`,
     wait:`Some fevers fade on their own. If this one is Kawasaki disease, she would still get the drip before day ten, but only just in time.`};
@@ -247,7 +247,7 @@ function shNews(){const st=shSt(),k=st.plan||'treat';
 function shDebrief(){const st=shSt(),s=st.sent,f=shForecast(st)||0,know=f>=70;
   const ask=!!(s.scar&&s.born),decision=know?st.plan==='treat':st.plan!=='wait',memo=String(S.memo||'').length>=12,heart=!st.leak&&memo;
   zhDebrief({scene:'shanghai',place:'Debrief · The Bund',stars:{ask,decision,heart},
-    items:[{star:'ask',ok:ask,text:ask?'You sent the pink scar and the baby shots across, so both hospitals saw the whole picture.':'Halo never learned about Ellie’s pink BCG scar, which is the one clue Shanghai’s doctors know best.'},
-      {star:'decision',ok:decision,text:decision?'Your plan fitted what both hospitals knew together.':'With everything the two hospitals knew together, a different plan would have protected Ellie’s heart sooner.'},
-      {star:'heart',ok:heart,text:st.leak?'You tried to send something Ms. Gao had asked you to keep private. Dr. Wen caught it this time.':'You kept Ellie’s name and address private, the way her mom asked, and you wrote to her in plain words.'}],
-    byte:'You helped two hospitals put their halves of the picture together, and you kept Ellie’s name where her mom wanted it.'})}
+    items:[{star:'ask',ok:ask,text:ask?'You sent the pink scar and the baby shots across, so both hospitals could use every clue they had.':'Halo never learned about Ellie’s pink BCG scar, which is the one clue Shanghai’s doctors know best.'},
+      {star:'decision',ok:decision,text:decision?'Your plan matched what both hospitals knew once they put their facts together.':'With everything the two hospitals knew together, a different plan would have protected Ellie’s heart sooner.'},
+      {star:'heart',ok:heart,text:st.leak?'You tried to send a card that Ms. Gao had asked you to keep private. Dr. Wen stopped it this time.':'You kept Ellie’s name and address private, the way her mom asked, and you wrote to her in plain words.'}],
+    byte:'You helped Boston and Shanghai share what each hospital knew about Ellie’s illness, and you kept her name and address private, as her mom asked.'})}
