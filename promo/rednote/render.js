@@ -110,6 +110,9 @@ const CSS = `
   await p.evaluate(() => { S.mute = true; S.player = 'Juniper'; S.lang = 'zh'; save() });
   const cdp = await ctx.newCDPSession(p);
   await cdp.send('Animation.enable'); await cdp.send('Animation.setPlaybackRate', {playbackRate: 0});  // only our clock moves animations
+  // A raw CDP screenshot on this session comes back at CSS size (405x540) unless the density is set on the session itself.
+  // Without this line every frame was captured at 405 wide and stretched to 1440, which made the whole video soft.
+  await cdp.send('Emulation.setDeviceMetricsOverride', {width: W, height: H, deviceScaleFactor: OW / W, mobile: false});
   const wait = ms => p.evaluate(ms => __run(ms), ms);                   // wait in page time
   const segs = []; let total = 0;
   for (const [n, s] of SHOTS.entries()) {
@@ -149,7 +152,8 @@ const CSS = `
       while (events.length && events[0][0] <= t) { const [, code, keep] = events.shift();
         await p.evaluate(({code, keep}) => { const pr = document.getElementById('pr'); try { (0, eval)(code) } catch (e) {} if (keep && pr) { pr.querySelectorAll('*').forEach(e => e.style.animation = 'none'); document.body.appendChild(pr) } }, {code, keep}).catch(() => {}) }
       const file = path.join(dir, String(frames.length).padStart(5, '0') + '.jpg');
-      const shot = await cdp.send('Page.captureScreenshot', {format: 'jpeg', quality: 94, optimizeForSpeed: true}); fs.writeFileSync(file, Buffer.from(shot.data, 'base64')); frames.push([file, t / 1000]);
+      const shot = await cdp.send('Page.captureScreenshot', {format: 'jpeg', quality: 94, optimizeForSpeed: true}); const buf = Buffer.from(shot.data, 'base64'); fs.writeFileSync(file, buf); frames.push([file, t / 1000]);
+      if (frames.length === 1) { const w = buf.readUInt16BE(buf.indexOf(Buffer.from([0xff, 0xc0])) + 7); if (w < OW) throw new Error(`frames are ${w}px wide, expected ${OW}`) }  // stop instead of shipping a stretched video
       if (!still && f >= N * .45) { fs.copyFileSync(file, path.join(out, 'stills', `${String(n + 1).padStart(2, '0')}-${s.id}.jpg`)); still = true }
       await p.evaluate(dt => __adv(dt), DT);
     }
