@@ -261,7 +261,7 @@ function extraLines(){const L=[];
 // ---------- small helpers for the custom screens ----------
 const N=()=>S.notes.bea||(S.notes.bea={});
 function portraitOf(who,mood){return who==='byte'?byteBox({...S.byte,mood:mood==='think'?'think':'happy'},'big'):portrait({...CAST[who],mood:mood||'smile'})}
-function whoRow(who){const name=who==='byte'?S.byte.name:CAST[who].name,role=who==='byte'?'Your AI partner':CAST[who].role;
+function whoRow(who){const name=who==='byte'?S.byte.name:T(CAST[who].name),role=T(who==='byte'?'Your AI partner':CAST[who].role);
   return `${who==='byte'?`<i class="bea-whobyte">${byteBox({...S.byte,mood:'happy'})}</i>`:''}<b>${esc(name)}</b><span>${esc(role)}</span>`}
 // show one line: speaker art (optional), name, graded text, voice. Resolves when the voice ends (or a minimum time).
 function sayLine(who,text,onArt){stopVoice();const line=$('#bline'),row=$('#bwho');if(!line)return Promise.resolve();
@@ -275,7 +275,7 @@ function cards(list,render){const box=$('#bch');box.innerHTML=list.map((o,j)=>`<
   return new Promise(res=>$$('.choice',box).forEach(b=>b.onclick=e=>{e.stopPropagation();box.innerHTML='';res(list[+b.dataset.j])}))}
 function talkFrame(sceneKey,place,cls,stage){
   screen('talk '+cls,`${scene(sceneKey)}<div class="talk-dim"></div>${hud(place)}<div class="stage ${cls}-stage" id="bstage">${stage}</div>
-    <div class="subtitle ${cls}-sub" id="bsub"><div class="who" id="bwho"></div><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`)}
+    <div class="subtitle ${cls}-sub" id="bsub"><div class="who" id="bwho"></div><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>${T('Tap to continue')}</div></div>`)}
 // a run of screens is abandoned if the player leaves the step (menu, reload)
 const alive=(step)=>()=>S.step===step&&document.getElementById('bsub');
 
@@ -289,15 +289,15 @@ async function interview(){
   for(const L of IV.intro){if(!live())return;await say(L.mood,L.text);if(!live())return;await tapToGo()}
   for(const Q of IV.qs){let left=Q.opts.slice(),first=true;if(!live())return;
     await say('neutral',Q.q);
-    while(live()){const pick=await cards(left,o=>esc(o.t));if(!live())return;
+    while(live()){const pick=await cards(left,o=>esc(T(o.t)));if(!live())return;
       if(pick.good&&first)good++;
       await say(pick.mood,pick.reply);if(!live())return;
       if(pick.good){await tapToGo();break}
       first=false;left=left.filter(o=>o!==pick)}}
   for(const L of IV.outro){if(!live())return;await say(L.mood,L.text);if(!live())return;if(L!==IV.outro[IV.outro.length-1])await tapToGo()}
   N().interview=good;heart('marisol',good);
-  $('#bch').innerHTML=`<div class="bea-score"><b>${good} of 4</b><span>${good>=3?'Strong answers on the first try.':'You got there in the end. Next time, try a specific, honest answer first.'}</span></div><button class="choice bea-go" id="ivgo">Meet Bea</button>`;
-  $('#ivgo').onclick=e=>{e.stopPropagation();toast('You’re an Elder Companion!','good');nextStep()}}
+  $('#bch').innerHTML=`<div class="bea-score"><b>${T('{0} of {1}',good,4)}</b><span>${T(good>=3?'Strong answers on the first try.':'You got there in the end. Next time, try a specific, honest answer first.')}</span></div><button class="choice bea-go" id="ivgo">${T('Meet Bea')}</button>`;
+  $('#ivgo').onclick=e=>{e.stopPropagation();toast(T('You’re an Elder Companion!'),'good');nextStep()}}
 
 // ---------- custom step: the family meeting ----------
 const TRIO=['grace','bea','jordan'];
@@ -314,39 +314,39 @@ async function meeting(){
   for(const B of MEET.beats){if(!live())return;let left=B.opts.slice(),first=true;
     await say(B.who,B.mood,B.text);
     while(live()){
-      const pick=await cards(left,o=>`<em class="bea-move bea-m-${o.m}">${MOVES[o.m]}</em>${esc(o.t)}`);if(!live())return;
+      const pick=await cards(left,o=>`<em class="bea-move bea-m-${o.m}">${T(MOVES[o.m])}</em>${esc(T(o.t))}`);if(!live())return;
       st.used[pick.m]=(st.used[pick.m]||0)+1;if(pick.good&&first)st.first++;
       if(pick.good){bump(pick.who);MUSIC.sfx('chime')}else MUSIC.sfx('blip');
       await say(pick.who,pick.mood,pick.reply);if(!live())return;
-      if(pick.shared&&unlock('shared-goal'))toast('New Field Guide idea: Look for the shared goal','good');
-      if(pick.clue&&!S.notes.waltz){const c=await cards([{t:'Write this in my notebook',cls:'clue',k:1},{t:'Keep listening',cls:'ghost',k:0}],o=>esc(o.t));
-        if(c.k){S.notes.waltz=true;save();toast('Added to your notebook','good')}}
+      if(pick.shared&&unlock('shared-goal'))toast(T('New Field Guide idea: {0}',T('Look for the shared goal')),'good');
+      if(pick.clue&&!S.notes.waltz){const c=await cards([{t:'Write this in my notebook',cls:'clue',k:1},{t:'Keep listening',cls:'ghost',k:0}],o=>esc(T(o.t)));
+        if(c.k){S.notes.waltz=true;save();toast(T('Added to your notebook'),'good')}}
       else if(pick.good||!B.retry)await tapToGo();
-      if(pick.final&&unlock('her-choice'))toast('New Field Guide idea: Her life, her choice','good');
+      if(pick.final&&unlock('her-choice'))toast(T('New Field Guide idea: {0}',T('Her life, her choice')),'good');
       if(pick.good||!B.retry)break;
       first=false;left=left.filter(o=>o!==pick)}}
   if(!live())return;
   const n=st.used;N().meeting={first:st.first,used:n,trust:st.trust};save();
   TRIO.forEach(w=>heart(w,st.trust[w]-1));
-  if(unlock('listening-moves'))toast('New Field Guide idea: Three listening moves','good');
+  if(unlock('listening-moves'))toast(T('New Field Guide idea: {0}',T('Three listening moves')),'good');
   await say('byte','happy',MEET.end);if(!live())return;
-  $('#bch').innerHTML=`<div class="bea-tally">${['reflect','ask','summarize'].map(m=>`<span class="bea-move bea-m-${m}">${MOVES[m]} ×${n[m]||0}</span>`).join('')}</div>
-    <div class="bea-score"><b>${st.first} of ${MEET.beats.length}</b><span>listening moves on the first try</span></div><button class="choice bea-go" id="mgo">Write Tempo’s rules</button>`;
+  $('#bch').innerHTML=`<div class="bea-tally">${['reflect','ask','summarize'].map(m=>`<span class="bea-move bea-m-${m}">${T(MOVES[m])} ×${n[m]||0}</span>`).join('')}</div>
+    <div class="bea-score"><b>${T('{0} of {1}',st.first,MEET.beats.length)}</b><span>${T('listening moves on the first try')}</span></div><button class="choice bea-go" id="mgo">${T('Write Tempo’s rules')}</button>`;
   $('#mgo').onclick=e=>{e.stopPropagation();nextStep()}}
 
 // ---------- custom step: Tempo's rule sheet ----------
 function rules(){
   const R=N().rules||(N().rules={});
   const card=(c,i)=>{const v=R[c.id],good=v&&c.best.includes(v);
-    return `<div class="bea-rule ${v?(good?'good':'warn'):''}" data-id="${c.id}"><div class="bea-rule-t"><span class="bea-rule-n">${i+1}</span>${esc(c.t)}</div>
-      <div class="seg bea-bins">${BINS.map(([k,l])=>`<button class="segb bea-bin-${k} ${v===k?'on':''}" data-b="${k}">${l}</button>`).join('')}</div>
-      ${v?`<div class="bea-rule-fb"><i>${byteBox({...S.byte,mood:good?'happy':'think'})}</i><p>${esc(c.fb[v])}</p></div>`:''}</div>`};
+    return `<div class="bea-rule ${v?(good?'good':'warn'):''}" data-id="${c.id}"><div class="bea-rule-t"><span class="bea-rule-n">${i+1}</span>${esc(T(c.t))}</div>
+      <div class="seg bea-bins">${BINS.map(([k,l])=>`<button class="segb bea-bin-${k} ${v===k?'on':''}" data-b="${k}">${T(l)}</button>`).join('')}</div>
+      ${v?`<div class="bea-rule-fb"><i>${byteBox({...S.byte,mood:good?'happy':'think'})}</i><p>${esc(T(c.fb[v]))}</p></div>`:''}</div>`};
   const done=RULES.cards.every(c=>R[c.id]);
   screen('bea-rules',`${scene('bea_parlor')}<div class="talk-dim"></div>${hud('Bea’s parlor · Tempo’s rules')}
-    <div class="panel-card bea-rules"><div class="bea-rules-head"><div class="bea-wren">${portrait({...CAST.wren,mood:'neutral'})}</div><div><h2>Tempo’s rule sheet</h2><p>${rich(RULES.intro)}</p></div></div>
-    <div class="bea-legend">${BINS.map(([k,l])=>`<span class="bea-bin-${k}">${l}</span>`).join('')}</div>
+    <div class="panel-card bea-rules"><div class="bea-rules-head"><div class="bea-wren">${portrait({...CAST.wren,mood:'neutral'})}</div><div><h2>${T('Tempo’s rule sheet')}</h2><p>${rich(RULES.intro)}</p></div></div>
+    <div class="bea-legend">${BINS.map(([k,l])=>`<span class="bea-bin-${k}">${T(l)}</span>`).join('')}</div>
     ${RULES.cards.map(card).join('')}
-    <button class="btn wide" id="rsign" ${done?'':'disabled'}>Sign the rule sheet</button></div>`);
+    <button class="btn wide" id="rsign" ${done?'':'disabled'}>${T('Sign the rule sheet')}</button></div>`);
   if(!N().rulesSpoke){N().rulesSpoke=1;playLine('wren',RULES.intro)}
   $$('.bea-rule').forEach(el=>$$('[data-b]',el).forEach(b=>b.onclick=()=>{const id=el.dataset.id,c=RULES.cards.find(x=>x.id===id);R[id]=b.dataset.b;save();
     MUSIC.sfx(c.best.includes(R[id])?'chime':'blip');const y=el.getBoundingClientRect().top;rules();
@@ -354,20 +354,20 @@ function rules(){
     const fb=again&&again.querySelector('.bea-rule-fb p');if(fb)MUSIC.babble(fb.textContent,'byte')}));
   $('#rsign').onclick=()=>{const good=RULES.cards.filter(c=>c.best.includes(R[c.id])).length;N().rulesScore=good;
     S.choice.auto=R.raise==='alone'?'auto':'ask';heart('bea',good>=6?1:0);save();
-    if(unlock('act-or-ask'))toast('New Field Guide idea: Act alone, or ask first?','good');
-    const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc('Companion '+P())}</div><p>${esc(RULES.signed)}</p><p class="bea-sigscore">${good} of ${RULES.cards.length} rules match Byte’s safety advice</p></div>`;
+    if(unlock('act-or-ask'))toast(T('New Field Guide idea: {0}',T('Act alone, or ask first?')),'good');
+    const sig=document.createElement('div');sig.className='signing';sig.innerHTML=`<div class="sigcard"><div class="sigline">${esc(T('Companion {0}',P()))}</div><p>${esc(T(RULES.signed))}</p><p class="bea-sigscore">${T('{0} of {1} rules match Byte’s safety advice',good,RULES.cards.length)}</p></div>`;
     document.body.appendChild(sig);playLine('wren',RULES.signed);setTimeout(()=>{sig.remove();nextStep()},2300)}}
 
 // ---------- custom step: Bea's treasures (a first visit: look around and listen) ----------
 async function treasures(){
   const live=alive('treasures'),seen=new Set(N().seen||[]);
-  const tile=t=>`<button class="bea-tr ${seen.has(t.id)?'seen':''}" data-t="${t.id}" aria-label="${esc(t.label)}"><span class="bea-tr-art">${typeof beaTreasureArt==='function'?beaTreasureArt(t.id):''}</span><b>${esc(t.label)}</b></button>`;
+  const tile=t=>`<button class="bea-tr ${seen.has(t.id)?'seen':''}" data-t="${t.id}" aria-label="${esc(T(t.label))}"><span class="bea-tr-art">${typeof beaTreasureArt==='function'?beaTreasureArt(t.id):''}</span><b>${esc(T(t.label))}</b></button>`;
   screen('talk bea-trs',`${scene('bea_parlor')}<div class="talk-dim"></div>${hud('Bea’s parlor · Rutland Square')}
     <div class="bea-trgrid" id="trgrid">${TREASURES.map(tile).join('')}</div>
-    <div class="subtitle bea-trsub" id="bsub"><div class="bea-trbea" id="trbea">${portraitOf('bea','smile')}</div><div class="bea-trtext"><div class="who" id="bwho"></div><p id="bline"></p></div><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`);
+    <div class="subtitle bea-trsub" id="bsub"><div class="bea-trbea" id="trbea">${portraitOf('bea','smile')}</div><div class="bea-trtext"><div class="who" id="bwho"></div><p id="bline"></p></div><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>${T('Tap to continue')}</div></div>`);
   const face=(m,on)=>{const b=$('#trbea');if(!b)return;b.innerHTML=portraitOf('bea',m);b.classList.toggle('talking',!!on)};
   $('#bwho').innerHTML=whoRow('bea');$('#bline').innerHTML=rich('Go on. Tap anything you like.');
-  const gate=()=>{if(seen.size>=4&&!$('#trgo')){$('#bch').innerHTML=`<button class="choice bea-go" id="trgo">${seen.size>=TREASURES.length?'Sit down with Bea':'I’ve looked around'}</button>`;$('#trgo').onclick=e=>{e.stopPropagation();outro()}}};
+  const gate=()=>{if(seen.size>=4&&!$('#trgo')){$('#bch').innerHTML=`<button class="choice bea-go" id="trgo">${T(seen.size>=TREASURES.length?'Sit down with Bea':'I’ve looked around')}</button>`;$('#trgo').onclick=e=>{e.stopPropagation();outro()}}};
   let busy=false;
   $$('.bea-tr').forEach(b=>b.onclick=async()=>{if(busy||!live())return;busy=true;const t=TREASURES.find(x=>x.id===b.dataset.t);
     $$('.bea-tr').forEach(x=>x.classList.toggle('on',x===b));seen.add(t.id);N().seen=[...seen];save();b.classList.add('seen');MUSIC.sfx(t.id==='record'?'chime':'pop');
@@ -376,16 +376,16 @@ async function treasures(){
   gate();
   async function outro(){if(!live())return;$('#bch').innerHTML='';$('#trgrid').classList.add('done');if(seen.size>=TREASURES.length)heart('bea',1);
     face('think',true);await sayLine('bea',TREASURE_OUTRO.text);face('think',false);if(!live())return;
-    const pick=await cards(TREASURE_OUTRO.opts,o=>esc(o.t));if(!live())return;if(pick.good)heart('bea',1);
-    face(pick.mood,true);await sayLine('bea',pick.reply);face(pick.mood,false);if(!live())return;await tapToGo();if(live()){toast('Family meeting');nextStep()}}}
+    const pick=await cards(TREASURE_OUTRO.opts,o=>esc(T(o.t)));if(!live())return;if(pick.good)heart('bea',1);
+    face(pick.mood,true);await sayLine('bea',pick.reply);face(pick.mood,false);if(!live())return;await tapToGo();if(live()){toast(T('Family meeting'));nextStep()}}}
 
 // ---------- custom step: what matters to Bea (the Future Table's criteria, chosen by listening to her) ----------
 function goals(){
   const C=MISSIONS.bea.criteria,picked=S.criteria.filter(id=>C.some(c=>c.id===id));S.criteria=picked;
-  const chip=(id,label)=>`<button class="critb ${picked.includes(id)?'on':''}" data-c="${id}">${esc(label.replace(/\[\[|\]\]/g,''))}</button>`;
+  const chip=(id,label)=>`<button class="critb ${picked.includes(id)?'on':''}" data-c="${id}">${esc(T(label).replace(/\[\[|\]\]/g,''))}</button>`;
   talkFrame('bea_parlor','Bea’s parlor · What matters','bea-goal',`<div class="speaker enter" id="gsp">${portraitOf('bea','smile')}</div>`);
   const sp=$('#gsp'),say=async(m,t)=>{sp.innerHTML=portraitOf('bea',m);await sayLine('bea',t,on=>sp.classList.toggle('talking',on))};
-  const foot=()=>`<div class="crit bea-goalchips">${C.map(c=>chip(c.id,c.label)).join('')}${chip('long',GOALS.long.label)}</div><button class="choice bea-go" id="ggo" ${picked.length>=2?'':'disabled'}>Open the Future Table</button>`;
+  const foot=()=>`<div class="crit bea-goalchips">${C.map(c=>chip(c.id,c.label)).join('')}${chip('long',GOALS.long.label)}</div><button class="choice bea-go" id="ggo" ${picked.length>=2?'':'disabled'}>${T('Open the Future Table')}</button>`;
   const wire=()=>{$('#bch').innerHTML=foot();
     $$('.critb',$('#bch')).forEach(b=>b.onclick=async e=>{e.stopPropagation();const id=b.dataset.c;
       if(id==='long'){b.classList.add('on','bea-no');MUSIC.sfx('blip');await say('think',GOALS.long.reply);b.classList.remove('on');return}
@@ -400,15 +400,15 @@ async function wedding(){
   const live=alive('wedding');if(!S.result){S.result=sampleReal(S.choice,rngFrom(Date.now()%100000+7));save()}
   const R=S.result,line=REVEAL[R.kind]||'';
   screen('talk bea-wed',`${scene('dance_hall')}<div class="talk-dim"></div>${hud('Jordan’s wedding · Tremont Street')}
-    <div class="bea-wcal" id="wcal"><span>Week</span><b id="wk">1</b></div>
+    <div class="bea-wcal" id="wcal"><span>${T('Week')}</span><b id="wk">1</b></div>
     <div class="bea-wfloor" id="wfloor" hidden>${typeof beaWeddingArt==='function'?beaWeddingArt(R.kind):''}</div>
-    <div class="subtitle bea-wsub" id="bsub" hidden><div class="who" id="bwho"></div><h2 class="bea-wcap">${esc(R.cap)}</h2><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>Tap to continue</div></div>`);
+    <div class="subtitle bea-wsub" id="bsub" hidden><div class="who" id="bwho"></div><h2 class="bea-wcap">${esc(T(R.cap))}</h2><p id="bline"></p><div class="choices" id="bch"></div><div class="tap-hint" id="bhint" hidden>${T('Tap to continue')}</div></div>`);
   for(let w=2;w<=13;w++){await new Promise(r=>setTimeout(r,120));if(!live())return;$('#wk').textContent=w}
   $('#wcal').classList.add('done');await new Promise(r=>setTimeout(r,450));if(!live())return;
   $('#wcal').hidden=true;$('#wfloor').hidden=false;$('#bsub').hidden=false;MUSIC.sfx(R.kind==='waltz'?'chime':'pop');
-  if(unlock('forecast'))toast('New Field Guide idea: Forecasts are not promises','good');
+  if(unlock('forecast'))toast(T('New Field Guide idea: {0}',T('Forecasts are not promises')),'good');
   await sayLine('bea',line);if(!live())return;
-  $('#bch').innerHTML='<button class="choice bea-go" id="wgo">See how you did</button>';$('#wgo').onclick=e=>{e.stopPropagation();nextStep()}}
+  $('#bch').innerHTML=`<button class="choice bea-go" id="wgo">${T('See how you did')}</button>`;$('#wgo').onclick=e=>{e.stopPropagation();nextStep()}}
 
 // ---------- the mission ----------
 MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'workday',year:1,season:'spring',district:'boston',rank:'trainee',
@@ -446,7 +446,7 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
     {key:'auto',label:'Changes to her plan',opts:[['auto','Tempo alone'],['ask','Bea says yes']]},
     {key:'practice',label:'Dance practice with Jordan',opts:[[false,'No'],[true,'Weekly']]}],
   start:{dose:'full',auto:'auto',practice:false},
-  planName(c){return `${DOSE[c.dose]}, ${c.auto==='auto'?'Tempo changes alone':'Bea says yes'}${c.practice?', weekly practice':''}`},
+  planName(c){return T(DOSE[c.dose])+T(c.auto==='auto'?', Tempo changes alone':', Bea says yes')+(c.practice?T(', weekly practice'):'')},
   outcomes(c,knows){const {s,q,f,r,live}=model(c,knows);const F=(d,sf)=>({dance:d,safe:sf,say:c.auto==='ask'?1:0,easy:c.dose==='full'?0:1});
     return [{kind:'flutter',p:s,cap:'Her heart fluttered, and Tempo paused the dose. She’s fine.',flags:F(0,0)},
       {kind:'quit',p:(1-s)*q,cap:'She felt pushed and quit the plan.',flags:F(0,1)},
@@ -455,50 +455,50 @@ MISSIONS.bea={id:'bea',title:'Dancing at 104',career:'companion',day:1,kind:'wor
       {kind:'cane',p:live*(1-r),cap:knows?'She danced, but with her cane.':'She danced a little, with her cane.',flags:F(0,1)}].filter(o=>o.p>1e-9)},
   truth(){return true},knows(){return told()},
   why(c){const o=this.outcomes(c,this.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0));
-    return `<b>${esc(this.planName(c))}:</b> Bea dances at the wedding without her cane about ${sum('dance')}% of the time, with no fall or heart flutter about ${sum('safe')}% of the time. `+
-      (told()?'That’s for one 3-minute waltz, which is what she told you she wants. ':'I’m assuming “dancing” means about an hour on her feet. If Bea means something smaller, tell me. ')+
-      (c.auto==='auto'?'Tempo changes her plan on its own, so it’s a bit faster, but about 15 in 100 people quit when they aren’t asked. ':'Bea says yes to each change, so she stays in charge, and few people quit. ')+
-      (c.dose!=='none'?'Only 31 people over 100 have tried renewal therapy, so I’m less sure about these numbers.':'')},
+    return T('<b>{plan}:</b> Bea dances at the wedding without her cane about {d}% of the time, with no fall or heart flutter about {sf}% of the time. ',{plan:esc(this.planName(c)),d:sum('dance'),sf:sum('safe')})+
+      T(told()?'That’s for one 3-minute waltz, which is what she told you she wants. ':'I’m assuming “dancing” means about an hour on her feet. If Bea means something smaller, tell me. ')+
+      T(c.auto==='auto'?'Tempo changes her plan on its own, so it’s a bit faster, but about 15 in 100 people quit when they aren’t asked. ':'Bea says yes to each change, so she stays in charge, and few people quit. ')+
+      (c.dose!=='none'?T('Only 31 people over 100 have tried renewal therapy, so I’m less sure about these numbers.'):'')},
   whyGuide(c){return c.dose!=='none'?'sample-size':null},
   vignette(kind){return typeof beaVignette==='function'?beaVignette(kind):vignette(kind)},
   consent:{scene:'bea_parlor',place:'Bea’s parlor · Rutland Square',left:'grace',right:'bea',title:'Bea and Grace',role:'Your client and her granddaughter',prompt:'So, companion. What are my choices, and what are my odds?',replyWho:'bea',heart:'bea',
     opts(c,M){const o=M.outcomes(c,M.knows()),sum=k=>pct(o.reduce((a,x)=>a+x.p*x.flags[k],0)),d=sum('dance'),sf=sum('safe');
-      const plan={none:'strength and balance training with Wren, and no renewal',gentle:'the gentle dose, plus training',full:'the full dose, plus training'}[c.dose]+(c.practice?', and weekly waltz practice with Jordan':'');
-      const what=told()?'dancing your waltz with Jordan':'dancing at the wedding',risk=100-sf;
-      const odds=d>=75?`I think there’s a good chance you’ll be ${what} without your cane.`:d>=50?`There’s a fair chance you’ll be ${what} without your cane, a bit better than a coin flip.`:d>=25?`You might be ${what} without your cane, Bea, but I’d be fibbing if I called it likely. More often than not, you’d still need your cane.`:`I have to be honest: with this plan, ${what} without your cane is a long shot.`;
-      const safe=risk<=10?'The chance of a fall or a heart flutter is small.':`There’s also a real risk: about ${Math.round(risk/10)} in 10 people like you have a fall or a heart flutter on this plan.`;
-      return [{t:`Here’s what I’d suggest: ${plan}. ${odds} ${safe} ${c.auto==='auto'?'Tempo would change your plan on its own.':'And nothing changes unless you say yes.'} It’s your body and your call. How does that sound to you?`,good:true,mood:'happy',reply:d<40?CONSENT_REPLIES.goodLow:CONSENT_REPLIES.good},
-        {t:'Just trust the plan, Bea. Tempo has studied thousands of people like you, so it knows what’s best. You don’t need to worry about the details or the numbers. Tempo will take care of all of that.',good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
-        {t:'Good news, Bea! With the plan we picked, you’ll definitely dance at Jordan’s wedding. Tempo and Wren will get you ready in time, so there’s really nothing to worry about.',good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
-        {t:'Grace and I already talked it over and decided for you, Bea. We picked the plan that seems safest, so you can relax and leave the details to us. Tempo starts on Sunday.',good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
+      const plan=T({none:'strength and balance training with Wren, and no renewal',gentle:'the gentle dose, plus training',full:'the full dose, plus training'}[c.dose])+(c.practice?T(', and weekly waltz practice with Jordan'):'');
+      const what=T(told()?'dancing your waltz with Jordan':'dancing at the wedding'),risk=100-sf;
+      const odds=d>=75?T('I think there’s a good chance you’ll be {what} without your cane.',{what}):d>=50?T('There’s a fair chance you’ll be {what} without your cane, a bit better than a coin flip.',{what}):d>=25?T('You might be {what} without your cane, Bea, but I’d be fibbing if I called it likely. More often than not, you’d still need your cane.',{what}):T('I have to be honest: with this plan, {what} without your cane is a long shot.',{what});
+      const safe=risk<=10?T('The chance of a fall or a heart flutter is small.'):T('There’s also a real risk: about {0} in 10 people like you have a fall or a heart flutter on this plan.',Math.round(risk/10));
+      return [{t:T('Here’s what I’d suggest: {plan}. {odds} {safe} {auto} It’s your body and your call. How does that sound to you?',{plan,odds,safe,auto:T(c.auto==='auto'?'Tempo would change your plan on its own.':'And nothing changes unless you say yes.')}),good:true,mood:'happy',reply:d<40?CONSENT_REPLIES.goodLow:CONSENT_REPLIES.good},
+        {t:T('Just trust the plan, Bea. Tempo has studied thousands of people like you, so it knows what’s best. You don’t need to worry about the details or the numbers. Tempo will take care of all of that.'),good:false,mood:'stern',reply:CONSENT_REPLIES.trust},
+        {t:T('Good news, Bea! With the plan we picked, you’ll definitely dance at Jordan’s wedding. Tempo and Wren will get you ready in time, so there’s really nothing to worry about.'),good:false,mood:'surprised',reply:CONSENT_REPLIES.sure},
+        {t:T('Grace and I already talked it over and decided for you, Bea. We picked the plan that seems safest, so you can relax and leave the details to us. Tempo starts on Sunday.'),good:false,mood:'stern',reply:CONSENT_REPLIES.decided}]}},
   memo:{starters:['I recommend ','because ','The chance she dances is about ','Bea wants ','Tempo may change her plan '],placeholder:'I recommend the gentle dose with weekly practice because…',
     plan:/dose|gentle|full|half|training|renewal|therapy|tempo|practice|exercise/,careLabel:'Includes what Bea wants',care:/\bbea\b|she |her |waltz|danc|cane|jordan|wedding/,signAs:'Companion ',topic:'Bea’s renewal plan'},
   reveal:{days(){return 13},unit:'Week',who:'bea',lines:REVEAL,mood(k){return {waltz:'happy',cane:'smile',flutter:'smile',fall:'sad',quit:'stern'}[k]||'smile'}},
   trap(c){const fit=c.dose==='gentle'&&c.practice;
-    return {ok:told()||fit,text:told()?'You asked Bea what her dancing would look like, and you told '+S.byte.name+'. The forecast fit what she really wanted.':
+    return {ok:told()||fit,text:T(told()?'You asked Bea what her dancing would look like, and you told {byte}. The forecast fit what she really wanted.':
       fit?'You chose a gentle plan with practice. It fit, because Bea only wants one 3-minute waltz. Did you hear her say it?':
-      S.notes.waltz?'You wrote down Bea’s waltz but never told '+S.byte.name+', so the forecast planned for an hour of dancing she never wanted.':
-      'Bea only wanted one 3-minute waltz, not a night of dancing. Asking “what would that look like?” would have shown it.'}},
+      S.notes.waltz?'You wrote down Bea’s waltz but never told {byte}, so the forecast planned for an hour of dancing she never wanted.':
+      'Bea only wanted one 3-minute waltz, not a night of dancing. Asking “what would that look like?” would have shown it.',{byte:S.byte.name})}},
   byteGood:'Nice work, Companion. You listened until you heard what Bea really wanted, and you kept the choice hers.',
   debriefScene:'dance_hall',
-  evening(){return [`<b>${esc(S.byte.name)}:</b> “Bea left you a voice message: ‘Tell my companion thank you for asking what I meant by dancing.’ Then she hummed a waltz for a whole minute.”`,
-    '“The Ledger news also had a short story about Kendall Square. A DNA print shop there blocked a few orders from brand-new customers last night. Checking orders like that is exactly the job of the shop’s screening computers.”']},
+  evening(){return [T('<b>{byte}:</b> “Bea left you a voice message: ‘Tell my companion thank you for asking what I meant by dancing.’ Then she hummed a waltz for a whole minute.”',{byte:esc(S.byte.name)}),
+    T('“The Ledger news also had a short story about Kendall Square. A DNA print shop there blocked a few orders from brand-new customers last night. Checking orders like that is exactly the job of the shop’s screening computers.”')]},
   eveningScene:'night',eveningPlace:'Home · Boston · 9:20 PM',
   brief(){return `Current case (Elder Companion, South End, Boston): Bea Hollis, 104, retired dancer and nurse, walks with a cane; her leg muscles have about half the strength they had at 70. Her great-grandson Jordan marries in 13 weeks at the Tremont Street dance hall. Her granddaughter Grace (Jordan's mother, a bridge inspector) worries; Bea broke her hip at 99. Options: training with Wren (her home robot) only; a gentle (half) dose of renewal therapy plus training; the full dose plus training. Renewal therapy was tested on 2,400 people over 80 but only 31 over 100. Heart flutter (therapy paused, stops): about 15 in 100 on the full dose, 5 in 100 gentle. Falls in 3 months of training: about 5 in 100, 3 in 100 with weekly dance practice. Tempo, the dosing AI, runs the plan through Wren; it can change her plan (raise the dose, harder exercises) on its own or only with Bea's yes; changing alone gets about 4 more in 100 ready in time, but about 15 in 100 people quit when plans change without asking, versus 3 in 100. Safety pauses are automatic in every setting. Tempo's goal is set by Jordan to "as strong as possible by July 19". Bea's choice is hers; she is fully able to decide.
 What you know: ${told()?'The player told you Bea wants one 3-minute waltz, on her own feet, holding Jordan’s hands, not an hour of dancing. Forecasts for that (weekly practice, Bea approves each change): gentle 79 in 100, full 74, training only 56. Gentle dose is your pick for her.':'You assume "dancing at the wedding" means about an hour of dancing. Forecasts for that (weekly practice, Bea approves each change): full 58 in 100, gentle 34, training only 8. You do not know what Bea herself means by dancing.'}
 The key consideration when asked which option: ${told()?'Bea wants one 3-minute waltz, so far less strength is needed; and who approves changes to her plan':'ask what Bea herself means by dancing at the wedding, because it changes everything'}. You are an expert AI partner (never call yourself superintelligent). Tempo follows the clinic's approved dosing plan and does not learn on the job; its goals are published in its spec.`},
   canned(q){
-    if(/waltz|three minutes|3 minutes|one dance|walter/.test(q)){if(S.notes.waltz&&!S.told){S.told=true;save();unlock('aim-the-goal');return 'Woof, that changes my whole forecast! One 3-minute waltz needs much less strength than an hour of dancing. With weekly practice and Bea saying yes to each change, she can do it in about 79 of 100 futures on the gentle dose, 74 on the full dose, and 56 with training only.'}
-      if(S.told)return 'Right, her waltz! For one 3-minute waltz, the gentle dose with weekly practice gives her about a 79 in 100 chance, with much milder aches than the full dose.';return null}
-    if(/tempo|on its own|alone|ask first|permission|rule/.test(q))return 'Tempo is very good at spotting when Bea’s body is ready. The real question is who gets to say yes to each change in her plan. Changing on its own is a bit faster. Asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.';
-    if(/flutter|heart/.test(q))return 'In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks of training.';
-    if(/fall|hip|safe/.test(q))return 'About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.';
-    if(/practice|jordan/.test(q))return 'Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 3 to 20 in 100, depending on the plan, and lowers falls a little.';
-    if(/beat|win|how do i|what do i do|stuck|help/.test(q))return 'Here’s the path: listen to Bea and her family, ask what she really wants, tell me anything I’m missing, set Tempo’s rules, pick what matters most, test plans on the Future Table, explain honestly to Bea, then write your decision and sign it!';
-    if(/best|which|pick|choose|should|recommend/.test(q))return told()?'I can’t pick for Bea, but here’s the big thing: she wants one 3-minute waltz, not a night of dancing. Does she care more about the best odds or the gentlest plan? I lean toward the gentle dose, Bea saying yes to each change, and weekly practice: about 79 in 100.':'Before I answer: what does Bea mean by dancing? An hour on her feet needs far more strength than one slow dance. Did anyone ask her?';
-    if(/grace|worr/.test(q))return 'Grace inspects bridges for a living, so she thinks in safety margins. Her worry is fair: Bea broke her hip at 99, and only 31 people over 100 have tried this therapy.';
-    if(/wren|robot/.test(q))return 'Wren is Bea’s home robot. It carries out Tempo’s plan: the weekly patch, the exercises, the morning checks. It also steadies her arm when she stands.';
-    if(/who are you|what are you/.test(q))return `I’m ${S.byte.name}, your AI partner! I read everything, run forecasts and build Future Tables. You bring the listening, and Bea makes the call.`;
+    if(TRX(/waltz|three minutes|3 minutes|one dance|walter/).test(q)){if(S.notes.waltz&&!S.told){S.told=true;save();unlock('aim-the-goal');return T('Woof, that changes my whole forecast! One 3-minute waltz needs much less strength than an hour of dancing. With weekly practice and Bea saying yes to each change, she can do it in about 79 of 100 futures on the gentle dose, 74 on the full dose, and 56 with training only.')}
+      if(S.told)return T('Right, her waltz! For one 3-minute waltz, the gentle dose with weekly practice gives her about a 79 in 100 chance, with much milder aches than the full dose.');return null}
+    if(TRX(/tempo|on its own|alone|ask first|permission|rule/).test(q))return T('Tempo is very good at spotting when Bea’s body is ready. The real question is who gets to say yes to each change in her plan. Changing on its own is a bit faster. Asking first keeps Bea in charge, and far fewer people quit. Safety pauses happen on their own either way.');
+    if(TRX(/flutter|heart/).test(q))return T('In the trial, about 15 in 100 people over 100 on the full dose had a heart flutter, and about 5 in 100 on the gentle dose. Tempo pauses the dose within a minute and the flutter stops, but the pause can cost her weeks of training.');
+    if(TRX(/fall|hip|safe/).test(q))return T('About 5 in 100 people her age fall during three months of training, even with Wren nearby. Weekly dance practice lowers that to about 3 in 100, because it trains her balance.');
+    if(TRX(/practice|jordan/).test(q))return T('Practicing the real dance makes her training count for more. Weekly practice raises her odds by about 3 to 20 in 100, depending on the plan, and lowers falls a little.');
+    if(TRX(/beat|win|how do i|what do i do|stuck|help/).test(q))return T('Here’s the path: listen to Bea and her family, ask what she really wants, tell me anything I’m missing, set Tempo’s rules, pick what matters most, test plans on the Future Table, explain honestly to Bea, then write your decision and sign it!');
+    if(TRX(/best|which|pick|choose|should|recommend/).test(q))return T(told()?'I can’t pick for Bea, but here’s the big thing: she wants one 3-minute waltz, not a night of dancing. Does she care more about the best odds or the gentlest plan? I lean toward the gentle dose, Bea saying yes to each change, and weekly practice: about 79 in 100.':'Before I answer: what does Bea mean by dancing? An hour on her feet needs far more strength than one slow dance. Did anyone ask her?');
+    if(TRX(/grace|worr/).test(q))return T('Grace inspects bridges for a living, so she thinks in safety margins. Her worry is fair: Bea broke her hip at 99, and only 31 people over 100 have tried this therapy.');
+    if(TRX(/wren|robot/).test(q))return T('Wren is Bea’s home robot. It carries out Tempo’s plan: the weekly patch, the exercises, the morning checks. It also steadies her arm when she stands.');
+    if(TRX(/who are you|what are you/).test(q))return T('I’m {0}, your AI partner! I read everything, run forecasts and build Future Tables. You bring the listening, and Bea makes the call.',S.byte.name);
     return null},
   lines:[...extraLines(),{who:'byte',text:'Here are 10 possible futures for this plan. Change the plan and watch how the futures change.'}],
   custom:{interview,treasures,meeting,rules,goals,wedding}
