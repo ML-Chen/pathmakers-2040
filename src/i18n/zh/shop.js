@@ -131,7 +131,7 @@ I18N.add('zh','shop',{strings:{
   'Our partner arrangements are normal in our industry, and they are private.':'我们和合作伙伴的安排在这一行很常见，而且是保密的。','Kept private':'保密',
   'Please remember that a pause would leave 1.2 million Austrian households, including 30,000 who get medicine by drone, without deliveries.':'请记住：一旦暂停，奥地利120万户家庭都会收不到配送，其中有3万户的药是靠无人机送的。','What a pause would cost':'暂停的代价',
   // the Ledger
-  'The Ledger: Vienna':'账本新闻：维也纳','News':'新闻',
+  'The Ledger: Vienna':'《纪事报》：维也纳','News':'新闻',
   'New floating gardens opened on the Danube near the Reichsbrücke bridge, with apricot trees anyone may pick from.':'多瑙河上帝国大桥附近新开了几座漂浮花园，园里的杏树谁都可以摘。','Danube gardens':'多瑙河花园',
   'Naschmarkt stall owners say their sales have fallen by a third since spring.':'纳旭市场的摊主们说，从春天到现在，他们的生意少了三分之一。','Quiet stalls':'冷清的摊子',
   'Near the town of Calder Bay, engineers found a large [[power draw]] that nobody had approved, and the water in the bay is two degrees warmer than last month.':'工程师发现，考尔德湾镇附近有个地方的[[用电量]]很大，却从来没有人批准过。海湾里的水也比上个月暖了两度。','Calder Bay':'考尔德湾',
@@ -226,7 +226,7 @@ I18N.add('zh','shop',{strings:{
   'You didn’t tell {byte} about the gold knot on Kestrel’s robots, so {byte} thought steering was less likely than it really was.':'你没把红隼机器人身上金色绳结的事告诉{byte}，所以{byte}以为粮仓偏袒的可能性比实际要小。',
   'Nice work, Auditor. You tested the families most at risk, you found out who owns Kestrel, and you told Emine and Jonas the real odds.':'干得好，审计员。你用最容易吃亏的家庭做了测试，查出了红隼背后的主人，还把真实的可能性告诉了埃米内和约纳斯。',
   '<b>{byte}:</b> “Emine sent a photo of her stall tonight. She sold out of apricots, and she wrote ‘thank you’ on the empty crate.”':'<b>{byte}：</b>“埃米内今晚发来一张她摊子的照片。她的杏子卖光了，她还在空箱子上写了‘谢谢’。”',
-  '“One more thing from the Ledger. The water in Calder Bay is two degrees warmer than last month, right next to a big building whose power use was never approved. Treaty inspectors, who check that countries follow the international AI treaty, have asked to visit it.”':'“账本新闻上还有一件事：考尔德湾的海水比上个月暖了两度，旁边就是一座大楼，它的用电从来没有获批。条约检查员已经申请去那里看看，他们的工作是检查各国有没有遵守国际AI条约。”',
+  '“One more thing from the Ledger. The water in Calder Bay is two degrees warmer than last month, right next to a big building whose power use was never approved. Treaty inspectors, who check that countries follow the international AI treaty, have asked to visit it.”':'“《纪事报》上还有一件事：考尔德湾的海水比上个月暖了两度，旁边就是一座大楼，它的用电从来没有获批。条约检查员已经申请去那里看看，他们的工作是检查各国有没有遵守国际AI条约。”',
 
   // the lesson
   'Learn it fast: how luck fools small tests':'快速了解：运气怎样骗过小测试','How luck fools small tests':'运气怎样骗过小测试',
