@@ -436,7 +436,10 @@ glossary:{
   'protein':{w:'蛋白质',d:'食物里的一种成分，身体用它来长肌肉、修复肌肉。'},
   'reflect':{w:'复述',d:'倾听时把听到的话说回给对方，让对方知道你听懂了。'},
   'open question':{w:'开放式问题',d:'不能只用“是”或“不是”回答的问题，比如“那会是什么样子？”'},
-  'summarize':{w:'总结',d:'用几句话说出要点。'}
+  'summarize':{w:'总结',d:'用几句话说出要点。'},
+  // global words this mission marks; same as src/i18n/zh/core.js on i18n/zh-core (core loads later and wins)
+  'trial':{w:'临床试验',d:'为了看一种新药安不安全、管不管用，而做的仔细测试。',alt:['试验']},
+  'dividend':{w:'分红',d:'分给大家的钱。2040年，每个成年人都能领到一份“公民分红”，钱来自公司建造机器人和电脑芯片时交的费用。',alt:['公民分红']}
 },
 regex:{
   // memo: names the plan, and includes what Bea wants
