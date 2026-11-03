@@ -245,7 +245,7 @@ I18N.add('zh','quietyear',{strings:{
   'That is how the lantern garden started':'灯笼花园就是这样开始的','One small lantern led to thousands':'一盏小灯笼，引出了几千盏',
   // words written on the six things people left in the garden
   'for now':'过段时间见','Bread for':'面包送给','nurses':'护士们','back door':'放后门','SNIFFER v1':'嗅嗅 1号',
-  'PRINT ORDER':'DNA订单','HOLD FOR':'暂扣','REVIEW':'待审'
+  'I HELPED':'我帮助了','VARROW':'瓦罗','9:40':'9:40','PRINT ORDER':'DNA订单','HOLD FOR':'暂扣','REVIEW':'待审'
 },
 glossary:{
   'germ':{w:'病菌',d:'非常小的生物，小到眼睛看不见，会让人生病。',alt:['新病菌']},

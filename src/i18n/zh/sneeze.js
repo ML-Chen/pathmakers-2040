@@ -312,6 +312,7 @@ I18N.add('zh','sneeze',{strings:{
   'A balance tipping from a guess towards evidence':'天平从猜测那边倒向证据这边','a guess':'猜测','evidence':'证据',
   'A padlock holding the order queue while honest orders flow past':'一把锁扣住了那份订单，正经订单从旁边照常流过',
   'Three jobs sorted: the AI flags, the AI holds and a person checks, only a person blocks':'三项工作的分工：AI标记，AI扣下再由人检查，只有人能拦截',
+  '3:02 · 3:07 · 3:11':'3:02 · 3:07 · 3:11','3:00':'3:00','3:05':'3:05','3:15':'3:15','×1':'×1','×4':'×4','×8':'×8',
   'Flag':'标记','the AI alone':'AI自己做','Hold':'扣下','AI + a check':'AI＋人检查','Block':'拦截','only a person':'只能由人做',
   'A clever shadow at a door that only opens for a signature':'一个聪明的影子站在门口，可这扇门只认签名',
   'Monitors on the city pipes, one for each neighbourhood':'城市水管上的监测器，每个街区一个',
