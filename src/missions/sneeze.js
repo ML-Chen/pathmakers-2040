@@ -48,7 +48,7 @@ const SN_TESTS=[
   {id:'sign',t:'Check the signature on every order',sub:'Does a real lab stand behind it?',cost:1,
    r:'Not one of these orders is signed by a lab I can find. A real order from a real lab carries a signature that I can check in a second. These carry a typed name and nothing more.',good:true,guide:'signature'},
   {id:'time',t:'Line up the exact order times',sub:'Timestamps, to the minute',cost:1,
-   r:'The orders were sent at three minutes past three, seven past, and eleven past, from a city where it was the middle of the night. That looks like one person sending all three in one sitting.',good:true},
+   r:'The orders were sent at two minutes past three, seven past, and eleven past, from a city where it was the middle of the night. That looks like one person sending all three in one sitting.',good:true},
   {id:'call',t:'Call the labs the orders name',sub:'Ask whether they sent anything',cost:1,
    r:'All three labs say they never placed an order at all. One of them was asleep when I called, and quite annoyed with me, and then very glad I had called.',good:true},
   {id:'guess',t:`Ask ${'{B}'} who is behind it`,sub:'A guess, not a check',cost:1,
@@ -122,7 +122,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     'evidence':'Something you can show other people so they can check it for themselves, like a record of when each order was sent. A feeling that something is wrong does not count as evidence.',
     'appeal':'To ask a person to look again at a decision you think is wrong.',
     'least privilege':'Giving a person or a machine only the power it needs for its job, and no more.',
-    'the Quiet Year':'In this story, the year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it. True today: Varrow and the Quiet Year are made up for this game.'
+    'the quiet year':'In this story, the year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it. True today: Varrow and the Quiet Year are made up for this game.'
   },
   cast:{
     // no two of them share a silhouette: long hair and glasses, a broad man with short hair, a bun and gold hoops
@@ -418,8 +418,8 @@ MISSIONS.sneeze.custom={
       if(!pick){pick=id;draw();return}
       if(pick===id){pick=null;draw();return}
       const L=SN_LINKS.find(x=>(x.a===pick&&x.b===id)||(x.b===pick&&x.a===id));pick=null;draw();
-      if(!L){byteSays('Those two do not tell me anything together. Try another pair.','think');playLine('byte','Those two do not tell me anything together. Try another pair.');return}
-      const key=L.a+'-'+L.b;if(s.links.includes(key)){byteSays('We already have that one.','happy');return}
+      if(!L){byteSays('Those two do not tell me anything when you put them together. Try another pair.','think');playLine('byte','Those two do not tell me anything when you put them together. Try another pair.');return}
+      const key=L.a+'-'+L.b;if(s.links.includes(key)){byteSays('We already have that connection on the board.','happy');return}
       s.links.push(key);snSafety(7);save();
       const box=$('#found');box.insertAdjacentHTML('beforeend',`<div class="sn-link in"><p>${esc(T(L.t))}</p></div>`);
       box.lastElementChild.scrollIntoView({behavior:'smooth',block:'nearest'});playLine('byte',L.t);

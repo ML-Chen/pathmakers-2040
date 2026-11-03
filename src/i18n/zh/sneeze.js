@@ -118,9 +118,9 @@ I18N.add('zh','sneeze',{strings:{
   'A real vaccine lab would have years of past orders. These three customers say they do vaccine work, but none of them has ever ordered anything before.':'真正做疫苗的实验室会有好几年的下单记录。这三个顾客都说自己在做疫苗研究，可他们以前谁都没下过单。',
   'So four shops got an order last night, not three. Tidemark Wharf is too small to be on Lena’s list, so nobody there checks orders, and we would have missed that fourth order if we had only watched Lena’s list.':'所以昨晚收到订单的是四家店，不是三家。潮痕码头太小，不在莉娜的名单上，那里没人检查订单。要是我们只盯着莉娜的名单，就会漏掉第四份订单。',
   'If the order was split four ways instead of three, then blocking three of them still leaves the fourth piece moving.':'如果订单拆成了四块而不是三块，那么拦下其中三块，第四块还是会照样往前走。',
-  'Those two do not tell me anything together. Try another pair.':'这两条放在一起看不出什么。换一对试试。',
+  'Those two do not tell me anything when you put them together. Try another pair.':'这两条放在一起看不出什么。换一对试试。',
   'Those two do not tell me anything when you put them together. Try another pair.':'这两条放在一起，看不出什么。换一对试试。',
-  'We already have that one.':'这一条我们已经有了。','We already have that connection on the board.':'这个联系已经在案情板上了。',
+  'We already have that connection on the board.':'这一条我们已经有了。','We already have that connection on the board.':'这个联系已经在案情板上了。',
 
   // the checks
   'Which checks are worth a day?':'哪些检查值得花一天？',
@@ -133,7 +133,7 @@ I18N.add('zh','sneeze',{strings:{
   'Check the signature on every order':'检查每份订单的签名','Does a real lab stand behind it?':'背后有没有真的实验室？',
   'Not one of these orders is signed by a lab I can find. A real order from a real lab carries a signature that I can check in a second. These carry a typed name and nothing more.':'这些订单没有一份带着我能查到的实验室签名。真实验室的真订单，都带着我一秒钟就能核实的签名。这几份只有一个打上去的名字，别的什么都没有。',
   'Line up the exact order times':'把订单的准确时间排一排','Timestamps, to the minute':'时间戳，精确到分钟',
-  'The orders were sent at three minutes past three, seven past, and eleven past, from a city where it was the middle of the night. That looks like one person sending all three in one sitting.':'这几份订单分别是在三点零三分、三点零七分和三点十一分发出的，发出的那座城市当时正是半夜。看起来像是一个人坐在那儿一口气发了三份。',
+  'The orders were sent at two minutes past three, seven past, and eleven past, from a city where it was the middle of the night. That looks like one person sending all three in one sitting.':'这几份订单分别是在三点零二分、三点零七分和三点十一分发出的，发出的那座城市当时正是半夜。看起来像是一个人坐在那儿一口气发了三份。',
   'Call the labs the orders name':'给订单上写的实验室打电话','Ask whether they sent anything':'问问他们有没有发过订单',
   'All three labs say they never placed an order at all. One of them was asleep when I called, and quite annoyed with me, and then very glad I had called.':'三家实验室都说，他们根本没下过订单。我打过去的时候，其中一家还在睡觉，一开始很不高兴，后来又很庆幸我打了这个电话。',
   'Ask {B} who is behind it':'问{B}背后是谁','A guess, not a check':'这是猜测，不是检查',
@@ -319,7 +319,7 @@ I18N.add('zh','sneeze',{strings:{
   'A sensor warning reaching phones across the city while the hospital opens':'传感器的警报传到全城的手机上，医院同时开门',
   'Soft light panels over a station platform':'车站站台上方柔和的灯板','A clean-air shelter with its doors open and nobody in a hurry':'洁净空气避难所的门开着，没有人着急',
   'Vials moving along a fast line while the days count down':'药瓶沿着快速生产线前进，天数在倒数','weeks':'周',
-  'A line from one hard year to the rules it left behind':'从艰难的一年，连到它留下的规定','today':'今天','the Quiet Year':'静默之年','the rules':'规则','this desk':'这个筛查台',
+  'A line from one hard year to the rules it left behind':'从艰难的一年，连到它留下的规定','today':'今天','the quiet year':'静默之年','the rules':'规则','this desk':'这个筛查台',
   'A dark machine and four orders still on the shelf':'一台没开的机器，四份订单还放在架子上','0 made':'造出0份',
   'A secret datacenter that was shut down':'一座被关停的秘密数据中心',
   'A silver patch in the desert doubling again and again':'沙漠里一片银色的地方，一次又一次地翻倍','three times this month':'这个月三次'
@@ -351,7 +351,7 @@ glossary:{
   'evidence':{w:'证据',d:'能拿给别人看、让他们自己去核对的事实，比如每份订单发出的时间记录。光是觉得不对劲，不算证据。'},
   'appeal':{w:'申诉',d:'觉得一个决定错了，请人重新看一看。'},
   'least privilege':{w:'最小权限',d:'只给一个人或一台机器做好本职工作所需要的权力，多一点都不给。'},
-  'the Quiet Year':{w:'静默之年',d:'在这个故事里，2030年是静默之年。那一年，一种新病菌在港口城市瓦罗传开，人们在家待了好几个月，直到快速研发的疫苗挡住了它。现实中：瓦罗和静默之年都是为这个游戏编出来的。'}
+  'the quiet year':{w:'静默之年',d:'在这个故事里，2030年是静默之年。那一年，一种新病菌在港口城市瓦罗传开，人们在家待了好几个月，直到快速研发的疫苗挡住了它。现实中：瓦罗和静默之年都是为这个游戏编出来的。'}
 },
 regex:{
   'recipe|germ|what.*(in|inside) (it|the order)|how.*(make|made|build)|pathogen|virus|bacteria':'配方|病菌|里面是什么|里面有什么|怎么做出|怎么造|怎么制造|病原体|病毒|细菌',
