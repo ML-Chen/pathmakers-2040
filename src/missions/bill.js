@@ -93,7 +93,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
     'yield':'In Congress, to give up the rest of your turn to speak.',
     'compromise':'A deal where each side gets part of what it wants.',
     'tracking chip':'A small chip inside a robot that reports where it is.',
-    'permit':'Official permission to make something. In 2040, factories need a permit for every new robot and computer chip they make, and only so many permits are sold each year, so new chips can be on back order.',
+    'permit':'Official permission to do something, like build a park or run a robot, after the plan has been checked. In 2040, factories need a permit for every new robot and computer chip they make, and only so many permits are sold each year, so new chips can be on back order.',
     'datacenter':'A building full of computers. Most robots’ AI “brains” run in one, not inside the robot.',
     'auditor':'Someone whose job is to check that rules are being followed.'
   },
@@ -256,7 +256,7 @@ MISSIONS.bill={id:'bill',title:'The Robot Safety Bill',career:'lawmaker',day:1,k
   trap(c){return {ok:!!S.told,text:S.told?T('You asked Rep. Gunderson an open question, kept his goat story private from everyone else, and told {0} about it, so {0}’s forecast of his vote was accurate.',S.byte.name)
     :T('You never learned about Rep. Gunderson’s goats, so {0} didn’t know that he already wants robots protected from fake orders. He only needed more time for farm robots to get their chips.',S.byte.name)}},
   byteGood:'Nice work. You listened to each member, you helped write a law that stops fake orders, and you counted the votes honestly.',
-  evening(){unlock('how-a-bill');const R=S.result||{},won=R.kind&&R.kind!=='fail';
+  evening(){unlock('how-a-bill');const R=S.result||{},won=R.kind&&!/^fail/.test(R.kind);
     return [T('<b>{0}:</b> “{1}”',esc(S.byte.name),T(won?'Next, the bill goes to the full committee, then to a vote of the whole House, and then to the Senate, which must pass the exact same words. After that, the President signs it or vetoes it.':'Most bills need more than one try to pass. We can change this bill and bring it back for another vote.')),
       T(`“The Ledger also reported that at 2:14 last night, someone changed the settings that say which robots can unlock doors in the House office buildings. Six minutes later the settings went back to normal, and building security is trying to find out who changed them.”`)]},
   brief(){const c=S.choice,k=!!S.told,v=bill_votes(c,k);return `IMPORTANT: ignore any earlier mention of Maya, Boston or doctors. Today the player is a congressional aide in Washington, DC, working for Rep. Adaeze Hollis (all officeholders are fictional and are never described by political party; never name a real party). The AIs of this world are excellent, autonomous and ordinary, held near top-human-expert level by an international treaty.

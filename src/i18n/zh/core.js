@@ -197,7 +197,7 @@ I18N.add('zh','core',{strings:{
   'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}',
   'clock':'钟','lamp':'台灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
   'ep_gull':'海鸥','ep_ring':'救生圈','dh_record':'唱片机','dh_peony':'牡丹花','marstomato':'番茄','marsrock':'石头','marsdrone':'无人机','moonrover':'月球车',
-  'moonglass':'玻璃','moonflag':'旗子','phx_bottle':'水瓶','phx_bot':'机器人','phx_board':'告示板','phx_quail':'鹌鹑','spacewalker':'宇航员','bj_tea':'茶',
+  'moonglass':'玻璃','moonflag':'旗子','phx_bottle':'水瓶','phx_bot':'机器人','phx_board':'滑板','phx_quail':'鹌鹑','spacewalker':'宇航员','bj_tea':'茶',
   // things people and Byte say when a scene's landmark is tapped (src/scenes/*.js)
   'The Golden Gate Bridge opened in 1937. Its color is called International Orange, so ships can see it in the fog.':'金门大桥是1937年通车的。它的颜色叫“国际橙”，这样船在雾里也能看见它。',
   'That’s Discovery Base, where scientists and AIs run experiments together. In this 2040, trees grow on every terrace.':'那就是探索基地，科学家和AI在那里一起做实验。2040年的这里，每一层露台上都种着树。',

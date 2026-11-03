@@ -65,7 +65,7 @@ MISSIONS.lot={id:'lot',title:'The Flood Lot',career:'architect',day:1,kind:'work
     ramp:'A gentle slope instead of steps, so wheelchairs, walkers and strollers can roll up easily.',
     hohokam:'People who lived in the Phoenix area long ago and dug hundreds of miles of canals to water their farms.',
     haboob:'A huge wall of dust pushed across the desert by cold wind rushing out of a thunderstorm.',
-    permit:'Official permission to do something, like build or dig, after the plan has been checked.',
+    permit:'Official permission to do something, like build a park or run a robot, after the plan has been checked. In 2040, factories need a permit for every new robot and computer chip they make, and only so many permits are sold each year, so new chips can be on back order.',
     'robot zone':'An area set aside for factories and robot work. In 2040, heavy industry must stay inside these zones, and new robots need permits.',
     satellite:'A machine that circles the Earth. Some take photos of the ground from space.',
     'red team':'People (or AIs) who try to break or misuse a plan on purpose, so its weak spots get fixed before anyone else finds them.',
@@ -419,7 +419,7 @@ function lotNight(){const st=lotState(),c=S.choice;st.night=st.night||{};const N
     <div class="row lot-night-btns">${N.pick?'':`<button class="btn small ghost" id="lot-pick">${T('What would you pick?')}</button>`}<button class="btn small" id="lot-send">${T('Send the night orders')}</button></div></div>`);
   $$('.lot-opt').forEach(b=>b.onclick=()=>{const g=b.dataset.g,v=b.dataset.v;S.choice[g]=v;
     if(g==='crew'){const [w,t]=LOT_NIGHT.crew[v];N.who=w;N.say=t;N.mood=v==='free'?'worried':v==='scoped'?'smile':'think';if(v==='scoped')unlock('least-privilege')&&toast(T('New Field Guide idea: {0}',T('Least privilege')),'good');save();lotNight();playLine(w,t)}
-    else{const L=LOT_NIGHT.gate[v];N.who='marco';N.say=L[1][1];N.mood=v==='off'?'stern':v==='ask'?'think':'smile';if(v==='auto')unlock('guardrails')&&toast(T('New Field Guide idea: {0}',T('Autonomy with guardrails')),'good');save();lotNight();playSeq(L)}
+    else{const L=LOT_NIGHT.gate[v];N.who='marco';N.say=L[1][1];N.mood=v==='off'?'stern':v==='ask'?'think':'smile';if(v==='auto')unlock('guardrails')&&toast(T('New Field Guide idea: {0}',T('Acting alone, inside signed rules')),'good');save();lotNight();playSeq(L)}
     const y=document.querySelector('.lot-react');y&&y.scrollIntoView({block:'nearest',behavior:'smooth'})});
   const p=$('#lot-pick');if(p)p.onclick=()=>{N.pick=1;save();lotNight();playLine('byte',LOT_NIGHT.pick)};
   $('#lot-send').onclick=()=>{const d=document.createElement('div');d.className='signing';d.innerHTML=`<div class="sigcard lot-stamp"><div class="lot-stamp-mark">${T('SENT')}</div><p>${T('Crew 7 and Arroyo have their orders.')}</p></div>`;document.body.appendChild(d);MUSIC.sfx('beep');

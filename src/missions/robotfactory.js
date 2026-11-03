@@ -44,7 +44,7 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
   voices:{linxm:'af_river',huangjg:'am_onyx',tangyf:'af_alloy'},
   glossary:{
     'special economic zone':'An area with its own rules for business and building. In 2040, heavy robot industry is kept inside zones like this one. True today: Shenzhen really is a Special Economic Zone, and has been since 1980.',
-    'permit':'Official permission to do something. In this zone, every working robot needs one.',
+    'permit':'Official permission to do something, like build a park or run a robot, after the plan has been checked. In 2040, factories need a permit for every new robot and computer chip they make, and only so many permits are sold each year, so new chips can be on back order.',
     'permit cap':'The most permits a zone may hand out. In 2040, when a zone reaches its cap, no more robots may work there. True today: no country caps robots this way.',
     'robot crew':'In 2040, a team of robots that builds things together. Its own AI runs it, and a human crew lead is responsible for it. True today: robots build parts of buildings in factories, but no robot crew builds a whole school.',
     'crew lead':'The person who is responsible for a robot crew. The crew lead’s name goes on everything the crew builds, and the crew lead must deal with any problem it causes.',
