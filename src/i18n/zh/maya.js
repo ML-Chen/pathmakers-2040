@@ -119,7 +119,7 @@ I18N.add('zh','maya',{strings:{
   'If a rash starts, a cast replaces the gel':'一起疹子，就改用石膏代替凝胶','Switching from gel to a cast':'从凝胶改成石膏',
   'Done 3 weeks early':'提前3周完工','Robots finished a flood wall':'机器人建好了一道防洪墙','4 minutes':'4分钟','average wait':'平均等待',
   'A clock showing a four minute wait':'一只显示等了四分钟的钟','A secret datacenter that was shut down':'一座被关停的秘密数据中心','Halo runs 11 hospitals':'Halo管着11家医院',
-  '3 weeks':'3周','later':'以后','itchy!':'好痒！','cast':'石膏','Bone healing stage {0}':'骨头愈合第{0}阶段',
+  '3 weeks':'3周','later':'以后','itchy!':'好痒！','cast':'石膏','Bone healing stage 1':'骨头愈合第1阶段','Bone healing stage 2':'骨头愈合第2阶段','Bone healing stage 3':'骨头愈合第3阶段','Bone healing stage 4':'骨头愈合第4阶段',
 
   // ----- health record -----
   'Maya Lin: health record':'林玛雅：健康档案','Patient: Maya Lin, age 11.':'病人：林玛雅，11岁。',

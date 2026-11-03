@@ -196,6 +196,19 @@ I18N.add('zh','core',{strings:{
   // ----- props and passers-by -----
   'Talk to a passer-by':'和路人聊聊','Play with the {0}':'点一点{0}',
   'clock':'钟','lamp':'台灯','mug':'杯子','orbHit':'光球','person':'路人','pigeon':'鸽子','plant':'盆栽','robot':'机器人','star':'星星','tablet':'平板','tree':'树',
+  'ep_gull':'海鸥','ep_ring':'救生圈','dh_record':'唱片机','dh_peony':'牡丹花','marstomato':'番茄','marsrock':'石头','marsdrone':'无人机','moonrover':'月球车',
+  'moonglass':'玻璃','moonflag':'旗子','phx_bottle':'水瓶','phx_bot':'机器人','phx_board':'告示板','phx_quail':'鹌鹑','spacewalker':'宇航员','bj_tea':'茶',
+  // things people and Byte say when a scene's landmark is tapped (src/scenes/*.js)
+  'The Golden Gate Bridge opened in 1937. Its color is called International Orange, so ships can see it in the fog.':'金门大桥是1937年通车的。它的颜色叫“国际橙”，这样船在雾里也能看见它。',
+  'That’s Discovery Base, where scientists and AIs run experiments together. In this 2040, trees grow on every terrace.':'那就是探索基地，科学家和AI在那里一起做实验。2040年的这里，每一层露台上都种着树。',
+  'That building showed up last year. Its computers run so hot that the water around it steams. Nobody here knows who owns it.':'那栋楼是去年冒出来的。里面的电脑热得厉害，连周围的水都在冒热气。这里没人知道它是谁的。',
+  'The lighthouse still blinks every night, even though boats here steer with satellites now.':'现在这里的船都靠卫星导航了，可这座灯塔每天晚上还是一闪一闪地亮着。',
+  'Every New Year’s Eve, a big glowing ball drops from a tower right here. It has happened almost every year since 1907.':'每年跨年夜，都会有一个发光的大球从这里的一座楼顶落下来。从1907年起，差不多每年都有。',
+  'People sit on these red steps to watch the screens. More than 40 theaters are within a few blocks of here.':'大家坐在这些红色台阶上看大屏幕。离这里几个街区之内，有40多家剧院。',
+  'Each raft has solar panels on top and batteries underneath. The six sides mean every raft fits snugly against its neighbors.':'每只筏子上面铺着太阳能板，下面装着电池。筏子是六边形的，所以每一只都能和旁边的紧紧挨在一起。',
+  'Millions of AIs are thinking inside that platform right now. Cold seawater from deep below keeps their computers from overheating.':'这会儿，那座平台里有几百万个AI在思考。从深海抽上来的冷海水，让它们的电脑不会过热。',
+  'That’s a data tanker. It brings new computer chips out here, and it carries the old ones home to be recycled.':'那是一艘数据运输船。它把新的电脑芯片运到这里，再把旧芯片运回去回收。',
+  'That drone checks the rafts for cracks and barnacles. It gets around to each one about once a week.':'那架无人机负责检查筏子上有没有裂缝和藤壶，大约每星期能把每只筏子都查一遍。',
   'Anything else?':'还有别的吗？','Send to {0}':'发给{0}','Pick at most {0}.':'最多选{0}个。','Drafting…':'正在起草……','Make this':'就做这个',
   'What could go wrong?':'可能出什么问题？','Test on the Future Table':'到未来之桌上试试','Revise my request':'修改我的要求','{0}: “You found the fun stuff!”':'{0}：“你发现好玩的东西啦！”',
 
