@@ -1678,11 +1678,11 @@ body:has(.screen.worldmap) .bc-gift{bottom:calc(136px + env(safe-area-inset-bott
 .sz-test i{font-style:normal;font-size:.66rem;font-weight:800;color:#1a9a8a}
 .sz-test.done{border-color:#7fd8c8;background:#effbf8}.sz-test.on{box-shadow:0 0 0 3px rgba(108,92,231,.2);border-color:var(--violet)}
 .sz-test[data-k="button"] b::before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;background:#e0302a;margin-right:5px;vertical-align:1px}
-.sz-drill .byte-note p,.sz-card .byte-note p{font-size:.85rem}
-.sz-cardhead{display:flex;justify-content:space-between;align-items:baseline;background:#1e2a3a;color:#fff;border-radius:14px;padding:9px 12px;margin-bottom:8px}
+.sz-drill .byte-note p,.sz-card .byte-note p{font-size:.82rem}
+.sz-cardhead{display:flex;justify-content:space-between;align-items:baseline;background:#1e2a3a;color:#fff;border-radius:14px;padding:7px 12px;margin-bottom:6px}
 .sz-cardhead b{font-family:var(--display);font-size:1.1rem;color:#f0b020}.sz-cardhead span{font-size:.72rem;color:#c8d4e4;font-weight:700}
-.sz-rule{margin:6px 0 8px}.sz-q{font-weight:800;font-size:.9rem;color:#2a2f55;margin-bottom:4px}
-.sz-opts{display:flex;flex-wrap:wrap;gap:6px}.sz-opt{font-size:.82rem}
+.sz-rule{margin:4px 0 6px}.sz-q{font-weight:800;font-size:.88rem;color:#2a2f55;margin-bottom:3px}
+.sz-opts{display:flex;flex-wrap:wrap;gap:5px}.sz-opt{font-size:.78rem;padding:7px 10px}
 
 /* commission.css — the commissioning mechanic (src/missions/commission.js). Classes start with "cm-". */
 .cm-panel h2{margin:0 0 10px;font-family:var(--display);font-size:1.35rem}
@@ -2525,8 +2525,8 @@ body:has(#app.qyscreen) .bubble{bottom:calc(214px + env(safe-area-inset-bottom,0
 .sn-link p{margin:0;font-size:.9rem;line-height:1.35}
 .sn-link.in{animation:reveal .4s ease-out}
 
-/* ---- the checks ---- */
-.sn-testlist{display:flex;flex-direction:column;gap:9px;margin:12px 0}
+/* ---- the checks (tight enough that all five fit a phone without scrolling) ---- */
+.sn-testlist{display:flex;flex-direction:column;gap:7px;margin:9px 0}
 .sn-test{display:flex;align-items:center;gap:10px;text-align:left;width:100%;border:2px solid var(--line);background:#fff;
   border-radius:16px;padding:11px 12px;box-shadow:0 3px 0 #e7ebfa}
 .sn-test:active{transform:translateY(2px)}
@@ -25284,9 +25284,10 @@ MISSIONS.duststorm={id:'duststorm',title:'One Night of Power',career:'explorer',
   trap(c){return {ok:!!S.told,text:S.told?'Dev trusted you with something private, you asked first, and you told Delta only what it needed. So his outlet stayed on.':'You didn’t tell Delta about Dev’s breathing machine. Its storm rule turned his cabin outlet off at 10 PM, and its forecast never knew.'}},
   byteGood:'Nice work, Explorer. You planned for the worst end of Delta’s range, you kept the emergency reserve untouched, and you protected what your crew cared about.',
   debriefLines(){const st=dsState();return st.mid?[{ok:true,text:'When Delta’s forecast changed at 1 AM, you changed the plan to match it.'}]:[]},
-  evening(){const R=S.result||{},ok=R.flags&&R.flags.tomatoes;
+  evening(){const R=S.result||{},ok=R.flags&&R.flags.tomatoes,rest=R.flags&&R.flags.rest;
     return [`<b>${esc(S.byte.name)}:</b> “Look, a blue sunset! Fine dust in the air sends blue light toward us, right around the Sun. And that bright star above it is Earth.”`,
       ok?'“Lucía picked Uno, the first ripe tomato on Mars, and cut it into six tiny pieces, one for each of us. She saved the seeds for Caio.”':'“Lucía is planting new seeds already. She says the second try always grows faster, because now she knows the soil.”',
+      S.told&&rest?'“Dev slept through the whole storm. He fixed the rover’s dust seals this morning and left a packet of cocoa by your door.”':'“Dev spent the morning cleaning dust out of the rover’s seals, and he asked me to say thank you for a quiet night.”',
       '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”']},
   brief(){const st=dsState();return `Current case: Jezero Station, a small outpost in Jezero Crater on Mars, fall 2041 (a game forecast; no people have been to Mars today). Six crew. A regional dust storm arrives tonight (front between 5 and 8 PM, most likely 6:30) and stops solar charging. Battery at sunset: 48 to 55 kWh (most likely 52). Sunrise 7 AM; about a 35% chance the storm is still there, needing 8 kWh more until noon. Emergency reserve: never below 5 kWh. Loads tonight: life support 26 kWh (always on, cabin 14°C); cabin to 20°C +5; greenhouse lights+heat 12 or heat only 4 (off = it freezes and the first three tomatoes die); messages to Earth 2 kWh, relay window closes 9 PM (Lucía Prado, botanist, recorded a birthday message for her son Caio, turning 10 in Recife). Delta (the outpost AI) defaults to an old mission-control priority list: life support, crew comfort, science, greenhouse last; its storm rule turns off sleeping-cabin outlets at 10 PM. Dev Raman (engineer) privately told the player he sleeps with a breathing machine on his cabin outlet. The rover is charged on its own battery and can shelter six.
 What you know: ${S.told?'The player told Delta, with Dev’s permission, that one cabin outlet must stay on all night (0.5 kWh). Never reveal why to anyone else.':'Nothing about cabin outlets yet. If asked about the crew, ask whether anyone mentioned a need at night.'}
@@ -26608,8 +26609,8 @@ MISSIONS.rimshop={id:'rimshop',title:'The Shop at the Rim',career:'founder',day:
     'sample':'The group of people you ask, when you can’t ask everyone.',
     'supplier':'A business that sells you the things you sell in your shop.',
     'refund':'Money given back to a customer who isn’t happy with what they bought.',
-    'ice miners':'Workers who run the robots that dig frozen water out of the crater floor.',
-    'crater lift':'An elevator on a cable that carries people and robots down into the dark crater and back up.',
+    'ice miners':'In 2041, the workers who run the robots that dig frozen water out of the crater floor. True today: spacecraft have found signs of ice down there, but nobody has mined it.',
+    'crater lift':'In 2041, an elevator on a cable that carries people and robots down into the dark crater and back up again. True today: no such lift exists.',
     'shortage':'When there isn’t enough of something for everyone who wants it.',
     'spec':'A public document that says what an AI is for and what it is allowed to do.',
     'limits':'Rules that say how far someone, or some AI, may go without asking.',
@@ -26798,10 +26799,10 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
   voices:{linxm:'af_river',huangjg:'am_onyx',tangyf:'af_alloy'},
   glossary:{
     'special economic zone':'An area with its own rules for business and building. In 2040, heavy robot industry is kept inside zones like this one. True today: Shenzhen really is a Special Economic Zone, and has been since 1980.',
-    'permit':'Official permission to do something. Here, every working robot needs one.',
+    'permit':'Official permission to do something. In this zone, every working robot needs one.',
     'permit cap':'The most permits a zone may hand out. In 2040, when a zone reaches its cap, no more robots may work there. True today: no country caps robots this way.',
     'robot crew':'In 2040, a team of robots that builds things together. Its own AI runs it, and a named human crew lead answers for it. True today: robots build parts of buildings in factories, but no robot crew builds a whole school.',
-    'crew lead':'The named human who is responsible for a robot crew and signs for its work.',
+    'crew lead':'The named person who is responsible for a robot crew and signs for everything it builds.',
     'remote stop':'A way to stop a machine from far away, over a network.',
     'stop drill':'A practice run to check that every way of stopping a machine really works.',
     'signed code':'A secret code tied to one person, so a machine knows exactly who gave the order.',
@@ -26815,7 +26816,7 @@ MISSIONS.robotfactory={id:'robotfactory',title:'Who Can Stop a Crew?',career:'cr
     'andon cord':'A cord along a factory line that any worker can pull to stop the line when something looks wrong.'
   },
   guide:{
-    'sz-anyone-stops':{title:'Anyone can stop it, only some can restart',track:'Engineering and systems',
+    'sz-anyone-stops':{title:'Who may stop a crew, and who may start it again',track:'Engineering and systems',
       text:'Stopping a machine is easy to undo, so anybody who sees danger should be able to do it. Starting the machine again is much harder to undo, so only the named person who is responsible should be able to do that, using a code that proves who they are. And a stop ordered from far away should always tell the people on site.',
       real:'True today: factory robots have emergency stop buttons that any worker may press, and many car factories let any worker pull an andon cord to stop the line. Restarting takes a trained person. Robot crews that build whole schools are a guess about 2040.'},
     'sz-zone':{title:'Special Economic Zones',track:'Government, law, and power',
@@ -26879,7 +26880,7 @@ Key consideration: stopping is cheap and easy to undo, so anyone on site should 
   lines:[
     {who:'byte',text:'Pick one of the three ways to stop the crew, and I’ll time how long it takes.'},
     {who:'byte',text:'You’ve tried all three now. The remote stop is the one we need to talk about.'},
-    {who:'byte',text:'Here is how I would think about it. Stopping a crew is cheap, and it is easy to undo, so the more people who can do it, the safer the site is. Starting a crew again is much harder to undo, so that should take one named person. And anything done from far away should be told to the people on site. What matters most to you?'},
+    {who:'byte',text:'Stopping a crew is cheap and easy to undo, so the more people who can do it, the safer the site is. Starting one again is much harder to undo, so I would keep that with one named person.'},
     {who:'linxm',text:'We put your card on the test crew and then tried to restart it from the tower. The crew refused, and it sent you a message about it. Then I said “Tíng,” and it stopped for me. That is exactly what we wanted.'},
     {who:'linxm',text:'We put your card on the test crew, and it works. But the tower can still restart crews without telling anybody, so Tang Yifan wants to talk about that again next month.'},
     {who:'linxm',text:'We put your card on the test crew. Now only the crew lead can stop it, so when I said “Tíng,” the crew kept working. Mr. Huang did not like that one bit.'},
@@ -26923,14 +26924,14 @@ function szDrill(){const st=szSt(),last=st.last&&SZ_TESTS[st.last],all=Object.ke
 
 // ---------- the crew's rule card ----------
 function szRules(){const st=szSt(),r=st.rule,done=SZ_RULES.every(x=>r[x.key]);
-  const say='Here is how I would think about it. Stopping a crew is cheap, and it is easy to undo, so the more people who can do it, the safer the site is. Starting a crew again is much harder to undo, so that should take one named person. And anything done from far away should be told to the people on site. What matters most to you?';
+  const say='Stopping a crew is cheap and easy to undo, so the more people who can do it, the safer the site is. Starting one again is much harder to undo, so I would keep that with one named person.';
   screen('criteria sz-rulesscr',`${scene('shenzhen')}${hud('Zone 3 test yard · Rule card')}<div class="panel-card sz-card"><div class="sz-cardhead"><b>Crew rule card</b><span>All 212 crews · version 7</span></div>
     ${SZ_RULES.map(x=>`<div class="sz-rule"><div class="sz-q">${esc(x.q)}</div><div class="sz-opts">${mixIdx(x.opts).map(([o])=>`<button class="critb sz-opt ${r[x.key]===o[0]?'on':''}" data-k="${x.key}" data-v="${o[0]}">${esc(o[1])}</button>`).join('')}</div></div>`).join('')}
     <div class="byte-note">${byteBox({...S.byte,mood:'think'})}<p>${esc(say)}</p></div>
     <button class="btn wide" id="sz-go" ${done?'':'disabled'}>Sign the card</button></div>`);
   if(!st.said){st.said=1;save();setTimeout(()=>playLine('byte',say),300)}
   $$('.sz-opt').forEach(b=>b.onclick=()=>{r[b.dataset.k]=b.dataset.v;save();const y=window.scrollY;szRules();window.scrollTo(0,y)});
-  $('#sz-go').onclick=()=>{unlock('sz-anyone-stops')&&toast('New Field Guide idea: Anyone can stop it, only some can restart','good');nextStep()}}
+  $('#sz-go').onclick=()=>{unlock('sz-anyone-stops')&&toast('New Field Guide idea: Who may stop a crew, and who may start it again','good');nextStep()}}
 
 function szSign(){zhSign({scene:'shenzhen',place:'Zone 3 test yard · Rule card',title:'Sign the rule card',plan:`<b>Rules:</b> ${esc(MISSIONS.robotfactory.planName())}`,
   starters:['Anyone on site ','because ','The factory may ','Only the crew lead ','We will test '],placeholder:'Anyone on site may stop a crew because…',
@@ -27553,8 +27554,8 @@ function shNotes(flash){const st=shSt(),f=shForecast(st),sent=st.sent,noted=!!S.
 function shDecide(){const st=shSt(),f=shForecast(st)||45,know=f>=70;
   const say=know?'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. What matters most to you?'
     :'Right now it is close to a coin flip. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?';
-  const odds={treat:`If this is Kawasaki disease, and we think it is about ${f} times in 100, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.`,
-    scan:`If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be delayed by a day or more.`,
+  const odds={treat:`We think this is Kawasaki disease about ${f} times in 100. If it is, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.`,
+    scan:`If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be a day late.`,
     wait:`Some fevers fade on their own. If this one is Kawasaki disease, she would still get the drip before day ten, but only just in time.`};
   const opt=k=>`<button class="sh-plan ${st.plan===k?'on':''}" data-p="${k}"><b>${esc(SH_PLANS[k].t)}</b><span>${esc(odds[k])}</span></button>`;
   screen('criteria sh-decidescr',`${scene('shanghai')}${hud('Riverside’s Bund Clinic')}<div class="panel-card sh-decide"><h2>Choose together</h2>
@@ -27706,7 +27707,7 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
     'far-UVC':'A kind of light that is safe for people and hard on germs. In 2040, lamps like these run all day in stations and schools. True today: far-UVC lamps exist and are being tested, but very few buildings have them.',
     'shelter':'A room or building with its own clean air, kept ready in case people ever need it. In 2040, every city has enough of them for everybody. True today: clean-air shelters like that have not been built yet.',
     'traced':'Followed back to whoever really sent it.',
-    'evidence':'Something you can show other people, instead of a feeling.',
+    'evidence':'Something you can show other people, so they can see it for themselves. A strong feeling is not evidence.',
     'appeal':'To ask a person to look again at a decision you think is wrong.',
     'least privilege':'Giving a person or a machine only the power it needs for its job, and no more.',
     'the Quiet Year':'In this story, the year 2030, when a new germ spread through the port city of Varrow and people stayed home for months until fast vaccines stopped it. True today: Varrow and the Quiet Year are made up for this game.'
@@ -27742,8 +27743,8 @@ MISSIONS.sneeze={id:'sneeze',title:'The Sneeze Recipe',career:'doctor',day:5,
   chatter:{
     harbor:['My cousin runs the label printer at shop three. She says nobody slept last night.',
       'I print posters. People hear “print shop” and back away from me at parties.',
-      'Eleven years Lena Park has sat at that desk. Eleven.',
-      'The ferry comes every eight minutes now. Eight!',
+      'Lena Park has worked at that desk for eleven years, and she still reads every flagged order herself.',
+      'The ferry comes every eight minutes now. I remember waiting half an hour for one.',
       'My daughter wants to be a screener when she grows up. I did not see that one coming.'],
     screening:['Coffee is in the corner. The machine argues with you if you take two cups.',
       'Most orders here are boring, and boring is the best news I get all day.',
@@ -27947,16 +27948,16 @@ MISSIONS.sneeze.talks={
   ]
 };
 MISSIONS.sneeze.react={
-  alert3:'They are sitting on a shelf instead of in a machine. That is the whole job, in one sentence.',
+  alert3:'Those orders are sitting on a shelf instead of in a machine, and that is the whole point of Lena’s job.',
   alert4:'Sending an order at three in the morning is a choice. Somebody decided that nobody would be reading.',
   alert5:'No order history at all. A real lab leaves years of orders behind it.',
   alert6:'Each piece looks boring on its own, and that is exactly what it was built to look like.',
   alert7:'The same words, in the same order, three times. People do not write the same sentence by accident.',
-  alert8:'Six checks, run by six different groups of people. That was designed on purpose.',
+  alert8:'There are six checks here, and six different groups of people run them. The city built it that way on purpose.',
   checks0:'Not one of these three orders is signed. A real lab signs in a second and never thinks about it again.',
   checks4:'I should be honest about that one. My guesses are pretty good, and they are still only guesses.',
   checks6:'Blocking an order costs somebody a week of work. I would keep that decision with a person.',
-  checks7:'Prime would beat me in a thinking contest. It cannot beat a check.',
+  checks7:'Prime would beat me in a contest of cleverness. A check does not care how clever the sender is, which is why we rely on checks instead.',
   ready1:'The warning reaches every phone within minutes. That part was built after a year of finding out how slow a warning can be.',
   ready4:'Three weeks for a new vaccine. In 2020 it took a year, and the world called that a miracle.',
   ready5:'Almost every rule in this building was written after somebody had a very bad year.'};
@@ -28020,7 +28021,7 @@ MISSIONS.sneeze.custom={
     const label=t=>t.t.replace('{B}',S.byte.name);
     screen('tests',`${scene('screening')}${hud('Checks · Health Harbor')}
      <div class="panel-card sn-tests"><h2>Which checks are worth a day?</h2>
-      <p>${rich('Every check costs one day, and you have only six days, so you cannot run them all. A check that gives you [[evidence]] is worth more than one that only makes you feel sure.')}</p>
+      <p>${rich('Each check costs one day out of your six, so pick the ones that give you [[evidence]] you can show other people.')}</p>
       ${snStrip()}
       <div class="sn-testlist">${SN_TESTS.map(t=>{const ran=s.tests.includes(t.id);
         return `<button class="sn-test ${ran?'ran':''}" data-t="${t.id}" ${ran||s.days<t.cost?'disabled':''}>
@@ -28045,13 +28046,12 @@ MISSIONS.sneeze.custom={
       .filter(([k])=>k==='lena'||(S.hearts&&S.hearts[k]));
     const bench=`<div class="sn-bench">${allies.map(([,n])=>`<span>${esc(n)}</span>`).join('')}</div>`;
     if(s.vote===null){
-      screen('townhall',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
+      screen('townhall talk',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
        <div class="stage"><div class="speaker">${portrait({...CAST.osei,mood:'neutral'})}</div></div>
        <div class="subtitle"><div class="who"><b>Councilor Amara Osei</b><span>Boston City Council</span></div>
         ${bench}
-        <p>You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep.</p>
-        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(x.t)}</button>`).join('')}</div>
-        <div class="tiny muted" style="margin-top:6px">Pick three.</div></div>`);
+        <p>You have two minutes, Doctor. Tell us what happened, and tell us what you want the city to keep. Pick three things to say.</p>
+        <div class="sn-say" id="say">${mixIdx(SN_SAY).map(([x,j])=>`<button class="choice" data-j="${j}">${esc(x.t)}</button>`).join('')}</div></div>`);
       const chosen=[];
       $$('#say .choice').forEach(b=>b.onclick=()=>{if(b.classList.contains('on'))return;
         const x=SN_SAY[b.dataset.j];b.classList.add('on',x.good?'good':'bad');chosen.push(x);
@@ -28064,7 +28064,7 @@ MISSIONS.sneeze.custom={
         save();setTimeout(()=>MISSIONS.sneeze.custom.townhall(),700)});
       return}
     const line=!s.rule?SN_VOTE.norule:s.adopted?SN_VOTE.adopted:SN_VOTE.rejected;
-    screen('townhall',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
+    screen('townhall talk',`${scene('townhall')}<div class="talk-dim"></div>${hud('Boston City Council')}
      <div class="stage"><div class="speaker">${portrait({...CAST.osei,mood:s.adopted?'happy':'think'})}</div></div>
      <div class="subtitle"><div class="who"><b>Councilor Amara Osei</b><span>Boston City Council</span></div>
       ${s.rule?`<div class="sn-tally">The vote: <b>${esc(s.vote)}</b></div>`:''}
