@@ -31,9 +31,9 @@ I18N.add('zh','maya',{strings:{
   // ----- Maya and her dad -----
   'Hi. Is my arm going to be okay?':'你好。我的胳膊会好起来吗？',
   'My [[recital]] is Friday. I’ve practiced the Bach piece for four months.':'我周五有[[演出]]。那首巴赫的曲子，我练了整整四个月。',
-  'Your arm is going to heal. Let’s figure out the best plan together.':'你的胳膊会长好的。我们一起想个最好的办法。','Okay. Can I still play on Friday?':'好。那我周五还能上台吗？',
+  'Your arm is going to heal. Let’s figure out the best plan together.':'你的胳膊会好的。咱们一起想想怎么治最好。','Okay. Can I still play on Friday?':'好。那我周五还能上台吗？',
   'Don’t worry about the recital right now.':'演出的事先别想了。','But it’s really important to me...':'可是演出对我真的很重要……',
-  'We just want her arm to heal right. She wants to keep playing the violin for the rest of her life.':'我们只希望她的胳膊能好好长回去。她想拉一辈子小提琴。',
+  'We just want her arm to heal right. She wants to keep playing the violin for the rest of her life.':'我们就希望她的胳膊能恢复好，别落下毛病。她还想拉一辈子小提琴呢。',
   'Oh, one thing. Last summer she got a bad [[rash]] from one of those cooling patches for sunburn. We were visiting family in Taipei, so it’s probably not in her records here.':'哦，还有件事。去年夏天她贴了那种治晒伤的降温贴，结果起了一大片[[疹子]]。那时我们在台北走亲戚，所以这边的病历里应该没有记录。',
   'That rash was super itchy. It looked like strawberry polka dots.':'那次的疹子痒死了，满胳膊都是小红点，像草莓上的点点。',
   'Thanks for telling me. That might really matter when we choose a treatment.':'谢谢你告诉我。选治疗方案的时候，这件事可能很要紧。','Really? Okay!':'真的吗？好呀！',
