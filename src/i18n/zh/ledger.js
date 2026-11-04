@@ -2,7 +2,7 @@
 // The app is called 纪事报 in Chinese. Keys are the exact English text; see src/i18n.js.
 I18N.add('zh','ledger',{strings:{
   // ----- the app -----
-  'The Ledger':'纪事报','{0} new in the Ledger':'纪事报有{0}条新报道','{0} new':'{0}条新',
+  'The Ledger':'纪事报','{0} new in the Ledger':'纪事报有{0}条新报道','{0} new':'新{0}条',
   'Spring {0}':'{0}年春','Summer {0}':'{0}年夏','Fall {0}':'{0}年秋','Winter {0}':'{0}年冬',
   'All':'全部','Science':'科学','Places':'各地','World':'世界',
   'Tricks spotted':'识破的报道','Tap Save on a story to keep it here.':'在报道里点“收藏”，它就会留在这里。','No stories here yet.':'这里还没有报道。',
@@ -50,7 +50,7 @@ I18N.add('zh','ledger',{strings:{
   'Phoenix riders, maybe it’s time to move to Boston!':'凤凰城的乘客们，也许该搬到波士顿来了！',
   'On time, out of 100 trips':'每100趟里准点的趟数','Trips on time':'准点的车次','Come on over':'快搬过来吧',
   'Those numbers are real: 97 and 94. Now look at how the chart draws them.':'97和94这两个数字是真的。再看看图是怎么画它们的。',
-  'That sentence is the claim. What makes Boston’s lead look so big? Check the chart.':'这句话是文章的说法。是什么让波士顿看起来领先这么多？看看那张图。',
+  'That sentence is the claim. What makes Boston’s lead look so big? Check the chart.':'这句是文章的结论。是什么让波士顿看起来领先这么多？看看那张图。',
   'That sentence is just a joke. What made Boston look so far ahead?':'这句只是开玩笑。是什么让波士顿看起来遥遥领先？',
   'Look at the chart’s side: the bars start at 90, not at zero. So the bars show 97 and 94 as if they were 7 and 4, and Boston’s bar looks almost twice as tall. Really, both cities’ trams were on time on almost every trip.':
     '看看图左边的数字：柱子是从90开始画的，不是从0开始。所以97和94画出来就像7和4，波士顿的柱子看起来差不多有凤凰城的两倍高。其实两座城市的有轨电车几乎每一趟都准点。',
@@ -64,7 +64,7 @@ I18N.add('zh','ledger',{strings:{
   'Who Built the Calder Bay Datacenter?':'考尔德湾的数据中心是谁建的？',
   'Treaty [[inspectors]] shut down a small [[datacenter]] near Calder Bay that had no [[license]] to run.':'条约[[检查员]]关停了考尔德湾附近的一座小型[[数据中心]]，因为它没有运营[[许可证]]。',
   'The owner’s name on its papers led to an empty office.':'按文件上写的老板名字找过去，只找到一间空办公室。',
-  'Inspectors are asking anyone who saw delivery trucks there to get in touch.':'检查员请见过那里有送货卡车的人和他们联系。',
+  'Inspectors are asking anyone who saw delivery trucks there to get in touch.':'检查员希望，在那里见过送货卡车的人能跟他们联系。',
   'Shut down':'被关停','Nobody home':'空无一人','Trucks at night':'夜里的卡车',
 
   'Boston Votes Tonight on a New River Park':'波士顿今晚投票，决定要不要建河滨新公园',
@@ -88,7 +88,7 @@ I18N.add('zh','ledger',{strings:{
   'At 92, He Ran His First Marathon':'92岁，他跑完了人生第一场马拉松',
   'Walt Grisby started running at age 85, after a new [[renewal therapy]] rebuilt his worn-out knees.':'沃尔特·格里斯比85岁才开始跑步。那一年，一种新的[[再生疗法]]修好了他磨损的膝盖。',
   'On Saturday, he finished the Boston Marathon route in five hours and ten minutes.':'周六，他用5小时10分钟跑完了波士顿马拉松的全程。',
-  '“I’m not fast,” he said. “I’m just having the best time of my life.”':'“我跑得不快，”他说，“我就是在过这辈子最开心的日子。”',
+  '“I’m not fast,” he said. “I’m just having the best time of my life.”':'“我跑得不快，”他说，“可我这辈子从来没这么开心过。”',
   'New knees':'新膝盖','5 hours, 10 minutes':'5小时10分钟','Cheered on':'一路有人加油',
 
   'DNA Print Shop Blocks Strange Orders':'DNA打印店拦下一批奇怪的订单',
@@ -112,7 +112,7 @@ I18N.add('zh','ledger',{strings:{
   'The First Tomatoes Grown on Mars':'火星上种出了第一批番茄',
   'The six people at the Jezero Crater outpost on Mars picked their first tomatoes this week.':'这周，火星耶泽罗陨石坑基地的六个人摘下了他们种的第一批番茄。',
   'The plants grew under pink lights inside a sealed [[greenhouse]].':'这些番茄长在一间密封的[[温室]]里，照着粉色的灯。',
-  'The crew shared a very small salad on a video call with a school in Boston.':'队员们和波士顿的一所学校视频通话，一起分享了一份很小很小的沙拉。',
+  'The crew shared a very small salad on a video call with a school in Boston.':'队员们跟波士顿一所学校视频通话时，分着吃了一份小小的沙拉。',
   'Tomatoes on Mars':'火星番茄','Pink lights':'粉色的灯','Salad for six':'六个人的沙拉',
 
   'Clean-Air Lights Arrive at Every Boston Transit Station':'波士顿所有公交地铁站都装上了净化空气的灯',
@@ -145,7 +145,7 @@ I18N.add('zh','ledger',{strings:{
 
   'The Datacenters Floating in the Middle of the Pacific':'漂在太平洋中央的数据中心',
   'Good instinct to check! The story is signed, and its facts match the sources. The last part really happened back in the 2020s: companies did test datacenters on the seafloor, and solar panels did float on lakes.':
-    '想到核查，很有眼光！这篇报道有签名，内容也和原始资料对得上。最后一部分在2020年代真的发生过：确实有公司在海底测试过数据中心，湖面上也确实漂着太阳能板。',
+    '想到要核查，这个直觉很好！这篇报道有签名，内容也和原始资料对得上。最后一部分在2020年代真的发生过：确实有公司在海底测试过数据中心，湖面上也确实漂着太阳能板。',
   'Far out in the Pacific Ocean, north of Hawaii, a field of [[solar rafts]] covers the sea for miles in every direction. It floats in [[international waters]], where no single country is in charge.':
     '在遥远的太平洋上，夏威夷以北，一大片[[太阳能浮筏]]铺满了海面，往四面八方延伸好几英里。它漂在[[公海]]上，那里不归任何一个国家管。',
   'Each raft has six sides, so the rafts fit together like tiles. Solar panels cover the top, and big batteries hang underneath, which keeps the power flowing after the sun goes down.':
@@ -157,7 +157,7 @@ I18N.add('zh','ledger',{strings:{
   'Every week, [[data tankers]] bring new computer chips out to the platforms and carry the old ones home to be recycled.':
     '每周，[[数据运输船]]都会把新的电脑芯片运到平台上，再把旧芯片运回去回收。',
   'The idea started small. Back in the 2020s, companies tested datacenters sealed in tanks on the seafloor, and [[floating solar]] farms were already covering lakes and reservoirs.':
-    '这个想法是从小规模开始的。早在2020年代，就有公司把数据中心封进罐子、放到海底做测试，湖泊和水库上也已经建起了[[水上光伏]]电站。',
+    '这个想法一开始规模很小。早在2020年代，就有公司把数据中心封进罐子、放到海底做测试，湖泊和水库上也已经建起了[[水上光伏]]电站。',
   'Rafts to the horizon':'一直铺到天边的浮筏','Sun by day, batteries by night':'白天靠太阳，晚上靠电池','Cooled by the deep sea':'用深海的冷水降温',
   'Far from every city':'远离所有城市','New chips out, old chips home':'新芯片运去，旧芯片运回','Where it started':'最早的样子',
 
@@ -293,7 +293,7 @@ I18N.add('zh','ledger',{strings:{
   'One story is not proof':'一个故事不算证据',
   'One person’s story can be true and still mislead. To know whether something really works, you test it on many people and compare them with people who didn’t get it.':
     '一个人的故事可能是真的，却照样会误导人。想知道一样东西到底有没有用，得在很多人身上试，再和没用过它的人比一比。',
-  'True today: most medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.':'现实中：大多数药物要在几千人身上做试验，还要有对照组，才能获批，而不是靠几个开心的故事。',
+  'True today: most medicines are approved after trials with thousands of people and a comparison group, not after a few happy stories.':'现实中：大多数药物要在几千人身上做试验，还要有对照组，才能获批，光靠几个皆大欢喜的故事是不行的。',
   'Look for the signature':'找一找签名',
   'In 2032, during the Flood of Fakes, fake videos and fake people overwhelmed an election in Estmark. Since then, real photos and videos of public people carry a content signature, which is a code that proves who made them. If a video has no signature, you can’t know who made it, and a video that has been shared many times has only spread fast, which doesn’t make it true.':
     '2032年，在“假货洪灾”期间，假视频和冒充真人的假账号淹没了埃斯特马克的一场选举。从那以后，公众人物的真照片和真视频都带着内容签名，这是一种能证明是谁拍的代码。视频没有签名，你就没法知道是谁拍的。一段视频被转发了很多次，只说明它传得快，不说明它是真的。',
