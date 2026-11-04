@@ -5,8 +5,8 @@ I18N.add('zh','grandrounds',{strings:{
   'Dr. Owen Hale':'欧文·黑尔医生','Care Doctor, Boston Harbor Hospital':'波士顿港医院照护医生',
   'Who answers for it?':'出了问题，谁来负责？',
   'An expert AI can know the facts better than anyone. A person still signs, because someone has to explain the choice to the family and answer for it if it goes wrong. That person is accountable.':
-    '专家级的AI可能比谁都更了解事实。可签字的仍然是人，因为总得有人把这个选择给家人讲清楚，万一出了问题，也得有人站出来负责。签字的这个人就要承担责任。',
-  'True today: doctors, engineers and judges sign their names to decisions, and they can be asked to explain them later.':'现实中：医生、工程师和法官都会在决定上签自己的名字，以后也可能被要求解释这些决定。',
+    '专家级的AI可能比谁都清楚事实。可签字的还得是人，因为总得有人把这个选择给家人讲清楚，万一出了问题，也得有人站出来交代。签字的人就要为这个决定负责。',
+  'True today: doctors, engineers and judges sign their names to decisions, and they can be asked to explain them later.':'现实中：医生、工程师和法官都会在决定上签自己的名字，以后也可能要出来解释这些决定。',
 
   // ----- backstage: building the talk with Byte -----
   'Backstage · Grand Rounds':'后台 · 病例分享会',
@@ -16,8 +16,8 @@ I18N.add('zh','grandrounds',{strings:{
   'Maya’s wrist':'玛雅的手腕','Ari’s ankle':'阿里的脚踝','A case':'一个病例',
   'The story':'故事','The decision':'决定','What I learned':'我学到了什么',
   'How will you start your talk? Audiences remember a story about a person better than a list of numbers.':'你打算怎么开场？比起一串数字，听众更容易记住一个人的故事。',
-  'Maya is 11. She broke her wrist nine days before her violin recital.':'玛雅11岁。离她的小提琴演出还有九天时，她摔断了手腕。',
-  'Ari is 10, and he’s the best goalkeeper on his team. He sprained his ankle four days before a game.':'阿里10岁，是队里最好的守门员。离比赛还有四天时，他扭伤了脚踝。',
+  'Maya is 11. She broke her wrist nine days before her violin recital.':'玛雅11岁。小提琴演出前九天，她摔断了手腕。',
+  'Ari is 10, and he’s the best goalkeeper on his team. He sprained his ankle four days before a game.':'阿里10岁，是队里最好的守门员。比赛前四天，他扭伤了脚踝。',
   'This is a real case from my first season.':'这是我上岗第一个季度遇到的一个真实病例。',
   'Great start! You introduced a real patient in one sentence, so the audience will want to hear what happened to them.':'开场真不错！你用一句话介绍了一个真实的病人，听众就会想知道后来发生了什么。',
   'Today I’ll show you forty slides of numbers about bones and healing times. Please hold all your questions until the very end.':'今天我要给大家看四十张幻灯片，全是关于骨头和愈合时间的数字。请把所有问题都留到最后再问。',
@@ -26,7 +26,7 @@ I18N.add('zh','grandrounds',{strings:{
   'Hmm. The audience came to learn about a patient’s case, not about how hard you worked. Start with your patient.':'嗯。听众是来了解病人的病例的，不是来听你有多努力的。先讲你的病人吧。',
   'Next comes the decision. What will you say about the plan you chose?':'接下来讲决定。关于你选的方案，你打算怎么说？',
   'We chose {plan}. Here’s what I signed: “{memo}”':'我们选了{plan}。这是我签了字的那段话：“{memo}”','We chose {plan}, and I said how sure I was.':'我们选了{plan}，我也说了自己有多大把握。',
-  'a plan together':'一个大家一起商量的方案',
+  'a plan together':'一个大家一起商量出来的方案',
   'Reading out the decision you signed takes courage, and it shows the audience your reasons and how sure you were.':'把你签过字的决定念出来需要勇气，这也让听众看到了你的理由，还有你当时有多大把握。',
   'We picked the best option for the family. You can trust me on that, because I checked everything carefully.':'我们为这家人选了最好的方案。这一点大家可以相信我，因为我什么都仔细检查过了。',
   'If you just ask people to trust you, they can’t learn anything from your case. Tell them what you chose and why.':'如果你只是让大家相信你，他们就没法从你的病例里学到东西。告诉他们你选了什么、为什么。',
@@ -51,7 +51,7 @@ I18N.add('zh','grandrounds',{strings:{
 
   // ----- on stage -----
   'Grand Rounds · Boston Harbor Hospital':'病例分享会 · 波士顿港医院',
-  'Good morning, everyone. Our newest Care Doctor, who is still a trainee, will present a case today. Please give them a warm welcome!':'大家早上好。今天由我们最新来的照护医生给大家讲一个病例，这位医生还在见习期。请大家热烈欢迎！',
+  'Good morning, everyone. Our newest Care Doctor, who is still a trainee, will present a case today. Please give them a warm welcome!':'大家早上好。今天，我们新来的照护医生要给大家讲一个病例，这位医生还在见习期。请大家热烈欢迎！',
   'Halo can read every chart in this hospital in a second. Why does a human doctor need to sign at all?':'Halo一秒钟就能读完这家医院所有的病历。那为什么还非得要人类医生来签字呢？',
   'Maya’s old rash':'玛雅以前起过的疹子','the fact that Ari hides his pain':'阿里会忍着疼这件事','the most important clue':'最重要的那条线索',
   'Halo knows the facts better than I do. But I only learned about {0} by talking with the family, and the choice belongs to them. Someone has to sit with them, explain the odds honestly, and then answer for the decision. That’s why a doctor signs.':
@@ -68,7 +68,7 @@ I18N.add('zh','grandrounds',{strings:{
 
   // ----- the promotion -----
   'I’ve watched you listen to families, explain the choices, and sign your decisions with care. Congratulations, Doctor. You’ve been promoted to Pro.':
-    '我看着你认真听家人说话，把选择讲清楚，用心地在每个决定上签字。恭喜你，医生，你升为专业级医生了。',
+    '我一直看着你：你认真听家人说话，把选择讲得清清楚楚，每个决定都签得很慎重。恭喜你，医生，你升为专业级了。',
   'A Pro! I’m doing my happy spin. Can you tell?':'专业级！我在开心地转圈圈呢，你看出来了吗？',
   'Harder cases, with more people to listen to':'更难的病例，要听更多人的意见','Bigger hospital systems to watch over':'要照看更大的医院系统','Trips to sister hospitals, like Shanghai':'去姐妹医院出差，比如上海',
   
@@ -76,7 +76,7 @@ I18N.add('zh','grandrounds',{strings:{
   // ----- chat fallback replies -----
   'Your talk has three parts. Start with the patient, then say what you chose and why, and then say what you learned and who helped. You can do it!':'你的演讲有三部分。先讲病人，再讲你选了什么、为什么，最后讲你学到了什么、谁帮了你。你一定行！',
   'A doctor signs because the family’s choice needs a person who explains it to them and answers for it if it goes wrong. People also notice things the AI was never told, like a rash that happened in another country.':
-    '医生要签字，是因为家人的选择需要有一个人来给他们讲清楚，万一出了问题，也要有人负责。而且人能注意到AI从没被告知的事，比如在另一个国家起过的疹子。'
+    '医生要签字，是因为家人做选择，需要有人给他们讲清楚，万一出了问题，也要有人负责。而且人还能注意到没人告诉过AI的事，比如在另一个国家起过的疹子。'
 },
 glossary:{
   'grand rounds':{w:'病例分享会',d:'医生给其他医生讲一个真实病例的会，让大家都能从中学到东西。'}

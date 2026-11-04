@@ -29,10 +29,10 @@ I18N.add('zh','hired',{strings:{
     'Halo是医院的AI，管着日常的活儿，比如做扫描、排班、送药。我读研究资料，写预测。你和病人聊天，弄清他们在乎什么，然后在决定上签字。',
   'Why do people still want a human doctor?':'为什么大家还想要人类医生？',
   'People want a human doctor because the treatment is for their own body and their own life. They want someone who listens, explains the odds honestly, and takes responsibility for the choice. In 2040, the law also says a person must sign every medical decision.':
-    '因为治疗关系到他们自己的身体和生活。他们希望有人认真听他们说话，诚实地讲清楚可能性，并且为这个选择负责。在2040年，法律也规定每个医疗决定都必须由一个人签字。',
+    '因为治的是他们自己的身体，关系到他们自己的生活。他们希望有人认真听他们说，老老实实讲清楚可能性，还肯为这个选择负责。而且在2040年，法律也规定每个医疗决定都必须由人来签字。',
   'What’s the hardest part of the job?':'这份工作最难的是什么？',
   'The hardest part is helping a family make a hard choice. Sometimes every option has a downside, and the family is scared. A good Care Doctor stays calm, kind, and honest with them.':
-    '最难的是帮一家人做艰难的选择。有时候每个方案都有坏处，家人也很害怕。好的照护医生会一直冷静、温和、诚实地对待他们。',
+    '最难的是帮一家人做艰难的选择。有时候每个方案都有坏处，家人也很害怕。好的照护医生不慌不乱，对他们又温和又诚实。',
   'Do doctors still need to know science?':'医生还需要懂科学吗？',
   'Yes! You don’t have to memorize everything, because I can look things up in a second. But you need to understand enough to ask good questions and notice when something doesn’t make sense.':
     '需要！你不用什么都背下来，因为我一秒钟就能查到。但你得懂得够多，才能问出好问题，也才能发现哪里说不通。',
@@ -52,7 +52,7 @@ I18N.add('zh','hired',{strings:{
   'Hi there! Welcome to the [[open house]]. I’m Gabi, the [[charge nurse]] on the kids’ floor.':'你好呀！欢迎来参加[[开放日]]。我是嘉比，儿童病房这层楼的[[护士长]]。',
   'Hi Gabi, I’m {P}. What does a charge nurse do?':'嘉比你好，我是{P}。护士长是做什么的？',
   'I make sure every kid on our floor gets what they need, and every nurse has a buddy. Halo, the hospital’s AI, does the schedules, so I get to spend my time with people.':
-    '我要保证这层楼的每个孩子都得到需要的照顾，每个护士都有搭档。排班交给医院的AI Halo，所以我能把时间花在人身上。',
+    '我负责让这层楼的每个孩子都得到需要的照顾，让每个护士都有搭档。排班的事交给医院的AI Halo，所以我能把时间都花在人身上。',
   'Can you get me a job here?':'你能帮我在这儿找份工作吗？','Ha! Let’s start with hello. I’m Gabi, and it’s nice to meet you.':'哈！咱们先打个招呼吧。我是嘉比，很高兴认识你。',
   'My cat is named Bandage, because he sleeps on the first-aid box.':'我的猫叫“绷带”，因为它总睡在急救箱上。',
   'Oh no. I promised the kids’ floor this box of teddy bears, and the elevator robot is busy.':'糟糕。我答应要把这箱泰迪熊送到儿童病房，可电梯机器人正忙着呢。',
@@ -71,12 +71,12 @@ I18N.add('zh','hired',{strings:{
   'Can’t the robot figure it out?':'机器人自己弄不明白吗？','Not today, it seems. I’ll move the sign myself.':'看来今天不行。我自己去挪吧。',
   'Hello, dear. I’m Ruth. I’ve been a [[volunteer]] here every Tuesday for twenty years.':'你好呀，孩子。我是露丝。二十年来，我每个星期二都来这里当[[志愿者]]。',
   'Hi Ruth, I’m {P}. Why do you volunteer?':'露丝你好，我是{P}。你为什么来当志愿者呀？',
-  'This hospital fixed my hip when I was eighty. Now I walk three miles a day, and coming here is my way of saying thank you.':'我八十岁那年，这家医院治好了我的髋关节。现在我每天能走三英里路。来这里帮忙，就是我说谢谢的方式。',
-  'Twenty years? Wow, you must be really old!':'二十年？哇，你一定很老很老了吧！','Ha! Eighty-eight, and proud of it, dear.':'哈！八十八岁啦，我还挺骄傲的呢，孩子。',
+  'This hospital fixed my hip when I was eighty. Now I walk three miles a day, and coming here is my way of saying thank you.':'我八十岁那年，这家医院治好了我的髋关节。现在我每天能走三英里路。我来这里帮忙，就当是谢谢他们。',
+  'Twenty years? Wow, you must be really old!':'二十年？哇，你一定很老很老了吧！','Ha! Eighty-eight, and proud of it, dear.':'哈！八十八啦，我可得意着呢，孩子。',
   'On Fridays I play the piano in the lobby. My favorite song is “Fly Me to the Moon.”':'每个星期五，我都在大厅里弹钢琴。我最喜欢的曲子是《带我飞向月球》。',
-  'Oh, bother. I’ve lost my reading glasses again. They have red frames, and they’re somewhere in this lobby.':'哎呀，真烦人。我的老花镜又找不到了。是红色镜框的，就在这大厅里的什么地方。',
+  'Oh, bother. I’ve lost my reading glasses again. They have red frames, and they’re somewhere in this lobby.':'唉，真是的。我的老花镜又找不到了。是红色镜框的，就在这大厅里的什么地方。',
   'I’ll help you look!':'我帮你找！','Bless you, dear.':'真是个好孩子。','I hope you find them.':'希望你能找到。','Thank you. I’ll keep looking.':'谢谢你。我再找找。',
-  'Thanks again for stopping by! I’ll tell my cat, Bandage, that you said hi.':'谢谢你又来看我！我会跟我家的猫“绷带”说，你向它问好了。',
+  'Thanks again for stopping by! I’ll tell my cat, Bandage, that you said hi.':'谢谢你过来看看！我会跟我家的猫“绷带”说，你向它问好了。',
   'My robot Jupiter just beeped at you. That means thank you.':'我的机器人木星刚才冲你嘀了一声，意思是谢谢你。',
   'Have you seen my glasses anywhere? They have red frames.':'你看见我的眼镜了吗？是红色镜框的。',
   'You found my glasses! Now I can read the lunch menu again. Thank you, dear.':'你找到我的眼镜了！这下我又能看清午餐菜单了。谢谢你，孩子。',
@@ -84,7 +84,7 @@ I18N.add('zh','hired',{strings:{
 
   // ----- Dr. Reyes and the practice case -----
   'Hello! I’m Dr. Reyes, the [[chief of care]]. You must be the visitor everyone is talking about.':'你好！我是雷耶斯医生，医院的[[照护主任]]。你一定就是大家都在说的那位客人吧。',
-  'I hear you met some of the team. When you help people out, even in small ways, they remember it.':'听说你见了我们团队的一些人。你帮过别人的忙，哪怕只是小忙，他们都会记在心里。',
+  'I hear you met some of the team. When you help people out, even in small ways, they remember it.':'听说你已经认识了我们团队的几个人。你帮过别人的忙，哪怕只是小忙，他们都会记在心里。',
   'Gabi says you carried the teddy bears. People around here notice when someone is kind.':'嘉比说你帮她搬了泰迪熊。在这里，谁心肠好，大家都看在眼里。',
   'Kofi says you helped Jupiter get unstuck. People around here notice when someone is kind.':'科菲说你帮木星解了围。在这里，谁心肠好，大家都看在眼里。',
   'Ruth says you found her glasses. People around here notice when someone is kind.':'露丝说你帮她找到了眼镜。在这里，谁心肠好，大家都看在眼里。',
@@ -97,9 +97,9 @@ I18N.add('zh','hired',{strings:{
   'What if I make a mistake?':'要是我出错了怎么办？','Then we’ll talk about what went wrong, because that’s what a practice case is for. Come on, he’s at the first-aid tent.':'那我们就一起聊聊哪里出了错，练习病例本来就是干这个的。走吧，他在急救帐篷里。',
   'Ow, ow. I stepped in a hole during the fun run, and my ankle went sideways.':'哎哟，哎哟。我跑步的时候踩进一个坑里，脚踝一下子歪了。',
   'I’m the [[goalkeeper]] for the Southie Stingrays. We have a game on Saturday!':'我是南波士顿魟鱼队的[[守门员]]。我们星期六有比赛！',
-  'Your ankle will heal. Let’s figure out a plan together.':'你的脚踝会好的。我们一起想个办法吧。','Okay. But can I still play?':'好吧。可我还能上场吗？',
+  'Your ankle will heal. Let’s figure out a plan together.':'你的脚踝会好的。咱们一起想想怎么办。','Okay. But can I still play?':'好吧。可我还能上场吗？',
   'Forget about soccer for now. Your ankle comes first.':'先别想足球了。你的脚踝最要紧。','But my team needs me...':'可是队里需要我……',
-  'He loves that team. I just don’t want him to hurt his ankle worse.':'他特别爱他的球队。我就是不想让他的脚踝伤得更重。',
+  'He loves that team. I just don’t want him to hurt his ankle worse.':'他可喜欢他们球队了。我就是不想让他的脚踝伤得更重。',
   'One more thing, Doctor. Ari always says “I’m fine,” even when it hurts. Last spring he played a whole game on a sore wrist and never told anyone.':
     '还有一件事，医生。阿里总是说“我没事”，哪怕疼得厉害也这么说。去年春天，他手腕疼着踢完了一整场比赛，谁也没告诉。',
   'I just don’t want to let my team down.':'我就是不想让队友失望。',
@@ -114,7 +114,7 @@ I18N.add('zh','hired',{strings:{
   'Because Ari hides pain, I updated my forecast: if he plays on Saturday, about 3 in 10 kids like him roll the ankle again in a brace, and about 5 in 10 do with tape.':
     '因为阿里会忍着疼不说，我更新了预测：如果他星期六上场，像他这样的孩子，戴护踝的10个里大约有3个会再次崴脚，缠胶布的10个里大约有5个。',
   'A second sprain takes about 6 weeks to heal, which is three times as long as the first one.':'第二次扭伤大约要6周才能好，是第一次的三倍长。',
-  'My forecast assumes Ari will stop playing when his ankle hurts. Most kids do stop, but not all of them.':'我的预测是假设阿里脚踝一疼就会停下来。大多数孩子确实会停，但不是每个都会。',
+  'My forecast assumes Ari will stop playing when his ankle hurts. Most kids do stop, but not all of them.':'我这个预测有个前提：阿里脚踝一疼就会停下来。大多数孩子确实会停，但不是每个都会。',
   'Ari’s grandma says he hides pain, so he might keep playing even when his ankle hurts.':'阿里的奶奶说他会忍着疼不说，所以他脚踝疼了也可能继续踢。',
   'Ari’s right ankle':'阿里的右脚踝','Two ways to protect it':'两种保护办法','Rolling it again if he plays':'上场后再次崴脚的可能','Updated: a kid who hides pain':'更新：一个会忍着疼的孩子',
   'First sprain vs. second sprain':'第一次扭伤和第二次扭伤','Stopping when it hurts':'疼了就停','A kid who says “I’m fine”':'一个总说“我没事”的孩子',
@@ -122,12 +122,12 @@ I18N.add('zh','hired',{strings:{
   'Hi, Doctor! Saturday is a friendly [[scrimmage]] against the Harbor Hawks.':'医生你好！星期六是我们和港湾鹰队的一场[[友谊赛]]。',
   'Our big [[playoff]] game is in three weeks, and Ari is our best [[goalkeeper]].':'三周后是我们的[[季后赛]]大战，阿里是我们最好的[[守门员]]。',
   'Whatever you decide, Ari can sit on the bench with the team and cheer.':'不管你怎么决定，阿里都可以和队友一起坐在替补席上加油。',
-  'Saturday’s game':'星期六的比赛','Three weeks away':'还有三周','Still part of the team':'依然是队里的一员',
-  'Only 1 in 10, but that forecast assumes Ari stops playing when it hurts.':'只有10个里1个，但这个预测是假设阿里疼了就会停下来。',
+  'Saturday’s game':'星期六的比赛','Three weeks away':'还有三周','Still part of the team':'还是球队的一员',
+  'Only 1 in 10, but that forecast assumes Ari stops playing when it hurts.':'只有10个里1个，不过这个预测的前提是阿里疼了就会停下来。',
   'I’m less sure about this sentence than about anything else in my memo.':'我的备忘录里，这句话是我最没把握的。',
   'So Saturday’s game doesn’t count in the standings, but the playoff game does.':'所以星期六的比赛不计入排名，季后赛才算数。',
   'Tell Byte that Ari hides his pain':'告诉Byte：阿里会忍着疼不说',
-  'Thanks! I updated my forecast. If Ari plays on Saturday, he has about a 3 in 10 chance of rolling it again, even in a brace.':'谢谢！我更新了预测。如果阿里星期六上场，就算戴着护踝，他再次崴脚的可能也有大约10次里3次。',
+  'Thanks! I updated my forecast. If Ari plays on Saturday, he has about a 3 in 10 chance of rolling it again, even in a brace.':'谢谢！我更新了预测。如果阿里星期六上场，就算戴着护踝，10次里也大约有3次会再崴脚。',
 
   // ----- what matters, the Future Table, consent and the memo -----
   'Healthy for the [[playoff]] game':'健健康康打[[季后赛]]','Plays in Saturday’s game':'能参加星期六的比赛','No heavy [[walking boot]]':'不用穿笨重的[[固定靴]]',
@@ -137,16 +137,16 @@ I18N.add('zh','hired',{strings:{
   'Sit out':'不上场',
   'Brace, play Saturday':'护踝，星期六上场','Brace, sit out Saturday':'护踝，星期六不上场','Tape, play Saturday':'胶布，星期六上场','Tape, sit out Saturday':'胶布，星期六不上场',
   'Walking boot, sit out Saturday':'固定靴，星期六不上场',
-  'He played Saturday, and his ankle stayed fine!':'他星期六上场了，脚踝没出问题！','He rolled it again Saturday and misses the playoffs.':'他星期六又崴了脚，只能错过季后赛。',
+  'He played Saturday, and his ankle stayed fine!':'他星期六上场了，脚踝没出问题！','He rolled it again Saturday and misses the playoffs.':'他星期六又崴了脚，季后赛打不成了。',
   'He healed in the boot and is ready for the playoffs!':'他穿着固定靴养好了伤，准备好打季后赛了！','He cheered on Saturday and is ready for the playoffs!':'他星期六在场边加油，准备好打季后赛了！',
-  'He rolled it again at home and misses the playoffs.':'他在家又崴了脚，只能错过季后赛。',
+  'He rolled it again at home and misses the playoffs.':'他在家又崴了脚，季后赛打不成了。',
   '{boot}<b>{plan}:</b> about {re} in 100 kids roll the ankle again. {tail}':'{boot}<b>{plan}：</b>100个孩子里大约有{re}个会再次崴脚。{tail}',
   'Nobody can play soccer in a walking boot, so this plan means sitting out. ':'穿着固定靴没法踢球，所以这个方案就等于不上场。',
   'Because Ari hides pain, he might not stop playing when it hurts, so I raised the risk.':'因为阿里会忍着疼，疼了他也可能不停下来，所以我把风险调高了。',
-  'That forecast assumes he stops playing when it hurts.':'这个预测是假设他疼了就会停下来。','Resting lets the ligament heal before the playoffs.':'休息能让韧带在季后赛前长好。',
+  'That forecast assumes he stops playing when it hurts.':'这个预测的前提是他疼了就会停下来。','Resting lets the ligament heal before the playoffs.':'休息能让韧带在季后赛前长好。',
   'Ari and his grandma':'阿里和奶奶','Patient and grandparent':'病人和奶奶','So can I play on Saturday or not?':'那我星期六到底能不能上场？',
   'Yes, you can play on Saturday, Ari, with {gear} on. But {odds}, so you’d have to tell us the truth the moment it hurts. What do you two think?':
-    '可以，阿里，星期六你可以上场，不过要用上{gear}。但是{odds}，所以一疼你就得马上说实话。你们俩觉得呢？',
+    '可以，阿里，星期六你能上场，要用上{gear}。不过{odds}，所以一疼你就得马上说实话。你们俩觉得呢？',
   'Not this Saturday, Ari. I’d like you to rest it with {gear}, so you’re strong for the playoffs in three weeks. {rest} You can still sit with your team and cheer. What do you two think?':
     '这个星期六先不上场了，阿里。我想让你用{gear}好好养着，这样三周后打季后赛时，你的脚踝就结实了。{rest}你还是可以和队友坐在一起加油。你们俩觉得呢？',
   'a walking boot for about two weeks':'固定靴（大约穿两周）','a brace':'护踝','tape':'胶布',
@@ -165,14 +165,14 @@ I18N.add('zh','hired',{strings:{
   'I recommend a brace and sitting out Saturday because…':'我建议戴护踝、星期六不上场，因为……','Includes what Ari cares about':'写到了阿里在乎的事','Ari’s sprained ankle':'阿里扭伤的脚踝',
   'I made three saves on Saturday! My ankle feels totally fine.':'星期六我扑出了三个球！脚踝一点事都没有。','Ow. It rolled again, and now I have to miss the playoffs...':'哎哟。又崴了，这下季后赛我只能错过了……',
   'I cheered so loud on Saturday. And now I’m ready for the playoffs!':'星期六我加油喊得可响了。现在我准备好打季后赛了！','Wearing that boot was so boring. But my ankle is strong again!':'穿那只靴子真没劲。不过我的脚踝又结实了！',
-  'You told {0} that Ari hides pain, so the forecast was accurate.':'你告诉了{0}阿里会忍着疼，所以预测是准的。',
+  'You told {0} that Ari hides pain, so the forecast was accurate.':'你把阿里会忍着疼的事告诉了{0}，所以预测很准。',
   'You chose rest. Did you notice why playing was riskier for Ari? His grandma said he hides pain.':'你选了休息。你注意到为什么上场对阿里风险更大吗？他奶奶说过，他会忍着疼不说。',
-  'You didn’t tell {0} that Ari hides pain. Playing looked safer than it really was for him.':'你没告诉{0}阿里会忍着疼。所以上场看起来比实际更安全。',
+  'You didn’t tell {0} that Ari hides pain. Playing looked safer than it really was for him.':'你没把阿里会忍着疼的事告诉{0}，所以上场看起来比实际上安全。',
   'Nice work! You listened to Ari and his grandma, and you explained your plan to them with the odds.':'干得好！你认真听了阿里和奶奶的话，还把方案和可能性都给他们讲清楚了。',
 
   // ----- chat fallback replies (when the AI chat is off) -----
   'Read my memo and the coach’s message, tell me anything I’m missing about Ari, pick what matters most, test plans on the Future Table, explain honestly to Ari and his grandma, then write your decision and sign it!':
-    '先读我的备忘录和教练的留言，把我还不知道的阿里的情况告诉我，选出最重要的事，在未来之桌上试试各种方案，诚实地讲给阿里和奶奶听，最后写下你的决定并签字！',
+    '先读我的备忘录和教练的留言，阿里有什么我还不知道的情况，就告诉我，选出最重要的事，在未来之桌上试试各种方案，诚实地讲给阿里和奶奶听，最后写下你的决定并签字！',
   'Tell real stories with details: what you chose, why, and how it turned out. Be honest, even about mistakes. And ask Dr. Reyes a good question at the end!':
     '讲有细节的真实故事：你选了什么，为什么，结果怎样。要诚实，犯过的错也照实说。最后，再问雷耶斯医生一个好问题！',
   'Explore the job, meet people at the open house, help them out, and remember one thing about each person. Then try the practice case!':
@@ -185,7 +185,7 @@ I18N.add('zh','hired',{strings:{
   'Tape helps a little, but it loosens during a game. About 2 in 10 kids who play with only tape roll it again.':'胶布有一点用，但比赛中会松掉。只缠胶布上场的孩子，10个里大约有2个会再次崴脚。',
   'A walking boot keeps the ankle very still, so it heals safely, but it’s heavy and he can’t play soccer in it.':'固定靴能让脚踝一动不动，所以能安全地养好。但它很重，穿着它没法踢球。',
   'A sprain is a stretched or torn ligament, the stretchy band that holds bones together. A mild one heals in about 2 weeks. A second sprain takes about 6.':
-    '扭伤就是韧带被拉伤或撕裂了。韧带是把骨头连在一起的、有弹性的带子。轻度扭伤大约2周能好，第二次扭伤大约要6周。',
+    '扭伤就是韧带被拉伤或撕裂了。韧带是一种有弹性的带子，把骨头和骨头连在一起。轻度扭伤大约2周能好，第二次扭伤大约要6周。',
   'Saturday is just a friendly scrimmage. The playoffs are in 3 weeks, and Ari is their best goalkeeper. So what matters more to Ari and his grandma?':
     '星期六只是一场友谊赛。季后赛在3周后，阿里是队里最好的守门员。那么，对阿里和奶奶来说，哪个更重要？',
   'I can’t pick for you, but here’s the big question: what matters more to Ari, Saturday’s friendly game or being healthy for the playoffs?':
@@ -202,7 +202,7 @@ I18N.add('zh','hired',{strings:{
   'Home · Boston · 8:30 PM':'家 · 波士顿 · 晚上8:30',
   
   
-  'You did real work on Ari’s case. Do you want to save it in your Portfolio Book?':'你在阿里的病例上做了真正的工作。要把它存进你的作品集吗？',
+  'You did real work on Ari’s case. Do you want to save it in your Portfolio Book?':'阿里的病例，你可是实实在在做下来了。要把它存进你的作品集吗？',
   'Saved! Tomorrow, at your interview, Dr. Reyes will want to hear about this case.':'存好了！明天面试时，雷耶斯医生会想听你讲讲这个病例。','Get ready for the interview':'准备面试',
 
   // ----- the interview -----
@@ -213,7 +213,7 @@ I18N.add('zh','hired',{strings:{
   'You’re ready! Remember to tell real stories from your work, answer honestly, and ask Dr. Reyes one good question at the end.':'你准备好了！记住：讲你工作中的真实故事，诚实回答，最后再问雷耶斯医生一个好问题。',
   'Thanks for coming in, {P}. I read your [[portfolio]]. Let’s talk.':'谢谢你来，{P}。我看过你的[[作品集]]了。我们聊聊吧。',
   'Tell me about a hard choice you made.':'说说你做过的一个艰难的选择。','Dr. Reyes might ask: “Tell me about a hard choice you made.”':'雷耶斯医生可能会问：“说说你做过的一个艰难的选择。”',
-  'At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.':'在开放日上，我帮一个扭伤脚踝的男孩在上场和休息之间做选择。我把可能性讲给了他和他奶奶听。',
+  'At the open house I helped a boy with a sprained ankle decide between playing and resting. I explained the odds to him and his grandma.':'在开放日上，有个男孩扭伤了脚踝，我帮他决定是上场还是休息。我把可能性讲给了他和他奶奶听。',
   'At the open house I helped Ari, a goalkeeper with a sprained ankle. I chose {plan}, {why}. {out}':'在开放日上，我帮了扭伤脚踝的守门员阿里。我选了{plan}，{why}。{out}',
   ', play Saturday':'，星期六上场',', sit out Saturday':'，星期六不上场','…':'……',
   'a walking boot':'固定靴',' and playing on Saturday':'、星期六上场',' and sitting out on Saturday':'、星期六不上场','a brace and playing on Saturday':'戴护踝、星期六上场','a brace and sitting out on Saturday':'戴护踝、星期六不上场','tape and sitting out on Saturday':'缠胶布、星期六不上场',
@@ -222,15 +222,15 @@ I18N.add('zh','hired',{strings:{
   'He played, and his ankle was fine.':'他上场了，脚踝没事。','He rolled it again, so next time I’d ask more about his pain.':'他又崴了脚，所以下次我会多问问他疼不疼。',
   'He cheered from the bench and was ready for the playoffs.':'他在替补席上加油，后来顺利打上了季后赛。','He healed in the boot and was ready for the playoffs.':'他穿着固定靴养好了伤，顺利打上了季后赛。',
   'That’s a real story: you told me what you chose, why you chose it, and what happened. Thank you for being honest that it didn’t go well, because that takes courage.':
-    '这是个真实的故事：你告诉了我你选了什么、为什么这么选、结果怎样。谢谢你诚实地说出结果不好，这需要勇气。',
-  'That’s a real story: you told me what you chose, why you chose it, and what happened.':'这是个真实的故事：你告诉了我你选了什么、为什么这么选、结果怎样。',
-  'Great answer! You said what you chose, why you chose it, and what happened. In the real interview, say it just like that.':'回答得真好！你说了选了什么、为什么选、结果怎样。正式面试时，就这样说。',
+    '这是个真实的故事：你讲了自己选了什么、为什么这么选、结果怎样。结果不好你也照实说了，谢谢你，这需要勇气。',
+  'That’s a real story: you told me what you chose, why you chose it, and what happened.':'这是个真实的故事：你讲了自己选了什么、为什么这么选、结果怎样。',
+  'Great answer! You said what you chose, why you chose it, and what happened. In the real interview, say it just like that.':'回答得真好！你说了自己选了什么、为什么选、结果怎样。正式面试时，就这样说。',
   'I make hard choices all the time. At school I pick the hardest projects, and my friends always ask me for advice.':'我经常做艰难的选择。在学校我总挑最难的项目，朋友们也总找我出主意。',
   'Hmm. Can you give me a real example? A true story about one choice tells me more than hearing that you’re good at choosing.':'嗯。你能举个真实的例子吗？讲一次真实的选择，比告诉我你很会做选择更能说明问题。',
   'Try a real example instead, like Ari’s ankle. Details make a story believable.':'换一个真实的例子吧，比如阿里的脚踝。有了细节，故事才让人相信。',
   'I helped a goalkeeper named Ari with a sprained ankle at the open house, and everything went perfectly from start to finish.':'在开放日上，我帮了扭伤脚踝的守门员阿里，从头到尾都非常顺利。',
   'I helped a goalkeeper named Ari with a sprained ankle at the open house. It went great, and everyone said I’m a natural.':'在开放日上，我帮了扭伤脚踝的守门员阿里。结果很好，大家都说我天生就是干这行的。',
-  'Your Portfolio Book says his ankle rolled again. I’d rather hear what really happened. We all learn from our mistakes here.':'你的作品集里写着，他的脚踝又崴了。我更想听听真实发生了什么。在这里，我们都从错误里学习。',
+  'Your Portfolio Book says his ankle rolled again. I’d rather hear what really happened. We all learn from our mistakes here.':'你的作品集里写着，他的脚踝又崴了。我更想听听真实发生了什么。在我们这儿，大家都是从错误里学过来的。',
   'It did go well! But tell me why you chose that plan. I want to hear how you decided, not just how it turned out.':'确实很顺利！不过跟我说说，你为什么选那个方案。我想听你是怎么做决定的，不只是结果怎样。',
   'Hmm, that’s not quite what happened with Ari. Interviewers are more impressed by honest stories, even stories about mistakes.':'嗯，阿里那件事其实不是这样的。面试官更看重诚实的故事，哪怕讲的是自己的错。',
   'Add your reason! Say why you chose it, not only that it worked.':'加上你的理由！说说为什么这么选，别只说它管用。',
@@ -238,7 +238,7 @@ I18N.add('zh','hired',{strings:{
   'I’d ask the AI and the patient each to explain their reasons, because each may know something the other doesn’t. Then I’d explain the tradeoffs, and the patient would decide.':
     '我会请AI和病人各自说说理由，因为他们可能各知道一些对方不知道的事。然后我会讲清楚各种取舍，让病人来决定。',
   'Exactly. Ari’s grandma knew that he hides pain, and no AI could have known that unless someone told it.':'没错。阿里的奶奶知道他会忍着疼，要是没人告诉，哪个AI也不可能知道。',
-  'Exactly. Patients often know things about themselves that no AI could know unless they tell it.':'没错。病人常常知道一些关于自己的事，他们不说，哪个AI也不可能知道。',
+  'Exactly. Patients often know things about themselves that no AI could know unless they tell it.':'没错。病人自己的有些情况，他们不说，哪个AI也不可能知道。',
   'Perfect. You could even add an example, like Ari’s grandma telling you he hides pain!':'完美。你还可以加个例子，比如阿里的奶奶告诉你，他会忍着疼！','Perfect. If you have an example, add it!':'完美。要是有例子，就加上！',
   'The AI has read every medical study ever written, so I’d gently help the patient understand why the AI’s plan is the right one.':'AI读过有史以来所有的医学研究，所以我会温和地帮病人明白，为什么AI的方案是对的。',
   'Our AIs are brilliant, but they only know what is in their records or what people tell them. And it’s the patient’s body, so the patient decides.':'我们的AI很聪明，但它们只知道记录里有的，或者别人告诉它们的。而且那是病人自己的身体，所以要由病人来决定。',
@@ -252,31 +252,31 @@ I18N.add('zh','hired',{strings:{
   'That was honest and specific. Managers like answers like that, because they show you know what to work on.':'这个回答诚实又具体。领导喜欢这样的回答，因为它说明你知道自己该在哪里努力。',
   'I’m already good at most things, so mostly I’d just learn the hospital’s computer system and where everything is.':'大多数事我都已经很拿手了，所以我主要就是学学医院的电脑系统，弄清楚东西都放在哪儿。',
   'Everyone has something to learn, even me. I’d like to hear what yours is.':'每个人都有要学的东西，我也一样。我想听听你的是什么。',
-  'Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.':'没有人什么都擅长，雷耶斯医生也明白这一点。说一件你真正在努力的事。',
+  'Nobody is great at everything, and Dr. Reyes knows that. Name one real thing you’re working on.':'没有人什么都擅长，雷耶斯医生也明白这一点。说一件你正在下功夫的事吧。',
   'I’m not sure yet. I’d let my AI figure out what I need to learn, and then I’d do whatever lessons it gives me.':'我还不确定。我会让我的AI来判断我需要学什么，然后它给我什么课，我就上什么课。',
   'Your AI can help you study, but you know best what feels hard for you. I’d like to hear what that is.':'你的AI能帮你学习，但什么事对你来说难，你自己最清楚。我想听听是什么。',
   'I can help you study, but you know best what’s hard for you. Try naming one real thing, like explaining odds.':'我能帮你学习，但什么对你来说难，你自己最清楚。试着说一件真实的事，比如讲清楚可能性。',
   'Do you have a question for me?':'你有什么问题要问我吗？','At the end she’ll ask: “Do you have a question for me?”':'最后她会问：“你有什么问题要问我吗？”',
-  'The hardest part is telling a family that every choice has a downside. That never gets easy, but I keep getting better at explaining it.':'最难的是告诉一家人，每个选择都有坏处。这件事从来不会变得容易，但我讲得越来越好了。',
+  'The hardest part is telling a family that every choice has a downside. That never gets easy, but I keep getting better at explaining it.':'最难的是告诉一家人，每个选择都有坏处。这事从来都不容易，不过我讲得一次比一次好了。',
   'Great question! It shows you really want to understand the job.':'好问题！这说明你真的想了解这份工作。',
   'What does a great new doctor do in the first month?':'一个优秀的新医生，第一个月会做些什么？',
-  'A great new doctor asks lots of questions. The best new doctors ask for help as soon as they are stuck.':'优秀的新医生会问很多问题。最好的新医生一遇到难处就马上求助。',
+  'A great new doctor asks lots of questions. The best new doctors ask for help as soon as they are stuck.':'优秀的新医生会问很多问题。最好的新医生，一卡住就马上找人帮忙。',
   'Great question! It shows you want to do well.':'好问题！这说明你想把工作做好。',
   'No, I think I’m all set. I read the hospital’s website, and my AI already told me everything about the job.':'没有，我觉得都清楚了。我看过医院的网站，我的AI也已经把这份工作的情况全告诉我了。',
-  'Okay! Next time, try asking the interviewer a question, because it shows you’re curious about the job.':'好的！下次试着问面试官一个问题，这能说明你对这份工作很好奇。',
-  'Try asking Dr. Reyes a question! A good question shows you’re curious about the job.':'试着问雷耶斯医生一个问题吧！好问题能说明你对这份工作很好奇。',
+  'Okay! Next time, try asking the interviewer a question, because it shows you’re curious about the job.':'好的！下次试着问面试官一个问题，这说明你对这份工作有兴趣，想多了解。',
+  'Try asking Dr. Reyes a question! A good question shows you’re curious about the job.':'试着问雷耶斯医生一个问题吧！问个好问题，说明你对这份工作有兴趣，想多了解。',
   'Thank you. That’s a thoughtful answer.':'谢谢你，这个回答想得很周到。','Can you tell me a bit more? A specific example helps me understand.':'能再多说一点吗？举个具体的例子，我就更明白了。',
   'Nice! That answer was clear and honest.':'不错！这个回答清楚又诚实。','Try adding a real example, with what you did and why.':'试着加一个真实的例子，说说你做了什么、为什么。',
   'That was a wonderful interview. You told me real stories, you were honest, and you asked a great question. Welcome to Boston Harbor Hospital. You’re hired!':
     '这次面试太棒了。你给我讲了真实的故事，回答得很诚实，还问了一个很好的问题。欢迎来到波士顿港医院。你被录用了！',
   'I can tell you care about people, and that is what matters most to me in a Care Doctor. You’re hired! Next time, try to tell more real stories, like the ones in your Portfolio Book.':
-    '我看得出你很在乎别人，这是我最看重的照护医生的品质。你被录用了！下次试着多讲些真实的故事，就像你作品集里的那些。',
+    '我看得出你很在乎别人，对照护医生来说，这一点我最看重。你被录用了！下次试着多讲些真实的故事，就像你作品集里的那些。',
   'Your first day is tomorrow. You’ll meet the team.':'明天是你上班的第一天，你会认识团队里的人。',
   
 
   // ----- the first day -----
   'Kids’ floor · Boston Harbor Hospital · 8:30 AM':'儿童病房 · 波士顿港医院 · 早上8:30',
-  'Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.':'欢迎来上第一天班，{P}医生！你先从[[实习生]]做起。我来给你介绍一下团队。',
+  'Welcome to your first day, Doctor {P}! You start as a [[trainee]]. Let me introduce the team.':'欢迎你第一天来上班，{P}医生！你先从[[实习生]]做起。我来给你介绍一下团队。',
   'Thank you again for finding my glasses, dear. I can read the sheet music now!':'再次谢谢你帮我找到眼镜，孩子。现在我能看清乐谱了！',
   'Welcome back! Sorry, I’m a little sleepy. Someone at home knocked the whole first-aid box off the shelf at 3 a.m. and then fell asleep inside it...':
     '欢迎回来！不好意思，我有点困。凌晨三点，家里有个小家伙把整个急救箱从架子上碰了下来，然后就睡在里面了……',
@@ -285,13 +285,13 @@ I18N.add('zh','hired',{strings:{
   'Ha! It was my cat, Bandage. He thinks the first-aid box is his bed. Welcome to the team.':'哈！是我的猫“绷带”。它以为急救箱是它的床。欢迎加入我们。',
   'Hey, it’s you! Careful, the big robot is backing up. Every new robot gets a name, and this little one just arrived, so I’m calling her... hmm...':
     '嘿，是你呀！小心，大机器人在倒车。每个新来的机器人都要起名字，这个小家伙刚到，我打算叫她……嗯……',
-  'Let me guess: Saturn?':'让我猜猜：土星？','How about Sparky?':'叫“火花”怎么样？','Is she named after a dinosaur?':'她是用恐龙的名字命名的吗？',
+  'Let me guess: Saturn?':'让我猜猜：土星？','How about Sparky?':'叫“火花”怎么样？','Is she named after a dinosaur?':'她是用恐龙起的名吗？',
   'Saturn! You remembered that I name my robots after planets. Jupiter, the big robot, says hi. Beep boop.':'土星！你记得我用行星给机器人起名字。大机器人木星向你问好。嘀嘀嘟嘟。',
   'Not quite! I name all my robots after planets, so she’s Saturn. Jupiter, the big robot, says hi.':'不太对！我所有的机器人都用行星起名，所以她叫土星。大机器人木星向你问好。',
   'Hello again, dear. I’m practicing for Friday, when I play the piano in the lobby. You know the song I always play: da-da da-da-da, da-da...':
     '又见面了，孩子。我在为星期五练琴呢，那天我要在大厅里弹钢琴。你知道我总弹的那首曲子：嗒嗒，嗒嗒嗒，嗒嗒……',
   'Fly Me to the Moon!':'《带我飞向月球》！','Is it Happy Birthday?':'是《生日快乐》吗？','Twinkle, Twinkle?':'《小星星》？',
-  'That’s the one! You listened when I told you. Come and hear me play it this Friday.':'就是它！我跟你说的时候，你听进去了。这个星期五来听我弹吧。',
+  'That’s the one! You listened when I told you. Come and hear me play it this Friday.':'就是它！我跟你说过一次，你就记住了。这个星期五来听我弹吧。',
   'Not quite, dear. It’s “Fly Me to the Moon.” Come and hear me play it this Friday!':'不太对哦，孩子。是《带我飞向月球》。这个星期五来听我弹吧！',
   'At Boston Harbor Hospital we have one [[house rule]]: ask for help early, and ask anyone. If you’re stuck, or something seems wrong, say so, even to me.':
     '波士顿港医院有一条[[院规]]：有困难早点求助，问谁都可以。如果你卡住了，或者觉得哪里不对，就说出来，跟我说也行。',
@@ -310,7 +310,7 @@ I18N.add('zh','hired',{strings:{
   'True today: career counselors suggest informational interviews, short talks where you ask someone about their job.':'现实中：职业规划老师会建议做“职业访谈”，也就是找人简短地聊一聊，问问他们的工作。',
   'Trust and referrals':'信任和推荐',
   'When lots of people can do a job, employers often pick someone that they or their team already trust. People come to trust you when you’re kind and helpful, even when nobody is grading you.':
-    '很多人都能做一份工作时，雇主常常会挑一个自己或团队已经信得过的人。你待人友善、乐于帮忙，哪怕没有人给你打分，别人也会慢慢信任你。',
+    '一份工作要是很多人都能做，雇主常常会挑一个自己或团队已经信得过的人。你待人友善、乐于帮忙，哪怕没有人给你打分，别人也会慢慢信任你。',
   'True today: many jobs are filled through referrals, where someone who works there recommends a person they know.':'现实中：很多工作是靠推荐找到人的，也就是在那里工作的人推荐一个自己认识的人。',
   'What people say vs. how they feel':'嘴上说的和真实的感受',
   'Some people say “I’m fine” when they are hurting, so a plan that depends on a person telling you about their own pain can fail. Ari hides pain, so a plan where he plays and stops when it hurts was not safe for him.':
@@ -338,7 +338,7 @@ I18N.add('zh','hired',{strings:{
 },
 glossary:{
   'open house':{w:'开放日',d:'一个地方邀请所有人进来参观、认识里面工作人员的日子。'},
-  'charge nurse':{w:'护士长',d:'在一个班上带领一层楼所有护士的护士。'},
+  'charge nurse':{w:'护士长',d:'当班时带领一层楼所有护士的护士。'},
   'chief of care':{w:'照护主任',d:'负责全院病人照护工作的医生。'},
   'volunteer':{w:'志愿者',d:'不拿工资、主动来帮忙的人。'},
   'sprain':{w:'扭伤',d:'韧带被拉伤或撕裂，常常发生在脚踝或手腕。',alt:['崴脚']},
