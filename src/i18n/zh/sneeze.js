@@ -119,8 +119,7 @@ I18N.add('zh','sneeze',{strings:{
   'So four shops got an order last night, not three. Tidemark Wharf is too small to be on Lena’s list, so nobody there checks orders, and we would have missed that fourth order if we had only watched Lena’s list.':'所以昨晚收到订单的是四家店，不是三家。潮痕码头太小，不在莉娜的名单上，那里没人检查订单。要是我们只盯着莉娜的名单，就会漏掉第四份订单。',
   'If the order was split four ways instead of three, then blocking three of them still leaves the fourth piece moving.':'如果订单拆成了四块而不是三块，那么拦下其中三块，第四块还是会照样往前走。',
   'Those two do not tell me anything when you put them together. Try another pair.':'这两条放在一起看不出什么。换一对试试。',
-  'Those two do not tell me anything when you put them together. Try another pair.':'这两条放在一起，看不出什么。换一对试试。',
-  'We already have that connection on the board.':'这一条我们已经有了。','We already have that connection on the board.':'这个联系已经在案情板上了。',
+  'We already have that connection on the board.':'这两条已经连过了，案情板上有。',
 
   // the checks
   'Which checks are worth a day?':'哪些检查值得花一天？',
