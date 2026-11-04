@@ -24,9 +24,9 @@ I18N.add('zh','sneeze',{strings:{
   'Lena checks the orders that come in to the harbor [[print shops]]. Last night three orders arrived from three brand-new customers, all within nine minutes, at three in the morning.':'莉娜负责检查港口那几家[[打印店]]收到的订单。昨晚凌晨三点，三个全新的顾客在九分钟之内发来了三份订单。',
   'She has put all three on hold, so nothing has been made. Before she decides what to do next, she wants a doctor in the room, and she asked for you.':'她把三份订单都扣下了，所以什么都还没造出来。决定下一步之前，她想找一位医生一起商量，她点名要你。',
   'Why a doctor and not a police officer?':'为什么找医生，不找警察？',
-  'Because this is about people getting sick, and because whoever signs the decision has to understand what the odds really mean. The police come later, if we ever find out who sent these orders.':'因为这件事关系到有人会不会生病，而且在决定上签字的人，得真正明白那些可能性是什么意思。等我们查出是谁发的订单，警察才会来。',
+  'Because this is about people getting sick, and because whoever signs the decision has to understand what the odds really mean. The police come later, if we ever find out who sent these orders.':'因为这件事关系到有人会不会生病，而且在决定上签字的人，得真弄明白这些概率到底意味着什么。等我们查出是谁发的订单，警察才会来。',
   'What do you think it is?':'你觉得是怎么回事？',
-  'I think one sender placed all three orders while pretending to be three customers. But my opinion is not proof, and the city council can only act on proof.':'我觉得是同一个人假装成三个顾客，下了这三份订单。可我的看法不是证据，市议会只能根据证据行动。',
+  'I think one sender placed all three orders while pretending to be three customers. But my opinion is not proof, and the city council can only act on proof.':'我觉得是同一个人假装成三个顾客，下了这三份订单。可我的看法不是证据，市议会得有证据才能动手。',
   'Let’s go.':'走吧。','Grab your coat. The tram leaves at 7:30, and I have already read all three orders twice.':'穿上外套。电车7:30开，三份订单我已经各读了两遍了。',
 
   // the harbor walk
@@ -35,12 +35,12 @@ I18N.add('zh','sneeze',{strings:{
   'It says Tidemark. Tidemark Wharf! I have been standing outside shop two for an hour.':'上面写的是潮痕。潮痕码头！我在二号店外面站了一个小时了。',
   'Do not say the name out loud.':'别把名字说出来。','Nobody heard me say Tidemark Wha—':'没人听见我说潮痕码——','Walk. Walk away. Walk normally!':'走。快走。正常走路！',
   'They hurry off, walking far too normally. So four shops got an order last night, not three, and Tidemark Wharf is not on anybody’s list.':'他们匆匆走开了，走得实在“正常”过了头。看来昨晚收到订单的是四家店，不是三家，而潮痕码头不在任何人的名单上。',
-  'Added to your notebook. Hearing that early bought you an extra day.':'已经记到你的笔记本上了。这么早听到这件事，让你多出了一天时间。',
+  'Added to your notebook. Hearing that early bought you an extra day.':'已经记到你的笔记本上了。这么早就听到了，你多赚到一天时间。',
 
   // Lena
   'You came. Good. I have been staring at these orders since four this morning, and I have stopped trusting my own eyes.':'你来了，太好了。我从早上四点就盯着这几份订单，现在连自己的眼睛都不敢信了。',
   'I have worked at this desk for eleven years. The machine [[flagged]] these three, and I put them on hold, and that is as far as my job goes. I can hold an order for a few days. I cannot block one for good, and I cannot make the other shops pay attention.':'我在这个筛查台干了十一年。机器把这三份[[标记]]了出来，我把它们扣下，我的工作就只能管到这儿。我能把一份订单扣几天，却没法永久拦下它，也没法让其他店重视起来。',
-  'Each order looks completely ordinary on its own. That frightens me, because someone trying to sneak a dangerous order past us would want each piece to look ordinary.':'每份订单单看都普普通通。这正是让我害怕的地方，因为想把危险订单偷偷混过去的人，就会想让每一块都看起来很普通。',
+  'Each order looks completely ordinary on its own. That frightens me, because someone trying to sneak a dangerous order past us would want each piece to look ordinary.':'每份订单单看都普普通通。我怕的就是这个：真想把危险订单混过去的人，肯定会让每一份都看起来很普通。',
   'And before you ask: the [[wastewater]] monitors are clean, the [[far-UVC]] lamps are on, and the [[vaccine]] line is ready. I would still much rather nothing was ever made.':'你先别问，我先说：[[污水]]监测器一切正常，[[远紫外线]]灯开着，[[疫苗]]生产线也准备好了。可我还是希望什么都别造出来。',
   'Lena, I read all three orders on the tram. Three strangers wrote the same sentence, inside the same nine minutes, in the middle of the night.':'莉娜，我在电车上把三份订单都读了。三个陌生人，在半夜同样的九分钟里，写了同一句话。',
   'Then you see it too. Read my alert, put the pieces together, and choose your checks carefully. In six days the pickup window opens and I am no longer allowed to hold these orders.':'那你也看出来了。读读我的警报，把线索拼起来，仔细挑选要做的检查。六天后取货时间一到，我就不能再扣着这些订单了。',
@@ -63,7 +63,7 @@ I18N.add('zh','sneeze',{strings:{
   'Each order is only a piece, small enough to stay under one shop’s limit. Put the pieces together and they add up to one order for a recipe for a germ that makes people very sick.':'每份订单都只是一小块，小到不会超过一家店的上限。可把这几块拼在一起，就成了一份订单，要的是一种会让人病得很重的病菌的配方。','One order, split into pieces':'一份订单，拆成了几块',
   'All three orders give the same reason, in exactly the same words: vaccine work.':'三份订单给的理由都一样，连用词都一字不差：疫苗研究。','The same sentence, three times':'同一句话，出现了三次',
   'My screening desk is the first [[safeguard]], but Boston has others too: lab [[signatures]], warnings shared between shops, each shop’s own check, [[wastewater]] testing across the city, and a hospital line that can make a new [[vaccine]] in about three weeks.':'我的筛查台是第一道[[安全措施]]，但波士顿还有别的：实验室的[[签名]]、店与店之间互通的警告、每家店自己的检查、全城的[[污水]]检测，还有一条大约三周就能做出新[[疫苗]]的医院生产线。','Many checks in a row':'一道接一道的检查',
-  'Those orders are waiting on hold instead of being built, which is exactly what Lena’s job is for.':'这些订单被扣着等候，没有被造出来，莉娜的工作就是为了这个。',
+  'Those orders are waiting on hold instead of being built, which is exactly what Lena’s job is for.':'这些订单扣在那儿等着，没被造出来。莉娜的工作就是干这个的。',
   'Someone chose to send these orders at three in the morning, probably hoping that no person would be awake to read them.':'有人特意挑在凌晨三点发这些订单，大概是希望那时没人醒着去读。',
   'None of these customers has ever ordered before, while a real lab would have years of past orders.':'这些顾客以前都没下过单，而真正的实验室会有好几年的下单记录。',
   'Each piece looks ordinary on its own, and whoever sent the orders made them look ordinary on purpose.':'每一块单看都很普通，发订单的人是故意让它们看起来普通的。',
