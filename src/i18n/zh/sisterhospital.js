@@ -5,7 +5,7 @@
 I18N.add('zh','sisterhospital',{strings:{
   'The Sister Hospital':'姐妹医院',
   'You fly to Shanghai to talk through a sick child’s case with the doctors there, because each hospital knows something about her illness that the other does not.':
-    '你飞到上海，和那里的医生一起商量一个生病孩子的病情。关于她的病，两家医院各自知道一些对方不知道的事。',
+    '你飞到上海，和那里的医生一起商量一个生病孩子的病情。因为对她的病，两家医院各自掌握一些对方不知道的情况。',
   'The Bund · Shanghai':'外滩 · 上海','The Bund · Shanghai · 7:40 AM':'外滩 · 上海 · 早上7:40','Bund Clinic · 9:00 AM':'外滩诊所 · 上午9:00',
   'Video call · Boston, 9:15 PM':'视频通话 · 波士顿，晚上9:15','The Bund · Shanghai · 9:30 PM':'外滩 · 上海 · 晚上9:30',
   'Riverside’s Bund Clinic':'滨江医院外滩诊所','Video call · Saturday morning':'视频通话 · 星期六早上','Debrief · The Bund':'总结 · 外滩',
@@ -21,7 +21,7 @@ I18N.add('zh','sisterhospital',{strings:{
   // Field Guide
   'Two halves of the picture':'两家各有一半线索','Evidence and truth':'证据与真相',
   'Boston’s hospital AI, Halo, knew Ellie well, and Riverside’s AI knew a lot about Kawasaki disease. Neither AI had every fact it needed to judge Ellie’s case by itself. When two teams each know something the other does not, they get a better answer by sharing the medical facts than by trusting either team’s first guess.':
-    '波士顿医院的AI叫Halo，它很了解艾莉；滨江的AI很了解川崎病。可是哪个AI都没有掌握判断艾莉病情所需的全部事实。两个团队各知道一些对方不知道的事时，把医学事实拿出来一起看，得出的答案会比只相信任何一方的第一判断更好。',
+    '波士顿医院的AI叫Halo，它很了解艾莉；滨江的AI很了解川崎病。可是光靠自己，哪个AI都没有判断艾莉病情需要的全部事实。两个团队各自知道一些对方不知道的情况时，与其相信哪一方最初的猜测，不如把医学事实拿出来一起看，这样得出的答案更好。',
   'True today: Kawasaki disease is much more common in Japan, Korea and China than in the United States, and doctors there noticed that a red BCG scar can be an early clue. The hospital AIs in this story are a guess about 2040.':
     '现实中：川崎病在日本、韩国和中国比在美国常见得多，这些国家的医生发现，卡介苗疤发红可能是一条早期线索。故事里的医院AI是对2040年的猜想。',
   'Share what’s needed':'只分享需要的','People skills':'与人相处',
@@ -42,8 +42,8 @@ I18N.add('zh','sisterhospital',{strings:{
   'Good morning from Shanghai! We’re standing on [[the Bund]], the old stone riverfront. Those tall towers across the water are a business district called [[Lujiazui]].':
     '上海，早上好！咱们站在外滩上，对岸那一片高楼就是陆家嘴。',
   'Boston Harbor Hospital and Riverside Children’s Hospital here are [[sister hospitals]], which means their doctors work together. Twice a year they meet to talk through their hardest cases. Today you are the doctor from Boston.':
-    '波士顿港医院和这里的滨江儿童医院是[[姐妹医院]]，两边的医生一起合作。他们每年碰两次头，讨论最难的病例。今天你是从波士顿来的医生。',
-  'What’s the case?':'是什么病例？',
+    '波士顿港医院和这里的滨江儿童医院是[[姐妹医院]]，两边的医生平时就互相合作。他们每年碰两次头，讨论最难的病例。今天你是从波士顿来的医生。',
+  'What’s the case?':'是个什么样的病例？',
   'A five-year-old in Boston named Ellie has had a fever for five days. It might be a rare illness that the doctors here see far more often than we do.':
     '波士顿有个五岁的小女孩叫艾莉，已经发烧五天了。可能是一种少见的病，这里的医生见得比我们多得多。',
   'Why fly here for a meeting?':'开个会为什么要飞过来？',
@@ -99,7 +99,7 @@ I18N.add('zh','sisterhospital',{strings:{
   'This might be silly, but she keeps showing me her arm. The little round scar from one of her baby shots went pink and puffy yesterday. Could that be from the fever?':
     '可能是我想多了，可她一直给我看她的胳膊。她胳膊上那个打预防针留下的小圆疤，昨天变红了，还有点肿。会不会是发烧引起的？',
   'I just want to know what this is. And I don’t want her stuck in the hospital for nothing.':'我就想知道这到底是什么病。我也不想让她白白在医院里待着。',
-  'We’ll work it out together tonight, and I’ll tell you how sure we are.':'我们今晚一起把它弄清楚。我们有几分把握，我都会告诉你。',
+  'We’ll work it out together tonight, and I’ll tell you how sure we are.':'今晚我们一起把它弄清楚。我们有几成把握，我都会如实告诉你。',
   'Thank you. Please tell me the truth, even if nobody is sure of it yet.':'谢谢你。请跟我说实话，哪怕现在谁都还不确定。',
   'Try not to worry. It’s almost certainly just a virus that will pass.':'别太担心，几乎可以肯定只是病毒感染，会好的。',
   'Almost certainly? Dr. Reyes told me that is exactly what you were all trying to find out.':'几乎肯定？雷耶斯医生跟我说，你们大家要弄清楚的正是这一点啊。',
@@ -131,7 +131,7 @@ I18N.add('zh','sisterhospital',{strings:{
   'Send Boston’s cards across to Riverside one at a time. Each medical fact you send can change how sure the two AIs are that Ellie has Kawasaki disease.':
     '把波士顿这边的卡片一张一张发给滨江。你每发过去一条医学事实，两个AI对艾莉是不是川崎病的把握都可能会变。',
   'Both AIs are looking at the same facts now, and together they think it is probably Kawasaki disease, about 8 times in 10.':
-    '现在两个AI看的是同样的事实。合起来看，它们认为这很可能是川崎病，10次里大约有8次。',
+    '现在两个AI看的是同样的事实。合起来看，它们认为大约有八成可能是川崎病。',
   'Even with both hospitals’ facts, the two AIs are still not sure it is Kawasaki disease. Did Ms. Gao mention anything that Halo might not know about?':
     '就算把两家医院知道的事实都放在一起，两个AI还是拿不准是不是川崎病。高女士有没有提到什么Halo可能不知道的事？',
   'Ellie’s mother asked us not to share her name, address or photos, so that card stays in Boston. Riverside’s AI does not need it to compare Ellie with other children.':
@@ -145,11 +145,11 @@ I18N.add('zh','sisterhospital',{strings:{
   'Scan her heart tonight, and start the drip only if the scan shows swelling':'今晚先做心脏彩超，查出血管肿了再输液','Heart scan first':'先查心脏',
   'Wait two more days, and treat her if the fever keeps coming back':'再等两天，要是还反复发烧就治疗','Wait two more days':'再等两天',
   'We think this is Kawasaki disease about {0} times in 100. If it is, her heart is protected in almost every case. If it is not, she spends a long day on a drip she did not need.':
-    '我们认为100次里大约有{0}次是川崎病。如果是，她的心脏几乎肯定能保住。如果不是，她就要白白输上一整天的液。',
+    '我们认为大约有{0}%的可能是川崎病。如果是，她的心脏几乎肯定能保住。如果不是，她就要白白输上一整天的液。',
   'If the scan is clear she goes home tonight. But this early a scan can look normal even with Kawasaki disease, so the drip could be a day late.':
     '如果彩超没问题，她今晚就能回家。可是这么早做彩超，就算是川崎病也可能看着正常，所以输液可能会晚一天。',
   'Some fevers fade on their own. If this one is Kawasaki disease, she would still get the drip before day ten, but only just in time.':
-    '有些发烧会自己退。如果这次是川崎病，她还是能在第十天之前输上液，不过只是刚刚赶上。',
+    '有些发烧会自己退。如果这次是川崎病，她还是能在第十天之前输上液，不过也只是刚好赶上。',
   'The drip works best within ten days of the first fever, and today is day five. This early, a heart scan can look normal even when a child does have Kawasaki disease. With everything both hospitals know, I would start the drip tonight and scan her heart in the morning. Which plan do you think is best for Ellie?':
     '输液在第一次发烧后的十天之内效果最好，今天是第五天。这么早的时候，孩子就算真得了川崎病，心脏彩超也可能看着正常。综合两家医院知道的所有情况，我会今晚就开始输液，明早再查心脏。你觉得哪个方案对艾莉最好？',
   'Right now the two AIs think the chance that this is Kawasaki disease is only about half. A heart scan tonight is quick and painless, but this early it can look normal even when a child does have Kawasaki disease. I would scan first. Did Ms. Gao mention anything that Halo would not know?':
@@ -177,10 +177,10 @@ I18N.add('zh','sisterhospital',{strings:{
   'You tried to send a card that Ms. Gao had asked you to keep private. Dr. Wen stopped it this time.':'你想发一张高女士要求保密的卡片。这次温医生拦住了。',
   'You kept Ellie’s name and address private, the way her mom asked, and you wrote to her in plain words.':'你照艾莉妈妈的要求，没有泄露艾莉的名字和住址，给她写的信也简单明白。',
   'You helped Boston and Shanghai share what each hospital knew about Ellie’s illness, and you kept her name and address private, as her mom asked.':
-    '你帮波士顿和上海把各自了解的艾莉的病情都拿了出来，还照她妈妈的要求，没有泄露她的名字和住址。',
+    '你帮波士顿和上海把各自掌握的病情都拿出来一起看，还照艾莉妈妈的要求，没有泄露她的名字和住址。',
 
   // evening
-  '“Look at the river. You can see every tower across the water reflected upside down in it.”':'“看江面。对岸的每一栋楼都倒映在水里。”',
+  '“Look at the river. You can see every tower across the water reflected upside down in it.”':'“你看江面，对岸的楼一栋栋都倒映在水里。”',
   '“Dr. Wen sent a message a minute ago: ‘[[Xièxie]] for today. Ellie is lucky to have doctors in two cities looking after her.’”':
     '“温医生刚发来消息：‘今天谢谢你啦。艾莉真幸运，有两座城市的医生一起照顾她。’”',
   '“Dr. Wen sent a message a minute ago: ‘[[Xièxie]] for today. Ellie is lucky to have doctors in two cities looking after her.’ She added a photo of a pancake.”':
@@ -194,7 +194,7 @@ I18N.add('zh','sisterhospital',{strings:{
   'Ellie’s pink scar is the clue that Halo could not see. In children who had the BCG shot, the scar turns red in about half of those who have Kawasaki disease.':
     '艾莉发红的疤，就是Halo看不到的那条线索。打过卡介苗的孩子得了川崎病，大约一半人的疤会发红。',
   'Ms. Gao said that Ellie’s baby-shot scar went pink yesterday. The doctors here may know what that means, so try sending that card across.':
-    '高女士说艾莉的预防针疤昨天变红了。这里的医生可能知道这意味着什么，试试把那张卡发过去。',
+    '高女士说艾莉的预防针疤昨天变红了。这里的医生也许知道是怎么回事，把那张卡发过去试试。',
   'Ms. Gao said yes to sharing Ellie’s medical facts, and no to her name, address and photos. Riverside’s AI does not need any of those to compare her with other children.':
     '高女士同意分享艾莉的医学情况，但不同意分享她的名字、住址和照片。滨江的AI不需要这些，也能把她和别的孩子作比较。',
   'Kawasaki disease mostly affects children under five. It causes a long fever, red eyes and lips, and sometimes a rash and swollen hands. The real danger is to the small arteries around the heart, which is why doctors treat it quickly.':
@@ -205,7 +205,7 @@ I18N.add('zh','sisterhospital',{strings:{
     '心脏彩超就是用超声波给心脏拍图像，不疼。这么早的时候，孩子就算真得了川崎病，彩超也常常看着正常，所以彩超正常也说明不了问题。',
   'Try “nǐ hǎo” for hello and “xièxie” for thank you. Dr. Wen will be delighted.':'温医生在波士顿待过一年，你跟她说中文或者英文都行。临走说声谢谢，她会很高兴的。',
   'Listen to Ellie’s mom first. Then send Boston’s medical facts across to Riverside, one card at a time, and keep her private details at home. After that, choose a plan with Dr. Wen and sign it together.':
-    '先听艾莉的妈妈说。然后把波士顿的医学事实一张卡一张卡地发给滨江，她的隐私信息留在家里。之后和温医生一起选方案，一起签字。'
+    '先听艾莉妈妈怎么说。然后把波士顿的医学事实一张一张发给滨江，涉及隐私的卡片留在波士顿。之后和温医生一起选方案，一起签字。'
 },
 glossary:{
   'sister hospital':{w:'姐妹医院',d:'另一座城市里和你们医院结成伙伴的医院。两边的医生会互相访问，一起讨论疑难病例。'},

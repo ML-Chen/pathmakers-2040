@@ -4,7 +4,7 @@
 I18N.add('zh','robotfactory',{strings:{
   'Who Can Stop a Crew?':'谁能叫停机器人队？',
   'You fly to the factory in Shenzhen that built your robot crew. You test every way of stopping a crew, and then you write the rules for who may stop one and start it again.':
-    '你飞到深圳，来到造出你那支机器人队的工厂。你要把让机器人队停下的每种办法都试一遍，再定下规则：谁可以让它停下，谁可以让它重新开工。',
+    '你飞到深圳，去那家造出你那支机器人队的工厂。你要把叫停机器人队的办法一个个试一遍，再定下规矩：谁可以叫停，谁可以让它重新开工。',
   'Zone 3 · Shenzhen':'3号区 · 深圳','Zone 3 test yard · 9:00 AM':'3号区测试场 · 上午9:00','Zone 3 test yard · Shenzhen':'3号区测试场 · 深圳',
   'Zone 3 test yard · 11:30 AM':'3号区测试场 · 上午11:30','Zone 3 · Shenzhen · 6:40 PM':'3号区 · 深圳 · 傍晚6:40',
   'Zone 3 test yard · Stop drill':'3号区测试场 · 停机演练','Zone 3 test yard · Rule card':'3号区测试场 · 规则卡',
@@ -20,12 +20,12 @@ I18N.add('zh','robotfactory',{strings:{
   // Field Guide
   'Who may stop a crew, and who may start it again':'谁可以叫停机器人队，谁可以让它重新开工','Engineering and systems':'工程与系统',
   'If someone stops a machine by mistake, the only cost is a short delay, so anybody who sees danger should be able to stop it. Starting the machine again is riskier, because if the problem has not been fixed, someone could get hurt. So only the person who is responsible for the machine should be able to restart it, using a code that proves who they are. If someone far away stops the machine, the people on site should always be told.':
-    '要是有人误把机器停了，损失的只是一小会儿时间，所以谁看到危险，都应该能让机器停下。让机器重新开动风险更大，因为问题要是还没解决，就可能有人受伤。所以只有负责这台机器的人才能让它重新开动，还要用一个能证明自己身份的密码。如果有人在远处让机器停了，一定要告诉现场的人。',
+    '要是有人不小心把机器停了，也就耽误一小会儿，所以谁看到危险，都应该能把机器停下。重新开机的风险要大得多，因为问题要是还没解决，就可能有人受伤。所以只有负责这台机器的人才能重新开机，而且要用能证明自己身份的密码。如果有人在远处把机器停了，一定要通知现场的人。',
   'True today: factory robots have emergency stop buttons that any worker may press, and many car factories let any worker pull an andon cord to stop the line. Restarting takes a trained person. Robot crews that build whole schools are a guess about 2040.':
     '现实中：工厂里的机器人都有急停按钮，任何工人都可以按。很多汽车厂允许任何工人拉安灯绳，让生产线停下。重新开动要由受过培训的人来做。能盖起整所学校的机器人施工队，是对2040年的猜想。',
   'Special Economic Zones':'经济特区','Government, law, and power':'政府、法律与权力',
   'In 2040, heavy robot industry is kept inside special zones like this one, and each zone has a strict limit on how many robots may work there. Keeping the robot factories and mines inside the zones lets the land outside them stay quiet and green. Zone monitors check the robot numbers every day.':
-    '在2040年，用机器人的重工业都集中在像这样的特区里，每个区能用多少台机器人，都有严格的上限。机器人工厂和矿场都放在特区里，特区外面的地方就能保持安静，到处绿油油的。区域监察员每天都要核对机器人的数量。',
+    '在2040年，用机器人的重工业都集中在像这样的特区里，每个区能用多少台机器人，都有严格的上限。机器人工厂和矿场都放在特区里，特区外面就能保持安静，到处都是绿地。区域监察员每天都要核对机器人的数量。',
   'True today: in 1980, Shenzhen, then a small town, became one of China’s first Special Economic Zones. It is now a city of more than 17 million people. Robot permit caps are a guess about 2040.':
     '现实中：深圳是1980年设立的第一批经济特区之一，那时它还是个小镇，现在已经是一座有一千七百多万人的城市。机器人许可上限是对2040年的猜想。',
 
@@ -33,15 +33,15 @@ I18N.add('zh','robotfactory',{strings:{
   'I’m the only person on this shift. Me and eleven thousand robots.':'这一班就我一个人，再加一万一千台机器人。',
   'That mine used to be a hill. They will fill it back in when the zone is allowed fewer robots.':'那个矿坑原来是座小山。等这个区的机器人名额减下来，他们会把它填回去。',
   'My father fished in this bay when Shenzhen was a village.':'深圳还是个小渔村的时候，我爸就在这片海湾打鱼。',
-  'Lunch is in the tower. The noodles are made by a person, which is why they’re good.':'午饭在塔楼里吃。面条是人亲手做的，所以好吃。',
+  'Lunch is in the tower. The noodles are made by a person, which is why they’re good.':'午饭在塔楼里吃。面是真人手擀的，所以好吃。',
   'The number on the permit board goes up each time a new crew is built, and down each time an old crew is recycled.':'每造出一支新队，许可牌上的数字就往上跳；每回收一支旧队，数字就往下降。',
 
   // arrive
   'Welcome to Shenzhen! We’re in Zone 3, part of the city’s [[Special Economic Zone]]. Almost everything you can see here is run by robots.':
-    '欢迎来到深圳！咱们在[[经济特区]]的3号区。你在这儿看到的东西，几乎全是机器人在运转。',
+    '欢迎来到深圳！咱们在[[经济特区]]的3号区。你在这儿看到的，差不多全是机器人在干。',
   'The robot crews that build schools back in Phoenix were made in that factory. Every robot working here needs a [[permit]], and that board shows how close the zone is to its [[permit cap]].':
     '在凤凰城盖学校的那些机器人施工队，就是那座工厂造的。在这里干活的每台机器人都要有[[许可证]]，那块牌子显示这个区离[[许可上限]]还差多少。',
-  'Why are we here?':'我们来这儿干什么？',
+  'Why are we here?':'我们来这儿是干什么的？',
   'The factory asked an American crew lead to help them answer one question. Who is allowed to stop a robot crew, and how do you know the stop really works? You’ll test all three ways of stopping a crew, and then write the rules the crews follow.':
     '工厂请一位美国队长来帮他们回答一个问题：谁可以让机器人队停下？怎么知道停机真的管用？你要把三种停机办法都试一遍，然后写下机器人队要遵守的规则。',
   'Where are all the people?':'人都去哪儿了？',
@@ -55,7 +55,7 @@ I18N.add('zh','robotfactory',{strings:{
   'You’re welcome! Today we are testing whether the crew stops quickly and safely when someone tells it to. That matters even more than how well it builds.':
     '不客气！今天我们要测的是，有人叫它停的时候，它能不能停得又快又安全。这比它活儿干得好不好还要紧。',
   'It finished early, so it’s probably fine.':'它都提前完工了，应该没问题吧。',
-  'Probably. But today we are here to check with real tests whether it stops safely, instead of guessing.':'可能吧。不过咱们今天来，就是要做真正的测试，看看它能不能安全地停下。',
+  'Probably. But today we are here to check with real tests whether it stops safely, instead of guessing.':'也许吧。不过今天咱们就是来实际测一测，看它能不能安全停下，不能光靠猜。',
 
   // huang
   'I’m Huang Jianguo, and I run this floor. I started here at eighteen, putting phones together by hand. My father fished in that bay before there was any city here at all.':
@@ -64,10 +64,10 @@ I18N.add('zh','robotfactory',{strings:{
     '四十三年了，我这个车间有一条规矩从来没变过：谁看见问题，谁都可以把线停下。新来的工人可以，老工人可以，来参观的人也可以。',
   'Even a visitor like me?':'连我这样来参观的也可以？',
   'Even you. If you see something wrong, you stop the line, and then we talk about it. Stopping the line costs us a few minutes, but fixing a broken crew can take weeks.':
-    '你也可以。看见不对劲，你就停线，然后咱们再商量。停一次线只耽误几分钟，可修好一支坏掉的机器人队，可能要好几个星期。',
+    '你也可以。看见不对劲，你就停线，然后咱们再商量。停一次线只耽误几分钟，可要是一支队坏了，修起来可能要好几个星期。',
   'Doesn’t that waste a lot of time?':'那不是很浪费时间吗？',
   'Less than you would think. People here only stop the line when they think something is wrong. When they turn out to be right, the stop can save us weeks of repairs.':
-    '没你想的那么多。这里的人只有觉得哪里不对才会停线。要是他们没看错，停这一下能给我们省下好几个星期的修理。',
+    '没你想的那么多。这里的人只有觉得哪里不对才会停线。要是真让他们说中了，停这一下能省下好几个星期的修理功夫。',
   'So here is today’s [[stop drill]]. This test crew is stacking bricks, and there are three different ways to stop it. Try each one, and we’ll time how long it takes.':
     '好，今天的[[停机演练]]是这样的：这支测试队正在码砖，有三种不同的办法能让它停下。每种都试一下，我们来计时。',
   'I’ll write down every run. Watch what each robot actually does, not only how fast the crew stops.':'每一次我都会记下来。你要看每台机器人到底做了什么，别光看整队停得多快。',
@@ -89,19 +89,19 @@ I18N.add('zh','robotfactory',{strings:{
 
   // tang
   'Hi! Tang Yifan, [[zone monitor]]. I make sure Zone 3 stays under its cap. Today it’s at 41,860 robots, out of 42,000.':
-    '你好！我是唐一帆，[[区域监察员]]。我负责让3号区不超过上限。今天这里有41,860台机器人，上限是42,000台。',
+    '你好！我是唐一帆，[[区域监察员]]。我负责盯着3号区，别让它超上限。今天这儿有41,860台机器人，上限是42,000台。',
   'I watched your remote-stop test from the tower. That is the button I care about most, because if a crew anywhere goes over its permit, I want it stopped quickly.':
     '你做远程停机测试的时候，我在控制塔上看着。我最在意的就是那个按钮，因为不管哪里的机器人队超出了许可，我都希望能马上让它停下。',
   'But your test also showed something else. The tower can start those crews up again from right here, without asking anybody in Phoenix. I don’t like that, and I am the person who would be pressing the button.':
-    '可是你的测试还暴露了另一件事：控制塔在这儿就能让那些机器人队重新开工，不用问凤凰城的任何人。我不喜欢这样，何况按那个按钮的人就是我。',
-  'So the people on site wouldn’t even know?':'那现场的人连知道都不知道？',
+    '可是你的测试还暴露了另一件事：控制塔在这儿就能让那些机器人队重新开工，不用问凤凰城的任何人。按那个按钮的人就是我，可我也不喜欢这样。',
+  'So the people on site wouldn’t even know?':'那现场的人根本不知道？',
   'Not unless somebody tells them. That is why I asked the factory to bring a crew lead out here. You get to help decide what goes on the crews’ new rule card.':
-    '除非有人告诉他们。所以我才请工厂把一位队长请过来。机器人队的新规则卡上写什么，你也能一起来定。',
+    '除非有人告诉他们。所以我才让工厂请一位队长过来。机器人队的新规则卡上写什么，你也来一起定。',
   'If the factory built them, shouldn’t it control them?':'机器人是工厂造的，不就该由工厂来管吗？',
   'The factory built them, yes. But the people of Phoenix live and work right beside those robots. The crew lead on site should know what is happening to their own crew.':
     '是工厂造的，没错。可是凤凰城的人就在那些机器人旁边生活、干活。现场的队长应该知道自己的队出了什么事。',
   'Every crew carries a rule card that says who may pause it, stop it and start it again. Today we write a new card, and tonight every crew this factory has ever built will get it. So choose carefully.':
-    '每支机器人队都带着一张规则卡，上面写着谁可以让它暂停、停机和重新开工。今天我们写一张新卡，今晚这家工厂造过的每一支队都会收到。所以要好好选。',
+    '每支机器人队都带着一张规则卡，上面写着谁可以让它暂停、停机和重新开工。今天我们写一张新卡，今晚这家工厂造过的每一支队都会收到。所以你可得想好了再选。',
 
   // the rule card
   'Crew rule card':'机器人队规则卡','All 212 crews · version 7':'全部212支队 · 第7版','Sign the card':'签署规则卡',
@@ -111,7 +111,7 @@ I18N.add('zh','robotfactory',{strings:{
   'What may the factory do from far away?':'工厂在远处可以做什么？','Stop a crew, and tell the crew lead at once':'让机器人队停下，并马上通知队长',
   'Nothing at all, ever':'什么都不能做','Stop or restart any crew it built':'让它造的任何一支队停下或重新开工',
   'Stopping a crew costs only a short delay, so the site is safer when everyone there can do it. A restart could hurt someone if something is still wrong, so I would let only the crew lead do that.':
-    '让机器人队停下，只会耽误一小会儿，所以现场的人谁都能叫停，工地就更安全。可要是问题还在就重新开工，可能会有人受伤，所以我只会让队长来做这件事。',
+    '叫停机器人队最多耽误一小会儿，所以现场的人谁都能叫停，工地会更安全。可要是问题还在就重新开工，可能会有人受伤，所以我只让队长来重启。',
   'Anyone on the site may pause a crew.':'现场的任何人都可以让机器人队暂停。','Only the crew lead may pause a crew.':'只有队长可以让机器人队暂停。',
   'Anyone on the site may fully stop a crew with the red pedestal.':'现场的任何人都可以用红色急停柱让机器人队彻底停机。',
   'Only the crew lead may fully stop a crew, using a code.':'只有队长可以用密码让机器人队彻底停机。',
@@ -130,23 +130,23 @@ I18N.add('zh','robotfactory',{strings:{
   'We put your card on the test crew and then tried to restart it from the tower. The crew refused, and it sent you a message about it. Then I said “Tíng,” and it stopped for me. That is exactly what we wanted.':
     '我们把你的卡装到测试队上，然后试着从控制塔让它重新开工。机器人队拒绝了，还给你发了一条消息。然后我喊了一声“停”，它马上就停了。这正是我们想要的。',
   'We put your card on the test crew, and it works. But the tower can still restart crews without telling anybody, so Tang Yifan wants to talk about that again next month.':
-    '我们把你的卡装到测试队上了，能用。可是控制塔还是能不告诉任何人就让机器人队重新开工，所以唐一帆想下个月再谈谈这件事。',
+    '我们把你的卡装到测试队上了，卡是管用的。可是控制塔还是能不告诉任何人就让机器人队重新开工，所以唐一帆想下个月再谈谈这件事。',
   'We put your card on the test crew. Now only the crew lead can stop it, so when I said “Tíng,” the crew kept working. Mr. Huang did not like that one bit.':
-    '我们把你的卡装到测试队上了。现在只有队长能让它停，所以我喊“停”的时候，它照样干活。黄师傅对这一点很不满意。',
+    '我们把你的卡装到测试队上了。现在只有队长能让它停，所以我喊“停”的时候，它照样干活。黄师傅一点都不高兴。',
   'See how you did':'看看你做得怎么样','Tíng!':'停！',
 
   // debrief
   'You tested all three stops and found that the remote stop could also restart crews.':'你把三种停机办法都试了，还发现远程停机也能让机器人队重新开工。',
   'Try every way of stopping a crew before you write the rules. Testing the remote stop showed that it could also restart crews without telling anyone.':
-    '写规则之前，先把每种停机办法都试一遍。测试远程停机的时候就会发现，它也能不告诉任何人就让机器人队重新开工。',
+    '写规则之前，先把每种停机办法都试一遍。你测远程停机的时候发现，它还能不告诉任何人就让机器人队重新开工。',
   'On your card, anybody can stop a crew, only the crew lead can start it again, and the tower cannot restart a crew without telling the people on site.':
     '按你的规则卡，谁都能叫停机器人队，只有队长能让它重新开工，控制塔也不能瞒着现场的人让它重新开工。',
   'Your card left a gap. Either a person next to a crew cannot stop it, or the factory can restart it without telling anyone.':
     '你的规则卡留了个漏洞：要么站在机器人队旁边的人叫不停它，要么工厂可以不告诉任何人就让它重新开工。',
-  'You listened to the people who know this factory floor best, and you signed a card that they could read and understand.':'你听取了最了解这个车间的人的意见，签的规则卡他们也读得懂。',
-  'Next time, ask Mr. Huang, Ms. Lin and Tang Yifan more. Each of them knew something useful.':'下次多问问黄师傅、林晓梅和唐一帆。他们每个人都知道一些有用的事。',
+  'You listened to the people who know this factory floor best, and you signed a card that they could read and understand.':'你听了最懂这个车间的人怎么说，签的规则卡他们也看得懂。',
+  'Next time, ask Mr. Huang, Ms. Lin and Tang Yifan more. Each of them knew something useful.':'下次多问问黄师傅、林晓梅和唐一帆。他们每个人都知道些有用的情况。',
   'A safe crew needs a stop that anybody on site can use, and a restart that only the crew lead can approve with a signed code.':
-    '一支安全的机器人队，要让现场的任何人都能叫停，而重新开工只能由队长用签名码来批准。',
+    '安全的机器人队，现场谁都能叫停，但重新开工只能由队长用签名码批准。',
 
   // evening
   '“Your new rule card went out to all 212 crews at six o’clock. Your own crew in Phoenix sent back a short note: rules received.”':'“你的新规则卡六点钟发给了全部212支队。凤凰城你自己那支队回了一句话：规则已收到。”',

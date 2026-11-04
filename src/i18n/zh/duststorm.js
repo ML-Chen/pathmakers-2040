@@ -21,21 +21,21 @@ I18N.add('zh','duststorm',{strings:{
   'What’s my job today?':'我今天要做什么？',
   'You’re in charge of the station tonight. Delta, the outpost’s AI, runs the power, air and heat. The battery can’t power everything, so you’ll decide what stays on, and then you’ll sign the plan.':'今晚由你来管这个站。前哨站的AI叫Delta，它负责电、空气和暖气。电池供不了所有东西，所以你要决定哪些东西继续开着，然后在方案上签字。',
   'Is the crew in danger?':'队员们有危险吗？',
-  'Not if we plan well. The habitat is built for storms. The hard part is choosing what to keep on, because the battery can’t power everything.':'只要计划得好，就没有危险。这个居住舱是专门为风暴造的。难的是选哪些东西继续开着，因为电池供不了所有东西。',
+  'Not if we plan well. The habitat is built for storms. The hard part is choosing what to keep on, because the battery can’t power everything.':'只要计划得好，就不会有危险。这个居住舱本来就是按抗风暴设计的。难的是选哪些东西继续开着，因为电池供不了所有东西。',
 
   // ---- Delta ----
-  'Hello, Explorer. I’m Delta. I run the station’s power, air and heat. Here is my storm [[forecast]]. I’ll give you a [[range]] for each number, because I can’t know them exactly.':'你好，探索者。我是Delta，负责这个站的电、空气和暖气。这是我的风暴[[预测]]。每个数字我都会给你一个[[范围]]，因为我没法知道准确的数。',
+  'Hello, Explorer. I’m Delta. I run the station’s power, air and heat. Here is my storm [[forecast]]. I’ll give you a [[range]] for each number, because I can’t know them exactly.':'你好，探索者。我是Delta，负责这个站的电、空气和暖气。这是我的风暴[[预测]]。每个数字我都会给你一个[[范围]]，因为这些数我没法算得一点不差。',
   'The storm should arrive between 5 and 8 PM, most likely at about 6:30. At [[sunset]], the battery should hold between 48 and 55 [[kilowatt-hours]] of energy.':'风暴应该在下午5点到晚上8点之间到，最可能是6点半左右。[[日落]]的时候，电池里应该有48到55[[千瓦时]]的电。',
   'There is about a 35% chance that the storm is still here at sunrise. If it is, the panels will make only a little power until noon, and we will need 8 more kilowatt-hours from the battery to get through the morning.':'日出的时候，风暴还没走的可能大约是35%。要是那样，到中午之前太阳能板只能发一点点电，我们还得从电池里再用8千瓦时，才能撑过上午。',
-  'My default plan follows the [[priority list]] that [[mission control]] wrote years ago. [[Life support]] comes first, then crew comfort, then science. The greenhouse comes last, so it goes off tonight.':'我的默认方案是照着[[任务控制中心]]好几年前写的[[优先顺序表]]来的。第一是[[生命保障系统]]，第二是队员的舒适，第三是科研。温室排在最后，所以今晚要关掉。',
+  'My default plan follows the [[priority list]] that [[mission control]] wrote years ago. [[Life support]] comes first, then crew comfort, then science. The greenhouse comes last, so it goes off tonight.':'我的默认方案是照着[[任务控制中心]]好几年前写的[[优先顺序表]]来的。第一是[[生命保障系统]]，第二是让队员过得舒服，第三是科研。温室排在最后，所以今晚要关掉。',
   'Can we change that order tonight?':'今晚能改改这个顺序吗？',
-  'Yes. The old priority list is only where my plan starts. You lead the station tonight, so you choose the order. I’ll show you exactly how much power each choice costs.':'能。那份老的优先顺序表只是我做方案的起点。今晚这个站由你带领，所以顺序由你来定。每种选择要用多少电，我都会清清楚楚地告诉你。',
+  'Yes. The old priority list is only where my plan starts. You lead the station tonight, so you choose the order. I’ll show you exactly how much power each choice costs.':'能。那份老的优先顺序表只是我做方案的起点。今晚这个站归你管，所以顺序由你来定。每种选择要用多少电，我都会清清楚楚地告诉你。',
   'You know best. Use your plan.':'你最清楚了，就用你的方案吧。',
-  'I can run my plan safely. But my list was written before anyone grew food here. You should hear from the crew before you decide.':'我的方案我能安全地执行。可我的那份清单，是在这里有人种菜之前写的。你做决定之前，应该先听听队员们怎么说。',
+  'I can run my plan safely. But my list was written before anyone grew food here. You should hear from the crew before you decide.':'我的方案我能安全执行。可那份清单是在这里有人种菜之前写的。你做决定之前，应该先听听队员们怎么说。',
 
   // ---- Lucía ----
   'Explorer! Come see. Three red tomatoes, the first ever grown on Mars. I’ve named them Uno, Dos and Tres.':'探索者！快来看。三个红番茄，这是火星上种出来的第一批番茄。我给它们起了名字，叫老大、老二、老三。',
-  'If the greenhouse goes cold tonight, the flowers die, and the tomatoes freeze. We’d have to start again, and that takes four months.':'要是今晚温室冷下来，花会死掉，番茄也会冻坏。那我们就得从头再种，还得花四个月。',
+  'If the greenhouse goes cold tonight, the flowers die, and the tomatoes freeze. We’d have to start again, and that takes four months.':'要是今晚温室冷下来，花会冻死，番茄也会冻坏。那就得从头再种，又要花四个月。',
   'But the plants can live through one dark night, as long as they stay warm. We could keep the heat on and turn the lights off. They won’t mind the dark.':'不过只要暖和，植物能熬过一个黑夜。我们可以开着暖气，把灯关掉。它们不怕黑。',
   'One more thing, and it’s just for me. My son Caio turns ten tomorrow, back home in Recife. I recorded a birthday message, and the [[relay window]] closes at 9 PM.':'还有一件事，是我自己的事。我儿子卡约明天就满十岁了，他在老家累西腓。我录了一段生日祝福，可[[中继窗口]]晚上9点就关了。',
   'Ten! Does he know about the tomatoes?':'十岁啦！他知道番茄的事吗？',
@@ -44,15 +44,15 @@ I18N.add('zh','duststorm',{strings:{
   'They can. It’s only a birthday. I just hoped he’d hear from me on the day.':'是可以晚一天。不过就是个生日嘛。我只是希望他能在生日当天听到我的声音。',
 
   // ---- Dev ----
-  'Hey, Explorer. I’m Dev. I keep the rovers running and the habitat in one piece. Hand me that strap, would you?':'嘿，探索者。我是德夫，负责让火星车能跑，让居住舱别散架。把那根带子递给我好吗？',
+  'Hey, Explorer. I’m Dev. I keep the rovers running and the habitat in one piece. Hand me that strap, would you?':'嘿，探索者。我是德夫，负责让火星车能跑，让居住舱别散架。把那根带子递我一下，行吗？',
   'The rover is parked facing into the wind, and its own battery is full. If anything goes wrong tonight, all six of us can fit inside. It would be a tight squeeze.':'火星车停好了，车头迎着风，它自己的电池也是满的。今晚要是出了什么事，我们六个人都能挤进去。就是会挤得够呛。',
-  'Can I tell you something, just you? I sleep with a [[breathing machine]]. My throat closes up at night, and the machine keeps the air flowing.':'有件事我能只跟你一个人说吗？我睡觉的时候要戴[[呼吸机]]。我的喉咙晚上会堵住，呼吸机能让空气一直流通。',
-  'It runs on my cabin outlet. Delta’s storm rule turns off the cabin outlets at 10 PM. I never put it in my records. I didn’t want everyone fussing over me.':'它插在我舱房的插座上。可Delta的风暴规则会在晚上10点关掉舱房的插座。这件事我从来没写进我的记录里，因为我不想让大家围着我大惊小怪。',
+  'Can I tell you something, just you? I sleep with a [[breathing machine]]. My throat closes up at night, and the machine keeps the air flowing.':'有件事我能只跟你一个人说吗？我睡觉的时候要戴[[呼吸机]]。我晚上睡着了喉咙会堵住，呼吸机能让气一直通着。',
+  'It runs on my cabin outlet. Delta’s storm rule turns off the cabin outlets at 10 PM. I never put it in my records. I didn’t want everyone fussing over me.':'它插在我舱房的插座上。可Delta的风暴规则会在晚上10点关掉舱房的插座。这事我从来没写进记录里，我不想让大家围着我大惊小怪。',
   'It doesn’t use much. I just need it to stay on.':'它用不了多少电。我只是需要它一直开着。',
   'Can I tell Delta? It only needs to know that outlet stays on.':'我能告诉Delta吗？它只需要知道那个插座得一直开着。',
   'Yes. Just Delta, and only that. Thanks for asking me first.':'可以。只告诉Delta，也只说这一点。谢谢你先问我。',
-  'Let’s tell the whole crew at dinner.':'吃晚饭的时候，我们告诉全体队员吧。',
-  'I’d really rather you didn’t. Could you just make sure the outlet stays on?':'我真的不希望你这么做。你就帮我保证那个插座一直开着，行吗？',
+  'Let’s tell the whole crew at dinner.':'吃晚饭的时候，咱们跟大家都说一下吧。',
+  'I’d really rather you didn’t. Could you just make sure the outlet stays on?':'我真的不想让别人知道。你就帮我让那个插座一直开着，行吗？',
 
   // ---- Delta's storm forecast ----
   'Delta’s storm forecast':'Delta的风暴预测',
@@ -100,17 +100,17 @@ I18N.add('zh','duststorm',{strings:{
   // ---- telling Delta, goals, controls ----
   'Tell Delta about Dev’s outlet':'把德夫插座的事告诉Delta',
   'Done. Delta will keep that one outlet on all night, and it won’t say why. That adds half a kilowatt-hour to tonight’s plan.':'办好了。Delta会让那个插座整夜开着，也不会说为什么。今晚的方案要多用半千瓦时。',
-  'The battery lasts until the Sun is back':'电池撑到太阳出来','The first tomatoes survive':'头一批番茄活下来','Everyone sleeps safely':'每个人都睡得安全','Lucía’s message reaches Earth in time':'露西娅的消息按时发到地球',
-  'Not sure what one means? <button class="gw" data-w="relay window">Relay window</button> means the time a satellite can carry messages to Earth.':'不确定意思？<button class="gw" data-w="relay window">中继窗口</button>就是卫星能把消息传到地球的那段时间。',
+  'The battery lasts until the Sun is back':'电池撑到太阳出来','The first tomatoes survive':'头一批番茄活下来','Everyone sleeps safely':'大家都能安全睡觉','Lucía’s message reaches Earth in time':'露西娅的消息按时发到地球',
+  'Not sure what one means? <button class="gw" data-w="relay window">Relay window</button> means the time a satellite can carry messages to Earth.':'有不懂的词？<button class="gw" data-w="relay window">中继窗口</button>就是卫星能把消息传到地球的那段时间。',
   'Decide what matters most tonight before you look at the odds. When you know what matters most, the odds can help you choose between plans.':'先想好今晚什么最重要，再去看可能性。知道了什么最重要，可能性才能帮你在几个方案里做选择。',
   'Greenhouse':'温室','Lights + heat':'开灯＋暖气','Heat only':'只开暖气','Off':'关掉',
-  'Cabin':'舱房','Cozy 20°C':'暖和的20°C','Cool 14°C':'凉快的14°C',
+  'Cabin':'舱房','Cozy 20°C':'暖和的20°C','Cool 14°C':'偏凉的14°C',
   'Message to Earth':'发往地球的消息','Send tonight':'今晚发','Wait':'等一等',
 
   // ---- plan names ----
   '{0}, {1}, {2}':'{0}，{1}，{2}','<b>{0}:</b> {1}':'<b>{0}：</b>{1}',
   'Greenhouse lights and heat':'温室开灯加暖气','Greenhouse heat only':'温室只开暖气','Greenhouse off':'温室关掉',
-  'a cozy cabin':'舱房暖和','a cool cabin':'舱房凉快','send the messages':'发出消息','messages wait':'消息等一等',
+  'a cozy cabin':'舱房暖和','a cool cabin':'舱房偏凉','send the messages':'发出消息','messages wait':'消息等一等',
 
   // ---- Future Table ----
   'The battery ran low, so everyone slept in the rover.':'电池快没电了，所以大家都在火星车里过夜。',
@@ -126,14 +126,14 @@ I18N.add('zh','duststorm',{strings:{
   // ---- consent ----
   'So, Explorer, what’s the plan for tonight?':'那么，探索者，今晚怎么安排？',
   'Here’s my plan: {0}, the cabin stays cozy, and {1}. The battery lasts until sunrise in about {2} of 10 nights like this.':'我的计划是：{0}，舱房保持暖和，{1}。像今晚这样的夜，10个里大约有{2}个，电池能撑到日出。',
-  'Here’s my plan: {0}, the cabin stays cool, and {1}. The battery lasts until sunrise in about {2} of 10 nights like this.':'我的计划是：{0}，舱房保持凉快，{1}。像今晚这样的夜，10个里大约有{2}个，电池能撑到日出。',
+  'Here’s my plan: {0}, the cabin stays cool, and {1}. The battery lasts until sunrise in about {2} of 10 nights like this.':'我的计划是：{0}，舱房保持偏凉，{1}。像今晚这样的夜，10个里大约有{2}个，电池能撑到日出。',
   'the greenhouse gets lights and heat':'温室开灯又开暖气','the greenhouse stays warm but dark':'温室保持暖和，但不开灯','the greenhouse goes off':'温室关掉',
   'the messages go out':'消息发出去','the messages wait':'消息先等一等',
   'I hate losing them. But you were honest with us about the odds, and I trust you. Okay.':'我真舍不得它们。不过你把可能性老老实实告诉了我们，我信你。好吧。',
   'Thank you for telling us the real odds. I feel safe going to bed with that plan.':'谢谢你把真实的可能性告诉我们。有这个方案，我可以安心去睡觉了。',
   'Delta runs this station better than any of us ever could. We’ll use its plan exactly as it is, so nobody needs to worry about tonight.':'Delta管这个站比我们谁都强。我们就原封不动地用它的方案，这样今晚谁都不用担心。',
-  'Delta’s plan turns my greenhouse off. Did you even look at what it costs? Please tell us what you decided, and why.':'Delta的方案要把我的温室关掉。你到底有没有看过这样做的代价？请告诉我们你是怎么决定的，为什么这样决定。',
-  'Don’t worry, everyone. The storm will be gone by morning, so the battery has plenty of power for everything we want to run tonight.':'大家别担心。风暴到早上就会走，所以电池的电足够今晚开所有我们想开的东西。',
+  'Delta’s plan turns my greenhouse off. Did you even look at what it costs? Please tell us what you decided, and why.':'Delta的方案要把我的温室关掉。你到底算过这样会损失什么没有？请告诉我们你是怎么定的，为什么这么定。',
+  'Don’t worry, everyone. The storm will be gone by morning, so the battery has plenty of power for everything we want to run tonight.':'大家别担心。风暴到早上就会走，所以今晚想开什么都行，电池的电足够用。',
   'Delta said there’s about a one in three chance it’s still here at sunrise. Please don’t promise us something that nobody can know yet.':'Delta说了，日出时风暴还没走的可能大约是三分之一。谁都还不知道的事，请别跟我们打包票。',
 
   // ---- memo ----
@@ -151,7 +151,7 @@ I18N.add('zh','duststorm',{strings:{
   'The battery lasts in <b>{0}</b> of 10. The tomatoes make it in <b>{1}</b>.':'10个夜里，电池有 <b>{0}</b> 个能撑住，番茄有 <b>{1}</b> 个能活下来。',
   'Even if the battery starts at the low end and the storm lasts past sunrise, this plan never uses the emergency reserve.':'就算电池一开始只有最低的电量，风暴到日出后还没走，这个方案也不会动用应急储备。',
   'This plan is safe if the storm clears by morning. If the storm lasts and the battery starts at the low end, we would dip into the reserve.':'要是风暴早上就散了，这个方案很安全。要是风暴不走，电池一开始又只有最低的电量，我们就得动用储备。',
-  'This plan only works if the storm comes late and leaves early. On most nights like this one, the battery would run down to the emergency reserve.':'只有风暴来得晚、走得早，这个方案才行得通。像今晚这样的夜，大多数时候电池都会一直用到应急储备。',
+  'This plan only works if the storm comes late and leaves early. On most nights like this one, the battery would run down to the emergency reserve.':'只有风暴来得晚、走得早，这个方案才行得通。像今晚这样的夜，大多数时候电池都会降到应急储备。',
   'Lock in tonight’s plan':'定下今晚的方案',
   'Jezero Station · The storm night':'耶泽罗站 · 风暴之夜','Outside: −{0}°C':'外面：−{0}°C','{0} kWh':'{0}千瓦时',
   '9 PM':'晚上9点','10 PM':'晚上10点','11 PM':'晚上11点','Midnight':'午夜','1 AM':'凌晨1点','2 AM':'凌晨2点','3 AM':'凌晨3点','4 AM':'凌晨4点','5 AM':'凌晨5点','6 AM':'早上6点','7 AM':'早上7点','10 AM':'上午10点',
@@ -160,7 +160,7 @@ I18N.add('zh','duststorm',{strings:{
   'Nine PM. The messages went out to Earth before the relay window closed.':'晚上九点。中继窗口关上之前，消息已经发往地球了。',
   'Ten PM. The cabin outlets are off now, as my storm rule says.':'晚上十点。照我的风暴规则，舱房插座现在都关了。',
   'Ten PM. The cabin outlets are off now, except the one you asked me to keep on.':'晚上十点。舱房插座现在都关了，只有你让我留着的那一个还开着。',
-  'Update, 1 AM. The storm is slowing down. The chance it is still here at sunrise is now 70 in 100.':'凌晨1点更新。风暴移动得慢下来了。现在日出时它还没走的可能是100次里70次。',
+  'Update, 1 AM. The storm is slowing down. The chance it is still here at sunrise is now 70 in 100.':'凌晨1点更新。风暴移动变慢了。现在日出时它还没走的可能是100次里70次。',
   'Update, 1 AM. The storm is thinning. The chance it is still here at sunrise is now 10 in 100.':'凌晨1点更新。风暴在变弱。现在日出时它还没走的可能是100次里10次。',
   'Delta’s update':'Delta的更新','Switch the greenhouse to heat only':'温室改成只开暖气','Turn the cabin down to 14°C':'把舱房调低到14°C','Keep the plan':'按原计划',
   'Seven AM. The storm is still here, so the panels make only a little power.':'早上七点。风暴还没走，所以太阳能板只能发一点点电。',
@@ -177,7 +177,7 @@ I18N.add('zh','duststorm',{strings:{
 
   // ---- debrief ----
   'Dev trusted you with something private, you asked first, and you told Delta only what it needed. So his outlet stayed on.':'德夫把一件私事托付给你。你先问过他，也只告诉了Delta它需要知道的那一点。所以他的插座一直开着。',
-  'You didn’t tell Delta about Dev’s breathing machine. Its storm rule turned his cabin outlet off at 10 PM, and its forecast never knew.':'你没有把德夫呼吸机的事告诉Delta。它的风暴规则在晚上10点关掉了他舱房的插座，它的预测也从来不知道这件事。',
+  'You didn’t tell Delta about Dev’s breathing machine. Its storm rule turned his cabin outlet off at 10 PM, and its forecast never knew.':'你没有把德夫呼吸机的事告诉Delta。它的风暴规则在晚上10点关掉了他舱房的插座，它做预测时也根本不知道这件事。',
   'Nice work, Explorer. You planned for the worst end of Delta’s range, you kept the emergency reserve untouched, and you kept power for the things your crew cared about.':'干得好，探索者。你按Delta给的范围里最糟的情况做了计划，一点没动应急储备，还把电留给了队员们在意的东西。',
   'When Delta’s forecast changed at 1 AM, you changed the plan to match it.':'凌晨1点Delta的预测变了，你也跟着改了方案。',
 
@@ -187,8 +187,8 @@ I18N.add('zh','duststorm',{strings:{
   '“Lucía picked Uno, the first ripe tomato on Mars, and cut it into six tiny pieces, one for each of us. She saved the seeds for Caio.”':'“露西娅摘下了老大，这是火星上第一个熟透的番茄。她把它切成六小块，我们每人一块。种子她留给了卡约。”',
   '“Lucía is planting new seeds already. She says the second planting should go faster, because now she knows how this soil behaves.”':'“露西娅已经在种新种子了。她说第二次会种得快一些，因为她现在摸清了这里的土是什么脾气。”',
   '“Dev slept through the whole storm. He fixed the rover’s dust seals this morning and left a packet of cocoa by your door.”':'“整场风暴里，德夫一觉睡到了天亮。今天早上他修好了火星车的防尘密封条，还在你门口放了一包可可。”',
-  '“Dev spent the morning cleaning dust out of the rover’s seals, and he asked me to say thank you for a quiet night.”':'“德夫一上午都在清理火星车密封条里的尘土。他让我替他谢谢你，昨晚过得很安稳。”',
-  '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”':'“现实中：火星车已经在耶泽罗陨石坑拍到过这样的蓝色晚霞，但还没有人站在这里过。”',
+  '“Dev spent the morning cleaning dust out of the rover’s seals, and he asked me to say thank you for a quiet night.”':'“德夫一上午都在清理火星车密封条里的尘土。他让我替他谢谢你，让他安安稳稳过了一夜。”',
+  '“True today: rovers have filmed blue sunsets like this in Jezero Crater, but no person has stood here yet.”':'“现实中：火星车已经在耶泽罗陨石坑拍到过这样的蓝色晚霞，但还没有人来过这里。”',
 
   // ---- Field Guide ----
   'Forecasts with ranges':'带范围的预测',
