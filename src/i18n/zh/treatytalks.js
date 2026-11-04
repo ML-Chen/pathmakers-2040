@@ -40,7 +40,7 @@ I18N.add('zh','treatytalks',{strings:{
     '现实中：有些军备控制条约让两国的核查员可以到对方的设施实地查看。“信任，但要核查”这句话出自一句俄罗斯老话。关于AI的条约现在还没有，故事里的条约是对2040年的猜想。',
   'Read the fine print':'小字也要细读','Ethics and AI alignment':'伦理与AI对齐',
   'A single line in an AI’s list of goals can change many of the choices that AI makes. So read every line of a published spec, and read your own side’s spec as carefully as you read the other side’s.':
-    'AI的目标清单里只要有一行字，就能改变这个AI做出的很多选择。所以公开的规范要一行一行读完。读自己这边的规范，也要像读对方的一样仔细。',
+    'AI的目标清单里，哪怕只是一行字，也可能改变这个AI的很多选择。所以公开的规范要一行一行读完。读自己这边的规范，也要像读对方的一样仔细。',
   'True today: some AI companies publish documents that describe how their AIs are supposed to behave, and people outside the companies read them and point out problems.':
     '现实中：有些AI公司会发布文件，说明自己的AI应该怎样做事。公司以外的人会去读这些文件，指出里面的问题。',
 
@@ -75,12 +75,12 @@ I18N.add('zh','treatytalks',{strings:{
   'Welcome. I am Han Yuewen. I lead China’s [[delegation]] this year. I hear this is your first time at the talks.':
     '欢迎。我是韩悦文，今年由我带中国[[代表团]]。听说你是第一次来参加会谈？',
   'Here is how we work. Your team reads the spec of our treaty AI, which is called Tianping, line by line. Our team reads the spec of your AI, Beacon.':
-    '我们是这样做的：你们的团队一行一行地读我们的条约AI的规范，它叫天平。我们的团队读你们的AI“灯塔”的规范。',
+    '我们是这样做的：我们的条约AI叫天平，你们团队一行一行地读它的规范。你们的AI叫灯塔，它的规范由我们团队来读。',
   'Every line in a treaty AI’s spec has to help both countries keep the treaty, and no line may give one country an advantage. If you find a line that could help a country hide something from an [[inspector]], tell us about it, and we will do the same for you.':
     '条约AI的规范里，每一行都必须帮两国遵守条约，哪一行都不能让一个国家占便宜。要是你发现哪一行可能帮一个国家瞒过[[核查员]]，就告诉我们。我们发现了你们的问题，也会告诉你们。',
   'Isn’t that a lot of checking between friends?':'朋友之间也要查得这么细吗？',
   'Our two countries are not enemies, but we do not fully trust each other yet. Each time one side checks a promise and finds that it was kept, the two countries trust each other a little more. In Chinese, the word for trust is [[xìnrèn]].':
-    '我们两国不是敌人，但还没有完全信任对方。一方每检查一次对方的承诺，发现确实做到了，两国就会多信任对方一点。',
+    '我们两国不是敌人，但还没有完全信任对方。一方每检查一次对方的承诺，发现确实做到了，两国之间就多一分信任。',
   'Has anyone ever found a real problem?':'真有人找出过问题吗？',
   'Every year, and usually small ones. Last year your team found a line in our spec that let reports arrive in the wrong format, and we fixed it within a week.':
     '每年都有，一般是小问题。去年你们的团队发现，我们的规范里有一行让报告可以用错的格式交上来。我们一个星期之内就改好了。',
@@ -95,7 +95,7 @@ I18N.add('zh','treatytalks',{strings:{
   'That line does not break any rule in the treaty. But a treaty AI is supposed to help both countries keep the treaty, and this line makes Beacon help American companies sell chips. Our own AI is not allowed to have lines like that.':
     '这一行没有违反条约里的任何规定。可是条约AI本来应该帮两国遵守条约，这一行却让灯塔帮美国公司卖芯片。我们自己的AI是不允许有这种句子的。',
   'You’re right to raise it. Give me a minute to look at it.':'你提得对。给我一分钟，我看看。',
-  'Thank you. Take your time. I would rather wait for a real answer.':'谢谢。不着急，慢慢看。我宁可多等一会儿，听一个真正的答复。',
+  'Thank you. Take your time. I would rather wait for a real answer.':'谢谢。不着急，慢慢看。我宁可多等一会儿，也要听个实在的答复。',
   'That line is probably just there to protect American jobs.':'这一行大概只是为了保护美国人的工作。',
   'Perhaps. But if Tianping had a line like that about Chinese jobs, would your team let it stay?':'也许吧。可要是天平的规范里有一行这样护着中国人的工作，你们的团队会让它留着吗？',
   'Mr. Zhao is right about what that line does. It breaks no rule, but whenever Beacon chooses between two allowed plans, the line makes it pick the plan that helps American companies. The spec is accurate, because Beacon really does have that goal. The problem is that a treaty AI should not have that goal at all.':
@@ -104,7 +104,7 @@ I18N.add('zh','treatytalks',{strings:{
   // tea
   'You’re back! Sit, sit. How did the talks go?':'回来啦！坐，坐。今天谈得怎么样？',
   'This [[ginkgo]] tree is older than the drums in the Drum Tower. My grandfather sold tea under it, and his father did before him.':
-    '这棵银杏比鼓楼里的鼓还老。我爷爷就在这树底下卖茶，我爷爷的爹也在这儿卖过。',
+    '这棵银杏比鼓楼里的鼓还老。我爷爷就在这树底下卖过茶，他爹也在这儿卖过。',
   'When I was a boy, people said the two countries would never sit at the same table. Now their teams sit in my courtyard and argue about single words in their AIs’ rules, and afterwards they drink my tea.':
     '我小时候，人家都说这两个国家永远坐不到一张桌子上。现在倒好，两国的人坐在我这院儿里，为AI规则里的一个字争来争去，争完了还喝我的茶。',
   'Today one of their inspectors found a mistake in our spec.':'今天他们的一个核查员在我们的规范里找出了一个错。',
@@ -152,9 +152,9 @@ I18N.add('zh','treatytalks',{strings:{
   'Beacon’s chip-buying line breaks no rule, so you could defend it. But a treaty AI is supposed to help both countries keep the treaty, and Mr. Zhao will remember how you answered him today. Admitting the problem and letting him check the fix would cost our side very little. What matters most to you here?':
     '灯塔那行买芯片的话没有违反规定，所以你可以替它辩护。可是条约AI本来应该帮两国遵守条约，而且赵先生会记住你今天是怎么答复他的。承认问题，再让他来查改好了没有，对我们这边来说代价很小。在这件事上，你最看重的是什么？',
   'Thank you. You found two lines in our spec, and you did not hide the one in yours. Mr. Zhao will check your change tonight. When each side fixes the problems the other side finds, these talks are working the way they should.':
-    '谢谢。你们在我们的规范里找出了两行，自己规范里的那一行也没有藏着掖着。赵先生今晚会去查你们的修改。双方都把对方找出的问题改好，会谈就算开成了。',
+    '谢谢。你们在我们的规范里找出了两行，自己规范里的那一行也没有藏着掖着。赵先生今晚会去查你们的修改。双方都把对方找出的问题改掉，这样的会谈才算没白开。',
   'I understand that the line is legal. But we cannot ask our people to trust an AI that leans toward your companies. We will raise that line first at next year’s talks.':
-    '我明白这一行是合法的。但是一个偏向你们公司的AI，我们没法让自己的老百姓去信任它。明年的会谈上，我们头一件事就要提这一行。',
+    '我明白这一行是合法的。但是我们没法让国内的人去信任一个偏向你们公司的AI。明年的会谈上，我们头一件事就要提这一行。',
   'A year is a long time to leave a line like that in place. We will wait, and until then our inspectors will read Beacon’s spec twice as carefully.':
     '让这样一行留一整年，时间太长了。我们可以等，但在那之前，我们的核查员读灯塔的规范会加倍仔细。',
   'Write the joint statement':'写联合声明',
@@ -172,7 +172,7 @@ I18N.add('zh','treatytalks',{strings:{
   // debrief
   'You read every line and found both of the gaps in Tianping’s spec.':'你读完了每一行，找出了天平规范里的两处漏洞。',
   'Read each line slowly and ask yourself what an inspector could miss. Two of the lines in Tianping’s spec had gaps that could hide things from inspectors.':
-    '每一行都要慢慢读，问问自己核查员可能会漏掉什么。天平的规范里有两行有漏洞，能让事情瞒过核查员。',
+    '每一行都要慢慢读，问问自己核查员可能会漏掉什么。天平的规范里有两行有漏洞，能让一些事瞒过核查员。',
   'You admitted the problem with Beacon’s line and invited Mr. Zhao to check the change. Admitting a mistake and letting the other side check the fix is the quickest way to win back their trust.':
     '你承认了灯塔那一行有问题，还请赵先生来查修改。认了错，再让对方来查改好了没有，这是重新赢得对方信任最快的办法。',
   'Beacon’s chip-buying line stayed in place. It was legal, but it made a treaty AI favor one country.':'灯塔那行买芯片的话还留着。它是合法的，但它让一个条约AI偏向了一个国家。',
