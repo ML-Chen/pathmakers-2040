@@ -23,7 +23,7 @@ I18N.add('zh','quietyear',{strings:{
   'It’s your day off! I booked us a ferry up the coast to the city of Varrow, because there’s a memorial garden here I think you should see.':'今天你放假！我订了渡轮，带你沿着海岸来到了瓦罗城。这里有一座纪念花园，我觉得你应该来看看。',
   'Welcome to the Lantern Garden. I’m Gus. I take care of it.':'欢迎来到灯笼花园。我叫格斯，这座花园由我照看。',
   'Ten years ago, in 2030, a new [[germ]] spread through Varrow. We call that year the Quiet Year.':'十年前，也就是2030年，一种新的[[病菌]]在瓦罗传开了。我们把那一年叫作“静默之年”。',
-  'Back then, Varrow had none of the safeguards you’ll see tonight. Nothing tested the water for new germs, nothing cleaned the air on buses, and nobody checked DNA orders.':'那时候，你今晚会看到的这些安全措施，瓦罗一样都没有。没有东西检测水里有没有新病菌，公交车上没有东西净化空气，DNA订单也没人检查。',
+  'Back then, Varrow had none of the safeguards you’ll see tonight. Nothing tested the water for new germs, nothing cleaned the air on buses, and nobody checked DNA orders.':'那时候，你今晚会看到的这些安全措施，瓦罗一样都没有。没有设备检测水里有没有新病菌，公交车上没有净化空气的装置，DNA订单也没人检查。',
   'By the time anyone noticed the germ, it was in more than a hundred homes. The only thing left to do was for families to stay home for months, so it couldn’t spread.':'等到有人发现这种病菌，它已经进了一百多户人家。剩下的办法只有一个：家家户户在家里待上好几个月，不让它再传开。',
   'Was everyone okay?':'大家都没事吗？',
   'Not everyone. Some people got very sick, and we still miss the ones we lost. But the city pulled through, together.':'不是每个人都没事。有些人病得很重，我们到现在还想念那些离开的人。不过全城的人一起挺过来了。',
@@ -36,7 +36,7 @@ I18N.add('zh','quietyear',{strings:{
   'All of them, because staying home to stop the germ was a way of helping. Varrow had 4,812 families, so the garden has 4,812 lanterns.':'每一户都出过力，因为待在家里挡住病菌，本身就是在帮忙。瓦罗那时有4,812户人家，所以花园里有4,812盏灯笼。',
   'That’s a lot of lanterns!':'好多灯笼啊！',
   'It is. On a still night, you can see the glow from the ferry.':'是啊。没风的晚上，坐在渡轮上都能看见这片亮光。',
-  'People left things in the garden from the Quiet Year, and each thing has a story. Will you find them?':'人们在花园里留下了一些静默之年的旧东西，每样东西都有一个故事。你愿意去找找吗？',
+  'People left things in the garden from the Quiet Year, and each thing has a story. Will you find them?':'人们在花园里留下了一些静默之年的旧东西，每样东西都有一个故事。你能把它们找出来吗？',
   'I’ll listen too. Tap anything that glows!':'我也一起听。看到发光的东西就点一下！',
 
   // the garden
@@ -53,7 +53,7 @@ I18N.add('zh','quietyear',{strings:{
   'Every night at eight, my family video-called Grandma Lucía, who lived alone across town.':'每天晚上八点，我们全家都和露西娅奶奶视频。她一个人住在城的另一头。',
   'She taught us her soup recipe over the screen, one step at a time.':'她隔着屏幕，一步一步教我们做她拿手的汤。',
   'When we finally hugged again, she said those calls helped her get through the lonely months.':'后来我们终于又能抱在一起了。她说，那几个月她很孤单，是每天的视频陪她熬了过来。',
-  'Staying apart kept us safe, because the [[germ]] jumped from person to person when people were close.':'分开待着让我们平平安安，因为人挨得近的时候，[[病菌]]就会从一个人跳到另一个人身上。',
+  'Staying apart kept us safe, because the [[germ]] jumped from person to person when people were close.':'大家分开待着，我们才平平安安的，因为人挨得近的时候，[[病菌]]就会从一个人跳到另一个人身上。',
   'When people stayed apart, the germ couldn’t jump from one person to the next, so it ran out of people to infect.':'大家分开待着，病菌就没法从一个人跳到下一个人身上，最后再也找不到人可以传染了。',
   // the bakery sign (Kwame)
   'A bakery sign':'一块面包店招牌',
@@ -61,7 +61,7 @@ I18N.add('zh','quietyear',{strings:{
   'Nurses at Varrow General were working very long [[shifts]].':'瓦罗总医院的护士们在[[轮班]]，每一班都特别长。',
   'So every morning I left bread at the back door, and a delivery robot carried it to the hospital.':'所以每天早上，我都把面包放在后门口，再由送货机器人运到医院去。',
   'Neighbors I had never met started leaving bags of flour on my step.':'一些我从没见过的邻居，开始把一袋袋面粉放在我家门口的台阶上。',
-  'By spring, we had fed the whole hospital, one loaf at a time.':'一个面包接一个面包，到了春天，整座医院的人都吃过我们的面包了。',
+  'By spring, we had fed the whole hospital, one loaf at a time.':'就这样一个面包一个面包地送，到了春天，整座医院的人都吃上了我们的面包。',
   'Helping was how Kwame handled being worried. I like Kwame.':'夸梅心里着急的时候，就去帮别人。我喜欢夸梅。',
   // the water tester (Priya)
   'A homemade water tester':'一台自制的污水检测器',
@@ -70,9 +70,9 @@ I18N.add('zh','quietyear',{strings:{
   'So after the Quiet Year, my team built this box and named it Sniffer.':'所以静默之年过后，我的团队造了这个盒子，给它起名叫“嗅嗅”。',
   'It tests the [[wastewater]] that drains out of buildings for new germs, and if it finds one, it sends an alert within a day.':'它检测从楼里排出去的[[污水]]，看看里面有没有新病菌。一旦发现，一天之内就会发出警报。',
   'Today every school and neighborhood in Varrow has a tester like Sniffer, and so does every city and airport in the world.':'现在，瓦罗的每所学校、每个街区都有一台像嗅嗅这样的检测器，世界上每座城市、每个机场也都有。',
-  'An AI watches all of those testers at once, and it alerts the health office the moment something new shows up.':'有一个AI同时盯着所有检测器。只要出现新东西，它马上就通知卫生办公室。',
-  'Today, a new germ that reaches Varrow gets noticed within days instead of weeks, while it is still small enough to stop. Varrow’s [[early warning]] system is built to catch new germs that early.':'现在，新病菌一到瓦罗，几天之内就会被发现，不用再等好几个星期，那时它还很小，还拦得住。瓦罗的[[预警]]系统，就是为了这么早抓住新病菌而建的。',
-  'Noticing a germ in days instead of weeks makes a huge difference, because the number of sick homes keeps doubling.':'几天就发现病菌，和几个星期才发现，差别大得很，因为生病的人家会一直翻倍。',
+  'An AI watches all of those testers at once, and it alerts the health office the moment something new shows up.':'有一个AI同时盯着所有检测器。一发现新情况，它马上就通知卫生办公室。',
+  'Today, a new germ that reaches Varrow gets noticed within days instead of weeks, while it is still small enough to stop. Varrow’s [[early warning]] system is built to catch new germs that early.':'现在，新病菌一到瓦罗，几天之内就会被发现，用不着等上好几个星期。那时它传得还不广，还拦得住。瓦罗的[[预警]]系统，就是专门用来这么早发现新病菌的。',
+  'Noticing a germ in days instead of weeks makes a huge difference, because the number of sick homes keeps doubling.':'几天就发现病菌，和几个星期才发现，差别大得很，因为生病的人家数会不停地翻倍。',
   // the order slip (Noor)
   'An order slip, stamped HOLD':'一张盖着“暂扣”章的订单',
   'The Quiet Year germ was made with help from an [[unsafe AI]], and its recipe was printed at a [[DNA]] [[print shop]].':'静默之年的病菌，是有人借助一个[[不安全的AI]]造出来的，它的配方是在一家[[DNA]][[打印店]]印出来的。',
@@ -97,7 +97,7 @@ I18N.add('zh','quietyear',{strings:{
   'The next night, the family across the street put a lantern in their window too.':'第二天晚上，街对面那户人家也在窗口放了一盏灯笼。',
   'By the end of the week, our whole street was glowing.':'一个星期还没过完，我们整条街都亮起来了。',
   'The lanterns in Varrow’s windows all started with our one paper lantern.':'瓦罗家家户户窗口的灯笼，都是从我们那一盏纸灯笼开始的。',
-  'I didn’t know a little kid could start something that big.':'我以前不知道，一个小孩子也能带出这么大的事。',
+  'I didn’t know a little kid could start something that big.':'我以前不知道，一个小孩子也能带动这么多人。',
   'One lantern in Ivy’s window led to lanterns in windows all over Varrow, because people who see a kind act often copy it.':'艾薇窗口的一盏灯笼，让瓦罗到处的窗口都亮起了灯笼，因为人们看到别人做好事，常常会跟着学。',
 
   // Priya's doubling exhibit
@@ -111,7 +111,7 @@ I18N.add('zh','quietyear',{strings:{
   'What if the germ is noticed early?':'要是早点发现病菌呢？','{0} of 1,024 homes':'1,024户里有{0}户','Back to the pond':'回池塘边',
 
   // the Safety Table
-  'You’ve seen how fast a germ can grow. Now come see what Varrow built so that a new germ never spreads that far again.':'你已经看到病菌能长得多快了。现在来看看瓦罗建了些什么，好让新的病菌再也传不了那么远。',
+  'You’ve seen how fast a germ can grow. Now come see what Varrow built so that a new germ never spreads that far again.':'你已经看到病菌能传得多快了。现在来看看瓦罗建了些什么，好让新的病菌再也传不了那么远。',
   'This is the Safety Table. It shows 100 futures in which someone tries to make a germ like the one in 2030.':'这是安全之桌。它摆出了100种未来，在每一种未来里，都有人想造出一种像2030年那样的病菌。',
   'Since then, Varrow has put [[far-UVC lights]] in every bus, shop and school. You can’t see the light, but it breaks down germs floating in the air.':'从那以后，瓦罗在每辆公交车、每家商店和每所学校里都装了[[远紫外线灯]]。你看不见它的光，但它能分解飘在空气里的病菌。',
   'The hospital keeps reusable [[respirators]] for every nurse and bus driver, and the schools can fill their halls with a [[glycol vapor]] that kills germs in the air.':'医院给每位护士和公交司机都备好了能反复用的[[防护口罩]]。学校还能往走廊里放一种[[二醇雾气]]，杀死空气里的病菌。',
@@ -120,7 +120,7 @@ I18N.add('zh','quietyear',{strings:{
   'This is Varrow in 2030, with no safeguards ready. In all 100 futures, the germ starts another Quiet Year.':'这是2030年的瓦罗，一道安全措施都还没有。在全部100种未来里，病菌都引发了又一个静默之年。',
   'One safeguard helps a lot, but it misses some attempts. Try turning on another one.':'一道安全措施就帮了大忙，可它还是会漏掉一些。再打开一道试试。',
   'Each safeguard you add catches some of the attempts that the safeguards before it missed.':'每多加一道安全措施，就能接住一些前面几道漏掉的。',
-  'All four safeguards are on, which is what Varrow has today. Fewer than 1 attempt in 100 gets past all four, so people still keep watching.':'四道安全措施全都打开了，瓦罗今天就是这样。100次尝试里，能闯过全部四道的不到1次，所以大家还是一直盯着。',
+  'All four safeguards are on, which is what Varrow has today. Fewer than 1 attempt in 100 gets past all four, so people still keep watching.':'四道安全措施全都打开了，瓦罗今天就是这样。100次尝试里，能闯过全部四道的不到1次，所以大家还是不能松懈，一直盯着。',
   '100 possible futures':'100种可能的未来','See Varrow’s rule board':'看看瓦罗的规则板',
   'DNA order checks':'DNA订单检查','Stopped before the germ was made':'病菌造出来之前就被拦下','Every order checked first':'每份订单先检查',
   'Wastewater testing':'污水检测','Caught in days, kept small':'几天内发现，规模很小','A tester in every neighborhood':'每个街区一台检测器',
@@ -134,7 +134,7 @@ I18N.add('zh','quietyear',{strings:{
   'AI alone':'AI自己做','AI, then a person checks':'AI做，人检查','Only a person':'只能由人做',
   'Varrow’s rules agree':'和瓦罗的规则一样','Varrow’s rule: {0}':'瓦罗的规则：{0}','Next job':'下一项','See the board':'看看规则板',
   'Check every DNA order before it prints':'每份DNA订单打印前先检查',
-  'Varrow’s print shop gets thousands of orders a day. Checking an order doesn’t change anything by itself, so the AI can do it without waiting for anyone.':'瓦罗的打印店一天要收几千份订单。光是检查订单，什么都不会改变，所以AI不用等任何人，自己就能做。',
+  'Varrow’s print shop gets thousands of orders a day. Checking an order doesn’t change anything by itself, so the AI can do it without waiting for anyone.':'瓦罗的打印店一天要收几千份订单。只是检查订单，本身不会改变任何东西，所以AI不用等任何人，自己就能做。',
   'Alert the health office when a water test finds something new':'污水检测发现新东西时，通知卫生办公室',
   'For this job, speed matters most. If the alert is wrong, someone at the health office makes one phone call for nothing, but if the alert is late, the germ gets weeks to spread.':'这件事最要紧的是快。警报报错了，卫生办公室的人不过白打一个电话；警报报晚了，病菌就多出好几个星期去传播。',
   'Flag an odd order and wait for a screener':'标记不对劲的订单，等筛查员来看',
@@ -152,12 +152,12 @@ I18N.add('zh','quietyear',{strings:{
   // Ivy and the lantern
   'Hi! Gus said you found my drawing. I’m Ivy.':'你好！格斯说你找到了我的画。我叫艾薇。',
   'I was seven when I put that first lantern in our window. Now I help hang the new ones.':'我七岁那年，在我家窗口放了第一盏灯笼。现在我帮忙挂新的灯笼。',
-  'Every visitor gets to light a lantern. Who would you thank with yours?':'每位来这里的人都可以点一盏灯笼。你的灯笼想谢谢谁？',
+  'Every visitor gets to light a lantern. Who would you thank with yours?':'每个来这里的人都可以点一盏灯笼。你的灯笼想谢谢谁？',
   'The people who stayed home.':'那些待在家里的人。','Me too. Staying home was the hardest kind of helping.':'我也是。待在家里，是最难的一种帮忙。',
   'The people who keep checking, like Noor.':'那些一直在检查的人，比如努尔。',
   'Good pick. People hardly ever thank the ones who do quiet jobs like checking orders, but those jobs keep us safe.':'选得好。像检查订单这种不起眼的工作，很少有人去感谢，可就是这些工作在保护我们。',
   'I’m not sure yet.':'我还不确定。','That’s okay. Hold the lantern for a minute, and you’ll think of someone.':'没关系。先拿着灯笼想一会儿，你会想到谁的。',
-  'Here. Pick a color and write your thank-you.':'给你。挑个颜色，再写下你想说的谢谢。',
+  'Here. Pick a color and write your thank-you.':'给你。挑个颜色，再写上你想感谢的话。',
   'Light a lantern':'点一盏灯笼','Lantern color':'灯笼颜色','Add your own words':'写几句你自己的话','Set it on the pond':'放到池塘上',
   'the nurses':'护士们','the bakers':'面包师们','the screeners':'筛查员们','the kids who stayed home':'待在家里的孩子们','everyone who helped':'每一个帮过忙的人',
   'Thank you to {0}.':'谢谢{0}。',
@@ -174,7 +174,7 @@ I18N.add('zh','quietyear',{strings:{
 
   // the Field Guide
   'How germs spread':'病菌是怎么传开的',
-  'A germ spreads from person to person. If every sick person passes it to 2 others, 1 sick person becomes 2, then 4, then 8, then 16. When people stay apart for a while, the germ can’t reach new people, and the outbreak shrinks.':'病菌会一个人传给另一个人。如果每个病人都传给另外2个人，1个病人就会变成2个，再变成4个、8个、16个。大家分开待一阵子，病菌碰不到新的人，疫情就会变小。',
+  'A germ spreads from person to person. If every sick person passes it to 2 others, 1 sick person becomes 2, then 4, then 8, then 16. When people stay apart for a while, the germ can’t reach new people, and the outbreak shrinks.':'病菌会在人和人之间传播。如果每个病人都传给另外2个人，1个病人就会变成2个，再变成4个、8个、16个。大家分开待一阵子，病菌碰不到新的人，疫情就会变小。',
   'True today: health experts track how many people each sick person passes an illness to. When that number drops below 1, an outbreak shrinks.':'现实中：卫生专家会追踪每个病人平均把病传给几个人。这个数一降到1以下，疫情就会缩小。',
   'Early warning':'预警',
   'An outbreak that is noticed within days is still small, but one that goes unnoticed for weeks can grow huge. Sensors that notice a new germ early give people time to stop it.':'疫情如果几天内就被发现，规模还很小；要是几个星期都没人发现，就可能变得非常大。传感器早早发现新病菌，人们就有时间去阻止它。',
@@ -186,21 +186,21 @@ I18N.add('zh','quietyear',{strings:{
   'An AI can design a new medicine in days. Careful tests on real people still take weeks, because a medicine has to be safe for everyone who gets it.':'AI几天就能设计出一种新药。可是在真人身上仔细测试，还是要花好几个星期，因为药必须对每个用它的人都安全。',
   'True today: the first COVID-19 vaccines were designed within days in early 2020, then tested in large trials for months.':'现实中：2020年初，第一批新冠疫苗几天之内就设计出来了，之后又在大规模试验里测试了好几个月。',
   'Defense in depth':'纵深防御',
-  'No single safeguard is perfect. When you stack several safeguards, each one catches some of what the others missed, so a disaster becomes very unlikely, though never impossible.':'没有哪一道安全措施是完美的。把几道措施叠在一起，每一道都能接住别的几道漏掉的一部分。这样，灾难就很难发生了，不过永远不会变成完全不可能。',
+  'No single safeguard is perfect. When you stack several safeguards, each one catches some of what the others missed, so a disaster becomes very unlikely, though never impossible.':'没有哪一道安全措施是完美的。把几道措施叠在一起，每一道都能接住别的几道漏掉的一部分。这样，灾难就很难发生了，不过永远做不到绝对不会发生。',
   'True today: airplanes, hospitals and power plants use layers of safety checks. Engineers sometimes call it the Swiss cheese model.':'现实中：飞机、医院和发电厂都用一层又一层的安全检查。工程师有时把它叫作“瑞士奶酪模型”。',
   'Who does what?':'谁来做什么？',
   'AIs run many safeguards on their own. An AI does small, fast jobs that are easy to undo by itself. For bigger jobs, a person checks the AI’s work. For huge choices that are hard to undo, like closing schools or switching off a safeguard, a person decides and signs.':'很多安全措施都是AI自己在管。又小又快、做错了也容易改回来的事，AI自己做。大一些的事，AI做完要有人检查。像让学校停课、关掉一道安全措施这样很难挽回的大决定，要由人来做，并签上名字。',
   'True today: autopilots fly much of a passenger flight on their own, but the pilots watch them and decide when to take off and land.':'现实中：客机飞行的大部分时间是自动驾驶在飞，但飞行员一直盯着，什么时候起飞、什么时候降落也由他们决定。',
   'Exponential growth':'指数增长',
   'When something doubles again and again, it starts slow and then grows enormous: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1,024. Ten doublings turn 1 into more than 1,000. That is why catching a germ a few days earlier makes such a big difference.':'一样东西一次又一次翻倍，开头很慢，后来会大得吓人：1、2、4、8、16、32、64、128、256、512、1,024。翻10次倍，1就变成了1,000多。所以早几天发现病菌，差别会特别大。',
-  'True today: scientists use doubling time to describe how fast an outbreak grows, and the same math describes savings that earn interest and the number of tiny switches packed onto computer chips.':'现实中：科学家用“倍增时间”来描述疫情长得有多快。同样的数学还能描述存款怎样利滚利，以及电脑芯片上塞进了多少个微小的开关。',
+  'True today: scientists use doubling time to describe how fast an outbreak grows, and the same math describes savings that earn interest and the number of tiny switches packed onto computer chips.':'现实中：科学家用“倍增时间”来描述疫情扩大得有多快。同样的数学还能描述存款怎样利滚利，以及电脑芯片上塞进了多少个微小的开关。',
   'Kindness spreads':'善意会传开',
   'One family put a lantern in a window, and a whole city copied it. People who see someone help are more likely to help someone else.':'一户人家在窗口放了一盏灯笼，整座城市都跟着放了起来。人们看到有人在帮忙，自己也更愿意去帮别人。',
   'True today: some experiments have found that people who are treated generously are more likely to be generous to someone else afterward.':'现实中：有些实验发现，被人大方对待过的人，后来也更愿意大方地对待别人。',
 
   // people in the garden
   'My grandpa’s lantern is the blue one by the pond.':'我爷爷的灯笼是池塘边那盏蓝色的。',
-  'We come every year on the anniversary of the Quiet Year. Being here with everyone feels like a big, quiet hug.':'每年静默之年的纪念日，我们都会来。和大家一起待在这儿，就像被一个安安静静的大拥抱抱住了。',
+  'We come every year on the anniversary of the Quiet Year. Being here with everyone feels like a big, quiet hug.':'每年静默之年的纪念日，我们都会来。和大家一起待在这儿，感觉就像大家安安静静地抱在一起。',
   'My son was a baby in 2030. He slept through the whole Quiet Year.':'2030年我儿子还是个小婴儿，整个静默之年他几乎都在睡觉。',
   'Every bus in Varrow has far-UVC lamps now. You can’t even see the light.':'现在瓦罗的每辆公交车上都有远紫外线灯，你连那光都看不见。',
   'Kwame the baker still makes his special lantern bread every anniversary. Get to his bakery early!':'每年纪念日，面包师夸梅还会做他的灯笼面包。想买就早点去他店里！',
@@ -211,11 +211,11 @@ I18N.add('zh','quietyear',{strings:{
   'The AIs do small, fast jobs that are easy to undo by themselves. For bigger jobs, a person checks the AI’s work. Closing schools or switching off a safeguard needs a person who decides and signs.':'又小又快、容易改回来的事，AI自己做。大一些的事，AI做完要有人检查。让学校停课或者关掉一道安全措施，要由一个人来决定并签字。',
   'An AI checks every DNA order before it prints. Almost all of them are for medicine and pass at once. When one looks odd, Noor decides whether to hold it for experts.':'每份DNA订单打印之前，都由AI检查一遍。几乎所有订单都是为了做药，马上就能通过。要是有一份看起来不对劲，就由努尔决定要不要先扣下来，等专家来看。',
   'Far-UVC lamps in buses, shops and schools break down germs floating in the air. They slow a germ down, so the other safeguards have time to catch it.':'公交车、商店和学校里的远紫外线灯，能分解飘在空气里的病菌。它们让病菌传得慢一些，别的安全措施就有时间抓住它。',
-  'Sniffer boxes test the water that drains out of buildings and call for help within a day. In 2030, it took almost three weeks to notice the germ.':'嗅嗅检测器会检测从楼里排出去的水，一天之内就能报警求助。2030年那次，过了差不多三个星期才有人发现病菌。',
+  'Sniffer boxes test the water that drains out of buildings and call for help within a day. In 2030, it took almost three weeks to notice the germ.':'嗅嗅检测器会检测从楼里排出去的水，一天之内就会发出警报。2030年那次，过了差不多三个星期才有人发现病菌。',
   'Varrow built clean-air shelters with room for every family. They’re the last layer, for the very worst case. Nobody has needed them.':'瓦罗建了洁净空气避难所，每户人家都住得下。那是最后一层，留给最糟糕的情况。到现在还没人用过。',
   'An AI designed the vaccine in two days, and careful tests took weeks. The vaccine had to be made fast, and it also had to be proven safe.':'AI两天就设计出了疫苗，仔细测试又花了好几个星期。疫苗要做得快，也得证明它是安全的。',
   'Defense in depth means stacking safeguards. With all four, about 90 in 100 attempts are stopped before anything is made, and fewer than 1 in 100 slips all the way through.':'纵深防御，就是把安全措施一层层叠起来。四层全开的话，100次尝试里大约90次在什么都没造出来之前就被拦下，能一路闯过去的不到1次。',
-  'An unsafe AI, built without safety checks, helped someone make it. That’s why every DNA order gets checked now, and why AIs have rules about what they may do.':'是一个没做过安全检查的不安全AI帮人造出了它。所以现在每份DNA订单都要检查，AI能做什么也都有了规矩。',
+  'An unsafe AI, built without safety checks, helped someone make it. That’s why every DNA order gets checked now, and why AIs have rules about what they may do.':'帮人造出它的，是一个没经过安全检查、不安全的AI。所以现在每份DNA订单都要检查，AI能做什么也都有了规矩。',
   'Ask me about the lanterns, the Quiet Year, or the safeguards that keep Varrow safe today.':'你可以问我灯笼的事、静默之年的事，或者现在保护瓦罗的那些安全措施。',
 
   // pictures (labels and descriptions inside the story pictures)
